@@ -1,0 +1,1436 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
+import 'package:rassasy_new/new_design/auth_user/profie/profile.dart';
+import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
+import 'package:rassasy_new/new_design/back_ground_print/test_page.dart';
+import 'package:get/get.dart';
+
+import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
+import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
+import 'package:rassasy_new/new_design/report/new_report_page.dart';
+import 'customer/customer_detail_page.dart';
+import 'flavour/view_flavour.dart';
+import 'new_tax/tax_category.dart';
+import 'pos/new_method/pos_list_section.dart';
+import 'product/create_products.dart';
+import 'tax/create_tax_new.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:rassasy_new/main.dart';
+import 'package:rassasy_new/setting/settings_page.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:http/http.dart' as http;
+import 'package:rassasy_new/global/global.dart';
+
+class DashboardNew extends StatefulWidget {
+  @override
+  State<DashboardNew> createState() => _DashboardNewState();
+}
+
+class _DashboardNewState extends State<DashboardNew> {
+  bool networkConnection = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dataForStaff();
+  }
+
+
+
+
+
+  dataForStaff() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      var isArabic = prefs.getBool('isArabic')??false;
+      if(isArabic){
+        Get.updateLocale(Locale('ar'));
+      }
+      else{
+        Get.updateLocale(Locale('en', 'US'));
+      }
+
+      userName = prefs.getString('user_name') ?? '';
+      companyName = prefs.getString('companyName') ?? '';
+      companyType = prefs.getString('companyType') ?? '';
+      expireDate = prefs.getString('expiryDate') ?? '';
+      settingsPermission = prefs.getBool('General Setting') ?? false;
+    });
+  }
+
+  Future<Null> defaultData() async {
+    start(context);
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        stop();
+        networkConnection = false;
+      });
+    } else {
+      try {
+        HttpOverrides.global = MyHttpOverrides();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        var userID = prefs.getInt('user_id') ?? 0;
+        var companyID = prefs.getString('companyID') ?? 0;
+        var branchID = prefs.getInt('branchID') ?? 1;
+        var accessToken = prefs.getString('access') ?? '';
+
+        String baseUrl = BaseUrl.baseUrl;
+
+        final String url = '$baseUrl/users/get-default-values/';
+        print(url);
+        Map data = {"CompanyID": companyID, "userId": userID, "BranchID": branchID};
+        print(data);
+        print(accessToken);
+        //encode Map to JSON
+        var body = json.encode(data);
+        var response = await http.post(Uri.parse(url),
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': 'Bearer $accessToken',
+            },
+            body: body);
+        Map n = json.decode(response.body);
+        print(response.body);
+
+        var status = n["success"];
+        if (status == 6000) {
+          setState(() {
+            userName = prefs.getString('user_name') ?? '';
+            companyName = prefs.getString('companyName') ?? '';
+            companyType = prefs.getString('companyType') ?? '';
+            expireDate = prefs.getString('expiryDate') ?? '';
+
+            networkConnection = true;
+            var frmDate = n["financial_FromDate"].substring(0, 10);
+            var toDate = n["financial_ToDate"].substring(0, 10);
+            prefs.setString("financial_FromDate", frmDate);
+            prefs.setString("financial_ToDate", toDate);
+            prefs.setString("Country", n["Country"]);
+            prefs.setString("CountryName", n["CountryName"]);
+            prefs.setString("State", n["State"]);
+            prefs.setString("CurrencySymbol", n["CurrencySymbol"]);
+            var settingsData = n['settingsData'];
+            prefs.setBool("checkVat", settingsData["VAT"]);
+            prefs.setBool("check_GST", settingsData["GST"]);
+            prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
+            prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
+            prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
+            prefs.setInt("user_type", n["user_type"]);
+          });
+          stop();
+        } else if (status == 6001) {
+          stop();
+        } else {
+          stop();
+        }
+      } catch (e) {
+
+          stop();
+
+
+        print(e.toString());
+        print('Error In Loading');
+      }
+    }
+  }
+
+  returnBool(String data) {
+    if (data == "true") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> selectedItem(BuildContext context, item) async {
+    switch (item) {
+      case 0:
+        await defaultDataInitial(context: context);
+        await userTypeData(true);
+        break;
+      case 1:
+
+        if(settingsPermission){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsPage()));
+
+        }
+        else{
+          dialogBoxPermissionDenied(context);
+
+        }
+
+        break;
+      case 2:
+        company_info(context);
+        break;
+      case 3:
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfilePage()));
+
+        break;
+
+      case 4:
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        var printType = prefs.getString('PrintType') ?? "Wifi";
+
+        if (printType == "Wifi") {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => PrintSettings()),
+          );
+        } else {
+     //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => PrintSettingsBluetooth()),);
+        }
+
+        break;
+      case 5:
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var posUser = prefs.getBool('isPosUser');
+
+        print(posUser);
+        if (posUser == true) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+          );
+        } else if (posUser == false) {
+          prefs.setBool('isLoggedIn', false);
+          prefs.setBool('companySelected', false);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LoginPageNew()),
+          );
+        }
+
+        break;
+    }
+  }
+
+  var companyName = "";
+  bool settingsPermission = false;
+  var userName = "";
+  String india = "+91 905775 00400";
+  String ksa = "+966 533133 4959";
+  var companyType = "";
+  var expireDate = "";
+
+  company_info(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true, // user must tap button for close dialog!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 5,
+                child: SvgPicture.asset("assets/svg/company.svg"),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                companyName,
+                style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                "Your Company Will Expired on $expireDate.\n Please Contact us to Renew Your Plan",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                'call_us'.tr,
+                style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: Text(
+                      india,
+                      style: TextStyle(
+                        color: Color(0xff000000),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 3,
+                  ),
+                  Text(
+                    "|",
+                    style: TextStyle(
+                      color: Color(0xff000000),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 2,
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Text(
+                      ksa,
+                      style: TextStyle(
+                        color: Color(0xff000000),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                "support@vikncodes.com",
+                style: TextStyle(color: Colors.greenAccent),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+            ],
+          ),
+
+          // content: const Text(
+          //     'Are Sure Want to Exit?.'),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: const Color(0xffF3F3F3),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Dashboard'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.normal, 24.0),
+                //  style: TextStyle(color: Colors.black, fontSize: 24),
+              ),
+            ],
+          ),
+          actions: [
+            /// select waiter role is commented
+            // Theme(
+            //   data: Theme.of(context).copyWith(
+            //       textTheme: const TextTheme().apply(bodyColor: Colors.black),
+            //       dividerColor: Colors.white,
+            //       iconTheme: const IconThemeData(color: Colors.black)),
+            //   child: PopupMenuButton<int>(
+            //     color: Colors.white,
+            //     child: Row(
+            //       children: [
+            //         Icon(
+            //           Icons.settings,
+            //           color: Color(0xff096816),
+            //         ),
+            //         Text(
+            //           " Set waiter Role",
+            //           style:customisedStyle(context,Color(0xff096816),FontWeight.normal,13.0),
+            //
+            //         ),
+            //       ],
+            //     ),
+            //     itemBuilder: (context,) =>
+            //
+            //     [
+            //       PopupMenuItem(
+            //         child: StatefulBuilder(
+            //           builder: (context, setState) {
+            //             return Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Text(
+            //                   "Dining",
+            //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
+            //                 ),
+            //                 SizedBox(
+            //                   width: 7,
+            //                 ),
+            //                 SizedBox(
+            //                   width: 100,
+            //                   child: Center(
+            //                     child: FlutterSwitch(
+            //                       width: 40.0,
+            //                       height: 20.0,
+            //                       valueFontSize: 30.0,
+            //                       toggleSize: 15.0,
+            //                       value: diningStatus,
+            //                       borderRadius: 20.0,
+            //                       padding: 1.0,
+            //                       activeColor: Colors.green,
+            //                       activeTextColor: Colors.green,
+            //                       inactiveTextColor: Colors.white,
+            //                       inactiveColor: Colors.grey,
+            //                       onToggle: (val) {
+            //                         setState(() {
+            //                           diningStatus = val;
+            //                         });
+            //                       },
+            //                     ),
+            //                   ),
+            //                 )
+            //
+            //               ],
+            //             );
+            //           },
+            //         ),
+            //       ),
+            //       PopupMenuItem<int>(
+            //         value: 0,
+            //         child: StatefulBuilder(
+            //           builder: (context, setState) {
+            //             return Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Text(
+            //                   "Take Away",
+            //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
+            //                 ),
+            //                 SizedBox(
+            //                   width: 7,
+            //                 ),
+            //                 SizedBox(
+            //                   width: 100,
+            //                   child: Center(
+            //                     child: FlutterSwitch(
+            //                       width: 40.0,
+            //                       height: 20.0,
+            //                       valueFontSize: 30.0,
+            //                       toggleSize: 15.0,
+            //                       value: takeawayStatus,
+            //                       borderRadius: 20.0,
+            //                       padding: 1.0,
+            //                       activeColor: Colors.green,
+            //                       activeTextColor: Colors.green,
+            //                       inactiveTextColor: Colors.white,
+            //                       inactiveColor: Colors.grey,
+            //
+            //                       // showOnOff: true,
+            //                       onToggle: (val) {
+            //                         setState(() {
+            //                           takeawayStatus = val;
+            //                         });
+            //                       },
+            //                     ),
+            //                   ),
+            //                 )
+            //               ],
+            //             );
+            //           },
+            //         ),
+            //       ),
+            //       PopupMenuItem<int>(
+            //           value: 0,
+            //           child: StatefulBuilder(builder: (context, setState) {
+            //             return Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Text(
+            //                   "Online",
+            //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
+            //                 ),
+            //                 SizedBox(
+            //                   width: 7,
+            //                 ),
+            //                 SizedBox(
+            //                   width: 100,
+            //                   child: Center(
+            //                     child: FlutterSwitch(
+            //                       width: 40.0,
+            //                       height: 20.0,
+            //                       valueFontSize: 30.0,
+            //                       toggleSize: 15.0,
+            //                       value: onlineStatus,
+            //                       borderRadius: 20.0,
+            //                       padding: 1.0,
+            //                       activeColor: Colors.green,
+            //                       activeTextColor: Colors.green,
+            //                       inactiveTextColor: Colors.white,
+            //                       inactiveColor: Colors.grey,
+            //
+            //                       // showOnOff: true,
+            //                       onToggle: (val) {
+            //                         setState(() {
+            //                           onlineStatus = val;
+            //                         });
+            //                       },
+            //                     ),
+            //                   ),
+            //                 )
+            //               ],
+            //             );
+            //           })),
+            //       PopupMenuItem<int>(
+            //           value: 0,
+            //           child: StatefulBuilder(builder: (context, setState) {
+            //             return Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Text(
+            //                   "Car",
+            //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
+            //                 ),
+            //                 SizedBox(
+            //                   width: 7,
+            //                 ),
+            //                 SizedBox(
+            //                   width: 100,
+            //                   child: Center(
+            //                     child: FlutterSwitch(
+            //                       width: 40.0,
+            //                       height: 20.0,
+            //                       valueFontSize: 30.0,
+            //                       toggleSize: 15.0,
+            //                       value: carStatus,
+            //                       borderRadius: 20.0,
+            //                       padding: 1.0,
+            //                       activeColor: Colors.green,
+            //                       activeTextColor: Colors.green,
+            //                       inactiveTextColor: Colors.white,
+            //                       inactiveColor: Colors.grey,
+            //
+            //                       // showOnOff: true,
+            //                       onToggle: (val) {
+            //                         setState(() {
+            //                           carStatus = val;
+            //                         });
+            //                       },
+            //                     ),
+            //                   ),
+            //                 )
+            //               ],
+            //             );
+            //           })),
+            //       const PopupMenuDivider(),
+            //     ],
+            //    // onSelected: (item) => selectedItem(context, item),
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Container(
+            //     width: MediaQuery.of(context).size.width / 4,
+            //     height: MediaQuery.of(context).size.height / 20,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       crossAxisAlignment: CrossAxisAlignment.center,
+            //       children: [
+            //         Container(
+            //           width: MediaQuery.of(context).size.width / 5,
+            //           child: TextField(
+            //             readOnly: true,
+            //             controller: waiterController,
+            //
+            //             onTap: () async {
+            //
+            //               var result = await Navigator.push(
+            //                 context,
+            //                 MaterialPageRoute(builder: (context) => SelectWaiter()),
+            //               );
+            //
+            //               if (result != null) {
+            //                 waiterController.text = result;
+            //                 setUserRole(3, true);
+            //               } else {
+            //
+            //               }
+            //             },
+            //             style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+            //             keyboardType: TextInputType.text,
+            //             textCapitalization: TextCapitalization.words,
+            //             decoration: InputDecoration(
+            //                 enabledBorder: OutlineInputBorder(
+            //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
+            //                 focusedBorder: OutlineInputBorder(
+            //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
+            //                 disabledBorder: OutlineInputBorder(
+            //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
+            //                 contentPadding: EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+            //                 prefixIcon: Icon(
+            //                   Icons.person,
+            //                   color: Color(0xffF25F29),
+            //                 ),
+            //                 filled: true,
+            //                 hintStyle: customisedStyle(context,Colors.grey,FontWeight.normal,12.0),
+            //                 hintText: "Select waiter",
+            //                 fillColor: Color(0xffE6E6E6)),
+            //           ),
+            //         ),
+            //         IconButton(
+            //             onPressed: () {
+            //               popupAlert("Do you really want to remove it",2);
+            //
+            //             },
+            //             icon: Icon(
+            //               Icons.cancel,
+            //               color: Colors.red,
+            //               size: 30,
+            //             ))
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            Theme(
+              data: Theme.of(context).copyWith(
+                  textTheme: const TextTheme().apply(bodyColor: Colors.black),
+                  dividerColor: Colors.white,
+                  iconTheme: const IconThemeData(color: Colors.black)),
+              child: PopupMenuButton<int>(
+                color: Colors.white,
+                itemBuilder: (context) => [
+                  PopupMenuItem<int>(
+                      value: 0,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.refresh,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Text(
+                            'Refresh'.tr,
+                            style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                          )
+                        ],
+                      )),
+                  const PopupMenuDivider(),
+
+                  // settings permission
+
+                  PopupMenuItem<int>(
+                      value: 1,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.settings,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Text(
+                           'Settings'.tr,
+                            style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                          )
+                        ],
+                      )),
+                  const PopupMenuDivider(),
+                  PopupMenuItem<int>(
+                      value: 2,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.info,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Text(
+                            'com_info'.tr,
+                            style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                          )
+                        ],
+                      )),
+                  const PopupMenuDivider(),
+                  PopupMenuItem<int>(
+                      value: 3,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.manage_accounts,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Text(
+                            'Profile'.tr,
+                            style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                          )
+                        ],
+                      )),
+                  const PopupMenuDivider(),
+                  PopupMenuItem<int>(
+                      value: 4,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.print,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Text(
+                            "Print test page".tr,
+                            style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                          )
+                        ],
+                      )),
+                  const PopupMenuDivider(),
+                  PopupMenuItem<int>(
+                      value: 5,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.info,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Text(
+                            'user_log_out'.tr,
+                            style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                          )
+                        ],
+                      )),
+                ],
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Colors.black,
+                ),
+                onSelected: (item) => selectedItem(context, item),
+              ),
+            ),
+          ],
+        ),
+        body: networkConnection == true ? dashboardPage() : noNetworkConnectionPage());
+  }
+
+  /// set up user role
+  setupWaiterRole() {}
+
+  Widget noNetworkConnectionPage() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "assets/svg/warning.svg",
+            width: 100,
+            height: 100,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            'no_network'.tr,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextButton(
+            onPressed: () {
+              Future.delayed(Duration.zero, () async{
+                await  userTypeData(true);
+                await defaultData();
+              });
+
+            },
+            child: Text('retry'.tr,
+                style: TextStyle(
+                  color: Colors.white,
+                )),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget dashboardPage() {
+    return Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width / 4,
+              height: MediaQuery.of(context).size.height / 1.4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TaxCategory()));
+
+                      },
+                      child: Text("User type data")),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                var perm = await checkingPerm("Groupview");
+                                print(perm);
+                                if (perm) {
+                                  // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>  RMS()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddProductGroup()));
+                                } else {
+                                  dialogBoxPermissionDenied(context);
+                                }
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder:
+                                //             (BuildContext context) =>
+                                //            testing()));
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/product_group.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'Group'.tr,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                var perm = await checkingPerm("Productview");
+                                print(perm);
+                                if (perm) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CreateProductNew()));
+                                } else {
+                                  dialogBoxPermissionDenied(context);
+                                }
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/product.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                               'Products'.tr,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                var perm = await checkingPerm("Customerview");
+                                print(perm);
+                                if (perm) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCustomerNew()));
+                                } else {
+                                  dialogBoxPermissionDenied(context);
+                                }
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/customer.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'customer'.tr,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            GestureDetector(
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/POS.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onTap: () async {
+                                var dinePerm = await checkingPerm("Diningview");
+                                var takeAwayPerm = await checkingPerm("Take awayview");
+                                var carPerm = await checkingPerm("Carview");
+
+                                if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => POSListItemsSection()));
+                                } else {
+                                  dialogBoxPermissionDenied(context);
+                                }
+
+                                //
+                                // if(waiterController.text ==""){
+                                // //  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSPage()));
+                                //  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
+                                // }
+                                // else{
+                                //  popupAlert("Confirm ${waiterController.text} is ready to use",1);
+                                // }
+                                //
+                              },
+                            ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                "POS".tr,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                var salesReport = await checkingPerm("Sale Report");
+                                var tableWiseReport = await checkingPerm("Table Wise Report");
+                                var productReport = await checkingPerm("Product Report");
+
+                                var rmsReport = await checkingPerm("RMS Report");
+
+                                var diningReport = await checkingPerm("Dining Report");
+
+                                var takeAwayReport = await checkingPerm("Take Away Report");
+
+                                var carReport = await checkingPerm("Car Report");
+
+                                ///     var salesReport = await checkingPerm("Online Report");
+
+                                if (salesReport == true ||
+                                    tableWiseReport == true ||
+                                    productReport == true ||
+                                    rmsReport == true ||
+                                    diningReport == true ||
+                                    takeAwayReport == true ||
+                                    carReport == true) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ReportPageNew()));
+                                } else {
+                                  dialogBoxPermissionDenied(context);
+                                }
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/report.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                               'Report'.tr,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => SettingsPageDemo()),
+                                // );
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => AddTax()),
+                                );
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/tax.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'tax'.tr,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // Column(
+                        //   children: [
+                        //     GestureDetector(
+                        //       onTap: () async {
+                        //         /// loyalty customer
+                        //         var loyaltyCustomer = await checkingPerm("Loyalty Customerview");
+                        //
+                        //         if (loyaltyCustomer == true) {
+                        //           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoyaltyCustomer()));
+                        //         } else {
+                        //           dialogBoxPermissionDenied(context);
+                        //         }
+                        //       },
+                        //       child: Container(
+                        //         decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                        //         height: MediaQuery.of(context).size.height / 12,
+                        //         width: MediaQuery.of(context).size.width / 17,
+                        //         child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           crossAxisAlignment: CrossAxisAlignment.center,
+                        //           children: [
+                        //             Container(
+                        //               height: MediaQuery.of(context).size.height / 20,
+                        //               width: MediaQuery.of(context).size.width / 20,
+                        //               child: SvgPicture.asset('assets/svg/Loyality.svg'),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     const Padding(
+                        //       padding: EdgeInsets.only(
+                        //         top: 12,
+                        //       ),
+                        //       child: Text(
+                        //         "Loyalty",
+                        //         style: TextStyle(fontSize: 12),
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
+/// english
+//                         IconButton(onPressed: (){
+//                           var printHelper = new AppBlocs();
+//                          printHelper.testPrintConnect("192.168.1.121");
+//
+//
+//                         }, icon: Text("AR",style: TextStyle(color: Colors.green),)),
+//
+
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                var flavour = await checkingPerm("Flavourview");
+
+                                if (flavour == true) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewFlavour()));
+                                } else {
+                                  dialogBoxPermissionDenied(context);
+                                }
+
+
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => MyListView()),
+                                // );
+                                //
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/flavour.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'Flavour'.tr,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                var invoices = await checkingPerm('Invoices'.tr);
+
+                                if (invoices == true) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+
+                                } else {
+                                  dialogBoxPermissionDenied(context);
+                                }
+
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => AddInvoice()),
+                                // );
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/invoice.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'Invoices'.tr,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+
+  Future<Null> userTypeData(type) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+    } else {
+      try {
+        if(type){
+          start(context);
+        }
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var branchID = prefs.getInt('branchID') ?? 1;
+        var companyID = prefs.getString('companyID') ?? '';
+        userName = prefs.getString('user_name') ?? '';
+        companyName = prefs.getString('companyName') ?? '';
+        companyType = prefs.getString('companyType') ?? '';
+        expireDate = prefs.getString('expiryDate') ?? '';
+        String baseUrl = BaseUrl.baseUrlV11;
+        var token = prefs.getString('access') ?? '';
+        var roleID = prefs.getString('role') ?? '';
+        final String url = '$baseUrl/posholds/list-detail/pos-role/';
+        print(url);
+        Map data = {"CompanyID": companyID, "Role_id": roleID, "BranchID": branchID};
+        print(data);
+        var body = json.encode(data);
+        var response = await http.post(Uri.parse(url),
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': 'Bearer $token',
+            },
+            body: body);
+
+        Map n = json.decode(utf8.decode(response.bodyBytes));
+        print(response.body);
+        print(token);
+        var status = n["StatusCode"];
+        var userRollData = n["data"] ?? [];
+        if (status == 6000) {
+          for (var i = 0; i < userRollData.length; i++) {
+            if (userRollData[i]["Key"] == "other" || userRollData[i]["Key"] == "report") {
+              prefs.setBool(userRollData[i]["Name"], userRollData[i]["Value"]);
+            } else {
+              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"], userRollData[i]["Value"]);
+            }
+          }
+          dataForStaff();
+          if(type){
+
+
+            stop();
+          }
+
+        } else if (status == 6001) {
+          if(type){
+
+            stop();
+          }
+        } else {}
+      } catch (e) {
+        if(type){
+          stop();
+        }
+      }
+    }
+  }
+
+  /// new user changes old method
+  // bool diningStatus = false;
+  // bool carStatus = false;
+  // bool onlineStatus = false;
+  // bool takeawayStatus = false;
+  // bool isSelectPos = false;
+  // bool isSelectWaiter = false;
+
+  // setUserRole(type, value) async {
+  //   print("_____________________________________-type   $type   $value");
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //
+  //   if (type == 1) {
+  //     prefs.setBool('IsSelectPos', value);
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => POSListItemsSection()));
+  //   }
+  //   if (type == 2) {
+  //     ///  waiterController.clear();
+  //     prefs.setBool('IsSelectPos', value);
+  //     prefs.setBool('IsSelectWaiter', value);
+  //   } else {
+  //     ///     prefs.setString('waiterNameInitial', waiterController.text);
+  //     prefs.setBool('IsSelectWaiter', value);
+  //     prefs.setBool('diningStatusPermission', diningStatus);
+  //     prefs.setBool('carStatusPermission', carStatus);
+  //     prefs.setBool('onlineStatusPermission', onlineStatus);
+  //     prefs.setBool('takeawayStatusPermission', takeawayStatus);
+  //   }
+  // }
+  //
+  // void popupAlert(content, type) {
+  //   showDialog(
+  //       context: context,
+  //       barrierDismissible: true,
+  //       builder: (BuildContext context) {
+  //         return Padding(
+  //           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+  //           child: AlertDialog(
+  //             title: const Padding(
+  //               padding: EdgeInsets.all(0.5),
+  //               child: Text(
+  //                 "Alert!",
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //             ),
+  //             content: Text(content),
+  //             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+  //             actions: <Widget>[
+  //               TextButton(
+  //                   onPressed: () => {
+  //                         Navigator.pop(context),
+  //                         if (type == 2)
+  //                           {
+  //                             setUserRole(2, false),
+  //                           }
+  //                         else
+  //                           {
+  //                             setUserRole(1, true),
+  //                           }
+  //                       },
+  //                   child: const Text(
+  //                     'Ok',
+  //                     style: TextStyle(color: Colors.black),
+  //                   )),
+  //               TextButton(
+  //                   onPressed: () => {
+  //                         Navigator.pop(context),
+  //                       },
+  //                   child: const Text(
+  //                     'Cancel',
+  //                     style: TextStyle(color: Colors.black),
+  //                   )),
+  //             ],
+  //           ),
+  //         );
+  //       });
+  // }
+}
+
+enum ConfirmAction { cancel, accept }
+
+Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
+  return showDialog<ConfirmAction>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'msg6'.tr,
+          style: TextStyle(color: Colors.black, fontSize: 13),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool('isLoggedIn', false);
+              prefs.setBool('companySelected', false);
+
+              Navigator.of(context).pushAndRemoveUntil(
+                CupertinoPageRoute(builder: (context) => LoginPageNew()),
+                (_) => false,
+              );
+            },
+          ),
+          TextButton(
+            child: Text('No'.tr, style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.of(context).pop(ConfirmAction.cancel);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}

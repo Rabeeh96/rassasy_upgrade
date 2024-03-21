@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="62" height="62" viewBox="0 0 62 62">
+  <defs>
+    <linearGradient id="linear-gradient" x1="-0.578" y1="0.229" x2="1" y2="0.756" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f68522"/>
+      <stop offset="1" stop-color="#ee4709"/>
+    </linearGradient>
+    <filter id="Ellipse_14" x="0" y="0" width="62" height="62" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#b75c02" flood-opacity="0.18"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_1414" data-name="Group 1414" transform="translate(-176.53 -642.53)">
+    <g transform="matrix(1, 0, 0, 1, 176.53, 642.53)" filter="url(#Ellipse_14)">
+      <circle id="Ellipse_14-2" data-name="Ellipse 14" cx="22" cy="22" r="22" transform="translate(7 5)" fill="url(#linear-gradient)"/>
+    </g>
+    <g id="Icon_feather-arrow-right" data-name="Icon feather-arrow-right" transform="translate(198.638 662.638)">
+      <path id="Path_1645" data-name="Path 1645" d="M7.5,18H21.284" transform="translate(-7.5 -11.108)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Path_1646" data-name="Path 1646" d="M18,7.5l6.892,6.892L18,21.284" transform="translate(-11.108 -7.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+  </g>
+</svg>

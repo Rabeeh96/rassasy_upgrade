@@ -1,0 +1,253 @@
+name: rassasy_new
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.1 <4.0.0'
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo/Rassasy.png"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_svg: ^2.0.9
+  #  splashscreen: ^1.3.5
+  passcode_screen: ^2.0.1
+  shared_preferences: ^2.2.2
+  dropdown_button2: ^2.3.9
+  flutter_switch: ^0.3.2
+  dotted_border: ^2.1.0
+  #  flutter_screen_lock: ^5.0.6
+  connectivity_plus:
+  flutter_overlay_loader: ^2.0.0
+  http: ^0.13.4
+  flutter_native_splash: ^2.0.5
+  #  search_page: ^2.0.0+1
+  #  flutter_datetime_picker: ^1.5.1
+  intl: ^0.17.0
+  #  pos_printer_manager: ^0.0.5
+  webcontent_converter: ^0.0.8+3
+  #  image:
+  image:
+  flutter_svg_provider: ^1.0.3
+  image_picker: ^1.0.7
+  path:
+  path_provider: ^2.0.13
+  email_validator: ^2.1.16
+  date_range_form_field: ^1.0.2
+  mime: ^1.0.2
+  network_info_plus: ^3.0.5
+  ping_discover_network_forked: ^0.0.1
+  #  esc_pos_printer: ^4.1.0
+  esc_pos_printer_plus: ^0.0.3
+#  open_file_safe: ^3.2.3
+  webview_flutter: ^4.7.0
+  popover: ^0.3.0
+  google_fonts:
+  flutter_countdown_timer: ^4.1.0
+  fluttertoast: ^8.2.2
+  charset_converter: ^2.2.0
+  #  flutter_typeahead: ^5.2.0
+  #alert: ^2.0.1
+  sunmi_printer_plus: ^2.1.1
+  widgets_to_image: ^0.0.2
+  flutter_barcode_scanner: ^2.0.0
+  get:
+  printing:
+  flutter_launcher_icons: ^0.13.1
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^3.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+  assets:
+    - assets/svg/Logo.svg
+    - assets/svg/rassasy.svg
+    - assets/svg/delete.svg
+    - assets/svg/add.svg
+    - assets/svg/addmore.svg
+    - assets/svg/genrlsetting.svg
+    - assets/svg/organisation.svg
+    - assets/svg/printseting.svg
+    - assets/svg/kitchenseting.svg
+    - assets/svg/users.svg
+    - assets/svg/Contactus.svg
+    - assets/svg/Privacypolicy.svg
+    - assets/svg/Termscontitions.svg
+    - assets/svg/Versiondetails.svg
+    - assets/svg/language.svg
+    - assets/svg/logout.svg
+    - assets/svg/navigatearrow.svg
+    - assets/svg/sidemenu.svg
+    - assets/svg/productgroup.svg
+    - assets/svg/products.svg
+    - assets/svg/customer.svg
+    - assets/svg/POS.svg
+    - assets/svg/report.svg
+    - assets/svg/filter.svg
+    - assets/svg/addproduct.svg
+    - assets/svg/veg.svg
+    - assets/svg/nonveg.svg
+    - assets/svg/arrow.svg
+    - assets/svg/user.svg
+    - assets/svg/wifi.svg
+    - assets/svg/usb.svg
+    - assets/svg/bluetooth.svg
+    - assets/svg/bluetooth.svg
+    - assets/svg/table.svg
+    - assets/svg/nextarrow.svg
+    - assets/svg/remove.svg
+    - assets/svg/dining.svg
+    - assets/svg/takeaway.svg
+    - assets/svg/online.svg
+    - assets/svg/car.svg
+    - assets/svg/clear.svg
+    - assets/svg/printer.svg
+    - assets/svg/cancelorder.svg
+    - assets/svg/pay.svg
+    - assets/svg/arrowforward.svg
+    - assets/svg/person.svg
+    - assets/svg/check.svg
+    - assets/svg/check.svg
+    - assets/svg/increment_qty.svg
+    - assets/svg/decrease_item.svg
+    - assets/pdf/terms.pdf
+    - assets/svg/backspace.svg
+    - assets/pdf/terms.pdf
+    - assets/pdf/Termsandconditions.pdf
+    - assets/svg/arrowback.svg
+    - assets/svg/print_image.svg
+    - assets/logo/Rassasy.png
+    - assets/svg/warning.svg
+    - assets/svg/background.svg
+    - assets/svg/logoimg.svg
+    - assets/svg/roundarrow.svg
+    - assets/png/coverpage.png
+    - assets/svg/refresh.svg
+    - assets/svg/dotmenu.svg
+    - assets/svg/product_group.svg
+    - assets/svg/product.svg
+    - assets/svg/tax.svg
+    - assets/svg/refreshproducts.svg
+    - assets/svg/addNew.svg
+    - assets/svg/delete1.svg
+    - assets/svg/add1.svg
+    - assets/svg/refreshcustomer.svg
+    - assets/svg/tax_refersh.svg
+    - assets/svg/group.svg
+    - assets/svg/Loyality.svg
+    - assets/svg/refreshloyality.svg
+    - assets/svg/product_veg.svg
+    - assets/svg/product_non_veg.svg
+    - assets/svg/go_baack_forgott.svg
+    - assets/svg/roundIcon1.svg
+    - assets/svg/roundCircle3.svg
+    - assets/svg/roundCircle2.svg
+    - assets/svg/taxdetail3.svg
+    - assets/svg/addressdetail1.svg
+    - assets/svg/addressdetail3.svg
+    - assets/svg/addressdetail2.svg
+    - assets/svg/address2.svg
+    - assets/svg/addressIcon2.svg
+    - assets/svg/profilepage2.svg
+    - assets/svg/1.svg
+    - assets/svg/2.svg
+    - assets/svg/3.svg
+    - assets/svg/logout_from_pinNo.svg
+    - assets/svg/exclamation.svg
+    - assets/svg/asterisk.svg
+    - assets/svg/image_placeholder.svg
+    - assets/svg/KOT.svg
+    - assets/jpeg/rabbit_black.jpeg
+    - assets/svg/download_pdf.svg
+    - assets/svg/print_pdf.svg
+    - assets/svg/share_pdf.svg
+    - assets/svg/company.svg
+    - assets/svg/flavour.svg
+    - assets/svg/user_role.svg
+    - assets/svg/kotlog.svg
+    - assets/svg/invoice.svg
+    - assets/svg/delivery_man.svg
+    - assets/svg/reserve.svg
+    - assets/svg/remove_item.svg
+    - assets/svg/pending.svg
+    - assets/svg/delivered.svg
+    - assets/svg/take_away.svg
+    - assets/svg/remove_table.svg
+    - assets/svg/Refresh_icon.svg
+    - assets/svg/checkmark-filled_selected.svg
+    - assets/svg/checkmark-filled.svg
+    - assets/svg/checkmark-filled.svg
+    - assets/svg/convert.svg
+    - assets/svg/Edit_Icon.svg
+    - assets/png/EmptyCompany.png
+    - assets/png/Edit_Icon_png.png
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Light.ttf
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
+          weight: 700
+
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
