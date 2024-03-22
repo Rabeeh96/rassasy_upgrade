@@ -26,7 +26,6 @@ class _LoginPageNewState extends State<LoginPageNew> {
  TextEditingController userNameController = TextEditingController();
  TextEditingController passwordController = TextEditingController();
 
-
   // TextEditingController userNameController = TextEditingController()..text = "bawanland";
   // TextEditingController passwordController = TextEditingController()..text = "bawan@123";
 

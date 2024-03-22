@@ -75,7 +75,7 @@ class _ProductDetailsState extends State<SelectTax> {
         child: Container(
 
             height: MediaQuery.of(context).size.height / 1, //height of button
-            width: MediaQuery.of(context).size.width / 2,
+            width: MediaQuery.of(context).size.width / 3,
             color: Colors.grey[100],
             // color: Colors.grey[100],
             child:taxLists.isNotEmpty?Padding(
@@ -90,8 +90,8 @@ class _ProductDetailsState extends State<SelectTax> {
                           subtitle:Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Sale %  " +taxLists[index].salesPrice,style: customisedStyle(context, Colors.grey, FontWeight.normal, 13.0),),
-                              Text("Purchase %  " +taxLists[index].purchasePrice,style: customisedStyle(context, Colors.grey, FontWeight.normal, 13.0),),
+                              Text("Sale %  ${roundStringWith(taxLists[index].salesPrice)}",style: customisedStyle(context, Colors.grey, FontWeight.normal, 13.0),),
+                              Text("Purchase %  ${roundStringWith(taxLists[index].purchasePrice)}",style: customisedStyle(context, Colors.grey, FontWeight.normal, 13.0),),
                             ],
                           ) ,
                           onTap: () async {
@@ -190,13 +190,17 @@ class _ProductDetailsState extends State<SelectTax> {
         var priceRounding = BaseUrl.priceRounding;
 
         final String url = '$baseUrl/taxCategories/taxListByType/';
-
+        var checkGst = prefs.getBool("check_GST") ?? false;
+        int taxType = 1;
+        if(checkGst){
+          taxType=2;
+        }
         Map data = {
           "CompanyID": companyID,
           "BranchID": branchID,
           "CreatedUserID": userID,
           "PriceRounding": priceRounding,
-          "TaxType": 1
+          "TaxType": taxType
         };
 
         print(data);

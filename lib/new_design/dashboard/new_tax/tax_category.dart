@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,92 +16,94 @@ class TaxCategory extends StatefulWidget {
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 class _TaxCategoryState extends State<TaxCategory> {
-  final RAddTaxControllerPage controller = Get.put(RAddTaxControllerPage());
+  final RAddTaxControllerPage taxController = Get.put(RAddTaxControllerPage());
 
   String? dropdownValue = 'General';
 
-  String? method;
+  String? method="";
 
   @override
   void initState() {
     super.initState();
-    if (method != "EDIT") {
-      controller.getTaxCategoryFullList();
-      controller.TaxTypeID.value = 1;
-    } else {}
-    controller.loadData();
-    print(dropdownValue);
+
+  //  taxController.isDataLoading.value = true;
+    method= "CREATE";
+    taxController.clear();
+    taxController.getTaxCategoryFullList();
+    // print("Method Method    $method");
+    // if (method != "EDIT") {
+    //   taxController.getTaxCategoryFullList();
+    //   taxController.TaxTypeID.value = 1;
+    // } else {
+    //
+    // }
+    //  taxController.loadData();
+
   }
 
 
+  loadViewDataOfTaxCategoryItem(String? id) async {
 
+
+    var result = await taxController.getViewData(id: id);
+    if (result[0] == null) {
+      taxController.isDataLoading.value=false;
+      var responseData = result[1];
+      taxController.nameController.text = responseData["TaxName"];
+      taxController.generalTaxController.text = responseData["Tax"].toString();
+
+      dropdownValue = responseData["TaxType"]["TaxTypeName"];
+      var company = "VAT";
+      if (dropdownValue == 'General') {
+        if (company == "VAT") {
+          taxController.TaxTypeID.value = 1;
+        } else if (company == "GST") {
+          taxController.TaxTypeID.value = 2;
+        }
+      } else if (dropdownValue == 'Excise') {
+        taxController.TaxTypeID.value = 8;
+      } else {
+        taxController.TaxTypeID.value = 6;
+      }
+
+      taxController.breakingPointController.text = responseData["BPValue"].toString();
+      taxController.IsAmountTaxBefore.value = responseData["IsAmountTaxBefore"];
+      if (responseData["IsAmountTaxBefore"] == true) {
+        taxController.selectPercentageorAmount.value = 1;
+      } else if (responseData["IsAmountTaxBefore"] == false) {
+        taxController.selectPercentageorAmount.value = 0;
+      }
+      taxController.IsAmountTaxAfter.value = responseData["IsAmountTaxAfter"];
+      if (responseData["IsAmountTaxAfter"] == true) {
+        taxController.selectPercentageorAmount1.value = 1;
+      } else if (responseData["IsAmountTaxAfter"] == false) {
+        taxController.selectPercentageorAmount1.value = 0;
+      }
+      taxController.taxBeforeController.text = responseData["TaxBefore"].toString();
+      taxController.taxAfterController.text = responseData["TaxAfter"].toString();
+      taxController.update();
+
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
-     String? id;
-    loadViewDataOfTaxCategoryItem(String? id) async {
+   
 
-
-      var result = await controller.getViewData(id: id);
-      print("hi");
-      print(result[0]);
-      if (result[0] == null) {
-        var responseData = result[1];
-        print(responseData);
-
-        controller.nameController.text = responseData["TaxName"];
-        print(controller.nameController.text);
-        controller.generalTaxController.text = responseData["Tax"].toString();
-
-        dropdownValue = responseData["TaxType"]["TaxTypeName"];
-        var company = "VAT";
-        if (dropdownValue == 'General') {
-          if (company == "VAT") {
-            controller.TaxTypeID.value = 1;
-          } else if (company == "GST") {
-            controller.TaxTypeID.value = 2;
-          }
-        } else if (dropdownValue == 'Excise') {
-          controller.TaxTypeID.value = 8;
-        } else {
-          controller.TaxTypeID.value = 6;
-        }
-        print(' ~DROp   $dropdownValue');
-        controller.breakingPointController.text =
-            responseData["BPValue"].toString();
-        print(controller.breakingPointController.text);
-        controller.IsAmountTaxBefore.value = responseData["IsAmountTaxBefore"];
-        if (responseData["IsAmountTaxBefore"] == true) {
-          controller.selectPercentageorAmount.value = 1;
-        } else if (responseData["IsAmountTaxBefore"] == false) {
-          controller.selectPercentageorAmount.value = 0;
-        }
-        controller.IsAmountTaxAfter.value = responseData["IsAmountTaxAfter"];
-        if (responseData["IsAmountTaxAfter"] == true) {
-          controller.selectPercentageorAmount1.value = 1;
-        } else if (responseData["IsAmountTaxAfter"] == false) {
-          controller.selectPercentageorAmount1.value = 0;
-        }
-        controller.taxBeforeController.text =
-            responseData["TaxBefore"].toString();
-        controller.taxAfterController.text = responseData["TaxAfter"].toString();
-        controller.update();
-        print(controller.nameController.text);
-        print(dropdownValue);
-        print(controller.generalTaxController.text);
-      }
-    }
     final mHeight = MediaQuery.of(context).size.height;
     final mWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xfff8f8f8),
+        backgroundColor: const Color(0xfff8f8f8),
         appBar: AppBar(
             leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back,
                 color: Colors.black,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
             title: const Text(
               'Tax',
@@ -110,17 +114,14 @@ class _TaxCategoryState extends State<TaxCategory> {
               ),
             ),
             backgroundColor: Colors.grey[300],
-            actions: <Widget>[
-              // IconButton(
-              //     icon: SvgPicture.asset('assets/svg/sidemenu.svg'),
-              //     onPressed: () {}),
-            ]),
-        body: Obx(() {
-          if (controller.isDataLoading.value) {
-            return Center(child:CircularProgressIndicator());
-          } else if(controller.isError.value) {
 
-            return Center(
+        ),
+        body: Obx(() {
+          if (taxController.isDataLoading.value) {
+            return const Center(child:CircularProgressIndicator());
+          } else if(taxController.isError.value) {
+
+            return const Center(
               child: Text('Error occured while loading data'),
             );
           } else {
@@ -129,14 +130,14 @@ class _TaxCategoryState extends State<TaxCategory> {
                 key: _formKey,
                 child: Expanded(
                   flex: 4,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: ListView(
+                   // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Column(
                         children: [
                           Text("Add Tax Category",
                               style: customisedStyle(context,
-                                  Color(0xff000000), FontWeight.w400, 17.0)),
+                                  const Color(0xff000000), FontWeight.w400, 17.0)),
                           SizedBox(
                             height: mHeight * .05,
                           ),
@@ -148,7 +149,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                 Text("Name",
                                     style: customisedStyle(
                                         context,
-                                        Color(0xff000000),
+                                        const Color(0xff000000),
                                         FontWeight.w400,
                                         12.0)),
                                 SizedBox(
@@ -181,7 +182,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               value;
                                         },
                                         focusnode: null,
-                                        suffixIcon: Icon(null),
+                                        suffixIcon: const Icon(null),
                                         maxWidth: mWidth * .25);
                                   })
                               ],
@@ -197,7 +198,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                               Text("Type",
                                   style: customisedStyle(
                                       context,
-                                      Color(0xff000000),
+                                      const Color(0xff000000),
                                       FontWeight.w400,
                                       12.0)),
                               SizedBox(
@@ -211,27 +212,27 @@ class _TaxCategoryState extends State<TaxCategory> {
                                   iconSize: 0,
                                   // Remove the icon
                                   elevation: 5,
-                                  style: TextStyle(color: Colors.deepPurple),
+                                  style: const TextStyle(color: Colors.deepPurple),
                                   onChanged: (value) {
                                     setState(() {
                                       dropdownValue = value;
                                       var company = "VAT";
 
                                       if (dropdownValue == 'General') {
-                                        controller.breakingPointController
+                                        taxController.breakingPointController
                                             .clear();
-                                        controller.taxBeforeController.clear();
-                                        controller.taxAfterController.clear();
+                                        taxController.taxBeforeController.clear();
+                                        taxController.taxAfterController.clear();
                                         if (company == "VAT") {
-                                          controller.TaxTypeID.value = 1;
+                                          taxController.TaxTypeID.value = 1;
                                         } else if (company == "GST") {
-                                          controller.TaxTypeID.value = 2;
+                                          taxController.TaxTypeID.value = 2;
                                         }
                                       } else if (dropdownValue == 'Excise') {
-                                        controller.TaxTypeID.value = 8;
-                                        controller.generalTaxController.clear();
+                                        taxController.TaxTypeID.value = 8;
+                                        taxController.generalTaxController.clear();
                                       } else {
-                                        controller.TaxTypeID.value = 6;
+                                        taxController.TaxTypeID.value = 6;
                                       }
                                     });
                                   },
@@ -242,15 +243,15 @@ class _TaxCategoryState extends State<TaxCategory> {
                                       value: value,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            color: Color(0xFFFDFDFD),
+                                            color: const Color(0xFFFDFDFD),
                                             border: Border.all(
-                                              color: Color(0xFFE7E7E7),
+                                              color: const Color(0xFFE7E7E7),
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         height: mHeight * .1,
                                         width: mWidth * .25,
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             left: 15.0, right: 20.0),
                                         child: Row(
                                           mainAxisAlignment:
@@ -258,15 +259,15 @@ class _TaxCategoryState extends State<TaxCategory> {
                                           children: [
                                             Text(
                                               value,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 12),
                                             ),
-                                            SvgPicture.asset(
-                                              'assets/ViknBooksPro/StockManagementReport/svg/dropdown.svg',
-                                              height: mHeight * .009,
-                                              color: Colors.black,
-                                            ),
+                                            // SvgPicture.asset(
+                                            //   'assets/ViknBooksPro/StockManagementReport/svg/dropdown.svg',
+                                            //   height: mHeight * .009,
+                                            //   color: Colors.black,
+                                            // ),
                                           ],
                                         ),
                                       ),
@@ -288,7 +289,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                   height: mHeight * 0.1,
                                   // width: mWidth * .3,
                                   child: Padding(
-                                    padding: EdgeInsets.only(left: 0.0),
+                                    padding: const EdgeInsets.only(left: 0.0),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -308,18 +309,18 @@ class _TaxCategoryState extends State<TaxCategory> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 30),
+                                const SizedBox(width: 30),
                                 customisedTextFormField(
                                   initialValue:
-                                      controller.breakingPointController.text,
+                                      taxController.breakingPointController.text,
                                   onChanged: (value) {
-                                    controller.breakingPointController.text =
+                                    taxController.breakingPointController.text =
                                         value;
                                   },
                                   readOnly: false,
                                   labelText: "",
                                   controller:
-                                      controller.breakingPointController,
+                                      taxController.breakingPointController,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter value';
@@ -327,12 +328,12 @@ class _TaxCategoryState extends State<TaxCategory> {
                                     return null;
                                   },
                                   onSubmitted: (value) {
-                                    controller.breakingPointController.text =
+                                    taxController.breakingPointController.text =
                                         value;
                                   },
                                   focusnode: null,
                                   keyboardtype: TextInputType.number,
-                                  suffixIcon: Icon(null),
+                                  suffixIcon: const Icon(null),
                                   maxWidth: mWidth * .1,
                                 ),
                               ],
@@ -353,7 +354,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                 Text("Tax",
                                     style: customisedStyle(
                                         context,
-                                        Color(0xff000000),
+                                        const Color(0xff000000),
                                         FontWeight.w400,
                                         12.0)),
                                 SizedBox(
@@ -361,14 +362,14 @@ class _TaxCategoryState extends State<TaxCategory> {
                                 ),
                                 customisedTextFormField(
                                     initialValue:
-                                        controller.generalTaxController.text,
+                                        taxController.generalTaxController.text,
                                     onChanged: (value) {
-                                      controller.generalTaxController.text =
+                                      taxController.generalTaxController.text =
                                           value;
                                     },
                                     readOnly: false,
                                     labelText: "",
-                                    controller: controller.generalTaxController,
+                                    controller: taxController.generalTaxController,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter tax percentage';
@@ -378,7 +379,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                     onSubmitted: null,
                                     focusnode: null,
                                     keyboardtype: TextInputType.number,
-                                    suffixIcon: Icon(null),
+                                    suffixIcon: const Icon(null),
                                     maxWidth: mWidth * .25),
                               ],
                             ),
@@ -410,7 +411,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.only(left: 0.0, right: 0.0),
+                                        const EdgeInsets.only(left: 0.0, right: 0.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -434,31 +435,32 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  controller
-                                                      .selectPercentageorAmount
-                                                      .value = 0;
-                                                  controller.IsAmountTaxBefore
-                                                      .value = false;
+                                                  taxController.selectPercentageorAmount.value = 0;
+                                                  taxController.IsAmountTaxBefore.value = false;
+
+                                                  print("controller.selectPercentageorAmount.value  ${taxController.selectPercentageorAmount.value}");
+                                                  print("controller.IsAmountTaxBefore.value  ${taxController.IsAmountTaxBefore.value}");
+
                                                 },
                                                 child: Obx(
                                                   () => Row(
                                                     children: [
-                                                      controller.selectPercentageorAmount
+                                                      taxController.selectPercentageorAmount
                                                                   .value ==
                                                               0
                                                           ? Icon(
-                                                              CupertinoIcons
-                                                                  .checkmark_alt_circle_fill,
-                                                              size: 20,
+                                                              Icons
+                                                                  .check_circle,
+                                                              size: 25,
                                                               color: Colors
                                                                   .black
                                                                   .withOpacity(
                                                                       .4),
                                                             )
                                                           : Icon(
-                                                              CupertinoIcons
-                                                                  .circle,
-                                                              size: 20,
+                                                        Icons
+                                                                  .circle_outlined,
+                                                              size: 25,
                                                               color: Colors.grey
                                                                   .withOpacity(
                                                                       .4),
@@ -470,7 +472,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                                           style:
                                                               customisedStyle(
                                                                   context,
-                                                                  Color(
+                                                                  const Color(
                                                                       0xff000000),
                                                                   FontWeight
                                                                       .w400,
@@ -484,48 +486,50 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  controller
+                                                  taxController
                                                       .selectPercentageorAmount
                                                       .value = 1;
-                                                  controller.IsAmountTaxBefore
+                                                  taxController.IsAmountTaxBefore
                                                       .value = true;
                                                 },
-                                                child: Obx(
-                                                  () => Row(
-                                                    children: [
-                                                      controller.selectPercentageorAmount
-                                                                  .value ==
-                                                              1
-                                                          ? Icon(
-                                                              CupertinoIcons
-                                                                  .checkmark_alt_circle_fill,
-                                                              size: 20,
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .4),
-                                                            )
-                                                          : Icon(
-                                                              CupertinoIcons
-                                                                  .circle,
-                                                              size: 20,
-                                                              color: Colors.grey
-                                                                  .withOpacity(
-                                                                      .4),
-                                                            ),
-                                                      SizedBox(
-                                                        width: mWidth * .005,
-                                                      ),
-                                                      Text("Amount",
-                                                          style:
-                                                              customisedStyle(
-                                                                  context,
-                                                                  Color(
-                                                                      0xff000000),
-                                                                  FontWeight
-                                                                      .w400,
-                                                                  12.0)),
-                                                    ],
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(15.0),
+                                                  child: Obx(
+                                                    () => Row(
+                                                      children: [
+                                                        taxController.selectPercentageorAmount
+                                                                    .value ==
+                                                                1
+                                                            ? Icon(
+                                                          Icons.check_circle,
+                                                                size: 25,
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        .4),
+                                                              )
+                                                            : Icon(
+                                                          Icons
+                                                              .circle_outlined,
+                                                                size: 25,
+                                                                color: Colors.grey
+                                                                    .withOpacity(
+                                                                        .4),
+                                                              ),
+                                                        SizedBox(
+                                                          width: mWidth * .005,
+                                                        ),
+                                                        Text("Amount",
+                                                            style:
+                                                                customisedStyle(
+                                                                    context,
+                                                                    const Color(
+                                                                        0xff000000),
+                                                                    FontWeight
+                                                                        .w400,
+                                                                    12.0)),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -540,7 +544,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                     height: mHeight * .022,
                                   ),
                                   Obx(() {
-                                    if (controller
+                                    if (taxController
                                             .selectPercentageorAmount.value ==
                                         0) {
                                       return Column(
@@ -552,24 +556,24 @@ class _TaxCategoryState extends State<TaxCategory> {
                                           Text("Tax",
                                               style: customisedStyle(
                                                   context,
-                                                  Color(0xff000000),
+                                                  const Color(0xff000000),
                                                   FontWeight.w400,
                                                   12.0)),
                                           SizedBox(
                                             height: mHeight * .01,
                                           ),
                                           customisedTextFormField(
-                                              initialValue: controller
+                                              initialValue: taxController
                                                   .taxBeforeController.text,
                                               onChanged: (value) {
-                                                controller.taxBeforeController
+                                                taxController.taxBeforeController
                                                     .text = value;
                                               },
                                               keyboardtype:
                                                   TextInputType.number,
                                               readOnly: false,
                                               labelText: "",
-                                              controller: controller
+                                              controller: taxController
                                                   .taxBeforeController,
                                               validator: (value) {
                                                 if (value == null ||
@@ -580,7 +584,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               },
                                               onSubmitted: null,
                                               focusnode: null,
-                                              suffixIcon: Icon(null),
+                                              suffixIcon: const Icon(null),
                                               maxWidth: mWidth * .25),
                                         ],
                                       );
@@ -594,23 +598,23 @@ class _TaxCategoryState extends State<TaxCategory> {
                                           Text("Tax",
                                               style: customisedStyle(
                                                   context,
-                                                  Color(0xff000000),
+                                                  const Color(0xff000000),
                                                   FontWeight.w400,
                                                   12.0)),
                                           SizedBox(
                                             height: mHeight * .01,
                                           ),
                                           customisedTextFormField(
-                                              initialValue: controller
+                                              initialValue: taxController
                                                   .taxBeforeController.text,
                                               onChanged: (value) {
-                                                controller.taxBeforeController
+                                                taxController.taxBeforeController
                                                     .text = value;
                                               },
                                               keyboardtype:
                                                   TextInputType.number,
                                               readOnly: false,
-                                              controller: controller
+                                              controller: taxController
                                                   .taxBeforeController,
                                               labelText: "",
                                               validator: (value) {
@@ -622,7 +626,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               },
                                               onSubmitted: null,
                                               focusnode: null,
-                                              suffixIcon: Icon(null),
+                                              suffixIcon: const Icon(null),
                                               maxWidth: mWidth * .25),
                                         ],
                                       );
@@ -651,7 +655,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.only(left: 0.0, right: 0.0),
+                                        const EdgeInsets.only(left: 0.0, right: 0.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -675,48 +679,50 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  controller
+                                                  taxController
                                                       .selectPercentageorAmount1
                                                       .value = 0;
-                                                  controller.IsAmountTaxAfter
+                                                  taxController.IsAmountTaxAfter
                                                       .value = false;
                                                 },
                                                 child: Obx(
-                                                  () => Row(
-                                                    children: [
-                                                      controller.selectPercentageorAmount1
-                                                                  .value ==
-                                                              0
-                                                          ? Icon(
-                                                              CupertinoIcons
-                                                                  .checkmark_alt_circle_fill,
-                                                              size: 20,
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .4),
-                                                            )
-                                                          : Icon(
-                                                              CupertinoIcons
-                                                                  .circle,
-                                                              size: 20,
-                                                              color: Colors.grey
-                                                                  .withOpacity(
-                                                                      .4),
-                                                            ),
-                                                      SizedBox(
-                                                        width: mWidth * .005,
-                                                      ),
-                                                      Text("Percentage",
-                                                          style:
-                                                              customisedStyle(
-                                                                  context,
-                                                                  Color(
-                                                                      0xff000000),
-                                                                  FontWeight
-                                                                      .w400,
-                                                                  12.0)),
-                                                    ],
+                                                  () => Padding(
+                                                    padding: const EdgeInsets.all(15.0),
+                                                    child: Row(
+                                                      children: [
+                                                        taxController.selectPercentageorAmount1
+                                                                    .value ==
+                                                                0
+                                                            ? Icon(
+                                                          Icons.check_circle,
+                                                                size: 25,
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        .4),
+                                                              )
+                                                            : Icon(
+                                                          Icons
+                                                              .circle_outlined,
+                                                                size: 25,
+                                                                color: Colors.grey
+                                                                    .withOpacity(
+                                                                        .4),
+                                                              ),
+                                                        SizedBox(
+                                                          width: mWidth * .005,
+                                                        ),
+                                                        Text("Percentage",
+                                                            style:
+                                                                customisedStyle(
+                                                                    context,
+                                                                    const Color(
+                                                                        0xff000000),
+                                                                    FontWeight
+                                                                        .w400,
+                                                                    12.0)),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -725,31 +731,30 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  controller
+                                                  taxController
                                                       .selectPercentageorAmount1
                                                       .value = 1;
-                                                  controller.IsAmountTaxAfter
+                                                  taxController.IsAmountTaxAfter
                                                       .value = true;
                                                 },
                                                 child: Obx(
                                                   () => Row(
                                                     children: [
-                                                      controller.selectPercentageorAmount1
+                                                      taxController.selectPercentageorAmount1
                                                                   .value ==
                                                               1
                                                           ? Icon(
-                                                              CupertinoIcons
-                                                                  .checkmark_alt_circle_fill,
-                                                              size: 20,
+                                                        Icons.check_circle,
+                                                              size: 25,
                                                               color: Colors
                                                                   .black
                                                                   .withOpacity(
                                                                       .4),
                                                             )
                                                           : Icon(
-                                                              CupertinoIcons
-                                                                  .circle,
-                                                              size: 20,
+                                                        Icons
+                                                            .circle_outlined,
+                                                              size: 25,
                                                               color: Colors.grey
                                                                   .withOpacity(
                                                                       .4),
@@ -761,7 +766,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                                           style:
                                                               customisedStyle(
                                                                   context,
-                                                                  Color(
+                                                                  const Color(
                                                                       0xff000000),
                                                                   FontWeight
                                                                       .w400,
@@ -781,7 +786,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                     height: mHeight * .022,
                                   ),
                                   Obx(() {
-                                    if (controller
+                                    if (taxController
                                             .selectPercentageorAmount1.value ==
                                         0) {
                                       return Column(
@@ -793,17 +798,17 @@ class _TaxCategoryState extends State<TaxCategory> {
                                           Text("Tax",
                                               style: customisedStyle(
                                                   context,
-                                                  Color(0xff000000),
+                                                  const Color(0xff000000),
                                                   FontWeight.w400,
                                                   12.0)),
                                           SizedBox(
                                             height: mHeight * .01,
                                           ),
                                           customisedTextFormField(
-                                              initialValue: controller
+                                              initialValue: taxController
                                                   .taxAfterController.text,
                                               onChanged: (value) {
-                                                controller.taxAfterController
+                                                taxController.taxAfterController
                                                     .text = value;
                                               },
                                               keyboardtype:
@@ -811,7 +816,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               readOnly: false,
                                               labelText: "",
                                               controller:
-                                                  controller.taxAfterController,
+                                                  taxController.taxAfterController,
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
@@ -821,7 +826,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               },
                                               onSubmitted: null,
                                               focusnode: null,
-                                              suffixIcon: Icon(null),
+                                              suffixIcon: const Icon(null),
                                               maxWidth: mWidth * .25),
                                         ],
                                       );
@@ -835,24 +840,24 @@ class _TaxCategoryState extends State<TaxCategory> {
                                           Text("Tax",
                                               style: customisedStyle(
                                                   context,
-                                                  Color(0xff000000),
+                                                  const Color(0xff000000),
                                                   FontWeight.w400,
                                                   12.0)),
                                           SizedBox(
                                             height: mHeight * .01,
                                           ),
                                           customisedTextFormField(
-                                              initialValue: controller
+                                              initialValue: taxController
                                                   .taxAfterController.text,
                                               onChanged: (value) {
-                                                controller.taxAfterController
+                                                taxController.taxAfterController
                                                     .text = value;
                                               },
                                               keyboardtype:
                                                   TextInputType.number,
                                               readOnly: false,
                                               controller:
-                                                  controller.taxAfterController,
+                                                  taxController.taxAfterController,
                                               labelText: "",
                                               validator: (value) {
                                                 if (value == null ||
@@ -863,7 +868,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               },
                                               onSubmitted: null,
                                               focusnode: null,
-                                              suffixIcon: Icon(null),
+                                              suffixIcon: const Icon(null),
                                               maxWidth: mWidth * .25),
                                         ],
                                       );
@@ -875,6 +880,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                           ),
                         ),
                       ),
+
                     ],
                   ),
                 ),
@@ -890,7 +896,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                         TextField(
                           onChanged: (value) {
                             if (value.isNotEmpty) {
-                              controller.taxCategoryList.value = controller
+                              taxController.taxCategoryList.value = taxController
                                   .taxCategoryList
                                   .where((taxCategory) =>
                                       taxCategory.taxName != null &&
@@ -900,7 +906,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                                   .toList();
                             } else {
                               // If the search value is null or empty, reset the list
-                              controller.getTaxCategoryFullList();
+                              taxController.getTaxCategoryFullList();
                             }
                           },
                           decoration: InputDecoration(
@@ -910,7 +916,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 // color: Colors.grey.withOpacity(.2),
                                 color: Color(0xFFE7E7E7),
                                 width: 1,
@@ -918,7 +924,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             hintText: 'Search',
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 // color: Colors.grey.withOpacity(.2),
                                 color: Color(0xFFE7E7E7),
@@ -928,13 +934,13 @@ class _TaxCategoryState extends State<TaxCategory> {
                           ),
                         ),
                         Obx(() {
-                          if (controller.isDataLoading.value) {
+                          if (taxController.isDataLoading.value) {
                             return Container(
                               height: mHeight * 1,
-                              child: Center(child: CircularProgressIndicator()),
+                              child: const Center(child: CircularProgressIndicator()),
                             );
-                          } else if (controller.isError.value) {
-                            return Center(
+                          } else if (taxController.isError.value) {
+                            return const Center(
                               child: Text('Error occured while loading data'),
                             );
                           } else {
@@ -943,11 +949,10 @@ class _TaxCategoryState extends State<TaxCategory> {
                               // constraints: BoxConstraints(maxHeight: mHeight, minHeight: 100),
                               child: ListView.builder(
                                   shrinkWrap: true,
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  itemCount: controller.taxCategoryList.length,
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  itemCount: taxController.taxCategoryList.length,
                                   itemBuilder: (context, index) {
-                                    final taxCategory =
-                                        controller.taxCategoryList[index];
+                                    final taxCategory = taxController.taxCategoryList[index];
 
                                     return Dismissible(
                                       key: Key(taxCategory.id.toString()),
@@ -961,27 +966,23 @@ class _TaxCategoryState extends State<TaxCategory> {
                                           // false = user must tap button, true = tap outside dialog
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title: Text('Confirm'),
-                                              content: Text(
+                                              title: const Text('Confirm'),
+                                              content: const Text(
                                                   'Are you sure you want to delete this item?'),
                                               actions: <Widget>[
                                                 TextButton(
-                                                  child: Text('CANCEL'),
+                                                  child: const Text('CANCEL'),
                                                   onPressed: () {
                                                     Navigator.of(context)
                                                         .pop(false);
-                                                    // Dismiss alert dialogdfSf
+
                                                   },
                                                 ),
                                                 TextButton(
-                                                  child: Text('DELETE'),
+                                                  child: const Text('DELETE'),
                                                   onPressed: () {
-                                                    controller
-                                                        .deleteTaxCategory(
-                                                            taxCategory.id);
-                                                    setState(() {});
-                                                    Navigator.of(context)
-                                                        .pop(true);
+                                                    taxController.deleteTaxCategory(taxCategory.id);
+                                                    Navigator.of(context).pop(false);
                                                     // Dismiss alert dialog
                                                   },
                                                 ),
@@ -1007,13 +1008,13 @@ class _TaxCategoryState extends State<TaxCategory> {
                                               child: ListTile(
                                                   onTap: ()  {
                                                     method = "EDIT";
-                                                  id= taxCategory.id;
-                                                  controller.isDataLoading.value = true;
+                                                    taxController.uID.value= taxCategory.id!;
+                                                    taxController.isDataLoading.value = true;
 
-                                                  loadViewDataOfTaxCategoryItem(id);
-                                                  controller.getTaxCategoryFullList();
+                                                   loadViewDataOfTaxCategoryItem(taxCategory.id);
+                                                   //controller.getTaxCategoryFullList();
                                                   },
-                                                  contentPadding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                                                  contentPadding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
                                                   title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
                                                       Column(
@@ -1077,7 +1078,7 @@ class _TaxCategoryState extends State<TaxCategory> {
           }
         }),
         bottomNavigationBar: BottomAppBar(
-            color: Color(0xfff8f8f8),
+            color: const Color(0xfff8f8f8),
             elevation: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -1093,11 +1094,11 @@ class _TaxCategoryState extends State<TaxCategory> {
                           onTap: () {
                             // controller.nameController.text = "455";
                             // print(controller.nameController.text);
-                            controller.isDataLoading.value = true;
+                            taxController.isDataLoading.value = true;
                             method= "CREATE";
 
-                            controller.clear();
-                            controller.getTaxCategoryFullList();
+                            taxController.clear();
+                            taxController.getTaxCategoryFullList();
                           },
                           child: SvgPicture.asset(
                             'assets/svg/delete1.svg',
@@ -1109,6 +1110,9 @@ class _TaxCategoryState extends State<TaxCategory> {
                         ),
                         GestureDetector(
                             onTap: () async {
+
+
+
                               if (_formKey.currentState!.validate()) {
                                 // If the form is valid, display a Snackbar.
                                 // ScaffoldMessenger.of(context).showSnackBar(
@@ -1121,16 +1125,15 @@ class _TaxCategoryState extends State<TaxCategory> {
 
                                 print("DropdownValue: $dropdownValue");
                                 if (method != "EDIT") {
-                                  await controller.taxItemCreateFunction(
-                                      "CREATE", "");
-                                  controller.clear();
+                                  await taxController.taxItemCreateFunction("CREATE", "");
+                                  taxController.clear();
 
                                 } else if (method == "EDIT") {
-                                  await controller.taxItemCreateFunction(
-                                      "EDIT", id);
-                                 print("object: $dropdownValue");
+                                  
+                                    await taxController.taxItemCreateFunction("EDIT", taxController.uID.value);
+
                                 }
-                                controller.getTaxCategoryFullList();
+
                               }
                             },
                             child: InkWell(
@@ -1143,7 +1146,7 @@ class _TaxCategoryState extends State<TaxCategory> {
                   ),
                 ),
 
-                Spacer(
+                const Spacer(
                   flex: 2,
                 ),
 
@@ -1155,22 +1158,22 @@ class _TaxCategoryState extends State<TaxCategory> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              setState(() {
-                                controller.isDataLoading.value=true;
+
+                                taxController.isDataLoading.value=true;
                                 method = "CREATE";
-                                controller.clear();
-                                print(controller.nameController.text);
-                                print(dropdownValue);
-                                print(controller.generalTaxController.text);
+                                taxController.clear();
                                 dropdownValue = "General";
-                                controller.getTaxCategoryFullList();
-                              });
+                                taxController.getTaxCategoryFullList();
+
                             },
                             child: InkWell(
+
                                 child: SvgPicture.asset(
-                              'assets/ViknBooksPro/plusIcon.svg',
-                              height: mHeight * .05,
-                            ))),
+                              'assets/svg/addNew.svg',
+
+                                    height: mHeight * .06,
+                            )
+                            )),
                       ],
                     ),
                   ),
@@ -1207,7 +1210,7 @@ class _TaxCategoryState extends State<TaxCategory> {
         onChanged: onChanged,
         onTap: onTap,
         readOnly: readOnly,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
         ),
         validator: validator,
@@ -1226,26 +1229,26 @@ class _TaxCategoryState extends State<TaxCategory> {
           //   'assets/ViknBooksPro/AddProduct/svg/dropdown.svg',
           // ),
           hintText: labelText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: Color(0xFFAEAEAE),
             fontFamily: 'Poppins',
             fontSize: 15,
             fontWeight: FontWeight.w400,
           ),
           suffixIcon: suffixIcon,
-          suffixIconConstraints: BoxConstraints(maxWidth: 50, minWidth: 50),
+          suffixIconConstraints: const BoxConstraints(maxWidth: 50, minWidth: 50),
           labelStyle: TextStyle(
-            color: labelColor ?? Color(0xFFAEAEAE),
+            color: labelColor ?? const Color(0xFFAEAEAE),
             fontFamily: 'Poppins',
             fontSize: 15,
             fontWeight: FontWeight.w400,
           ),
-          contentPadding: EdgeInsets.all(5),
+          contentPadding: const EdgeInsets.all(5),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               // color: Colors.grey.withOpacity(.2),
               color: Color(0xFFE7E7E7),
               width: 1,
@@ -1253,7 +1256,7 @@ class _TaxCategoryState extends State<TaxCategory> {
             borderRadius: BorderRadius.circular(6),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               // color: Colors.grey.withOpacity(.2),
               color: Color(0xFFE7E7E7),
               width: 1,
@@ -1269,22 +1272,22 @@ class TextFieldStyle {
   static InputDecoration textFieldType(context,
       {String hintTextStr = "", String labelTextStr = ""}) {
     return InputDecoration(
-        contentPadding: EdgeInsets.all(6),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
+        contentPadding: const EdgeInsets.all(6),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
           borderSide: BorderSide(width: .5, color: Color(0xffE7E7E7)),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
           borderSide: BorderSide(width: .5, color: Color(0xffE7E7E7)),
         ),
         labelText: labelTextStr,
         labelStyle: customisedStyle(
-            context, Color(0xffAEAEAE), FontWeight.w500, 15.0),
+            context, const Color(0xffAEAEAE), FontWeight.w500, 15.0),
         hintText: hintTextStr,
         hintStyle: customisedStyle(
-            context, Color(0xffAEAEAE), FontWeight.w500, 15.0),
+            context, const Color(0xffAEAEAE), FontWeight.w500, 15.0),
         filled: true,
-        fillColor: Color(0xffFDFDFD));
+        fillColor: const Color(0xffFDFDFD));
   }
 }

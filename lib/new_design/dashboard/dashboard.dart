@@ -45,16 +45,15 @@ class _DashboardNewState extends State<DashboardNew> {
 
 
 
-
   dataForStaff() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       var isArabic = prefs.getBool('isArabic')??false;
       if(isArabic){
-        Get.updateLocale(Locale('ar'));
+        Get.updateLocale(const Locale('ar'));
       }
       else{
-        Get.updateLocale(Locale('en', 'US'));
+        Get.updateLocale(const Locale('en', 'US'));
       }
 
       userName = prefs.getString('user_name') ?? '';
@@ -240,7 +239,7 @@ class _DashboardNewState extends State<DashboardNew> {
               ),
               Text(
                 companyName,
-                style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
@@ -248,7 +247,7 @@ class _DashboardNewState extends State<DashboardNew> {
               ),
               Text(
                 "Your Company Will Expired on $expireDate.\n Please Contact us to Renew Your Plan",
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
@@ -260,7 +259,7 @@ class _DashboardNewState extends State<DashboardNew> {
               ),
               Text(
                 'call_us'.tr,
-                style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w700),
+                style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w700),
               ),
               const SizedBox(
                 height: 4,
@@ -272,7 +271,7 @@ class _DashboardNewState extends State<DashboardNew> {
                     onTap: () {},
                     child: Text(
                       india,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xff000000),
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -282,7 +281,7 @@ class _DashboardNewState extends State<DashboardNew> {
                   const SizedBox(
                     width: 3,
                   ),
-                  Text(
+                  const Text(
                     "|",
                     style: TextStyle(
                       color: Color(0xff000000),
@@ -297,7 +296,7 @@ class _DashboardNewState extends State<DashboardNew> {
                     onTap: () {},
                     child: Text(
                       ksa,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xff000000),
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -309,7 +308,7 @@ class _DashboardNewState extends State<DashboardNew> {
               const SizedBox(
                 height: 4,
               ),
-              Text(
+              const Text(
                 "support@vikncodes.com",
                 style: TextStyle(color: Colors.greenAccent),
               ),
@@ -616,11 +615,11 @@ class _DashboardNewState extends State<DashboardNew> {
                       value: 0,
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.refresh,
                             color: Colors.red,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 7,
                           ),
                           Text(
@@ -637,11 +636,11 @@ class _DashboardNewState extends State<DashboardNew> {
                       value: 1,
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.settings,
                             color: Colors.red,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 7,
                           ),
                           Text(
@@ -655,11 +654,11 @@ class _DashboardNewState extends State<DashboardNew> {
                       value: 2,
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.info,
                             color: Colors.red,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 7,
                           ),
                           Text(
@@ -673,11 +672,11 @@ class _DashboardNewState extends State<DashboardNew> {
                       value: 3,
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.manage_accounts,
                             color: Colors.red,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 7,
                           ),
                           Text(
@@ -691,11 +690,11 @@ class _DashboardNewState extends State<DashboardNew> {
                       value: 4,
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.print,
                             color: Colors.red,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 7,
                           ),
                           Text(
@@ -709,11 +708,11 @@ class _DashboardNewState extends State<DashboardNew> {
                       value: 5,
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.info,
                             color: Colors.red,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 7,
                           ),
                           Text(
@@ -723,7 +722,7 @@ class _DashboardNewState extends State<DashboardNew> {
                         ],
                       )),
                 ],
-                icon: Icon(
+                icon: const Icon(
                   Icons.more_vert,
                   color: Colors.black,
                 ),
@@ -749,14 +748,14 @@ class _DashboardNewState extends State<DashboardNew> {
             width: 100,
             height: 100,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             'no_network'.tr,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextButton(
@@ -768,10 +767,10 @@ class _DashboardNewState extends State<DashboardNew> {
 
             },
             child: Text('retry'.tr,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEE830C))),
           ),
         ],
       ),
@@ -793,12 +792,8 @@ class _DashboardNewState extends State<DashboardNew> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TaxCategory()));
 
-                      },
-                      child: Text("User type data")),
+
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Row(
@@ -842,12 +837,12 @@ class _DashboardNewState extends State<DashboardNew> {
                               ),
                             ),
                               Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 top: 12,
                               ),
                               child: Text(
                                 'Group'.tr,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
@@ -882,12 +877,12 @@ class _DashboardNewState extends State<DashboardNew> {
                               ),
                             ),
                               Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 top: 12,
                               ),
                               child: Text(
                                'Products'.tr,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
@@ -922,12 +917,12 @@ class _DashboardNewState extends State<DashboardNew> {
                               ),
                             ),
                               Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 top: 12,
                               ),
                               child: Text(
                                 'customer'.tr,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
@@ -965,7 +960,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 var carPerm = await checkingPerm("Carview");
 
                                 if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => POSListItemsSection()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -982,12 +977,12 @@ class _DashboardNewState extends State<DashboardNew> {
                               },
                             ),
                               Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 top: 12,
                               ),
                               child: Text(
                                 "POS".tr,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
@@ -1040,12 +1035,12 @@ class _DashboardNewState extends State<DashboardNew> {
                               ),
                             ),
                               Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 top: 12,
                               ),
                               child: Text(
                                'Report'.tr,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
@@ -1082,16 +1077,19 @@ class _DashboardNewState extends State<DashboardNew> {
                               ),
                             ),
                               Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 top: 12,
                               ),
                               child: Text(
                                 'tax'.tr,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
                         ),
+
+
+
                       ],
                     ),
                   ),
@@ -1100,55 +1098,6 @@ class _DashboardNewState extends State<DashboardNew> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Column(
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () async {
-                        //         /// loyalty customer
-                        //         var loyaltyCustomer = await checkingPerm("Loyalty Customerview");
-                        //
-                        //         if (loyaltyCustomer == true) {
-                        //           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoyaltyCustomer()));
-                        //         } else {
-                        //           dialogBoxPermissionDenied(context);
-                        //         }
-                        //       },
-                        //       child: Container(
-                        //         decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                        //         height: MediaQuery.of(context).size.height / 12,
-                        //         width: MediaQuery.of(context).size.width / 17,
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           crossAxisAlignment: CrossAxisAlignment.center,
-                        //           children: [
-                        //             Container(
-                        //               height: MediaQuery.of(context).size.height / 20,
-                        //               width: MediaQuery.of(context).size.width / 20,
-                        //               child: SvgPicture.asset('assets/svg/Loyality.svg'),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     const Padding(
-                        //       padding: EdgeInsets.only(
-                        //         top: 12,
-                        //       ),
-                        //       child: Text(
-                        //         "Loyalty",
-                        //         style: TextStyle(fontSize: 12),
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
-/// english
-//                         IconButton(onPressed: (){
-//                           var printHelper = new AppBlocs();
-//                          printHelper.testPrintConnect("192.168.1.121");
-//
-//
-//                         }, icon: Text("AR",style: TextStyle(color: Colors.green),)),
-//
 
                         Column(
                           children: [
@@ -1187,12 +1136,12 @@ class _DashboardNewState extends State<DashboardNew> {
                               ),
                             ),
                               Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 top: 12,
                               ),
                               child: Text(
                                 'Flavour'.tr,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
@@ -1233,16 +1182,56 @@ class _DashboardNewState extends State<DashboardNew> {
                               ),
                             ),
                               Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 top: 12,
                               ),
                               child: Text(
                                 'Invoices'.tr,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
                         ),
+
+                        /// new taxz commented
+                        // Column(
+                        //   children: [
+                        //     GestureDetector(
+                        //       onTap: () {
+                        //
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(builder: (context) => TaxCategory()),
+                        //         );
+                        //       },
+                        //       child: Container(
+                        //         decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                        //         height: MediaQuery.of(context).size.height / 12,
+                        //         width: MediaQuery.of(context).size.width / 17,
+                        //         child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           crossAxisAlignment: CrossAxisAlignment.center,
+                        //           children: [
+                        //             Container(
+                        //               height: MediaQuery.of(context).size.height / 20,
+                        //               width: MediaQuery.of(context).size.width / 20,
+                        //               child: SvgPicture.asset('assets/svg/tax.svg'),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     const Padding(
+                        //       padding: EdgeInsets.only(
+                        //         top: 12,
+                        //       ),
+                        //       child: Text(
+                        //         'New tax',
+                        //         style: TextStyle(fontSize: 12),
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
@@ -1407,11 +1396,11 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
       return AlertDialog(
         title: Text(
           'msg6'.tr,
-          style: TextStyle(color: Colors.black, fontSize: 13),
+          style: const TextStyle(color: Colors.black, fontSize: 13),
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
+            child: Text('Yes'.tr, style: const TextStyle(color: Colors.red)),
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.setBool('isLoggedIn', false);
@@ -1424,7 +1413,7 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
             },
           ),
           TextButton(
-            child: Text('No'.tr, style: TextStyle(color: Colors.black)),
+            child: Text('No'.tr, style: const TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.of(context).pop(ConfirmAction.cancel);
             },

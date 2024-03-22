@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
-//import 'package:alert/alert.dart';
+// import 'package:alert/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,9 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 start(context) {
   Loader.show(context,
-      progressIndicator: CircularProgressIndicator(),
+      progressIndicator: const CircularProgressIndicator(),
       overlayColor: Colors.transparent,
-      themeData: ThemeData(colorScheme:ColorScheme.dark(primary: Color(0xffffab00))
+      themeData: ThemeData(colorScheme:const ColorScheme.dark(primary: Color(0xffffab00))
       )
   );
 }
@@ -51,10 +51,80 @@ start(context) {
 // }
 
 dialogBoxHide(BuildContext context, msg) async {
- //  Alert(message: msg).show();
+ //Alert(message: msg).show();
 }
+
 dialogBox(BuildContext context, msg) async {
- // Alert(message: msg,shortDuration: false).show();
+  await showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: const Color(0xff415369),
+           title: Text(msg, style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
+         actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+
+              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text("OK", style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+
+
+
+dialogBoxs(BuildContext context ,String textMsg ) {
+  return showModalBottomSheet(
+    context: context,
+    enableDrag: false,
+    builder: (BuildContext context) {
+      return Container(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child:Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  // color: Colors.blue,
+               //     width: MediaQuery.of(context).size.width*.6,
+                    child: Text(textMsg,overflow:TextOverflow.fade,style:
+
+                    customisedStyle(
+                        context,
+                          const Color(0xff000000),
+                        FontWeight.w400,
+                        15.0),
+
+                    )),
+                TextButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child:   const Text("Okay",
+                  style: TextStyle(color: Color(0xff0E74F4,),fontWeight: FontWeight.bold),)
+
+                ),
+              ],
+            )
+        ),
+      );
+    },
+  );
+}
+
+dialogBoxa(BuildContext context, msg) async {
+  // QuickAlert.show(
+  //   context: context,
+  //   type: QuickAlertType.success,
+  // );
+  //Alert(message: msg,shortDuration: false).show();
 }
 
 
@@ -166,10 +236,10 @@ class CommonStyleTextField {
       ),
       hintStyle:  TextStyle(color: Colors.grey[800], fontSize: 12),
       hintText: hintTextStr,
-      labelStyle:  TextStyle(color: Color(0xff9F9F9F), fontSize: 12),
+      labelStyle:  const TextStyle(color: Color(0xff9F9F9F), fontSize: 12),
       labelText: labelTextStr,
-      fillColor: Color(0xffFAFAFA),
-      contentPadding: EdgeInsets.fromLTRB(15, 3, 3, 3),
+      fillColor: const Color(0xffFAFAFA),
+      contentPadding: const EdgeInsets.fromLTRB(15, 3, 3, 3),
 
       // prefixIcon: Icon(Icons.keyboard_arrow_down),
     );
@@ -199,11 +269,11 @@ class NoItemFound extends StatelessWidget {
         child: SizedBox(
           height: MediaQuery.of(context).size.height / 2.5,
           width: MediaQuery.of(context).size.width / 1.2,
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Text(
+              Text(
                 'No Results Found',
                 style: TextStyle(fontSize: 13, color: Colors.black),
               )
@@ -223,10 +293,10 @@ class NoData extends StatelessWidget {
         child: SizedBox(
           height: MediaQuery.of(context).size.height / 2,
           width: MediaQuery.of(context).size.width / 1.2,
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const <Widget>[
+            children: <Widget>[
               // IconButton(
               //   splashColor: Colors.transparent,
               //   highlightColor: Colors.transparent,
@@ -263,7 +333,7 @@ dialogBoxPermissionDenied(BuildContext context) async {
     context: context,
     barrierDismissible: true, // user must tap button for close dialog!
     builder: (BuildContext context) {
-      return AlertDialog(
+      return const AlertDialog(
         backgroundColor: Colors.white,
         title: Text(
           "Permission denied",
@@ -322,7 +392,7 @@ Future<bool>? returnNetwork()async{
 }
 
 stop() {
-  Future.delayed(Duration(seconds: 0), () {
+  Future.delayed(const Duration(seconds: 0), () {
     Loader.hide();
   });
 }
@@ -363,7 +433,7 @@ class Global {
       {String labelTextStr = "",String hintTextStr = ""}) {
     return InputDecoration(
       filled:true,
-    fillColor:Color(0xffF8F8F8),
+    fillColor:const Color(0xffF8F8F8),
       hintStyle: TextStyle(color: Colors.grey[800], fontSize: 14),
       hintText:hintTextStr,
       labelStyle:
@@ -400,14 +470,14 @@ class _AutoClosingAlertState extends State<AutoClosingAlert> {
     // Create an overlay entry with the alert dialog
     overlayEntry = OverlayEntry(
       builder: (context) => AlertDialog(
-        title: Text('Alert'),
+        title: const Text('Alert'),
         content: Text(widget.message),
         actions: <Widget>[
           ElevatedButton(
             onPressed: () {
               overlayEntry?.remove(); // Use safe navigation to remove the overlay
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),

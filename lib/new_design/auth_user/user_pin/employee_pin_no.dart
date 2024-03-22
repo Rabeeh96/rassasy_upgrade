@@ -239,6 +239,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
           //   }
           // });
         } else if (status == 6001) {
+
           stop();
         } else {
 
@@ -839,6 +840,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
             // );
           });
         } else if (status == 6001) {
+
           dialogBox(context, " Please Enter Correct Password");
           //    dialogBox(context," Please Enter Correct Password");
           setState(() {

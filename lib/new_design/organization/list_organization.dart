@@ -251,20 +251,28 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                     prefs.setString('companyID', companyList[index].id);
                                                     prefs.setBool('companySelected', true);
 
-                                                    if(companyList[index].isPosUser){
 
-                                                      Navigator.pushReplacement(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (BuildContext context) =>
-                                                              const EnterPinNumber()));
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (BuildContext context) =>
+                                                            const EnterPinNumber()));
 
-                                                    }
-                                                    else{
 
-                                                      userTypeData();
-
-                                                    }
+                                                    // if(companyList[index].isPosUser){
+                                                    //
+                                                    //   Navigator.pushReplacement(
+                                                    //       context,
+                                                    //       MaterialPageRoute(
+                                                    //           builder: (BuildContext context) =>
+                                                    //           const EnterPinNumber()));
+                                                    //
+                                                    // }
+                                                    // else{
+                                                    //
+                                                    //   userTypeData();
+                                                    //
+                                                    // }
                                                   }
 
 
@@ -413,7 +421,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
         print(accessToken);
         print(url);
 
-        Map data = {"userId": userID};
+        Map data = {"userId": userID,"BranchID":1};
         print(data);
         //encode Map to JSON
         var body = json.encode(data);

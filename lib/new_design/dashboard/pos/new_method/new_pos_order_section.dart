@@ -77,7 +77,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   /// detail controller
   TextEditingController unitPriceDetailController = TextEditingController();
   TextEditingController qtyDetailController = TextEditingController();
-  TextEditingController searchController1 = TextEditingController();
+
 
   TextEditingController tableNameController = TextEditingController();
   TextEditingController amountController = TextEditingController();
@@ -150,6 +150,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   var printAfterPayment = false;
 
   bool autoFocusField = false;
+  bool isGst = false;
 
   @override
   void initState() {
@@ -187,6 +188,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     } else {
       changeVal(widget.orderType);
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
+      currency = prefs.getString('CurrencySymbol') ?? "";
+       isGst = prefs.getBool("check_GST") ?? false;
       networkConnection = true;
       if (widget.sectionType == "Create") {
         mainPageIndex = 7;
@@ -308,7 +311,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   Future<bool> _onWillPop() async {
     print("____________ its calle");
     if (orderDetTable.length > 1) {
-      return (await showDialog<bool>(
+      return (
+          await showDialog<bool>(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
@@ -934,7 +938,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                   height: MediaQuery.of(context).size.height / 14,
                   //height of button
                   width: MediaQuery.of(context).size.width / 1.8,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.transparent,
                     //        borderRadius: BorderRadius.all(Radius.circular(4.0)),
 
@@ -992,7 +996,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                                       textCapitalization: TextCapitalization.words,
                                       decoration: InputDecoration(
-                                          suffixIcon: Icon(
+                                          suffixIcon: const Icon(
                                             Icons.keyboard_arrow_down,
                                             color: Colors.black,
                                           ),
@@ -1083,7 +1087,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Text(
-                                  currency + " . " + roundStringWith(balance.toString()),
+                                  currency + "  " + roundStringWith(balance.toString()),
                                   style: customisedStyle(context, Color(0xff808080), FontWeight.bold, 15.00),
                                 ),
                               ),
@@ -1124,7 +1128,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             Padding(
                               padding: const EdgeInsets.only(right: 0),
                               child: Text(
-                                currency + " . " + roundStringWith(grandTotalAmount),
+                                currency + "  " + roundStringWith(grandTotalAmount),
                                 style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
                               ),
                             ),
@@ -1148,6 +1152,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             ),
                           ],
                         ):Container() ,
+
+
+
 
                         exciseAmountTotalP>0? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1799,6 +1806,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       width: MediaQuery.of(context).size.width / 8,
                       child: TextButton(
                           style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                             padding: const EdgeInsets.all(2.0),
                             backgroundColor: const Color(0xffFF0000),
                             textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
@@ -1809,7 +1819,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           child: Text(
                             'cancel'.tr,
                             style: customisedStyle(context, Colors.white, FontWeight.w500, 12.00),
-                          )),
+                          )
+                      ),
                     ),
                     const SizedBox(
                       width: 4,
@@ -1820,6 +1831,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             width: MediaQuery.of(context).size.width / 8,
                             child: TextButton(
                                 style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
                                   foregroundColor: Colors.white,
                                   padding: EdgeInsets.all(2.0),
                                   backgroundColor: const Color(0xff1155F3),
@@ -1846,14 +1860,15 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       width: MediaQuery.of(context).size.width / 8,
                       child: TextButton(
                           style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                             padding: const EdgeInsets.all(2.0),
                             foregroundColor: Colors.white,
                             backgroundColor: const Color(0xff0A9800),
                             textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
                           ),
                           onPressed: () {
-                            print("ledgerID $ledgerID");
-
 
                             if(ledgerID !=1){
                               createSaleInvoice(printAfterPayment, context);
@@ -2307,7 +2322,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width / 16,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: productSearchNotifier.value == 1 ? Color(0xffF25F29) : Colors.white),
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),backgroundColor: productSearchNotifier.value == 1 ? Color(0xffF25F29) : Colors.white),
                           onPressed: () {
                             productSearchNotifier.value = 1;
                           },
@@ -2322,8 +2340,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width / 16,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: productSearchNotifier.value == 2 ? Color(0xffF25F29) : Colors.white),
+                          child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              backgroundColor: productSearchNotifier.value == 2 ? Color(0xffF25F29) : Colors.white),
                           onPressed: () {
                             productSearchNotifier.value = 2;
                           },
@@ -2339,7 +2361,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width / 15,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: productSearchNotifier.value == 3 ? Color(0xffF25F29) : Colors.white),
+
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              backgroundColor: productSearchNotifier.value == 3 ? Color(0xffF25F29) : Colors.white),
                           onPressed: () {
                             productSearchNotifier.value = 3;
                             print(productSearchNotifier.value);
@@ -2386,7 +2413,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width / 14,
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(backgroundColor: productSearchNotifier.value == 4 ? Color(0xffF25F29) : Colors.white),
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),backgroundColor: productSearchNotifier.value == 4 ? Color(0xffF25F29) : Colors.white),
                                 onPressed: () async {
                                   productSearchNotifier.value = 4;
                                   String? barcode = await BarcodeScannerClass.scanBarcode(context);
@@ -3139,7 +3169,57 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
         ],
       ),
-    ):Row(
+    ):
+    isGst?
+    Padding(
+      padding: const EdgeInsets.only(top: 5.0,bottom: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "CGst  ",
+                style:customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+              ),
+              Text("$currency ", style: customisedStyle(context, Colors.grey, FontWeight.w500, 11.0)),
+              Text(" "+roundStringWith(cGstAmountTotalP.toString()), style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0))
+            ],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "SGst  ",
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+              ),
+              Text("$currency ", style: customisedStyle(context, Colors.grey, FontWeight.w500, 11.0)),
+
+              Text(roundStringWith(sGstAmountTotalP.toString()), style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0))
+            ],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'total_tax'.tr+" ",
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+              ),
+              Text(currency+" ", style: customisedStyle(context, Colors.grey, FontWeight.w500, 11.0)),
+              Text(roundStringWith(totalTaxMP.toString()),
+                  style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0))
+            ],
+          ),
+
+
+        ],
+      ),
+    )
+
+        :   Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
@@ -3168,8 +3248,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width / 11,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),backgroundColor: Color(0xff0347A1)),
                       onPressed: () {
+
+                        print("object");
                         changeStatusToDelivered("take_away");
                       },
                       child: Text(
@@ -3184,7 +3269,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width / 11,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xff000000)),
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),backgroundColor: Color(0xff000000)),
                       onPressed: () {
                         changeStatusToDelivered("delivered");
                       },
@@ -3592,6 +3680,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                           foregroundColor: const Color(0xffFFFFFF), backgroundColor: const Color(0xffFF0000), // Background Color
                         ),
                         onPressed: () {
@@ -3621,6 +3712,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                           backgroundColor: const Color(0xff10C103), // Background Color
                         ),
                         onPressed: () async {
@@ -3654,6 +3748,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                           backgroundColor: const Color(0xff10C103), // Background Color
                         ),
                         onPressed: () async {
@@ -4028,6 +4125,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     width: MediaQuery.of(context).size.width / 6.5,
                     child: TextButton(
                       style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.all(16.0),
                         backgroundColor: const Color(0xffFF0000),
@@ -4049,6 +4149,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     width: MediaQuery.of(context).size.width / 6.5,
                     child: TextButton(
                       style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.all(16.0),
                         backgroundColor: const Color(0xff309E10),
@@ -5589,6 +5692,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             width: MediaQuery.of(context).size.width / 8,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
                                 foregroundColor: const Color(0xffFF0000),
                               ),
                               child: Text(
@@ -5605,6 +5711,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             width: MediaQuery.of(context).size.width / 8,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
                                   foregroundColor: const Color(0xff12AA07),
                                 ),
                                 child: const Text(
@@ -5921,6 +6030,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           width: MediaQuery.of(context).size.width / 8,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: const Color(0xffFF0000),
             ),
             child: Text(
@@ -5937,6 +6049,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           width: MediaQuery.of(context).size.width / 8,
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 foregroundColor: const Color(0xff12AA07),
               ),
               child: const Text(
