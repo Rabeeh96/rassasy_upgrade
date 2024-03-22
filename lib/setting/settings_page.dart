@@ -228,10 +228,9 @@ class _SettingsPageState extends State<SettingsPage> {
   /// default print
   funcDefaultPrint() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var templateBT = prefs.getString("template") ?? "template1";
-    setState(() {
-      print('temlate 1----$templateBT');
 
+    var templateBT = prefs.getString("template") ?? "template3";
+    setState(() {
       if (templateBT == "template1") {
         templateIndex = 1;
       } else if (templateBT == "template2") {
@@ -260,8 +259,8 @@ class _SettingsPageState extends State<SettingsPage> {
     DateTime dt = DateTime.now();
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     final String formatted = formatter.format(dt);
-    _date = '$formatted';
-    kotFromDate = '$formatted';
+    _date = formatted;
+    kotFromDate = formatted;
     kotTODate = '$formatted';
   }
 
@@ -547,7 +546,7 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
                 Text('KOT_log'.tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
                     fontSize: 20,
@@ -561,13 +560,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         _selectDate(context, 1);
                       },
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Color(0xffCBCBCB))),
+                        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: const Color(0xffCBCBCB))),
                         height: MediaQuery.of(context).size.height / 16,
                         width: MediaQuery.of(context).size.width / 7,
                         child: Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0, right: 8),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 8.0, right: 8),
                               child: Icon(
                                 Icons.calendar_today_outlined,
                                 size: 20,
@@ -578,10 +577,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('from'.tr, style: TextStyle(fontSize: 10, color: Color(0xff888580))),
+                                Text('from'.tr, style: const TextStyle(fontSize: 10, color: Color(0xff888580))),
                                 Text(
                                   kotFromDate,
-                                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
+                                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
                                 ),
                               ],
                             )
@@ -589,7 +588,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     GestureDetector(
@@ -597,13 +596,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         _selectDate(context, 2);
                       },
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Color(0xffCBCBCB))),
+                        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: const Color(0xffCBCBCB))),
                         height: MediaQuery.of(context).size.height / 16,
                         width: MediaQuery.of(context).size.width / 7,
                         child: Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0, right: 8),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 8.0, right: 8),
                               child: Icon(
                                 Icons.calendar_today_outlined,
                                 color: Colors.black,
@@ -614,10 +613,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('to'.tr, style: TextStyle(fontSize: 10, color: Color(0xff888580))),
+                                Text('to'.tr, style: const TextStyle(fontSize: 10, color: Color(0xff888580))),
                                 Text(
                                   kotTODate,
-                                  style: TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.w400),
+                                  style: const TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.w400),
                                 ),
                               ],
                             )
@@ -642,12 +641,12 @@ class _SettingsPageState extends State<SettingsPage> {
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 0,
-                  color: Color(0xffFfffff),
+                  color: const Color(0xffFfffff),
                   child: ListTile(
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
+                        const Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:  [
@@ -661,7 +660,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             )
                           ],
                         ),
-                        Column(
+                        const Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:  [
@@ -681,15 +680,15 @@ class _SettingsPageState extends State<SettingsPage> {
                           children: [
                             Text(
                               'token_no'.tr,
-                              style: TextStyle(color: Color(0xff9A9A9A), fontSize: 12),
+                              style: const TextStyle(color: Color(0xff9A9A9A), fontSize: 12),
                             ),
-                            Text(
+                            const Text(
                               "011",
                               style: TextStyle(color: Color(0xff000000), fontSize: 11),
                             )
                           ],
                         ),
-                        Column()
+                        const Column()
                       ],
                     ),
                   ),
@@ -712,7 +711,7 @@ class _SettingsPageState extends State<SettingsPage> {
           height: MediaQuery.of(context).size.height / 16, //height of button
           width: MediaQuery.of(context).size.width / 1,
           child:   Text('user_role'.tr,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
                 fontSize: 20,
@@ -730,7 +729,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                           Text(
                          'name'.tr,
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
                           height: 10,
@@ -742,22 +741,22 @@ class _SettingsPageState extends State<SettingsPage> {
                             textCapitalization: TextCapitalization.words,
                             controller: roleNameController,
                             decoration:   InputDecoration(
-                              contentPadding: EdgeInsets.all(13),
+                              contentPadding: const EdgeInsets.all(13),
                               hintText: 'role_name'.tr,
-                              hintStyle: TextStyle(color: Colors.grey),
-                              focusedBorder: OutlineInputBorder(
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              focusedBorder: const OutlineInputBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                               isDense: true,
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                           Text(
                           'Role'.tr,
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
@@ -766,7 +765,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             children: [
                                Text(
                                 'Dining'.tr,
-                                style: TextStyle(fontWeight: FontWeight.w400),
+                                style: const TextStyle(fontWeight: FontWeight.w400),
                               ),
                               SizedBox(
                                   child: FlutterSwitch(
@@ -795,7 +794,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                                Text('Take_awy'.tr, style: TextStyle(fontWeight: FontWeight.w400)),
+                                Text('Take_awy'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
                               SizedBox(
                                   child: FlutterSwitch(
                                 width: 40.0,
@@ -823,7 +822,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                                Text('Online'.tr, style: TextStyle(fontWeight: FontWeight.w400)),
+                                Text('Online'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
                               SizedBox(
                                   child: FlutterSwitch(
                                 width: 40.0,
@@ -851,7 +850,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                                Text('Car'.tr, style: TextStyle(fontWeight: FontWeight.w400)),
+                                Text('Car'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
                               SizedBox(
                                   child: FlutterSwitch(
                                 width: 40.0,
@@ -891,14 +890,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     itemBuilder: (context, index) {
                       return Card(
                         elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: BorderSide(width: 1, color: Color(0xffDFDFDF))),
-                        color: Color(0xffF3F3F3),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
+                        color: const Color(0xffF3F3F3),
                         child: ListTile(
                           title: Text(
                             "User roles $index",
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                           ),
-                          trailing: Icon(
+                          trailing: const Icon(
                             Icons.arrow_forward_ios_outlined,
                             color: Colors.black,
                           ),
@@ -979,7 +978,7 @@ class _SettingsPageState extends State<SettingsPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
 
             children: [
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1026,6 +1025,8 @@ class _SettingsPageState extends State<SettingsPage> {
             padding: const EdgeInsets.only(top: 10.0,bottom: 15),
             child: defaultPrinterNew(),
           ),
+
+          /// commented template selection
           print_type_value ==true  ?Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
@@ -1184,23 +1185,23 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                       controller: defaultSalesInvoiceController,
                       decoration: InputDecoration(
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.keyboard_arrow_down,
                           color: Colors.black,
                         ),
-                        contentPadding: EdgeInsets.all(13),
+                        contentPadding: const EdgeInsets.all(13),
                         hintText:'sales_invoice'.tr,
                         hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         labelText: "Sales  invoice",
                         labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         focusedBorder:
-                            OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                            const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                         isDense: true,
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 25,
                   ),
                   SizedBox(
@@ -1214,23 +1215,23 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                       controller: defaultSalesOrderController,
                       decoration: InputDecoration(
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.keyboard_arrow_down,
                           color: Colors.black,
                         ),
-                        contentPadding: EdgeInsets.all(13),
+                        contentPadding: const EdgeInsets.all(13),
                         hintText: 'sale_order'.tr,
                         hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         labelText: 'sale_order'.tr,
                         labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         focusedBorder:
-                            OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                            const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                         isDense: true,
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 25,
                   ),
                   ElevatedButton(
@@ -1264,7 +1265,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     width: MediaQuery.of(context).size.width / 5,
                     child: Text('select_capability'.tr,style:  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 25,
                   ),
                   SizedBox(
@@ -1285,9 +1286,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                       controller: capabilitiesController,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(13),
+                        contentPadding: const EdgeInsets.all(13),
                         hintText: 'select_capability'.tr,
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.keyboard_arrow_down,
                           color: Colors.black,
                         ),
@@ -1295,9 +1296,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         labelText: 'select_capability'.tr,
                         labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         focusedBorder:
-                        OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                        const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                         isDense: true,
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
@@ -1462,21 +1463,21 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                 controller: termsAndConditionController,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(13),
+                  contentPadding: const EdgeInsets.all(13),
                   hintText: 'terms_condition'.tr,
 
                   hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                   labelText: 'terms_condition'.tr,
                   labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                   focusedBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                  const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                   isDense: true,
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
           ),
-          SizedBox(height: 50,)
+          const SizedBox(height: 50,)
         ],
       ),
     );
@@ -2166,7 +2167,7 @@ class _SettingsPageState extends State<SettingsPage> {
           height: MediaQuery.of(context).size.height / 16, //height of button
           width: MediaQuery.of(context).size.width / 1,
           child: Text('gen_setting'.tr,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
                 fontSize: 20,
@@ -3081,7 +3082,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
                           updateList("InitialTokenNo", val, "");
                         },
-                         style: customisedStyle(context, Color(0xffF25F29), FontWeight.normal, 15.0),
+                         style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 15.0),
                        // style: const TextStyle(color: Colors.black, decoration: TextDecoration.underline),
                         decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -3120,7 +3121,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     items: dropdownValues.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value+" Hour ",style: customisedStyle(context, Color(0xffF25F29), FontWeight.normal, 15.0),),
+                        child: Text(value+" Hour ",style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 15.0),),
                       );
                     }).toList(),
                     onChanged: (newValue) {
@@ -3179,7 +3180,7 @@ class _SettingsPageState extends State<SettingsPage> {
             //   ),
             // ),
 
-            SizedBox(
+            const SizedBox(
               height: 20,
             )
           ]),
@@ -3195,7 +3196,7 @@ class _SettingsPageState extends State<SettingsPage> {
   navigateToPrinter() async {
     var result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SelectPrinter()),
+      MaterialPageRoute(builder: (context) => const SelectPrinter()),
     );
 
     print(result);
@@ -3756,9 +3757,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         hintText: 'kit_name'.tr,
                         hintStyle: customisedStyle(context, Colors.grey, FontWeight.w500, 14.0),
                         //  errorText: _errorText,
-                        contentPadding: EdgeInsets.all(13),
+                        contentPadding: const EdgeInsets.all(13),
                         isDense: true,
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
@@ -4023,16 +4024,16 @@ class _SettingsPageState extends State<SettingsPage> {
               textCapitalization: TextCapitalization.words,
               // controller: roleNameController,
               decoration:   InputDecoration(
-                contentPadding: EdgeInsets.all(13),
+                contentPadding: const EdgeInsets.all(13),
                 hintText:'sales_invoice'.tr,
-                hintStyle: TextStyle(color: Colors.grey),
-                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                hintStyle: const TextStyle(color: Colors.grey),
+                focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                 isDense: true,
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 25,
           ),
           SizedBox(
@@ -4042,16 +4043,16 @@ class _SettingsPageState extends State<SettingsPage> {
               textCapitalization: TextCapitalization.words,
               // controller: roleNameController,
               decoration:   InputDecoration(
-                contentPadding: EdgeInsets.all(13),
+                contentPadding: const EdgeInsets.all(13),
                 hintText: 'sale_order'.tr,
-                hintStyle: TextStyle(color: Colors.grey),
-                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                hintStyle: const TextStyle(color: Colors.grey),
+                focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                 isDense: true,
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 25,
           ),
           ElevatedButton(onPressed: () {}, child: Text('set_both'.tr))
@@ -4075,7 +4076,7 @@ class _SettingsPageState extends State<SettingsPage> {
             padding: const EdgeInsets.all(10.0),
             child: Text(
               'select_print'.tr,
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
           GestureDetector(
@@ -4471,7 +4472,7 @@ class _SettingsPageState extends State<SettingsPage> {
           width: MediaQuery.of(context).size.width / 1,
 
           child:   Text('Users'.tr,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
                 fontSize: 20,
@@ -4500,7 +4501,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   onTap: () async {
                     var result = await Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SelectUser()),
+                      MaterialPageRoute(builder: (context) => const SelectUser()),
                     );
 
                     print(result);
@@ -4517,12 +4518,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   decoration:  InputDecoration(
                     hintText: 'select_employee'.tr,
                     hintStyle: customisedStyle(context, Colors.grey, FontWeight.w500, 14.0),
-                    contentPadding: EdgeInsets.all(13),
-                    suffixIcon: Icon(Icons.arrow_drop_down),
+                    contentPadding: const EdgeInsets.all(13),
+                    suffixIcon: const Icon(Icons.arrow_drop_down),
                     focusedBorder:
-                        OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                        const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                     isDense: true,
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
@@ -4624,7 +4625,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             onTap: () async {
                               var result = await Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SelectRoles()),
+                                MaterialPageRoute(builder: (context) => const SelectRoles()),
                               );
 
                               print(result);
@@ -4731,7 +4732,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                             Text(
                             'Role'.tr,
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                           ),
                           const SizedBox(
                             height: 10,
@@ -4743,13 +4744,13 @@ class _SettingsPageState extends State<SettingsPage> {
                               textCapitalization: TextCapitalization.words,
                               controller: roleNameController,
                               decoration:   InputDecoration(
-                                contentPadding: EdgeInsets.all(13),
+                                contentPadding: const EdgeInsets.all(13),
                                 hintText: 'role_name'.tr,
-                                hintStyle: TextStyle(color: Colors.grey),
-                                focusedBorder: OutlineInputBorder(
+                                hintStyle: const TextStyle(color: Colors.grey),
+                                focusedBorder: const OutlineInputBorder(
                                     borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                                 isDense: true,
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                               ),
                             ),
                           ),
@@ -4760,7 +4761,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               children: [
                                  Text(
                                   'Dining'.tr,
-                                  style: TextStyle(fontWeight: FontWeight.w300),
+                                  style: const TextStyle(fontWeight: FontWeight.w300),
                                 ),
                                 SizedBox(
                                     child: FlutterSwitch(
@@ -4789,7 +4790,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  Text('Take_awy'.tr, style: TextStyle(fontWeight: FontWeight.w300)),
+                                  Text('Take_awy'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
                                 SizedBox(
                                     child: FlutterSwitch(
                                   width: 40.0,
@@ -4817,7 +4818,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  Text('Online'.tr, style: TextStyle(fontWeight: FontWeight.w300)),
+                                  Text('Online'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
                                 SizedBox(
                                     child: FlutterSwitch(
                                   width: 40.0,
@@ -4845,7 +4846,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  Text('Car'.tr, style: TextStyle(fontWeight: FontWeight.w300)),
+                                  Text('Car'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
                                 SizedBox(
                                     child: FlutterSwitch(
                                   width: 40.0,
@@ -4873,7 +4874,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  Text('Kitchen'.tr, style: TextStyle(fontWeight: FontWeight.w300)),
+                                  Text('Kitchen'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
                                 SizedBox(
                                     child: FlutterSwitch(
                                   width: 40.0,
@@ -4992,7 +4993,7 @@ class _SettingsPageState extends State<SettingsPage> {
             width: MediaQuery.of(context).size.width / 1,
 
             child:   Text('delivery_man'.tr,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                   fontSize: 20,
@@ -5013,18 +5014,18 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: Container(
                           height: MediaQuery.of(context).size.height / 20,
                           width: MediaQuery.of(context).size.width / 2,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               //  border:Border.all(color:Color(0xff858585),width: .5)
                               ),
                           child: TextField(
                             onTap: () {},
                             controller: staffNameController,
                             decoration:   InputDecoration(
-                              contentPadding: EdgeInsets.all(6),
-                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xff858585), width: .5)),
-                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xff858585), width: .5)),
+                              contentPadding: const EdgeInsets.all(6),
+                              focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xff858585), width: .5)),
+                              enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xff858585), width: .5)),
                               hintText: 'name'.tr,
-                              hintStyle: TextStyle(color: Color(0xffAFAFAF)),
+                              hintStyle: const TextStyle(color: Color(0xffAFAFAF)),
                             ),
                           ),
                         ),
@@ -5044,14 +5045,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       itemBuilder: (context, index) {
                         return Card(
                           elevation: 0,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: BorderSide(width: 1, color: Color(0xffDFDFDF))),
-                          color: Color(0xffF3F3F3),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
+                          color: const Color(0xffF3F3F3),
                           child: ListTile(
                             title: Text(
                               'delivery_man'.tr,
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                             ),
-                            trailing: Icon(
+                            trailing: const Icon(
                               Icons.arrow_forward_ios_outlined,
                               color: Colors.black,
                             ),
@@ -5275,7 +5276,7 @@ class _SettingsPageState extends State<SettingsPage> {
             width: MediaQuery.of(context).size.width / 1,
 
             child: Text(index == 12 ? 'Waiter' : 'Delivery man',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                   fontSize: 20,
@@ -5293,8 +5294,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     itemBuilder: (context, index) {
                       return Card(
                         elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: BorderSide(width: 1, color: Color(0xffDFDFDF))),
-                        color: Color(0xffF3F3F3),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
+                        color: const Color(0xffF3F3F3),
                         child: ListTile(
                           onLongPress: () async {
                             deleteAlert(waiterLists[index].waiterUID, "", 3, "");
@@ -5309,16 +5310,16 @@ class _SettingsPageState extends State<SettingsPage> {
                           },
                           title: Text(
                             waiterLists[index].waiterName,
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                           ),
-                          trailing: Icon(
+                          trailing: const Icon(
                             Icons.arrow_forward_ios_outlined,
                             color: Colors.black,
                           ),
                         ),
                       );
                     })
-                : Center(
+                : const Center(
                     child: Text("No data"),
                   ),
           ),
@@ -5356,7 +5357,7 @@ class _SettingsPageState extends State<SettingsPage> {
           width: MediaQuery.of(context).size.width / 1,
 
           child: Text(index == 12 ? 'Waiter' : 'Delivery man',
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
                 fontSize: 20,
@@ -5371,7 +5372,7 @@ class _SettingsPageState extends State<SettingsPage> {
             children: [
                 Text(
                'name'.tr,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
@@ -5497,7 +5498,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 GestureDetector(
                   onTap: () {
                     copyPhone();
@@ -5528,7 +5529,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 7,
                 ),
                 Container(
@@ -5555,7 +5556,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     'www.viknbooks.com',style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
@@ -5572,7 +5573,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           style: customisedStyle(context, Colors.white, FontWeight.w600, 15.0)
                       ),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Color(0xffF25F29)),
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color(0xffF25F29)),
                       ),
                     )),
               ],
@@ -5612,7 +5613,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
                 //  textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 5.0,
                 ),
               ),
@@ -5655,7 +5656,7 @@ We are collecting your data for several reasons\n \u2022 To better understand yo
                   ],
                 ),
                 //  textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20.0,
                 ),
               ),
@@ -5677,7 +5678,7 @@ Our application is committed to securing your data and keeping it confidential T
                   ],
                 ),
                 //  textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20.0,
                 ),
               ),
@@ -5892,7 +5893,7 @@ At some point, you might wish to restrict the use and collection of your persona
                 ],
               ),
               //  textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 21.0,
               ),
             ),
@@ -5913,7 +5914,7 @@ At some point, you might wish to restrict the use and collection of your persona
                 ],
               ),
               //  textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
               ),
             ),
@@ -5932,7 +5933,7 @@ At some point, you might wish to restrict the use and collection of your persona
                 ],
               ),
               //  textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
               ),
             ),
@@ -5951,7 +5952,7 @@ At some point, you might wish to restrict the use and collection of your persona
                 ],
               ),
               //  textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
               ),
             ),
@@ -5971,7 +5972,7 @@ At some point, you might wish to restrict the use and collection of your persona
                 ],
               ),
               //  textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
               ),
             ),
@@ -5991,7 +5992,7 @@ At some point, you might wish to restrict the use and collection of your persona
                 ],
               ),
               //  textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
               ),
             ),
@@ -6012,7 +6013,7 @@ At some point, you might wish to restrict the use and collection of your persona
                 ],
               ),
               //  textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
               ),
             ),
@@ -6081,7 +6082,7 @@ At some point, you might wish to restrict the use and collection of your persona
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 7,
                 ),
                 Container(
@@ -6108,7 +6109,7 @@ At some point, you might wish to restrict the use and collection of your persona
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 7,
                 ),
                 Container(
@@ -6498,10 +6499,10 @@ At some point, you might wish to restrict the use and collection of your persona
         barrierDismissible: false,
         builder: (BuildContext context) {
           return Padding(
-            padding:   EdgeInsets.fromLTRB(0, 0, 0, 0),
+            padding:   const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: AlertDialog(
               title:   Padding(
-                padding: EdgeInsets.all(0.5),
+                padding: const EdgeInsets.all(0.5),
                 child: Text(
                   'msg4'.tr,
                   textAlign: TextAlign.center,
@@ -6536,7 +6537,7 @@ At some point, you might wish to restrict the use and collection of your persona
                         },
                     child:  Text(
                       'cancel'.tr,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     )),
               ],
             ),
@@ -7067,7 +7068,7 @@ At some point, you might wish to restrict the use and collection of your persona
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: AlertDialog(
               title:   Padding(
-                padding: EdgeInsets.all(0.5),
+                padding: const EdgeInsets.all(0.5),
                 child: Text(
                   'msg4'.tr,
                   textAlign: TextAlign.center,
@@ -7091,7 +7092,7 @@ At some point, you might wish to restrict the use and collection of your persona
                         },
                     child:  Text(
                       'cancel'.tr,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     )),
               ],
             ),
@@ -7325,11 +7326,11 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
       return AlertDialog(
         title: Text(
           'msg6'.tr,
-          style: TextStyle(color: Colors.black, fontSize: 13),
+          style: const TextStyle(color: Colors.black, fontSize: 13),
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
+            child: Text('Yes'.tr, style: const TextStyle(color: Colors.red)),
             onPressed: () {
               Navigator.of(context).pushAndRemoveUntil(
                 CupertinoPageRoute(builder: (context) => LoginPageNew()),
@@ -7338,7 +7339,7 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
             },
           ),
           TextButton(
-            child: Text('No', style: TextStyle(color: Colors.black)),
+            child: const Text('No', style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.of(context).pop(ConfirmAction.cancel);
             },

@@ -33,6 +33,7 @@ late var namecontroller= nameController.text.obs;
     await Future.delayed(Duration(seconds: 2));
     isLoading.value = false;
   }
+  RxString  uID="".obs;
   @override
   void onInit() {
     super.onInit();
@@ -42,7 +43,7 @@ late var namecontroller= nameController.text.obs;
   void addItemInTaxCategoryList(newTaxCategoryItem) {
     itemList.insert(0, newTaxCategoryItem);
   }
-void clear () {
+  void clear () {
     nameController.clear();
     generalTaxController.clear();
     breakingPointController.clear();
@@ -52,7 +53,7 @@ void clear () {
 }
   Future<void> taxItemCreateFunction(String type,String? id) async {
 
-    print(type);
+
     print(breakingPointController.text);
     if (generalTaxController.text == "") {
       generalTaxController.text = "0";
@@ -125,12 +126,15 @@ void clear () {
         final responseData = json.decode(response.body);
         print(responseData['StatusCode']);
         if (responseData['StatusCode'] == 6000) {
-          Get.snackbar(
-            'Successfully ',
-            'Created : ${responseData['message']}',
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-          );
+
+          clear();
+          getTaxCategoryFullList();
+          // Get.snackbar(
+          //   'Successfully ',
+          //   'Created : ${responseData['message']}',
+          //   backgroundColor: Colors.green,
+          //   colorText: Colors.white,
+          // );
 
           update();
         }else if (responseData['StatusCode'] == 6001) {
@@ -214,10 +218,12 @@ void clear () {
     var accessToken = prefs.getString('access') ?? '';
     var companyID = prefs.getString('companyID') ?? 0;
     var branchID = prefs.getInt('branchID') ?? 1;
-    String baseUrl = BaseUrl.baseUrlV11;
+    String baseUrl = BaseUrl.baseUrl;
     var priceRounding = BaseUrl.priceRounding;
 
     final apiUrl = '$baseUrl/taxCategories/delete/taxCategory/$id/';
+
+    print(apiUrl);
     // Replace with your API URL and tax category ID
 
 
@@ -231,12 +237,25 @@ void clear () {
         'Authorization': 'Bearer $accessToken'
       },
     );
+
     if (response.statusCode == 200) {
-      // If the deletion is successful, update the list by calling getTaxCategoryFullList()
-      await getTaxCategoryFullList();
-      clear();
-      update();
-      print(response.body);
+      Map n = json.decode(utf8.decode(response.bodyBytes));
+      var status = n["StatusCode"];
+      if(status==6000){
+        await getTaxCategoryFullList();
+        clear();
+        update();
+      }
+      else{
+        var responseJson = n["message"];
+        Get.snackbar(
+          'Error',
+          'Creation failed:$responseJson',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+
     } else {
       // Handle the error case
       throw Exception('Failed to delete tax category. Status code: ${response.statusCode}');
@@ -256,12 +275,7 @@ void clear () {
       var branchID = prefs.getInt('branchID') ?? 1;
 
       String baseUrl = BaseUrl.baseUrlV11;
-
-      var priceRounding = BaseUrl.priceRounding;
-
-
-
-      var apiUrl = '$baseUrl/taxCategories/list-taxCategory/';
+       var apiUrl = '$baseUrl/taxCategories/list-taxCategory/';
       var requestBody = {
         "CreatedUserID": userID,
         "BranchID": branchID,

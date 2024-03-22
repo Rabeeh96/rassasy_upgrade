@@ -73,7 +73,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
   /// onchange
 
-  String user_name = "";
+  String userName = "";
   bool dining_view_perm = false;
   bool reservation_view_perm = false;
   bool take_away_view_perm = false;
@@ -161,7 +161,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     onlineOrderLists.clear();
     setState(() {
 
-      user_name = prefs.getString('user_name')!;
+      userName = prefs.getString('user_name')!;
       dining_view_perm = prefs.getBool('Diningview')??true;
       reservation_view_perm = prefs.getBool('View Reservation')??true;
       take_away_view_perm = prefs.getBool('Take awayview')??true;
@@ -525,7 +525,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       // ),
 
 
-                      UserDetailsAppBar(user_name: user_name),
+                      UserDetailsAppBar(user_name: userName),
 
 
 
@@ -1216,470 +1216,467 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
             return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
 
-
-
-                    permissionToEdit?status =="Ordered"
-                        ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width / 12,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                  selectedDiningIndex = 1000;
-                                  if (sectionType == 1) {
-                                    navigateToOrderSection(tableID:"",sectionType: "Edit",UUID:diningOrderList[tableIndex].salesOrderID,tableHead:"Order");
-                                  }
-                                  else if (sectionType == 2) {
-                                    navigateToOrderSection(tableID:"",sectionType: "Edit",UUID:takeAwayOrderLists[tableIndex].salesOrderId,tableHead:"Order");
-                                  }
-                                  else if (sectionType == 3) {
-                                    navigateToOrderSection(tableID:"",sectionType: "Edit",UUID:onlineOrderLists[tableIndex].salesOrderId,tableHead:"Order");
-                                  } else if (sectionType == 4) {
-                                    navigateToOrderSection(tableID:"",sectionType: "Edit",UUID:carOrderLists[tableIndex].salesOrderId,tableHead:"Order");
-
-                                  }
-
-                              },
-
-                              icon: Image.asset('assets/png/Edit_Icon_png.png'),
-                              iconSize: 60),
-                          Text(
-                            "edit".tr,
-                            style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
-                          )
-                        ]))
-                        : Container():Container(),
-
-                    print_perm?isVacant ==false
-                        ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width / 12,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-                          IconButton(
-                              onPressed: () {
-                                print(sectionType);
-
-                                setState(() {
-                                  selectedDiningIndex = 1000;
-
-                                  if (sectionType == 1) {
-                                    if (diningOrderList[tableIndex].status == "Ordered") {
-                                      print(diningOrderList[tableIndex].salesOrderID);
-                                      Navigator.pop(context);
-                                      PrintDataDetails.type = "SO";
-                                      PrintDataDetails.id = diningOrderList[tableIndex].salesOrderID;
-                                      printDetail();
-                                    }
-                                    if (diningOrderList[tableIndex].status == "Paid") {
-                                      Navigator.pop(context);
-                                      PrintDataDetails.type = "SI";
-                                      PrintDataDetails.id = diningOrderList[tableIndex].salesMasterID;
-
-                                      printDetail();
-                                    }
-                                  }
-                                  else if (sectionType == 2) {
-                                    if (takeAwayOrderLists[tableIndex].status == "Ordered") {
-                                      Navigator.pop(context);
-                                      PrintDataDetails.type = "SO";
-                                      PrintDataDetails.id = takeAwayOrderLists[tableIndex].salesOrderId;
-                                      printDetail();
-                                    }
-                                    if (takeAwayOrderLists[tableIndex].status == "Paid") {
-                                      Navigator.pop(context);
-                                      PrintDataDetails.type = "SI";
-                                      PrintDataDetails.id = takeAwayOrderLists[tableIndex].salesId;
-                                      printDetail();
-                                    }
-                                  }
-                                  else if (sectionType == 3) {
-                                    if (onlineOrderLists[tableIndex].status == "Ordered") {
-                                      Navigator.pop(context);
-                                      PrintDataDetails.type = "SO";
-                                      PrintDataDetails.id = onlineOrderLists[tableIndex].salesOrderId;
-
-                                      printDetail();
-                                    }
-
-                                    if (onlineOrderLists[tableIndex].status == "Paid") {
-                                      Navigator.pop(context);
-                                      PrintDataDetails.type = "SI";
-                                      PrintDataDetails.id = onlineOrderLists[tableIndex].salesId;
-
-                                      printDetail();
-                                    }
-                                  } else if (sectionType == 4) {
-                                    if (carOrderLists[tableIndex].status == "Ordered") {
-                                      Navigator.pop(context);
-                                      PrintDataDetails.type = "SO";
-                                      PrintDataDetails.id = carOrderLists[tableIndex].salesOrderId;
-
-                                      printDetail();
-                                    }
-                                    if (carOrderLists[tableIndex].status == "Paid") {
-                                      Navigator.pop(context);
-                                      PrintDataDetails.type = "SI";
-                                      PrintDataDetails.id = carOrderLists[tableIndex].salesId;
-
-                                      printDetail();
-                                    }
-                                  }
-                                });
-                              },
-                              icon: SvgPicture.asset(
-                                'assets/svg/print_image.svg',
-                              ),
-                              iconSize: 60),
-
-
-                          Text(
-                            "print".tr,
-                            style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
-                          )
-                        ]))
-                        : Container():Container(),
-
-                     isVacant ==false
-                        ?  SizedBox(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width / 12,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedDiningIndex = 1000;
-                                  if (sectionType == 1) {
-                                    if (diningOrderList[tableIndex].status == "Ordered") {
-
-
-                                      if(cancel_order_perm){
-                                        cancelId = diningOrderList[tableIndex].tableId;
-                                        Navigator.pop(context);
-                                        cancelReason(context, tableIndex, sectionType);
-                                      }
-                                      else{
-                                        Navigator.pop(context);
-                                        dialogBoxPermissionDenied(context);
-                                      }
-
-
-                                    }
-                                    if (diningOrderList[tableIndex].status == "Paid") {
-                                      var deleteId = diningOrderList[tableIndex].tableId;
-                                      var type = "Dining";
-                                      Navigator.pop(context);
-                                      delete(type, deleteId, "");
-                                    }
-                                  } else if (sectionType == 2) {
-                                    if (takeAwayOrderLists[tableIndex].status == "Ordered") {
-
-
-
-
-                                      if(cancel_order_perm){
-                                        cancelId = takeAwayOrderLists[tableIndex].salesOrderId;
-                                        Navigator.pop(context);
-                                        cancelReason(context, tableIndex, sectionType);
-                                      }
-                                      else{
-                                        Navigator.pop(context);
-                                        dialogBoxPermissionDenied(context);
-                                      }
-
-
-
-
-                                    }
-                                    if (takeAwayOrderLists[tableIndex].status == "Paid") {
-                                      var deleteId = takeAwayOrderLists[tableIndex].salesOrderId;
-                                      var type = "TakeAway";
-                                      Navigator.pop(context);
-                                      delete(type, deleteId, "");
-                                    }
-                                  } else if (sectionType == 3) {
-                                    if (onlineOrderLists[tableIndex].status == "Ordered") {
-
-                                      if(cancel_order_perm){
-                                        cancelId = onlineOrderLists[tableIndex].salesOrderId;
-                                        Navigator.pop(context);
-                                        cancelReason(context, tableIndex, sectionType);
-                                      }
-                                      else{
-                                        Navigator.pop(context);
-                                        dialogBoxPermissionDenied(context);
-                                      }
-
-                                    }
-
-                                    if (onlineOrderLists[tableIndex].status == "Paid") {
-                                      var deleteId = onlineOrderLists[tableIndex].salesOrderId;
-                                      var type = "Online";
-                                      Navigator.pop(context);
-                                      delete(type, deleteId, "");
-                                      // OnlineCar
-                                    }
-                                  } else if (sectionType == 4) {
-                                    if (carOrderLists[tableIndex].status == "Ordered") {
-
-                                      if(cancel_order_perm){
-                                        cancelId = carOrderLists[tableIndex].salesOrderId;
-                                        Navigator.pop(context);
-                                        cancelReason(context, tableIndex, sectionType);
-                                      }
-                                      else{
-                                        Navigator.pop(context);
-                                        dialogBoxPermissionDenied(context);
-                                      }
-
-                                    }
-                                    if (carOrderLists[tableIndex].status == "Paid") {
-                                      var deleteId = carOrderLists[tableIndex].salesOrderId;
-                                      var type = "Car";
-                                      Navigator.pop(context);
-                                      delete(type, deleteId, "");
-
-                                    }
-                                  }
-                                });
-                              },
-                              icon: SvgPicture.asset(
-                                'assets/svg/cancelorder.svg',
-                              ),
-                              iconSize: 60),
-                          Text(
-                            returnCancelHead(status),
-                            style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
-                          )
-                        ]))
-                        : Container(),
-
-                    pay_perm? paymentSection == false
-                        ? isInvoice == false
-                        ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width / 12,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-                          IconButton(
-                              onPressed: () {
-
-
-                                  if (sectionType == 1) {
-                                    if (diningOrderList[tableIndex].status == "Ordered") {
-                                      tableID = diningOrderList[tableIndex].tableId;
-                                      Navigator.pop(context);
-                                      navigateToOrderSection(tableID:tableID,sectionType: "Payment",UUID:diningOrderList[tableIndex].salesOrderID,tableHead:"");
-                                    }
-                                  } else if (sectionType == 2) {
-                                    if (takeAwayOrderLists[tableIndex].status == "Ordered") {
-
-                                      tableID = "";
-                                   //   mainPageIndex = 6;
-                                      Navigator.pop(context);
-                                    //  navigateToOrderSection(tableID:tableID,sectionType: "Payment",UUID:diningOrderList[tableIndex].salesOrderID,tableHead:"Parcel");
-                                      navigateToOrderSection(tableID:"",sectionType: "Payment",UUID:takeAwayOrderLists[tableIndex].salesOrderId,tableHead:"Parcel ");
-
-                                    }
-                                  } else if (sectionType == 3) {
-                                    if (onlineOrderLists[tableIndex].status == "Ordered") {
-                                      tableID = "";
-                                 //     mainPageIndex = 6;
-                                      Navigator.pop(context);
-                                      navigateToOrderSection(tableID:"",sectionType: "Payment",UUID:onlineOrderLists[tableIndex].salesOrderId,tableHead:"Online ");
-                                    }
-                                  } else if (sectionType == 4) {
-                                    if (carOrderLists[tableIndex].status == "Ordered") {
-                                      tableID = "";
-                                     // mainPageIndex = 6;
-                                      Navigator.pop(context);
-                                      navigateToOrderSection(tableID:"",sectionType: "Payment",UUID:carOrderLists[tableIndex].salesOrderId,tableHead:"Online ");
-                                    }
-                                  }
-
-                              },
-
-
-                              icon: SvgPicture.asset(
-                                'assets/svg/pay.svg',
-                              ),
-                              iconSize: 60),
-                          Text(
-                            "pay".tr,
-                            style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
-                          )
-                        ]))
-                        : Container()
-                        : Container():Container(),
-
-                    kitchen_print_perm?  paymentSection == false
-                        ? isInvoice == false
-                        ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width / 12,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-                          IconButton(
-                              onPressed: () {
-
-                                print("objectobjectobjectobjectobjectobjectobjectobject");
-                                setState(() {
-                                  selectedDiningIndex = 1000;
-
-
-                                  print(diningOrderList[tableIndex].salesOrderID);
-                                  if (sectionType == 1) {
-                                    if (diningOrderList[tableIndex].status == "Ordered") {
-                                      Navigator.pop(context);
-                                      ReprintKOT(diningOrderList[tableIndex].salesOrderID);
-                                    }
-                                  } else if (sectionType == 2) {
-                                    if (takeAwayOrderLists[tableIndex].status == "Ordered") {
-                                      Navigator.pop(context);
-                                      ReprintKOT(takeAwayOrderLists[tableIndex].salesOrderId);
-                                    }
-                                  } else if (sectionType == 3) {
-                                    if (onlineOrderLists[tableIndex].status == "Ordered") {
-                                      Navigator.pop(context);
-                                      ReprintKOT(onlineOrderLists[tableIndex].salesOrderId);
-                                    }
-                                  } else if (sectionType == 4) {
-                                    if (carOrderLists[tableIndex].status == "Ordered") {
-                                      Navigator.pop(context);
-                                      ReprintKOT(carOrderLists[tableIndex].salesOrderId);
-                                    }
-                                  }
-                                });
-                              },
-                              icon: SvgPicture.asset(
-                                'assets/svg/KOT.svg',
-                              ),
-                              iconSize: 60),
-                          Text(
-                            "kit_print".tr,
-                            style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
-                          )
-                        ]))
-                        : Container()
-                        : Container():Container(),
-
-                    reservation_perm? isReserve
-                        ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width / 12,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-                          IconButton(
-                            icon: SvgPicture.asset(
-                              'assets/svg/reserve.svg',
-                            ),
-                            iconSize: 60,
+                  permissionToEdit?status =="Ordered"
+                      ? SizedBox(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 12,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        IconButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              showPopup(context,diningOrderList[tableIndex].tableId);
-                            },
-                          ),
-
-
-                          Text(
-                            "reserve".tr,
-                            style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
-                          )
-                        ]))
-                        : Container():Container(),
-
-
-                    remove_table_perm? isReserve
-                        ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width / 12,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-                          IconButton(
-                            icon: SvgPicture.asset(
-                              "assets/svg/remove_table.svg",
-                            ),
-                            iconSize: 60,
-                            onPressed: () {
-
-
-                              Navigator.pop(context);
-                              removeTable(diningOrderList[tableIndex].status,diningOrderList[tableIndex].title);
-
-
-                           //   showPopup(context,diningOrderList[tableIndex].tableId);
-                            },
-                          ),
-
-
-                          Text(
-                            "Remove_table".tr,
-                            style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
-                          )
-                        ]))
-                        : Container():Container(),
-
-                    convert_type_perm? isConvert == true
-                        ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width / 12,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-                          IconButton(
-                              onPressed: () {
-
-
-                                if (sectionType == 1)
-                                {
-
-
-                                    Navigator.pop(context);
-
-
-                                  convertSalesType(sectionType: sectionType,tableID:diningOrderList[tableIndex].tableId, voucherNumber: "token",salesOrderID:diningOrderList[tableIndex].salesOrderID);
+                                selectedDiningIndex = 1000;
+                                if (sectionType == 1) {
+                                  navigateToOrderSection(tableID:"",sectionType: "Edit",UUID:diningOrderList[tableIndex].salesOrderID,tableHead:"Order");
+                                }
+                                else if (sectionType == 2) {
+                                  navigateToOrderSection(tableID:"",sectionType: "Edit",UUID:takeAwayOrderLists[tableIndex].salesOrderId,tableHead:"Order");
+                                }
+                                else if (sectionType == 3) {
+                                  navigateToOrderSection(tableID:"",sectionType: "Edit",UUID:onlineOrderLists[tableIndex].salesOrderId,tableHead:"Order");
+                                } else if (sectionType == 4) {
+                                  navigateToOrderSection(tableID:"",sectionType: "Edit",UUID:carOrderLists[tableIndex].salesOrderId,tableHead:"Order");
 
                                 }
 
+                            },
+                            icon: SvgPicture.asset(
+                              'assets/svg/Edit_Icon.svg',
+                            ),
+
+                           // iconSize: 50
+                        ),
+                        Text(
+                          "edit".tr,
+                          style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                        )
+                      ]))
+                      : Container():Container(),
+
+                  print_perm?isVacant ==false
+                      ? SizedBox(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 12,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        IconButton(
+                            onPressed: () {
+
+                              setState(() {
+                                selectedDiningIndex = 1000;
+
+                                if (sectionType == 1) {
+                                  if (diningOrderList[tableIndex].status == "Ordered") {
+                                    print(diningOrderList[tableIndex].salesOrderID);
+                                    Navigator.pop(context);
+                                    PrintDataDetails.type = "SO";
+                                    PrintDataDetails.id = diningOrderList[tableIndex].salesOrderID;
+                                    printDetail();
+                                  }
+                                  if (diningOrderList[tableIndex].status == "Paid") {
+                                    Navigator.pop(context);
+                                    PrintDataDetails.type = "SI";
+                                    PrintDataDetails.id = diningOrderList[tableIndex].salesMasterID;
+
+                                    printDetail();
+                                  }
+                                }
                                 else if (sectionType == 2) {
                                   if (takeAwayOrderLists[tableIndex].status == "Ordered") {
                                     Navigator.pop(context);
-                                    convertSalesType(sectionType: sectionType,tableID:"",salesOrderID:takeAwayOrderLists[tableIndex].salesOrderId);
+                                    PrintDataDetails.type = "SO";
+                                    PrintDataDetails.id = takeAwayOrderLists[tableIndex].salesOrderId;
+                                    printDetail();
+                                  }
+                                  if (takeAwayOrderLists[tableIndex].status == "Paid") {
+                                    Navigator.pop(context);
+                                    PrintDataDetails.type = "SI";
+                                    PrintDataDetails.id = takeAwayOrderLists[tableIndex].salesId;
+                                    printDetail();
+                                  }
+                                }
+                                else if (sectionType == 3) {
+                                  if (onlineOrderLists[tableIndex].status == "Ordered") {
+                                    Navigator.pop(context);
+                                    PrintDataDetails.type = "SO";
+                                    PrintDataDetails.id = onlineOrderLists[tableIndex].salesOrderId;
+
+                                    printDetail();
+                                  }
+
+                                  if (onlineOrderLists[tableIndex].status == "Paid") {
+                                    Navigator.pop(context);
+                                    PrintDataDetails.type = "SI";
+                                    PrintDataDetails.id = onlineOrderLists[tableIndex].salesId;
+
+                                    printDetail();
+                                  }
+                                } else if (sectionType == 4) {
+                                  if (carOrderLists[tableIndex].status == "Ordered") {
+                                    Navigator.pop(context);
+                                    PrintDataDetails.type = "SO";
+                                    PrintDataDetails.id = carOrderLists[tableIndex].salesOrderId;
+
+                                    printDetail();
+                                  }
+                                  if (carOrderLists[tableIndex].status == "Paid") {
+                                    Navigator.pop(context);
+                                    PrintDataDetails.type = "SI";
+                                    PrintDataDetails.id = carOrderLists[tableIndex].salesId;
+
+                                    printDetail();
+                                  }
+                                }
+                              });
+                            },
+                            icon: SvgPicture.asset(
+                              'assets/svg/print_image.svg',
+                            ),
+                            iconSize: 60),
+
+
+                        Text(
+                          "print".tr,
+                          style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                        )
+                      ]))
+                      : Container():Container(),
+
+                   isVacant ==false
+                      ?  SizedBox(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 12,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                selectedDiningIndex = 1000;
+                                if (sectionType == 1) {
+                                  if (diningOrderList[tableIndex].status == "Ordered") {
+
+
+                                    if(cancel_order_perm){
+                                      cancelId = diningOrderList[tableIndex].tableId;
+                                      Navigator.pop(context);
+                                      cancelReason(context, tableIndex, sectionType);
+                                    }
+                                    else{
+                                      Navigator.pop(context);
+                                      dialogBoxPermissionDenied(context);
+                                    }
+
+
+                                  }
+                                  if (diningOrderList[tableIndex].status == "Paid") {
+                                    var deleteId = diningOrderList[tableIndex].tableId;
+                                    var type = "Dining";
+                                    Navigator.pop(context);
+                                    delete(type, deleteId, "");
+                                  }
+                                } else if (sectionType == 2) {
+                                  if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+
+
+
+
+                                    if(cancel_order_perm){
+                                      cancelId = takeAwayOrderLists[tableIndex].salesOrderId;
+                                      Navigator.pop(context);
+                                      cancelReason(context, tableIndex, sectionType);
+                                    }
+                                    else{
+                                      Navigator.pop(context);
+                                      dialogBoxPermissionDenied(context);
+                                    }
+
+
+
+
+                                  }
+                                  if (takeAwayOrderLists[tableIndex].status == "Paid") {
+                                    var deleteId = takeAwayOrderLists[tableIndex].salesOrderId;
+                                    var type = "TakeAway";
+                                    Navigator.pop(context);
+                                    delete(type, deleteId, "");
                                   }
                                 } else if (sectionType == 3) {
                                   if (onlineOrderLists[tableIndex].status == "Ordered") {
 
+                                    if(cancel_order_perm){
+                                      cancelId = onlineOrderLists[tableIndex].salesOrderId;
+                                      Navigator.pop(context);
+                                      cancelReason(context, tableIndex, sectionType);
+                                    }
+                                    else{
+                                      Navigator.pop(context);
+                                      dialogBoxPermissionDenied(context);
+                                    }
+
+                                  }
+
+                                  if (onlineOrderLists[tableIndex].status == "Paid") {
+                                    var deleteId = onlineOrderLists[tableIndex].salesOrderId;
+                                    var type = "Online";
                                     Navigator.pop(context);
-                                    convertSalesType(sectionType: sectionType,tableID:"",salesOrderID:onlineOrderLists[tableIndex].salesOrderId);
+                                    delete(type, deleteId, "");
+                                    // OnlineCar
                                   }
                                 } else if (sectionType == 4) {
                                   if (carOrderLists[tableIndex].status == "Ordered") {
 
+                                    if(cancel_order_perm){
+                                      cancelId = carOrderLists[tableIndex].salesOrderId;
+                                      Navigator.pop(context);
+                                      cancelReason(context, tableIndex, sectionType);
+                                    }
+                                    else{
+                                      Navigator.pop(context);
+                                      dialogBoxPermissionDenied(context);
+                                    }
+
+                                  }
+                                  if (carOrderLists[tableIndex].status == "Paid") {
+                                    var deleteId = carOrderLists[tableIndex].salesOrderId;
+                                    var type = "Car";
                                     Navigator.pop(context);
-                                    convertSalesType(sectionType: sectionType,tableID:"",salesOrderID:carOrderLists[tableIndex].salesOrderId);
-                                   }
+                                    delete(type, deleteId, "");
+
+                                  }
+                                }
+                              });
+                            },
+                            icon: SvgPicture.asset(
+                              'assets/svg/cancelorder.svg',
+                            ),
+                            iconSize: 60),
+                        Text(
+                          returnCancelHead(status),
+                          style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                        )
+                      ]))
+                      : Container(),
+
+                  pay_perm? paymentSection == false
+                      ? isInvoice == false
+                      ? SizedBox(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 12,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        IconButton(
+                            onPressed: () {
+
+
+                                if (sectionType == 1) {
+                                  if (diningOrderList[tableIndex].status == "Ordered") {
+                                    tableID = diningOrderList[tableIndex].tableId;
+                                    Navigator.pop(context);
+                                    navigateToOrderSection(tableID:tableID,sectionType: "Payment",UUID:diningOrderList[tableIndex].salesOrderID,tableHead:"");
+                                  }
+                                } else if (sectionType == 2) {
+                                  if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+
+                                    tableID = "";
+                                 //   mainPageIndex = 6;
+                                    Navigator.pop(context);
+                                  //  navigateToOrderSection(tableID:tableID,sectionType: "Payment",UUID:diningOrderList[tableIndex].salesOrderID,tableHead:"Parcel");
+                                    navigateToOrderSection(tableID:"",sectionType: "Payment",UUID:takeAwayOrderLists[tableIndex].salesOrderId,tableHead:"Parcel ");
+
+                                  }
+                                } else if (sectionType == 3) {
+                                  if (onlineOrderLists[tableIndex].status == "Ordered") {
+                                    tableID = "";
+                               //     mainPageIndex = 6;
+                                    Navigator.pop(context);
+                                    navigateToOrderSection(tableID:"",sectionType: "Payment",UUID:onlineOrderLists[tableIndex].salesOrderId,tableHead:"Online ");
+                                  }
+                                } else if (sectionType == 4) {
+                                  if (carOrderLists[tableIndex].status == "Ordered") {
+                                    tableID = "";
+                                   // mainPageIndex = 6;
+                                    Navigator.pop(context);
+                                    navigateToOrderSection(tableID:"",sectionType: "Payment",UUID:carOrderLists[tableIndex].salesOrderId,tableHead:"Online ");
+                                  }
                                 }
 
-                              },
-                              icon: SvgPicture.asset(
-                                'assets/svg/convert.svg',
-                              ),
-                              iconSize: 60),
-                          Text(
-                            "convert".tr,
-                            style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
-                          )
-                        ]))
-                        : Container():Container()
+                            },
+
+
+                            icon: SvgPicture.asset(
+                              'assets/svg/pay.svg',
+                            ),
+                            iconSize: 60),
+                        Text(
+                          "pay".tr,
+                          style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                        )
+                      ]))
+                      : Container()
+                      : Container():Container(),
+
+                  kitchen_print_perm?  paymentSection == false
+                      ? isInvoice == false
+                      ? SizedBox(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 12,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        IconButton(
+                            onPressed: () {
+
+                              print("objectobjectobjectobjectobjectobjectobjectobject");
+                              setState(() {
+                                selectedDiningIndex = 1000;
+
+
+                                print(diningOrderList[tableIndex].salesOrderID);
+                                if (sectionType == 1) {
+                                  if (diningOrderList[tableIndex].status == "Ordered") {
+                                    Navigator.pop(context);
+                                    ReprintKOT(diningOrderList[tableIndex].salesOrderID);
+                                  }
+                                } else if (sectionType == 2) {
+                                  if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+                                    Navigator.pop(context);
+                                    ReprintKOT(takeAwayOrderLists[tableIndex].salesOrderId);
+                                  }
+                                } else if (sectionType == 3) {
+                                  if (onlineOrderLists[tableIndex].status == "Ordered") {
+                                    Navigator.pop(context);
+                                    ReprintKOT(onlineOrderLists[tableIndex].salesOrderId);
+                                  }
+                                } else if (sectionType == 4) {
+                                  if (carOrderLists[tableIndex].status == "Ordered") {
+                                    Navigator.pop(context);
+                                    ReprintKOT(carOrderLists[tableIndex].salesOrderId);
+                                  }
+                                }
+                              });
+                            },
+                            icon: SvgPicture.asset(
+                              'assets/svg/KOT.svg',
+                            ),
+                            iconSize: 60),
+                        Text(
+                          "kit_print".tr,
+                          style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                        )
+                      ]))
+                      : Container()
+                      : Container():Container(),
+
+                  reservation_perm? isReserve
+                      ? SizedBox(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 12,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/svg/reserve.svg',
+                          ),
+                          iconSize: 60,
+                          onPressed: () {
+                            Navigator.pop(context);
+                            showPopup(context,diningOrderList[tableIndex].tableId);
+                          },
+                        ),
+
+
+                        Text(
+                          "reserve".tr,
+                          style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                        )
+                      ]))
+                      : Container():Container(),
+
+
+                  remove_table_perm? isReserve
+                      ? SizedBox(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 12,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            "assets/svg/remove_table.svg",
+                          ),
+                          iconSize: 60,
+                          onPressed: () {
+
+
+                            Navigator.pop(context);
+                            removeTable(diningOrderList[tableIndex].status,diningOrderList[tableIndex].title);
+
+
+                         //   showPopup(context,diningOrderList[tableIndex].tableId);
+                          },
+                        ),
+
+
+                        Text(
+                          "Remove_table".tr,
+                          style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                        )
+                      ]))
+                      : Container():Container(),
+
+                  convert_type_perm? isConvert == true
+                      ? SizedBox(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 12,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        IconButton(
+                            onPressed: () {
+
+
+                              if (sectionType == 1)
+                              {
+
+
+                                  Navigator.pop(context);
+
+
+                                convertSalesType(sectionType: sectionType,tableID:diningOrderList[tableIndex].tableId, voucherNumber: "token",salesOrderID:diningOrderList[tableIndex].salesOrderID);
+
+                              }
+
+                              else if (sectionType == 2) {
+                                if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+                                  Navigator.pop(context);
+                                  convertSalesType(sectionType: sectionType,tableID:"",salesOrderID:takeAwayOrderLists[tableIndex].salesOrderId);
+                                }
+                              } else if (sectionType == 3) {
+                                if (onlineOrderLists[tableIndex].status == "Ordered") {
+
+                                  Navigator.pop(context);
+                                  convertSalesType(sectionType: sectionType,tableID:"",salesOrderID:onlineOrderLists[tableIndex].salesOrderId);
+                                }
+                              } else if (sectionType == 4) {
+                                if (carOrderLists[tableIndex].status == "Ordered") {
+
+                                  Navigator.pop(context);
+                                  convertSalesType(sectionType: sectionType,tableID:"",salesOrderID:carOrderLists[tableIndex].salesOrderId);
+                                 }
+                              }
+
+                            },
+                            icon: SvgPicture.asset(
+                              'assets/svg/convert.svg',
+                            ),
+                            iconSize: 60),
+                        Text(
+                          "convert".tr,
+                          style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                        )
+                      ]))
+                      : Container():Container()
 
 
 
-                    // sectionType ==1? ReserveButton():Container(),
-                  ],
-                ),
+                  // sectionType ==1? ReserveButton():Container(),
+                ],
               ),
             );
           });
@@ -2902,7 +2899,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   ),
                 ),
 
-                UserDetailsAppBar(user_name: user_name),
+                UserDetailsAppBar(user_name: userName),
                 // IconButton(
                 //     onPressed: () {
                 //       posFunctions();
@@ -3319,7 +3316,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     ],
                   ),
                 ),
-                UserDetailsAppBar(user_name: user_name),
+                UserDetailsAppBar(user_name: userName),
                 Container(
                   width: 100,
                   child: ElevatedButton(
@@ -3652,7 +3649,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     ],
                   ),
                 ),
-                UserDetailsAppBar(user_name: user_name),
+                UserDetailsAppBar(user_name: userName),
                 Container(
                   width: 100,
                   child: ElevatedButton(

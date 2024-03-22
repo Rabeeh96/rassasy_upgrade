@@ -1019,7 +1019,12 @@ class _ProductCreateState extends State<CreateProductNew> {
             focusNode: nameFCNode,
             onEditingComplete: () {
               if(nameController.text !=""){
-                convertToArabic(nameController.text);
+                if(isGst ==false){
+                  convertToArabic(nameController.text);
+                }
+                else{
+                  descriptionController.text = nameController.text;
+                }
               }
               FocusScope.of(context).requestFocus(saveFcNode);
             },
@@ -1271,7 +1276,7 @@ class _ProductCreateState extends State<CreateProductNew> {
             ),
           ),
         ),
-        Padding(
+      isExcise?  Padding(
           padding: const EdgeInsets.only(top: 12, bottom: 8, left: 4),
           child: Container(
             // width: MediaQuery.of(context).size.width / 9,
@@ -1280,8 +1285,8 @@ class _ProductCreateState extends State<CreateProductNew> {
               style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
             ),
           ),
-        ),
-        Padding(
+        ):Container(),
+        isExcise?  Padding(
           padding: const EdgeInsets.only(left: 4),
           child: Container(
             // color: Colors.red,
@@ -1320,7 +1325,7 @@ class _ProductCreateState extends State<CreateProductNew> {
               ],
             ),
           ),
-        ),
+        ):Container(),
       ],
     );
   }
@@ -1614,6 +1619,8 @@ class _ProductCreateState extends State<CreateProductNew> {
   }
 
   bool createPermission = true;
+  bool isGst = true;
+  bool isExcise = false;
 
   ///list products
   Future<Null> getProductList() async {
@@ -1633,6 +1640,7 @@ class _ProductCreateState extends State<CreateProductNew> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
+        isGst = prefs.getBool("check_GST") ?? false;
         createPermission = prefs.getBool("Productsave") ?? true;
         String baseUrl = BaseUrl.baseUrl;
         final url = '$baseUrl/posholds/pos-product-list-paginated/';
@@ -1776,25 +1784,6 @@ class _ProductCreateState extends State<CreateProductNew> {
 
   ///create products
 
-  void _startImageUploading() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      setState(() {
-        dialogBox(context, 'no_network'.tr);
-      });
-    } else {
-      // edit == true ? editProduct() : createProductApi();
-      //
-      // if (OrgData.imageSelected == false) {
-      //   createOrganizationApi();
-      // }
-      // else {
-      //
-      //   await _uploadImage();
-      //
-      // }
-    }
-  }
 
   clearData() {
     nameController.clear();
