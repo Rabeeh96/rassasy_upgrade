@@ -123,6 +123,7 @@ class _DashboardNewState extends State<DashboardNew> {
             prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
             prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
             prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
+            prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"]??false);
             prefs.setInt("user_type", n["user_type"]);
           });
           stop();

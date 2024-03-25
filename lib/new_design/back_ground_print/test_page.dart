@@ -1949,7 +1949,7 @@ class _PrintSettingsState extends State<PrintSettings> {
                   MaterialPageRoute(builder: (context) => PrintSettingsDetailed()),
                 );
               },
-              child: Text('Detailed Settings'),
+              child: const Text('Detailed Settings',style: TextStyle(color: Colors.white),),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -1964,7 +1964,7 @@ class _PrintSettingsState extends State<PrintSettings> {
                   }
                 });
               },
-              child: Text(arabic ? 'Image 2' : 'Direct Text '),
+              child: Text(arabic ? 'Image 2' : 'Direct Text ',style: TextStyle(color: Colors.white)),
             )
           ]),
 
@@ -2144,7 +2144,7 @@ class _PrintSettingsState extends State<PrintSettings> {
                         backgroundColor: Colors.cyan, // Background color
                       ),
                       child: Text(
-                          '${isDiscovering ? 'Discovering...' : 'Discover'}'),
+                          '${isDiscovering ? 'Discovering...' : 'Discover'}',style: TextStyle(color: Colors.white)),
                       onPressed: isDiscovering ? null : () => discover(context)),
                     //  onPressed: isDiscovering ? null : () => discover(context)),
 
@@ -2154,7 +2154,7 @@ class _PrintSettingsState extends State<PrintSettings> {
                         backgroundColor: Colors.cyan, // Background color
                       ),
                       child: Text(
-                          'Check availability'),
+                          'Check availability',style: TextStyle(color: Colors.white)),
         //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
                       onPressed:()async{
 
@@ -2268,7 +2268,7 @@ class _PrintSettingsState extends State<PrintSettings> {
 
                                 }
 
-                              }, child: Text('Save width')),
+                              }, child: Text('Save width',style: TextStyle(color: Colors.white))),
                         ),
                       ],
                     ),
@@ -2284,7 +2284,7 @@ class _PrintSettingsState extends State<PrintSettings> {
                             onPressed: () async{
                              directPrint(context);
                             },
-                            child: const Text('Test print')),
+                            child: const Text('Test print',style: TextStyle(color: Colors.white))),
                       ),
                     ),
                     Padding(
@@ -2299,7 +2299,7 @@ class _PrintSettingsState extends State<PrintSettings> {
                             onPressed: () async{
                              directPrint(context);
                             },
-                            child: const Text('Demo')),
+                            child: const Text('Demo',style: TextStyle(color: Colors.white))),
                       ),
                     ),
                   ],
@@ -2326,7 +2326,7 @@ class _PrintSettingsState extends State<PrintSettings> {
                             onPressed: () async{
                               directPrintOpenDrawer(context);
                             },
-                            child: const Text('Open drawer')),
+                            child: const Text('Open drawer',style: TextStyle(color: Colors.white))),
                       ),
                     ),
                     Padding(
@@ -2343,7 +2343,7 @@ class _PrintSettingsState extends State<PrintSettings> {
                               var loadData = await sunmiHelper.initialPrint();
                               var loadDatas = await sunmiHelper.printSunmi();
                             },
-                            child: const Text('Sunmi test print')),
+                            child: const Text('Sunmi test print',style: TextStyle(color: Colors.white))),
                       ),
                     ),
                   ],

@@ -33,63 +33,21 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Color(0xffF3F3F3),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                  onPressed: () {
-                    _asyncConfirmDialog(context);
-                  },
-                  icon: SvgPicture.asset('assets/svg/logout_from_pinNo.svg')),
-            )
-            // Theme(
-            //   data: Theme.of(context).copyWith(
-            //       textTheme: const TextTheme().apply(bodyColor: Colors.black),
-            //       dividerColor: Colors.white,
-            //       iconTheme: const IconThemeData(color: Colors.black)),
-            //   child: PopupMenuButton<int>(
-            //     color: Colors.white,
-            //     itemBuilder: (context) => [
-            //
-            //
-            //       PopupMenuItem<int>(
-            //           value: 0,
-            //           child: Row(
-            //             children: const [
-            //               Icon(
-            //                 Icons.settings,
-            //                 color: Colors.red,
-            //               ),
-            //               SizedBox(
-            //                 width: 7,
-            //               ),
-            //               Text("Change Company",style: TextStyle(color: Colors.black),)
-            //             ],
-            //           )),
-            //       const PopupMenuDivider(),
-            //       PopupMenuItem<int>(
-            //           value: 1,
-            //           child: Row(
-            //             children: const [
-            //               Icon(
-            //                 Icons.logout,
-            //                 color: Colors.red,
-            //               ),
-            //               SizedBox(
-            //                 width: 7,
-            //               ),
-            //               Text("Logout",style: TextStyle(color: Colors.black),)
-            //             ],
-            //           )),
-            //     ],
-            //     onSelected: (item) => selectedItem(context, item),
-            //   ),
-            // )
-          ],
-        ),
+        // appBar: AppBar(
+        //   elevation: 0.0,
+        //   backgroundColor: Color(0xffF3F3F3),
+        //   actions: [
+        //     Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: IconButton(
+        //           onPressed: () {
+        //             _asyncConfirmDialog(context);
+        //           },
+        //           icon: SvgPicture.asset('assets/svg/logout_from_pinNo.svg')),
+        //     )
+        //
+        //   ],
+        // ),
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -104,9 +62,17 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                       MediaQuery.of(context).size.height / 1, //height of button
                   width: MediaQuery.of(context).size.width / 1.1,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  //  crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: IconButton(
+                                onPressed: () {
+                                  _asyncConfirmDialog(context);
+                                },
+                                icon: SvgPicture.asset('assets/svg/logout_from_pinNo.svg')),
+                          ),
                       SizedBox(
                         // height: MediaQuery.of(context).size.height / 1.3, //height of button
                         width: MediaQuery.of(context).size.width / 3,

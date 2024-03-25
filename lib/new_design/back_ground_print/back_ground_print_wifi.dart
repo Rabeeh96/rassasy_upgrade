@@ -269,12 +269,14 @@ class AppBlocs {
     /// image print commented
 
     printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+
     if (PrintDataDetails.type == "SI") {
       if (companyLogo != "") {
         final Uint8List imageData = await _fetchImageData(companyLogo);
         final Img.Image? image = Img.decodeImage(imageData);
         final Img.Image resizedImage = Img.copyResize(image!, width: 200);
-        printer.image(resizedImage);
+        printer.imageRaster(resizedImage);
+     //   printer.image(resizedImage);
       }
     }
 
@@ -843,7 +845,8 @@ class AppBlocs {
         final Uint8List imageData = await _fetchImageData(companyLogo);
         final Img.Image? image = Img.decodeImage(imageData);
         final Img.Image resizedImage = Img.copyResize(image!, width: 200);
-        printer.image(resizedImage);
+        printer.imageRaster(resizedImage);
+        //printer.image(resizedImage);
       }
     }
 
@@ -1255,7 +1258,6 @@ class AppBlocs {
     if (PrintDataDetails.type == "SI") {
       if (paymentDetailsInPrint) {
         printer.row([
-
           PosColumn(
               text: "Cash receipt",
               width: 5,

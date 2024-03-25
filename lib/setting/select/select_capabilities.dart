@@ -122,7 +122,7 @@ class _SelectCapabilitiesState extends State<SelectCapabilities> {
 
 
   bool Check(String text) {
-    print("ceck called");
+
     var val = false;
     bool both = true;
     if (text.contains(RegExp(r'[A-Z,a-z]'))) {
@@ -186,7 +186,8 @@ class _SelectCapabilitiesState extends State<SelectCapabilities> {
             value += listSplit[i].toString().split('').reversed.join();
           else
             value += "" + listSplit[i].toString().split('').reversed.join();
-        } else {
+        }
+        else {
           if (value == "")
             value += listSplit[i].toString().split('').reversed.join();
           else
@@ -194,7 +195,6 @@ class _SelectCapabilitiesState extends State<SelectCapabilities> {
         }
       }
     } catch (e) {
-      print('Something went wrong set Stinrg ${e.toString()}');
       return e.toString();
     }
     return value;

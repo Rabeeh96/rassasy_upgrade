@@ -1643,6 +1643,9 @@ class _ProductCreateState extends State<CreateProductNew> {
         isGst = prefs.getBool("check_GST") ?? false;
         createPermission = prefs.getBool("Productsave") ?? true;
         String baseUrl = BaseUrl.baseUrl;
+       // EnableExciseTax
+          isExcise = prefs.getBool("EnableExciseTax") ?? false;
+
         final url = '$baseUrl/posholds/pos-product-list-paginated/';
 
         print(url);
@@ -2033,6 +2036,9 @@ class _ProductCreateState extends State<CreateProductNew> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
+
+
+
         var productUID = ProductData.productID;
         print("3");
         String baseUrl = BaseUrl.baseUrl;
@@ -2080,9 +2086,16 @@ class _ProductCreateState extends State<CreateProductNew> {
               ProductExciseTaxID = responseJson['VatID'];
 
               var exciseData = responseJson["ExciseTaxData"]??"";
+              print("------------------------asd");
               if(exciseData !=""){
+                print("------------------------dsa");
                 exciseTaxController.text = exciseData["TaxName"]??"";
                 ProductExciseTaxID = exciseData["TaxID"]??6;
+              }
+              else{
+                ProductExciseTaxID = defaultTaxId;
+                exciseTaxController.text = defaultTaxName;
+
               }
             }
 

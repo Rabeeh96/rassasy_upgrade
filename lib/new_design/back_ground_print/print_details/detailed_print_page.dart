@@ -1670,7 +1670,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
                 withCapabilities  =!withCapabilities;
               });
-            }, child: Text("Capabilities",style: TextStyle(color:withCapabilities?Colors.white:Colors.white10),)),
+            }, child: Text("Capabilities",style: TextStyle(color:withCapabilities?Colors.red:Colors.white10),)),
 
           ]),
 
@@ -1850,6 +1850,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     child: TextField(
                         style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                         onTap: () async {
+
                           final result = await Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => select_code_page()),
@@ -1890,7 +1891,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         backgroundColor: Colors.cyan, // Background color
                       ),
                       child: Text(
-                          '${isDiscovering ? 'Discovering...' : 'Discover'}'),
+                          isDiscovering ? 'Discovering...' : 'Discover',style: TextStyle(color: Colors.white)),
                       onPressed: isDiscovering ? null : () => discover(context)),
                   //  onPressed: isDiscovering ? null : () => discover(context)),
 
@@ -1900,7 +1901,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         backgroundColor: Colors.cyan, // Background color
                       ),
                       child: Text(
-                          'Check availability'),
+                          'Check availability',style: TextStyle(color: Colors.white)),
                       //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
                       onPressed:()async{
 
@@ -1940,8 +1941,6 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                               return Card(
                                 child: ListTile(
                                   onTap: () async {
-
-
                                     if(withCapabilities){
                                       testPrint(ctx: context,capability: printerModels[index],codePage: code_page_controller.text);
                                     }
@@ -1992,6 +1991,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   ),
                 ),
               ),
+
               // Container(
               //   height: 250,
               //

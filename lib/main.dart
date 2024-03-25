@@ -12,14 +12,16 @@ import 'new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'new_design/dashboard/dashboard.dart';
 import 'new_design/organization/list_organization.dart';
 import 'package:get/get.dart';
+
+import 'test/deliveryman.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
 
 
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
+    // DeviceOrientation.landscapeLeft,
+    // DeviceOrientation.landscapeRight,
   ]).then((_) {
     runApp(MyApp());
   });
@@ -36,14 +38,15 @@ class MyApp extends StatelessWidget {
           //  return MaterialApp(home: TestDemoPrintingOption());
           return GetMaterialApp(
               translations: LocaleChange(),
-              locale: Locale('en','US'),
+              locale: const Locale('en','US'),
               fallbackLocale: const Locale('en', 'US'),
-              home: Splash());
+              home: Splash()
+          );
         } else {
           // Loading is done, return the app:
           return GetMaterialApp(
             translations: LocaleChange(),
-            locale: Locale('en','US'),
+            locale: const Locale('en','US'),
 
             ///device language is not supported, we need to show the default langauge.
             ///For this, we’ve configured the fallbackLocale for the default language
@@ -58,8 +61,8 @@ class MyApp extends StatelessWidget {
                   //  selectionHandleColor: Colors.blue,
                 )),
             debugShowCheckedModeBanner: false,
-            home: MyHomePage (),
-            //     home: PrintSettings (),
+           home: MyHomePage (),
+               //  home: WaiterApi (),
             //home: TestDemoPrintingOption (),
 
           );
@@ -92,7 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
     var status = prefs.getBool('isLoggedIn') ?? false;
     print(status);
     var companySelected = prefs.getBool('companySelected') ?? false;
-    var isPosUser = prefs.getBool('isPosUser') ?? false;
+    var isPosUser = true;
+    // var isPosUser = prefs.getBool('isPosUser') ?? false;
+    print("isPosUser  $isPosUser");
     print(companySelected);
     if (status) {
       if (companySelected) {
@@ -109,9 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
           // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         }
         else{
-          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
 
           /// pos user commented
+
           if(isPosUser){
             if(selectPos){
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => POSListItemsSection()));

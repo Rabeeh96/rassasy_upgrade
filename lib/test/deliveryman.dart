@@ -32,79 +32,59 @@ class _ReportPageState extends State<WaiterApi> {
           backgroundColor: const Color(0xffF3F3F3),
           title:   Text(
             'Waiter'.tr,
-            style: TextStyle(color: Color(0xff0000000)),
+            style: const TextStyle(color: Color(0xff0000000)),
           ),
         ),
-        body: Row(
+        body: Column(
           children: [
             Expanded(
-              flex: 2,
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.25,
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: isShow == true
-                        ?   ListView(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('name'.tr),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height:
-                            MediaQuery.of(context).size.height / 20,
-                            width: MediaQuery.of(context).size.width / 2,
-                            decoration: BoxDecoration(
-                              //  border:Border.all(color:Color(0xff858585),width: .5)
-                            ),
-                            child: TextField(
-                              onTap: () {},
-                              controller: deliveryName,
-                              decoration:   InputDecoration(
-                                contentPadding: EdgeInsets.all(6),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xff858585),
-                                        width: .5)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xff858585),
-                                        width: .5)),
-                                hintText:'name'.tr,
-                                hintStyle: TextStyle(color: Color(0xffAFAFAF)),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                        : ListView.builder(
-                        itemCount: waiterModelClass.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            color: Color(0xffF3F3F3),
-                            child: ListTile(
-                              onTap: (){
-                                var id = waiterModelClass[index].id;
-                                deleteAnItem(id);
-                              },
-                              title: Text(
-                                waiterModelClass[index].name,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              trailing: Icon(Icons.arrow_forward_ios_outlined),
-                            ),
-                          );
-                        })),
+                color: Colors.blue,
+                child: Center(
+                  child: Text(
+                    'Header',
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.010,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.width * 0.3,
+                      color: Colors.green,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.width * 0.3,
+                      color: Colors.yellow,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.width * 0.3,
+                      color: Colors.orange,
+                    ),
+                  ],
+                ),
               ),
             ),
             Expanded(
-                flex: 1,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                )),
+              child: Container(
+                color: Colors.blue,
+                child: Center(
+                  child: Text(
+                    'Footer',
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.1,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
         floatingActionButton: isShow == true
@@ -114,30 +94,34 @@ class _ReportPageState extends State<WaiterApi> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GestureDetector(
-                  child: Icon(Icons.clear,color: Colors.black,),
+                  child: const Icon(Icons.clear,color: Colors.black,),
                   onTap: () {
                     setState(() {
                       deliveryName.clear();
                     });
-                  }),
+                  }
+                  ),
               GestureDetector(
-                  child: Icon(Icons.save,color: Colors.black,),
+                  child: const Icon(Icons.save,color: Colors.black),
                   onTap: () {
                     createWaiter();
                     setState(() {
                       isShow = false;
                     });
-                  }),
+                  }
+                  ),
             ],
           ),
         )
             : GestureDetector(
-            child: Icon(Icons.add,color: Colors.black,),
+            child: const Icon(Icons.add,color: Colors.black,),
             onTap: () {
               setState(() {
                 isShow = true;
               });
-            }));
+            }
+            )
+    );
   }
   Future<Null> viewList() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -259,15 +243,14 @@ class _ReportPageState extends State<WaiterApi> {
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"]; //6000 status or messege is here
         var msgs = n["message"];
+
         print(msgs);
         print(response.body);
 
         print(status);
         if (status == 6000) {
           setState(() {
-
             waiterModelClass.clear();
-
             viewList();
           });
         } else if (status == 6001) {

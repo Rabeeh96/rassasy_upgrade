@@ -13,7 +13,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
-
 ///tax type not set
 ///
 
@@ -50,7 +49,7 @@ class _AddTaxState extends State<AddTax> {
         backgroundColor: const Color(0xffF3F3F3),
         elevation: 0.0,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
@@ -60,21 +59,18 @@ class _AddTaxState extends State<AddTax> {
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children:  [
+          children: [
             Text(
               'tax'.tr,
-              style: TextStyle(color: Colors.black, fontSize: 24,fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ],
         ),
       ),
-      body: networkConnection == true
-          ? taxDetailPage()
-          : noNetworkConnectionPage(),
+      body: networkConnection == true ? taxDetailPage() : noNetworkConnectionPage(),
       bottomNavigationBar: bottomBar(),
     );
   }
-
 
   onSearchTextChanged(String text) async {
     searchTaxList.clear();
@@ -83,8 +79,7 @@ class _AddTaxState extends State<AddTax> {
       return;
     }
     taxLists.forEach((userDetail) {
-      if (userDetail.taxName.toLowerCase().contains(text.toLowerCase()))
-        searchTaxList.add(userDetail);
+      if (userDetail.taxName.toLowerCase().contains(text.toLowerCase())) searchTaxList.add(userDetail);
     });
 
     setState(() {});
@@ -103,14 +98,13 @@ class _AddTaxState extends State<AddTax> {
             children: [
               Container(
                 height: MediaQuery.of(context).size.height / 11,
-               color: const Color(0xffFFFFFF),
+                color: const Color(0xffFFFFFF),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: controller,
                     onChanged: onSearchTextChanged,
-                    decoration:
-                        TextFieldDecoration.searchField(hintTextStr: 'search'.tr),
+                    decoration: TextFieldDecoration.searchField(hintTextStr: 'search'.tr),
                   ),
                 ),
               ),
@@ -224,463 +218,431 @@ class _AddTaxState extends State<AddTax> {
               //         ),
               //       );
               //     }),
-Container(
-  height: MediaQuery.of(context).size.height/1.2,
-  child: searchTaxList.length != 0 || controller.text.isNotEmpty
-      ? searchTaxList.isEmpty
-      ?  NoItemFound()
-      :  ListView.builder(
-      shrinkWrap: true,
-      itemCount: searchTaxList.length,
-      itemBuilder: (BuildContext context, i) {
-        return Dismissible(
-          key: Key('${searchTaxList[i]}'),
-          background: Container(
-            color: Colors.red,
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: const <Widget>[
-                  Icon(Icons.delete, color: Colors.white),
-                ],
-              ),
-            ),
-          ),
-          secondaryBackground: Container(),
-          confirmDismiss: (DismissDirection direction) async {
-            return await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(
-                    'delete_msg'.tr,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  content: Text(
-                      'msg4'.tr,
-                      style: TextStyle(fontSize: 14)),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () => {
-                          TaxData.taxUid = searchTaxList[i].id,
-                          Navigator.of(context).pop(),
-                          deleteAnItem()
-                        },
-                        child: Text(
-                          'dlt'.tr,
-                          style: TextStyle(color: Colors.red),
-                        )),
-                    TextButton(
-                      onPressed: () =>
-                      {Navigator.of(context).pop()},
-                      child: Text('cancel'.tr, style: TextStyle()),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          direction: searchTaxList.length > 0
-              ? DismissDirection.startToEnd
-              : DismissDirection.none,
-          onDismissed: (DismissDirection direction) {
-            if (direction == DismissDirection.endToStart) {
-              print('Remove item');
-            } else {
-              print("");
-            }
+              Container(
+                height: MediaQuery.of(context).size.height / 1.2,
+                child: searchTaxList.isNotEmpty || controller.text.isNotEmpty
+                    ? searchTaxList.isEmpty
+                        ? const NoItemFound()
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: searchTaxList.length,
+                            itemBuilder: (BuildContext context, i) {
+                              return Dismissible(
+                                key: Key('${searchTaxList[i]}'),
+                                background: Container(
+                                  color: Colors.red,
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Icon(Icons.delete, color: Colors.white),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                secondaryBackground: Container(),
+                                confirmDismiss: (DismissDirection direction) async {
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          'delete_msg'.tr,
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                        content: Text('msg4'.tr, style: const TextStyle(fontSize: 14)),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () => {TaxData.taxUid = searchTaxList[i].id, Navigator.of(context).pop(), deleteAnItem()},
+                                              child: Text(
+                                                'dlt'.tr,
+                                                style: const TextStyle(color: Colors.red),
+                                              )),
+                                          TextButton(
+                                            onPressed: () => {Navigator.of(context).pop()},
+                                            child: Text('cancel'.tr, style: const TextStyle()),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                direction: searchTaxList.length > 0 ? DismissDirection.startToEnd : DismissDirection.none,
+                                onDismissed: (DismissDirection direction) {
+                                  if (direction == DismissDirection.endToStart) {
+                                    print('Remove item');
+                                  } else {
+                                    print("");
+                                  }
 
-            setState(() {
-              searchTaxList.removeAt(i);
-            });
-          },
-          child: Card(
-            child: ListTile(
-                onTap: () {
-                  TaxData.taxUid = searchTaxList[i].id;
-                  editTax = true;
-                  setState(() {
-                    getSingleView();
-                    isAddTax = true;
-                  });
-                },
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          searchTaxList[i].taxName,
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          searchTaxList[i].salesPrice,
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Color(0xff565656)),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      searchTaxList[i].purchasePrice,
-                      style: TextStyle(
-                          fontSize: 13, color: Color(0xff565656)),
-                    ),
-                  ],
-                )),
-          ),
-        );
-      })
-      : taxLists.isEmpty
-      ? NoData()
-      :  ListView.builder(
-      scrollDirection: Axis.vertical,
+                                  setState(() {
+                                    searchTaxList.removeAt(i);
+                                  });
+                                },
+                                child: Card(
+                                  child: ListTile(
+                                      onTap: () {
+                                        TaxData.taxUid = searchTaxList[i].id;
+                                        editTax = true;
+                                        setState(() {
+                                          getSingleView();
+                                          isAddTax = true;
+                                        });
+                                      },
+                                      title: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                searchTaxList[i].taxName,
+                                                style: const TextStyle(fontSize: 15, color: Color(0xff000000), fontWeight: FontWeight.w600),
+                                              ),
+                                              Text(
+                                                searchTaxList[i].salesPrice,
+                                                style: const TextStyle(fontSize: 13, color: Color(0xff565656)),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            searchTaxList[i].purchasePrice,
+                                            style: const TextStyle(fontSize: 13, color: Color(0xff565656)),
+                                          ),
+                                        ],
+                                      )),
+                                ),
+                              );
+                            })
+                    : taxLists.isEmpty
+                        ? const NoData()
+                        : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: taxLists.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Dismissible(
+                                key: Key('${taxLists[index]}'),
+                                background: Container(
+                                  color: Colors.red,
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Icon(Icons.delete, color: Colors.white),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                secondaryBackground: Container(),
+                                confirmDismiss: (DismissDirection direction) async {
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          'delete_msg'.tr,
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                        content: Text('msg4'.tr, style: const TextStyle(fontSize: 14)),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () => {TaxData.taxUid = taxLists[index].id, Navigator.of(context).pop(), deleteAnItem()},
+                                              child: Text(
+                                                'dlt'.tr,
+                                                style: const TextStyle(color: Colors.red),
+                                              )),
+                                          TextButton(
+                                            onPressed: () => {Navigator.of(context).pop()},
+                                            child: Text('cancel'.tr, style: const TextStyle()),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                direction: taxLists.length > 0 ? DismissDirection.startToEnd : DismissDirection.none,
+                                onDismissed: (DismissDirection direction) {
+                                  if (direction == DismissDirection.endToStart) {
+                                    print('Remove item');
+                                  } else {
+                                    print("");
+                                  }
 
-      physics: const AlwaysScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: taxLists.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Dismissible(
-          key: Key('${taxLists[index]}'),
-          background: Container(
-            color: Colors.red,
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: const <Widget>[
-                  Icon(Icons.delete, color: Colors.white),
-                ],
-              ),
-            ),
-          ),
-          secondaryBackground: Container(),
-          confirmDismiss: (DismissDirection direction) async {
-            return await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(
-                    'delete_msg'.tr,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  content: Text(
-                      'msg4'.tr,
-                      style: TextStyle(fontSize: 14)),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () => {
-                          TaxData.taxUid = taxLists[index].id,
-                          Navigator.of(context).pop(),
-                          deleteAnItem()
-                        },
-                        child: Text(
-                          'dlt'.tr,
-                          style: TextStyle(color: Colors.red),
-                        )),
-                    TextButton(
-                      onPressed: () =>
-                      {Navigator.of(context).pop()},
-                      child: Text('cancel'.tr, style: TextStyle()),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          direction: taxLists.length > 0
-              ? DismissDirection.startToEnd
-              : DismissDirection.none,
-          onDismissed: (DismissDirection direction) {
-            if (direction == DismissDirection.endToStart) {
-              print('Remove item');
-            } else {
-              print("");
-            }
+                                  setState(() {
+                                    taxLists.removeAt(index);
+                                  });
+                                },
+                                child: Card(
+                                  child: ListTile(
+                                      onTap: () {
+                                        TaxData.taxUid = taxLists[index].id;
+                                        editTax = true;
+                                        setState(() {
+                                          getSingleView();
+                                          isAddTax = true;
+                                        });
+                                      },
+                                      title: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            taxLists[index].taxName,
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 12.5),
 
-            setState(() {
-              taxLists.removeAt(index);
-            });
-          },
-          child:Card(
-            child: ListTile(
-                onTap: () {
-                  TaxData.taxUid = taxLists[index].id;
-                  editTax = true;
-                  setState(() {
-                    getSingleView();
-                    isAddTax = true;
-                  });
-                },
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                       taxLists[index].taxName,
-                       style: customisedStyle(context, Colors.black, FontWeight.w400, 12.5),
-
-                      // style: TextStyle(
-                      //     fontSize: 15,
-                      //     color: Color(0xff000000),
-                      //     fontWeight: FontWeight.w400),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                           taxLists[index].purchasePrice,
-                          style: TextStyle(
-                              fontSize: 13, color: Color(0xff565656)),
-                        ),
-                        Text(
-                          taxLists[index].salesPrice,
-                          style: customisedStyle(context, Color(0xff565656), FontWeight.w400, 10.5),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-          ),
-
-        );
-
-      }
-      ),
-)
-               // searchTaxList.length != 0 || controller.text.isNotEmpty
-               //      ? searchTaxList.isEmpty
-               //      ?  NoItemFound()
-               //      :  ListView.builder(
-               //     shrinkWrap: true,
-               //     itemCount: searchTaxList.length,
-               //     itemBuilder: (BuildContext context, i) {
-               //       return Dismissible(
-               //         key: Key('${searchTaxList[i]}'),
-               //         background: Container(
-               //           color: Colors.red,
-               //           child: Padding(
-               //             padding: const EdgeInsets.all(15),
-               //             child: Row(
-               //               mainAxisAlignment: MainAxisAlignment.end,
-               //               children: const <Widget>[
-               //                 Icon(Icons.delete, color: Colors.white),
-               //               ],
-               //             ),
-               //           ),
-               //         ),
-               //         secondaryBackground: Container(),
-               //         confirmDismiss: (DismissDirection direction) async {
-               //           return await showDialog(
-               //             context: context,
-               //             builder: (BuildContext context) {
-               //               return AlertDialog(
-               //                 title: Text(
-               //                   'delete_msg'.tr,
-               //                   style: TextStyle(fontSize: 14),
-               //                 ),
-               //                 content: Text(
-               //                     'msg4'.tr,
-               //                     style: TextStyle(fontSize: 14)),
-               //                 actions: <Widget>[
-               //                   TextButton(
-               //                       onPressed: () => {
-               //                         TaxData.taxUid = searchTaxList[i].id,
-               //                         Navigator.of(context).pop(),
-               //                         deleteAnItem()
-               //                       },
-               //                       child: Text(
-               //                         "Delete",
-               //                         style: TextStyle(color: Colors.red),
-               //                       )),
-               //                   TextButton(
-               //                     onPressed: () =>
-               //                     {Navigator.of(context).pop()},
-               //                     child: Text("Cancel", style: TextStyle()),
-               //                   ),
-               //                 ],
-               //               );
-               //             },
-               //           );
-               //         },
-               //         direction: searchTaxList.length > 0
-               //             ? DismissDirection.startToEnd
-               //             : DismissDirection.none,
-               //         onDismissed: (DismissDirection direction) {
-               //           if (direction == DismissDirection.endToStart) {
-               //             print('Remove item');
-               //           } else {
-               //             print("");
-               //           }
-               //
-               //           setState(() {
-               //             searchTaxList.removeAt(i);
-               //           });
-               //         },
-               //         child: Card(
-               //           child: ListTile(
-               //               onTap: () {
-               //                 TaxData.taxUid = searchTaxList[i].id;
-               //                 editTax = true;
-               //                 setState(() {
-               //                   getSingleView();
-               //                   isAddTax = true;
-               //                 });
-               //               },
-               //               title: Row(
-               //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               //                 children: [
-               //                   Column(
-               //                     mainAxisAlignment: MainAxisAlignment.start,
-               //                     crossAxisAlignment: CrossAxisAlignment.start,
-               //                     children: [
-               //                       Text(
-               //                         searchTaxList[i].taxName,
-               //                         style: TextStyle(
-               //                             fontSize: 15,
-               //                             color: Color(0xff000000),
-               //                             fontWeight: FontWeight.w600),
-               //                       ),
-               //                       Text(
-               //                         searchTaxList[i].salesPrice,
-               //                         style: TextStyle(
-               //                             fontSize: 13,
-               //                             color: Color(0xff565656)),
-               //                       ),
-               //                     ],
-               //                   ),
-               //                   Text(
-               //                     searchTaxList[i].purchasePrice,
-               //                     style: TextStyle(
-               //                         fontSize: 13, color: Color(0xff565656)),
-               //                   ),
-               //                 ],
-               //               )),
-               //         ),
-               //       );
-               //     })
-               //      : taxLists.isEmpty
-               //      ? NoData()
-               //      :  ListView.builder(
-               //     scrollDirection: Axis.vertical,
-               //
-               //     physics: const AlwaysScrollableScrollPhysics(),
-               //     shrinkWrap: true,
-               //     itemCount: taxLists.length,
-               //     itemBuilder: (BuildContext context, int index) {
-               //       return Dismissible(
-               //         key: Key('${taxLists[index]}'),
-               //         background: Container(
-               //           color: Colors.red,
-               //           child: Padding(
-               //             padding: const EdgeInsets.all(15),
-               //             child: Row(
-               //               mainAxisAlignment: MainAxisAlignment.end,
-               //               children: const <Widget>[
-               //                 Icon(Icons.delete, color: Colors.white),
-               //               ],
-               //             ),
-               //           ),
-               //         ),
-               //         secondaryBackground: Container(),
-               //         confirmDismiss: (DismissDirection direction) async {
-               //           return await showDialog(
-               //             context: context,
-               //             builder: (BuildContext context) {
-               //               return AlertDialog(
-               //                 title: Text(
-               //                   'delete_msg'.tr,
-               //                   style: TextStyle(fontSize: 14),
-               //                 ),
-               //                 content: Text(
-               //                     'msg4'.tr,
-               //                     style: TextStyle(fontSize: 14)),
-               //                 actions: <Widget>[
-               //                   TextButton(
-               //                       onPressed: () => {
-               //                         TaxData.taxUid = taxLists[index].id,
-               //                         Navigator.of(context).pop(),
-               //                         deleteAnItem()
-               //                       },
-               //                       child: Text(
-               //                         "Delete",
-               //                         style: TextStyle(color: Colors.red),
-               //                       )),
-               //                   TextButton(
-               //                     onPressed: () =>
-               //                     {Navigator.of(context).pop()},
-               //                     child: Text("Cancel", style: TextStyle()),
-               //                   ),
-               //                 ],
-               //               );
-               //             },
-               //           );
-               //         },
-               //         direction: taxLists.length > 0
-               //             ? DismissDirection.startToEnd
-               //             : DismissDirection.none,
-               //         onDismissed: (DismissDirection direction) {
-               //           if (direction == DismissDirection.endToStart) {
-               //             print('Remove item');
-               //           } else {
-               //             print("");
-               //           }
-               //
-               //           setState(() {
-               //             taxLists.removeAt(index);
-               //           });
-               //         },
-               //         child: Card(
-               //           child: ListTile(
-               //               onTap: () {
-               //                 TaxData.taxUid = taxLists[index].id;
-               //                 editTax = true;
-               //                 setState(() {
-               //                   getSingleView();
-               //                   isAddTax = true;
-               //                 });
-               //               },
-               //               title: Row(
-               //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               //                 children: [
-               //                   Column(
-               //                     mainAxisAlignment: MainAxisAlignment.start,
-               //                     crossAxisAlignment: CrossAxisAlignment.start,
-               //                     children: [
-               //                       Text(
-               //                         taxLists[index].taxName,
-               //                         style: TextStyle(
-               //                             fontSize: 15,
-               //                             color: Color(0xff000000),
-               //                             fontWeight: FontWeight.w600),
-               //                       ),
-               //                       Text(
-               //                         taxLists[index].salesPrice,
-               //                         style: TextStyle(
-               //                             fontSize: 13,
-               //                             color: Color(0xff565656)),
-               //                       ),
-               //                     ],
-               //                   ),
-               //                   Text(
-               //                     taxLists[index].purchasePrice,
-               //                     style: TextStyle(
-               //                         fontSize: 13, color: Color(0xff565656)),
-               //                   ),
-               //                 ],
-               //               )),
-               //         ),
-               //       );
-               //     }),
-
-
-
+                                            // style: TextStyle(
+                                            //     fontSize: 15,
+                                            //     color: Color(0xff000000),
+                                            //     fontWeight: FontWeight.w400),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                taxLists[index].purchasePrice,
+                                                style: const TextStyle(fontSize: 13, color: Color(0xff565656)),
+                                              ),
+                                              Text(
+                                                taxLists[index].salesPrice,
+                                                style: customisedStyle(context, const Color(0xff565656), FontWeight.w400, 10.5),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )),
+                                ),
+                              );
+                            }),
+              )
+              // searchTaxList.length != 0 || controller.text.isNotEmpty
+              //      ? searchTaxList.isEmpty
+              //      ?  NoItemFound()
+              //      :  ListView.builder(
+              //     shrinkWrap: true,
+              //     itemCount: searchTaxList.length,
+              //     itemBuilder: (BuildContext context, i) {
+              //       return Dismissible(
+              //         key: Key('${searchTaxList[i]}'),
+              //         background: Container(
+              //           color: Colors.red,
+              //           child: Padding(
+              //             padding: const EdgeInsets.all(15),
+              //             child: Row(
+              //               mainAxisAlignment: MainAxisAlignment.end,
+              //               children: const <Widget>[
+              //                 Icon(Icons.delete, color: Colors.white),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //         secondaryBackground: Container(),
+              //         confirmDismiss: (DismissDirection direction) async {
+              //           return await showDialog(
+              //             context: context,
+              //             builder: (BuildContext context) {
+              //               return AlertDialog(
+              //                 title: Text(
+              //                   'delete_msg'.tr,
+              //                   style: TextStyle(fontSize: 14),
+              //                 ),
+              //                 content: Text(
+              //                     'msg4'.tr,
+              //                     style: TextStyle(fontSize: 14)),
+              //                 actions: <Widget>[
+              //                   TextButton(
+              //                       onPressed: () => {
+              //                         TaxData.taxUid = searchTaxList[i].id,
+              //                         Navigator.of(context).pop(),
+              //                         deleteAnItem()
+              //                       },
+              //                       child: Text(
+              //                         "Delete",
+              //                         style: TextStyle(color: Colors.red),
+              //                       )),
+              //                   TextButton(
+              //                     onPressed: () =>
+              //                     {Navigator.of(context).pop()},
+              //                     child: Text("Cancel", style: TextStyle()),
+              //                   ),
+              //                 ],
+              //               );
+              //             },
+              //           );
+              //         },
+              //         direction: searchTaxList.length > 0
+              //             ? DismissDirection.startToEnd
+              //             : DismissDirection.none,
+              //         onDismissed: (DismissDirection direction) {
+              //           if (direction == DismissDirection.endToStart) {
+              //             print('Remove item');
+              //           } else {
+              //             print("");
+              //           }
+              //
+              //           setState(() {
+              //             searchTaxList.removeAt(i);
+              //           });
+              //         },
+              //         child: Card(
+              //           child: ListTile(
+              //               onTap: () {
+              //                 TaxData.taxUid = searchTaxList[i].id;
+              //                 editTax = true;
+              //                 setState(() {
+              //                   getSingleView();
+              //                   isAddTax = true;
+              //                 });
+              //               },
+              //               title: Row(
+              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                 children: [
+              //                   Column(
+              //                     mainAxisAlignment: MainAxisAlignment.start,
+              //                     crossAxisAlignment: CrossAxisAlignment.start,
+              //                     children: [
+              //                       Text(
+              //                         searchTaxList[i].taxName,
+              //                         style: TextStyle(
+              //                             fontSize: 15,
+              //                             color: Color(0xff000000),
+              //                             fontWeight: FontWeight.w600),
+              //                       ),
+              //                       Text(
+              //                         searchTaxList[i].salesPrice,
+              //                         style: TextStyle(
+              //                             fontSize: 13,
+              //                             color: Color(0xff565656)),
+              //                       ),
+              //                     ],
+              //                   ),
+              //                   Text(
+              //                     searchTaxList[i].purchasePrice,
+              //                     style: TextStyle(
+              //                         fontSize: 13, color: Color(0xff565656)),
+              //                   ),
+              //                 ],
+              //               )),
+              //         ),
+              //       );
+              //     })
+              //      : taxLists.isEmpty
+              //      ? NoData()
+              //      :  ListView.builder(
+              //     scrollDirection: Axis.vertical,
+              //
+              //     physics: const AlwaysScrollableScrollPhysics(),
+              //     shrinkWrap: true,
+              //     itemCount: taxLists.length,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       return Dismissible(
+              //         key: Key('${taxLists[index]}'),
+              //         background: Container(
+              //           color: Colors.red,
+              //           child: Padding(
+              //             padding: const EdgeInsets.all(15),
+              //             child: Row(
+              //               mainAxisAlignment: MainAxisAlignment.end,
+              //               children: const <Widget>[
+              //                 Icon(Icons.delete, color: Colors.white),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //         secondaryBackground: Container(),
+              //         confirmDismiss: (DismissDirection direction) async {
+              //           return await showDialog(
+              //             context: context,
+              //             builder: (BuildContext context) {
+              //               return AlertDialog(
+              //                 title: Text(
+              //                   'delete_msg'.tr,
+              //                   style: TextStyle(fontSize: 14),
+              //                 ),
+              //                 content: Text(
+              //                     'msg4'.tr,
+              //                     style: TextStyle(fontSize: 14)),
+              //                 actions: <Widget>[
+              //                   TextButton(
+              //                       onPressed: () => {
+              //                         TaxData.taxUid = taxLists[index].id,
+              //                         Navigator.of(context).pop(),
+              //                         deleteAnItem()
+              //                       },
+              //                       child: Text(
+              //                         "Delete",
+              //                         style: TextStyle(color: Colors.red),
+              //                       )),
+              //                   TextButton(
+              //                     onPressed: () =>
+              //                     {Navigator.of(context).pop()},
+              //                     child: Text("Cancel", style: TextStyle()),
+              //                   ),
+              //                 ],
+              //               );
+              //             },
+              //           );
+              //         },
+              //         direction: taxLists.length > 0
+              //             ? DismissDirection.startToEnd
+              //             : DismissDirection.none,
+              //         onDismissed: (DismissDirection direction) {
+              //           if (direction == DismissDirection.endToStart) {
+              //             print('Remove item');
+              //           } else {
+              //             print("");
+              //           }
+              //
+              //           setState(() {
+              //             taxLists.removeAt(index);
+              //           });
+              //         },
+              //         child: Card(
+              //           child: ListTile(
+              //               onTap: () {
+              //                 TaxData.taxUid = taxLists[index].id;
+              //                 editTax = true;
+              //                 setState(() {
+              //                   getSingleView();
+              //                   isAddTax = true;
+              //                 });
+              //               },
+              //               title: Row(
+              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                 children: [
+              //                   Column(
+              //                     mainAxisAlignment: MainAxisAlignment.start,
+              //                     crossAxisAlignment: CrossAxisAlignment.start,
+              //                     children: [
+              //                       Text(
+              //                         taxLists[index].taxName,
+              //                         style: TextStyle(
+              //                             fontSize: 15,
+              //                             color: Color(0xff000000),
+              //                             fontWeight: FontWeight.w600),
+              //                       ),
+              //                       Text(
+              //                         taxLists[index].salesPrice,
+              //                         style: TextStyle(
+              //                             fontSize: 13,
+              //                             color: Color(0xff565656)),
+              //                       ),
+              //                     ],
+              //                   ),
+              //                   Text(
+              //                     taxLists[index].purchasePrice,
+              //                     style: TextStyle(
+              //                         fontSize: 13, color: Color(0xff565656)),
+              //                   ),
+              //                 ],
+              //               )),
+              //         ),
+              //       );
+              //     }),
             ],
           ),
         )
@@ -700,33 +662,31 @@ Container(
               child: ListView(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, top: 10, bottom: 10, right: 20),
+                    padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10, right: 20),
                     child: Container(
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width / 12,
                       child: editTax == true
                           ? Text(
                               'edit_tax'.tr,
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             )
                           : Text(
                               'add_tax'.tr,
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             ),
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 5, right: 5, bottom: 12),
+                    padding: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width / 5,
-                          child:  Text(
+                          child: Text(
                             'tax_name'.tr,
-                            style: TextStyle(fontSize: 17),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ),
                         Container(
@@ -739,25 +699,22 @@ Container(
                             },
                             keyboardType: TextInputType.text,
                             textCapitalization: TextCapitalization.words,
-                            decoration:
-                                TextFieldDecoration.customerMandatoryField(
-                                    hintTextStr: ''),
+                            decoration: TextFieldDecoration.customerMandatoryField(hintTextStr: ''),
                           ),
                         ),
                       ],
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 5, right: 5, bottom: 12),
+                    padding: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width / 5,
-                          child:  Text(
+                          child: Text(
                             'sale_percent'.tr,
-                            style: TextStyle(fontSize: 17),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ),
                         Container(
@@ -766,35 +723,29 @@ Container(
                             controller: salesPercentController,
                             focusNode: salesFcNode,
                             onEditingComplete: () {
-                              FocusScope.of(context)
-                                  .requestFocus(purchaseFcNode);
+                              FocusScope.of(context).requestFocus(purchaseFcNode);
                             },
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d+\.?\d{0,8}')),
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                             ],
                             textCapitalization: TextCapitalization.words,
-                            decoration:
-                                TextFieldDecoration.customerMandatoryField(
-                                    hintTextStr: ''),
+                            decoration: TextFieldDecoration.customerMandatoryField(hintTextStr: ''),
                           ),
                         ),
                       ],
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 5, right: 5, bottom: 12),
+                    padding: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width / 5,
-                          child:  Text(
+                          child: Text(
                             'purchase_percent'.tr,
-                            style: TextStyle(fontSize: 17),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ),
                         Container(
@@ -805,16 +756,12 @@ Container(
                             onEditingComplete: () {
                               FocusScope.of(context).requestFocus(saveFCNode);
                             },
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d+\.?\d{0,8}')),
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                             ],
                             textCapitalization: TextCapitalization.words,
-                            decoration:
-                                TextFieldDecoration.customerMandatoryField(
-                                    hintTextStr: ''),
+                            decoration: TextFieldDecoration.customerMandatoryField(hintTextStr: ''),
                           ),
                         ),
                       ],
@@ -838,15 +785,14 @@ Container(
             width: 100,
             height: 100,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             'no_network'.tr,
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextButton(
@@ -855,11 +801,10 @@ Container(
               // defaultData();
             },
             child: Text('retry'.tr,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEE830C))),
           ),
         ],
       ),
@@ -879,24 +824,23 @@ Container(
               children: [
                 SvgPicture.asset('assets/svg/tax_refersh.svg'),
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Container(
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width / 12,
                       child: Text(
                         'select_tax'.tr,
-                        style: TextStyle(fontSize: 25),
+                        style: const TextStyle(fontSize: 25),
                       )),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(7.0),
+                  padding: const EdgeInsets.all(7.0),
                   child: Container(
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width / 12,
                       child: Text(
                         'or'.tr,
-                        style:
-                            TextStyle(fontSize: 20, color: Color(0xff949494)),
+                        style: const TextStyle(fontSize: 20, color: Color(0xff949494)),
                       )),
                 ),
                 addButton(),
@@ -915,7 +859,7 @@ Container(
         onTap: () {
           setState(() {
             isAddTax = true;
-             editTax=false;
+            editTax = false;
             clearData();
           });
         },
@@ -936,9 +880,7 @@ Container(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xffffffff)),
-                    shape: BoxShape.circle),
+                decoration: BoxDecoration(border: Border.all(color: const Color(0xffffffff)), shape: BoxShape.circle),
                 height: MediaQuery.of(context).size.height / 22,
                 width: MediaQuery.of(context).size.width / 22,
                 child: const Icon(
@@ -946,7 +888,7 @@ Container(
                   color: Colors.white,
                 ),
               ),
-               Text(
+              Text(
                 'add_tax'.tr,
                 style: const TextStyle(color: Color(0xffffffff)),
               )
@@ -977,7 +919,7 @@ Container(
                                 setState(() {
                                   isAddTax = false;
                                 });
-                                editTax=false;
+                                editTax = false;
                                 clearData();
                               }),
                         ),
@@ -993,9 +935,7 @@ Container(
                                     purchasePercentController.text == '') {
                                   dialogBox(context, 'Please fill mandatory field');
                                 } else {
-                                  editTax == true
-                                      ? editTaxDetail()
-                                      : createTax();
+                                  editTax == true ? editTaxDetail() : createTax();
                                 }
                               }),
                         )
@@ -1023,15 +963,17 @@ Container(
                 ),
               ],
             )
-          : Row(),
+          : const Row(),
     );
   }
+
   ///to clear the fields
-clearData(){
-  taxNameController.clear();
-  salesPercentController.clear();
-  purchasePercentController.clear();
-}
+  clearData() {
+    taxNameController.clear();
+    salesPercentController.clear();
+    purchasePercentController.clear();
+  }
+
   ///list tax
   Future<Null> getAllTax() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -1057,12 +999,7 @@ clearData(){
 
         final String url = '$baseUrl/taxCategories/taxCategories/';
 
-        Map data = {
-          "CompanyID": companyID,
-          "BranchID": branchID,
-          "CreatedUserID": userID,
-          "PriceRounding": priceRounding
-        };
+        Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID, "PriceRounding": priceRounding};
         print(data);
         var body = json.encode(data);
         var response = await http.post(Uri.parse(url),
@@ -1112,9 +1049,7 @@ clearData(){
   Future<Null> createTax() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-
-        stop();
-
+      stop();
     } else {
       try {
         start(context);
@@ -1171,7 +1106,6 @@ clearData(){
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
 
-
         if (status == 6000) {
           setState(() {
             taxLists.clear();
@@ -1188,10 +1122,8 @@ clearData(){
           stop();
         } else {}
       } catch (e) {
-
-          dialogBox(context, "Some thing went wrong");
-          stop();
-
+        dialogBox(context, "Some thing went wrong");
+        stop();
       }
     }
   }
@@ -1221,12 +1153,7 @@ clearData(){
 
         final url = '$baseUrl/taxCategories/view/taxCategory/$uID/';
         print(url);
-        Map data = {
-          "CompanyID": companyID,
-          "BranchID": branchID,
-          "CreatedUserID": userID,
-          "PriceRounding": priceRounding
-        };
+        Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID, "PriceRounding": priceRounding};
 
         print(data);
         //encode Map to JSON
@@ -1340,9 +1267,7 @@ clearData(){
   Future<Null> deleteAnItem() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-
-        stop();
-
+      stop();
     } else {
       try {
         start(context);
@@ -1358,11 +1283,7 @@ clearData(){
         final String url = '$baseUrl/taxCategories/delete/taxCategory/$uID/';
         print(url);
 
-        Map data = {
-          "CreatedUserID": userID,
-          "CompanyID": companyID,
-          "BranchID": branchID
-        };
+        Map data = {"CreatedUserID": userID, "CompanyID": companyID, "BranchID": branchID};
         print(data);
 
         var body = json.encode(data);
@@ -1383,7 +1304,7 @@ clearData(){
           setState(() {
             controller.clear();
             searchTaxList.clear();
-            editTax=false;
+            editTax = false;
             clearData();
             taxLists.clear();
             stop();
@@ -1411,12 +1332,7 @@ List<TaxModel> taxLists = [];
 class TaxModel {
   String taxName, type, id, salesPrice, purchasePrice;
 
-  TaxModel(
-      {required this.taxName,
-      required this.type,
-      required this.id,
-      required this.purchasePrice,
-      required this.salesPrice});
+  TaxModel({required this.taxName, required this.type, required this.id, required this.purchasePrice, required this.salesPrice});
 
   factory TaxModel.fromJson(Map<dynamic, dynamic> json) {
     return TaxModel(
@@ -1431,5 +1347,3 @@ class TaxModel {
 class TaxData {
   static String taxUid = '';
 }
-
-
