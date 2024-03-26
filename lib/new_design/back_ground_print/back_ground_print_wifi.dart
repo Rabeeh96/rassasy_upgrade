@@ -184,7 +184,13 @@ class AppBlocs {
         await printArabic(printer);
       }
 
-      printer.disconnect();
+
+
+
+      Future.delayed(const Duration(seconds: 2), ()async {
+        print("------after delay----------------------------strt printing");
+        printer.disconnect();
+      });
     } else {
       dialogBox(ctx, "Check your printer connection");
     }
@@ -2545,8 +2551,11 @@ class AppBlocs {
         else {
           await printArabicKot(printer, id, items);
         }
+        Future.delayed(const Duration(seconds: 1), ()async {
+          print("------after delay----------------------------strt printing");
+          printer.disconnect();
+        });
 
-        printer.disconnect();
       } else {
         print('---${res.msg}----d------------');
       }
