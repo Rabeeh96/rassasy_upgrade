@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Future.delayed(Duration.zero, () {
       //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => PrintSettings()));
-     // navigateUser();
+     navigateUser();
     });
   }
 
@@ -114,23 +114,23 @@ class _MyHomePageState extends State<MyHomePage> {
           // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         }
         else{
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
+           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
 
           /// pos user commented
 
-          if(isPosUser){
-            if(selectPos){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => POSListItemsSection()));
-            }
-            else{
-              //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => RassassyScreen()));
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
-            }
-
-          }
-          else{
-            Navigator.pushReplacement(context, MaterialPageRoute(builder:(BuildContext context) => DashboardNew()));
-          }
+          // if(isPosUser){
+          //   if(selectPos){
+          //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => POSListItemsSection()));
+          //   }
+          //   else{
+          //     //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => RassassyScreen()));
+          //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
+          //   }
+          //
+          // }
+          // else{
+          //   Navigator.pushReplacement(context, MaterialPageRoute(builder:(BuildContext context) => DashboardNew()));
+          // }
         }
       }
       else {

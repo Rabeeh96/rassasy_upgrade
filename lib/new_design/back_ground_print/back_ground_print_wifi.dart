@@ -148,7 +148,7 @@ class AppBlocs {
 
     return printer;
   }
-
+/// print order and invoice
   void print_receipt(String printerIp, BuildContext ctx) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var temp = prefs.getString("template") ?? "template4";
@@ -2414,15 +2414,15 @@ class AppBlocs {
           for (var i = 0; i < printListData.length; i++) {
             try {
               print('------------------ index $i');
-              dataPrint.clear();
-              await kotPrintConnect(printListData[i].ip, i, printListData[i].items, false, isUpdate);
-              await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
+               dataPrint.clear();
+               await kotPrintConnect(printListData[i].ip, i, printListData[i].items, false, isUpdate);
+               await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
             } catch (e) {
               print('log ${e.toString()}');
               print(e.toString());
             }
           }
-
+/// cancel order print
           for (var i = 0; i < cancelOrder.length; i++) {
             try {
               print('------------------ index $i');
@@ -2434,6 +2434,8 @@ class AppBlocs {
               print(e.toString());
             }
           }
+
+
         } else if (status == 6001) {
           stop();
           var errorMessage = n["message"];
@@ -2529,6 +2531,7 @@ class AppBlocs {
       var temp = prefs.getString("template") ?? "template4";
       var capabilities = prefs.getString("default_capabilities") ?? "default";
 
+      print("template =---------------------- $temp");
       var profile;
       if (capabilities == "default") {
         profile = await CapabilityProfile.load();
@@ -2551,10 +2554,13 @@ class AppBlocs {
         else {
           await printArabicKot(printer, id, items);
         }
+
         Future.delayed(const Duration(seconds: 1), ()async {
-          print("------after delay----------------------------strt printing");
+          print("------after delay----------------------------strting for printing process");
           printer.disconnect();
         });
+
+
 
       } else {
         print('---${res.msg}----d------------');
@@ -2734,38 +2740,23 @@ class AppBlocs {
     var totalQty = printListData[id].totalQty;
     var tokenNumber = dataPrint[0].tokenNumber;
     var orderType = dataPrint[0].orderTypeI ?? "";
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+    // printer.setStyles(const PosStyles.defaults());
+    // printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
 
 
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
     var updateNote = "MADE SOME CHANGES IN";
-
-
     var invoiceType = "KOT";
-
-
-
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
-
-    printer.text(invoiceType,
-        styles:
-        const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    printer.text(invoiceType, styles: const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (isCancelNote) {
-      printer.text(cancelNoteData,
-          styles:
-          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-
+      printer.text(cancelNoteData, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
 
     }
 
     if (isUpdate) {
-      printer.text(updateNote,
-          styles:
-          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-
+      printer.text(updateNote, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
 
 
@@ -2793,8 +2784,8 @@ class AppBlocs {
       ]);
     }
 
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
+    // printer.setStyles(const PosStyles.defaults());
+    // printer.setStyles(const PosStyles(codeTable: 'CP864'));
     printer.hr();
     printer.row([
       PosColumn(
@@ -2862,7 +2853,7 @@ class AppBlocs {
           (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
-    printer.disconnect();
+
   }
 
   /// arabic kot image print method
