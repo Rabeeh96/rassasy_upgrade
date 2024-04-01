@@ -676,6 +676,7 @@ class AddProductGroupState extends State<AddProductGroup> {
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos/product-group/list/';
+        print(url);
           createPermission = prefs.getBool("Groupsave")??true;
           kitchenID ="";
 
@@ -689,6 +690,7 @@ class AddProductGroupState extends State<AddProductGroup> {
 
         Map data = {"CompanyID": companyID, "BranchID": branchID};
 
+        print(data);
         var body = json.encode(data);
 
         var response = await http.post(Uri.parse(url),
@@ -700,6 +702,7 @@ class AddProductGroupState extends State<AddProductGroup> {
 
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
+        print(response.body);
         var responseJson = n["data"];
         if (status == 6000) {
           setState(() {
