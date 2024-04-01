@@ -373,7 +373,7 @@ class BaseUrl{
   // static String imageURL = 'http://192.168.1.77:8002';
 
   static String currentAppVersion ="1.1.4";
-  static int branchID =1;
+
   static int priceRounding=2;
 }
 

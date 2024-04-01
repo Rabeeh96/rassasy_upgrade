@@ -6221,7 +6221,7 @@ At some point, you might wish to restrict the use and collection of your persona
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
 
@@ -6282,7 +6282,7 @@ At some point, you might wish to restrict the use and collection of your persona
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var categoryID = 1;
         var accessToken = prefs.getString('access') ?? '';
 
@@ -6365,10 +6365,11 @@ At some point, you might wish to restrict the use and collection of your persona
 
         var accessToken = prefs.getString('access') ?? '';
         String baseUrl = BaseUrl.baseUrl;
+        var branchID = prefs.getInt('branchID') ?? 1;
         final url = '$baseUrl/posholds/view/pos-kitchen/$id/';
         print(accessToken);
         print(url);
-        Map data = {"CompanyID": companyID, "BranchID": BaseUrl.branchID};
+        Map data = {"CompanyID": companyID, "BranchID": branchID};
 
         print(data);
         //encode Map to JSON
@@ -6438,7 +6439,7 @@ At some point, you might wish to restrict the use and collection of your persona
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var categoryID = 1;
         var accessToken = prefs.getString('access') ?? '';
 
@@ -6560,7 +6561,7 @@ At some point, you might wish to restrict the use and collection of your persona
         var userID = prefs.getInt("user_id");
         var kitchenID = id;
 
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var categoryID = 1;
         String baseUrl = BaseUrl.baseUrl;
         final String url = "$baseUrl/posholds/pos-kitchen/";
@@ -6670,7 +6671,7 @@ At some point, you might wish to restrict the use and collection of your persona
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
 
@@ -6737,7 +6738,7 @@ At some point, you might wish to restrict the use and collection of your persona
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var ipAddress = "";
         if(type =="Wifi"){
            ipAddress = ipAddressController1.text + '.' + ipAddressController2.text + '.' + ipAddressController3.text + '.' + ipAddressController4.text;
@@ -6817,7 +6818,7 @@ At some point, you might wish to restrict the use and collection of your persona
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         String baseUrl = BaseUrl.baseUrl;
@@ -6882,7 +6883,7 @@ At some point, you might wish to restrict the use and collection of your persona
 
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/generate-pos-pin/';
@@ -6940,7 +6941,7 @@ At some point, you might wish to restrict the use and collection of your persona
 
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var user_id = SettingsData.employeeID;
         var roleId = SettingsData.role_id;
         var pinNum = pinGenerateController.text;
@@ -7006,7 +7007,7 @@ At some point, you might wish to restrict the use and collection of your persona
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         String baseUrl = BaseUrl.baseUrl;
         final String url = '$baseUrl/posholds/list/pos-users/';
 
@@ -7169,7 +7170,7 @@ At some point, you might wish to restrict the use and collection of your persona
         HttpOverrides.global = MyHttpOverrides();
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
         var userUId = SettingsData.employeeID;
         var roleId = SettingsData.role_id;

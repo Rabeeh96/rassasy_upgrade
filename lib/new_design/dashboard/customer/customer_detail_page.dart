@@ -2185,7 +2185,7 @@ class _AddCustomerNewState extends State<AddCustomerNew> {
           Map data = {
             "CompanyID": companyID,
             "CreatedUserID": userID,
-            "BranchID": BaseUrl.branchID,
+            "BranchID": branchID,
             "PriceRounding": 2,
             "product_name": searchVal,
             "length": searchVal.length,

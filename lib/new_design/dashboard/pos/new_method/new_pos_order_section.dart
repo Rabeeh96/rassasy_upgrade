@@ -2546,7 +2546,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           start(context);
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var companyID = prefs.getString('companyID') ?? '';
-          var branchID = BaseUrl.branchID;
+           var branchID = prefs.getInt('branchID') ?? 1;
           var priceRounding = BaseUrl.priceRounding;
           String baseUrl = BaseUrl.baseUrl;
           var userID = prefs.getInt('user_id') ?? 0;
@@ -6376,7 +6376,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
         var userID = prefs.getInt('user_id') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/flavours/flavours/';
@@ -6434,10 +6434,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = BaseUrl.branchID;
-
-        user_name = prefs.getString('user_name')!;
-        autoFocusField = prefs.getBool('autoFocusField') ?? false;
+         var branchID = prefs.getInt('branchID') ?? 1;
+         user_name = prefs.getString('user_name')!;
+         autoFocusField = prefs.getBool('autoFocusField') ?? false;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos/product-group/list/';
@@ -6508,7 +6507,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var priceRounding = BaseUrl.priceRounding;
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos-product-list/';
@@ -6575,7 +6574,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           String baseUrl = BaseUrl.baseUrl;
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var companyID = prefs.getString('companyID') ?? '';
-          var branchID = BaseUrl.branchID;
+           var branchID = prefs.getInt('branchID') ?? 1;
           var priceRounding = BaseUrl.priceRounding;
           var userID = prefs.getInt('user_id') ?? 0;
           var accessToken = prefs.getString('access') ?? '';

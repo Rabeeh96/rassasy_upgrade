@@ -1539,7 +1539,7 @@ class _ProductCreateState extends State<CreateProductNew> {
 
     var companyID = prefs.getString('companyID') ?? '';
     var userID = prefs.getInt('user_id') ?? 0;
-
+    var branchID = prefs.getInt('branchID') ?? 1;
     if (searchVal == '') {
       pageNumber = 1;
       productLists.clear();
@@ -1552,7 +1552,7 @@ class _ProductCreateState extends State<CreateProductNew> {
       } else {
         try {
           Map data = {
-            "BranchID": BaseUrl.branchID,
+            "BranchID": branchID,
             "CompanyID": companyID,
             "CreatedUserID": userID,
             "PriceRounding": BaseUrl.priceRounding,

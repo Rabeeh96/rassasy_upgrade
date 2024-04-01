@@ -95,7 +95,7 @@ class _ProductDetailsState extends State<SelectUser> {
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt("user_id");
         String baseUrl = BaseUrl.baseUrl;
         final String url = '$baseUrl/employees/employees/';

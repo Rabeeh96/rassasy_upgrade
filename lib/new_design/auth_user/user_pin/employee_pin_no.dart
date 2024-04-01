@@ -21,6 +21,7 @@ class EnterPinNumber extends StatefulWidget {
 }
 
 class _EnterPinNumberState extends State<EnterPinNumber> {
+
   Color c1 = Colors.white;
   Color c2 = Colors.white;
   Color c3 = Colors.white;
@@ -110,7 +111,6 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         start(context);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var branchID = prefs.getInt('branchID') ?? 1;
-
         var companyID = prefs.getString('companyID') ?? '';
 
         String baseUrl = BaseUrl.baseUrlV11;
@@ -749,7 +749,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
         var companyID = prefs.getString('companyID') ?? '';
 
-        var branchID = BaseUrl.branchID;
+        var branchID = prefs.getInt('branchID') ?? 1;
         print('2');
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/validate-user-pin/';

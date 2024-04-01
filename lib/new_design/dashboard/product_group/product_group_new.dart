@@ -672,7 +672,7 @@ class AddProductGroupState extends State<AddProductGroup> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos/product-group/list/';
@@ -739,7 +739,7 @@ class AddProductGroupState extends State<AddProductGroup> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
 
         final String url = "$baseUrl/productGroups/create-productGroup/";
@@ -865,7 +865,7 @@ class AddProductGroupState extends State<AddProductGroup> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
         var groupID = GroupData.uID;
 
@@ -930,7 +930,7 @@ class AddProductGroupState extends State<AddProductGroup> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var accessToken = prefs.getString('access') ?? '';
         var companyID = prefs.getString('companyID') ?? '';
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt("user_id");
         var productId = id;
 
@@ -977,7 +977,7 @@ class AddProductGroupState extends State<AddProductGroup> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var companyID = prefs.getString('companyID') ?? '';
     var userID = prefs.getInt('user_id') ?? 0;
-
+    var branchID = prefs.getInt('branchID') ?? 1;
     if (string == '') {
       pageNumber = 1;
       productLists.clear();
@@ -990,7 +990,7 @@ class AddProductGroupState extends State<AddProductGroup> {
       } else {
         try {
           Map data = {
-            "BranchID": BaseUrl.branchID,
+            "BranchID": branchID,
             "CompanyID": companyID,
             "CreatedUserID": userID,
             "PriceRounding": BaseUrl.priceRounding,

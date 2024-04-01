@@ -150,7 +150,7 @@ class SelectPrinterState extends State<SelectPrinter> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
 

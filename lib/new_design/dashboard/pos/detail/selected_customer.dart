@@ -165,7 +165,6 @@ class _ProductDetailsState extends State<SelectPaymentCustomer> {
         if (status == 6000) {
           setState(() {
             customersLists.clear();
-
             stop();
             for (Map user in responseJson) {
               customersLists.add(CustomerModel.fromJson(user));
@@ -181,9 +180,7 @@ class _ProductDetailsState extends State<SelectPaymentCustomer> {
           stop();
         }
       } catch (e) {
-        setState(() {
-          stop();
-        });
+        stop();
       }
     }
   }
@@ -192,7 +189,7 @@ class _ProductDetailsState extends State<SelectPaymentCustomer> {
 
     var companyID = prefs.getString('companyID') ?? '';
     var userID = prefs.getInt('user_id') ?? 0;
-
+    var branchID = prefs.getInt('branchID') ?? 1;
     if (string == '') {
       pageNumber = 1;
       customersLists.clear();
@@ -213,7 +210,7 @@ class _ProductDetailsState extends State<SelectPaymentCustomer> {
       } else {
         try {
           Map data = {
-            "BranchID": BaseUrl.branchID,
+            "BranchID": branchID,
             "CompanyID": companyID,
             "CreatedUserID": userID,
             "PriceRounding": BaseUrl.priceRounding,

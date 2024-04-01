@@ -16,6 +16,8 @@ import '../dashboard/dashboard.dart';
 import 'create/organization_profile_pg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'selectBranchDetails.dart';
+
 class OrganizationList extends StatefulWidget {
   @override
   State<OrganizationList> createState() => _OrganizationDetailState();
@@ -75,61 +77,65 @@ class _OrganizationDetailState extends State<OrganizationList> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6, right: 20, left: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'create_new_org'.tr,
-                          style: TextStyle(fontWeight: FontWeight.w800),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width / 10,
-                          height: MediaQuery.of(context).size.height / 17,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            gradient: LinearGradient(
-                              colors: <Color>[
-                                Color(0xFFEE4709),
-                                Color(0xFFF68522),
-                              ],
-                            ),
-                          ),
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              textStyle: const TextStyle(fontSize: 14),
-                            ),
-                            onPressed: () {
-                              clearAll();
-                              OrgData.firstSection = true;
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CreateOrganisationProfile()),
-                              );
-                            },
-                            child:  Text('create'.tr),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+
+                  /// create section commented
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 6, right: 20, left: 20),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Text(
+                  //         'create_new_org'.tr,
+                  //         style: TextStyle(fontWeight: FontWeight.w800),
+                  //       ),
+                  //       Container(
+                  //         width: MediaQuery.of(context).size.width / 10,
+                  //         height: MediaQuery.of(context).size.height / 17,
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(5),
+                  //           gradient: LinearGradient(
+                  //             colors: <Color>[
+                  //               Color(0xFFEE4709),
+                  //               Color(0xFFF68522),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //         child: TextButton(
+                  //           style: TextButton.styleFrom(
+                  //             foregroundColor: Colors.white,
+                  //             textStyle: const TextStyle(fontSize: 14),
+                  //           ),
+                  //           onPressed: () {
+                  //             clearAll();
+                  //             OrgData.firstSection = true;
+                  //             Navigator.push(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                   builder: (context) =>
+                  //                       CreateOrganisationProfile()),
+                  //             );
+                  //           },
+                  //           child:  Text('create'.tr),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
 
 
 
                 Column(
               //      crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Text(
-                          'or'.tr,
-                          style: TextStyle(fontWeight: FontWeight.w800),
-                        ),
-                      ),
+                    /// create section commented
+
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 20),
+                      //   child: Text(
+                      //     'or'.tr,
+                      //     style: TextStyle(fontWeight: FontWeight.w800),
+                      //   ),
+                      // ),
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 6, left: 20, right: 20, bottom: 0),
@@ -177,6 +183,9 @@ class _OrganizationDetailState extends State<OrganizationList> {
                               ListView.builder(
                                   itemCount: companyList.length,
                                   itemBuilder: (BuildContext context, int index) {
+
+
+
                                     return Padding(
                                       padding: const EdgeInsets.all(4.0),
                                       child: Card(
@@ -189,7 +198,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                   ''
                                                   ? NetworkImage(
                                                   'https://www.gravatar.com/avatar/$index?s=46&d=identicon&r=PG&f=1')
-                                                  : NetworkImage(BaseUrl.imageURL +
+                                                  : NetworkImage(
                                                   companyList[index].image),
                                             ),
                                             trailing: Container(
@@ -204,34 +213,9 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                 ),
                                                 onPressed: () async {
 
-                                                  // SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                  // prefs.setString('companyName', companyList[index].companyName);
-                                                  // prefs.setString('companyType', companyList[index].companyType);
-                                                  // prefs.setString('expiryDate', companyList[index].expiryDate);
-                                                  // prefs.setString('permission', companyList[index].permission);
-                                                  // prefs.setString('edition', companyList[index].permission);
-                                                  // prefs.setBool('isPosUser', companyList[index].isPosUser);
-                                                  // prefs.setString('companyID', companyList[index].id);
-                                                  // prefs.setBool('companySelected', true);
-                                                  //
-                                                  // if(companyList[index].isPosUser){
-                                                  //
-                                                  //
-                                                  //   Navigator.pushReplacement(
-                                                  //       context,
-                                                  //       MaterialPageRoute(
-                                                  //           builder: (BuildContext context) =>
-                                                  //           const EnterPinNumber()));
-                                                  //
-                                                  // }
-                                                  // else{
-                                                  //   Navigator.pushReplacement(
-                                                  //       context,
-                                                  //       MaterialPageRoute(
-                                                  //           builder: (BuildContext context) =>
-                                                  //               DashboardNew()));
-                                                  // }
-                                                  //
+
+
+
 
                                                   var expire =checkExpire(companyList[index].expiryDate);
                                                   if(expire){
@@ -239,24 +223,55 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                   }
                                                   else{
 
-                                                    await defaultDataInitial(context:context);
+                                                    var branchDetails=companyList[index].branchList??[];
 
-                                                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                    prefs.setString('companyName', companyList[index].companyName);
-                                                    prefs.setString('companyType', companyList[index].companyType);
-                                                    prefs.setString('expiryDate', companyList[index].expiryDate);
-                                                    prefs.setString('permission', companyList[index].permission);
-                                                    prefs.setString('edition', companyList[index].permission);
-                                                    prefs.setBool('isPosUser', companyList[index].isPosUser);
-                                                    prefs.setString('companyID', companyList[index].id);
-                                                    prefs.setBool('companySelected', true);
+                                                    print("branchDetails  $branchDetails");
+
+                                                    if(branchDetails.isEmpty){
+                                                      await defaultDataInitial(context:context);
+
+                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                      prefs.setString('companyName', companyList[index].companyName);
+                                                      prefs.setString('companyType', companyList[index].companyType);
+                                                      prefs.setString('expiryDate', companyList[index].expiryDate);
+                                                      prefs.setString('permission', companyList[index].permission);
+                                                      prefs.setString('edition', companyList[index].permission);
+                                                      prefs.setBool('isPosUser', companyList[index].isPosUser);
+                                                      prefs.setString('companyID', companyList[index].id);
+                                                      prefs.setBool('companySelected', true);
 
 
-                                                    Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (BuildContext context) =>
-                                                            const EnterPinNumber()));
+                                                     await Navigator.pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (BuildContext context) =>
+                                                              const EnterPinNumber()));
+                                                    }
+                                                    else{
+
+                                                      var result = await  Navigator.push(context, MaterialPageRoute(builder: (context) => SelectBranch(list: branchDetails)),);
+                                                      if(result !=null){
+                                                        await defaultDataInitial(context:context);
+                                                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                        prefs.setString('companyName', companyList[index].companyName);
+                                                        prefs.setString('companyType', companyList[index].companyType);
+                                                        prefs.setString('expiryDate', companyList[index].expiryDate);
+                                                        prefs.setString('permission', companyList[index].permission);
+                                                        prefs.setString('edition', companyList[index].permission);
+                                                        prefs.setBool('isPosUser', companyList[index].isPosUser);
+                                                        prefs.setString('companyID', companyList[index].id);
+                                                        prefs.setBool('companySelected', true);
+                                                        await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
+                                                      }
+                                                      else{
+                                                        dialogBox(context, "Select branch, before go to next step");
+                                                      }
+
+
+                                                    }
+
+
+
 
 
                                                     // if(companyList[index].isPosUser){
@@ -291,7 +306,10 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 12))),
+                                                    fontSize: 12)),
+
+
+                                        ),
                                       ),
                                     );
                                   }):
@@ -412,16 +430,17 @@ class _OrganizationDetailState extends State<OrganizationList> {
     } else {
       try {
         HttpOverrides.global = MyHttpOverrides();
-        String baseUrl = BaseUrl.baseUrl;
+        String baseUrl = BaseUrl.baseUrlV11;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var userID = prefs.getInt('user_id') ?? 0;
         var accessToken = prefs.getString('access') ?? '';
-        final String url = '$baseUrl/posholds/pos-companies/';
+        final String url = '$baseUrl/users/companies/';
 
         print(accessToken);
         print(url);
 
-        Map data = {"userId": userID,"BranchID":1};
+
+        Map data = {"userId": userID,"is_rassasy":true};
         print(data);
         //encode Map to JSON
         var body = json.encode(data);
@@ -477,6 +496,7 @@ class CompanyListDataModel {
       edition,
       image;
 
+  var branchList = [];
   CompanyListDataModel(
       {required this.id,
       required this.image,
@@ -484,19 +504,21 @@ class CompanyListDataModel {
       required this.companyName,
       required this.isPosUser,
       required this.edition,
+      required this.branchList,
       required this.expiryDate,
       required this.permission});
 
   factory CompanyListDataModel.fromJson(Map<dynamic, dynamic> json) {
     return CompanyListDataModel(
       id: json['id'],
-      permission: json['Permission'],
+      permission: json['Permission']??"",
       companyType: json['company_type'],
       edition: json['Edition'],
       expiryDate: json['ExpiryDate'],
       companyName: json['CompanyName'],
       isPosUser: json['IsPosUser'],
-      image: json['CompanyImage'],
+      branchList: json['Branches']??[],
+      image: json['CompanyLogo']??"",
     );
   }
 
