@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Future.delayed(Duration.zero, () {
       //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => PrintSettings()));
-      navigateUser();
+     // navigateUser();
     });
   }
 
@@ -157,7 +157,14 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
-      body: Center(child: SvgPicture.asset('assets/svg/Logo.svg')),
+      body: Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset('assets/svg/Logo.svg'),
+          Text(appVersion,style: customisedStyle(context, Colors.grey, FontWeight.w500, 19.0),),
+        ],
+      )),
     );
   }
 }
