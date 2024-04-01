@@ -2245,8 +2245,7 @@ class _ProductCreateState extends State<CreateProductNew> {
   }
 }
 
-List<ProductListModel> productLists = [];
-
+List<ProductListModel> productLists = [];//
 class ProductListModel {
   String productName, defaultUnitName, id, productImage, productImage2, productImage3, defaultSalesPrice;
 
