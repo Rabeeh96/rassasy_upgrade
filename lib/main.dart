@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Future.delayed(Duration.zero, () {
       //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => PrintSettings()));
-     // navigateUser();
+     navigateUser();
     });
   }
 
