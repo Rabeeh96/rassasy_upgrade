@@ -2448,7 +2448,7 @@
 //           start(context);
 //           SharedPreferences prefs = await SharedPreferences.getInstance();
 //           var companyID = prefs.getString('companyID') ?? '';
-//           var branchID = BaseUrl.branchID;
+//            var branchID = prefs.getInt('branchID') ?? 1;
 //           var priceRounding = BaseUrl.priceRounding;
 //           String baseUrl = BaseUrl.baseUrl;
 //           var userID = prefs.getInt('user_id') ?? 0;
@@ -6269,7 +6269,7 @@
 //         SharedPreferences prefs = await SharedPreferences.getInstance();
 //         var companyID = prefs.getString('companyID') ?? "0";
 //         var userID = prefs.getInt('user_id') ?? 0;
-//         var branchID = BaseUrl.branchID;
+//          var branchID = prefs.getInt('branchID') ?? 1;
 //
 //         var accessToken = prefs.getString('access') ?? '';
 //         final String url = '$baseUrl/flavours/flavours/';
@@ -6327,7 +6327,7 @@
 //         String baseUrl = BaseUrl.baseUrl;
 //         SharedPreferences prefs = await SharedPreferences.getInstance();
 //         var companyID = prefs.getString('companyID') ?? 0;
-//         var branchID = BaseUrl.branchID;
+//          var branchID = prefs.getInt('branchID') ?? 1;
 //
 //         user_name = prefs.getString('user_name')!;
 //         autoFocusField = prefs.getBool('autoFocusField') ?? false;
@@ -6400,7 +6400,7 @@
 //         String baseUrl = BaseUrl.baseUrl;
 //         SharedPreferences prefs = await SharedPreferences.getInstance();
 //         var companyID = prefs.getString('companyID') ?? '';
-//         var branchID = BaseUrl.branchID;
+//          var branchID = prefs.getInt('branchID') ?? 1;
 //         var priceRounding = BaseUrl.priceRounding;
 //         var accessToken = prefs.getString('access') ?? '';
 //         final String url = '$baseUrl/posholds/pos-product-list/';
@@ -6465,7 +6465,7 @@
 //           String baseUrl = BaseUrl.baseUrl;
 //           SharedPreferences prefs = await SharedPreferences.getInstance();
 //           var companyID = prefs.getString('companyID') ?? '';
-//           var branchID = BaseUrl.branchID;
+//            var branchID = prefs.getInt('branchID') ?? 1;
 //           var priceRounding = BaseUrl.priceRounding;
 //           var userID = prefs.getInt('user_id') ?? 0;
 //           var accessToken = prefs.getString('access') ?? '';

@@ -44,7 +44,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
         var userID = prefs.getInt('user_id') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         String url = "";
@@ -168,7 +168,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
         var userID = prefs.getInt('user_id') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         String url = '$baseUrl/flavours/delete/flavour/$id/';
@@ -235,7 +235,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
         var userID = prefs.getInt('user_id') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         createPermission = prefs.getBool("Flavoursave") ?? false;
 
         var accessToken = prefs.getString('access') ?? '';
@@ -335,7 +335,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
                       height: MediaQuery.of(context).size.height,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ListView.builder(
+                        child:flavourList.length!=0? ListView.builder(
                             // the number of items in the list
                             itemCount: flavourList.length,
 
@@ -373,14 +373,11 @@ class _ViewFlavourState extends State<ViewFlavour> {
                                       dialogBoxPermissionDenied(context);
                                     }
 
-
-
-
                                   },
                                   title: Text(flavourList[index].flavourName),
                                 ),
                               );
-                            }),
+                            }):Container(),
                       ),
                     ),
                   ),

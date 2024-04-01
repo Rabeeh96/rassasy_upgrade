@@ -6,6 +6,7 @@ class LocaleChange extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en_US': {
           'unit_title': 'Unit',
+          'select_branch': 'Select your branch',
           'is_Arabic': 'Arabic',
           'Verify_your_account': 'Verify your account',
           'Email': 'Email',
@@ -296,6 +297,7 @@ class LocaleChange extends Translations {
         'ar': {
           'autoFocusField': 'مجال التركيز التلقائي',
           'print': 'مطبعة',
+          'select_branch': 'اختر فرعك',
           'edit': 'يحرر',
           'reserve': 'احتياطي',
           'Cancel_order': 'الغاء الطلب',

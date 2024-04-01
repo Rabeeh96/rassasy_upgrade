@@ -730,7 +730,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt('user_id') ?? 0;
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos-table-reserve/';
@@ -2677,7 +2677,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/table-create/';
@@ -2744,7 +2744,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
         var showInvoice = prefs.getBool('AutoClear') ?? true;
         final String url = '$baseUrl/posholds/pos-table-list/';

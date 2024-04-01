@@ -7944,7 +7944,7 @@ class _ReportPageState extends State<ReportPageNew> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt('user_id') ?? 0;
 
         var accessToken = prefs.getString('access') ?? '';
@@ -8043,7 +8043,7 @@ class _ReportPageState extends State<ReportPageNew> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt('user_id') ?? 0;
 
         var accessToken = prefs.getString('access') ?? '';
@@ -8137,7 +8137,7 @@ class _ReportPageState extends State<ReportPageNew> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = BaseUrl.branchID;
+         var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt('user_id') ?? 0;
 
         var accessToken = prefs.getString('access') ?? '';
