@@ -474,7 +474,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         Map n = json.decode(utf8.decode(response.bodyBytes));
         print(response.body);
         var status = n["StatusCode"];
-        var message = n["message"];
+        var message = n["message"]??"";
         var responseJson = n["data"];
 
         if (status == 6000) {
@@ -613,7 +613,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         print("${response.body}");
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
-        var message = n["message"];
+        var message = n["message"]??"";
         var responseJson = n["data"];
 
         if (status == 6000) {
@@ -2746,6 +2746,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
           ///here
 
+          categoryList.isNotEmpty?
           Container(
             height: MediaQuery.of(context).size.height / 8, //height of button
             width: _width,
@@ -2794,7 +2795,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             )),
                   );
                 }),
-          ),
+          ):Container(),
 
           Container(
             decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -5426,7 +5427,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           });
         } else if (status == 6001) {
           stop();
-          var errorMessage = n["message"];
+          var errorMessage = n["message"]??"";
           dialogBox(context, errorMessage);
         }
 
@@ -6408,7 +6409,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["error"];
+          var msg = n["error"]??"";
           dialogBox(context, msg);
         }
         //DB Error
@@ -6436,7 +6437,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var companyID = prefs.getString('companyID') ?? 0;
          var branchID = prefs.getInt('branchID') ?? 1;
          user_name = prefs.getString('user_name')!;
-         autoFocusField = prefs.getBool('autoFocusField') ?? false;
+        autoFocusField = prefs.getBool('autoFocusField') ?? false;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos/product-group/list/';
@@ -6460,7 +6461,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
         var responseJson = n["data"];
-        print(responseJson);
+        print(response.body);
         print(status);
         if (status == 6000) {
           setState(() {
@@ -6477,7 +6478,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["error"];
+          var msg = n["error"]??"";
           dialogBox(context, msg);
         }
         //DB Error
@@ -6542,7 +6543,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["message"];
+          var msg = n["message"]??"";
           dialogBox(context, msg);
         } else {
           var msg = n["message"]??"";
@@ -6951,7 +6952,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           });
         } else if (status == 6001) {
           stop();
-          var errorMessage = n["message"];
+          var errorMessage = n["message"]??"";
           dialogBox(context, errorMessage);
         }
         //DB Error
