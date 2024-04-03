@@ -1117,7 +1117,7 @@ class _AddTaxState extends State<AddTax> {
             getAllTax();
           });
         } else if (status == 6001) {
-          var msg = n["message"];
+          var msg = n["message"]??"";
           dialogBox(context, msg);
           stop();
         } else {}
@@ -1179,7 +1179,7 @@ class _AddTaxState extends State<AddTax> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["error"];
+          var msg = n["error"]??"";
           dialogBox(context, msg);
         }
         //DB Error
@@ -1249,7 +1249,7 @@ class _AddTaxState extends State<AddTax> {
             getAllTax();
           });
         } else if (status == 6001) {
-          var msg = n["message"];
+          var msg = n["message"]??"";
           print(dialogBox(context, msg));
 
           stop();

@@ -109,70 +109,7 @@ class _ProductDetailsState extends State<SelectTax> {
     );
   }
 
-  Future<Null> getCategoryDetails() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      setState(() {
-        stop();
-      });
-    } else {
-      try {
-        String baseUrl = BaseUrl.baseUrl;
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        var userID = prefs.getInt('user_id') ?? 0;
-        var accessToken = prefs.getString('access') ?? '';
-        var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = prefs.getInt('branchID') ?? 1;
-        var priceRounding = BaseUrl.priceRounding;
 
-        final String url = '$baseUrl/taxCategories/taxCategories/';
-
-        Map data = {
-          "CompanyID": companyID,
-          "BranchID": branchID,
-          "CreatedUserID": userID,
-          "PriceRounding": priceRounding
-        };
-
-        print(data);
-
-        var body = json.encode(data);
-        var response = await http.post(Uri.parse(url),
-            headers: {
-              "Content-Type": "application/json",
-              'Authorization': 'Bearer $accessToken',
-            },
-            body: body);
-
-        Map n = json.decode(utf8.decode(response.bodyBytes));
-        var status = n["StatusCode"];
-        var responseJson = n["data"];
-        print(status);
-        print(responseJson);
-        if (status == 6000) {
-          setState(() {
-            stop();
-            taxLists.clear();
-            for (Map user in responseJson) {
-              taxLists.add(TaxModel.fromJson(user));
-            }
-          });
-        } else if (status == 6001) {
-          stop();
-          var msg = n["error"];
-          dialogBox(context, msg);
-        }
-        //DB Error
-        else {
-          stop();
-        }
-      } catch (e) {
-        setState(() {
-          stop();
-        });
-      }
-    }
-  }
   Future<Null> getTaxDetails() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -239,7 +176,7 @@ class _ProductDetailsState extends State<SelectTax> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["error"];
+          var msg = n["error"]??"";
           dialogBox(context, msg);
         }
         //DB Error

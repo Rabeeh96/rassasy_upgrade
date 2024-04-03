@@ -96,7 +96,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
 
         } else if (status == 6001) {
           stop();
-          var msg = n["message"];
+          var msg = n["message"]??"";
           dialogBox(context, msg);
         }
         //DB Error
@@ -207,7 +207,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
 
         } else if (status == 6001) {
           stop();
-          var msg = n["message"];
+          var msg = n["message"]??"";
           dialogBox(context, msg);
         }
         //DB Error
@@ -273,7 +273,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["error"];
+          var msg = n["error"]??"";
           dialogBox(context, msg);
         }
         //DB Error
