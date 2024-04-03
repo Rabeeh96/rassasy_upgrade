@@ -115,11 +115,13 @@ class _DashboardNewState extends State<DashboardNew> {
             prefs.setString("financial_ToDate", toDate);
             prefs.setString("Country", n["Country"]);
             prefs.setString("CountryName", n["CountryName"]);
+
             prefs.setString("State", n["State"]);
             prefs.setString("CurrencySymbol", n["CurrencySymbol"]);
             var settingsData = n['settingsData'];
             prefs.setBool("checkVat", settingsData["VAT"]);
             prefs.setBool("check_GST", settingsData["GST"]);
+            prefs.setInt("Cash_Account", n["Cash_Account"]??1);
             prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
             prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
             prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);

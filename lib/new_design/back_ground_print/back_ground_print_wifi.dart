@@ -951,9 +951,6 @@ class AppBlocs {
 
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.text(invoiceType, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
-
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (tokenVal) {
       printer.hr();

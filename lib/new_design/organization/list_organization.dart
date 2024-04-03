@@ -467,7 +467,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["error"];
+          var msg = n["error"]??"";
           dialogBox(context, msg);
         }
         //DB Error
