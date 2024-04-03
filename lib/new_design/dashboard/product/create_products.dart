@@ -52,7 +52,7 @@ class _ProductCreateState extends State<CreateProductNew> {
 
   bool addNewProduct = false;
   bool networkConnection = true;
-  var categoryID = 1;
+
   var netWorkProblem = true;
   bool isLoading = false;
   var pageNumber = 1;
@@ -226,6 +226,7 @@ class _ProductCreateState extends State<CreateProductNew> {
 
         Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID, "PriceRounding": priceRounding};
 
+        print(url);
         print(data);
 
         var body = json.encode(data);
@@ -248,12 +249,11 @@ class _ProductCreateState extends State<CreateProductNew> {
               taxLists.add(TaxModel.fromJson(user));
             }
             searchTaxList = taxLists.where((i) => i.IsDefault == true).toList();
-
             defaultTaxId = searchTaxList[0].taxID;
             defaultTaxName = searchTaxList[0].taxName;
           });
         } else if (status == 6001) {
-          var msg = n["error"];
+          var msg = n["error"]??"";
           dialogBox(context, msg);
         }
         //DB Error
@@ -329,12 +329,12 @@ class _ProductCreateState extends State<CreateProductNew> {
     });
   }
   int ProductTaxID =0;
+  int categoryID =0;
   int ProductExciseTaxID =0;
   defaultValue() {
-    ProductData.catID = 1;
     ProductTaxID = defaultTaxId;
     ProductExciseTaxID = defaultTaxId;
-    categoryController..text = 'Primary Group';
+    categoryController..text = '';
     taxController..text = defaultTaxName;
     exciseTaxController..text = defaultTaxName;
   }
@@ -1096,7 +1096,8 @@ class _ProductCreateState extends State<CreateProductNew> {
               print(result);
 
               if (result != null) {
-                categoryController.text = result;
+                categoryController.text = result[1];
+                categoryID =   result[0];
               }
             },
             readOnly: true,
@@ -1411,27 +1412,54 @@ class _ProductCreateState extends State<CreateProductNew> {
                 focusNode: saveFcNode,
                 icon: SvgPicture.asset('assets/svg/add1.svg'),
                 onPressed: () {
+
+
+
+                  print(exciseTaxController.text);
+                  print(ProductTaxID);
+
+
                   /// commented for upload image in product
                   if (nameController.text.trim() == '' ||
                       nameController.text == '' ||
                       categoryController.text == '' ||
                       salesPriceController.text == '' ||
                       purchasePriceController.text == '' ||
-                      taxController.text == '' ||      exciseTaxController.text == '' ||
-                      ProductTaxID == '' ||
-                      ProductData.catID == '') {
+                      taxController.text == '' ||
+                      ProductTaxID == '') {
                     dialogBox(context, "Please fill mandatory fields");
                   } else {
-                    if (edit == false) {
-                      if (createPermission) {
-                        start(context);
-                        createProduct();
-                      } else {
-                        dialogBoxPermissionDenied(context);
+
+                    if(isExcise){
+                      if(exciseTaxController.text == ""){
+                        dialogBox(context, "Please fill mandatory fields");
                       }
-                    } else {
-                      start(context);
-                      editProduct();
+                      else{
+                        if (edit == false) {
+                          if (createPermission) {
+                            start(context);
+                            createProduct();
+                          } else {
+                            dialogBoxPermissionDenied(context);
+                          }
+                        } else {
+                          start(context);
+                          editProduct();
+                        }
+                      }
+                    }
+                    else{
+                      if (edit == false) {
+                        if (createPermission) {
+                          start(context);
+                          createProduct();
+                        } else {
+                          dialogBoxPermissionDenied(context);
+                        }
+                      } else {
+                        start(context);
+                        editProduct();
+                      }
                     }
                   }
                 }),
@@ -1814,9 +1842,12 @@ class _ProductCreateState extends State<CreateProductNew> {
         var type = "";
         veg == true ? type = "veg" : type = "Non-veg";
 
-        var categoryID = ProductData.catID.toString();
+        var categoryIDString = categoryID.toString();
         var tax_ID = ProductTaxID.toString();
         var exTax_ID = ProductExciseTaxID.toString();
+
+
+        print("   tax id  tax id  tax id  tax id  tax id  tax id $tax_ID");
 
         var price = "0.00";
 
@@ -1853,7 +1884,7 @@ class _ProductCreateState extends State<CreateProductNew> {
           "CompanyID": companyID,
           "VegOrNonVeg": type,
           "ProductName": nameController.text,
-          "ProductGroupID": categoryID,
+          "ProductGroupID": categoryIDString,
           "Description": descriptionController.text,
           "Price": purchasePrice,
           "TaxID": tax_ID,
@@ -1901,7 +1932,7 @@ class _ProductCreateState extends State<CreateProductNew> {
             getProductList();
           });
         } else if (status == 6001) {
-          var msg = n["message"];
+          var msg = n["message"]??"";
           dialogBox(context, msg);
           stop();
         }
@@ -1930,7 +1961,7 @@ class _ProductCreateState extends State<CreateProductNew> {
 
         var type = "";
         veg == true ? type = "veg" : type = "Non-veg";
-        var categoryID = ProductData.catID.toString();
+        var categoryIDString = categoryID.toString();
         var tax_ID = ProductTaxID.toString();
         var exTax_ID = ProductExciseTaxID.toString();
         var productUID = ProductData.productID;
@@ -1966,7 +1997,7 @@ class _ProductCreateState extends State<CreateProductNew> {
           "CompanyID": companyID,
           "VegOrNonVeg": type,
           "ProductName": nameController.text,
-          "ProductGroupID": categoryID,
+          "ProductGroupID": categoryIDString,
           "Description": descriptionController.text,
           "Price": purchasePrice,
           "TaxID": tax_ID,
@@ -1999,7 +2030,7 @@ class _ProductCreateState extends State<CreateProductNew> {
             imageSelect = false;
             imageSelect2 = false;
             imageSelect3 = false;
-            var msg = n["message"];
+            var msg = n["message"]??"";
             dialogBox(context, msg);
             addNewProduct = false;
             stop();
@@ -2009,7 +2040,7 @@ class _ProductCreateState extends State<CreateProductNew> {
             getProductList();
           });
         } else if (status == 6001) {
-          var msg = n["message"];
+          var msg = n["message"]??"";
           dialogBox(context, msg);
           stop();
         }
@@ -2107,7 +2138,7 @@ class _ProductCreateState extends State<CreateProductNew> {
             }
 
             stop();
-            ProductData.catID = responseJson['ProductGroupID'];
+            categoryID = responseJson['ProductGroupID'];
 
 
             isInclusiveNotifier.value = responseJson['is_inclusive'];
@@ -2232,7 +2263,7 @@ class _ProductCreateState extends State<CreateProductNew> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["message"];
+          var msg = n["message"]??"";
           print(dialogBox(context, msg));
         } else {}
       } catch (e) {
@@ -2272,7 +2303,7 @@ class ProductListModel {
 }
 
 class ProductData {
-  static int catID = 1;
+
   static String productID = '';
 }
 

@@ -133,6 +133,7 @@ Future defaultDataInitial({context}) async {
       prefs.setString("CountryName", n["CountryName"]);
       prefs.setString("State", n["State"]);
       prefs.setString("CurrencySymbol", n["CurrencySymbol"]);
+      prefs.setInt("Cash_Account", n["Cash_Account"]??1);
       var settingsData = n['settingsData'];
       prefs.setBool("checkVat", settingsData["VAT"]);
       prefs.setBool("check_GST", settingsData["GST"]);

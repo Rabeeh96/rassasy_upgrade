@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // }
 
 
- String appVersion = "1.1.7";
+ String appVersion = "1.1.9";
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),

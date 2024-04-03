@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rassasy_new/new_design/dashboard/product_group/detail/selectCategory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
@@ -21,6 +22,7 @@ class AddProductGroup extends StatefulWidget {
 
 class AddProductGroupState extends State<AddProductGroup> {
   TextEditingController productNameController = TextEditingController();
+  TextEditingController productCategoryController = TextEditingController();
   ScrollController _scrollController = ScrollController();
   TextEditingController kitchenController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -34,6 +36,7 @@ class AddProductGroupState extends State<AddProductGroup> {
   FocusNode submitFcNode = FocusNode();
 
   var kitchenID = "";
+  var categoryID =0;
   bool editProduct = false;
   var netWorkProblem = true;
   bool isLoading = false;
@@ -217,6 +220,63 @@ class AddProductGroupState extends State<AddProductGroup> {
                                     } else {}
                                   },
                                   controller: kitchenController,
+                                  onEditingComplete: () {
+                                    FocusScope.of(context).requestFocus(descriptionFocusNode);
+                                  },
+                                  decoration: InputDecoration(
+                                      suffixIcon: IconButton(
+                                          icon: Icon(
+                                            Icons.keyboard_arrow_down,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {}),
+                                      enabledBorder: const OutlineInputBorder(borderSide: const BorderSide(color: Color(0xffC9C9C9))),
+                                      focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                                      disabledBorder: const OutlineInputBorder(borderSide: const BorderSide(color: Color(0xffC9C9C9))),
+                                      contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+                                      filled: true,
+                                      hintStyle: customisedStyle(context, Colors.grey, FontWeight.w500, 14.0),
+                                      hintText: "",
+                                      fillColor: const Color(0xffffffff)),
+                                ),
+                              )
+                            ],
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(left: 5, right: 5, bottom: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 7),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 5,
+                                  child: Text(
+                                   'Select category',
+                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 3,
+                                child: TextField(
+
+                                  style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                                  readOnly: true,
+                                  onTap: () async {
+                                    var result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => SelectCategory()),
+                                    );
+
+                                    if (result != null) {
+                                      print(result);
+                                      productCategoryController.text = result[0];
+                                      categoryID = result[1];
+
+                                    } else {}
+                                  },
+                                  controller: productCategoryController,
                                   onEditingComplete: () {
                                     FocusScope.of(context).requestFocus(descriptionFocusNode);
                                   },
@@ -438,7 +498,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                             child: IconButton(
                               icon: SvgPicture.asset('assets/svg/add1.svg'),
                               onPressed: () async {
-                                if (productNameController.text.trim() == '' || productNameController.text == '') {
+                                if (productNameController.text.trim() == '' || productNameController.text == ''|| productCategoryController.text == '') {
                                   dialogBox(context, "Please enter mandatory fields");
                                 } else {
                                   if (editProduct == false) {
@@ -620,23 +680,30 @@ class AddProductGroupState extends State<AddProductGroup> {
               child: Card(
                   child: ListTile(
                 onTap: () async {
-                  var perm = await checkingPerm("Groupedit");
-                  print(perm);
-                  if (perm) {
-                    productNameController.clear();
-                    descriptionController.clear();
-                    kitchenController.clear();
+/// coomented befor add category
+                  //
+                  // var perm = await checkingPerm("Groupedit");
+                  // print(perm);
+                  // if (perm) {
+                  //   productNameController.clear();
+                  //   productCategoryController.clear();
+                  //   descriptionController.clear();
+                  //   kitchenController.clear();
+                  //
+                  //   GroupData.uID = productLists[index].productId;
+                  //  // categoryID = productLists[index].productId;
+                  //   getProductGroupSingleView(productLists[index].productId);
+                  //   editProduct = true;
+                  //   setState(() {
+                  //     getProductGroupSingleView(productLists[index].productId);
+                  //     isProductGroup = true;
+                  //   });
+                  // } else {
+                  //   dialogBoxPermissionDenied(context);
+                  // }
 
-                    GroupData.uID = productLists[index].productId;
-                    getProductGroupSingleView(productLists[index].productId);
-                    editProduct = true;
-                    setState(() {
-                      getProductGroupSingleView(productLists[index].productId);
-                      isProductGroup = true;
-                    });
-                  } else {
-                    dialogBoxPermissionDenied(context);
-                  }
+
+
                 },
                 title: Text(
                   productLists[index].groupName,
@@ -750,7 +817,7 @@ class AddProductGroupState extends State<AddProductGroup> {
           "BranchID": branchID,
           "CreatedUserID": userID,
           "CompanyID": companyID,
-          "CategoryID": 1,
+          "CategoryID": categoryID,
           "IsActive": true,
           "GroupName": productNameController.text,
           "Notes": descriptionController.text,
@@ -852,6 +919,7 @@ class AddProductGroupState extends State<AddProductGroup> {
   }
 
   clearData() {
+    productCategoryController.clear();
     productNameController.clear();
     kitchenController.clear();
     descriptionController.clear();

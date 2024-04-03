@@ -190,6 +190,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
       currency = prefs.getString('CurrencySymbol') ?? "";
        isGst = prefs.getBool("check_GST") ?? false;
+       ledgerID = prefs.getInt("Cash_Account") ?? 1;
       networkConnection = true;
       if (widget.sectionType == "Create") {
         mainPageIndex = 7;
@@ -3723,6 +3724,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             dialogBox(context, "At least one product");
                           } else {
                             bool val = await checkNonRatableItem();
+
+
                             if (val) {
                               postingData(true);
                             } else {
@@ -3758,6 +3761,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           if (orderDetTable.isEmpty) {
                             dialogBox(context, "At least one product");
                           } else {
+
                             bool val = await checkNonRatableItem();
                             if (val) {
                               postingData(false);

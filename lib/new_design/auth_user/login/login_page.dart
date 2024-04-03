@@ -334,7 +334,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
 
         } else if (status == 6001) {
-          var msg = n["error"];
+          var msg = n["error"]??"";
           print('3');
           dialogBox(context, msg);
           if (msg == "Please Verify Your Email to Login") {

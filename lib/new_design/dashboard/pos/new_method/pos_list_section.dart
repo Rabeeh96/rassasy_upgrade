@@ -1790,7 +1790,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           posFunctions(callFunction: true);
         } else if (status == 6001) {
           stop();
-          var msg = n["message"];
+          var msg = n["message"]??"";
           dialogBox(context, msg);
         } else {}
       } catch (e) {
