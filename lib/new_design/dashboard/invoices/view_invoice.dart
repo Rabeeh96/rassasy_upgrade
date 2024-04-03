@@ -480,7 +480,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       ),
     );
   }
-
+//
   var printHelper = new AppBlocs();
   var bluetoothHelper = new AppBlocsBT();
   printDetail() async {
