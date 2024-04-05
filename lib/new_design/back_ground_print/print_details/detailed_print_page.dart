@@ -1516,6 +1516,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     var  port = int.parse(portController.text);
     final PosPrintResult res = await printer.connect('192.168.1.16', port: port,);
 
+
     print(res.msg);
     if(res == PosPrintResult.success) {
       await demoPrint(printer);
