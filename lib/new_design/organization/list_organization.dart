@@ -239,7 +239,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                       prefs.setBool('isPosUser', companyList[index].isPosUser);
                                                       prefs.setString('companyID', companyList[index].id);
                                                       prefs.setBool('companySelected', true);
-
+                                                      prefs.setInt('branchID',1);
 
                                                      await Navigator.pushReplacement(
                                                           context,

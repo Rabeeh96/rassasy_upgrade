@@ -31,7 +31,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
 
 
-  TextEditingController code_page_controller = TextEditingController();
+  TextEditingController code_page_controller = TextEditingController()..text="CP864";
 
   @override
   void initState() {
@@ -48,8 +48,6 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     widthController.text = width;
     discover(context);
     print('-default ip  ---$defaultIp');
-
-
   }
 
   String localIp = '';
@@ -61,13 +59,20 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
   TextEditingController ipController = TextEditingController();
   // TextEditingController ipController = TextEditingController()..text = "192.168.1.169";
   bool connectionTesting = false;
-
+/// demo print
   Future<void> DemoPrint(NetworkPrinter printer,codepage) async {
     print(codepage);
-    printer.setStyles(PosStyles(codeTable: codepage, align: PosAlign.center));
-    Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكم صباح الخير عزيزتي جميعاً'));
-    printer.textEncoded(salam, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    printer.emptyLines(1);
+    //printer.setStyles(PosStyles(codeTable: codepage, align: PosAlign.center));
+
+    printer.setGlobalFont(PosFontType.fontA);
+    // Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكم صباح الخير عزيزتي جميعاً'));
+    // printer.textEncoded(salam, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+    // printer.emptyLines(1);
+
+    printer.hr();
+    //printer.text("hgadkjhagsdkjhsadgkjadgakdjhgaksdjhgdkjhagsdkgdkahdgkadhgadkislsdkjhkhbkjakiudygabakjxbhlaiuxcliaaasd",);
+    printer.hr(ch: '-',len: 12);
+    printer.hr(ch: '-',len: 64);
     printer.cut();
   }
 
@@ -1550,9 +1555,12 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     const PaperSize paper = PaperSize.mm80;
     final profile = await CapabilityProfile.load();
     final printer = NetworkPrinter(paper, profile);
+
     var  port = int.parse(portController.text);
     var printerIp = ipController.text;
     final PosPrintResult res = await printer.connect(printerIp, port: port);
+
+
 
     if(res == PosPrintResult.success) {
       await DemoPrint(printer,codePage);
@@ -1641,7 +1649,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     "default",
     "simple",
   ];
-  bool withCapabilities=false;
+  bool withCapabilities=true;
 
 
   @override
