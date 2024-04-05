@@ -382,7 +382,7 @@ class LoyaltyCustomerModel {
       phone: json['MobileNo'],
     );
   }
-}
+}///
 class PaymentData {
   static int cardTypeId = 0;
   static int ledgerID = 0;
