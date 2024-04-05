@@ -273,10 +273,10 @@ class _ProductCreateState extends State<CreateProductNew> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
 
-         var token = prefs.getString('access') ?? '';
-        print(token);
+        var token = prefs.getString('access') ?? '';
+
         final String url = "$baseUrl/translate/translate/";
-        print(url);
+
         Map data = {
           "keyword":dataa,
           "language": "ar"
@@ -299,14 +299,10 @@ class _ProductCreateState extends State<CreateProductNew> {
         if (status == 6000) {
       //    setState(() {
 
-            descriptionController.text = arabic;
+          descriptionController.text = arabic;
        //   });
         }else {
-
-
-            dialogBox(context,'Try again ');
-
-
+          dialogBox(context,'Try again ');
 
         }
       }
@@ -322,21 +318,21 @@ class _ProductCreateState extends State<CreateProductNew> {
     // TODO: implement initState
     super.initState();
     productLists.clear();
-    Future.delayed(Duration(seconds: 0), () async {
+    Future.delayed(const Duration(seconds: 0), () async {
       await getProductList();
       await getDefaultTax();
       await defaultValue();
     });
   }
-  int ProductTaxID =0;
+  int productTaxID =0;
   int categoryID =0;
-  int ProductExciseTaxID =0;
+  int productExciseTaxID =0;
   defaultValue() {
-    ProductTaxID = defaultTaxId;
-    ProductExciseTaxID = defaultTaxId;
-    categoryController..text = '';
-    taxController..text = defaultTaxName;
-    exciseTaxController..text = defaultTaxName;
+    productTaxID = defaultTaxId;
+    productExciseTaxID = defaultTaxId;
+    categoryController.text = '';
+    taxController.text = defaultTaxName;
+    exciseTaxController.text = defaultTaxName;
   }
 
   @override
@@ -1225,7 +1221,7 @@ class _ProductCreateState extends State<CreateProductNew> {
                       );
 
                       if (result != null) {
-                        ProductTaxID   = result[0];
+                        productTaxID   = result[0];
                         taxController.text = result[1];
                       }
                     },
@@ -1307,7 +1303,7 @@ class _ProductCreateState extends State<CreateProductNew> {
                       );
 
                       if (result != null) {
-                        ProductExciseTaxID   = result[0];
+                        productExciseTaxID   = result[0];
                         exciseTaxController.text = result[1];
 
                       }
@@ -1416,7 +1412,7 @@ class _ProductCreateState extends State<CreateProductNew> {
 
 
                   print(exciseTaxController.text);
-                  print(ProductTaxID);
+                  print(productTaxID);
 
 
                   /// commented for upload image in product
@@ -1426,7 +1422,7 @@ class _ProductCreateState extends State<CreateProductNew> {
                       salesPriceController.text == '' ||
                       purchasePriceController.text == '' ||
                       taxController.text == '' ||
-                      ProductTaxID == '') {
+                      productTaxID == '') {
                     dialogBox(context, "Please fill mandatory fields");
                   } else {
 
@@ -1843,8 +1839,8 @@ class _ProductCreateState extends State<CreateProductNew> {
         veg == true ? type = "veg" : type = "Non-veg";
 
         var categoryIDString = categoryID.toString();
-        var tax_ID = ProductTaxID.toString();
-        var exTax_ID = ProductExciseTaxID.toString();
+        var tax_ID = productTaxID.toString();
+        var exTax_ID = productExciseTaxID.toString();
 
 
         print("   tax id  tax id  tax id  tax id  tax id  tax id $tax_ID");
@@ -1962,8 +1958,8 @@ class _ProductCreateState extends State<CreateProductNew> {
         var type = "";
         veg == true ? type = "veg" : type = "Non-veg";
         var categoryIDString = categoryID.toString();
-        var tax_ID = ProductTaxID.toString();
-        var exTax_ID = ProductExciseTaxID.toString();
+        var tax_ID = productTaxID.toString();
+        var exTax_ID = productExciseTaxID.toString();
         var productUID = ProductData.productID;
 
         var val = 'False';
@@ -2111,20 +2107,20 @@ class _ProductCreateState extends State<CreateProductNew> {
             var checkGst = prefs.getBool("check_GST") ?? false;
 
             if (checkVat == true) {
-              ProductTaxID = responseJson['VatID'];
+              productTaxID = responseJson['VatID'];
               taxController.text = responseJson['VAT_TaxName'];
               exciseTaxController.text = responseJson['VAT_TaxName'];
-              ProductExciseTaxID = responseJson['VatID'];
+              productExciseTaxID = responseJson['VatID'];
 
               var exciseData = responseJson["ExciseTaxData"]??"";
               print("------------------------asd");
               if(exciseData !=""){
                 print("------------------------dsa");
                 exciseTaxController.text = exciseData["TaxName"]??"";
-                ProductExciseTaxID = exciseData["TaxID"]??6;
+                productExciseTaxID = exciseData["TaxID"]??6;
               }
               else{
-                ProductExciseTaxID = defaultTaxId;
+                productExciseTaxID = defaultTaxId;
                 exciseTaxController.text = defaultTaxName;
 
               }
@@ -2132,7 +2128,7 @@ class _ProductCreateState extends State<CreateProductNew> {
 
             if (checkGst == true) {
 
-              ProductTaxID = responseJson['GST_ID'];
+              productTaxID = responseJson['GST_ID'];
               taxController.text = responseJson['GST_TaxName'];
 
             }

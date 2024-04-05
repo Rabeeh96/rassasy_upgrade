@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
+import 'package:rassasy_new/new_design/back_ground_print/print_details/detailed_print_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/new_method/pos_list_section.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'global/global.dart';
@@ -83,8 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () {
-      //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => PrintSettings()));
-     navigateUser();
+     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => PrintSettingsDetailed()));
+     //navigateUser();
     });
   }
 
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(status);
     var companySelected = prefs.getBool('companySelected') ?? false;
     var isPosUser = true;
-    // var isPosUser = prefs.getBool('isPosUser') ?? false;
+    /// var isPosUser = prefs.getBool('isPosUser') ?? false;
     print("isPosUser  $isPosUser");
     print(companySelected);
     if (status) {
