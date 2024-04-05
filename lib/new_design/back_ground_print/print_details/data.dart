@@ -5,7 +5,7 @@
 // class PrinterTest extends StatefulWidget {
 //   @override
 //   _PrinterTestState createState() => _PrinterTestState();
-// }
+// }//
 //
 // class _PrinterTestState extends State<PrinterTest> {
 //   USBPrinterManager printerManager = USBPrinterManager();
