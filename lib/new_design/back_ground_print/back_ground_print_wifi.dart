@@ -180,13 +180,10 @@ class AppBlocs {
         await InvoicePrintTemplate4(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       } else if (temp == 'template3') {
         await InvoicePrintTemplate3(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
-      } else {
+      }
+      else {
         await printArabic(printer);
       }
-
-
-
-
       Future.delayed(const Duration(seconds: 2), ()async {
         print("------after delay----------------------------strt printing");
         printer.disconnect();

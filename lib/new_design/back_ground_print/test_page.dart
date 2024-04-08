@@ -142,7 +142,7 @@ class _PrintSettingsState extends State<PrintSettings> {
     // printer.emptyLines(1);
 
     printer.setStyles(PosStyles(align:PosAlign.left));
-
+  /// test page
     //
     // printer.row([
     //   PosColumn(text: 'Token No :', width: 4),
