@@ -510,6 +510,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       }
       else{
 
+        print("usb 1");
         var ret = await printHelperUsb.printDetails();
         if (ret == 2) {
           var ip = "";

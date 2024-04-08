@@ -6,6 +6,7 @@ class LocaleChange extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en_US': {
           'unit_title': 'Unit',
+          'usbPrinter': 'USB Printer',
           'select_branch': 'Select your branch',
           'is_Arabic': 'Arabic',
           'Verify_your_account': 'Verify your account',
@@ -295,6 +296,7 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'usbPrinter': 'طابعة USB',
           'autoFocusField': 'مجال التركيز التلقائي',
           'print': 'مطبعة',
           'select_branch': 'اختر فرعك',

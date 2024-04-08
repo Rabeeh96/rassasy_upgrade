@@ -743,7 +743,7 @@ class AddProductGroupState extends State<AddProductGroup> {
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos/product-group/list/';
-        print(url);
+
           createPermission = prefs.getBool("Groupsave")??true;
           kitchenID ="";
 

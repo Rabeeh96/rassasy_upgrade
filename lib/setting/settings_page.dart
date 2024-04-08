@@ -984,7 +984,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('wifi_printer'.tr,style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
+                  Text(print_type_value?'wifi_printer'.tr:'usbPrinter'.tr,style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
                   FlutterSwitch(
                     width: 50.0,
                     height: 25.0,
@@ -1031,7 +1031,9 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
 
           /// commented template selection
-          print_type_value ==true  ?Card(
+        //  print_type_value ==true  ?
+
+          Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
@@ -1057,57 +1059,58 @@ class _SettingsPageState extends State<SettingsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            templateIndex = 1;
-                            templateViewColor(templateIndex);
-                            setTemplate(1);
-                          });
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 12,
-                          width: MediaQuery.of(context).size.width / 18,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: template1Color,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "1",
-                            style: customisedStyle(context, template1Text, FontWeight.w700, 22.0),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            templateIndex = 2;
-                            templateViewColor(templateIndex);
-                            setTemplate(2);
-
-                          });
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 12,
-                          width: MediaQuery.of(context).size.width / 18,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: template2Color,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "2",
-                            style: customisedStyle(context, template2Text, FontWeight.w700, 22.0),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
+                      /// template 1 and  2 commented
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     setState(() {
+                      //       templateIndex = 1;
+                      //       templateViewColor(templateIndex);
+                      //       setTemplate(1);
+                      //     });
+                      //   },
+                      //   child: Container(
+                      //     height: MediaQuery.of(context).size.height / 12,
+                      //     width: MediaQuery.of(context).size.width / 18,
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(6),
+                      //       color: template1Color,
+                      //     ),
+                      //     alignment: Alignment.center,
+                      //     child: Text(
+                      //       "1",
+                      //       style: customisedStyle(context, template1Text, FontWeight.w700, 22.0),
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   width: 20,
+                      // ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     setState(() {
+                      //       templateIndex = 2;
+                      //       templateViewColor(templateIndex);
+                      //       setTemplate(2);
+                      //
+                      //     });
+                      //   },
+                      //   child: Container(
+                      //     height: MediaQuery.of(context).size.height / 12,
+                      //     width: MediaQuery.of(context).size.width / 18,
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(6),
+                      //       color: template2Color,
+                      //     ),
+                      //     alignment: Alignment.center,
+                      //     child: Text(
+                      //       "2",
+                      //       style: customisedStyle(context, template2Text, FontWeight.w700, 22.0),
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   width: 20,
+                      // ),
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -1126,7 +1129,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            "3",
+                            "1",
                             style: customisedStyle(context, template3Text, FontWeight.w700, 22.0),
                           ),
                         ),
@@ -1152,7 +1155,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            "4",
+                            "2",
                             style: customisedStyle(context, template4Text, FontWeight.w700, 22.0),
                           ),
                         ),
@@ -1165,7 +1168,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
-          ):Container(),
+          ),
+         //     :Container(),
           Card(
             child: Container(
               decoration: BoxDecoration(

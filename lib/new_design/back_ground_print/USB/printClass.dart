@@ -184,13 +184,15 @@ class USBPrintClass {
     // var port = int.parse("9100");
 
 
+
+    print("template template template           $temp");
     // final PosPrintResult res = await printer.connect(printerIp, port: port);
     //
     // if (res == PosPrintResult.success) {
       if (temp == 'template4') {
         await InvoicePrintTemplate4(profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       } else if (temp == 'template3') {
-        await InvoicePrintTemplate3(hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await invoicePrintTemplate3(profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       } else {
 
       }
@@ -207,6 +209,9 @@ class USBPrintClass {
     final http.Response response = await http.get(Uri.parse(imageUrl));
     return response.bodyBytes;
   }
+
+
+
 
   Future<void> InvoicePrintTemplate4(profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
     List<int> bytes = [];
@@ -295,9 +300,11 @@ class USBPrintClass {
 
     bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
     Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
-    Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
-    Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
-    Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
+
+
+
+
+
     Uint8List companyTaxEnc = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
     Uint8List companyCREnc = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
     Uint8List companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
@@ -314,7 +321,7 @@ class USBPrintClass {
     Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
     Uint8List exciseTax = await CharsetConverter.encode("ISO-8859-6", setString('مبلغ الضريبة الانتقائية'));
     Uint8List vatTax = await CharsetConverter.encode("ISO-8859-6", setString('ضريبة القيمة المضافة'));
-    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
+    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
     Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
 
     Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
@@ -329,6 +336,8 @@ class USBPrintClass {
                 height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
       if (companySecondName != "") {
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
+
         bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
         bytes +=generator.textEncoded(companySecondNameEncode,
             styles: const PosStyles(
@@ -337,6 +346,7 @@ class USBPrintClass {
        }
 
       if (companyAddress1 != "") {
+        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
         bytes +=generator.row([
           PosColumn(text: 'Address', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1),
@@ -349,6 +359,9 @@ class USBPrintClass {
        }
 
       if (secondAddress != "") {
+
+        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
+
         bytes +=generator.row([
           PosColumn(text: 'Building ', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
@@ -402,16 +415,21 @@ class USBPrintClass {
       }
 
       if (companySecondName != "") {
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
+
         bytes +=generator.textEncoded(companySecondNameEncode,
             styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (companyAddress1 != "") {
+        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
         bytes +=generator.textEncoded(secondAddress1Encode,
             styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (secondAddress != "") {
+        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
+
         bytes +=generator.textEncoded(secondAddressEncode,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
@@ -451,9 +469,7 @@ class USBPrintClass {
     if (tokenVal) {
       bytes +=generator.hr();
       bytes +=generator.text('Token No ', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-      bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
       bytes +=generator.text(token, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
-      bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
       bytes +=generator.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       bytes +=generator.hr();
     } else {
@@ -483,10 +499,11 @@ class USBPrintClass {
       PosColumn(text: date, width: 6, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
-    Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName));
-    Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
 
     if (customerName != "") {
+
+      Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName));
+
       bytes +=generator.row([
         PosColumn(text: 'Name    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
@@ -498,6 +515,9 @@ class USBPrintClass {
       ]);
     }
     if (customerPhone != "") {
+
+      Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
+
       bytes +=generator.row([
         PosColumn(text: 'Phone    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
@@ -526,8 +546,6 @@ class USBPrintClass {
         PosColumn(text: tableName, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     }
-
-
 
     bytes +=generator.hr();
 
@@ -569,7 +587,6 @@ class USBPrintClass {
     for (var i = 0; i < tableDataDetailsPrint.length; i++) {
       var slNo = i + 1;
 
-      Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
       Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
 
       bytes +=generator.row([
@@ -591,16 +608,26 @@ class USBPrintClass {
             styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
-      bytes +=generator.row([
-        PosColumn(
-            textEncoded: description, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(
-            text: '',
-            width: 5,
-            styles: const PosStyles(
-              height: PosTextSize.size1,
-            ))
-      ]);
+
+
+      String productDescription =tableDataDetailsPrint[i].productDescription;
+
+      if(productDescription!=""){
+        Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
+        bytes +=generator.row([
+          PosColumn(
+              textEncoded: description, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          PosColumn(
+              text: '',
+              width: 5,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+              ))
+        ]);
+      }
+
+
+
       bytes +=generator.hr();
     }
     bytes +=generator.emptyLines(1);
@@ -667,7 +694,7 @@ class USBPrintClass {
           styles:
           const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
       PosColumn(
-          text: countyCodeCompany + " " + roundStringWith(grandTotal),
+          text: "$countyCodeCompany ${roundStringWith(grandTotal)}",
           width: 6,
           styles: const PosStyles(
             fontType: PosFontType.fontA,
@@ -728,6 +755,7 @@ class USBPrintClass {
     final res = await usb_esc_printer_windows.sendPrintRequest(bytes, "POS-80C");
     String msg = "";
 
+
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
@@ -736,1197 +764,542 @@ class USBPrintClass {
 
   }
 
-  Future<void> InvoicePrintTemplate3(tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
-    // List<ProductDetailsModel> tableDataDetailsPrint = [];
-    //
-    // var salesDetails = BluetoothPrintThermalDetails.salesDetails;
-    // print(salesDetails);
-    // for (Map user in salesDetails) {
-    //   tableDataDetailsPrint.add(ProductDetailsModel.fromJson(user));
-    // }
-    //
-    // var logoAvailable = true;
-    // var productDecBool = true;
-    // var qrCodeAvailable = true;
-    //
-    // var invoiceType;
-    //
-    // invoiceType = "SIMPLIFIED TAX INVOICE";
-    //
-    // if (PrintDataDetails.type == "SI") {
-    //   invoiceType = "SIMPLIFIED TAX INVOICE";
-    // }
-    // if (PrintDataDetails.type == "SO") {
-    //   logoAvailable = false;
-    //   qrCodeAvailable = false;
-    //   productDecBool = false;
-    //   invoiceType = "SALES ORDER";
-    // }
-    //
-    // var companyName = BluetoothPrintThermalDetails.companyName;
-    // var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
-    // var secondAddress = BluetoothPrintThermalDetails.secondAddress;
-    // var companySecondName = BluetoothPrintThermalDetails.secondName;
-    // var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
-    // var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
-    // var companyTax = BluetoothPrintThermalDetails.companyGstNumber;
-    //
-    // var countyCodeCompany = BluetoothPrintThermalDetails.countyCodeCompany;
-    //
-    //
-    // var voucherNumber = BluetoothPrintThermalDetails.voucherNumber;
-    // var customerName = BluetoothPrintThermalDetails.ledgerName;
-    //
-    // if (BluetoothPrintThermalDetails.ledgerName == "Cash In Hand") {
-    //   customerName = BluetoothPrintThermalDetails.customerName;
-    // }
-    //
-    // var date = BluetoothPrintThermalDetails.date;
-    // var customerPhone = BluetoothPrintThermalDetails.customerPhone;
-    // var grossAmount = roundStringWith(BluetoothPrintThermalDetails.grossAmount);
-    // var discount = roundStringWith(BluetoothPrintThermalDetails.discount);
-    // var totalTax = roundStringWith(BluetoothPrintThermalDetails.totalTax);
-    // var sGstAmount = roundStringWith(BluetoothPrintThermalDetails.sGstAmount);
-    // var cGstAmount = roundStringWith(BluetoothPrintThermalDetails.cGstAmount);
-    // var grandTotal = roundStringWith(BluetoothPrintThermalDetails.grandTotal);
-    // var vatAmountTotal = roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
-    // var exciseAmountTotal = roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
-    // bool showExcise = double.parse(exciseAmountTotal) > 0.0 ? true : false;
-    // var companyLogo = BluetoothPrintThermalDetails.companyLogoCompany;
-    // var token = BluetoothPrintThermalDetails.tokenNumber;
-    //
-    // var cashReceived = BluetoothPrintThermalDetails.cashReceived;
-    // var bankReceived = BluetoothPrintThermalDetails.bankReceived;
-    // var balance = BluetoothPrintThermalDetails.balance;
-    // var orderType = BluetoothPrintThermalDetails.salesType;
-    // var tableName = BluetoothPrintThermalDetails.tableName;
-    //
-    // //
-    // /// image print commented
-    //
-    // printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
-    // if (PrintDataDetails.type == "SI") {
-    //   if (companyLogo != "") {
-    //     final Uint8List imageData = await _fetchImageData(companyLogo);
-    //     final Img.Image? image = Img.decodeImage(imageData);
-    //     final Img.Image resizedImage = Img.copyResize(image!, width: 200);
-    //     printer.imageRaster(resizedImage);
-    //     //printer.image(resizedImage);
-    //   }
-    // }
-    //
-    // printer.text('', styles: const PosStyles(align: PosAlign.left));
-    //
-    // if (headerAlignment) {
-    //   printer.text('', styles: const PosStyles(align: PosAlign.left));
-    //   if (companyName != "") {
-    //     printer.text(companyName,
-    //         styles: const PosStyles(
-    //             height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
-    //   }
-    //   if (companySecondName != "") {
-    //     printer.text('', styles: const PosStyles(align: PosAlign.left));
-    //     printer.text(companySecondName,
-    //         styles: const PosStyles(
-    //             height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
-    //   }
-    //
-    //   if (companyAddress1 != "") {
-    //     printer.row([
-    //       PosColumn(text: 'Address', width: 2, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(text: '', width: 1),
-    //       PosColumn(
-    //           text: companyAddress1, width: 9, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-    //     ]);
-    //   }
-    //
-    //   if (secondAddress != "") {
-    //     printer.row([
-    //       PosColumn(text: 'Building ', width: 3, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(
-    //           text: secondAddress, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-    //     ]);
-    //   }
-    //
-    //   if (companyTax != "") {
-    //     printer.row([
-    //       PosColumn(text: 'GST No  ', width: 2, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(
-    //           text: companyTax,
-    //           width: 9,
-    //           styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-    //     ]);
-    //   }
-    //
-    //   if (companyPhone != "") {
-    //     printer.row([
-    //       PosColumn(text: 'Phone', width: 2, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(
-    //           text:  companyPhone,
-    //           width: 9,
-    //           styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-    //     ]);
-    //   }
-    //
-    //   if (salesMan != "") {
-    //     printer.row([
-    //       PosColumn(text: 'Sales man', width: 4, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
-    //       PosColumn(text: salesMan, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-    //     ]);
-    //   }
-    // } else {
-    //   if (companyName != "") {
-    //     printer.text(companyName,
-    //         styles: const PosStyles(
-    //             height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
-    //   }
-    //
-    //   if (companySecondName != "") {
-    //     printer.text(companySecondName, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
-    //   }
-    //
-    //   if (companyAddress1 != "") {
-    //     printer.text(companyAddress1, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
-    //   }
-    //
-    //   if (secondAddress != "") {
-    //     printer.text(secondAddress, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    //   }
-    //
-    //   if (companyTax != "") {
-    //     printer.text("GST NO:$companyTax", styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
-    //   }
-    //
-    //   if (companyPhone != "") {
-    //     printer.text(companyPhone, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    //   }
-    //
-    //
-    // }
-    //
-    // printer.text('', styles: const PosStyles(align: PosAlign.left));
-    // printer.text(invoiceType, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    //
-    // if (tokenVal) {
-    //   printer.hr();
-    //   printer.text('Token No ', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-    //   printer.text('', styles: const PosStyles(align: PosAlign.left));
-    //   printer.text(token, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
-    //   printer.text('', styles: const PosStyles(align: PosAlign.left));
-    //   printer.text("Token Number", styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    //   printer.hr();
-    // } else {
-    //   printer.row([
-    //     PosColumn(
-    //         text: 'Token No ',
-    //         width: 4,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //         )),
-    //     PosColumn(
-    //         text: token,
-    //         width: 8,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //           align: PosAlign.right,
-    //         )),
-    //   ]);
-    // }
-    //
-    // printer.row([
-    //   PosColumn(
-    //       text: 'Voucher No  ',
-    //       width: 4,
-    //       styles: const PosStyles(
-    //         height: PosTextSize.size1,
-    //         width: PosTextSize.size1,
-    //       )),
-    //   PosColumn(
-    //       text: voucherNumber,
-    //       width: 8,
-    //       styles: const PosStyles(
-    //         height: PosTextSize.size1,
-    //         width: PosTextSize.size1,
-    //         align: PosAlign.right,
-    //       )),
-    // ]);
-    //
-    // printer.row([
-    //   PosColumn(
-    //       text: 'Date  ',
-    //       width: 4,
-    //       styles: const PosStyles(
-    //         height: PosTextSize.size1,
-    //         width: PosTextSize.size1,
-    //       )),
-    //   PosColumn(
-    //       text: date,
-    //       width: 8,
-    //       styles: const PosStyles(
-    //         height: PosTextSize.size1,
-    //         width: PosTextSize.size1,
-    //         align: PosAlign.right,
-    //       )),
-    // ]);
-    //
-    // if (customerName != "") {
-    //   printer.row([
-    //     PosColumn(
-    //         text: 'Name  ',
-    //         width: 4,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //         )),
-    //     PosColumn(
-    //         text: customerName,
-    //         width: 8,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //           align: PosAlign.right,
-    //         )),
-    //   ]);
-    // }
-    // if (customerPhone != "") {
-    //   printer.row([
-    //     PosColumn(
-    //         text: 'Phone  ',
-    //         width: 4,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //         )),
-    //     PosColumn(
-    //         text: customerPhone,
-    //         width: 8,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //           align: PosAlign.right,
-    //         )),
-    //   ]);
-    // }
-    //
-    // printer.setStyles(const PosStyles(codeTable: 'CP864'));
-    // printer.row([
-    //   PosColumn(
-    //       text: 'Order type  ',
-    //       width: 4,
-    //       styles: const PosStyles(
-    //         height: PosTextSize.size1,
-    //         width: PosTextSize.size1,
-    //       )),
-    //   PosColumn(
-    //       text: orderType,
-    //       width: 8,
-    //       styles: const PosStyles(
-    //         height: PosTextSize.size1,
-    //         width: PosTextSize.size1,
-    //         align: PosAlign.right,
-    //       )),
-    // ]);
-    //
-    // printer.setStyles(const PosStyles(codeTable: 'CP864'));
-    //
-    // if (tableName != "") {
-    //   printer.row([
-    //     PosColumn(
-    //         text: 'Table Name  ',
-    //         width: 4,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //         )),
-    //     PosColumn(
-    //         text: tableName,
-    //         width: 8,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //           align: PosAlign.right,
-    //         )),
-    //   ]);
-    // }
-    //
-    //
-    // if (salesMan != "") {
-    //   printer.row([
-    //     PosColumn(
-    //         text: 'Sales man  ',
-    //         width: 4,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //         )),
-    //     PosColumn(
-    //         text: salesMan,
-    //         width: 8,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //           width: PosTextSize.size1,
-    //           align: PosAlign.right,
-    //         )),
-    //   ]);
-    // }
-    //
-    //
-    //
-    // printer.emptyLines(1);
-    // printer.hr();
-    //
-    // printer.row([
-    //   PosColumn(
-    //       text: 'SL',
-    //       width: 1,
-    //       styles: const PosStyles(
-    //         height: PosTextSize.size1,
-    //       )),
-    //   PosColumn(text: 'Item Name', width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-    //   PosColumn(text: 'Qty', width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-    //   PosColumn(text: 'Rate', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-    //   PosColumn(text: 'Net', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-    // ]);
-    //
-    // printer.hr();
-    //
-    // for (var i = 0; i < tableDataDetailsPrint.length; i++) {
-    //   var slNo = i + 1;
-    //
-    //   printer.row([
-    //     PosColumn(
-    //         text: "$slNo",
-    //         width: 1,
-    //         styles: const PosStyles(
-    //           height: PosTextSize.size1,
-    //         )),
-    //     PosColumn(text: tableDataDetailsPrint[i].productName, width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(text: tableDataDetailsPrint[i].qty, width: 1, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center, bold: tokenVal)),
-    //     PosColumn(
-    //         text: roundStringWith(tableDataDetailsPrint[i].unitPrice),
-    //         width: 2,
-    //         styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-    //     PosColumn(
-    //         text: roundStringWith(tableDataDetailsPrint[i].netAmount),
-    //         width: 3,
-    //         styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-    //   ]);
-    //
-    //   if (tableDataDetailsPrint[i].productDescription != "") {
-    //     printer.row([
-    //       PosColumn(
-    //           text: '',
-    //           width: 1,
-    //           styles: const PosStyles(
-    //             height: PosTextSize.size1,
-    //           )),
-    //       PosColumn(
-    //           text: tableDataDetailsPrint[i].productDescription,
-    //           width: 11,
-    //           styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //
-    //     ]);
-    //   }
-    //
-    //   printer.hr();
-    // }
-    // printer.emptyLines(1);
-    // printer.row([
-    //
-    //   PosColumn(
-    //       text: "Gross Amount",
-    //       width: 5,
-    //       styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //   PosColumn(text: roundStringWith(grossAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    // ]);
-    //
-    // printer.row([
-    //
-    //   PosColumn(
-    //       text: "SGST ",
-    //       width: 5,
-    //       styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //   PosColumn(text: roundStringWith(sGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    // ]);
-    //
-    // printer.row([
-    //
-    //   PosColumn(
-    //       text: "CGST",
-    //       width: 5,
-    //       styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //   PosColumn(text: roundStringWith(cGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    // ]);
-    //
-    // printer.row([
-    //
-    //   PosColumn(
-    //       text: " ",
-    //       width: 8,
-    //       styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //   PosColumn(text: "---------", width: 4, styles: const PosStyles(align: PosAlign.right)),
-    // ]);
-    //
-    //
-    //
-    // printer.row([
-    //
-    //   PosColumn(
-    //       text: "Total Tax",
-    //       width: 5,
-    //       styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //   PosColumn(text: roundStringWith(totalTax), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    // ]);
-    //
-    // printer.row([
-    //
-    //   PosColumn(
-    //       text: "Discount",
-    //       width: 5,
-    //       styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //   PosColumn(text: roundStringWith(discount), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    // ]);
-    //
-    // printer.hr();
-    // printer.row([
-    //   PosColumn(
-    //       text: "Grand Total",
-    //       width: 6,
-    //       styles: const PosStyles(
-    //         fontType: PosFontType.fontA,
-    //         bold: true,
-    //         align: PosAlign.left,
-    //         height: PosTextSize.size2,
-    //         width: PosTextSize.size1,
-    //       )),
-    //   PosColumn(
-    //       text: "$countyCodeCompany ${roundStringWith(grandTotal)}",
-    //       width: 6,
-    //       styles: const PosStyles(
-    //         fontType: PosFontType.fontA,
-    //         bold: true,
-    //         align: PosAlign.right,
-    //         height: PosTextSize.size2,
-    //         width: PosTextSize.size1,
-    //       )),
-    // ]);
-    // printer.hr();
-    // if (PrintDataDetails.type == "SI") {
-    //   if (paymentDetailsInPrint) {
-    //     printer.row([
-    //       PosColumn(
-    //           text: "Cash receipt",
-    //           width: 5,
-    //           styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //       PosColumn(text: roundStringWith(cashReceived), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    //     ]);
-    //
-    //     printer.row([
-    //       PosColumn(
-    //           text: "Bank receipt",
-    //           width: 5,
-    //           styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //       PosColumn(text: roundStringWith(bankReceived), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    //     ]);
-    //
-    //     printer.row([
-    //       PosColumn(
-    //           text: "Balance",
-    //           width: 5,
-    //           styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-    //       PosColumn(text: roundStringWith(balance), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    //     ]);
-    //     printer.hr();
-    //
-    //   }
-    // }
-    //
-    // printer.cut();
-    // if (PrintDataDetails.type == "SI") {
-    //   if (OpenDrawer) {
-    //     printer.drawer();
-    //   }
-    // }
-  }
+  Future<void> invoicePrintTemplate3(profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
 
+    try{
+      List<int> bytes = [];
+      print("-------------------------------------------- Start ");
+      final generator = Generator(PaperSize.mm80, profile);
+      List<ProductDetailsModel> tableDataDetailsPrint = [];
 
+      var salesDetails = BluetoothPrintThermalDetails.salesDetails;
+      print(salesDetails);
+      for (Map user in salesDetails) {
+        tableDataDetailsPrint.add(ProductDetailsModel.fromJson(user));
+      }
 
-  Future<void> InvoicePrintTemplateDirectText({
-    required NetworkPrinter printer,
-    required bool tokenVal,
-    required String companyName,
-    required String address1Company,
-    required String city,
-    required String description,
-    required String countryNameCompany,
-    required String phoneCompany,
-    required String vatNumberCompany,
-    required String cRNumberCompany,
-    required String countyCodeCompany,
-    required String qrCodeImage,
-    required String voucherNumber,
-    required String ledgerName,
-    required String customerName,
-    required String date,
-    required String customerPhone,
-    required String grossAmount,
-    required String discount,
-    required String totalTax,
-    required String grandTotal,
-    required String companyLogoCompany,
-    required String tokenNumber,
-    required String cashReceived,
-    required String bankReceived,
-    required String balance,
-    required String salesType,
-    required var salesDetails,
-  }) async {
-    List<ProductDetailsModel> tableDataDetailsPrint = [];
+      var logoAvailable = true;
+      var productDecBool = true;
+      var qrCodeAvailable = true;
 
-    // var salesDetails = BluetoothPrintThermalDetails.salesDetails;
-    print(salesDetails);
-    for (Map user in salesDetails) {
-      tableDataDetailsPrint.add(ProductDetailsModel.fromJson(user));
-    }
+      var invoiceType;
 
-    var logoAvailable = true;
-    var productDecBool = true;
-    var qrCodeAvailable = true;
-
-    var invoiceType;
-    var invoiceTypeArabic;
-
-    invoiceType = "SIMPLIFIED TAX INVOICE";
-    invoiceTypeArabic = "(فاتورة ضريبية مبسطة)";
-
-    if (PrintDataDetails.type == "SI") {
       invoiceType = "SIMPLIFIED TAX INVOICE";
-      invoiceTypeArabic = "(فاتورة ضريبية مبسطة)";
-    }
-    if (PrintDataDetails.type == "SO") {
-      logoAvailable = false;
-      qrCodeAvailable = false;
-      productDecBool = false;
-      invoiceType = "SALES ORDER";
-      invoiceTypeArabic = "(طلب المبيعات)";
-    }
 
-    var companyAddress1 = address1Company;
+      if (PrintDataDetails.type == "SI") {
+        invoiceType = "SIMPLIFIED TAX INVOICE";
+      }
+      if (PrintDataDetails.type == "SO") {
+        logoAvailable = false;
+        qrCodeAvailable = false;
+        productDecBool = false;
+        invoiceType = "SALES ORDER";
+      }
 
-    var companyCountry = countryNameCompany;
-    var companyPhone = phoneCompany;
-    var companyTax = vatNumberCompany;
-    var companyCrNumber = cRNumberCompany;
+      var companyName = BluetoothPrintThermalDetails.companyName;
+      var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
+      var secondAddress = BluetoothPrintThermalDetails.secondAddress;
+      var companySecondName = BluetoothPrintThermalDetails.secondName;
+      var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
+      var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
+      var companyTax = BluetoothPrintThermalDetails.companyGstNumber;
 
-    var qrCodeData = qrCodeImage;
+      var countyCodeCompany = BluetoothPrintThermalDetails.countyCodeCompany;
+      print("-------------------------------------------- Start ");
 
-    var customerName = ledgerName;
-    print("________________LedgerName   ${ledgerName}");
-    print("________________customerName     ${customerName}");
+      var voucherNumber = BluetoothPrintThermalDetails.voucherNumber;
+      var customerName = BluetoothPrintThermalDetails.ledgerName;
 
-    if (ledgerName == "Cash In Hand") {
-      customerName = customerName;
-    }
+      if (BluetoothPrintThermalDetails.ledgerName == "Cash In Hand") {
+        customerName = BluetoothPrintThermalDetails.customerName;
+      }
 
-    var orderType = salesType;
+      var date = BluetoothPrintThermalDetails.date;
+      var customerPhone = BluetoothPrintThermalDetails.customerPhone;
+      var grossAmount = roundStringWith(BluetoothPrintThermalDetails.grossAmount);
+      var discount = roundStringWith(BluetoothPrintThermalDetails.discount);
+      var totalTax = roundStringWith(BluetoothPrintThermalDetails.totalTax);
+      var sGstAmount = roundStringWith(BluetoothPrintThermalDetails.sGstAmount);
+      var cGstAmount = roundStringWith(BluetoothPrintThermalDetails.cGstAmount);
+      var grandTotal = roundStringWith(BluetoothPrintThermalDetails.grandTotal);
+      var vatAmountTotal = roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
+      var exciseAmountTotal = roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
+      bool showExcise = double.parse(exciseAmountTotal) > 0.0 ? true : false;
+      var companyLogo = BluetoothPrintThermalDetails.companyLogoCompany;
+      var token = BluetoothPrintThermalDetails.tokenNumber;
 
-    //
-    /// image print commented
-    // final Uint8List imageData = await _fetchImageData(BluetoothPrintThermalDetails.companyLogoCompany);
-    //
-    // final Img.Image? image = Img.decodeImage(imageData);
-    // final Img.Image resizedImage = Img.copyResize(image!, width: 200);
-    // printer.image(resizedImage);
+      var cashReceived = BluetoothPrintThermalDetails.cashReceived;
+      var bankReceived = BluetoothPrintThermalDetails.bankReceived;
+      var balance = BluetoothPrintThermalDetails.balance;
+      var orderType = BluetoothPrintThermalDetails.salesType;
+      var tableName = BluetoothPrintThermalDetails.tableName;
 
-    printer.row([
-      PosColumn(text: '', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(text: '', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(text: '', width: 6, styles: const PosStyles(align: PosAlign.center)),
-    ]);
-    Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
-    Uint8List cityEncode = await CharsetConverter.encode("ISO-8859-6", setString(city));
-    Uint8List descriptionC = await CharsetConverter.encode("ISO-8859-6", setString(description));
-    Uint8List companyTaxEnc = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
-    Uint8List companyCREnc = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
-    Uint8List companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
+      //
+      /// image print commented
 
-    Uint8List invoiceTypeEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
-    Uint8List invoiceTypeArabicEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
+      bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+      if (PrintDataDetails.type == "SI") {
+        if (companyLogo != "") {
+          final Uint8List imageData = await _fetchImageData(companyLogo);
+          final Img.Image? image = Img.decodeImage(imageData);
+          final Img.Image resizedImage = Img.copyResize(image!, width: 200);
+          bytes +=generator.imageRaster(resizedImage);
+          //bytes +=generator.image(resizedImage);
+        }
+      }
 
-    Uint8List ga = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
-    Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
-    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
-    Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
+      bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
 
-    Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
-    Uint8List cr = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ المستلم'));
-    Uint8List br = await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
+      if (headerAlignment) {
+        bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+        if (companyName != "") {
+          bytes +=generator.text(companyName,
+              styles: const PosStyles(
+                  height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
+        }
+        if (companySecondName != "") {
+          bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+          bytes +=generator.text(companySecondName,
+              styles: const PosStyles(
+                  height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
+        }
 
-    if (companyName != "") {
-      printer.textEncoded(companyNameEnc,
-          styles:
-          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    }
-    if (description != "") {
-      printer.textEncoded(descriptionC, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
-    }
+        if (companyAddress1 != "") {
+          bytes +=generator.row([
+            PosColumn(text: 'Address', width: 2, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1),
+            PosColumn(
+                text: companyAddress1, width: 9, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          ]);
+        }
 
-    if (city != "") {
-      printer.textEncoded(cityEncode, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    }
+        if (secondAddress != "") {
+          bytes +=generator.row([
+            PosColumn(text: 'Building ', width: 3, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(
+                text: secondAddress, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          ]);
+        }
 
-    if (companyTax != "") {
-      printer.textEncoded(companyTaxEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    }
-    if (companyCrNumber != "") {
-      printer.textEncoded(companyCREnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    }
-    if (companyPhone != "") {
-      printer.textEncoded(companyPhoneEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    }
+        if (companyTax != "") {
+          bytes +=generator.row([
+            PosColumn(text: 'GST No  ', width: 2, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(
+                text: companyTax,
+                width: 9,
+                styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          ]);
+        }
 
-    printer.emptyLines(1);
+        if (companyPhone != "") {
+          bytes +=generator.row([
+            PosColumn(text: 'Phone', width: 2, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(
+                text:  companyPhone,
+                width: 9,
+                styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          ]);
+        }
 
-    printer.textEncoded(invoiceTypeEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    printer.textEncoded(invoiceTypeArabicEnc, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+        if (salesMan != "") {
+          bytes +=generator.row([
+            PosColumn(text: 'Sales man', width: 4, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: salesMan, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          ]);
+        }
+      } else {
+        if (companyName != "") {
+          bytes +=generator.text(companyName,
+              styles: const PosStyles(
+                  height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
+        }
 
-    printer.emptyLines(1);
+        if (companySecondName != "") {
+          bytes +=generator.text(companySecondName, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+        }
 
-    var isoDate = DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
-    printer.setStyles(const PosStyles(align: PosAlign.left));
+        if (companyAddress1 != "") {
+          bytes +=generator.text(companyAddress1, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+        }
 
-    Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
-    Uint8List voucherNoEnc = await CharsetConverter.encode("ISO-8859-6", setString('رقم الفاتورة'));
-    Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString('تاريخ'));
-    Uint8List customerEnc = await CharsetConverter.encode("ISO-8859-6", setString('اسم'));
-    Uint8List phoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
-    Uint8List typeEnc = await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
+        if (secondAddress != "") {
+          bytes +=generator.text(secondAddress, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        }
+        if (companyTax != "") {
+          bytes +=generator.text("GST NO:$companyTax", styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.center));
+        }
+        if (companyPhone != "") {
+          bytes +=generator.text(companyPhone, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        }
 
-    if (tokenVal) {
-      printer.hr();
-      printer.text('Token No ', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-      printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size3, width: PosTextSize.size3, bold: true, align: PosAlign.center));
-      printer.textEncoded(tokenEnc,
-          styles: const PosStyles(
-            align: PosAlign.right,
-            bold: true,
-          ));
-      printer.hr();
-    } else {
-      printer.row([
-        PosColumn(text: 'Token No ', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
+      }
+
+      bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+      bytes +=generator.text(invoiceType, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+
+      if (tokenVal) {
+        bytes +=generator.hr();
+        bytes +=generator.text('Token No ', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
+        bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+        bytes +=generator.text(token, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+        bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+        bytes +=generator.text("Token Number", styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        bytes +=generator.hr();
+      } else {
+        bytes +=generator.row([
+          PosColumn(
+              text: 'Token No ',
+              width: 4,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+              )),
+          PosColumn(
+              text: token,
+              width: 8,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+                align: PosAlign.right,
+              )),
+        ]);
+      }
+
+      bytes +=generator.row([
         PosColumn(
-            textEncoded: tokenEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(text: tokenNumber, width: 6, styles: const PosStyles(align: PosAlign.right)),
+            text: 'Voucher No  ',
+            width: 4,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: voucherNumber,
+            width: 8,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+              align: PosAlign.right,
+            )),
       ]);
-    }
 
-    printer.row([
-      PosColumn(text: 'Voucher No  ', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(
-          textEncoded: voucherNoEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: voucherNumber, width: 6, styles: const PosStyles(align: PosAlign.right)),
-    ]);
-
-    printer.row([
-      PosColumn(text: 'Date  ', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(textEncoded: dateEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: date, width: 6, styles: const PosStyles(align: PosAlign.right)),
-    ]);
-
-    Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName));
-    Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
-
-    if (customerName != "") {
-      printer.row([
-        PosColumn(text: 'Name    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      bytes +=generator.row([
         PosColumn(
-            textEncoded: customerEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+            text: 'Date  ',
+            width: 4,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+            )),
         PosColumn(
-            textEncoded: customerNameEnc,
-            width: 6,
-            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+            text: date,
+            width: 8,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+              align: PosAlign.right,
+            )),
       ]);
-    }
-    if (customerPhone != "") {
-      printer.row([
-        PosColumn(text: 'Phone    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+
+      if (customerName != "") {
+        bytes +=generator.row([
+          PosColumn(
+              text: 'Name  ',
+              width: 4,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+              )),
+          PosColumn(
+              text: customerName,
+              width: 8,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+                align: PosAlign.right,
+              )),
+        ]);
+      }
+      if (customerPhone != "") {
+        bytes +=generator.row([
+          PosColumn(
+              text: 'Phone  ',
+              width: 4,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+              )),
+          PosColumn(
+              text: customerPhone,
+              width: 8,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+                align: PosAlign.right,
+              )),
+        ]);
+      }
+
+      bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864'));
+      bytes +=generator.row([
         PosColumn(
-            textEncoded: phoneEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+            text: 'Order type  ',
+            width: 4,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+            )),
         PosColumn(
-            textEncoded: phoneNoEncoded,
-            width: 6,
-            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+            text: orderType,
+            width: 8,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+              align: PosAlign.right,
+            )),
       ]);
-    }
 
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
-    printer.row([
-      PosColumn(text: 'Order type    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(textEncoded: typeEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: orderType, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-    ]);
+      bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864'));
 
-    // printer.row([
-    //   PosColumn(text: '', width: 5, styles: PosStyles(fontType: PosFontType.fontB)),
-    //   PosColumn(text: "", width: 7, styles: PosStyles(align: PosAlign.right)),
-    // ]);
+      if (tableName != "") {
+        bytes +=generator.row([
+          PosColumn(
+              text: 'Table Name  ',
+              width: 4,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+              )),
+          PosColumn(
+              text: tableName,
+              width: 8,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+                align: PosAlign.right,
+              )),
+        ]);
+      }
 
-    // printer.row([
-    //   PosColumn(text: 'Token No ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: token, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    // ]);
+      print("-------------------------------------------- Start ");
+      if (salesMan != "") {
+        bytes +=generator.row([
+          PosColumn(
+              text: 'Sales man  ',
+              width: 4,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+              )),
+          PosColumn(
+              text: salesMan,
+              width: 8,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+                align: PosAlign.right,
+              )),
+        ]);
+      }
 
-    // printer.row([
-    //   PosColumn(text: 'Voucher No :', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: voucherNumber, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    // ]);
-    // printer.row([
-    //   PosColumn(text: 'Date      ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: date, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    // ]);
 
-    // if(customerName != ""){
-    //   printer.row([
-    //     PosColumn(text: 'Name    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosCol
-    //     umn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(textEncoded: customerNameEnc, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   ]);
-    // }
-    //
-    // if(customerPhone != ""){
-    //   printer.row([
-    //     PosColumn(text: 'Phone    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(textEncoded: phoneNoEncoded, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   ]);
-    // }
-    //
 
-    // printer.row([
-    //   PosColumn(text: 'Order type    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: orderType, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    // ]);
+      bytes +=generator.emptyLines(1);
+      bytes +=generator.hr();
 
-    printer.hr();
-
-    Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
-    Uint8List productNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("أغراض"));
-    Uint8List qtyEnc = await CharsetConverter.encode("ISO-8859-6", setString("كمية"));
-    Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
-    Uint8List netEnc = await CharsetConverter.encode("ISO-8859-6", setString("المجموع"));
-
-    // printer.setStyles(PosStyles(align: PosAlign.center));
-    // printer.setStyles(PosStyles(align: PosAlign.left));
-
-    printer.row([
-      PosColumn(
-          text: 'SL',
-          width: 1,
-          styles: const PosStyles(
-            height: PosTextSize.size1,
-          )),
-      PosColumn(text: 'Item Name', width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(text: 'Qty', width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(text: 'Rate', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: 'Net', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-    ]);
-
-    printer.row([
-      PosColumn(
-          textEncoded: slNoEnc,
-          width: 1,
-          styles: const PosStyles(
-            height: PosTextSize.size1,
-          )),
-      PosColumn(textEncoded: productNameEnc, width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(textEncoded: qtyEnc, width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(textEncoded: rateEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(textEncoded: netEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-    ]);
-
-    printer.hr();
-
-    for (var i = 0; i < tableDataDetailsPrint.length; i++) {
-      var slNo = i + 1;
-
-      Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
-      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
-
-      printer.row([
+      bytes +=generator.row([
         PosColumn(
-            text: "$slNo",
+            text: 'SL',
             width: 1,
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(textEncoded: productName, width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(text: tableDataDetailsPrint[i].qty, width: 1, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center, bold: tokenVal)),
-        PosColumn(
-            text: roundStringWith(tableDataDetailsPrint[i].unitPrice),
-            width: 2,
-            styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(
-            text: roundStringWith(tableDataDetailsPrint[i].netAmount),
-            width: 3,
-            styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: 'Item Name', width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Qty', width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Rate', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: 'Net', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
-      printer.row([
+      bytes +=generator.hr();
+
+      for (var i = 0; i < tableDataDetailsPrint.length; i++) {
+        var slNo = i + 1;
+
+        bytes +=generator.row([
+          PosColumn(
+              text: "$slNo",
+              width: 1,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+              )),
+          PosColumn(text: tableDataDetailsPrint[i].productName, width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+          PosColumn(text: roundStringWith(tableDataDetailsPrint[i].qty), width: 1, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center, bold: tokenVal)),
+          PosColumn(
+              text: roundStringWith(tableDataDetailsPrint[i].unitPrice),
+              width: 2,
+              styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+          PosColumn(
+              text: roundStringWith(tableDataDetailsPrint[i].netAmount),
+              width: 3,
+              styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        ]);
+
+        if (tableDataDetailsPrint[i].productDescription != "") {
+          bytes +=generator.row([
+            PosColumn(
+                text: '',
+                width: 1,
+                styles: const PosStyles(
+                  height: PosTextSize.size1,
+                )),
+            PosColumn(
+                text: tableDataDetailsPrint[i].productDescription,
+                width: 11,
+                styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+
+          ]);
+        }
+
+        bytes +=generator.hr();
+      }
+      bytes +=generator.emptyLines(1);
+      bytes +=generator.row([
+
         PosColumn(
-            textEncoded: description, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(
-            text: '',
+            text: "Gross Amount",
             width: 5,
-            styles: const PosStyles(
-              height: PosTextSize.size1,
-            ))
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: roundStringWith(grossAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
       ]);
-      printer.hr();
-    }
-    printer.emptyLines(1);
-    printer.row([
-      PosColumn(text: 'Gross Amount', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(textEncoded: ga, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: roundStringWith(grossAmount), width: 6, styles: const PosStyles(align: PosAlign.right)),
-    ]);
-    printer.row([
-      PosColumn(text: 'Total Tax', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(textEncoded: tt, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: roundStringWith(totalTax), width: 6, styles: const PosStyles(align: PosAlign.right)),
-    ]);
-    printer.row([
-      PosColumn(text: 'Discount', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(textEncoded: dis, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: roundStringWith(discount), width: 6, styles: const PosStyles(align: PosAlign.right)),
-    ]);
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
-    printer.hr();
-    printer.row([
-      PosColumn(text: 'Grand Total', width: 3, styles: const PosStyles(bold: true, fontType: PosFontType.fontB)),
-      PosColumn(
-          textEncoded: gt, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
-      PosColumn(
-          text: countyCodeCompany + " " + roundStringWith(grandTotal),
-          width: 6,
-          styles: const PosStyles(fontType: PosFontType.fontA, bold: true, align: PosAlign.right)),
-    ]);
-    if (qrCodeAvailable == true) {
-      /// details commented
-      // printer.row([
-      //   PosColumn(text: 'Cash receipt', width: 4, styles: PosStyles(fontType: PosFontType.fontB)),
-      //   PosColumn(textEncoded:cr,width: 5, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-      //   PosColumn(text: roundStringWith(cashReceived), width: 3,styles: PosStyles(align: PosAlign.right)),
-      // ]);
-      //
-      //
-      // printer.row([
-      //   PosColumn(text: 'Bank receipt', width: 4, styles: PosStyles(fontType: PosFontType.fontB)),
-      //   PosColumn(textEncoded:br,width: 5, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-      //   PosColumn(text: roundStringWith(bankReceived), width: 3,styles: PosStyles(align: PosAlign.right)),
-      // ]);
-      //
-      // printer.row([
-      //   PosColumn(text: 'Balance', width: 4, styles: PosStyles(fontType: PosFontType.fontB)),
-      //   PosColumn(textEncoded:bl,width: 5, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-      //   PosColumn(text: roundStringWith(balance), width: 3,styles: PosStyles(align: PosAlign.right)),
-      // ]);
-      printer.feed(1);
-      var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
-          BluetoothPrintThermalDetails.grandTotal, BluetoothPrintThermalDetails.totalTax);
-      printer.qrcode(qrCode, size: QRSize.Size5);
-    }
-    // printer.emptyLines(1);
-    // printer.text('Powered By Vikn Codes', styles: PosStyles(height: PosTextSize.size1, bold: true, width: PosTextSize.size1, align: PosAlign.center));
 
-    printer.cut();
+      bytes +=generator.row([
+
+        PosColumn(
+            text: "SGST ",
+            width: 5,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: roundStringWith(sGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+
+      bytes +=generator.row([
+
+        PosColumn(
+            text: "CGST",
+            width: 5,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: roundStringWith(cGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+
+      bytes +=generator.row([
+
+        PosColumn(
+            text: " ",
+            width: 8,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: "---------", width: 4, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+
+
+
+      bytes +=generator.row([
+
+        PosColumn(
+            text: "Total Tax",
+            width: 5,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: roundStringWith(totalTax), width: 7, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+
+      bytes +=generator.row([
+
+        PosColumn(
+            text: "Discount",
+            width: 5,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: roundStringWith(discount), width: 7, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+
+      bytes +=generator.hr();
+      bytes +=generator.row([
+        PosColumn(
+            text: "Grand Total",
+            width: 6,
+            styles: const PosStyles(
+              fontType: PosFontType.fontA,
+              bold: true,
+              align: PosAlign.left,
+              height: PosTextSize.size2,
+              width: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: "$countyCodeCompany ${roundStringWith(grandTotal)}",
+            width: 6,
+            styles: const PosStyles(
+              fontType: PosFontType.fontA,
+              bold: true,
+              align: PosAlign.right,
+              height: PosTextSize.size2,
+              width: PosTextSize.size1,
+            )),
+      ]);
+      bytes +=generator.hr();
+      if (PrintDataDetails.type == "SI") {
+        if (paymentDetailsInPrint) {
+          bytes +=generator.row([
+            PosColumn(
+                text: "Cash receipt",
+                width: 5,
+                styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+            PosColumn(text: roundStringWith(cashReceived), width: 7, styles: const PosStyles(align: PosAlign.right)),
+          ]);
+
+          bytes +=generator.row([
+            PosColumn(
+                text: "Bank receipt",
+                width: 5,
+                styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+            PosColumn(text: roundStringWith(bankReceived), width: 7, styles: const PosStyles(align: PosAlign.right)),
+          ]);
+
+          bytes +=generator.row([
+            PosColumn(
+                text: "Balance",
+                width: 5,
+                styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+            PosColumn(text: roundStringWith(balance), width: 7, styles: const PosStyles(align: PosAlign.right)),
+          ]);
+          bytes +=generator.hr();
+
+        }
+      }
+
+      bytes +=generator.cut();
+      if (PrintDataDetails.type == "SI") {
+        if (OpenDrawer) {
+          bytes +=generator.drawer();
+        }
+      }
+
+      print("-------------------------------------------- Start $bytes");
+      final res = await usb_esc_printer_windows.sendPrintRequest(bytes, "POS-80C");
+      print(res);
+      String msg = "";
+
+      if (res == "success") {
+        msg = "Printed Successfully";
+      } else {
+        msg = "Failed to generate a print please make sure to use the correct printer name";
+      }
+    }
+    catch(e){
+      print("error in ${e.toString()}");
+    }
+
   }
-
-  // Future<void> salesInvoicePrint(NetworkPrinter printer) async {
-  //   List<ProductDetailsModel> tableDataDetailsPrint = [];
-  //
-  //   var salesDetails = BluetoothPrintThermalDetails.salesDetails;
-  //   print(salesDetails);
-  //   for (Map user in salesDetails) {
-  //     tableDataDetailsPrint.add(ProductDetailsModel.fromJson(user));
-  //   }
-  //
-  //   var logoAvailable = true;
-  //   var productDecBool = true;
-  //   var qrCodeAvailable = true;
-  //
-  //   var invoiceType;
-  //   var invoiceTypeArabic;
-  //
-  //   invoiceType = "SIMPLIFIED TAX INVOICE";
-  //   invoiceTypeArabic = "(فاتورة ضريبية مبسطة)";
-  //
-  //   if (PrintDataDetails.type == "SI") {
-  //     invoiceType = "SIMPLIFIED TAX INVOICE";
-  //     invoiceTypeArabic = "(فاتورة ضريبية مبسطة)";
-  //   }
-  //   if (PrintDataDetails.type == "SO") {
-  //     logoAvailable = false;
-  //     qrCodeAvailable = false;
-  //     productDecBool = false;
-  //     invoiceType = "ORDER";
-  //     invoiceTypeArabic = "(طلب المبيعات)";
-  //   }
-  //
-  //   var companyName = BluetoothPrintThermalDetails.companyName;
-  //   var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
-  //   var city = BluetoothPrintThermalDetails.city;
-  //   var description = BluetoothPrintThermalDetails.description;
-  //   var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
-  //   var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
-  //   var companyTax = BluetoothPrintThermalDetails.vatNumberCompany;
-  //   var companyCrNumber = BluetoothPrintThermalDetails.cRNumberCompany;
-  //   var countyCodeCompany = BluetoothPrintThermalDetails.countyCodeCompany;
-  //   var qrCodeData = BluetoothPrintThermalDetails.qrCodeImage;
-  //
-  //   var voucherNumber = BluetoothPrintThermalDetails.voucherNumber;
-  //   var name = BluetoothPrintThermalDetails.customerName;
-  //   var date = BluetoothPrintThermalDetails.date;
-  //   var phone = BluetoothPrintThermalDetails.customerPhone;
-  //   var grossAmount = roundStringWith(BluetoothPrintThermalDetails.grossAmount);
-  //   var discount = roundStringWith(BluetoothPrintThermalDetails.discount);
-  //   var totalTax = roundStringWith(BluetoothPrintThermalDetails.totalTax);
-  //   var grandTotal = roundStringWith(BluetoothPrintThermalDetails.grandTotal);
-  //   var companyLogo = BluetoothPrintThermalDetails.companyLogoCompany;
-  //   var token = BluetoothPrintThermalDetails.tokenNumber;
-  //
-  //   var cashReceived = BluetoothPrintThermalDetails.cashReceived;
-  //   var bankReceived = BluetoothPrintThermalDetails.bankReceived;
-  //   var balance = BluetoothPrintThermalDetails.balance;
-  //   var orderType = BluetoothPrintThermalDetails.salesType;
-  //
-  //   //
-  //
-  //   printer.setStyles(PosStyles(codeTable: 'CP864', align: PosAlign.center));
-  //   Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
-  //    Uint8List cityEncode = await CharsetConverter.encode("ISO-8859-6", setString(city));
-  //   Uint8List descriptionC = await CharsetConverter.encode("ISO-8859-6", setString(description));
-  //    Uint8List h3E = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
-  //   Uint8List h4E = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
-  //    Uint8List h5E = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
-  //   Uint8List h6E = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
-  //   Uint8List sH = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
-  //
-  //   Uint8List ga = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
-  //   Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
-  //   Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
-  //   Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
-  //
-  //   Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
-  //   Uint8List cr = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ المستلم'));
-  //   Uint8List br = await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
-  //
-  //   printer.textEncoded(companyNameEnc,
-  //       styles: PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-  //   printer.textEncoded(descriptionC, styles: PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
-  //   printer.textEncoded(cityEncode, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-  //
-  //
-  //   printer.textEncoded(h3E, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-  //   printer.textEncoded(h4E, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-  //   printer.textEncoded(h5E, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-  //   printer.textEncoded(h6E, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-  //   printer.textEncoded(sH, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-  //
-  //   printer.emptyLines(1);
-  //   var isoDate = DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
-  //
-  //   printer.row([
-  //     PosColumn(text: 'Token No ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: token, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //   ]);
-  //
-  //   printer.row([
-  //     PosColumn(text: 'Voucher No :', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: voucherNumber, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //   ]);
-  //   printer.row([
-  //     PosColumn(text: 'Date      ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: date, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //   ]);
-  //   Uint8List customerName = await CharsetConverter.encode("ISO-8859-6", setString(name));
-  //   Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(phone));
-  //   printer.row([
-  //     PosColumn(text: 'Name    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(textEncoded: customerName, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //   ]);
-  //   printer.row([
-  //     PosColumn(text: 'Phone    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(textEncoded: phoneNoEncoded, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //   ]);
-  //
-  //   printer.row([
-  //     PosColumn(text: 'Order type    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //     PosColumn(text: orderType, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //   ]);
-  //
-  //   printer.hr();
-  //   printer.row([
-  //     PosColumn(
-  //         text: 'SL',
-  //         width: 1,
-  //         styles: PosStyles(
-  //           height: PosTextSize.size1,
-  //         )),
-  //     PosColumn(
-  //         text: 'Product Name',
-  //         width: 6,
-  //         styles: PosStyles(
-  //           height: PosTextSize.size1,
-  //         )),
-  //     PosColumn(
-  //         text: 'Qty',
-  //         width: 1,
-  //         styles: PosStyles(
-  //           height: PosTextSize.size1,
-  //         )),
-  //     PosColumn(
-  //         text: 'Rate',
-  //         width: 2,
-  //         styles: PosStyles(
-  //           height: PosTextSize.size1,
-  //         )),
-  //     PosColumn(
-  //         text: 'Net',
-  //         width: 2,
-  //         styles: PosStyles(
-  //           height: PosTextSize.size1,
-  //         )),
-  //   ]);
-  //   printer.hr();
-  //
-  //   for (var i = 0; i < tableDataDetailsPrint.length; i++) {
-  //     var slNo = i + 1;
-  //
-  //     Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
-  //     Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
-  //     printer.row([
-  //       PosColumn(
-  //           text: "$slNo",
-  //           width: 1,
-  //           styles: PosStyles(
-  //             height: PosTextSize.size1,
-  //           )),
-  //       PosColumn(textEncoded: productName, width: 6, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //       PosColumn(text: tableDataDetailsPrint[i].qty, width: 1, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-  //       PosColumn(
-  //           text: tableDataDetailsPrint[i].unitPrice,
-  //           width: 2,
-  //           styles: PosStyles(
-  //             height: PosTextSize.size1,
-  //           )),
-  //       PosColumn(
-  //           text: tableDataDetailsPrint[i].netAmount,
-  //           width: 2,
-  //           styles: PosStyles(
-  //             height: PosTextSize.size1,
-  //           )),
-  //     ]);
-  //
-  //     printer.row([
-  //       PosColumn(textEncoded: description, width: 7, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-  //       PosColumn(
-  //           text: '',
-  //           width: 5,
-  //           styles: PosStyles(
-  //             height: PosTextSize.size1,
-  //           )),
-  //     ]);
-  //
-  //     printer.hr();
-  //   }
-  //   printer.feed(1);
-  //
-  //
-  //
-  //   printer.row([
-  //     PosColumn(text: 'Gross Amount', width: 5, styles: PosStyles(fontType: PosFontType.fontB)),
-  //     PosColumn(text: '', width: 4),
-  //     PosColumn(text: roundStringWith(grossAmount), width: 3),
-  //   ]);
-  //   printer.textEncoded(ga, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left));
-  //
-  //   printer.row([
-  //     PosColumn(text: 'Total Tax', width: 5, styles: PosStyles(fontType: PosFontType.fontB)),
-  //     PosColumn(text: '', width: 4),
-  //     PosColumn(text: roundStringWith(totalTax), width: 3),
-  //   ]);
-  //   printer.textEncoded(tt, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left));
-  //   printer.row([
-  //     PosColumn(text: 'Discount', width: 5, styles: PosStyles(fontType: PosFontType.fontB)),
-  //     PosColumn(text: '', width: 4),
-  //     PosColumn(text: roundStringWith(discount), width: 3),
-  //   ]);
-  //
-  //   printer.textEncoded(dis, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left));
-  //
-  //   printer.feed(1);
-  //   printer.row([
-  //     PosColumn(text: 'Grand Total', width: 5, styles: PosStyles(bold: true, fontType: PosFontType.fontB)),
-  //     PosColumn(text: '', width: 4, styles: PosStyles(bold: true)),
-  //     PosColumn(text: countyCodeCompany + " " + roundStringWith(grandTotal), width: 3, styles: PosStyles(fontType: PosFontType.fontA, bold: true)),
-  //   ]);
-  //   printer.textEncoded(gt, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left));
-  //
-  //   if (qrCodeAvailable == true) {
-  //     printer.row([
-  //       PosColumn(text: 'Cash receipt', width: 5, styles: PosStyles(fontType: PosFontType.fontB)),
-  //       PosColumn(text: '', width: 4),
-  //       PosColumn(text: roundStringWith(cashReceived), width: 3),
-  //     ]);
-  //
-  //     printer.textEncoded(cr, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left));
-  //
-  //     printer.row([
-  //       PosColumn(text: 'Bank receipt', width: 5, styles: PosStyles(fontType: PosFontType.fontB)),
-  //       PosColumn(text: '', width: 4),
-  //       PosColumn(text: roundStringWith(bankReceived), width: 3),
-  //     ]);
-  //     printer.textEncoded(br, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left));
-  //
-  //     printer.row([
-  //       PosColumn(text: 'Balance', width: 5, styles: PosStyles(fontType: PosFontType.fontB)),
-  //       PosColumn(text: '', width: 4),
-  //       PosColumn(text: roundStringWith(balance), width: 3),
-  //     ]);
-  //     printer.textEncoded(bl, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left));
-  //
-  //     printer.feed(1);
-  //
-  //     var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
-  //         BluetoothPrintThermalDetails.grandTotal, BluetoothPrintThermalDetails.totalTax);
-  //     printer.qrcode(qrCode, size: QRSize.Size5);
-  //   }
-  //
-  //   printer.hr();
-  //   printer.text('Powered By Vikn Codes', styles: PosStyles(height: PosTextSize.size1, bold: true, width: PosTextSize.size1, align: PosAlign.center));
-  //
-  //   printer.cut();
-  // }
 
   printKotPrint(var id, rePrint, cancelOrder, isUpdate) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -2108,55 +1481,40 @@ class USBPrintClass {
       } else {
         profile = await CapabilityProfile.load(name: capabilities);
       }
-      const PaperSize paper = PaperSize.mm80;
-      final printer = NetworkPrinter(paper, profile);
-      var port = int.parse("9100");
-      final PosPrintResult res = await printer.connect(printerIp, port: port);
-      print("print result ${res.msg}");
 
-      if (res == PosPrintResult.success) {
-        if (temp == 'template4') {
-          await kotPrint(printer, id, items, isCancelNote, isUpdate);
+      if (temp == 'template4') {
+          await kotPrint(printerIp,profile, id, items, isCancelNote, isUpdate);
         }
         else if (temp == 'template3') {
-          await kotPrintGst(printer, id, items, isCancelNote, isUpdate);
-        }
-        else {
-          await printArabicKot(printer, id, items);
+          await kotPrintGst(printerIp,profile, id, items, isCancelNote, isUpdate);
         }
 
-        Future.delayed(const Duration(seconds: 1), ()async {
-          print("------after delay----------------------------strting for printing process");
-          printer.disconnect();
-        });
 
-
-
-      } else {
-        print('---${res.msg}----d------------');
-      }
     } catch (e) {
       print('------------------------------${e.toString()}');
     }
   }
 
   /// Direct text method
-  Future<void> kotPrint(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate) async {
-
+  Future<void> kotPrint(printerAddress,profile,id, items, bool isCancelNote, isUpdate) async {
+    List<int> bytes = [];
+    print("-----1");
+    final generator = Generator(PaperSize.mm80, profile);
     List<ItemsDetails> dataPrint = [];
     dataPrint.clear();
 
     for (Map user in items) {
       dataPrint.add(ItemsDetails.fromJson(user));
     }
-
+    print("-----1");
     var kitchenName = printListData[id].kitchenName;
     var tableName = dataPrint[0].tableName;
     var totalQty = printListData[id].totalQty;
     var tokenNumber = dataPrint[0].tokenNumber;
     var orderType = dataPrint[0].orderTypeI ?? "";
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+
+    bytes +=generator.setStyles(const PosStyles.defaults());
+    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
 
     var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
@@ -2172,68 +1530,66 @@ class USBPrintClass {
 
     Uint8List typeEng = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
     Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
+    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
 
-    printer.textEncoded(typeEng,
-        styles:
+    bytes +=generator.textEncoded(typeEng, styles:
         const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-    // printer.text('', styles: PosStyles(align: PosAlign.left));
-    printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
-    printer.textEncoded(typeArabic,
+    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
+    bytes +=generator.textEncoded(typeArabic,
         styles:
         const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
+    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (isCancelNote) {
-      printer.text(cancelNoteData,
+      bytes +=generator.text(cancelNoteData,
           styles:
           const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-      printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
-      printer.textEncoded(cancelNoteEnc,
+      bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
+      bytes +=generator.textEncoded(cancelNoteEnc,
           styles:
           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     }
-
+    print("-----3");
     if (isUpdate) {
-      printer.text(updateNote,
+      bytes +=generator.text(updateNote,
           styles:
           const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-      printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
-      printer.textEncoded(updateNoteEnc,
+      bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
+      bytes +=generator.textEncoded(updateNoteEnc,
           styles:
           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     }
 
     Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
-    printer.hr();
-    printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
-    printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
-    printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    printer.hr();
-
-    printer.row([
+    bytes +=generator.hr();
+    bytes +=generator.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
+    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+    bytes +=generator.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+    bytes +=generator.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+    bytes +=generator.hr();
+    print("-----4");
+    bytes +=generator.row([
       PosColumn(text: 'Kitchen name :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: kitchenName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
-    printer.row([
+    bytes +=generator.row([
       PosColumn(text: 'Order type       :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: orderType, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     if (orderType == "Dining") {
-      printer.row([
+      bytes +=generator.row([
         PosColumn(text: 'Table Name       :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(text: tableName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
-
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
-    printer.hr();
-    printer.row([
+    print("-----5");
+    bytes +=generator.setStyles(const PosStyles.defaults());
+    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864'));
+    bytes +=generator.hr();
+    bytes +=generator.row([
       PosColumn(
           text: 'SL',
           width: 2,
@@ -2248,17 +1604,18 @@ class USBPrintClass {
           )),
       PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
-    printer.hr();
-
+    bytes +=generator.hr();
+    print("-----5.5");
     for (var i = 0; i < dataPrint.length; i++) {
       var slNo = i + 1;
-
+      print("-----5.6");
       var productDescription = dataPrint[i].productDescription;
-      Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription));
-      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
-      Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].flavour));
 
-      printer.row([
+
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
+
+      print("-----5.7");
+      bytes +=generator.row([
         PosColumn(
             text: '$slNo',
             width: 2,
@@ -2270,17 +1627,20 @@ class USBPrintClass {
       ]);
 
       if (productDescription != "") {
-        printer.textEncoded(productDescriptionEnc,
+        Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription));
+        bytes +=generator.textEncoded(productDescriptionEnc,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (dataPrint[i].flavour != "") {
-        printer.textEncoded(flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].flavour));
+        bytes +=generator.textEncoded(flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
-      printer.hr();
+      bytes +=generator.hr();
     }
-    printer.feed(1);
-    printer.row([
+    print("-----6");
+    bytes +=generator.feed(1);
+    bytes +=generator.row([
       PosColumn(
           text: 'Total quantity',
           width: 3,
@@ -2292,12 +1652,20 @@ class USBPrintClass {
           styles:
           (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
-    printer.cut();
-    printer.disconnect();
+    bytes +=generator.cut();
+    print("-----8   $printerAddress");
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    String msg = "";
+    if (res == "success") {
+      msg = "Printed Successfully";
+    } else {
+      msg = "Failed to generate a print please make sure to use the correct printer name";
+    }
   }
   /// Direct text method for Gst company
-  Future<void> kotPrintGst(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate) async {
-
+  Future<void> kotPrintGst(printerAddress,profile, id, items, bool isCancelNote, isUpdate) async {
+    List<int> bytes = [];
+    final generator = Generator(PaperSize.mm80, profile);
     List<ItemsDetails> dataPrint = [];
     dataPrint.clear();
 
@@ -2310,54 +1678,52 @@ class USBPrintClass {
     var totalQty = printListData[id].totalQty;
     var tokenNumber = dataPrint[0].tokenNumber;
     var orderType = dataPrint[0].orderTypeI ?? "";
-    // printer.setStyles(const PosStyles.defaults());
-    // printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
 
 
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
     var updateNote = "MADE SOME CHANGES IN";
     var invoiceType = "KOT";
-    printer.text(invoiceType, styles: const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
+    bytes +=generator.text(invoiceType, styles: const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (isCancelNote) {
-      printer.text(cancelNoteData, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+      bytes +=generator.text(cancelNoteData, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
 
     }
 
     if (isUpdate) {
-      printer.text(updateNote, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+      bytes +=generator.text(updateNote, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
 
 
-    printer.hr();
-    printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
-    printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
-    printer.hr();
+    bytes +=generator.hr();
+    bytes +=generator.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
+    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+    bytes +=generator.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+    bytes +=generator.hr();
 
-    printer.row([
+    bytes +=generator.row([
       PosColumn(text: 'Kitchen name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: kitchenName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
-    printer.row([
+    bytes +=generator.row([
       PosColumn(text: 'Order type       :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: orderType, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     if (orderType == "Dining") {
-      printer.row([
+      bytes +=generator.row([
         PosColumn(text: 'Table Name       :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(text: tableName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
 
-    // printer.setStyles(const PosStyles.defaults());
-    // printer.setStyles(const PosStyles(codeTable: 'CP864'));
-    printer.hr();
-    printer.row([
+    // bytes +=generator.setStyles(const PosStyles.defaults());
+    // bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864'));
+    bytes +=generator.hr();
+    bytes +=generator.row([
       PosColumn(
           text: 'SL',
           width: 2,
@@ -2372,14 +1738,14 @@ class USBPrintClass {
           )),
       PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
-    printer.hr();
+    bytes +=generator.hr();
 
     for (var i = 0; i < dataPrint.length; i++) {
       var slNo = i + 1;
 
       var productDescription = dataPrint[i].productDescription;
 
-      printer.row([
+      bytes +=generator.row([
         PosColumn(
             text: '$slNo',
             width: 2,
@@ -2391,7 +1757,7 @@ class USBPrintClass {
       ]);
 
       if (productDescription != "") {
-        printer.row([
+        bytes +=generator.row([
           PosColumn(
               text: '',
               width: 2,
@@ -2405,12 +1771,12 @@ class USBPrintClass {
       }
 
       if (dataPrint[i].flavour != "") {
-        printer.text (dataPrint[i].flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        bytes +=generator.text (dataPrint[i].flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
-      printer.hr();
+      bytes +=generator.hr();
     }
-    printer.feed(1);
-    printer.row([
+    bytes +=generator.feed(1);
+    bytes +=generator.row([
       PosColumn(
           text: 'Total quantity',
           width: 3,
@@ -2422,84 +1788,16 @@ class USBPrintClass {
           styles:
           (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
-    printer.cut();
-
-  }
-
-  /// arabic kot image print method
-  Future<void> printArabicKot(NetworkPrinter printer, id, items) async {
-    print('----------printArabicKot-----------------$id');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var width = prefs.getString('width') ?? '150';
-
-    final content = ThermalEnglishDesignKot.getInvoiceContent(id, items, width + 'mm');
-    var bytes = await WebcontentConverter.contentToImage(content: content);
-    final Image? image = decodeImage(bytes);
-    printer.imageRaster(image!);
-    printer.cut();
-  }
-
-  /// test print
-  Future<void> testPrintConnect(String printerIp) async {
-    try {
-      print("a");
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var temp = prefs.getString("template") ?? "template4";
-      var capabilities = prefs.getString("default_capabilities") ?? "default";
-      print("a");
-      var profile;
-      if (capabilities == "default") {
-        profile = await CapabilityProfile.load();
-      } else {
-        profile = await CapabilityProfile.load(name: capabilities);
-      }
-      print("a");
-      const PaperSize paper = PaperSize.mm80;
-      final printer = NetworkPrinter(paper, profile);
-      var port = int.parse("9100");
-      print("a $printerIp");
-      final PosPrintResult res = await printer.connect(printerIp, port: port);
-      print("print result ${res.msg}");
-
-      if (res == PosPrintResult.success) {
-        testPrint(printer);
-
-        printer.disconnect();
-      } else {
-        print('---${res.msg}----d------------');
-      }
-    } catch (e) {
-      print('------------------------------${e.toString()}');
+    bytes +=generator.cut();
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    String msg = "";
+    if (res == "success") {
+      msg = "Printed Successfully";
+    } else {
+      msg = "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
-  Future<void> testPrint(NetworkPrinter printer) async {
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
-    printer.text('Test kot', styles: const PosStyles(align: PosAlign.left));
-    printer.emptyLines(1);
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
-    printer.hr();
-    printer.row([
-      PosColumn(
-          text: 'SL',
-          width: 2,
-          styles: const PosStyles(
-            height: PosTextSize.size1,
-          )),
-      PosColumn(
-          text: 'Product Name',
-          width: 8,
-          styles: const PosStyles(
-            height: PosTextSize.size1,
-          )),
-      PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-    ]);
-    printer.hr();
-
-    printer.disconnect();
-  }
 
   bool Check(String text) {
     var val = false;
