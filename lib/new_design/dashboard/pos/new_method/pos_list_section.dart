@@ -1241,7 +1241,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   permissionToEdit?status =="Ordered"
                       ? SizedBox(
                       height: MediaQuery.of(context).size.height / 5,
-                      width: MediaQuery.of(context).size.width / 12,
+                      width: MediaQuery.of(context).size.width / 13,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
                         IconButton(
                             onPressed: () {
@@ -1277,7 +1277,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   print_perm?isVacant ==false
                       ? SizedBox(
                       height: MediaQuery.of(context).size.height / 5,
-                      width: MediaQuery.of(context).size.width / 12,
+                      width: MediaQuery.of(context).size.width / 13,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
                         IconButton(
                             onPressed: () {
@@ -1365,7 +1365,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                    isVacant ==false
                       ?  SizedBox(
                       height: MediaQuery.of(context).size.height / 5,
-                      width: MediaQuery.of(context).size.width / 12,
+                      width: MediaQuery.of(context).size.width / 13,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
                         IconButton(
                             onPressed: () {
@@ -1480,7 +1480,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ? isInvoice == false
                       ? SizedBox(
                       height: MediaQuery.of(context).size.height / 5,
-                      width: MediaQuery.of(context).size.width / 12,
+                      width: MediaQuery.of(context).size.width / 13,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
                         IconButton(
@@ -1538,7 +1538,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ? isInvoice == false
                       ? SizedBox(
                       height: MediaQuery.of(context).size.height / 5,
-                      width: MediaQuery.of(context).size.width / 12,
+                      width: MediaQuery.of(context).size.width / 13,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
                         IconButton(
                             onPressed: () {
@@ -1587,7 +1587,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   reservation_perm? isReserve
                       ? SizedBox(
                       height: MediaQuery.of(context).size.height / 5,
-                      width: MediaQuery.of(context).size.width / 12,
+                      width: MediaQuery.of(context).size.width / 13,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
                         IconButton(
                           icon: SvgPicture.asset(
@@ -1641,7 +1641,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   convert_type_perm? isConvert == true
                       ? SizedBox(
                       height: MediaQuery.of(context).size.height / 5,
-                      width: MediaQuery.of(context).size.width / 12,
+                      width: MediaQuery.of(context).size.width / 13,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
                         IconButton(

@@ -984,7 +984,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('wifi_printer'.tr,style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
+                  Text(print_type_value?'wifi_printer'.tr:'usbPrinter'.tr,style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
                   FlutterSwitch(
                     width: 50.0,
                     height: 25.0,
@@ -1129,7 +1129,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            "3",
+                            "1",
                             style: customisedStyle(context, template3Text, FontWeight.w700, 22.0),
                           ),
                         ),
@@ -1155,7 +1155,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            "4",
+                            "2",
                             style: customisedStyle(context, template4Text, FontWeight.w700, 22.0),
                           ),
                         ),
