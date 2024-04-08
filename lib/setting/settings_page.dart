@@ -287,18 +287,20 @@ class _SettingsPageState extends State<SettingsPage> {
       payAfterSave = prefs.getBool("pay_after_save") ?? false;
       printPreview = prefs.getBool('print_preview') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
+
+
+
       hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
       paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
       headerAlignment = prefs.getBool("headerAlignment") ?? false;
       termsAndConditionController.text =prefs.getString('printTermsAndCondition') ?? "";
-      print("-----------------------------$printType");
+      print("---printType---printType---printType--printType-----printType---printType-----printType---printType--$printType");
       if(printType =="Wifi"){
         print_type_value = true;
       }
       else{
         print_type_value = false;
       }
-
       capabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
       defaultSalesInvoiceController.text = prefs.getString('defaultIP') ?? "";
       defaultSalesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
@@ -1003,7 +1005,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         } else {
                           defaultSalesInvoiceController.clear();
                           defaultSalesOrderController.clear();
-                          prefs.setString("PrintType", "BT");
+                          prefs.setString("PrintType", "USB");
+/// bluetooth commented
+                          // prefs.setString("PrintType", "BT");
                         }
                       });
                     },
@@ -1085,7 +1089,6 @@ class _SettingsPageState extends State<SettingsPage> {
                             templateViewColor(templateIndex);
                             setTemplate(2);
 
-                            //templateViewColor=
                           });
                         },
                         child: Container(
@@ -3414,7 +3417,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child:  Text(
-                    printType == "Wifi"? 'Ip Address':'Bluetooth address',
+                    printType == "Wifi"? 'Ip Address':'Printer address',
                     style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                     textAlign: TextAlign.start,
                   ),
@@ -3423,7 +3426,8 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 6,
               ),
-             printType == "Wifi" ?Row(
+             printType == "Wifi" ?
+             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
@@ -3602,11 +3606,21 @@ class _SettingsPageState extends State<SettingsPage> {
                      createPrinterApi("Wifi");
                   }
                 }
-                else{
+
+
+
+                else if(printType =="BT"){
                   if (printerNameController.text.trim() == '' || bluetoothAddressController.text == '') {
                      dialogBox(context,"Please fill mandatory field");
                   } else {
                     createPrinterApi("BT");
+                  }
+                }
+                else{
+                  if (printerNameController.text.trim() == '' || bluetoothAddressController.text == '') {
+                    dialogBox(context,"Please fill mandatory field");
+                  } else {
+                    createPrinterApi("USB");
                   }
                 }
 
@@ -6718,10 +6732,10 @@ At some point, you might wish to restrict the use and collection of your persona
           stop();
         } else {}
       } catch (e) {
-        setState(() {
+
           dialogBox(context, "Some thing went wrong");
           stop();
-        });
+
       }
     }
   }
@@ -7481,18 +7495,7 @@ class PrinterListModel {
   }
 }
 
-// "id": "71b2e900-4920-4d9b-9811-035687c95aa3",
-// "PrinterID": 3,
-// "BranchID": 1,
-// "Action": "A",
-// "PrinterName": "New Printer",
-// "IPAddress": "187.76.87.87",
-// "IsActive": true,
-// "CreatedUserID": 62,
-// "CreatedDate": "2022-06-02T13:59:15.319601",
-// "UpdatedDate": "2022-06-02T13:59:15.309095",
-// "Type": "WF",
-// "CompanyID": "d4ca8637-696b-4ff0-8b88-991774b9547c"
+
 
 ///users
 class SettingsData {
