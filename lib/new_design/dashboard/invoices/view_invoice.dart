@@ -7,6 +7,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
 
 import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -481,8 +482,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     );
   }
 //
-  var printHelper = new AppBlocs();
-  var bluetoothHelper = new AppBlocsBT();
+  var printHelperUsb =   USBPrintClass();
+  var printHelperIP =   AppBlocs();
+  var bluetoothHelper =   AppBlocsBT();
   printDetail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
@@ -492,7 +494,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       dialogBox(context, "Please select a default printer");
     } else {
       if(printType =='Wifi'){
-        var ret = await printHelper.printDetails();
+        var ret = await printHelperIP.printDetails();
         if (ret == 2) {
           var ip = "";
           if (PrintDataDetails.type == "SO") {
@@ -500,38 +502,54 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           } else {
             ip = defaultIp;
           }
-
-          printHelper.print_receipt(ip, context);
+          printHelperIP.print_receipt(ip, context);
         } else {
           dialogBox(context, 'Please try again later');
         }
       }
       else{
 
-        var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
-        if(loadData){
-
-          var printStatus =await bluetoothHelper.scan();
-
-          if(printStatus ==1){
-            dialogBox(context,"Check your bluetooth connection");
+        var ret = await printHelperUsb.printDetails();
+        if (ret == 2) {
+          var ip = "";
+          if (PrintDataDetails.type == "SO") {
+            ip = defaultOrderIP;
+          } else {
+            ip = defaultIp;
           }
-          else if(printStatus ==2){
-            dialogBox(context,"Your default printer configuration problem");
-          }
-
-          else if(printStatus ==3){
-
-            await bluetoothHelper.scan();
-            // alertMessage("Try again");
-          }
-          else if(printStatus ==4){
-            //  alertMessage("Printed successfully");
-          }
+          printHelperUsb.printReceipt(ip, context);
+        } else {
+          dialogBox(context, 'Please try again later');
         }
-        else{
-          dialogBox(context,"Try again");
-        }
+
+        /// commented
+
+
+
+        // var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
+        // if(loadData){
+        //   var printStatus =await bluetoothHelper.scan();
+        //   if(printStatus ==1){
+        //     dialogBox(context,"Check your bluetooth connection");
+        //   }
+        //   else if(printStatus ==2){
+        //     dialogBox(context,"Your default printer configuration problem");
+        //   }
+        //   else if(printStatus ==3){
+        //
+        //     await bluetoothHelper.scan();
+        //     // alertMessage("Try again");
+        //   }
+        //   else if(printStatus ==4){
+        //     //  alertMessage("Printed successfully");
+        //   }
+        // }
+        // else{
+        //   dialogBox(context,"Try again");
+        // }
+        //
+
+
       }
 
     }

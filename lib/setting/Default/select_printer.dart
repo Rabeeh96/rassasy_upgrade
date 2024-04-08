@@ -202,10 +202,10 @@ class SelectPrinterState extends State<SelectPrinter> {
           stop();
         } else {}
       } catch (e) {
-        setState(() {
+
           dialogBox(context, "Some thing went wrong");
           stop();
-        });
+
       }
     }
   }
