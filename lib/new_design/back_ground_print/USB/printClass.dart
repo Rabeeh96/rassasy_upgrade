@@ -190,7 +190,7 @@ class USBPrintClass {
       if (temp == 'template4') {
         await InvoicePrintTemplate4(profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       } else if (temp == 'template3') {
-        await InvoicePrintTemplate3( hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await InvoicePrintTemplate3(hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       } else {
 
       }
