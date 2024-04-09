@@ -509,8 +509,6 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         //
       }
       else{
-
-        print("usb 1");
         var ret = await printHelperUsb.printDetails();
         if (ret == 2) {
           var ip = "";
@@ -525,9 +523,6 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         }
 
         /// commented
-
-
-
         // var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
         // if(loadData){
         //   var printStatus =await bluetoothHelper.scan();
@@ -550,8 +545,6 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         //   dialogBox(context,"Try again");
         // }
         //
-
-
       }
 
     }
