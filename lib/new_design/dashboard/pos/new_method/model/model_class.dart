@@ -98,7 +98,8 @@ class ProductListModelDetail {
 
 
   var exciseData;
-  int productID, defaultUnitID, gstID, vatID;
+  var taxDetails;
+   int productID, defaultUnitID, gstID, vatID;
   bool isInclusive;
 
   ProductListModelDetail(
@@ -117,6 +118,7 @@ class ProductListModelDetail {
         required this.gSTTaxName,
         required this.vATTaxName,
         required this.description,
+        required this.taxDetails,
         required this.productImage,
         required this.isInclusive});
 
@@ -138,6 +140,7 @@ class ProductListModelDetail {
       description: json['Description'] ?? '',
       vegOrNonVeg: json['VegOrNonVeg'] ?? '',
       productImage: json['ProductImage'] ?? '',
+      taxDetails: json['Tax'] ?? '',
       exciseData: json['ExciseTaxData'],
     );
   }

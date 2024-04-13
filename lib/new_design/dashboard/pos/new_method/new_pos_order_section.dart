@@ -179,6 +179,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     start(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     productSearchNotifier = ValueNotifier(2);
+    productList.clear();
     flavourList.clear();
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -2640,16 +2641,32 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                 item_status = "pending";
                 unitName = productList[0].defaultUnitName;
 
-                if (checkVat == true) {
-                  productTaxName = productList[0].vATTaxName;
-                  productTaxID = productList[0].vatID;
-                } else if (checkGst == true) {
-                  productTaxName = productList[0].gSTTaxName;
-                  productTaxID = productList[0].gstID;
-                } else {
-                  productTaxName = "None";
-                  productTaxID = 1;
+
+                print(productList[0].taxDetails);
+
+
+
+                var taxDetails = productList[0].taxDetails;
+                if(taxDetails !=""){
+                  productTaxID = taxDetails["TaxID"];
+                  productTaxName = taxDetails["TaxName"];
                 }
+
+                // if (ch
+                //
+                //
+                // eckVat == true) {
+                //   productTaxName = productList[0].vATTaxName;
+                //   productTaxID = productList[0].vatID;
+                // } else if (checkGst == true) {
+                //   productTaxName = productList[0].gSTTaxName;
+                //   productTaxID = productList[0].gstID;
+                // } else {
+                //
+                //
+                //   productTaxName = "None";
+                //   productTaxID = 1;
+                // }
 
                 detailID = 1;
                 salesPrice = productList[0].defaultSalesPrice;
@@ -2900,16 +2917,26 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       item_status = "pending";
                       unitName = productList[i].defaultUnitName;
 
-                      if (checkVat == true) {
-                        productTaxName = productList[i].vATTaxName;
-                        productTaxID = productList[i].vatID;
-                      } else if (checkGst == true) {
-                        productTaxName = productList[i].gSTTaxName;
-                        productTaxID = productList[i].gstID;
-                      } else {
-                        productTaxName = "None";
-                        productTaxID = 1;
+
+                      print(productList[i].taxDetails);
+
+                      var taxDetails = productList[i].taxDetails;
+                      if(taxDetails !=""){
+                        productTaxID = taxDetails["TaxID"];
+                        productTaxName = taxDetails["TaxName"];
                       }
+
+
+                      // if (checkVat == true) {
+                      //   productTaxName = productList[i].vATTaxName;
+                      //   productTaxID = productList[i].vatID;
+                      // } else if (checkGst == true) {
+                      //   productTaxName = productList[i].gSTTaxName;
+                      //   productTaxID = productList[i].gstID;
+                      // } else {
+                      //   productTaxName = "None";
+                      //   productTaxID = 1;
+                      // }
 
                       detailID = 1;
                       salesPrice = productList[i].defaultSalesPrice;
@@ -5074,6 +5101,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var branchID = prefs.getInt('branchID') ?? 1;
         var countryID = prefs.getString('Country') ?? 1;
         var stateID = prefs.getString('State') ?? 1;
+        var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$selectedDateAndTime";
@@ -5185,12 +5213,24 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         if (status == 6000) {
           stop();
           var id = n["OrderID"];
+
+
+
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
-          dialogBoxHide(context, 'Order created successfully !!!');
+
+          if(printAfterOrder){
+
+            PrintDataDetails.type = "SO";
+            PrintDataDetails.id = n["OrderID"];
+            await printDetail(context);
+          }
+
+
+
+         // dialogBoxHide(context, 'Order created successfully !!!');
 
           Future.delayed(const Duration(seconds: 1), () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
-
             var kot = prefs.getBool("KOT") ?? false;
             if (kot == true) {
               PrintDataDetails.type = "SO";
@@ -5220,6 +5260,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       }
     }
   }
+
+
+
+
 
   changeQtyTextField(BuildContext context) async {
     return showDialog(
@@ -5331,6 +5375,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var branchID = prefs.getInt('branchID') ?? 1;
         var countryID = prefs.getString('Country') ?? 1;
         var stateID = prefs.getString('State') ?? 1;
+        var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$selectedDateAndTime";
@@ -5433,7 +5478,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           var id = n["OrderID"];
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
-          dialogBoxHide(context, 'Order updated successfully !!!');
+
+          if(printAfterOrder){
+            PrintDataDetails.type = "SO";
+            PrintDataDetails.id = id;
+            await printDetail(context);
+          }
+
+          // dialogBoxHide(context, 'Order updated successfully !!!');
 
           Future.delayed(const Duration(seconds: 1), () async {
             print("-------id-------");

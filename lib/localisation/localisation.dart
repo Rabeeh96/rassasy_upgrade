@@ -287,7 +287,8 @@ class LocaleChange extends Translations {
           'Barcode': 'Barcode',
           'autoFocusField': 'Auto focus field',
           'excise_tax': 'Excise Tax',
-          'total_vat': 'Total VAT '
+          'total_vat': 'Total VAT ',
+          'print_after_order': 'Print after order',
 
         },
 
@@ -296,6 +297,8 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+
+          'print_after_order': 'الطباعة بعد الطلب',
           'usbPrinter': 'طابعة USB',
           'autoFocusField': 'مجال التركيز التلقائي',
           'print': 'مطبعة',
