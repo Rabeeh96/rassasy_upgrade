@@ -9,8 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
 
-
- String appVersion = "1.1.12";
+ String appVersion = "1.1.13";
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),

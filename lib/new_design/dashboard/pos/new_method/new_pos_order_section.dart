@@ -2652,8 +2652,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                   productTaxName = taxDetails["TaxName"];
                 }
 
-
-
                 // if (ch
                 //
                 //
@@ -5224,7 +5222,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = n["OrderID"];
-            printDetail(context);
+            await printDetail(context);
           }
 
 
@@ -5377,6 +5375,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var branchID = prefs.getInt('branchID') ?? 1;
         var countryID = prefs.getString('Country') ?? 1;
         var stateID = prefs.getString('State') ?? 1;
+        var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$selectedDateAndTime";
@@ -5479,7 +5478,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           var id = n["OrderID"];
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
-          dialogBoxHide(context, 'Order updated successfully !!!');
+
+          if(printAfterOrder){
+            PrintDataDetails.type = "SO";
+            PrintDataDetails.id = id;
+            await printDetail(context);
+          }
+
+          // dialogBoxHide(context, 'Order updated successfully !!!');
 
           Future.delayed(const Duration(seconds: 1), () async {
             print("-------id-------");
