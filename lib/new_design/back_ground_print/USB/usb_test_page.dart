@@ -46,9 +46,6 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
           backgroundColor: Colors.grey[300],
 
       ),
-
-
-
       body: Center(
         child: Container(
           color: Colors.white,
