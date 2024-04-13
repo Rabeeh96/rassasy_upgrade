@@ -100,7 +100,8 @@ class _SettingsPageState extends State<SettingsPage> {
   bool hilightTokenNumber = false;
   bool paymentDetailsInPrint = false;
   bool headerAlignment = false;
-  bool payAfterSave = false;
+
+  bool printAfterOrder = false;
   bool printPreview = false;
   String printType = "Wifi";
   bool waiterPay = false;
@@ -284,7 +285,8 @@ class _SettingsPageState extends State<SettingsPage> {
       showInvoice = prefs.getBool("AutoClear") ?? false;
       clearTable = prefs.getBool("tableClearAfterPayment") ?? false;
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
-      payAfterSave = prefs.getBool("pay_after_save") ?? false;
+
+      printAfterOrder = prefs.getBool("print_after_order") ?? false;
       printPreview = prefs.getBool('print_preview') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
 
@@ -2628,6 +2630,52 @@ class _SettingsPageState extends State<SettingsPage> {
                       onToggle: (val) {
                         printAfterPayment = val;
                         updateList("IsPrintAfterPayment", val, "printAfterPayment");
+
+                        // setState(() {
+                        //   printAfterPayment = val;
+                        //   switchStatus("printAfterPayment", printAfterPayment);
+                        // });
+                      },
+                    ),
+                  ),
+                ),
+
+              ),
+            ),
+
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'print_after_order'.tr,
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 100,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: printAfterOrder,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        setState(() {
+                          printAfterOrder = val;
+                          switchStatus("print_after_order", printAfterOrder);
+                        });
 
                         // setState(() {
                         //   printAfterPayment = val;

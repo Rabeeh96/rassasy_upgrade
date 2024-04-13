@@ -1,12 +1,11 @@
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image/image.dart' as img;
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart' as usb_esc_printer_windows;
 import 'package:charset_converter/charset_converter.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class TestPrintUSB extends StatefulWidget {
   const TestPrintUSB({super.key});
 
@@ -18,11 +17,19 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
   TextEditingController controllerName = TextEditingController();
   final String _printerName = "EPSON";
   late Future<CapabilityProfile> _profile;
-
   @override
   initState() {
-    _profile = CapabilityProfile.load();
     super.initState();
+    loadInitial();
+  }
+
+  loadInitial()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String defaultIp =  prefs.getString('defaultIP')??'';
+    controllerName.text = defaultIp;
+    _profile = CapabilityProfile.load();
+
+
   }
 
   @override
@@ -44,7 +51,6 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
             ),
           ),
           backgroundColor: Colors.grey[300],
-
       ),
       body: Center(
         child: Container(
@@ -55,17 +61,15 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-
                 width: MediaQuery.of(context).size.width/5,
                 child: TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: controllerName,
                   style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-
                   keyboardType: TextInputType.text,
                   decoration: TextFieldDecoration.rectangleTextField(hintTextStr: 'Enter Driver Address'),
                 ),
-              ),SizedBox(
+              ),const SizedBox(
                 width: 20,
               ),
 

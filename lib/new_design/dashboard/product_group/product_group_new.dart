@@ -85,14 +85,14 @@ class AddProductGroupState extends State<AddProductGroup> {
             width: 100,
             height: 100,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             'no_network'.tr,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextButton(
@@ -102,10 +102,10 @@ class AddProductGroupState extends State<AddProductGroup> {
               });
             },
             child: Text('retry'.tr,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEE830C))),
           ),
         ],
       ),
@@ -187,7 +187,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                         ),
                       ),
                       Padding(
-                          padding: EdgeInsets.only(left: 5, right: 5, bottom: 12),
+                          padding: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -210,7 +210,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                                   onTap: () async {
                                     var result = await Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => SelectKitchen()),
+                                      MaterialPageRoute(builder: (context) => const SelectKitchen()),
                                     );
 
                                     if (result != null) {
@@ -225,7 +225,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                                   },
                                   decoration: InputDecoration(
                                       suffixIcon: IconButton(
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.keyboard_arrow_down,
                                             color: Colors.black,
                                           ),
@@ -243,7 +243,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                             ],
                           )),
                       Padding(
-                          padding: EdgeInsets.only(left: 5, right: 5, bottom: 12),
+                          padding: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -266,7 +266,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                                   onTap: () async {
                                     var result = await Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => SelectCategory()),
+                                      MaterialPageRoute(builder: (context) => const SelectCategory()),
                                     );
 
                                     if (result != null) {
@@ -282,7 +282,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                                   },
                                   decoration: InputDecoration(
                                       suffixIcon: IconButton(
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.keyboard_arrow_down,
                                             color: Colors.black,
                                           ),
@@ -355,7 +355,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                 },
                 controller: searchController,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(8),
+                  contentPadding: const EdgeInsets.all(8),
                   suffixIcon: IconButton(
                     onPressed: () {
 
@@ -365,14 +365,14 @@ class AddProductGroupState extends State<AddProductGroup> {
                       firstTime = 1;
                       getProductListDetails();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.cancel,
                       color: Colors.black,
                     ),
                   ),
                   hintText: 'search'.tr,
                   hintStyle: customisedStyle(context, Colors.grey, FontWeight.w500, 14.0),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
@@ -410,7 +410,7 @@ class AddProductGroupState extends State<AddProductGroup> {
 
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width / 4,
-                  child: Text('or'.tr, style: customisedStyle(context, Color(0xff949494), FontWeight.w400, 18.0)),
+                  child: Text('or'.tr, style: customisedStyle(context, const Color(0xff949494), FontWeight.w400, 18.0)),
                 ),
                 addButton(),
               ],
@@ -458,7 +458,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                   color: Colors.white,
                 ),
               ),
-              Text('add_product_grp'.tr, style: customisedStyle(context, Color(0xffffffff), FontWeight.w400, 15.0)),
+              Text('add_product_grp'.tr, style: customisedStyle(context, const Color(0xffffffff), FontWeight.w400, 15.0)),
             ],
           ),
         ),
@@ -501,7 +501,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                                 if (productNameController.text.trim() == '' || productNameController.text == ''|| productCategoryController.text == '') {
                                   dialogBox(context, "Please enter mandatory fields");
                                 } else {
-                                  if (editProduct == false) {
+                                  if (editProduct == false){
                                     if (createPermission) {
                                       start(context);
                                       createProductGroup();
@@ -510,12 +510,12 @@ class AddProductGroupState extends State<AddProductGroup> {
                                     }
                                   } else {
                                     start(context);
-
                                     editProductGroup();
                                   }
                                 }
                               },
-                            ))
+                            )
+                        )
                       ],
                     )),
                 Container(
@@ -543,7 +543,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                 ),
               ],
             )
-          : Row(),
+          : const Row(),
     );
   }
 
@@ -609,11 +609,11 @@ class AddProductGroupState extends State<AddProductGroup> {
               key: Key('${productLists[index]}'),
               background: Container(
                 color: Colors.red,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
+                child: const Padding(
+                  padding: EdgeInsets.all(15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const <Widget>[
+                    children: <Widget>[
                       Icon(Icons.delete, color: Colors.white),
                     ],
                   ),
@@ -642,9 +642,9 @@ class AddProductGroupState extends State<AddProductGroup> {
                               onPressed: () => {
 
 
-                                GroupData.uID = productLists[index].productId,
+                                groupUID = productLists[index].uID,
                                 Navigator.pop(context),
-                                deleteProduct(productLists[index].productId, context)
+                                deleteProduct(productLists[index].uID, context)
                               },
                               child: Text(
                                 'dlt'.tr,
@@ -681,26 +681,28 @@ class AddProductGroupState extends State<AddProductGroup> {
                   child: ListTile(
                 onTap: () async {
 /// coomented befor add category
-                  //
-                  // var perm = await checkingPerm("Groupedit");
-                  // print(perm);
-                  // if (perm) {
-                  //   productNameController.clear();
-                  //   productCategoryController.clear();
-                  //   descriptionController.clear();
-                  //   kitchenController.clear();
-                  //
-                  //   GroupData.uID = productLists[index].productId;
-                  //  // categoryID = productLists[index].productId;
-                  //   getProductGroupSingleView(productLists[index].productId);
-                  //   editProduct = true;
-                  //   setState(() {
-                  //     getProductGroupSingleView(productLists[index].productId);
-                  //     isProductGroup = true;
-                  //   });
-                  // } else {
-                  //   dialogBoxPermissionDenied(context);
-                  // }
+
+                  var perm = await checkingPerm("Groupedit");
+                  print(perm);
+                  if (perm) {
+                    productNameController.clear();
+                    productCategoryController.clear();
+                    descriptionController.clear();
+                    kitchenController.clear();
+                    print(productLists[index].uID);
+                    groupUID = productLists[index].uID;
+                    print("====================================");
+                    // categoryID = productLists[index].categoryID;
+                    // productCategoryController.text = productLists[index].categoryName;
+                    getProductGroupSingleView(productLists[index].uID);
+                    editProduct = true;
+                    setState(() {
+                      // getProductGroupSingleView(productLists[index].uID);
+                      isProductGroup = true;
+                    });
+                  } else {
+                    dialogBoxPermissionDenied(context);
+                  }
 
 
 
@@ -893,15 +895,18 @@ class AddProductGroupState extends State<AddProductGroup> {
         var status = n["StatusCode"];
         var responseJson = n["data"];
 
+        print(responseJson);
         if (status == 6000) {
           setState(() {
             stop();
             productNameController.text = responseJson['GroupName'];
             kitchenController.text = responseJson['KitchenName'];
             descriptionController.text = responseJson['Notes'];
+            productCategoryController.text = responseJson['ProductCategoryName'];
+
             kitchenID = responseJson['KitchenID'];
-            GroupData.catID = responseJson['CategoryID'];
-            GroupData.uID = responseJson['id'];
+            categoryID = responseJson['CategoryID'];
+            groupUID = responseJson['id'];
           });
         } else if (status == 6001) {
           stop();
@@ -925,7 +930,7 @@ class AddProductGroupState extends State<AddProductGroup> {
     descriptionController.clear();
     productLists.clear();
   }
-
+var groupUID ="";
   ///edit product group api
   Future<Null> editProductGroup() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -938,13 +943,13 @@ class AddProductGroupState extends State<AddProductGroup> {
         var userID = prefs.getInt("user_id");
          var branchID = prefs.getInt('branchID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
-        var groupID = GroupData.uID;
+        var groupID = groupUID;
 
         String baseUrl = BaseUrl.baseUrl;
         final url = '$baseUrl/productGroups/edit/productGroup/$groupID/';
         Map data = {
           "GroupName": productNameController.text,
-          "CategoryID": 1,
+          "CategoryID": categoryID,
           "Notes": descriptionController.text,
           "BranchID": branchID,
           "CreatedUserID": userID,
@@ -1121,13 +1126,19 @@ class AddProductGroupState extends State<AddProductGroup> {
 List<ProductListModel> productLists = [];
 
 class ProductListModel {
-  final String productId, groupName;
-  final int productGroupId;
+  final String uID, groupName,
+  categoryName;
+  final int productGroupId,categoryID;
 
-  ProductListModel({required this.groupName, required this.productGroupId, required this.productId});
+  ProductListModel({required this.groupName, required this.productGroupId, required this.uID, required this.categoryID, required this.categoryName});
 
   factory ProductListModel.fromJson(Map<dynamic, dynamic> json) {
-    return ProductListModel(groupName: json['GroupName'], productGroupId: json['ProductGroupID'], productId: json['id']);
+    return ProductListModel(
+        groupName: json['GroupName'],
+        categoryID: json['CategoryID'],
+        categoryName: json['CategoryName'],
+        productGroupId: json['ProductGroupID'],
+        uID: json['id']);
   }
 }
 
@@ -1150,9 +1161,9 @@ class Kitchen {
 }
 
 ///product group id ,kitchen id cat id
-class GroupData {
-  static String uID = '';
-
-  static int catID = 0;
- // static String kitchenID = "";
-}
+// class GroupData {
+//   static String uID = '';
+//
+//   static int catID = 0;
+//  // static String kitchenID = "";
+// }

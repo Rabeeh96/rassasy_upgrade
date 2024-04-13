@@ -1637,7 +1637,7 @@ class USBPrintClass {
       }
       bytes +=generator.hr();
     }
-    print("-----6");
+
     bytes +=generator.feed(1);
     bytes +=generator.row([
       PosColumn(

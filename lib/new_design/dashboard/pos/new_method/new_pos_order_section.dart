@@ -179,6 +179,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     start(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     productSearchNotifier = ValueNotifier(2);
+    productList.clear();
     flavourList.clear();
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -5074,6 +5075,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var branchID = prefs.getInt('branchID') ?? 1;
         var countryID = prefs.getString('Country') ?? 1;
         var stateID = prefs.getString('State') ?? 1;
+        var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$selectedDateAndTime";
@@ -5185,12 +5187,24 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         if (status == 6000) {
           stop();
           var id = n["OrderID"];
+
+
+
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
-          dialogBoxHide(context, 'Order created successfully !!!');
+
+          if(printAfterOrder){
+
+            PrintDataDetails.type = "SO";
+            PrintDataDetails.id = n["OrderID"];
+            printDetail(context);
+          }
+
+
+
+         // dialogBoxHide(context, 'Order created successfully !!!');
 
           Future.delayed(const Duration(seconds: 1), () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
-
             var kot = prefs.getBool("KOT") ?? false;
             if (kot == true) {
               PrintDataDetails.type = "SO";
@@ -5220,6 +5234,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       }
     }
   }
+
+
+
+
 
   changeQtyTextField(BuildContext context) async {
     return showDialog(

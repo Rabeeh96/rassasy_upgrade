@@ -176,9 +176,9 @@ class AppBlocs {
 
     if (res == PosPrintResult.success) {
       if (temp == 'template4') {
-        await InvoicePrintTemplate4(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await invoicePrintTemplate4(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       } else if (temp == 'template3') {
-        await InvoicePrintTemplate3(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await invoicePrintTemplate3(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       }
       else {
         await printArabic(printer);
@@ -197,7 +197,7 @@ class AppBlocs {
     return response.bodyBytes;
   }
 
-  Future<void> InvoicePrintTemplate4(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
+  Future<void> invoicePrintTemplate4(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -284,9 +284,6 @@ class AppBlocs {
 
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
-    Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
-    Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
-    Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
     Uint8List companyTaxEnc = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
     Uint8List companyCREnc = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
     Uint8List companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
@@ -318,6 +315,8 @@ class AppBlocs {
                 height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
       if (companySecondName != "") {
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
+
         printer.text('', styles: const PosStyles(align: PosAlign.left));
         printer.textEncoded(companySecondNameEncode,
             styles: const PosStyles(
@@ -327,6 +326,8 @@ class AppBlocs {
       }
 
       if (companyAddress1 != "") {
+        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
+
         printer.row([
           PosColumn(text: 'Address', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1),
@@ -340,6 +341,8 @@ class AppBlocs {
       }
 
       if (secondAddress != "") {
+        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
+
         printer.row([
           PosColumn(text: 'Building ', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
@@ -402,16 +405,22 @@ class AppBlocs {
       }
 
       if (companySecondName != "") {
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
+
         printer.textEncoded(companySecondNameEncode,
             styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (companyAddress1 != "") {
+        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
+
         printer.textEncoded(secondAddress1Encode,
             styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (secondAddress != "") {
+        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
+
         printer.textEncoded(secondAddressEncode,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
@@ -442,9 +451,7 @@ class AppBlocs {
     Uint8List voucherNoEnc = await CharsetConverter.encode("ISO-8859-6", setString('رقم الفاتورة'));
     Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString('تاريخ'));
     Uint8List customerEnc = await CharsetConverter.encode("ISO-8859-6", setString('اسم'));
-    Uint8List phoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
     Uint8List typeEnc = await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
-    Uint8List tableEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
     // printer.setStyles(PosStyles.defaults());
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
@@ -483,10 +490,10 @@ class AppBlocs {
       PosColumn(text: date, width: 6, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
-    Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName));
-    Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
 
     if (customerName != "") {
+      Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName));
+
       printer.row([
         PosColumn(text: 'Name    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
@@ -498,6 +505,10 @@ class AppBlocs {
       ]);
     }
     if (customerPhone != "") {
+      Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
+
+      Uint8List phoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
+
       printer.row([
         PosColumn(text: 'Phone    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
@@ -519,6 +530,8 @@ class AppBlocs {
     printer.setStyles(const PosStyles(codeTable: 'CP864'));
 
     if (tableName != "") {
+      Uint8List tableEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+
       printer.row([
         PosColumn(text: 'Table Name   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
@@ -616,7 +629,6 @@ class AppBlocs {
     for (var i = 0; i < tableDataDetailsPrint.length; i++) {
       var slNo = i + 1;
 
-      Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
       Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
 
       printer.row([
@@ -638,16 +650,22 @@ class AppBlocs {
             styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
-      printer.row([
-        PosColumn(
-            textEncoded: description, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(
-            text: '',
-            width: 5,
-            styles: const PosStyles(
-              height: PosTextSize.size1,
-            ))
-      ]);
+
+      var description =tableDataDetailsPrint[i].productDescription??'';
+      if(description !=""){
+        Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
+        printer.row([
+          PosColumn(
+              textEncoded: description, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          PosColumn(
+              text: '',
+              width: 5,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+              ))
+        ]);
+      }
+
       printer.hr();
     }
     printer.emptyLines(1);
@@ -773,7 +791,7 @@ class AppBlocs {
     }
   }
 
-  Future<void> InvoicePrintTemplate3(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
+  Future<void> invoicePrintTemplate3(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -2331,10 +2349,8 @@ class AppBlocs {
     for (var i = 0; i < dataPrint.length; i++) {
       var slNo = i + 1;
 
-      var productDescription = dataPrint[i].productDescription;
-      Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription));
+      var productDescription = dataPrint[i].productDescription??'';
       Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
-      Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].flavour));
 
       printer.row([
         PosColumn(
@@ -2348,11 +2364,15 @@ class AppBlocs {
       ]);
 
       if (productDescription != "") {
+
+        Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription));
+
         printer.textEncoded(productDescriptionEnc,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (dataPrint[i].flavour != "") {
+        Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].flavour));
         printer.textEncoded(flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
       printer.hr();
@@ -2371,7 +2391,7 @@ class AppBlocs {
               (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
-    printer.disconnect();
+
   }
   /// Direct text method for Gst company
   Future<void> kotPrintGst(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate) async {
