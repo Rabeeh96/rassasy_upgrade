@@ -4082,7 +4082,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
 
