@@ -40,7 +40,7 @@ class POSOrderSection extends StatefulWidget {
 }
 
 class _POSOrderSectionState extends State<POSOrderSection> {
-  Color borderColor = Color(0xffB8B8B8);
+  Color borderColor = const Color(0xffB8B8B8);
 
   /// scroll controller declaration
 
@@ -213,10 +213,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
   void _animateToIndex(int index) {
     print(index);
-    print(_width);
+    print("_width_width_width_width_width_width_width_width_width     $_width");
     categoryController.animateTo(
       index * _width,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 10),
       curve: Curves.fastOutSlowIn,
     );
   }
@@ -298,7 +298,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   var unitPriceAmountWR = "0.00";
   var inclusiveUnitPriceAmountWR = "0.00";
   var grossAmountWR = "0.00";
-  int totalCategory = 0;
+
   double exciseTaxAmount = 0.0;
   /// Excise tax
   int exciseTaxID = 0;
@@ -318,7 +318,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                backgroundColor: Color(0xff415369),
+                backgroundColor: const Color(0xff415369),
                 title: Text("Are you sure?".tr, style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
                 content: Text("There are unsaved changes are you sure ou want to leave this page".tr,
                     style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0)),
@@ -372,7 +372,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         Container(
           color: Colors.white,
           height: MediaQuery.of(context).size.height / 1, //height of button
-          width: MediaQuery.of(context).size.width / 11,
+        //  width: MediaQuery.of(context).size.width / 11,
           child: orderTypeDetailScreen(),
         )
       ],
@@ -390,14 +390,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             width: 100,
             height: 100,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             'no_network'.tr,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextButton(
@@ -405,10 +405,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               posFunctions();
             },
             child: Text('retry'.tr,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEE830C))),
           ),
         ],
       ),
@@ -755,7 +755,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       if (printType == 'Wifi') {
         printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate);
       } else {
-
         printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
         /// commented bluetooth
         // print("_____________________123123123123");
@@ -786,7 +785,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           height: MediaQuery.of(context).size.height / 1.1,
           //height of button
           width: MediaQuery.of(context).size.width / 1.7,
-          decoration: BoxDecoration(color: Color(0xffF8F8F8), border: Border.all(color: Colors.grey, width: .2)),
+          decoration: BoxDecoration(color: const Color(0xffF8F8F8), border: Border.all(color: Colors.grey, width: .2)),
           child: ListView(
             children: [
               // Container(
@@ -974,7 +973,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                         Row(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.arrow_back),
+                              icon: const Icon(Icons.arrow_back),
                               onPressed: () async {
                                 Navigator.pop(context);
                               },
@@ -996,12 +995,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                     width: MediaQuery.of(context).size.width / 5,
                                     height: MediaQuery.of(context).size.height / 20,
                                     child: TextField(
-                                      style: TextStyle(fontSize: 12),
+                                      style: const TextStyle(fontSize: 12),
                                       readOnly: true,
                                       onTap: () async {
                                         var result = await Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => SelectPaymentDeliveryMan()),
+                                          MaterialPageRoute(builder: (context) => const SelectPaymentDeliveryMan()),
                                         );
 
                                         if (result != null) {
@@ -1045,7 +1044,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                   height: MediaQuery.of(context).size.height / 14,
                   width: MediaQuery.of(context).size.width / 1.8,
                   decoration: BoxDecoration(
-                      color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(4.0)), border: Border.all(color: Colors.grey, width: .2)),
+                      color: Colors.white, borderRadius: const BorderRadius.all(Radius.circular(4.0)), border: Border.all(color: Colors.grey, width: .2)),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: Row(
@@ -1065,12 +1064,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               width: MediaQuery.of(context).size.width / 5.5,
                               height: MediaQuery.of(context).size.height / 20,
                               child: TextField(
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                                 readOnly: true,
                                 onTap: () async {
                                   var result = await Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SelectPaymentCustomer()),
+                                    MaterialPageRoute(builder: (context) => const SelectPaymentCustomer()),
                                   );
 
                                   print(result);
@@ -1101,14 +1100,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
                                 child: Text(
                                   'balance'.tr,
-                                  style: customisedStyle(context, Color(0xff808080), FontWeight.bold, 15.00),
+                                  style: customisedStyle(context, const Color(0xff808080), FontWeight.bold, 15.00),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Text(
                                   currency + "  " + roundStringWith(balance.toString()),
-                                  style: customisedStyle(context, Color(0xff808080), FontWeight.bold, 15.00),
+                                  style: customisedStyle(context, const Color(0xff808080), FontWeight.bold, 15.00),
                                 ),
                               ),
                             ],
@@ -1126,9 +1125,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                   //height of button
                   width: MediaQuery.of(context).size.width / 1.8,
                   decoration: BoxDecoration(
-                      color: Color(0xffEFEFEF),
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      border: Border.all(color: Color(0xffefefef), width: .2)),
+                      color: const Color(0xffEFEFEF),
+                      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                      border: Border.all(color: const Color(0xffefefef), width: .2)),
 
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
@@ -1149,7 +1148,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               padding: const EdgeInsets.only(right: 0),
                               child: Text(
                                 currency + "  " + roundStringWith(grandTotalAmount),
-                                style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                                style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                               ),
                             ),
                           ],
@@ -1161,13 +1160,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           children: [
                             Text(
                               'total_vat'.tr,
-                              style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                              style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: Text(
                                 roundStringWith(vatAmountTotalP.toString()),
-                                style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                                style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                               ),
                             ),
                           ],
@@ -1181,13 +1180,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           children: [
                             Text(
                               'excise_tax'.tr,
-                              style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                              style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: Text(
                                 roundStringWith(exciseAmountTotalP.toString()),
-                                style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                                style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                               ),
                             ),
                           ],
@@ -1197,13 +1196,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           children: [
                             Text(
                               'total_tax'.tr,
-                              style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                              style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: Text(
                                 roundStringWith(totalTaxP),
-                                style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                                style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                               ),
                             ),
                           ],
@@ -1213,13 +1212,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           children: [
                             Text(
                               'net_total'.tr,
-                              style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                              style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: Text(
                                 roundStringWith(netTotal),
-                                style: customisedStyle(context, Color(0xff000000), FontWeight.bold, 13.00),
+                                style: customisedStyle(context, const Color(0xff000000), FontWeight.bold, 13.00),
                               ),
                             ),
                           ],
@@ -1229,13 +1228,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           children: [
                             Text(
                               'grand_total'.tr,
-                              style: customisedStyle(context, Color(0xff0A9800), FontWeight.bold, 15.00),
+                              style: customisedStyle(context, const Color(0xff0A9800), FontWeight.bold, 15.00),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: Text(
                                 roundStringWith(grandTotalAmount),
-                                style: customisedStyle(context, Color(0xff0A9800), FontWeight.bold, 15.00),
+                                style: customisedStyle(context, const Color(0xff0A9800), FontWeight.bold, 15.00),
                               ),
                             ),
                           ],
@@ -1394,7 +1393,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                   //   height: MediaQuery.of(context).size.height / 18,
                                   child: TextButton(
                                       style: TextButton.styleFrom(
-                                        foregroundColor: Colors.white, backgroundColor: Color(0xff262626),
+                                        foregroundColor: Colors.white, backgroundColor: const Color(0xff262626),
                                         textStyle: customisedStyle(context, Colors.black, FontWeight.w400, 11.00),
                                       ),
                                       onPressed: () {
@@ -1545,7 +1544,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                     focusNode: cashReceivedFcNode,
                                     controller: cashReceivedController,
                                     style: customisedStyle(context, Colors.black, FontWeight.w500, 12.00),
-                                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                                     ],
@@ -1632,7 +1631,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                   child: TextField(
                                     focusNode: amountFcNode,
                                     controller: bankReceivedController,
-                                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                                     ],
@@ -1683,7 +1682,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 15),
+                          const SizedBox(height: 15),
                           Container(
                             //  width: MediaQuery.of(context).size.width / 4,
                             child: Row(
@@ -1703,7 +1702,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                     controller: discountAmountController,
                                     style: customisedStyle(context, Colors.black, FontWeight.w400, 12.00),
                                     //   focusNode: netTotalFocusNode,
-                                    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                    keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
 
                                     inputFormatters: [
                                       FilteringTextInputFormatter.deny(RegExp('[-, ]')),
@@ -1746,7 +1745,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                   height: MediaQuery.of(context).size.height / 21,
                                   child: TextField(
                                     controller: discountPerController,
-                                    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                    keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                                     ],
@@ -1855,7 +1854,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   foregroundColor: Colors.white,
-                                  padding: EdgeInsets.all(2.0),
+                                  padding: const EdgeInsets.all(2.0),
                                   backgroundColor: const Color(0xff1155F3),
                                   textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                                 ),
@@ -1913,7 +1912,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           //color: Colors.grey,
         ),
         Padding(
-            padding: EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 20),
             child: Container(
               height: MediaQuery.of(context).size.height / 1, //height of button
               width: MediaQuery.of(context).size.width / 3.3,
@@ -2099,7 +2098,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color(0xff415369),
+          backgroundColor: const Color(0xff415369),
           title: Text("Are you sure?", style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
           content: Text("There are unsaved changes ,want to leave this page", style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0)),
           actions: <Widget>[
@@ -2134,7 +2133,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   Widget tableNameHeader() {
     return SafeArea(
       child: Container(
-          padding: EdgeInsets.only(left: 8, right: 8),
+          padding: const EdgeInsets.only(left: 8, right: 8),
           decoration: BoxDecoration(
               //  color: Colors.red,
               border: Border(
@@ -2154,7 +2153,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               Container(
                 width: MediaQuery.of(context).size.width / 17,
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () async {
                     functionBack();
                   },
@@ -2173,11 +2172,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     Text(
                       widget.tableHead,
                       // style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff717171), fontSize: 17.0),
-                      style: customisedStyle(context, Color(0xff717171), FontWeight.w500, 17.0),
+                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 17.0),
                     ),
                     Text(
                       'choose_item'.tr,
-                      style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0),
+                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0),
                     )
                   ],
                 ),
@@ -2229,7 +2228,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       width: MediaQuery.of(context).size.width / 6,
                       height: MediaQuery.of(context).size.height / 15,
                       child: TextField(
-                        style: TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.words,
                         focusNode: custNameHeaderFcNode,
@@ -2250,7 +2249,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       width: MediaQuery.of(context).size.width / 6,
                       height: MediaQuery.of(context).size.height / 15,
                       child: TextField(
-                        style: TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                         keyboardType: TextInputType.number,
                         textCapitalization: TextCapitalization.words,
                         focusNode: phoneNoHeaderFcNode,
@@ -2345,7 +2344,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
-                              ),backgroundColor: productSearchNotifier.value == 1 ? Color(0xffF25F29) : Colors.white),
+                              ),backgroundColor: productSearchNotifier.value == 1 ? const Color(0xffF25F29) : Colors.white),
                           onPressed: () {
                             productSearchNotifier.value = 1;
                           },
@@ -2365,7 +2364,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
-                              backgroundColor: productSearchNotifier.value == 2 ? Color(0xffF25F29) : Colors.white),
+                              backgroundColor: productSearchNotifier.value == 2 ? const Color(0xffF25F29) : Colors.white),
                           onPressed: () {
                             productSearchNotifier.value = 2;
                           },
@@ -2386,7 +2385,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
-                              backgroundColor: productSearchNotifier.value == 3 ? Color(0xffF25F29) : Colors.white),
+                              backgroundColor: productSearchNotifier.value == 3 ? const Color(0xffF25F29) : Colors.white),
                           onPressed: () {
                             productSearchNotifier.value = 3;
                             print(productSearchNotifier.value);
@@ -2422,9 +2421,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                     hintText: 'Barcode'.tr,
                                     hintStyle: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
                                     isDense: true,
-                                    fillColor: Color(0xffFFFFFF),
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.all(11)),
+                                    fillColor: const Color(0xffFFFFFF),
+                                    border: const OutlineInputBorder(),
+                                    contentPadding: const EdgeInsets.all(11)),
                               ),
                             ),
                           )
@@ -2436,13 +2435,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0),
-                                    ),backgroundColor: productSearchNotifier.value == 4 ? Color(0xffF25F29) : Colors.white),
+                                    ),backgroundColor: productSearchNotifier.value == 4 ? const Color(0xffF25F29) : Colors.white),
                                 onPressed: () async {
-                                  productSearchNotifier.value = 4;
-                                  String? barcode = await BarcodeScannerClass.scanBarcode(context);
-                                  if (barcode != null) {
-                                    getBarcodeProduct(context: context, barcode: barcode);
-                                  }
+                                  // productSearchNotifier.value = 4;
+                                  // String? barcode = await BarcodeScannerClass.scanBarcode(context);
+                                  // if (barcode != null) {
+                                  //   getBarcodeProduct(context: context, barcode: barcode);
+                                  // }
                                 },
                                 child: Text(
                                   'Barcode'.tr,
@@ -2471,9 +2470,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               hintText: 'search'.tr,
                               hintStyle: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
                               isDense: true,
-                              fillColor: Color(0xffFFFFFF),
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(11)),
+                              fillColor: const Color(0xffFFFFFF),
+                              border: const OutlineInputBorder(),
+                              contentPadding: const EdgeInsets.all(11)),
                         ),
                       ),
                     ),
@@ -2735,10 +2734,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
   Widget displayCategoryNames() {
     return Container(
+   //  color: Colors.grey,
       padding: const EdgeInsets.only(left: 2, right: 2),
-
       height: MediaQuery.of(context).size.height / 6, //height of button
-      width: MediaQuery.of(context).size.width / 1.6,
+   //   width: MediaQuery.of(context).size.width / 1.6,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -2750,12 +2749,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(5))),
             child: IconButton(
               onPressed: () {
+                print("object data=================-=-=-=-=-$a");
                 setState(() {
                   ///if condition
                   if (a != 0) {
                     a = a - 1;
                     _animateToIndex(a);
-                  } else {}
+                  }
+                  else {}
                 });
               },
               icon: SvgPicture.asset(
@@ -2769,14 +2770,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           categoryList.isNotEmpty?
           Container(
             height: MediaQuery.of(context).size.height / 8, //height of button
-            width: _width,
-            //   width: MediaQuery.of(context).size.width / 2.2,
+           // width: _width,
+           width: MediaQuery.of(context).size.width / 2.2,
 
             child: GridView.builder(
                 controller: categoryController,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: .18,
                   crossAxisSpacing: 2,
@@ -2826,12 +2827,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             child: IconButton(
               onPressed: () {
                 setState(() {
-                  totalCategory = categoryList.length;
+
+                  print("a $a   totalCategory   totalCategory  categoryList.length ${categoryList.length}");
                   a = a + 1;
                   _animateToIndex(a);
                 });
               },
-              // onPressed: () => ,
+
               icon: SvgPicture.asset('assets/svg/arrowforward.svg'),
             ),
           ),
@@ -2998,7 +3000,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                                   child: SvgPicture.asset("assets/svg/Logo.svg"),
                                 )
-                              : Padding(
+                              :
+                          Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
                                     height: MediaQuery.of(context).size.height / 15, //height of button
@@ -3014,6 +3017,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                             )),
                                   ),
                                 ),
+
                           Padding(
                             padding: const EdgeInsets.only(left: 5.0),
                             child: Container(
@@ -3272,7 +3276,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
-                          ),backgroundColor: Color(0xff0347A1)),
+                          ),backgroundColor: const Color(0xff0347A1)),
                       onPressed: () {
 
                         print("object");
@@ -3293,7 +3297,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
-                          ),backgroundColor: Color(0xff000000)),
+                          ),backgroundColor: const Color(0xff000000)),
                       onPressed: () {
                         changeStatusToDelivered("delivered");
                       },
@@ -3372,7 +3376,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               "Select all",
                               style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                           ],
@@ -3419,7 +3423,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       Container(
                         //   width: MediaQuery.of(context).size.width / 4.2,
                         decoration: BoxDecoration(
-                            color: isSelected ? Color(0xff82acd9) : Color(0xffFffff),
+                            color: isSelected ? const Color(0xff82acd9) : const Color(0xffFffff),
                             //  color: isSelected ? Color(0xff82acd9) : returnColorListItem(orderDetTable[index].item_status),
                             border: Border.all(color: Colors.grey)),
                         child: Row(
@@ -3671,9 +3675,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                 returnTax(),
 
 
-
-
-
                 SizedBox(
                 //  height: MediaQuery.of(context).size.height / 27,
                   width: MediaQuery.of(context).size.width / 2.5,
@@ -3698,7 +3699,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     SizedBox(
                       // height: MediaQuery.of(context).size.height / 20,
-                      width: MediaQuery.of(context).size.width / 10,
+                   //   width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -3721,8 +3722,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           Padding(
                             padding: const EdgeInsets.only(left: 5.0),
                             child: Text(
-                              'cancel'.tr,
-                              style: customisedStyle(context, Colors.white, FontWeight.normal, 16.0),
+                              'cancel'.tr+"  ",
+                              style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),
                             ),
                           ),
                         ]),
@@ -3730,7 +3731,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     ),
                     SizedBox(
                       //  height: MediaQuery.of(context).size.height / 17,
-                      width: MediaQuery.of(context).size.width / 10,
+                     // width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -3753,13 +3754,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           }
                         },
                         child: InkWell(
-                          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
                             SvgPicture.asset("assets/svg/check.svg", width: 15),
                             Padding(
                               padding: const EdgeInsets.only(left: 5.0),
                               child: Text(
                                 'payment'.tr,
-                                style: customisedStyle(context, Colors.white, FontWeight.normal, 16.0),
+                                style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),
                               ),
                             ),
                           ]),
@@ -3768,7 +3770,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     ),
                     SizedBox(
                       //  height: MediaQuery.of(context).size.height / 17,
-                      width: MediaQuery.of(context).size.width / 10,
+                    //  width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -3800,8 +3802,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           Padding(
                             padding: const EdgeInsets.only(left: 5.0),
                             child: Text(
-                              'save'.tr,
-                              style: customisedStyle(context, Colors.white, FontWeight.normal, 16.0),
+                              'save'.tr+"    ",
+                              style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),
                             ),
                           ),
                         ]),
@@ -3842,7 +3844,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     } else if (status == "delivered") {
       return Colors.black;
     } else {
-      return Color(0xff0347A1);
+      return const Color(0xff0347A1);
     }
   }
 
@@ -3883,7 +3885,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -3899,7 +3901,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     width: MediaQuery.of(context).size.width / 9,
                     child: Text(
                       productName,
-                      style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 15.00),
+                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 15.00),
                     ),
                   ),
                   Container(
@@ -3937,7 +3939,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           child: TextField(
                             controller: qtyDetailController,
                             textAlign: TextAlign.center,
-                            style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 14.00),
+                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 14.00),
                             onChanged: (text) {
                               if (text.isNotEmpty) {
                                 quantity = double.parse(text);
@@ -3990,7 +3992,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 //               ),
 //             ),
 
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
 
@@ -4053,7 +4055,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     //  width: MediaQuery.of(context).size.width / 13,
                     child: Text(
                       'Rate:',
-                      style: customisedStyle(context, Color(0xffF25F29), FontWeight.w600, 12.00),
+                      style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w600, 12.00),
                     ),
                   ),
                   SizedBox(
@@ -4063,7 +4065,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       textAlign: TextAlign.end,
                       controller: unitPriceDetailController,
                       style: customisedStyle(context, Colors.black, FontWeight.w500, 12.00),
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                       ],
@@ -4094,7 +4096,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                 //   width: MediaQuery.of(context).size.width / 6,
                 height: MediaQuery.of(context).size.height / 12,
                 child: TextField(
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.words,
                   //  focusNode: custNameHeaderFcNode,
@@ -4120,7 +4122,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
                           child: ListTile(
-                        tileColor: flavourID == flavourList[index].id ? Colors.redAccent : Color(0xffEEEEEE),
+                        tileColor: flavourID == flavourList[index].id ? Colors.redAccent : const Color(0xffEEEEEE),
                         title: Text(
                           flavourList[index].flavourName,
                           style: customisedStyle(context, Colors.black, FontWeight.w400, 12.00),
@@ -5224,16 +5226,16 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Color(0xffEAF0F1),
+            backgroundColor: const Color(0xffEAF0F1),
             content: Container(
               height: MediaQuery.of(context).size.height / 7,
               width: 250,
               decoration: BoxDecoration(
-                  color: Color(0xffEAF0F1),
+                  color: const Color(0xffEAF0F1),
                   border: Border.all(
-                    color: Color(0xffEAF0F1),
+                    color: const Color(0xffEAF0F1),
                   ),
-                  borderRadius: BorderRadius.all(Radius.circular(1))),
+                  borderRadius: const BorderRadius.all(Radius.circular(1))),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -5253,7 +5255,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           onTap: () =>
                               tokenNumberController.selection = TextSelection(baseOffset: 0, extentOffset: tokenNumberController.value.text.length),
 
-                          style: TextStyle(fontSize: 12, color: Color(0xff000000)),
+                          style: const TextStyle(fontSize: 12, color: Color(0xff000000)),
                           decoration: CommonStyleTextField.textFieldStyle(labelTextStr: "Token Number", hintTextStr: "Token Number"),
                         )),
                   ),
@@ -5281,8 +5283,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                         ),
                         style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
-                            backgroundColor: Color(0xff10c103),
-                            textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                            backgroundColor: const Color(0xff10c103),
+                            textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
@@ -5472,6 +5474,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
+          height: 50,
+          width: 50,
           decoration: BoxDecoration(
             border: Border.all(
               color: mainPageIndexIcon == 1 ? Colors.black : Colors.transparent,
@@ -5480,7 +5484,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             borderRadius: const BorderRadius.all(
               Radius.circular(15),
             ),
-            color: Color(0xffE8E8E8),
+            color: mainPageIndexIcon ==1?Colors.white:Color(0xffE8E8E8),
           ),
           child: IconButton(
             onPressed: () {},
@@ -5499,6 +5503,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         ),
 
         Container(
+            height: 50,
+            width: 50,
             decoration: BoxDecoration(
               border: Border.all(
                 color: mainPageIndexIcon == 2 ? Colors.black : Colors.transparent,
@@ -5507,7 +5513,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
               ),
-              color: Color(0xffE8E8E8),
+              color: mainPageIndexIcon ==2?Colors.white:Color(0xffE8E8E8),
             ),
             child: IconButton(
               onPressed: () {},
@@ -5547,6 +5553,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           height: 15,
         ),
         Container(
+            height: 50,
+            width: 50,
             decoration: BoxDecoration(
               border: Border.all(
                 color: mainPageIndexIcon == 4 ? Colors.black : Colors.transparent,
@@ -5555,7 +5563,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
               ),
-              color: Color(0xffE8E8E8),
+              color: mainPageIndexIcon ==4?Colors.white:Color(0xffE8E8E8),
+
             ),
             child: IconButton(
               onPressed: () {},
@@ -5576,7 +5585,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Color(0xffffffff),
+            backgroundColor: const Color(0xffffffff),
             content: Container(
                 width: MediaQuery.of(context).size.width / 3.7,
                 height: MediaQuery.of(context).size.height / 2.1,
@@ -5587,7 +5596,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       child: Container(
                           //    width: MediaQuery.of(context).size.width / 5,
                           height: MediaQuery.of(context).size.height / 18,
-                          child: Text(
+                          child: const Text(
                             'Loyalty Customer',
                             style: TextStyle(fontSize: 20),
                           )),
@@ -5627,7 +5636,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                       firstTime = 1;
                                       getLoyaltyCustomer();
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.clear,
                                       color: Colors.black,
                                     ),
@@ -5654,7 +5663,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             itemCount: loyaltyCustLists.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Card(
-                                color: Color(0xffF5F5F5),
+                                color: const Color(0xffF5F5F5),
                                 child: ListTile(
                                     onTap: () {
                                       loyaltyCustomerID = loyaltyCustLists[index].loyaltyCustomerID;
@@ -5662,8 +5671,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                                       /// 123123      PaymentData.ledgerID=  loyaltyCustLists[index].
                                     },
-                                    tileColor: Color(0xffF5F5F5),
-                                    trailing: Icon(Icons.circle_rounded, color: Color(0xff008015)),
+                                    tileColor: const Color(0xffF5F5F5),
+                                    trailing: const Icon(Icons.circle_rounded, color: Color(0xff008015)),
                                     title: Column(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -5672,17 +5681,17 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            const Text(
                                               'Name',
                                               style: TextStyle(color: Color(0xff777777), fontSize: 10),
                                             ),
                                             Text(
                                               loyaltyCustLists[index].customerName,
-                                              style: TextStyle(fontSize: 12),
+                                              style: const TextStyle(fontSize: 12),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
                                         Column(
@@ -5691,11 +5700,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                           children: [
                                             Text(
                                               'phone'.tr,
-                                              style: TextStyle(color: Color(0xff777777), fontSize: 10),
+                                              style: const TextStyle(color: Color(0xff777777), fontSize: 10),
                                             ),
                                             Text(
                                               loyaltyCustLists[index].phone,
-                                              style: TextStyle(fontSize: 12),
+                                              style: const TextStyle(fontSize: 12),
                                             ),
                                           ],
                                         ),
@@ -5723,7 +5732,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               ),
                               child: Text(
                                 'cancel'.tr,
-                                style: TextStyle(color: Color(0xffFFFFFF)),
+                                style: const TextStyle(color: Color(0xffFFFFFF)),
                               ),
                               onPressed: () {
                                 Navigator.pop(context);
@@ -5765,7 +5774,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-              backgroundColor: Color(0xffEAF0F1),
+              backgroundColor: const Color(0xffEAF0F1),
               content: Container(
                   width: MediaQuery.of(context).size.width / 3.7,
                   height: MediaQuery.of(context).size.height / 1.2,
@@ -5883,7 +5892,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           width: MediaQuery.of(context).size.width / 7,
           child: Text(
             'name'.tr,
-            style: TextStyle(fontSize: 15),
+            style: const TextStyle(fontSize: 15),
           ),
         ),
         Container(
@@ -5914,7 +5923,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           width: MediaQuery.of(context).size.width / 7,
           child: Text(
             'phone1'.tr,
-            style: TextStyle(fontSize: 15),
+            style: const TextStyle(fontSize: 15),
           ),
         ),
         Container(
@@ -5945,7 +5954,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           width: MediaQuery.of(context).size.width / 7,
           child: Text(
             'loc'.tr,
-            style: TextStyle(fontSize: 15),
+            style: const TextStyle(fontSize: 15),
           ),
         ),
         Container(
@@ -5976,7 +5985,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           width: MediaQuery.of(context).size.width / 7,
           child: Text(
             'card_type'.tr,
-            style: TextStyle(fontSize: 15),
+            style: const TextStyle(fontSize: 15),
           ),
         ),
         Container(
@@ -5988,7 +5997,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               onTap: () async {
                 var result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SelectCardType()),
+                  MaterialPageRoute(builder: (context) => const SelectCardType()),
                 );
 
                 print(result);
@@ -6022,7 +6031,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           width: MediaQuery.of(context).size.width / 7,
           child: Text(
             'card_no'.tr,
-            style: TextStyle(fontSize: 15),
+            style: const TextStyle(fontSize: 15),
           ),
         ),
         Container(
@@ -6061,7 +6070,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             ),
             child: Text(
               'cancel'.tr,
-              style: TextStyle(color: Color(0xffFFFFFF)),
+              style: const TextStyle(color: Color(0xffFFFFFF)),
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -6966,7 +6975,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
           print("--0-----${widget.orderType}----");
           Navigator.pop(context, [widget.orderType, false]);
-          Future.delayed(Duration(milliseconds: 500), () {
+          Future.delayed(const Duration(milliseconds: 500), () {
             if (print_save == true) {
               PrintDataDetails.type = "SI";
               PrintDataDetails.id = n["invoice_id"];
@@ -7107,7 +7116,7 @@ class Button extends StatelessWidget {
         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
       ),
       child: GestureDetector(
-        child: Center(child: Text('Click Me')),
+        child: const Center(child: Text('Click Me')),
         onTap: () {},
       ),
     );
@@ -7139,7 +7148,7 @@ class UserDetailsAppBar extends StatelessWidget {
               style: customisedStyle(context, Colors.black, FontWeight.w700, 14.0),
             ),
             IconButton(
-              icon: Icon(Icons.login_outlined),
+              icon: const Icon(Icons.login_outlined),
               onPressed: () async {
                 showDialog(
                     context: context,
@@ -7149,7 +7158,7 @@ class UserDetailsAppBar extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: AlertDialog(
                           title: Padding(
-                            padding: EdgeInsets.all(0.5),
+                            padding: const EdgeInsets.all(0.5),
                             child: Text(
                               "Alert!",
                               style: customisedStyle(context, Colors.black, FontWeight.w600, 15.00),
@@ -7164,7 +7173,7 @@ class UserDetailsAppBar extends StatelessWidget {
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
                                   prefs.setBool('IsSelectPos', false);
                                   Navigator.pop(context);
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                 },
                                 child: Text(
                                   'Ok',
@@ -7206,7 +7215,7 @@ class BackButtonAppBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 var selectPos = prefs.getBool('IsSelectPos') ?? false;

@@ -159,7 +159,6 @@ class AppBlocs {
     var salesMan = prefs.getString("user_name") ?? '';
     var OpenDrawer = prefs.getBool("OpenDrawer") ?? false;
 
-    print("---------------------------------OpenDrawer-------------------------------$printerIp--------------$OpenDrawer");
 
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;

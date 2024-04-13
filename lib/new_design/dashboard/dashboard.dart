@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/new_design/auth_user/profie/profile.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/usb_test_page.dart';
 import 'package:rassasy_new/new_design/back_ground_print/test_page.dart';
 import 'package:get/get.dart';
 
@@ -115,7 +116,6 @@ class _DashboardNewState extends State<DashboardNew> {
             prefs.setString("financial_ToDate", toDate);
             prefs.setString("Country", n["Country"]);
             prefs.setString("CountryName", n["CountryName"]);
-
             prefs.setString("State", n["State"]);
             prefs.setString("CurrencySymbol", n["CurrencySymbol"]);
             var settingsData = n['settingsData'];
@@ -189,7 +189,7 @@ class _DashboardNewState extends State<DashboardNew> {
             MaterialPageRoute(builder: (context) => PrintSettings()),
           );
         } else {
-     //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => PrintSettingsBluetooth()),);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => TestPrintUSB()),);
         }
 
         break;

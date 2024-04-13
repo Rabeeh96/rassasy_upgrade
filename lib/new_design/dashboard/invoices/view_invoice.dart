@@ -491,7 +491,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
     if (defaultIp == "") {
-      dialogBox(context, "Please select a default printer");
+      dialogBox(context, "Please select a printer");
     } else {
       if(printType =='Wifi'){
         var ret = await printHelperIP.printDetails();

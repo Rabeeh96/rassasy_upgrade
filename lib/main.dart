@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
-import 'package:rassasy_new/new_design/back_ground_print/USB/test_printer.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/usb_test_page.dart';
 import 'package:rassasy_new/new_design/back_ground_print/print_details/detailed_print_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/new_method/pos_list_section.dart';
 import 'package:shared_preferences/shared_preferences.dart';

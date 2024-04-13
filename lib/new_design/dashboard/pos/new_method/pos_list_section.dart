@@ -31,7 +31,7 @@ class POSListItemsSection extends StatefulWidget {
 }
 
 class _POSListItemsSectionState extends State<POSListItemsSection> {
-  Color borderColor = Color(0xffB8B8B8);
+  Color borderColor = const Color(0xffB8B8B8);
 
 
   TextEditingController tableNameController = TextEditingController();
@@ -323,8 +323,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Confirmation'),
-            content: Text('Are you sure you want to exit?'),
+            title: const Text('Confirmation'),
+            content: const Text('Are you sure you want to exit?'),
             actions: <Widget>[
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -407,10 +407,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           child: selectOrderType(mainPageIndex),
         ),
         Container(
-          color: Colors.white,
+       //   color: Colors.red,
           height: MediaQuery.of(context).size.height / 1, //height of button
-          width: MediaQuery.of(context).size.width / 11,
-          child: orderTypeDetailScreen(),
+        //  width: MediaQuery.of(context).size.width / 11,
+          child: Center(child: orderTypeDetailScreen()),
         )
       ],
     );
@@ -427,14 +427,14 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             width: 100,
             height: 100,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             'no_network'.tr,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextButton(
@@ -442,10 +442,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
               posFunctions(callFunction: false);
             },
             child: Text('retry'.tr,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEE830C))),
           ),
         ],
       ),
@@ -475,7 +475,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
     return  RefreshIndicator(
       backgroundColor: Colors.white,
-      color:Color(0xffEE830C),
+      color:const Color(0xffEE830C),
       child: ListView(
 
         children: [
@@ -505,11 +505,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           children: [
                             Text(
                               'Dining'.tr,
-                              style: customisedStyle(context, Color(0xff717171), FontWeight.bold, 15.00),
+                              style: customisedStyle(context, const Color(0xff717171), FontWeight.bold, 15.00),
                             ),
                             Text(
                               'choose_table'.tr,
-                              style: customisedStyle(context, Color(0xff000000), FontWeight.w700, 12.00),
+                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 12.00),
                             )
                           ],
                         ),
@@ -533,7 +533,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       Container(
                         width: 100,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                          style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
                           onPressed: () {
                             posFunctions(callFunction: true);
                           },
@@ -578,7 +578,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     child:   Container(
                           decoration: BoxDecoration(
                               border: Border.all(
-                                color: Color(0xff8D8D8D),
+                                color: const Color(0xff8D8D8D),
                                 width: 1.7,
                               )),
                           child: returnDiningListItem(index)),
@@ -694,7 +694,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                           child: Text(
                             'Reservation'.tr,
-                            style: customisedStyle(context, Color(0xff00775E), FontWeight.w500, 14.00),
+                            style: customisedStyle(context, const Color(0xff00775E), FontWeight.w500, 14.00),
                           ),
                         ),
                       ],
@@ -706,7 +706,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         ],
       ),
       onRefresh: () {
-        return Future.delayed(Duration(seconds: 0), () {
+        return Future.delayed(const Duration(seconds: 0), () {
           posFunctions(callFunction: false);
         },
         );
@@ -954,7 +954,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         width: 6,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 5),
+                        padding: const EdgeInsets.only(left: 5),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1036,7 +1036,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           children: [
                             Text(
                               'Reservation'.tr,
-                              style: customisedStyle(context, Color(0xff00775E), FontWeight.w500, 10.0),
+                              style: customisedStyle(context, const Color(0xff00775E), FontWeight.w500, 10.0),
                             ),
                             Column(
                               // mainAxisAlignment:MainAxisAlignment.start,
@@ -1044,12 +1044,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               children: [
                                 Text(
                                   dateConverter(diningOrderList[dineIndex].reserved[0]["Date"]),
-                                  style: customisedStyle(context, Color(0xff707070), FontWeight.w500, 10.0),
+                                  style: customisedStyle(context, const Color(0xff707070), FontWeight.w500, 10.0),
                                 ),
                                 Text(
                                   ReturnDate(diningOrderList[dineIndex].reserved[0]["Date"], diningOrderList[dineIndex].reserved[0]["FromTime"],
                                       diningOrderList[dineIndex].reserved[0]["ToTime"]),
-                                  style: customisedStyle(context, Color(0xff707070), FontWeight.w500, 9.0),
+                                  style: customisedStyle(context, const Color(0xff707070), FontWeight.w500, 9.0),
                                 ),
                               ],
                             )
@@ -1722,7 +1722,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return  AlertDialog(
-            backgroundColor: Color(0xff415369),
+            backgroundColor: const Color(0xff415369),
             title: Text("Are you sure?",style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
             content: Text("Want to delete $tableName from list",style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0)),
             actions: <Widget>[
@@ -1850,7 +1850,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     Container(
                         decoration: BoxDecoration(
                             border: Border.all(
-                              color: Color(0xff8D8D8D),
+                              color: const Color(0xff8D8D8D),
                               width: 1.7,
                             )),
                         child: GestureDetector(
@@ -1901,7 +1901,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                             width: 6,
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(left: 5),
+                                            padding: const EdgeInsets.only(left: 5),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1971,7 +1971,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return  AlertDialog(
-            backgroundColor: Color(0xff415369),
+            backgroundColor: const Color(0xff415369),
             title: Text("Are you sure?",style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
             content: Container(
               height: MediaQuery.of(context).size.height/10,
@@ -2209,26 +2209,26 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          contentPadding: EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+                          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
                           filled: true,
-                          suffixStyle: TextStyle(
+                          suffixStyle: const TextStyle(
                             color: Colors.red,
                           ),
-                          hintStyle: customisedStyle(context, Color(0xff858585), FontWeight.w400, 14.0),
+                          hintStyle: customisedStyle(context, const Color(0xff858585), FontWeight.w400, 14.0),
                           hintText: "Table name",
-                          fillColor: Color(0xffffffff)),
+                          fillColor: const Color(0xffffffff)),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 13,
                   ),
 
                   Container(
                     height: MediaQuery.of(context).size.height / 20,
-                    decoration: BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(color: const Color(0xffF25F29), borderRadius: BorderRadius.circular(4)),
                     child: TextButton(
                       onPressed: () {
 
@@ -2238,13 +2238,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           createTableApi();
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Create",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Container(
@@ -2256,7 +2256,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       },
                       child: Text(
                         'cancel'.tr,
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
@@ -2293,20 +2293,20 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          contentPadding: EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+                          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
                           filled: true,
-                          suffixStyle: TextStyle(
+                          suffixStyle: const TextStyle(
                             color: Colors.red,
                           ),
-                          hintStyle: customisedStyle(context, Color(0xff858585), FontWeight.w400, 14.0),
+                          hintStyle: customisedStyle(context, const Color(0xff858585), FontWeight.w400, 14.0),
                           hintText: "Customer name",
-                          fillColor: Color(0xffffffff)),
+                          fillColor: const Color(0xffffffff)),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
 
@@ -2348,7 +2348,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       }),
                   // timeNotifierFromDate
                   // timeNotifierToDate
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   ValueListenableBuilder(
@@ -2395,7 +2395,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           },
                         );
                       }),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
 
@@ -2444,12 +2444,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         );
                       }),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height / 18,
-                    decoration: BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(color: const Color(0xffF25F29), borderRadius: BorderRadius.circular(4)),
                     child: TextButton(
                       onPressed: () {
                         if (reservationCustomerNameController.text == "") {
@@ -2458,7 +2458,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           reserveTable(reservationCustomerNameController.text, tableID);
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Reserve",
                         style: TextStyle(color: Colors.white),
                       ),
@@ -2474,7 +2474,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       },
                       child: Text(
                         'cancel'.tr,
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
@@ -2880,7 +2880,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   Widget takeAwayDetailScreen() {
     return  RefreshIndicator(
       backgroundColor: Colors.white,
-      color:Color(0xffEE830C),
+      color:const Color(0xffEE830C),
       child: ListView(
 
         children: [
@@ -2907,11 +2907,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       Text(
                         'Take_awy'.tr,
                         //  style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171), fontSize: 15),
-                        style: customisedStyle(context, Color(0xff717171), FontWeight.bold, 15.00),
+                        style: customisedStyle(context, const Color(0xff717171), FontWeight.bold, 15.00),
                       ),
                       Text('Create a parcel',
                           // style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff000000), fontSize: 11.0),
-                          style: customisedStyle(context, Color(0xff000000), FontWeight.w700, 12.00))
+                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 12.00))
                     ],
                   ),
                 ),
@@ -2930,7 +2930,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 Container(
                   width: 100,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
                     onPressed: () {
                       posFunctions(callFunction: true);
                     },
@@ -2948,7 +2948,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             //   height: MediaQuery.of(context).size.height / 1, //height of button
             width: MediaQuery.of(context).size.width / 1.1,
             child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
@@ -2964,7 +2964,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         ],
       ),
       onRefresh: () {
-        return Future.delayed(Duration(seconds: 0), () {
+        return Future.delayed(const Duration(seconds: 0), () {
           posFunctions(callFunction: true);
         },
         );
@@ -3187,10 +3187,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                             Text(
                                               'Parcel ${takeAwayOrderLists.length - takeIndex}',
                                               //   style: TextStyle(fontSize: 11, color: Color(0xff000000), fontWeight: FontWeight.w700),
-                                              style: customisedStyle(context, Color(0xff000000), FontWeight.w700, 11.00),
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.00),
                                             ),
                                             Text(takeAwayOrderLists[takeIndex].custName,
-                                                style: customisedStyle(context, Color(0xff2B2B2B), FontWeight.w400, 10.00)
+                                                style: customisedStyle(context, const Color(0xff2B2B2B), FontWeight.w400, 10.00)
                                               // style: TextStyle(
                                               //     fontSize: 10,
                                               //     color: Color(0xff2B2B2B)),
@@ -3202,7 +3202,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                     Text(
                                       currency + ". " + roundStringWith(takeAwayOrderLists[takeIndex].salesOrderGrandTotal),
                                       //style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xff005B37)),
-                                      style: customisedStyle(context, Color(0xff005B37), FontWeight.w600, 12.00),
+                                      style: customisedStyle(context, const Color(0xff005B37), FontWeight.w600, 12.00),
                                     ),
                                   ],
                                 ),
@@ -3219,21 +3219,21 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                       Text(
                                         'Token',
                                         //style: TextStyle(fontSize: 12, color: Color(0xff000000), fontWeight: FontWeight.w600),
-                                        style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 12.00),
+                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 12.00),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 5.0),
                                         child: Text(
                                           takeAwayOrderLists[takeIndex].tokenNo,
                                           //  style: const TextStyle(fontSize: 12, color: Color(0xff4E4E4E), fontWeight: FontWeight.w500),
-                                          style: customisedStyle(context, Color(0xff4E4E4E), FontWeight.w600, 12.00),
+                                          style: customisedStyle(context, const Color(0xff4E4E4E), FontWeight.w600, 12.00),
                                         ),
                                       )
                                     ],
                                   ),
                                   Text(
                                     returnOrderTime(takeAwayOrderLists[takeIndex].orderTime, takeAwayOrderLists[takeIndex].status),
-                                    style: customisedStyle(context, Color(0xff929292), FontWeight.w400, 11.00),
+                                    style: customisedStyle(context, const Color(0xff929292), FontWeight.w400, 11.00),
                                   ),
                                 ],
                               ),
@@ -3296,7 +3296,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
     return  RefreshIndicator(
       backgroundColor: Colors.white,
-      color:Color(0xffEE830C),
+      color:const Color(0xffEE830C),
       child: ListView(
 
         children: [
@@ -3323,12 +3323,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       Text(
                         'Online'.tr,
                         //    style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171), fontSize: 15),
-                        style: customisedStyle(context, Color(0xff717171), FontWeight.w600, 15.0),
+                        style: customisedStyle(context, const Color(0xff717171), FontWeight.w600, 15.0),
                       ),
                       Text(
                         'Create a Order',
                         // style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff000000), fontSize: 11.0),
-                        style: customisedStyle(context, Color(0xff000000), FontWeight.w700, 11.0),
+                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.0),
                       )
                     ],
                   ),
@@ -3337,7 +3337,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 Container(
                   width: 100,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
                     onPressed: () {
                       posFunctions(callFunction: true);
                     },
@@ -3355,7 +3355,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             width: MediaQuery.of(context).size.width / 1.1,
 
             child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
@@ -3371,7 +3371,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         ],
       ),
       onRefresh: () {
-        return Future.delayed(Duration(seconds: 0), () {
+        return Future.delayed(const Duration(seconds: 0), () {
           posFunctions(callFunction: false);
         },
         );
@@ -3550,11 +3550,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                                             'Order ${onlineOrderLists.length - onlineIndex}',
                                             //style: TextStyle(fontSize: 11, color: Color(0xff000000), fontWeight: FontWeight.w700),
-                                            style: customisedStyle(context, Color(0xff000000), FontWeight.w700, 11.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.0),
                                           ),
                                           Text(
                                             onlineOrderLists[onlineIndex].custName,
-                                            style: customisedStyle(context, Color(0xff2B2B2B), FontWeight.w400, 10.0),
+                                            style: customisedStyle(context, const Color(0xff2B2B2B), FontWeight.w400, 10.0),
                                           ),
                                         ],
                                       ),
@@ -3564,7 +3564,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                     currency + ". " + roundStringWith(onlineOrderLists[onlineIndex].salesOrderGrandTotal),
                                     // 'Rs.23455',
                                     //  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xff005B37))
-                                    style: customisedStyle(context, Color(0xff005B37), FontWeight.w600, 12.0),
+                                    style: customisedStyle(context, const Color(0xff005B37), FontWeight.w600, 12.0),
                                   ),
                                 ],
                               ),
@@ -3577,13 +3577,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               children: [
                                 Text(
                                   'Token',
-                                  style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 12.0),
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 12.0),
                                 ),
                                 Text(
                                   onlineOrderLists[onlineIndex].tokenNo,
                                   // 'Order $index',
 
-                                  style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 12.0),
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 12.0),
                                 )
                               ],
                             ),
@@ -3594,7 +3594,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               returnOrderTime(onlineOrderLists[onlineIndex].orderTime, onlineOrderLists[onlineIndex].status),
 
                               // '23 Minutes Ago',
-                              style: customisedStyle(context, Color(0xff929292), FontWeight.w600, 10.0),
+                              style: customisedStyle(context, const Color(0xff929292), FontWeight.w600, 10.0),
                             ),
                           ),
                         ],
@@ -3616,7 +3616,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5,)
+                    const SizedBox(height: 5,)
                     // ListTile(),
                   ],
                 ),
@@ -3635,7 +3635,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
     return  RefreshIndicator(
       backgroundColor: Colors.white,
-      color:Color(0xffEE830C),
+      color:const Color(0xffEE830C),
       child: ListView(
 
         children: [
@@ -3661,8 +3661,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     children: [
                       Text('Car'.tr,
                           // style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171), fontSize: 15),
-                          style: customisedStyle(context, Color(0xff717171), FontWeight.bold, 15.0)),
-                      Text('Create a Parcel', style: customisedStyle(context, Color(0xff000000), FontWeight.w700, 11.0))
+                          style: customisedStyle(context, const Color(0xff717171), FontWeight.bold, 15.0)),
+                      Text('Create a Parcel', style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.0))
                     ],
                   ),
                 ),
@@ -3670,7 +3670,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 Container(
                   width: 100,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
                     onPressed: () {
                       posFunctions(callFunction: true);
                     },
@@ -3688,7 +3688,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             width: MediaQuery.of(context).size.width / 1.1,
 
             child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
@@ -3704,7 +3704,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         ],
       ),
       onRefresh: () {
-        return Future.delayed(Duration(seconds: 0), () {
+        return Future.delayed(const Duration(seconds: 0), () {
           posFunctions(callFunction: true);
         },
         );
@@ -3906,9 +3906,9 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                 'Order ${carOrderLists.length - carIndex}',
 
 
-                                                style: customisedStyle(context, Color(0xff000000), FontWeight.w700, 11.0)),
+                                                style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.0)),
                                             Text(carOrderLists[carIndex].custName,
-                                                style: customisedStyle(context, Color(0xff2B2B2B), FontWeight.w400, 10.0)),
+                                                style: customisedStyle(context, const Color(0xff2B2B2B), FontWeight.w400, 10.0)),
                                           ],
                                         ),
                                       ],
@@ -3916,7 +3916,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                     Text(currency + "." + roundStringWith(carOrderLists[carIndex].salesOrderGrandTotal),
 
                                         //'Rs.23455',
-                                        style: customisedStyle(context, Color(0xff005B37), FontWeight.w600, 12.0)),
+                                        style: customisedStyle(context, const Color(0xff005B37), FontWeight.w600, 12.0)),
                                   ],
                                 ),
                               ),
@@ -3931,11 +3931,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                 children: [
                                   Text(
                                     'Token',
-                                    style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 12.0),
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 12.0),
                                   ),
                                   Text(
                                     carOrderLists[carIndex].tokenNo,
-                                    style: customisedStyle(context, Color(0xff4E4E4E), FontWeight.w500, 13.0),
+                                    style: customisedStyle(context, const Color(0xff4E4E4E), FontWeight.w500, 13.0),
                                   )
                                 ],
                               ),
@@ -3950,7 +3950,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                                 //'23 Minutes Ago',
 
-                                style: customisedStyle(context, Color(0xff929292), FontWeight.w500, 12.0),
+                                style: customisedStyle(context, const Color(0xff929292), FontWeight.w500, 12.0),
                               ),
                             ),
                           ],
@@ -4117,7 +4117,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     } else if (status == "delivered") {
       return Colors.black;
     } else {
-      return Color(0xff0347A1);
+      return const Color(0xff0347A1);
     }
   }
 
@@ -4235,10 +4235,9 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
 
-        // dining_perm
-        // take_away_perm
-        // car_perm
         dining_view_perm == true? Container(
+          height: 50,
+          width: 50,
           decoration: BoxDecoration(
             border: Border.all(
               color:mainPageIndex ==1?Colors.black:Colors.transparent,
@@ -4247,34 +4246,39 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             borderRadius: const BorderRadius.all(
               Radius.circular(15),
             ),
-            color: Color(0xffE8E8E8),
+            color: mainPageIndex ==1?Colors.white:Color(0xffE8E8E8),
+            // color: const Color(0xffE8E8E8),
           ),
           child: IconButton(
             onPressed: () {
               setState(() {
                   mainPageIndex = 1;
                 });
-
-
             },
             icon: SvgPicture.asset(
               'assets/svg/dining.svg',
             ),
           ),
-        ):SizedBox(),
+        ):const SizedBox(),
+
+
+
+
+
+
         dining_view_perm == true? Padding(
           padding: const EdgeInsets.only(top: 3.0,bottom: 15.0),
           child: Text(
             'Dining'.tr,
             style: customisedStyle(context, Colors.black, FontWeight.w500, 11.0),
           ),
-        ):SizedBox(),
+        ):const SizedBox(),
 
-        // const SizedBox(
-        //   height: 15,
-        // ),
+
 
         take_away_view_perm == true? Container(
+          height: 50,
+            width: 50,
             decoration: BoxDecoration(
               border: Border.all(
                 color:mainPageIndex ==2?Colors.black:Colors.transparent,
@@ -4283,7 +4287,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
               ),
-              color: Color(0xffE8E8E8),
+              color: mainPageIndex ==2?Colors.white:Color(0xffE8E8E8),
             ),
             child: IconButton(
               onPressed: () {
@@ -4293,14 +4297,15 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
               },
               icon: SvgPicture.asset('assets/svg/takeaway.svg'),
-            )):SizedBox(),
+            )):const SizedBox(),
+
         take_away_view_perm == true? Padding(
           padding: const EdgeInsets.only(top: 3.0,bottom: 15.0),
           child: Text(
             'Take_awy'.tr,
             style: customisedStyle(context, Colors.black, FontWeight.w500, 11.0),
           ),
-        ):SizedBox(),
+        ):const SizedBox(),
 
 
         /// online commented
@@ -4339,7 +4344,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         // ),
 
         car_view_perm == true? Container(
+            height: 50,
+            width: 50,
             decoration: BoxDecoration(
+
               border: Border.all(
                 color:mainPageIndex ==4?Colors.black:Colors.transparent,
                 width: 1,
@@ -4347,7 +4355,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
               ),
-              color: Color(0xffE8E8E8),
+              color: mainPageIndex ==4?Colors.white:Color(0xffE8E8E8),
             ),
             child: IconButton(
               onPressed: () {
@@ -4358,14 +4366,14 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
               },
               icon: SvgPicture.asset('assets/svg/car.svg'),
-            )):SizedBox(),
+            )):const SizedBox(),
         car_view_perm == true? Padding(
           padding: const EdgeInsets.only(top: 3.0,bottom: 15.0),
           child: Text(
             'Car'.tr,
             style: customisedStyle(context, Colors.black, FontWeight.w500, 11.0),
           ),
-        ):SizedBox(),
+        ):const SizedBox(),
 
 
 
@@ -4454,7 +4462,7 @@ class Button extends StatelessWidget {
         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
       ),
       child: GestureDetector(
-        child: Center(child: Text('Click Me')),
+        child: const Center(child: Text('Click Me')),
         onTap: () {},
       ),
     );
@@ -4486,7 +4494,7 @@ class UserDetailsAppBar extends StatelessWidget {
               style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
             ),
             IconButton(
-              icon: Icon(Icons.login_outlined),
+              icon: const Icon(Icons.login_outlined),
               onPressed: () async {
                 showDialog(
                     context: context,
@@ -4496,7 +4504,7 @@ class UserDetailsAppBar extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: AlertDialog(
                           title: Padding(
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
                             child: Text(
                               "Alert!",
                               style: customisedStyle(context, Colors.black, FontWeight.w600, 15.00),
@@ -4511,7 +4519,7 @@ class UserDetailsAppBar extends StatelessWidget {
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
                                   prefs.setBool('IsSelectPos', false);
                                   Navigator.pop(context);
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                 },
                                 child: Text(
                                   'Ok',
@@ -4552,7 +4560,7 @@ class BackButtonAppBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () async {
 
                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -4562,8 +4570,8 @@ class BackButtonAppBar extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Confirmation'),
-                        content: Text('Are you sure you want to exit?'),
+                        title: const Text('Confirmation'),
+                        content: const Text('Are you sure you want to exit?'),
                         actions: <Widget>[
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(

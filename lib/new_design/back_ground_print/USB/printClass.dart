@@ -190,9 +190,9 @@ class USBPrintClass {
     //
     // if (res == PosPrintResult.success) {
       if (temp == 'template4') {
-        await InvoicePrintTemplate4(profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await invoicePrintTemplate4(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       } else if (temp == 'template3') {
-        await invoicePrintTemplate3(profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await invoicePrintTemplate3(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
       } else {
 
       }
@@ -213,7 +213,7 @@ class USBPrintClass {
 
 
 
-  Future<void> InvoicePrintTemplate4(profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
+  Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, profile);
     List<ProductDetailsModel> tableDataDetailsPrint = [];
@@ -418,13 +418,13 @@ class USBPrintClass {
         Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
 
         bytes +=generator.textEncoded(companySecondNameEncode,
-            styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (companyAddress1 != "") {
         Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
         bytes +=generator.textEncoded(secondAddress1Encode,
-            styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (secondAddress != "") {
@@ -435,10 +435,10 @@ class USBPrintClass {
       }
 
       if (companyTax != "") {
-        bytes +=generator.textEncoded(companyTaxEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
+        bytes +=generator.textEncoded(companyTaxEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.center));
       }
       if (companyCrNumber != "") {
-        bytes +=generator.textEncoded(companyCREnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
+        bytes +=generator.textEncoded(companyCREnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.center));
       }
 
       if (companyPhone != "") {
@@ -450,10 +450,10 @@ class USBPrintClass {
       }
     }
 
-    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
-    bytes +=generator.textEncoded(invoiceTypeEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
-    bytes +=generator.textEncoded(invoiceTypeArabicEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+    bytes +=generator.emptyLines(1);
+
+    bytes +=generator.textEncoded(invoiceTypeEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size2, align: PosAlign.center));
+    bytes +=generator.textEncoded(invoiceTypeArabicEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size2, align: PosAlign.center));
 
     var isoDate = DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
     Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
@@ -463,8 +463,7 @@ class USBPrintClass {
     Uint8List phoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
     Uint8List typeEnc = await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
     Uint8List tableEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
-    // bytes +=generator.setStyles(PosStyles.defaults());
-    bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
+
 
     if (tokenVal) {
       bytes +=generator.hr();
@@ -752,7 +751,7 @@ class USBPrintClass {
       }
     }
 
-    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, "POS-80C");
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
     String msg = "";
 
 
@@ -764,7 +763,7 @@ class USBPrintClass {
 
   }
 
-  Future<void> invoicePrintTemplate3(profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
+  Future<void> invoicePrintTemplate3(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
 
     try{
       List<int> bytes = [];
@@ -1285,7 +1284,7 @@ class USBPrintClass {
       }
 
       print("-------------------------------------------- Start $bytes");
-      final res = await usb_esc_printer_windows.sendPrintRequest(bytes, "POS-80C");
+      final res = await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
       print(res);
       String msg = "";
 
