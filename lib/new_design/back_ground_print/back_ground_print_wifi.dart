@@ -101,9 +101,9 @@ class AppBlocs {
           var companyDetails = responseJson["CompanyDetails"];
 
           BluetoothPrintThermalDetails.companyName = companyDetails["CompanyName"] ?? '';
-          BluetoothPrintThermalDetails.address1Company = companyDetails["Address1"] ?? '';
+          BluetoothPrintThermalDetails.buildingNumber = companyDetails["Address1"] ?? '';
           BluetoothPrintThermalDetails.secondName = companyDetails["CompanyNameSec"] ?? '';
-          BluetoothPrintThermalDetails.secondAddress = companyDetails["Address2"] ?? '';
+          BluetoothPrintThermalDetails.streetName = companyDetails["Street"] ?? '';
           BluetoothPrintThermalDetails.state = companyDetails["StateName"] ?? '';
           BluetoothPrintThermalDetails.postalCodeCompany = companyDetails["PostalCode"] ?? '';
           BluetoothPrintThermalDetails.phoneCompany = companyDetails["Phone"] ?? '';
@@ -119,6 +119,7 @@ class AppBlocs {
           BluetoothPrintThermalDetails.countyCodeCompany = companyDetails["CountryCode"] ?? '';
           BluetoothPrintThermalDetails.buildingNumberCompany = companyDetails["Address1"] ?? '';
           BluetoothPrintThermalDetails.tableName = responseJson["TableName"];
+          BluetoothPrintThermalDetails.time = responseJson["CreatedDate"];
 
           BluetoothPrintThermalDetails.currency = currency;
           print("-------------  everything is fine-------------  ");
@@ -158,6 +159,8 @@ class AppBlocs {
     var headerAlignment = prefs.getBool("headerAlignment") ?? false;
     var salesMan = prefs.getString("user_name") ?? '';
     var OpenDrawer = prefs.getBool("OpenDrawer") ?? false;
+    var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
+
 
 
     // TODO Don't forget to choose printer's paper size
@@ -176,9 +179,9 @@ class AppBlocs {
 
     if (res == PosPrintResult.success) {
       if (temp == 'template4') {
-        await invoicePrintTemplate4(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
       } else if (temp == 'template3') {
-        await invoicePrintTemplate3(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await englishInvoicePrint(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
       }
       else {
         await printArabic(printer);
@@ -196,8 +199,8 @@ class AppBlocs {
     final http.Response response = await http.get(Uri.parse(imageUrl));
     return response.bodyBytes;
   }
-
-  Future<void> invoicePrintTemplate4(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
+  /// template supported  english and arabic template
+  Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -229,8 +232,8 @@ class AppBlocs {
     }
 
     var companyName = BluetoothPrintThermalDetails.companyName;
-    var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
-    var secondAddress = BluetoothPrintThermalDetails.secondAddress;
+    var buildingDetails = BluetoothPrintThermalDetails.buildingNumber;
+    var streetName = BluetoothPrintThermalDetails.streetName;
     var companySecondName = BluetoothPrintThermalDetails.secondName;
     var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
     var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
@@ -266,6 +269,7 @@ class AppBlocs {
     var balance = BluetoothPrintThermalDetails.balance;
     var orderType = BluetoothPrintThermalDetails.salesType;
     var tableName = BluetoothPrintThermalDetails.tableName;
+
 
     //
     /// image print commented
@@ -325,14 +329,14 @@ class AppBlocs {
         //printer.textEncoded(descriptionC, styles: PosStyles(height: PosTextSize.size2, width: PosTextSize.size1));
       }
 
-      if (companyAddress1 != "") {
-        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
+      if (buildingDetails != "") {
+        Uint8List buildingAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
 
         printer.row([
-          PosColumn(text: 'Address', width: 2, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Building', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1),
           PosColumn(
-              textEncoded: secondAddress1Encode,
+              textEncoded: buildingAddressEncode,
               width: 9,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
@@ -340,14 +344,14 @@ class AppBlocs {
         // printer.textEncoded(cityEncode, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
 
-      if (secondAddress != "") {
-        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
+      if (streetName != "") {
+        Uint8List streetNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
         printer.row([
           PosColumn(text: 'Building ', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(
-              textEncoded: secondAddressEncode,
+              textEncoded: streetNameEncode,
               width: 9,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
@@ -411,15 +415,15 @@ class AppBlocs {
             styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-      if (companyAddress1 != "") {
-        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
+      if (buildingDetails != "") {
+        Uint8List buildingDetailsEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
 
-        printer.textEncoded(secondAddress1Encode,
+        printer.textEncoded(buildingDetailsEncode,
             styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-      if (secondAddress != "") {
-        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
+      if (streetName != "") {
+        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
         printer.textEncoded(secondAddressEncode,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
@@ -428,6 +432,7 @@ class AppBlocs {
       if (companyTax != "") {
         printer.textEncoded(companyTaxEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
+
       if (companyCrNumber != "") {
         printer.textEncoded(companyCREnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
@@ -539,54 +544,25 @@ class AppBlocs {
         PosColumn(text: tableName, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     }
+    if (timeInPrint) {
+      var time = BluetoothPrintThermalDetails.time;
 
-    // printer.row([
-    //   PosColumn(text: '', width: 5, styles: PosStyles(fontType: PosFontType.fontB)),
-    //   PosColumn(text: "", width: 7, styles: PosStyles(align: PosAlign.right)),
-    // ]);
+      String timeInvoice = convertToSaudiArabiaTime(time,countyCodeCompany);
+      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
 
-    // printer.row([
-    //   PosColumn(text: 'Token No ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: token, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    // ]);
+      printer.row([
+        PosColumn(text: 'Time   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(
+            textEncoded: timeEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: timeInvoice, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+      ]);
+    }
 
-    // printer.row([
-    //   PosColumn(text: 'Voucher No :', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: voucherNumber, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    // ]);
-    // printer.row([
-    //   PosColumn(text: 'Date      ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: date, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    // ]);
 
-    // if(customerName != ""){
-    //   printer.row([
-    //     PosColumn(text: 'Name    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosCol
-    //     umn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(textEncoded: customerNameEnc, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   ]);
-    // }
-    //
-    // if(customerPhone != ""){
-    //   printer.row([
-    //     PosColumn(text: 'Phone    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(textEncoded: phoneNoEncoded, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   ]);
-    // }
-    //
-
-    // printer.row([
-    //   PosColumn(text: 'Order type    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   PosColumn(text: orderType, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-    // ]);
 
     printer.hr();
+
+    ///
 
     Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
     Uint8List productNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("أغراض"));
@@ -773,7 +749,7 @@ class AppBlocs {
         ]);
       }
     }
-
+    ///
     if (qrCodeAvailable) {
       printer.feed(1);
       var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
@@ -790,8 +766,8 @@ class AppBlocs {
       }
     }
   }
-
-  Future<void> invoicePrintTemplate3(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
+/// template supported only english
+  Future<void> englishInvoicePrint(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -819,8 +795,8 @@ class AppBlocs {
     }
 
     var companyName = BluetoothPrintThermalDetails.companyName;
-    var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
-    var secondAddress = BluetoothPrintThermalDetails.secondAddress;
+    var buildingDetails = BluetoothPrintThermalDetails.buildingNumber;
+    var streetName = BluetoothPrintThermalDetails.streetName;
     var companySecondName = BluetoothPrintThermalDetails.secondName;
     var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
     var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
@@ -873,44 +849,44 @@ class AppBlocs {
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (headerAlignment) {
-      printer.text('', styles: const PosStyles(align: PosAlign.left));
+
       if (companyName != "") {
         printer.text(companyName,
             styles: const PosStyles(
                 height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
       if (companySecondName != "") {
-        printer.text('', styles: const PosStyles(align: PosAlign.left));
+
         printer.text(companySecondName,
             styles: const PosStyles(
                 height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
 
-      if (companyAddress1 != "") {
+      if (buildingDetails != "") {
         printer.row([
-          PosColumn(text: 'Address', width: 2, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Building', width: 3, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1),
           PosColumn(
-              text: companyAddress1, width: 9, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+              text: buildingDetails, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 
-      if (secondAddress != "") {
+      if (streetName != "") {
         printer.row([
-          PosColumn(text: 'Building ', width: 3, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Street ', width: 3, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(
-              text: secondAddress, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+              text: streetName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 
       if (companyTax != "") {
         printer.row([
-          PosColumn(text: 'GST No  ', width: 2, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'GST No  ', width: 3, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(
               text: companyTax,
-              width: 9,
+              width: 8,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
@@ -944,12 +920,12 @@ class AppBlocs {
         printer.text(companySecondName, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-      if (companyAddress1 != "") {
-        printer.text(companyAddress1, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+      if (buildingDetails != "") {
+        printer.text(buildingDetails, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-      if (secondAddress != "") {
-        printer.text(secondAddress, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+      if (streetName != "") {
+        printer.text(streetName, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (companyTax != "") {
@@ -964,7 +940,7 @@ class AppBlocs {
     }
 
     printer.text('', styles: const PosStyles(align: PosAlign.left));
-    printer.text(invoiceType, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+    printer.text(invoiceType, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
 
     if (tokenVal) {
       printer.hr();
@@ -1109,27 +1085,39 @@ class AppBlocs {
             )),
       ]);
     }
+    if (timeInPrint) {
+      var time = BluetoothPrintThermalDetails.time;
 
+      String timeInvoice = convertToSaudiArabiaTime(time,countyCodeCompany);
+      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
 
-    if (salesMan != "") {
       printer.row([
+        PosColumn(text: 'Time   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
-            text: 'Sales man  ',
-            width: 4,
-            styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-            )),
-        PosColumn(
-            text: salesMan,
-            width: 8,
-            styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right,
-            )),
+            textEncoded: timeEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: timeInvoice, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     }
+
+    // if (salesMan != "") {
+    //   printer.row([
+    //     PosColumn(
+    //         text: 'Sales man  ',
+    //         width: 4,
+    //         styles: const PosStyles(
+    //           height: PosTextSize.size1,
+    //           width: PosTextSize.size1,
+    //         )),
+    //     PosColumn(
+    //         text: salesMan,
+    //         width: 8,
+    //         styles: const PosStyles(
+    //           height: PosTextSize.size1,
+    //           width: PosTextSize.size1,
+    //           align: PosAlign.right,
+    //         )),
+    //   ]);
+    // }
 
 
 

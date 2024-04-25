@@ -95,9 +95,9 @@ class USBPrintClass {
           var companyDetails = responseJson["CompanyDetails"];
 
           BluetoothPrintThermalDetails.companyName = companyDetails["CompanyName"] ?? '';
-          BluetoothPrintThermalDetails.address1Company = companyDetails["Address1"] ?? '';
+          BluetoothPrintThermalDetails.buildingNumber = companyDetails["Address1"] ?? '';
           BluetoothPrintThermalDetails.secondName = companyDetails["CompanyNameSec"] ?? '';
-          BluetoothPrintThermalDetails.secondAddress = companyDetails["Address2"] ?? '';
+          BluetoothPrintThermalDetails.streetName = companyDetails["Street"] ?? '';
           BluetoothPrintThermalDetails.state = companyDetails["StateName"] ?? '';
           BluetoothPrintThermalDetails.postalCodeCompany = companyDetails["PostalCode"] ?? '';
           BluetoothPrintThermalDetails.phoneCompany = companyDetails["Phone"] ?? '';
@@ -113,7 +113,7 @@ class USBPrintClass {
           BluetoothPrintThermalDetails.countyCodeCompany = companyDetails["CountryCode"] ?? '';
           BluetoothPrintThermalDetails.buildingNumberCompany = companyDetails["Address1"] ?? '';
           BluetoothPrintThermalDetails.tableName = responseJson["TableName"];
-
+          BluetoothPrintThermalDetails.time = responseJson["CreatedDate"];
           BluetoothPrintThermalDetails.currency = currency;
           print("-------------  everything is fine-------------  ");
           return 2;
@@ -167,7 +167,7 @@ class USBPrintClass {
     var headerAlignment = prefs.getBool("headerAlignment") ?? false;
     var salesMan = prefs.getString("user_name") ?? '';
     var OpenDrawer = prefs.getBool("OpenDrawer") ?? false;
-
+    var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
     print("---------------------------------OpenDrawer-------------------------------$printerIp--------------$OpenDrawer");
 
     // TODO Don't forget to choose printer's paper size
@@ -190,9 +190,9 @@ class USBPrintClass {
     //
     // if (res == PosPrintResult.success) {
       if (temp == 'template4') {
-        await invoicePrintTemplate4(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await invoicePrintTemplate4(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
       } else if (temp == 'template3') {
-        await invoicePrintTemplate3(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer);
+        await invoicePrintTemplate3(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
       } else {
 
       }
@@ -212,7 +212,7 @@ class USBPrintClass {
 
 
   
-  Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
+  Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint) async {
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, profile);
     List<ProductDetailsModel> tableDataDetailsPrint = [];
@@ -246,8 +246,8 @@ class USBPrintClass {
     }
 
     var companyName = BluetoothPrintThermalDetails.companyName;
-    var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
-    var secondAddress = BluetoothPrintThermalDetails.secondAddress;
+    var buildingDetails = BluetoothPrintThermalDetails.buildingNumber;
+    var streetName = BluetoothPrintThermalDetails.streetName;
     var companySecondName = BluetoothPrintThermalDetails.secondName;
     var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
     var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
@@ -344,28 +344,28 @@ class USBPrintClass {
 
        }
 
-      if (companyAddress1 != "") {
-        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
+      if (buildingDetails != "") {
+        Uint8List buildingDetailsEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
         bytes +=generator.row([
-          PosColumn(text: 'Address', width: 2, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Building', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1),
           PosColumn(
-              textEncoded: secondAddress1Encode,
+              textEncoded: buildingDetailsEncode,
               width: 9,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
 
        }
 
-      if (secondAddress != "") {
+      if (streetName != "") {
 
-        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
+        Uint8List streetNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
         bytes +=generator.row([
-          PosColumn(text: 'Building ', width: 2, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Street ', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(
-              textEncoded: secondAddressEncode,
+              textEncoded: streetNameEncode,
               width: 9,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
@@ -420,16 +420,16 @@ class USBPrintClass {
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-      if (companyAddress1 != "") {
-        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(companyAddress1));
+      if (buildingDetails != "") {
+        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
         bytes +=generator.textEncoded(secondAddress1Encode,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-      if (secondAddress != "") {
-        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(secondAddress));
+      if (streetName != "") {
+        Uint8List streetEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
-        bytes +=generator.textEncoded(secondAddressEncode,
+        bytes +=generator.textEncoded(streetEncode,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
@@ -544,7 +544,19 @@ class USBPrintClass {
         PosColumn(text: tableName, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     }
+    if (timeInPrint) {
+      var time = BluetoothPrintThermalDetails.time;
 
+      String timeInvoice = convertToSaudiArabiaTime(time,countyCodeCompany);
+      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+
+      bytes +=generator.row([
+        PosColumn(text: 'Time   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(
+            textEncoded: timeEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: timeInvoice, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+      ]);
+    }
     bytes +=generator.hr();
 
     Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
@@ -762,7 +774,7 @@ class USBPrintClass {
 
   }
 
-  Future<void> invoicePrintTemplate3(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer) async {
+  Future<void> invoicePrintTemplate3(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint) async {
 
     try{
       List<int> bytes = [];
@@ -795,8 +807,8 @@ class USBPrintClass {
       }
 
       var companyName = BluetoothPrintThermalDetails.companyName;
-      var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
-      var secondAddress = BluetoothPrintThermalDetails.secondAddress;
+      var buildingDetails = BluetoothPrintThermalDetails.buildingNumber;
+      var streetName = BluetoothPrintThermalDetails.streetName;
       var companySecondName = BluetoothPrintThermalDetails.secondName;
       var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
       var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
@@ -862,21 +874,21 @@ class USBPrintClass {
                   height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
         }
 
-        if (companyAddress1 != "") {
+        if (buildingDetails != "") {
           bytes +=generator.row([
-            PosColumn(text: 'Address', width: 2, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: 'Building', width: 2, styles: const PosStyles(align: PosAlign.left)),
             PosColumn(text: '', width: 1),
             PosColumn(
-                text: companyAddress1, width: 9, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+                text: buildingDetails, width: 9, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           ]);
         }
 
-        if (secondAddress != "") {
+        if (streetName != "") {
           bytes +=generator.row([
-            PosColumn(text: 'Building ', width: 3, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: 'Street', width: 3, styles: const PosStyles(align: PosAlign.left)),
             PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
             PosColumn(
-                text: secondAddress, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+                text: streetName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           ]);
         }
 
@@ -920,12 +932,12 @@ class USBPrintClass {
           bytes +=generator.text(companySecondName, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
         }
 
-        if (companyAddress1 != "") {
-          bytes +=generator.text(companyAddress1, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+        if (buildingDetails != "") {
+          bytes +=generator.text(buildingDetails, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
         }
 
-        if (secondAddress != "") {
-          bytes +=generator.text(secondAddress, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        if (streetName != "") {
+          bytes +=generator.text(streetName, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
         }
         if (companyTax != "") {
           bytes +=generator.text("GST NO:$companyTax", styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.center));
@@ -955,7 +967,8 @@ class USBPrintClass {
               styles: const PosStyles(
                 height: PosTextSize.size1,
                 width: PosTextSize.size1,
-              )),
+              )
+          ),
           PosColumn(
               text: token,
               width: 8,
@@ -1080,6 +1093,19 @@ class USBPrintClass {
                 width: PosTextSize.size1,
                 align: PosAlign.right,
               )),
+        ]);
+      }
+      if (timeInPrint) {
+        var time = BluetoothPrintThermalDetails.time;
+
+        String timeInvoice = convertToSaudiArabiaTime(time,countyCodeCompany);
+        Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+
+        bytes +=generator.row([
+          PosColumn(text: 'Time   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+          PosColumn(
+              textEncoded: timeEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          PosColumn(text: timeInvoice, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 

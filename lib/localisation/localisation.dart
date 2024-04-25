@@ -289,7 +289,8 @@ class LocaleChange extends Translations {
           'excise_tax': 'Excise Tax',
           'total_vat': 'Total VAT ',
           'print_after_order': 'Print after order',
-
+          'time_in_invoice': 'Time in invoice',
+          'payment_method': 'Payment method',
         },
 
         ///
@@ -300,6 +301,10 @@ class LocaleChange extends Translations {
 
           'print_after_order': 'الطباعة بعد الطلب',
           'usbPrinter': 'طابعة USB',
+
+          'payment_method': 'طريقة الدفع او السداد',
+
+          'time_in_invoice': 'الوقت في الفاتورة',
           'autoFocusField': 'مجال التركيز التلقائي',
           'print': 'مطبعة',
           'select_branch': 'اختر فرعك',

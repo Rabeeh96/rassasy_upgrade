@@ -47,7 +47,7 @@ class ThermalArabicShort {
 
 
     var companyName = BluetoothPrintThermalDetails.companyName;
-    var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
+    var companyAddress1 = BluetoothPrintThermalDetails.buildingNumber;
     var companyAddress2 = BluetoothPrintThermalDetails.address2Company;
     var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
     var companyPhone = BluetoothPrintThermalDetails.phoneCompany;

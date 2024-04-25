@@ -101,6 +101,8 @@ class _SettingsPageState extends State<SettingsPage> {
   bool paymentDetailsInPrint = false;
   bool headerAlignment = false;
 
+  bool time_in_invoice = false;
+
   bool printAfterOrder = false;
   bool printPreview = false;
   String printType = "Wifi";
@@ -288,6 +290,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
       printAfterOrder = prefs.getBool("print_after_order") ?? false;
       printPreview = prefs.getBool('print_preview') ?? false;
+      // payment_method = prefs.getBool('payment_method') ?? false;
+      time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
 
 
@@ -296,7 +300,7 @@ class _SettingsPageState extends State<SettingsPage> {
       paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
       headerAlignment = prefs.getBool("headerAlignment") ?? false;
       termsAndConditionController.text =prefs.getString('printTermsAndCondition') ?? "";
-      print("---printType---printType---printType--printType-----printType---printType-----printType---printType--$printType");
+
       if(printType =="Wifi"){
         print_type_value = true;
       }
@@ -1453,7 +1457,100 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {},
             ),
           ),
+          // Card(
+          //   shape: RoundedRectangleBorder(
+          //     side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+          //     borderRadius: BorderRadius.circular(2),
+          //   ),
+          //
+          //   child: ListTile(
+          //     title: Text(
+          //       'payment_method'.tr,
+          //       style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+          //     ),
+          //     trailing: SizedBox(
+          //       width: 100,
+          //       child: Center(
+          //         child: FlutterSwitch(
+          //           width: 40.0,
+          //           height: 20.0,
+          //           valueFontSize: 30.0,
+          //           toggleSize: 15.0,
+          //           value: payment_method,
+          //           borderRadius: 20.0,
+          //           padding: 1.0,
+          //           activeColor: Colors.green,
+          //           activeTextColor: Colors.green,
+          //           inactiveTextColor: Colors.white,
+          //           inactiveColor: Colors.grey,
+          //           // showOnOff: true,
+          //           onToggle: (val)async {
+          //             setState(() {
+          //               payment_method = val;
+          //             });
+          //
+          //             SharedPreferences prefs = await SharedPreferences.getInstance();
+          //             prefs.setBool('payment_method', val);
+          //
+          //
+          //             // setState(() {
+          //             //   printAfterPayment = val;
+          //             //   switchStatus("printAfterPayment", printAfterPayment);
+          //             // });
+          //           },
+          //         ),
+          //       ),
+          //     ),
+          //     onTap: () {},
+          //   ),
+          // ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
 
+            child: ListTile(
+              title: Text(
+                'time_in_invoice'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 100,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: time_in_invoice,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        time_in_invoice = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('time_in_invoice', val);
+
+
+                      // setState(() {
+                      //   printAfterPayment = val;
+                      //   switchStatus("printAfterPayment", printAfterPayment);
+                      // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),

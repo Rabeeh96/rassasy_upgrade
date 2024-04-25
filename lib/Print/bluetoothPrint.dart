@@ -466,7 +466,7 @@ class BluetoothPrintThermalDetails {
   static String discount = "";
   static String totalQty = "";
   static String companyName = "";
-  static String address1Company = "";
+  static String buildingNumber = "";
   static String secondName = "";
   static String address2Company = "";
   static String address3Company = "";
@@ -480,12 +480,13 @@ class BluetoothPrintThermalDetails {
   static String descriptionCompany = "";
   static String countryNameCompany = "";
   static String stateNameCompany = "";
-  static String secondAddress = "";
+  static String streetName = "";
   static String companyLogoCompany = "";
   static String countyCodeCompany = "";
   static String buildingNumberCompany = "";
   static bool companyLogo = false;
   static bool qrCodeImageBool = false;
+
   static var salesDetails;
   static String sGstAmount = "";
   static String qrCodeImage = "";
@@ -496,6 +497,7 @@ class BluetoothPrintThermalDetails {
   static String balance = "";
   static String salesType = "";
   static String tableName = "";
+  static String time = "";
   static String totalVATAmount = "";
   static String totalExciseAmount = "";
  }
