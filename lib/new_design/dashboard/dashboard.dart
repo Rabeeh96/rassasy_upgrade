@@ -1250,7 +1250,9 @@ class _DashboardNewState extends State<DashboardNew> {
     if (connectivityResult == ConnectivityResult.none) {
     } else {
       try {
+
         if(type){
+
           start(context);
         }
 

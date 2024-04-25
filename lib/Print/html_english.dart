@@ -27,7 +27,7 @@ class ThermalEnglishDesign {
     print("-1--");
 
     var companyName = BluetoothPrintThermalDetails.companyName;
-    var companyAddress1 = BluetoothPrintThermalDetails.address1Company;
+    var companyAddress1 = BluetoothPrintThermalDetails.buildingNumber;
     var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
     print("-2--");
     var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
