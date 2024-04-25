@@ -512,6 +512,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         var ret = await printHelperUsb.printDetails();
         if (ret == 2) {
           var ip = "";
+
           if (PrintDataDetails.type == "SO") {
             ip = defaultOrderIP;
           } else {
