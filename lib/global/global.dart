@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 // dialogBox(BuildContext context, msg) {
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
@@ -382,6 +383,57 @@ class BaseUrl{
 log_data(data){
   log("------$data");
 }
+
+String convertToSaudiArabiaTime(String utcTimeString,currencyCode) {
+  DateTime utcTime = DateTime.parse(utcTimeString).toUtc();
+  var timeZone = const Duration(hours: 5, minutes: 30);
+  print("****************************************************************************************");
+  print("utcTimeString $utcTimeString");
+  print("timeZone $timeZone");
+  print("currencyCode $currencyCode");
+  if(currencyCode =="SAR"){
+
+    timeZone = const Duration(hours: 3, minutes: 0);
+  }
+  print("timeZone $timeZone");
+  DateTime saudiArabiaTime = utcTime.add(timeZone);
+  String formattedTime = DateFormat('HH:mm:ss').format(saudiArabiaTime);
+  print("formattedTime $formattedTime");
+  print("****************************************************************************************");
+  return formattedTime;
+}
+// String convertToLocalTime(String timestamp, String countryCode) {
+//   print("timestamp    $timestamp  countryCode $countryCode");
+//   // Parse the input timestamp
+//   DateTime dateTime = DateTime.parse(timestamp);
+//
+//   // Define the format for the output
+//   DateFormat formatter = DateFormat.yMd().add_jms();
+//
+//   // Get the timezone for the specified country code
+//   String timeZone = getLocationTimezone(countryCode);
+//   print("time zone      $timeZone");
+//   // Convert the timestamp to local time
+//   String localTime = formatter.format(dateTime.toUtc().add(Duration(hours: int.parse(timeZone))));
+//   String formattedTime = DateFormat('HH:mm:ss').format(localTime);
+//   print("localTime    $localTime");
+//   return localTime;
+// }
+// String getLocationTimezone(String countryCode) {
+//   // This function should return the timezone offset based on the country code
+//   // You can implement a logic to fetch timezone based on the country code
+//   // For simplicity, let's assume a fixed offset for demonstration
+//   // Replace this with your own logic to get timezone offset for the given country code
+//   switch (countryCode) {
+//     case 'SAR':
+//       return '+3'; // Eastern Time (ET)
+//     case 'INR':
+//       return '5'; // Indian Standard Time (IST)
+//   // Add more cases for other country codes as needed
+//     default:
+//       return '+0'; // Default to UTC
+//   }
+// }
 
 Future<bool>? returnNetwork()async{
   var connectivityResult = await (Connectivity().checkConnectivity());
