@@ -158,9 +158,15 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     super.initState();
     Future.delayed(Duration.zero, () {
       posFunctions();
+      checkComplimentory();
     });
   }
+  bool isComplimentory=false;
+checkComplimentory() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  isComplimentory = prefs.getBool("complimentary_bill") ?? false;
+}
   changeVal(val) {
     if (val == 1) {
       mainPageIndexIcon = 1;
@@ -1806,7 +1812,34 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                 // )
                               ],
                             ),
-                          )
+                          ),
+                          const SizedBox(height: 12),
+                          isComplimentory==true?
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width / 12,
+                                //  height: MediaQuery.of(context).size.height / 18,
+                                child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      //    shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5),
+                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: const Color(0xff10C103),
+                                      textStyle: customisedStyle(context, Colors.black, FontWeight.w500, 10.00),
+                                    ),
+                                    onPressed: () {
+
+                                    },
+                                    child: Text(
+                                      'complimentary_bill'.tr,
+                                      style: customisedStyle(context, Colors.white, FontWeight.normal, 10.00),
+                                    )),
+                              ),
+                            ],
+                          ):Container()
+
                         ],
                       ),
                     )
