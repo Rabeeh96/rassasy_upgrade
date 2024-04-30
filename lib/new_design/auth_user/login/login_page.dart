@@ -81,12 +81,12 @@ class _LoginPageNewState extends State<LoginPageNew> {
                         width: MediaQuery.of(context).size.width / 4,
                         child: Text(
                           'sign_in_vikn_account'.tr,
-                          style: TextStyle(fontWeight: FontWeight.w800),
+                          style: const TextStyle(fontWeight: FontWeight.w800),
                         ),
                       ),
                     ),
 
-                    ///isAlert== true border color,fill color,icon color change
+
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
@@ -110,127 +110,165 @@ class _LoginPageNewState extends State<LoginPageNew> {
                                       'assets/svg/exclamation.svg',
                                     ))
                                 // icon: Icon(Icons.remove_circle_rounded,color: Color(0xffB40000), ))
-                                : SizedBox(),
+                                : const SizedBox(),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0)),
+                                    const BorderRadius.all(Radius.circular(30.0)),
                                 borderSide: BorderSide(
                                     color: isAlert == true
                                         ? Colors.red
-                                        : Color(0xffC9C9C9))),
+                                        : const Color(0xffC9C9C9))),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0)),
+                                    const BorderRadius.all(Radius.circular(30.0)),
                                 borderSide: BorderSide(
                                     color: isAlert == true
                                         ? Colors.red
-                                        : Color(0xffC9C9C9))),
+                                        : const Color(0xffC9C9C9))),
                             disabledBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0)),
+                                    const BorderRadius.all(Radius.circular(30.0)),
                                 borderSide: BorderSide(
                                     color: isAlert == true
                                         ? Colors.red
-                                        : Color(0xffC9C9C9))),
-                            contentPadding: EdgeInsets.only(
+                                        : const Color(0xffC9C9C9))),
+                            contentPadding: const EdgeInsets.only(
                                 left: 20, top: 10, right: 10, bottom: 10),
                             filled: true,
-                            hintStyle:                             TextStyle(color: Color(
+                            hintStyle:                             const TextStyle(color: Color(
                                 0xff000000), fontSize: 14),
                             hintText: 'username'.tr,
                             fillColor: isAlert == true
-                                ? Color(0xffFFFBFB)
-                                : Color(0xffffffff)),
+                                ? const Color(0xffFFFBFB)
+                                : const Color(0xffffffff)),
                       ),
                     ),
                     passwordField(),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotPasswordNew()),
-                          );
-                        },
-                        child: Text(
-                         'forgot_account'.tr,
-                          style: TextStyle(
-                              color: Color(0xff002AB4),
-                              fontWeight: FontWeight.w500),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16, top: 0, right: 9, bottom: 0),
-                      child: Text(
-                        'or'.tr,
-                        style: TextStyle(
-                            color: Color(0xffF26716),
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 7, top: 0, right: 0, bottom: 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              child: TextButton(
-                            onPressed: () {
-                              UserCreation.verifyMail = false;
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ///CreateNewAccount()));
-                                      CreateNewAccount()));
-                            },
-                            child: Text(
-                              'create_an_accnt'.tr,
-                              style: TextStyle(
-                                  color: Color(0xff208203),
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          )),
-                          MaterialButton(
-                            shape: const CircleBorder(),
-                            onPressed: () async{
-                              if (userNameController.text == '' || passwordController.text == '') {
-                                dialogBox(context, 'please_enter_details'.tr);
+                    MaterialButton(
+                      shape: const CircleBorder(),
+                      onPressed: () async{
+                        if (userNameController.text == '' || passwordController.text == '') {
+                          dialogBox(context, 'please_enter_details'.tr);
 
-                                setState(() {
-                                  isAlert = true;
-                                });
-                               } else {
-                                isAlert = false;
-                                loginAccount(context);
+                          setState(() {
+                            isAlert = true;
+                          });
+                        } else {
+                          isAlert = false;
+                          loginAccount(context);
 
-                                // SharedPreferences prefs = await SharedPreferences.getInstance();
-                                // prefs.setBool('isLoggedIn', true);
-                                // prefs.setString('access', "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzA4MTcxLCJpYXQiOjE2ODk3NzIxNzEsImp0aSI6ImQwMzBhOWI1MWYxNDRjODJiMzlkNDhjM2UzZjU1YzU0IiwidXNlcl9pZCI6NjJ9.sngN1G8smd0QwaTStCHxYLozgQWCe6MGfhWONjrPyAplOSOQeDfFqi93hyWsAwSGDo6NEhSQC3yB8PjXDJ8q_Tg_OhU5NJ3vJEZZJ1gEdXo7gZwR_Q7usKaKpIRrI6O6zTYefIi2yHBDz4IsJIVOmq-qTH93NTRWhG0umEHMtVH_pdZUcuC3-QxTRUIdIIJG5-g5u3T2n-fTln8LghxBNOMrzxb_XPSUuwS6Af50kDMdqnJo-tTpGtbZrr1POX7KCT6hSsJvYfc0A3_elWHT4TqLXBc7BFWcSuRqIZDJOSSQmcqk6JM92skCcOPmUiJonWlFVilKKuj6PZNOggsC6362GPwc-stpiVWtlfStEN1c2-o1hJ_kExywmG01GytOUB-qVuyAR8z4xMSsZmP5m3nf3whP7hCB2xVvj6Zp_6avRIYncinuu309o6jRGrEWxpIbYQCcBsK6MCoKuqypR5wvFVqeFR9EytBlL8b9ThfHJrgpVMwdpHT0mB-Uw8vSt4Ey-xlppLKKpc7YXfeT61o6PRL3zqIoO5zyYS6D_NLZqlaPaCb_pywFH0FYlroiNopPEqwwtu1Hn4aYqq865_jA4D0RcxJxoAmIpuXf4D9PSTHhV5ehSpaQu_1LgEvYB14iq6YDoN-Yx4BSx4HaxnesKyQlgm5X9Koa_x5h7Ck");
-                                // prefs.setInt('user_id', 62);
-                                // prefs.setString('user_name', userNameController.text);
-                                //
-                                //
-                                //
-                                // Navigator.pushReplacement(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (BuildContext context) => OrganizationList()));
+                          // SharedPreferences prefs = await SharedPreferences.getInstance();
+                          // prefs.setBool('isLoggedIn', true);
+                          // prefs.setString('access', "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzA4MTcxLCJpYXQiOjE2ODk3NzIxNzEsImp0aSI6ImQwMzBhOWI1MWYxNDRjODJiMzlkNDhjM2UzZjU1YzU0IiwidXNlcl9pZCI6NjJ9.sngN1G8smd0QwaTStCHxYLozgQWCe6MGfhWONjrPyAplOSOQeDfFqi93hyWsAwSGDo6NEhSQC3yB8PjXDJ8q_Tg_OhU5NJ3vJEZZJ1gEdXo7gZwR_Q7usKaKpIRrI6O6zTYefIi2yHBDz4IsJIVOmq-qTH93NTRWhG0umEHMtVH_pdZUcuC3-QxTRUIdIIJG5-g5u3T2n-fTln8LghxBNOMrzxb_XPSUuwS6Af50kDMdqnJo-tTpGtbZrr1POX7KCT6hSsJvYfc0A3_elWHT4TqLXBc7BFWcSuRqIZDJOSSQmcqk6JM92skCcOPmUiJonWlFVilKKuj6PZNOggsC6362GPwc-stpiVWtlfStEN1c2-o1hJ_kExywmG01GytOUB-qVuyAR8z4xMSsZmP5m3nf3whP7hCB2xVvj6Zp_6avRIYncinuu309o6jRGrEWxpIbYQCcBsK6MCoKuqypR5wvFVqeFR9EytBlL8b9ThfHJrgpVMwdpHT0mB-Uw8vSt4Ey-xlppLKKpc7YXfeT61o6PRL3zqIoO5zyYS6D_NLZqlaPaCb_pywFH0FYlroiNopPEqwwtu1Hn4aYqq865_jA4D0RcxJxoAmIpuXf4D9PSTHhV5ehSpaQu_1LgEvYB14iq6YDoN-Yx4BSx4HaxnesKyQlgm5X9Koa_x5h7Ck");
+                          // prefs.setInt('user_id', 62);
+                          // prefs.setString('user_name', userNameController.text);
+                          //
+                          //
+                          //
+                          // Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (BuildContext context) => OrganizationList()));
 
 
 
-                              }
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(0),
-                              child:
-                                  SvgPicture.asset('assets/svg/roundarrow.svg'),
-                            ),
-                          )
-                        ],
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child:
+                        SvgPicture.asset('assets/svg/roundarrow.svg'),
                       ),
                     )
+                  /// commented
+                    // TextButton(
+                    //     onPressed: () {
+                    //       Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => ForgotPasswordNew()),
+                    //       );
+                    //     },
+                    //     child: Text(
+                    //      'forgot_account'.tr,
+                    //       style: const TextStyle(
+                    //           color: Color(0xff002AB4),
+                    //           fontWeight: FontWeight.w500),
+                    //     )
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //       left: 16, top: 0, right: 9, bottom: 0),
+                    //   child: Text(
+                    //     'or'.tr,
+                    //     style: const TextStyle(
+                    //         color: Color(0xffF26716),
+                    //         fontWeight: FontWeight.w500),
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //       left: 7, top: 0, right: 0, bottom: 0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Container(
+                    //           child: TextButton(
+                    //         onPressed: () {
+                    //           UserCreation.verifyMail = false;
+                    //           Navigator.pushReplacement(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (BuildContext context) =>
+                    //                       ///CreateNewAccount()));
+                    //                   CreateNewAccount()));
+                    //         },
+                    //         child: Text(
+                    //           'create_an_accnt'.tr,
+                    //           style: const TextStyle(
+                    //               color: Color(0xff208203),
+                    //               fontWeight: FontWeight.w500),
+                    //         ),
+                    //       )),
+                    //       MaterialButton(
+                    //         shape: const CircleBorder(),
+                    //         onPressed: () async{
+                    //           if (userNameController.text == '' || passwordController.text == '') {
+                    //             dialogBox(context, 'please_enter_details'.tr);
+                    //
+                    //             setState(() {
+                    //               isAlert = true;
+                    //             });
+                    //            } else {
+                    //             isAlert = false;
+                    //             loginAccount(context);
+                    //
+                    //             // SharedPreferences prefs = await SharedPreferences.getInstance();
+                    //             // prefs.setBool('isLoggedIn', true);
+                    //             // prefs.setString('access', "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzA4MTcxLCJpYXQiOjE2ODk3NzIxNzEsImp0aSI6ImQwMzBhOWI1MWYxNDRjODJiMzlkNDhjM2UzZjU1YzU0IiwidXNlcl9pZCI6NjJ9.sngN1G8smd0QwaTStCHxYLozgQWCe6MGfhWONjrPyAplOSOQeDfFqi93hyWsAwSGDo6NEhSQC3yB8PjXDJ8q_Tg_OhU5NJ3vJEZZJ1gEdXo7gZwR_Q7usKaKpIRrI6O6zTYefIi2yHBDz4IsJIVOmq-qTH93NTRWhG0umEHMtVH_pdZUcuC3-QxTRUIdIIJG5-g5u3T2n-fTln8LghxBNOMrzxb_XPSUuwS6Af50kDMdqnJo-tTpGtbZrr1POX7KCT6hSsJvYfc0A3_elWHT4TqLXBc7BFWcSuRqIZDJOSSQmcqk6JM92skCcOPmUiJonWlFVilKKuj6PZNOggsC6362GPwc-stpiVWtlfStEN1c2-o1hJ_kExywmG01GytOUB-qVuyAR8z4xMSsZmP5m3nf3whP7hCB2xVvj6Zp_6avRIYncinuu309o6jRGrEWxpIbYQCcBsK6MCoKuqypR5wvFVqeFR9EytBlL8b9ThfHJrgpVMwdpHT0mB-Uw8vSt4Ey-xlppLKKpc7YXfeT61o6PRL3zqIoO5zyYS6D_NLZqlaPaCb_pywFH0FYlroiNopPEqwwtu1Hn4aYqq865_jA4D0RcxJxoAmIpuXf4D9PSTHhV5ehSpaQu_1LgEvYB14iq6YDoN-Yx4BSx4HaxnesKyQlgm5X9Koa_x5h7Ck");
+                    //             // prefs.setInt('user_id', 62);
+                    //             // prefs.setString('user_name', userNameController.text);
+                    //             //
+                    //             //
+                    //             //
+                    //             // Navigator.pushReplacement(
+                    //             //     context,
+                    //             //     MaterialPageRoute(
+                    //             //         builder: (BuildContext context) => OrganizationList()));
+                    //
+                    //
+                    //
+                    //           }
+                    //         },
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.all(0),
+                    //           child:
+                    //               SvgPicture.asset('assets/svg/roundarrow.svg'),
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),
@@ -263,21 +301,21 @@ class _LoginPageNewState extends State<LoginPageNew> {
                   });
                 },
               ),
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   borderSide: BorderSide(color: Color(0xffC9C9C9))),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   borderSide: BorderSide(color: Color(0xffC9C9C9))),
-              disabledBorder: OutlineInputBorder(
+              disabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   borderSide: BorderSide(color: Color(0xffC9C9C9))),
               contentPadding:
-                  EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+                  const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
               filled: true,
-              hintStyle: TextStyle(color: Color(0xff000000), fontSize: 14),
+              hintStyle: const TextStyle(color: Color(0xff000000), fontSize: 14),
               hintText: 'Password'.tr,
-              fillColor: Color(0xffffffff))),
+              fillColor: const Color(0xffffffff))),
     );
   }
 
