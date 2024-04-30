@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,18 +9,17 @@ import 'package:flutter/services.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
+import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/waiter_list/waiter_select_from_dash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_switch/flutter_switch.dart';
-import 'package:rassasy_new/global/global.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
-import '../main.dart';
-import 'package:get/get.dart';
 
+import '../main.dart';
 import 'Default/select_printer.dart';
 import 'select/select_capabilities.dart';
 import 'user_detail/select_role.dart';
@@ -100,10 +100,13 @@ class _SettingsPageState extends State<SettingsPage> {
   bool hilightTokenNumber = false;
   bool paymentDetailsInPrint = false;
   bool headerAlignment = false;
+  bool show_date_time_kot = false;
+  bool show_username_kot = false;
 
   bool time_in_invoice = false;
 
   bool printAfterOrder = false;
+  bool isComplimentaryBill = false;
   bool printPreview = false;
   String printType = "Wifi";
   bool waiterPay = false;
@@ -267,6 +270,11 @@ class _SettingsPageState extends State<SettingsPage> {
     kotTODate = '$formatted';
   }
 
+  getItemsectionData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.getString("item_section_KOT");
+  }
+
   void switchStatus(key, value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(key, value);
@@ -276,6 +284,9 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       printDetailList.clear();
+
+      ///
+
       defaultIp = prefs.getString('defaultIP') ?? '';
       kotPrint = prefs.getBool("KOT") ?? false;
       isArabic = prefs.getBool("isArabic") ?? false;
@@ -310,6 +321,18 @@ class _SettingsPageState extends State<SettingsPage> {
       capabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
       defaultSalesInvoiceController.text = prefs.getString('defaultIP') ?? "";
       defaultSalesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
+
+      ///newly added values here
+      kotDetail = prefs.getString("item_section_KOT") ?? "Product Name";
+      saleDetail = prefs.getString("item_section_sale_order") ?? "Product Name";
+      saleInvoiceDetail =
+          prefs.getString("item_section_sale_invoice") ?? "Product Name";
+      isComplimentaryBill = prefs.getBool("complimentary_bill") ?? false;
+
+      show_date_time_kot== prefs.getBool("show_date_time_kot");
+      show_username_kot== prefs.getBool("show_username_kot");
+
+
     });
   }
   ////
@@ -1333,7 +1356,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               ),
               trailing: SizedBox(
-                width: 100,
+                width: 50,
                 child: Center(
                   child: FlutterSwitch(
                     width: 40.0,
@@ -1377,7 +1400,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               ),
               trailing: SizedBox(
-                width: 100,
+                width: 50,
                 child: Center(
                   child: FlutterSwitch(
                     width: 40.0,
@@ -1423,7 +1446,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               ),
               trailing: SizedBox(
-                width: 100,
+                width: 50,
                 child: Center(
                   child: FlutterSwitch(
                     width: 40.0,
@@ -1517,7 +1540,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               ),
               trailing: SizedBox(
-                width: 100,
+                width: 50,
                 child: Center(
                   child: FlutterSwitch(
                     width: 40.0,
@@ -1539,6 +1562,101 @@ class _SettingsPageState extends State<SettingsPage> {
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('time_in_invoice', val);
+
+
+                      // setState(() {
+                      //   printAfterPayment = val;
+                      //   switchStatus("printAfterPayment", printAfterPayment);
+                      // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'show_date_kot'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: show_date_time_kot,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        show_date_time_kot = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('show_date_time_kot', val);
+
+
+                      // setState(() {
+                      //   printAfterPayment = val;
+                      //   switchStatus("printAfterPayment", printAfterPayment);
+                      // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'show_user_kot'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: show_username_kot,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        show_username_kot = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('show_username_kot', val);
 
 
                       // setState(() {
@@ -2297,7 +2415,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
-                  width: 100,
+                  width: 50 ,
                   child: Center(
                     child: FlutterSwitch(
                       width: 40.0,
@@ -2345,7 +2463,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
-                  width: 100,
+                  width: 50,
                   child: Center(
                     child: FlutterSwitch(
                       width: 40.0,
@@ -2394,7 +2512,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
-                  width: 100,
+                  width: 50,
                   child: Center(
                     child: FlutterSwitch(
                       width: 40.0,
@@ -2432,7 +2550,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
-                  width: 100,
+                  width: 50,
                   child: Center(
                     child: FlutterSwitch(
                       width: 40.0,
@@ -2470,7 +2588,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
-                  width: 100,
+                  width: 50,
                   child: Center(
                     child: FlutterSwitch(
                       width: 40.0,
@@ -2511,7 +2629,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                   ),
                   trailing: SizedBox(
-                    width: 100,
+                    width: 50,
                     child: Center(
                       child: FlutterSwitch(
                         width: 40.0,
@@ -2554,7 +2672,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                   ),
                   trailing: SizedBox(
-                    width: 100,
+                    width: 50,
                     child: Center(
                       child: FlutterSwitch(
                         width: 40.0,
@@ -2710,7 +2828,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
-                  width: 100,
+                  width: 50,
                   child: Center(
                     child: FlutterSwitch(
                       width: 40.0,
@@ -2754,7 +2872,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
-                  width: 100,
+                  width: 50,
                   child: Center(
                     child: FlutterSwitch(
                       width: 40.0,
@@ -3197,57 +3315,55 @@ class _SettingsPageState extends State<SettingsPage> {
                   'intial_tkn'.tr,
                   style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
                 ),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(right: 30.0),
-                  child: Container(
-                      height: MediaQuery.of(context).size.height / 20,
-                      width: 100,
-                      child: TextField(
+                trailing: Container(
+                    height: MediaQuery.of(context).size.height / 20,
+                    width: 100,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                        // Only allow digits (numbers)
+                      ],
+                      // onTap: () => initialTokenNoController.selection = TextSelection(
+                      //     baseOffset: 0,
+                      //     extentOffset: initialTokenNoController.value.text.length),
+                      // keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
+                      // inputFormatters: [
+                      //   FilteringTextInputFormatter.allow(
+                      //       RegExp(r'^\d+\.?\d{0,8}')),
+                      // ],
+                      textAlign: TextAlign.right,
+                      controller: initialTokenNoController,
+                      // onChanged: (text){
+                      //
+                      //   if(text ==""){
+                      //     text = "1";
+                      //   }
+                      //
+                      //
+                      // },
+                      onEditingComplete: () {
+                        FocusScope.of(context).requestFocus(initialTokenNode);
+                        var val = "0";
+                        if (initialTokenNoController.text != "") {
+                          val = initialTokenNoController.text;
+                        }
 
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly // Only allow digits (numbers)
-                        ],
-                        // onTap: () => initialTokenNoController.selection = TextSelection(
-                        //     baseOffset: 0,
-                        //     extentOffset: initialTokenNoController.value.text.length),
-                        // keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
-                        // inputFormatters: [
-                        //   FilteringTextInputFormatter.allow(
-                        //       RegExp(r'^\d+\.?\d{0,8}')),
-                        // ],
-                        textAlign: TextAlign.right,
-                        controller: initialTokenNoController,
-                        // onChanged: (text){
-                        //
-                        //   if(text ==""){
-                        //     text = "1";
-                        //   }
-                        //
-                        //
-                        // },
-                        onEditingComplete: () {
-                          FocusScope.of(context).requestFocus(initialTokenNode);
-                          var val = "0";
-                          if(initialTokenNoController.text !=""){
-                            val = initialTokenNoController.text;
-                          }
-
-                          updateList("InitialTokenNo", val, "");
-                        },
-                         style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 15.0),
-                       // style: const TextStyle(color: Colors.black, decoration: TextDecoration.underline),
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(6),
-                          hintText: '',
-                          hintStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
+                        updateList("InitialTokenNo", val, "");
+                      },
+                      style: customisedStyle(context, const Color(0xffF25F29),
+                          FontWeight.normal, 15.0),
+                      // style: const TextStyle(color: Colors.black, decoration: TextDecoration.underline),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(6),
+                        hintText: '',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
                         ),
-                      )),
-                ),
+                      ),
+                    )),
                 onTap: () {
                   setState(() {});
                 },
@@ -3266,22 +3382,23 @@ class _SettingsPageState extends State<SettingsPage> {
                   'com_hr'.tr,
                   style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
                 ),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(right: 30.0),
-                  child: DropdownButton<String>(
-                    value: compensationHour,
-                    underline: Container(),
-                    items: dropdownValues.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value+" Hour ",style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 15.0),),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      compensationHour = newValue!;
-                      updateList("CompensationHour",newValue, "");
-                    },
-                  ),
+                trailing: DropdownButton<String>(
+                  value: compensationHour,
+                  underline: Container(),
+                  items: dropdownValues.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value + " Hour ",
+                        style: customisedStyle(context, const Color(0xffF25F29),
+                            FontWeight.normal, 15.0),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    compensationHour = newValue!;
+                    updateList("CompensationHour", newValue, "");
+                  },
                 ),
                 onTap: () {
 
@@ -3332,9 +3449,179 @@ class _SettingsPageState extends State<SettingsPage> {
             //     },
             //   ),
             // ),
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'complimentary_bill'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: isComplimentaryBill,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        setState(() {
+                          isComplimentaryBill = val;
+                          switchStatus(
+                              "complimentary_bill", isComplimentaryBill);
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0, top: 10),
+              child: Text(
+                'item_section'.tr,
+                style: customisedStyle(
+                    context, Colors.black, FontWeight.w500, 19.0),
+              ),
+            ),
+
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                title: Text(
+                  'KOT',
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.normal, 15.0),
+                ),
+                trailing: DropdownButton<String>(
+                  value: kotDetail,
+                  underline: Container(),
+                  items: kotDetailsValues.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: customisedStyle(context, const Color(0xff000000),
+                            FontWeight.normal, 15.0),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                    setState(() {
+                      kotDetail = newValue!;
+
+                      prefs.setString("item_section_KOT", kotDetail);
+                    });
+                    // updateList("kotDetail",newValue, "");
+                  },
+                ),
+                onTap: () {},
+              ),
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                title: Text(
+                  'sale_order'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.normal, 15.0),
+                ),
+                trailing: DropdownButton<String>(
+                  value: saleDetail,
+                  underline: Container(),
+                  items: saleDetailsValues.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: customisedStyle(context, const Color(0xff000000),
+                            FontWeight.normal, 15.0),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                    setState(() {
+                      saleDetail = newValue!;
+                      prefs.setString("item_section_sale_order", saleDetail);
+                    });
+                    // updateList("kotDetail",newValue, "");
+                  },
+                ),
+                onTap: () {},
+              ),
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                title: Text(
+                  'sale_invoice'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.normal, 15.0),
+                ),
+                trailing: DropdownButton<String>(
+                  value: saleInvoiceDetail,
+                  underline: Container(),
+                  items: saleInvoiceDetailsValues.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: customisedStyle(context, const Color(0xff000000),
+                            FontWeight.normal, 15.0),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                    setState(() {
+                      saleInvoiceDetail = newValue!;
+                      prefs.setString(
+                          "item_section_sale_invoice", saleInvoiceDetail);
+                    });
+                    // updateList("kotDetail",newValue, "");
+                  },
+                ),
+                onTap: () {},
+              ),
+            ),
 
             const SizedBox(
-              height: 20,
+              height: 50,
             )
           ]),
         )
@@ -3344,14 +3631,30 @@ class _SettingsPageState extends State<SettingsPage> {
 
   String compensationHour = '1';
   List<String> dropdownValues = ['1','2','3','4','5','6','7'];
-
+  String kotDetail = 'Product Name';
+  List<String> kotDetailsValues = [
+    'Product Name',
+    'Product Description',
+    'Description'
+  ];
+  String saleDetail = 'Product Name';
+  List<String> saleDetailsValues = [
+    'Product Name',
+    'Product Description',
+    'Description'
+  ];
+  String saleInvoiceDetail = 'Product Name';
+  List<String> saleInvoiceDetailsValues = [
+    'Product Name',
+    'Product Description',
+    'Description'
+  ];
 
   navigateToPrinter() async {
     var result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const SelectPrinter()),
     );
-
     print(result);
 
     if (result != null) {
