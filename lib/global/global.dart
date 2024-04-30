@@ -392,16 +392,51 @@ String convertToSaudiArabiaTime(String utcTimeString,currencyCode) {
   print("timeZone $timeZone");
   print("currencyCode $currencyCode");
   if(currencyCode =="SAR"){
+    timeZone = const Duration(hours: -3, minutes: 0);
+    String formattedTime = DateFormat('HH:mm:ss').format(DateTime.parse(utcTimeString));
+    print("formattedTime $formattedTime");
 
-    timeZone = const Duration(hours: 3, minutes: 0);
+    return formattedTime;
+  }
+  else if (currencyCode =="INR"){
+    timeZone = const Duration(hours: 0, minutes: -30);
   }
   print("timeZone $timeZone");
+  print("utcTime $utcTime");
   DateTime saudiArabiaTime = utcTime.add(timeZone);
+
   String formattedTime = DateFormat('HH:mm:ss').format(saudiArabiaTime);
   print("formattedTime $formattedTime");
-  print("****************************************************************************************");
+
   return formattedTime;
 }
+
+// convertToSaudiArabiaTime(String utcTimeString,currencyCode) async {
+//   // UTC timestamp from server
+//   DateTime utcTime = DateTime.parse(utcTimeString);
+//
+//   // Function call to get times in India and Saudi Arabia
+// //  DateTime indiaTime = await getTimeInTimeZone(utcTime, "Asia/Kolkata", -30);
+//   DateTime saudiTime = await getTimeInTimeZone(utcTime, "Asia/Riyadh", -3 * 60);
+//   print("India Time: $saudiTime");
+//   print("Saudi Time: $saudiTime");
+//   return saudiTime;
+//   //print("India Time: $indiaTime");
+//   print("Saudi Time: $saudiTime");
+// }
+//
+// Future<DateTime> getTimeInTimeZone(DateTime utcTime, String timeZoneName, int offsetMinutes) async {
+//   // Load the timezone
+//
+//   final location = tz.getLocation(timeZoneName);
+//   // Convert to the timezone
+//   tz.TZDateTime localTime = tz.TZDateTime.from(utcTime, location);
+//   // Apply the offset
+//   localTime = localTime.subtract(Duration(minutes: offsetMinutes));
+//   return localTime;
+// }
+//
+//
 // String convertToLocalTime(String timestamp, String countryCode) {
 //   print("timestamp    $timestamp  countryCode $countryCode");
 //   // Parse the input timestamp

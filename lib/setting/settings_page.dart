@@ -312,6 +312,7 @@ class _SettingsPageState extends State<SettingsPage> {
       defaultSalesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
     });
   }
+  ////
 
   Future<Null> updateList(String type, apiVal, key) async {
     var connectivityResult = await (Connectivity().checkConnectivity());

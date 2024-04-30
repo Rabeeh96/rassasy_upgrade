@@ -16,6 +16,7 @@ import 'new_design/organization/list_organization.dart';
 import 'package:get/get.dart';
 
 import 'test/deliveryman.dart';
+import 'test/testingIp.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -84,8 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () {
-   //    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => TestPrintUSB()));
-    navigateUser();
+  //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => IpTest()));
+   navigateUser();
     });
   }
 
