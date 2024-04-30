@@ -711,6 +711,11 @@ class AddProductGroupState extends State<AddProductGroup> {
                   productLists[index].groupName,
                   style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                 ),
+                    ///kitchen name 'Kitchen name in group list'
+                    // subtitle: Text(
+                    //   productLists[index].categoryName,
+                    //   style: customisedStyle(context, Colors.black, FontWeight.w500, 12.0),
+                    // ) ,
               )),
             );
           }),
@@ -749,13 +754,6 @@ class AddProductGroupState extends State<AddProductGroup> {
           createPermission = prefs.getBool("Groupsave")??true;
           kitchenID ="";
 
-        // var perm = await checkingPerm("Groupview");
-        // print(perm);
-        // if (perm) {
-        //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddProductGroup()));
-        // } else {
-        //   dialogBoxPermissionDenied(context);
-        // }
 
         Map data = {"CompanyID": companyID, "BranchID": branchID};
 
@@ -772,6 +770,9 @@ class AddProductGroupState extends State<AddProductGroup> {
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
         print(response.body);
+        print(url);
+        print(data);
+        print(accessToken);
         var responseJson = n["data"];
         if (status == 6000) {
           setState(() {
@@ -1127,10 +1128,11 @@ List<ProductListModel> productLists = [];
 
 class ProductListModel {
   final String uID, groupName,
+      //kitchenName,
   categoryName;
   final int productGroupId,categoryID;
 
-  ProductListModel({required this.groupName, required this.productGroupId, required this.uID, required this.categoryID, required this.categoryName});
+  ProductListModel({required this.groupName,/*required this.kitchenName,*/ required this.productGroupId, required this.uID, required this.categoryID, required this.categoryName});
 
   factory ProductListModel.fromJson(Map<dynamic, dynamic> json) {
     return ProductListModel(
@@ -1138,6 +1140,7 @@ class ProductListModel {
         categoryID: json['CategoryID'],
         categoryName: json['CategoryName'],
         productGroupId: json['ProductGroupID'],
+        //kitchenName: json['ProductGroupID'],
         uID: json['id']);
   }
 }

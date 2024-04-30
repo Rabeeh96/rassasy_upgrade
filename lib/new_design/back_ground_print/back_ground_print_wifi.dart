@@ -165,7 +165,6 @@ class AppBlocs {
 
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
-
     var profile;
     if (capabilities == "default") {
       profile = await CapabilityProfile.load();
@@ -547,7 +546,7 @@ class AppBlocs {
     if (timeInPrint) {
       var time = BluetoothPrintThermalDetails.time;
 
-      String timeInvoice = convertToSaudiArabiaTime(time,countyCodeCompany);
+      String timeInvoice =await convertToSaudiArabiaTime(time,countyCodeCompany);
       Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
 
       printer.row([
