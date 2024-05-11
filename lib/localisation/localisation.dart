@@ -295,7 +295,8 @@ class LocaleChange extends Translations {
           'show_user_kot': 'Show Username in KOT',
           'show_date_kot': 'Show Date and Time in KOT',
           'complimentary_bill': 'Complimentary Bill',
-    'item_section':'Item Section',
+          'item_section':'Item Section',
+          'hide_tax_details':'Show tax details',
 
         },
 
@@ -304,16 +305,14 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
-  'item_section':'قسم البند',
+          'hide_tax_details':'شو تفاصيل الضرائب',
+          'item_section':'قسم البند',
           'complimentary_bill': 'فاتورة مجانية',
           'show_user_kot': 'إظهار اسم المستخدم في KOT',
           'show_date_kot': "إظهار التاريخ والوقت في KOT",
-
           'print_after_order': 'الطباعة بعد الطلب',
           'usbPrinter': 'طابعة USB',
-
           'payment_method': 'طريقة الدفع او السداد',
-
           'time_in_invoice': 'الوقت في الفاتورة',
           'autoFocusField': 'مجال التركيز التلقائي',
           'print': 'مطبعة',

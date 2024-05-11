@@ -10,7 +10,9 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/report/new_report_page.dart';
+import 'package:rassasy_new/test/dragable.dart';
 import 'customer/customer_detail_page.dart';
+import 'dailyReport/daily_report.dart';
 import 'flavour/view_flavour.dart';
 import 'new_tax/tax_category.dart';
 import 'pos/new_method/pos_list_section.dart';
@@ -1195,6 +1197,54 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+
+                           //     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DragableList()));
+
+
+                                // var invoices = await checkingPerm('Invoices'.tr);
+                                //
+                                // if (invoices == true) {
+                                //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                                //
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
+
+
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 17,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/report.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                              Padding(
+                              padding: const EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'Daily Report'.tr,
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
 
                         /// new taxz commented
                         // Column(
@@ -1244,6 +1294,9 @@ class _DashboardNewState extends State<DashboardNew> {
           ],
         ));
   }
+
+
+
 
   Future<Null> userTypeData(type) async {
     var connectivityResult = await (Connectivity().checkConnectivity());

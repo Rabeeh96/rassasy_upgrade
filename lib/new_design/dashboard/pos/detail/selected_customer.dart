@@ -46,7 +46,7 @@ class _ProductDetailsState extends State<SelectPaymentCustomer> {
           ), //
           title:   Text(
             'select_customer'.tr,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,
               fontSize: 23,
@@ -58,64 +58,65 @@ class _ProductDetailsState extends State<SelectPaymentCustomer> {
                 icon: SvgPicture.asset('assets/svg/sidemenu.svg'),
                 onPressed: () {}),
           ]),
-      body: ListView(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 11,
-            color: const Color(0xffFFFFFF),
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width/3,
+          child: ListView(
+            children: [
 
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                onChanged: (text) {
-                  setState(() {
-                    charLength = text.length;
-                    _searchData(text);
-                  });
-                },
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      charLength = text.length;
+                      _searchData(text);
+                    });
+                  },
 
-                controller: searchController,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(8),
-
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      searchController.clear();
-                      customersLists.clear();
-                      pageNumber = 1;
-                      firstTime = 1;
-                      getCustomersLists();
-                    },
-                    icon: Icon(
-                      Icons.cancel,
-                      color: Colors.black,
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(8),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        searchController.clear();
+                        customersLists.clear();
+                        pageNumber = 1;
+                        firstTime = 1;
+                        getCustomersLists();
+                      },
+                      icon: const Icon(
+                        Icons.cancel,
+                        color: Colors.black,
+                      ),
                     ),
+                    hintText: 'search'.tr,
+                    border: const OutlineInputBorder(),
                   ),
-                  hintText: 'search'.tr,
-                  border: OutlineInputBorder(),
                 ),
               ),
-            ),
-          ),
 
-          Container(
-              height: MediaQuery.of(context).size.height / 1.2, //height of button
-              width: MediaQuery.of(context).size.width / 1,
-              color: Colors.grey[100],
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount:customersLists.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                        child: ListTile(
-                          title: Text(customersLists[index].custName),
-                          onTap: () async {
-                            PaymentData.ledgerID = customersLists[index].ledgerID;
-                            Navigator.pop(context, [customersLists[index].custName,customersLists[index].ledgerID]);
-                          },
-                        ));
-                  })),
-        ],
+
+              customersLists.isNotEmpty?Container(
+                  height: MediaQuery.of(context).size.height / 1.2, //height of button
+               //   width: MediaQuery.of(context).size.width / 1,
+                  color: Colors.grey[100],
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount:customersLists.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                            child: ListTile(
+                              title: Text(customersLists[index].custName),
+                              onTap: () async {
+                                //PaymentData.ledgerID = customersLists[index].ledgerID;
+                                Navigator.pop(context, [customersLists[index].custName,customersLists[index].ledgerID]);
+                              },
+                            ));
+                      })):Container(),
+            ],
+          ),
+        ),
       ),
     );
   }

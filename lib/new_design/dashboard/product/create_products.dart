@@ -242,15 +242,22 @@ class _ProductCreateState extends State<CreateProductNew> {
         var responseJson = n["data"];
         print(status);
         print(responseJson);
+        print("-------------1");
         if (status == 6000) {
+          print("-------------2");
           setState(() {
             taxLists.clear();
             for (Map user in responseJson) {
               taxLists.add(TaxModel.fromJson(user));
             }
             searchTaxList = taxLists.where((i) => i.IsDefault == true).toList();
+            print("-------------3");
             defaultTaxId = searchTaxList[0].taxID;
+            print("-------------5");
             defaultTaxName = searchTaxList[0].taxName;
+            print("-------------4");
+            print("object    $defaultTaxId");
+            print("object    $defaultTaxName");
           });
         } else if (status == 6001) {
           var msg = n["error"]??"";
@@ -1869,9 +1876,8 @@ class _ProductCreateState extends State<CreateProductNew> {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $accessToken',
         };
-        print("4");
+
         var request = http.MultipartRequest('POST', Uri.parse(url));
-        print("5   $val");
         request.fields.addAll({
           "SalesPrice": price,
           "PurchasePrice": purchasePriceController.text,
@@ -1929,6 +1935,11 @@ class _ProductCreateState extends State<CreateProductNew> {
           });
         } else if (status == 6001) {
           var msg = n["message"]??"";
+          dialogBox(context, msg);
+          stop();
+        }
+        else if (status == 6002) {
+          var msg = n["error"]??"";
           dialogBox(context, msg);
           stop();
         }
