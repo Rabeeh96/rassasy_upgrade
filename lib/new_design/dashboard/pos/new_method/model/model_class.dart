@@ -385,13 +385,14 @@ class LoyaltyCustomerModel {
       phone: json['MobileNo'],
     );
   }
-}///
-class PaymentData {
-  static int cardTypeId = 0;
-  static int ledgerID = 0;
-  static String deliveryManID = "0";
-  static int loyaltyCustomerID = 0;
-  static String salesOrderID = "";
 }
+///
+// class PaymentData {
+//   static int cardTypeId = 0;
+//  // static int ledgerID = 0;
+//   static String deliveryManID = "0";
+//   static int loyaltyCustomerID = 0;
+//   static String salesOrderID = "";
+// }
 List<PrintDetails> printListData = [];
 List<ItemsDetails> dataPrint = [];

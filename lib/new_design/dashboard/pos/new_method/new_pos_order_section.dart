@@ -158,15 +158,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     super.initState();
     Future.delayed(Duration.zero, () {
       posFunctions();
-      checkComplimentory();
+
     });
   }
   bool isComplimentory=false;
-checkComplimentory() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  isComplimentory = prefs.getBool("complimentary_bill") ?? false;
-}
   changeVal(val) {
     if (val == 1) {
       mainPageIndexIcon = 1;
@@ -195,10 +191,13 @@ checkComplimentory() async {
       });
     } else {
       changeVal(widget.orderType);
-      printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
-      currency = prefs.getString('CurrencySymbol') ?? "";
+       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
+       currency = prefs.getString('CurrencySymbol') ?? "";
        isGst = prefs.getBool("check_GST") ?? false;
        ledgerID = prefs.getInt("Cash_Account") ?? 1;
+       isComplimentory = prefs.getBool("complimentary_bill") ?? false;
+
+       print("*/-*/-*/-*/-*/-*/-*/-*/ledgerisComplimentory  $isComplimentory");
       networkConnection = true;
       if (widget.sectionType == "Create") {
         mainPageIndex = 7;
@@ -1560,9 +1559,11 @@ checkComplimentory() async {
                                     onChanged: (val) {
                                       if (val.isEmpty) {
                                         val = "0";
-                                      } else {
+                                      }
+                                      else {
                                         calculationOnPayment();
                                       }
+
                                     },
                                     decoration: const InputDecoration(
                                       isDense: true,
@@ -1594,8 +1595,10 @@ checkComplimentory() async {
                                       child: Text(
                                         'full_cash'.tr,
                                         style: customisedStyle(context, Colors.white, FontWeight.normal, 10.00),
-                                      )),
-                                )
+                                      )
+                                  ),
+                                ),
+
                               ])
                               // color: Colors.grey,
                               ),
@@ -1819,7 +1822,7 @@ checkComplimentory() async {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width / 12,
+                             //   width: MediaQuery.of(context).size.width / 10,
                                 //  height: MediaQuery.of(context).size.height / 18,
                                 child: TextButton(
                                     style: TextButton.styleFrom(
@@ -1830,11 +1833,12 @@ checkComplimentory() async {
                                       textStyle: customisedStyle(context, Colors.black, FontWeight.w500, 10.00),
                                     ),
                                     onPressed: () {
-
+                                      discountAmountController.text =roundStringWith(grandTotalAmount.toString());
+                                      discountCalc(2, grandTotalAmount.toString());
                                     },
                                     child: Text(
                                       'complimentary_bill'.tr,
-                                      style: customisedStyle(context, Colors.white, FontWeight.normal, 10.00),
+                                      style: customisedStyle(context, Colors.white, FontWeight.normal, 12.00),
                                     )),
                               ),
                             ],
@@ -1892,15 +1896,34 @@ checkComplimentory() async {
                                   backgroundColor: const Color(0xff1155F3),
                                   textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                                 ),
-                                onPressed: () {
+                                onPressed: ()async {
 
-                                  print("ledgerID $ledgerID");
+                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  var id = prefs.getInt("Cash_Account") ?? 1;
 
-                                  if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
-                                    createSaleInvoice(true, context);
-                                  } else {
-                                    dialogBox(context, "You cant make credit sale");
+                                  print("ledger ID $ledgerID   id $id");
+
+
+
+                                  if(ledgerID !=id){
+                                    createSaleInvoice(printAfterPayment, context);
                                   }
+                                  else{
+                                    if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
+                                      createSaleInvoice(printAfterPayment, context);
+                                    } else {
+                                      dialogBox(context, "You cant make credit sale");
+                                    }
+                                  }
+
+
+
+
+                                  // if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
+                                  //   createSaleInvoice(true, context);
+                                  // } else {
+                                  //   dialogBox(context, "You cant make credit sale");
+                                  // }
                                 },
                                 child: Text('print_save'.tr, style: customisedStyle(context, Colors.white, FontWeight.w500, 12.00))),
                           )
@@ -1921,9 +1944,11 @@ checkComplimentory() async {
                             backgroundColor: const Color(0xff0A9800),
                             textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
                           ),
-                          onPressed: () {
-
-                            if(ledgerID !=1){
+                          onPressed: () async{
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            var id = prefs.getInt("Cash_Account") ?? 1;
+                            print("ledger ID $ledgerID   id $id");
+                            if(ledgerID !=id){
                               createSaleInvoice(printAfterPayment, context);
                             }
                             else{
@@ -2262,6 +2287,7 @@ checkComplimentory() async {
                       width: MediaQuery.of(context).size.width / 6,
                       height: MediaQuery.of(context).size.height / 15,
                       child: TextField(
+                        readOnly: true,
                         style: const TextStyle(fontSize: 12),
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.words,
@@ -2269,8 +2295,23 @@ checkComplimentory() async {
                         onEditingComplete: () {
                           FocusScope.of(context).requestFocus(phoneNoHeaderFcNode);
                         },
-                        onTap: () =>
-                            customerNameController.selection = TextSelection(baseOffset: 0, extentOffset: customerNameController.value.text.length),
+
+                        onTap: () async {
+                          var result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SelectPaymentCustomer()),
+                          );
+
+                          print(result);
+
+                          if (result != null) {
+                            customerNameController.text = result[0];
+                            ledgerID = result[1];
+
+                          }
+                        },
+               //         onTap: () => customerNameController.selection = TextSelection(baseOffset: 0, extentOffset: customerNameController.value.text.length),
+
                         controller: customerNameController,
                         decoration: TextFieldDecoration.rectangleTextField(hintTextStr: 'cus_name'.tr),
                       ),
@@ -5532,7 +5573,7 @@ checkComplimentory() async {
             if (kot == true) {
               PrintDataDetails.type = "SO";
               PrintDataDetails.id = id;
-              printKOT(id, true, cancelPrint, true);
+              printKOT(id, false, cancelPrint, true);
             } else {}
           });
         } else if (status == 6001) {
@@ -6552,9 +6593,9 @@ checkComplimentory() async {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
          user_name = prefs.getString('user_name')!;
-        autoFocusField = prefs.getBool('autoFocusField') ?? false;
+         autoFocusField = prefs.getBool('autoFocusField') ?? false;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos/product-group/list/';
@@ -6578,8 +6619,7 @@ checkComplimentory() async {
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
         var responseJson = n["data"];
-        print(response.body);
-        print(status);
+
         if (status == 6000) {
           setState(() {
             categoryList.clear();

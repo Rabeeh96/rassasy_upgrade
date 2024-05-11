@@ -126,8 +126,8 @@ class DeliveryManState extends State<SelectPaymentDeliveryMan> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["error"];
-          dialogBox(context, msg);
+
+          dialogBox(context, "No Data");
         }
         //DB Error
         else {

@@ -160,7 +160,6 @@ class _ProductDetailsState extends State<SelectTable> {
     return out;
   }
 
-
   Future<Null> getTableList() async {
 
 
@@ -239,6 +238,7 @@ class _ProductDetailsState extends State<SelectTable> {
     }
   }
 }
+
 
 
 List<TableListModel> tablesLists = [];

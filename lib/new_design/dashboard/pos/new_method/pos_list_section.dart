@@ -1114,7 +1114,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
 
   /// create table
-
+/// printing function
   var printHelperUsb =  USBPrintClass();
   var printHelperIP =   AppBlocs();
   var bluetoothHelper =   AppBlocsBT();
@@ -1128,6 +1128,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     } else {
       if(printType =='Wifi'){
         var ret = await printHelperIP.printDetails();
+        print("==========ret $ret");
         if (ret == 2) {
           var ip = "";
           if (PrintDataDetails.type == "SO") {
@@ -1138,7 +1139,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
           printHelperIP.print_receipt(ip, context);
         } else {
-          dialogBox(context, 'Please try again later');
+          dialogBox(context, 'Please try again later1');
         }
       }
       else{

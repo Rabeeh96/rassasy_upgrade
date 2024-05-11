@@ -329,6 +329,13 @@ checkingPerm(item) async {
   print("object $retData");
   return retData;
 }
+String convertDateAndTime(DateTime time) {
+  // Define the desired format
+  final DateFormat formatter = DateFormat('hh:mm a dd-MM-yyyy');
+
+  // Format the given DateTime object
+  return formatter.format(time);
+}
 
 dialogBoxPermissionDenied(BuildContext context) async {
   return showDialog(

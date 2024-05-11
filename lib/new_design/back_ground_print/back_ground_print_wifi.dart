@@ -62,10 +62,12 @@ class AppBlocs {
         var status = n["StatusCode"];
         var responseJson = n["data"];
 
+        print("----------------------------${response.body}");
         if (status == 6000) {
           stop();
 
           printDalesDetails.clear();
+
           BluetoothPrintThermalDetails.voucherNumber = responseJson["VoucherNo"].toString();
           BluetoothPrintThermalDetails.customerName = responseJson["CustomerName"] ?? 'Cash In Hand';
           BluetoothPrintThermalDetails.date = responseJson["Date"];
@@ -78,6 +80,7 @@ class AppBlocs {
           BluetoothPrintThermalDetails.discount = responseJson["TotalDiscount_print"].toString();
           BluetoothPrintThermalDetails.grandTotal = responseJson["GrandTotal_print"].toString();
           BluetoothPrintThermalDetails.qrCodeImage = responseJson["qr_image"];
+
           BluetoothPrintThermalDetails.customerTaxNumber = responseJson["TaxNo"].toString();
           BluetoothPrintThermalDetails.ledgerName = responseJson["LedgerName"] ?? '';
           BluetoothPrintThermalDetails.customerAddress = responseJson["Address1"];
@@ -94,7 +97,8 @@ class AppBlocs {
           BluetoothPrintThermalDetails.balance = responseJson["Balance"].toString() ?? "";
           BluetoothPrintThermalDetails.salesType = responseJson["OrderType"] ?? "";
           BluetoothPrintThermalDetails.salesDetails = responseJson["SalesDetails"];
-          BluetoothPrintThermalDetails.totalVATAmount = responseJson["VATAmount"];
+          BluetoothPrintThermalDetails.totalVATAmount = responseJson["VATAmount"]??'0';
+
           BluetoothPrintThermalDetails.totalExciseAmount = responseJson["ExciseTaxAmount"] ?? "0";
           BluetoothPrintThermalDetails.totalTax = responseJson["TotalTax_print"].toString();
 
@@ -118,9 +122,10 @@ class AppBlocs {
           BluetoothPrintThermalDetails.companyLogoCompany = companyDetails["CompanyLogo"] ?? '';
           BluetoothPrintThermalDetails.countyCodeCompany = companyDetails["CountryCode"] ?? '';
           BluetoothPrintThermalDetails.buildingNumberCompany = companyDetails["Address1"] ?? '';
-          BluetoothPrintThermalDetails.tableName = responseJson["TableName"];
-          BluetoothPrintThermalDetails.time = responseJson["CreatedDate"];
-
+          print("1-------------------------------");
+          BluetoothPrintThermalDetails.tableName = responseJson["TableName"]??"";
+          BluetoothPrintThermalDetails.time = responseJson["CreatedDate"]??"${DateTime.now()}";
+          print("1-------------------------------");
           BluetoothPrintThermalDetails.currency = currency;
           print("-------------  everything is fine-------------  ");
           return 2;
@@ -135,12 +140,12 @@ class AppBlocs {
           return 3;
         }
       } catch (e) {
+        print('   error ${e.toString()}');
         stop();
         return 3;
       }
     }
   }
-
   funcRest(String printerIp) async {
     const PaperSize paper = PaperSize.mm80;
 
@@ -160,6 +165,7 @@ class AppBlocs {
     var salesMan = prefs.getString("user_name") ?? '';
     var OpenDrawer = prefs.getBool("OpenDrawer") ?? false;
     var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
+    var hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;
 
 
 
@@ -178,9 +184,9 @@ class AppBlocs {
 
     if (res == PosPrintResult.success) {
       if (temp == 'template4') {
-        await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
+        await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails);
       } else if (temp == 'template3') {
-        await englishInvoicePrint(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
+        await englishInvoicePrint(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails);
       }
       else {
         await printArabic(printer);
@@ -199,7 +205,7 @@ class AppBlocs {
     return response.bodyBytes;
   }
   /// template supported  english and arabic template
-  Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint) async {
+  Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,taxDetails) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -653,33 +659,40 @@ class AppBlocs {
       PosColumn(text: roundStringWith(grossAmount), width: 4, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
-    if (showExcise) {
-      printer.row([
-        PosColumn(text: 'Total Excise Tax', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
-        PosColumn(
-            textEncoded: exciseTax,
-            width: 4,
-            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(text: roundStringWith(exciseAmountTotal), width: 4, styles: const PosStyles(align: PosAlign.right)),
-      ]);
-      printer.row([
-        PosColumn(text: 'Total VAT', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
-        PosColumn(
-            textEncoded: vatTax,
-            width: 4,
-            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(text: roundStringWith(vatAmountTotal), width: 4, styles: const PosStyles(align: PosAlign.right)),
-      ]);
-    }
 
+
+if(taxDetails){
+
+
+  if (showExcise) {
     printer.row([
-      PosColumn(text: 'Total Tax', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(text: 'Total Excise Tax', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
       PosColumn(
-          textEncoded: tt,
+          textEncoded: exciseTax,
           width: 4,
           styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: roundStringWith(totalTax), width: 4, styles: const PosStyles(align: PosAlign.right)),
+      PosColumn(text: roundStringWith(exciseAmountTotal), width: 4, styles: const PosStyles(align: PosAlign.right)),
     ]);
+    printer.row([
+      PosColumn(text: 'Total VAT', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(
+          textEncoded: vatTax,
+          width: 4,
+          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(vatAmountTotal), width: 4, styles: const PosStyles(align: PosAlign.right)),
+    ]);
+  }
+
+  printer.row([
+    PosColumn(text: 'Total Tax', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+    PosColumn(
+        textEncoded: tt,
+        width: 4,
+        styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+    PosColumn(text: roundStringWith(totalTax), width: 4, styles: const PosStyles(align: PosAlign.right)),
+  ]);
+
+}
 
     printer.row([
       PosColumn(text: 'Discount', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
@@ -766,7 +779,7 @@ class AppBlocs {
     }
   }
 /// template supported only english
-  Future<void> englishInvoicePrint(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint) async {
+  Future<void> englishInvoicePrint(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,taxDetails) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -1088,12 +1101,10 @@ class AppBlocs {
       var time = BluetoothPrintThermalDetails.time;
 
       String timeInvoice = convertToSaudiArabiaTime(time,countyCodeCompany);
-      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
 
       printer.row([
         PosColumn(text: 'Time   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            textEncoded: timeEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: '   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(text: timeInvoice, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     }
@@ -1188,43 +1199,48 @@ class AppBlocs {
       PosColumn(text: roundStringWith(grossAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
-    printer.row([
+    if(taxDetails){
+      printer.row([
 
-      PosColumn(
-          text: "SGST ",
-          width: 5,
-          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-      PosColumn(text: roundStringWith(sGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    ]);
+        PosColumn(
+            text: "SGST ",
+            width: 5,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: roundStringWith(sGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
+      ]);
 
-    printer.row([
+      printer.row([
 
-      PosColumn(
-          text: "CGST",
-          width: 5,
-          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-      PosColumn(text: roundStringWith(cGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    ]);
+        PosColumn(
+            text: "CGST",
+            width: 5,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: roundStringWith(cGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
+      ]);
 
-    printer.row([
+      printer.row([
 
-      PosColumn(
-          text: " ",
-          width: 8,
-          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-      PosColumn(text: "---------", width: 4, styles: const PosStyles(align: PosAlign.right)),
-    ]);
+        PosColumn(
+            text: " ",
+            width: 8,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: "---------", width: 4, styles: const PosStyles(align: PosAlign.right)),
+      ]);
 
 
 
-    printer.row([
+      printer.row([
 
-      PosColumn(
-          text: "Total Tax",
-          width: 5,
-          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
-      PosColumn(text: roundStringWith(totalTax), width: 7, styles: const PosStyles(align: PosAlign.right)),
-    ]);
+        PosColumn(
+            text: "Total Tax",
+            width: 5,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+        PosColumn(text: roundStringWith(totalTax), width: 7, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+
+    }
+
+
 
     printer.row([
 
@@ -1296,6 +1312,484 @@ class AppBlocs {
       }
     }
   }
+
+  /// daily Report
+
+
+
+
+  void print_daily(String printerIp, BuildContext ctx) async {
+    print("its acall");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var temp = prefs.getString("template") ?? "template4";
+    var capabilities = prefs.getString("default_capabilities") ?? "default";
+
+
+
+
+    // TODO Don't forget to choose printer's paper size
+    const PaperSize paper = PaperSize.mm80;
+    var profile;
+    if (capabilities == "default") {
+      profile = await CapabilityProfile.load();
+    } else {
+      profile = await CapabilityProfile.load(name: capabilities);
+    }
+
+    final printer = NetworkPrinter(paper, profile);
+    var port = int.parse("9100");
+    final PosPrintResult res = await printer.connect(printerIp, port: port);
+
+    if (res == PosPrintResult.success) {
+      if (temp == 'template4') {
+        await dailyReportEnglish(printer);
+      } else if (temp == 'template3') {
+        await dailyReportEnglish(printer);
+      //  await englishInvoicePrint(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
+      }
+      else {
+        await printArabic(printer);
+      }
+      Future.delayed(const Duration(seconds: 2), ()async {
+        print("------after delay----------------------------strt printing");
+        printer.disconnect();
+      });
+    } else {
+      dialogBox(ctx, "Check your printer connection");
+    }
+  }
+
+  Future<void> dailyReportEnglish(NetworkPrinter printer) async {
+
+    var fromTime = "25-02-2024 to 16-02-2036";
+    var userName = "Rabeeh";
+    var invoiceType = "DAILY REPORT";
+    var grossAmount = "13233";
+    var discount = "100";
+    var totalTax = "36";
+    var grandTotal = "15452";
+
+    var grossAmountSale = "13233";
+    var discountSale = "100";
+    var totalTaxSale = "36";
+    var grandTotalSale = "15452";
+    var noOfOrders = "10";
+    var ordersAmount = "1524";
+    var noOfCanceled = "1524";
+    var canceledAmount = "1524";
+    var diningAmount = "500";
+    var takeAwayAmount = "700";
+    var carAmount = "350";
+    var totalCashAmount = "12540";
+    var totalBankAmount = "3500";
+    var totalBankCredit = "500";
+
+
+
+
+    printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+
+    printer.text(invoiceType, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+    printer.hr();
+    printer.emptyLines(1);
+    printer.row([
+      PosColumn(
+          text: "User",
+          width: 3,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(text: userName, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+    ]);
+
+    printer.row([
+      PosColumn(
+          text: "Date",
+          width: 3,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(text: fromTime, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+    ]);
+
+    printer.hr();
+    printer.emptyLines(2);
+
+    printer.text("Sales Order", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+    printer.emptyLines(1);
+    printer.row([
+      PosColumn(
+          text: "Gross Amount",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+      PosColumn(text: roundStringWith(grossAmount), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.right)),
+    ]);
+    printer.row([
+      PosColumn(
+          text: "Discount",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(discount),
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+     ]);
+    printer.row([
+      PosColumn(
+          text: "Total Tax",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+
+          )),
+      PosColumn(
+          text: roundStringWith(totalTax),
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+     ]);
+
+    printer.hr();
+    printer.emptyLines(2);
+    printer.text("Order Details", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+    printer.emptyLines(1);
+
+
+    printer.row([
+      PosColumn(
+          text: "No of orders",
+          width: 4,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(noOfOrders),
+          width: 3,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+      PosColumn(
+          text: "Amount",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+
+          )),
+      PosColumn(
+          text: roundStringWith(ordersAmount),
+          width: 3,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+    ]);
+    printer.row([
+      PosColumn(
+          text: "No of Canceled",
+          width: 4,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(noOfCanceled),
+          width: 3,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+      PosColumn(
+          text: "Amount",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(canceledAmount),
+          width: 3,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+    ]);
+
+
+
+
+    printer.hr(ch: "=");
+    printer.emptyLines(2);
+
+    printer.text("Effective sale", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+    printer.emptyLines(1);
+    printer.row([
+      PosColumn(
+          text: "Gross Amount",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+      PosColumn(text: roundStringWith(grossAmountSale), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,   align: PosAlign.right)),
+    ]);
+    printer.row([
+      PosColumn(
+          text: "Discount",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(discountSale),
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+    ]);
+    printer.row([
+      PosColumn(
+          text: "Total Tax",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(totalTaxSale),
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,   align: PosAlign.right
+          )),
+    ]);
+    printer.row([
+      PosColumn(
+          text: "Grand total",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(grandTotalSale),
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+    ]);
+
+
+    printer.hr(ch: "=");
+    printer.emptyLines(2);
+    printer.text("Sale by type", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+    printer.emptyLines(1);
+    printer.hr();
+    printer.row([
+      PosColumn(
+          text: "Type",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+            bold: true,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "Amount",
+          width: 5,
+          styles: const PosStyles(
+              height: PosTextSize.size1,
+              bold: true,
+              align: PosAlign.right
+          )),
+    ]);
+    printer.hr();
+    printer.row([
+      PosColumn(
+          text: "Dining",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(diningAmount),
+          width: 5,
+          styles: const PosStyles(
+              height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+    ]);
+
+    printer.row([
+      PosColumn(
+          text: "Take away",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(takeAwayAmount),
+          width: 5,
+          styles: const PosStyles(
+              height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+    ]);
+    printer.row([
+      PosColumn(
+          text: "Online",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: roundStringWith(carAmount),
+          width: 5,
+          styles: const PosStyles(
+              height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+    ]);
+    printer.hr(ch: "=");
+    printer.emptyLines(2);
+    printer.text("Total revenue", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+    printer.emptyLines(1);
+    printer.row([
+      PosColumn(
+          text: "Total Cash",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+              height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+      PosColumn(text: roundStringWith(totalCashAmount), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,   align: PosAlign.right)),
+    ]);
+    printer.row([
+      PosColumn(
+          text: "Total Bank",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+              height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+      PosColumn(text: roundStringWith(totalBankAmount), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,   align: PosAlign.right)),
+    ]);    printer.row([
+      PosColumn(
+          text: "Total Credit",
+          width: 5,
+          styles: const PosStyles(
+            height: PosTextSize.size1,
+          )),
+      PosColumn(
+          text: "",
+          width: 2,
+          styles: const PosStyles(
+              height: PosTextSize.size1,
+              align: PosAlign.right
+          )),
+      PosColumn(text: roundStringWith(totalBankCredit), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,   align: PosAlign.right)),
+    ]);
+    printer.hr(ch: "=");
+    printer.cut();
+
+  }
+
 
   /// commented
   //
@@ -2098,8 +2592,7 @@ class AppBlocs {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
         final String url = '$baseUrl/posholds/kitchen-print/';
-        print(url);
-        print(accessToken);
+
         Map data = {
           "OrderID": id,
           "CompanyID": companyID,
@@ -2182,6 +2675,7 @@ class AppBlocs {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var temp = prefs.getString("template") ?? "template4";
+      var userName = prefs.getString('user_name')??"";
       var capabilities = prefs.getString("default_capabilities") ?? "default";
 
       print("template =---------------------- $temp");
@@ -2225,7 +2719,13 @@ class AppBlocs {
 
   /// Direct text method
   Future<void> kotPrint(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    var userName = prefs.getString('user_name')??"";
+    bool showUsernameKot = prefs.getBool('show_username_kot')??false;
+    bool showDateTimeKot = prefs.getBool('show_date_time_kot')??false;
+    var currentTime = DateTime.now();
+    print("----------------$currentTime");
     List<ItemsDetails> dataPrint = [];
     dataPrint.clear();
 
@@ -2295,7 +2795,18 @@ class AppBlocs {
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     printer.hr();
-
+    if(showUsernameKot){
+      printer.row([
+        PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+      ]);
+    }
+    if(showDateTimeKot){
+      printer.row([
+        PosColumn(text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: convertDateAndTime(currentTime), width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+      ]);
+    }
     printer.row([
       PosColumn(text: 'Kitchen name :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: kitchenName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
@@ -2382,7 +2893,13 @@ class AppBlocs {
   }
   /// Direct text method for Gst company
   Future<void> kotPrintGst(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    var userName = prefs.getString('user_name')??"";
+    bool showUsernameKot = prefs.getBool('show_username_kot')??false;
+    bool showDateTimeKot = prefs.getBool('show_date_time_kot')??false;
+    var currentTime = DateTime.now();
+    print("----------------$currentTime");
     List<ItemsDetails> dataPrint = [];
     dataPrint.clear();
 
@@ -2400,7 +2917,7 @@ class AppBlocs {
 
 
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
-    var updateNote = "MADE SOME CHANGES IN";
+    var updateNote = "RUNNING ORDER";
     var invoiceType = "KOT";
     printer.text(invoiceType, styles: const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
@@ -2422,6 +2939,18 @@ class AppBlocs {
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.hr();
 
+    if(showUsernameKot){
+      printer.row([
+        PosColumn(text: 'User name     ', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+      ]);
+    }
+    if(showDateTimeKot){
+      printer.row([
+        PosColumn(text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: convertDateAndTime(currentTime), width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+      ]);
+    }
     printer.row([
       PosColumn(text: 'Kitchen name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: kitchenName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),

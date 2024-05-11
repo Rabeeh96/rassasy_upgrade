@@ -102,6 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool headerAlignment = false;
   bool show_date_time_kot = false;
   bool show_username_kot = false;
+  bool hideTaxDetails = false;
 
   bool time_in_invoice = false;
 
@@ -325,13 +326,15 @@ class _SettingsPageState extends State<SettingsPage> {
       ///newly added values here
       kotDetail = prefs.getString("item_section_KOT") ?? "Product Name";
       saleDetail = prefs.getString("item_section_sale_order") ?? "Product Name";
-      saleInvoiceDetail =
-          prefs.getString("item_section_sale_invoice") ?? "Product Name";
+      saleInvoiceDetail = prefs.getString("item_section_sale_invoice") ?? "Product Name";
       isComplimentaryBill = prefs.getBool("complimentary_bill") ?? false;
 
-      show_date_time_kot== prefs.getBool("show_date_time_kot");
-      show_username_kot== prefs.getBool("show_username_kot");
+      show_date_time_kot = prefs.getBool("show_date_time_kot")??false;
+      show_username_kot = prefs.getBool("show_username_kot")??false;
+      hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
 
+
+      print("------show_date_time_kot---$show_date_time_kot--------show_username_kot-$show_username_kot-------------------------");
 
     });
   }
@@ -1657,6 +1660,53 @@ class _SettingsPageState extends State<SettingsPage> {
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('show_username_kot', val);
+
+
+                      // setState(() {
+                      //   printAfterPayment = val;
+                      //   switchStatus("printAfterPayment", printAfterPayment);
+                      // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'hide_tax_details'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: hideTaxDetails,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        hideTaxDetails = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('hideTaxDetails', val);
 
 
                       // setState(() {
@@ -3491,134 +3541,135 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10.0, top: 10),
-              child: Text(
-                'item_section'.tr,
-                style: customisedStyle(
-                    context, Colors.black, FontWeight.w500, 19.0),
-              ),
-            ),
-
-            Card(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
-                borderRadius: BorderRadius.circular(2),
-              ),
-              color: Colors.grey[100],
-              child: ListTile(
-                title: Text(
-                  'KOT',
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.normal, 15.0),
-                ),
-                trailing: DropdownButton<String>(
-                  value: kotDetail,
-                  underline: Container(),
-                  items: kotDetailsValues.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: customisedStyle(context, const Color(0xff000000),
-                            FontWeight.normal, 15.0),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-
-                    setState(() {
-                      kotDetail = newValue!;
-
-                      prefs.setString("item_section_KOT", kotDetail);
-                    });
-                    // updateList("kotDetail",newValue, "");
-                  },
-                ),
-                onTap: () {},
-              ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
-                borderRadius: BorderRadius.circular(2),
-              ),
-              color: Colors.grey[100],
-              child: ListTile(
-                title: Text(
-                  'sale_order'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.normal, 15.0),
-                ),
-                trailing: DropdownButton<String>(
-                  value: saleDetail,
-                  underline: Container(),
-                  items: saleDetailsValues.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: customisedStyle(context, const Color(0xff000000),
-                            FontWeight.normal, 15.0),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-
-                    setState(() {
-                      saleDetail = newValue!;
-                      prefs.setString("item_section_sale_order", saleDetail);
-                    });
-                    // updateList("kotDetail",newValue, "");
-                  },
-                ),
-                onTap: () {},
-              ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
-                borderRadius: BorderRadius.circular(2),
-              ),
-              color: Colors.grey[100],
-              child: ListTile(
-                title: Text(
-                  'sale_invoice'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.normal, 15.0),
-                ),
-                trailing: DropdownButton<String>(
-                  value: saleInvoiceDetail,
-                  underline: Container(),
-                  items: saleInvoiceDetailsValues.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: customisedStyle(context, const Color(0xff000000),
-                            FontWeight.normal, 15.0),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-
-                    setState(() {
-                      saleInvoiceDetail = newValue!;
-                      prefs.setString(
-                          "item_section_sale_invoice", saleInvoiceDetail);
-                    });
-                    // updateList("kotDetail",newValue, "");
-                  },
-                ),
-                onTap: () {},
-              ),
-            ),
+            /// commented
+            // Padding(
+            //   padding: const EdgeInsets.only(bottom: 10.0, top: 10),
+            //   child: Text(
+            //     'item_section'.tr,
+            //     style: customisedStyle(
+            //         context, Colors.black, FontWeight.w500, 19.0),
+            //   ),
+            // ),
+            //
+            // Card(
+            //   shape: RoundedRectangleBorder(
+            //     side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+            //     borderRadius: BorderRadius.circular(2),
+            //   ),
+            //   color: Colors.grey[100],
+            //   child: ListTile(
+            //     title: Text(
+            //       'KOT',
+            //       style: customisedStyle(
+            //           context, Colors.black, FontWeight.normal, 15.0),
+            //     ),
+            //     trailing: DropdownButton<String>(
+            //       value: kotDetail,
+            //       underline: Container(),
+            //       items: kotDetailsValues.map((String value) {
+            //         return DropdownMenuItem<String>(
+            //           value: value,
+            //           child: Text(
+            //             value,
+            //             style: customisedStyle(context, const Color(0xff000000),
+            //                 FontWeight.normal, 15.0),
+            //           ),
+            //         );
+            //       }).toList(),
+            //       onChanged: (newValue) async {
+            //         SharedPreferences prefs =
+            //             await SharedPreferences.getInstance();
+            //
+            //         setState(() {
+            //           kotDetail = newValue!;
+            //
+            //           prefs.setString("item_section_KOT", kotDetail);
+            //         });
+            //         // updateList("kotDetail",newValue, "");
+            //       },
+            //     ),
+            //     onTap: () {},
+            //   ),
+            // ),
+            // Card(
+            //   shape: RoundedRectangleBorder(
+            //     side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+            //     borderRadius: BorderRadius.circular(2),
+            //   ),
+            //   color: Colors.grey[100],
+            //   child: ListTile(
+            //     title: Text(
+            //       'sale_order'.tr,
+            //       style: customisedStyle(
+            //           context, Colors.black, FontWeight.normal, 15.0),
+            //     ),
+            //     trailing: DropdownButton<String>(
+            //       value: saleDetail,
+            //       underline: Container(),
+            //       items: saleDetailsValues.map((String value) {
+            //         return DropdownMenuItem<String>(
+            //           value: value,
+            //           child: Text(
+            //             value,
+            //             style: customisedStyle(context, const Color(0xff000000),
+            //                 FontWeight.normal, 15.0),
+            //           ),
+            //         );
+            //       }).toList(),
+            //       onChanged: (newValue) async {
+            //         SharedPreferences prefs =
+            //             await SharedPreferences.getInstance();
+            //
+            //         setState(() {
+            //           saleDetail = newValue!;
+            //           prefs.setString("item_section_sale_order", saleDetail);
+            //         });
+            //         // updateList("kotDetail",newValue, "");
+            //       },
+            //     ),
+            //     onTap: () {},
+            //   ),
+            // ),
+            // Card(
+            //   shape: RoundedRectangleBorder(
+            //     side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+            //     borderRadius: BorderRadius.circular(2),
+            //   ),
+            //   color: Colors.grey[100],
+            //   child: ListTile(
+            //     title: Text(
+            //       'sale_invoice'.tr,
+            //       style: customisedStyle(
+            //           context, Colors.black, FontWeight.normal, 15.0),
+            //     ),
+            //     trailing: DropdownButton<String>(
+            //       value: saleInvoiceDetail,
+            //       underline: Container(),
+            //       items: saleInvoiceDetailsValues.map((String value) {
+            //         return DropdownMenuItem<String>(
+            //           value: value,
+            //           child: Text(
+            //             value,
+            //             style: customisedStyle(context, const Color(0xff000000),
+            //                 FontWeight.normal, 15.0),
+            //           ),
+            //         );
+            //       }).toList(),
+            //       onChanged: (newValue) async {
+            //         SharedPreferences prefs =
+            //             await SharedPreferences.getInstance();
+            //
+            //         setState(() {
+            //           saleInvoiceDetail = newValue!;
+            //           prefs.setString(
+            //               "item_section_sale_invoice", saleInvoiceDetail);
+            //         });
+            //         // updateList("kotDetail",newValue, "");
+            //       },
+            //     ),
+            //     onTap: () {},
+            //   ),
+            // ),
 
             const SizedBox(
               height: 50,

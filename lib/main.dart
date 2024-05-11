@@ -16,6 +16,7 @@ import 'new_design/organization/list_organization.dart';
 import 'package:get/get.dart';
 
 import 'test/deliveryman.dart';
+import 'test/dragable.dart';
 import 'test/testingIp.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,9 +64,9 @@ class MyApp extends StatelessWidget {
                   //  selectionHandleColor: Colors.blue,
                 )),
             debugShowCheckedModeBanner: false,
-           home: MyHomePage (),
+         home: MyHomePage (),
                //  home: WaiterApi (),
-            //home: TestDemoPrintingOption (),
+      //       home: DragableList (),
 
           );
         }
