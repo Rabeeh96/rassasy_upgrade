@@ -75,7 +75,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   TextEditingController cashReceivedController = TextEditingController()..text = "0.0";
   TextEditingController bankReceivedController = TextEditingController()..text = "0.0";
 
-  /// detail controller
+  /// detail controllerb
   TextEditingController unitPriceDetailController = TextEditingController();
   TextEditingController qtyDetailController = TextEditingController();
 
@@ -5215,7 +5215,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         } else {}
 
         final String url = '$baseUrl/posholds/create-pos/salesOrder/';
-        print(url);
+
         Map data = {
           "Table": widget.tableID,
           "EmployeeID": employeeID,

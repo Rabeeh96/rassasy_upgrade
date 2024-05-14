@@ -1318,14 +1318,18 @@ if(taxDetails){
 
 
 
-  void print_daily(String printerIp, BuildContext ctx) async {
+  void print_report({required String printerIp,required reportType,required BuildContext ctx,required details
+    ,required date,
+    required totalCash,
+    required totalBank,
+    required totalCredit,
+    required totalGrand,
+
+  }) async {
     print("its acall");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var temp = prefs.getString("template") ?? "template4";
     var capabilities = prefs.getString("default_capabilities") ?? "default";
-
-
-
 
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
@@ -1341,15 +1345,28 @@ if(taxDetails){
     final PosPrintResult res = await printer.connect(printerIp, port: port);
 
     if (res == PosPrintResult.success) {
-      if (temp == 'template4') {
+
+      if(reportType =="daily_report"){
         await dailyReportEnglish(printer);
-      } else if (temp == 'template3') {
-        await dailyReportEnglish(printer);
-      //  await englishInvoicePrint(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
       }
-      else {
-        await printArabic(printer);
+      else{
+        await reportPrint(printer: printer,date: date,details: details,template: temp,invoiceType: reportType,
+           totalCash:totalCash,
+            totalBank:totalBank,
+            totalCredit:totalCredit,
+            totalGrand:totalGrand,
+
+        );
       }
+
+      // if (temp == 'template4') {
+      //   await dailyReportEnglish(printer);
+      // } else if (temp == 'template3') {
+      //   await dailyReportEnglish(printer);
+      // }
+      // else {
+      //   await printArabic(printer);
+      // }
       Future.delayed(const Duration(seconds: 2), ()async {
         print("------after delay----------------------------strt printing");
         printer.disconnect();
@@ -1790,6 +1807,288 @@ if(taxDetails){
 
   }
 
+  Future<void> reportPrint({required NetworkPrinter printer,required details,required date,
+    required template,
+    required invoiceType,
+  required totalCash,
+  required totalBank,
+  required totalCredit,
+  required totalGrand,
+
+  }) async {
+
+
+
+    printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+    printer.text(date, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center,bold: true));
+    if(invoiceType == "Sales report"||invoiceType == "Dining report"||invoiceType == "TakeAway report"||invoiceType == "Car report"||invoiceType == "TableWise report"){
+      printer.hr();
+      printer.row([
+        PosColumn(
+            text: 'SL',
+            width: 1,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: 'Date',
+            width: 3,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(text: 'Voucher No', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Ledger Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Amount', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+
+      ]);
+      printer.hr();
+      print("------------------template   ------------------template   $template");
+        if (template == 'template4') {
+
+          Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
+          Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
+          Uint8List voucherNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم القسيمة"));
+
+          Uint8List ledgerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("اسم دفتر الأستاذ"));
+          Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
+
+
+
+          printer.row([
+            PosColumn(
+                textEncoded: slNoEnc,
+                width: 1,
+                styles: const PosStyles(
+                  height: PosTextSize.size1,
+                )),
+
+            PosColumn(textEncoded: dateEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+
+            PosColumn(textEncoded: voucherNoEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+            PosColumn(textEncoded: ledgerNameEnc, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+            PosColumn(textEncoded: rateEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+
+          ]);
+
+          printer.hr();
+        }
+
+
+
+        print("----------------------------------$details");
+
+      for (var i = 0; i < details.length; i++) {
+        Uint8List ledgerName = await CharsetConverter.encode("ISO-8859-6", setString(details[i]["CustomerName"]));
+        printer.row([
+          PosColumn(
+              text: (i+1).toString(),
+              width: 1,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+              )),
+
+          PosColumn(text: details[i]["Date"], width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+
+          PosColumn(text: details[i]["VoucherNo"] , width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: ledgerName, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(text: roundStringWith(details[i]["GrandTotal"].toString()), width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+
+        ]);
+      }
+
+
+
+      printer.hr(ch: "=");
+      printer.row([
+        PosColumn(
+            text: "Total Cash sale",
+            width: 5,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: "",
+            width: 2,
+            styles: const PosStyles(
+                height: PosTextSize.size1,
+                align: PosAlign.right
+            )),
+        PosColumn(text: roundStringWith(totalCash), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.right)),
+      ]);
+
+
+      printer.row([
+        PosColumn(
+            text: "Total Bank sale",
+            width: 5,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: "",
+            width: 2,
+            styles: const PosStyles(
+                height: PosTextSize.size1,
+                align: PosAlign.right
+            )),
+        PosColumn(text: roundStringWith(totalBank), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.right)),
+      ]);
+
+      printer.row([
+        PosColumn(
+            text: "Total Credit sale",
+            width: 5,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: "",
+            width: 2,
+            styles: const PosStyles(
+                height: PosTextSize.size1,
+                align: PosAlign.right
+            )),
+        PosColumn(text: roundStringWith(totalCredit), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.right)),
+      ]);
+
+      printer.row([
+        PosColumn(
+            text: "Grand total",
+            width: 5,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: "",
+            width: 2,
+            styles: const PosStyles(
+                height: PosTextSize.size1,
+                align: PosAlign.right
+            )),
+        PosColumn(text: roundStringWith(totalGrand), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.right)),
+      ]);
+    }
+    else {
+      printer.hr();
+      printer.row([
+        PosColumn(
+            text: 'SL',
+            width: 1,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: 'Date',
+            width: 3,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(text: 'Voucher No', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Ledger Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Amount', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+
+      ]);
+      printer.hr();
+      print("------------------template   ------------------template   $template");
+      if (template == 'template4') {
+
+        Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
+        Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
+        Uint8List unitName = await CharsetConverter.encode("ISO-8859-6", setString("وحدة"));
+
+        Uint8List productNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("اسم المنتج"));
+        Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("عدد السلعة المباعة"));
+
+
+
+        printer.row([
+          PosColumn(
+              textEncoded: slNoEnc,
+              width: 1,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+              )),
+
+          PosColumn(textEncoded: dateEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+
+          PosColumn(textEncoded: unitName, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: productNameEnc, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: rateEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+
+        ]);
+
+        printer.hr();
+      }
+
+
+
+      print("----------------------------------$details");
+
+      for (var i = 0; i < details.length; i++) {
+        Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(details[i]["ProductName"]));
+        Uint8List unitName = await CharsetConverter.encode("ISO-8859-6", setString(details[i]["UnitName"]));
+        printer.row([
+          PosColumn(
+              text: (i+1).toString(),
+              width: 1,
+              styles: const PosStyles(
+                height: PosTextSize.size1,
+              )),
+
+          PosColumn(text: details[i]["date"], width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+
+          PosColumn(textEncoded: unitName , width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: productName, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(text: roundStringWith(details[i]["noOfSold"].toString()), width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+
+        ]);
+      }
+
+
+
+      printer.hr(ch: "=");
+      printer.row([
+        PosColumn(
+            text: "Total sold",
+            width: 5,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: "",
+            width: 2,
+            styles: const PosStyles(
+                height: PosTextSize.size1,
+                align: PosAlign.right
+            )),
+        PosColumn(text: roundStringWith(totalCash), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.right)),
+      ]);
+
+
+      printer.row([
+        PosColumn(
+            text: "Grand total",
+            width: 5,
+            styles: const PosStyles(
+              height: PosTextSize.size1,
+            )),
+        PosColumn(
+            text: "",
+            width: 2,
+            styles: const PosStyles(
+                height: PosTextSize.size1,
+                align: PosAlign.right
+            )),
+        PosColumn(text: roundStringWith(totalGrand), width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.right)),
+      ]);
+
+
+    }
+
+    printer.hr(ch: "=");
+    printer.cut();
+
+  }
 
   /// commented
   //

@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
+import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'package:rassasy_new/new_design/report/preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6847,16 +6849,58 @@ class _ReportPageState extends State<ReportPageNew> {
                               heading = "$typeHead from ";
                             }
 
-                            print(typeHead);
+
                             _navigatePrinter(context, heading, details, printType,"");
                           }
                         }
                       },
-                      child: const Text("Print",
-                          style: TextStyle(
-                            color: Color(0xffffffff),
-                          )),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff00428E))),
+                      child:   Text("View",
+                          style: customisedStyle(context, Colors.white, FontWeight.w500, 14.0)),
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 18, //height of button
+                    width: MediaQuery.of(context).size.width / 10,
+                    child: TextButton(
+                      onPressed: () {
+                        if (details.isEmpty) {
+                          dialogBox(context, "You have nothing to print");
+                        } else {
+                            var heading = '';
+
+                            var printType = typeHead;
+                            if (printType == "Product report") {
+                              heading = "$typeHead from";
+                            } else if (printType == "TableWise report") {
+                              heading = "$typeHead from ";
+                            } else {
+                              heading = "$typeHead from ";
+                            }
+
+
+
+
+
+                            print("------${fromDateNotifier.value}----${toDateNotifier.value}----");
+
+
+                           var head  = "$typeHead   ${printType == "Product wise report"? "${"("+details[0]["ProductName"]??""})":""}  ${printType == "TableWise report"? "${"("+details[0]["TableName"]})":""} ${dateFormat.format(fromDateNotifier.value)} ${timeFormat.format(fromTimeNotifier.value)}   ${dateFormat.format(toDateNotifier.value)}  ${timeFormat.format(toTimeNotifier.value)}";
+                            print("heading $printType   $heading  details $details  printType  $printType ");
+                            printDetail(heading: head,details: details,reportType:printType,
+                              totalBank: bankSum,
+                              totalCash: printType == "Product wise report"?totalNoOfSold:cashSum,
+                              totalCredit: creditSum,
+                              totalGrand: grandTotal
+                            );
+                           //_navigatePrinter(context, heading, details, printType,"");
+
+                        }
+                      },
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff00428E))),
+                      child:   Text("Print Report",
+                          style: customisedStyle(context, Colors.white, FontWeight.w500, 14.0)),
                     ),
                   ),
                 ],
@@ -8284,6 +8328,70 @@ class _ReportPageState extends State<ReportPageNew> {
     );
   }
 
+
+  var printHelperUsb =   USBPrintClass();
+  var printHelperIP =   AppBlocs();
+
+  printDetail({required heading,required details,
+    required reportType,
+    required totalCash,
+    required totalBank,
+    required totalCredit,
+    required totalGrand,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var defaultIp = prefs.getString('defaultIP') ?? '';
+    var printType = prefs.getString('PrintType') ?? 'Wifi';
+    var capabilities = prefs.getString("default_capabilities") ?? "default";
+    var temp = prefs.getString("template") ?? "template4";
+
+    if (defaultIp == "") {
+      dialogBox(context, "Please select a printer");
+    } else {
+      if(printType =='Wifi'){
+        //  var ret = await printHelperIP.printDetails();
+        var ret=2;
+        if (ret == 2) {
+          printHelperIP.print_report(printerIp: defaultIp,reportType: reportType,ctx: context,details: details,date: heading,
+              totalBank: bankSum,
+              totalCash: cashSum,
+              totalCredit: creditSum,
+              totalGrand: grandTotal
+
+          );
+        } else {
+          dialogBox(context, 'Please try again later');
+        }
+        //
+      }
+      else{
+        var ret = await printHelperUsb.reportPrint(
+          template: temp,
+            capabilities: capabilities,
+            printerIP: defaultIp,
+            invoiceType: reportType,
+            details: details,
+            date: heading,
+            totalBank: bankSum,
+            totalCash: cashSum,
+            totalCredit: creditSum,
+            totalGrand: grandTotal
+        );
+        // if (ret == 2) {
+        //
+        //   var ip = "";
+        //
+        //   /// printHelperUsb.printDailyReport(defaultIp, context);
+        // } else {
+        //   dialogBox(context, 'Please try again later');
+        // }
+
+      }
+
+    }
+
+  }
   /// convert to pdf
   _navigatePrinter(BuildContext context, heading, details, printType,html) async {
     final result = await Navigator.push(

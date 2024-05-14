@@ -138,7 +138,7 @@ class _PreviewPageState extends State<PreviewPage> {
      tr.hedding{
          background-color:#434343;
          border-radius:12px;
-         
+
      }
      th.head{
         color:#FFFFFF;
@@ -160,16 +160,16 @@ class _PreviewPageState extends State<PreviewPage> {
      <h2>${widget.heading}</h2>
 
      <table>
-     
+
      <tr class='hedding'>
      <th class='head'>Date</th>
      <th class='head'>Voucher No</th>
      <th class="company head">Ledger name</th>
      <th class='head'>Amount</th>
       </tr>
-     
-   
-    
+
+
+
    $printItems
      </table>
 
@@ -281,7 +281,7 @@ class _PreviewPageState extends State<PreviewPage> {
      border-collapse: collapse;
      width: 100%;
      }
- 
+
      td, th {
      border: 1px solid #dddddd;
      text-align: left;
@@ -290,7 +290,7 @@ class _PreviewPageState extends State<PreviewPage> {
      th.company {
      width: 35%
      }
-     
+
 
      td.right-align {
      text-align: right
@@ -298,7 +298,7 @@ class _PreviewPageState extends State<PreviewPage> {
      tr.hedding{
          background-color:#434343;
          border-radius:12px;
-         
+
      }
      th.head{
         color:#FFFFFF;
@@ -327,7 +327,7 @@ class _PreviewPageState extends State<PreviewPage> {
      <th class='head'>No of sold</th>
      <th class='head'>Total</th>
       </tr>
-    
+
    $printItems
      </table>
 
@@ -377,7 +377,7 @@ class _PreviewPageState extends State<PreviewPage> {
       savedPath = p.join(dir.path, path_name);
 
       var printItems = """
- 
+
     """;
 
       for (var i = 0; i < tableReportListsPreview.length; i++) {
@@ -398,7 +398,7 @@ class _PreviewPageState extends State<PreviewPage> {
      border-collapse: collapse;
      width: 100%;
      }
- 
+
      td, th {
      border: 1px solid #dddddd;
      text-align: left;
@@ -414,7 +414,7 @@ class _PreviewPageState extends State<PreviewPage> {
      tr.hedding{
          background-color:#434343;
          border-radius:12px;
-         
+
      }
      th.head{
         color:#FFFFFF;
@@ -435,14 +435,14 @@ class _PreviewPageState extends State<PreviewPage> {
      <h2>${widget.heading}</h2>
 
      <table>
-     
+
        <tr class='hedding'>
      <th class='head'>Date</th>
      <th class='head'>Voucher no</th>
      <th class="company head">Customer name</th>
      <th class='head'>Amount</th>
       </tr>
-    
+
    $printItems
      </table>
 

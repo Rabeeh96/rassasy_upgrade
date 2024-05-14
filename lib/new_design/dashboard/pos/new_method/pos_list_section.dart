@@ -4017,6 +4017,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     if (status == "Vacant") {
       return "";
     }
+    print("---value------value-------data-------$data");
 
     var t = data;
     var yy = int.parse(t.substring(0, 4));
@@ -4024,9 +4025,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     var da = int.parse(t.substring(8, 10));
     var hou = int.parse(t.substring(11, 13));
 
-
     var mnt = int.parse(t.substring(14, 16));
-
     var sec = int.parse(t.substring(17, 19));
 
     var startTime = DateTime(yy, month, da, hou, mnt, sec);
@@ -4037,6 +4036,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     var dMnt = currentTime.difference(startTime).inMinutes;
     var dH = currentTime.difference(startTime).inHours;
     String value = "$dMnt" + " " + "" + "Minutes";
+
+    print("---value------value-------value-------$value");
     return value;
   }
 

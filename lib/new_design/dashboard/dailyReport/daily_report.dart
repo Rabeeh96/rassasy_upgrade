@@ -201,7 +201,12 @@ class DailyReportSection extends State<DailyReport> {
       //  var ret = await printHelperIP.printDetails();
         var ret=2;
         if (ret == 2) {
-          printHelperIP.print_daily(defaultIp, context);
+          printHelperIP.print_report(printerIp: defaultIp,reportType: "daily_report",ctx: context,details: "",date: "",
+              totalBank: "",
+              totalCash: "",
+              totalCredit: "",
+              totalGrand: ""
+          );
         } else {
           dialogBox(context, 'Please try again later');
         }

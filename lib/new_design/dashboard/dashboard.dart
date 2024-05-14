@@ -1202,7 +1202,7 @@ class _DashboardNewState extends State<DashboardNew> {
                             GestureDetector(
                               onTap: () async {
 
-                           //     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+                           //    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
                                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DragableList()));
 
 
