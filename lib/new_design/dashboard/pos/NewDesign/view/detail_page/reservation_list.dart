@@ -5,26 +5,21 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/reservation_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
 class ReservationPage extends StatefulWidget {
   @override
   State<ReservationPage> createState() => _ReservationPageState();
 }
 
 class _ReservationPageState extends State<ReservationPage> {
-  final List<String> buttonLabels = [
-    'Button 1',
-    'Button 2',
-    'Button 3',
-    'Button 4'
-  ];
+  final List<String> buttonLabels = ['Button 1', 'Button 2', 'Button 3', 'Button 4'];
   final List<Color> buttonColors = [
     Colors.blue,
     Colors.green,
     Colors.orange,
     Colors.purple,
   ];
-  final ReservationController reservationController =
-      Get.put(ReservationController());
+  final ReservationController reservationController = Get.put(ReservationController());
 
   @override
   void initState() {
@@ -32,11 +27,8 @@ class _ReservationPageState extends State<ReservationPage> {
     super.initState();
     reservationController.reservations.clear();
     reservationController.update();
-    reservationController.fetchReservations(
-        reservationController.apiDateFormat
-            .format(reservationController.fromDateNotifier.value),
-        reservationController.apiDateFormat
-            .format(reservationController.toDateNotifier.value));
+    reservationController.fetchReservations(reservationController.apiDateFormat.format(reservationController.fromDateNotifier.value),
+        reservationController.apiDateFormat.format(reservationController.toDateNotifier.value));
   }
 
   @override
@@ -59,10 +51,7 @@ class _ReservationPageState extends State<ReservationPage> {
           children: [
             Text(
               'Reservations'.tr,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500),
+              style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -85,18 +74,14 @@ class _ReservationPageState extends State<ReservationPage> {
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
                         backgroundColor: Color(0xffFFF6F2),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24.0)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
                         minimumSize: const Size(150, 40),
                       ),
                       onPressed: () {
-                        showDatePickerFunction(
-                            context, reservationController.fromDateNotifier);
+                        showDatePickerFunction(context, reservationController.fromDateNotifier);
                         reservationController.fetchReservations(
-                            reservationController.apiDateFormat.format(
-                                reservationController.fromDateNotifier.value),
-                            reservationController.apiDateFormat.format(
-                                reservationController.toDateNotifier.value));
+                            reservationController.apiDateFormat.format(reservationController.fromDateNotifier.value),
+                            reservationController.apiDateFormat.format(reservationController.toDateNotifier.value));
                       },
                       child: Row(
                         children: [
@@ -104,8 +89,7 @@ class _ReservationPageState extends State<ReservationPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              reservationController.dateFormat
-                                  .format(fromDateNewValue),
+                              reservationController.dateFormat.format(fromDateNewValue),
                               style: const TextStyle(color: Colors.black),
                             ),
                           ),
@@ -122,18 +106,14 @@ class _ReservationPageState extends State<ReservationPage> {
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
                         backgroundColor: Color(0xffFFF6F2),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24.0)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
                         minimumSize: const Size(150, 40),
                       ),
                       onPressed: () {
-                        showDatePickerFunction(
-                            context, reservationController.toDateNotifier);
+                        showDatePickerFunction(context, reservationController.toDateNotifier);
                         reservationController.fetchReservations(
-                            reservationController.apiDateFormat.format(
-                                reservationController.fromDateNotifier.value),
-                            reservationController.apiDateFormat.format(
-                                reservationController.toDateNotifier.value));
+                            reservationController.apiDateFormat.format(reservationController.fromDateNotifier.value),
+                            reservationController.apiDateFormat.format(reservationController.toDateNotifier.value));
                       },
                       child: Row(
                         children: [
@@ -141,8 +121,7 @@ class _ReservationPageState extends State<ReservationPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              reservationController.dateFormat
-                                  .format(toDateNewValue),
+                              reservationController.dateFormat.format(toDateNewValue),
                               style: const TextStyle(color: Colors.black),
                             ),
                           ),
@@ -159,118 +138,98 @@ class _ReservationPageState extends State<ReservationPage> {
           ),
         ),
         Expanded(
-            child:Obx(() => reservationController.isLoading.value
-    ? const Center(child: CircularProgressIndicator())
-        : reservationController.reservations.isEmpty
-    ? const Text("No recent orders")
-        :  ListView.builder(
-          itemCount: reservationController.reservations.length,
-          itemBuilder: (context, index) {
-            return  Slidable(
-
-              endActionPane: ActionPane(
-                motion: const ScrollMotion(),
-
-                children: [
-                  // CustomSlidableAction(
-                  //   flex: 2,
-                  //   // An action can be bigger than the others.
-                  //   //  flex: 2,
-                  //   onPressed: (BuildContext context) async {
-                  //
-                  //
-                  //   },
-                  //   //onPressed: doNothing,
-                  //   backgroundColor:Colors.transparent,
-                  //   foregroundColor: Colors.transparent,
-                  //   child: Icon(Icons.clear),
-                  //
-                  // ),
-                  CustomSlidableAction(
-                    flex: 2,
-                    // An action can be bigger than the others.
-                    //  flex: 2,
-                    onPressed: (BuildContext context) async {
-
-
-                    },
-                    //onPressed: doNothing,
-                    backgroundColor: const Color(0xFFDF1515),
-                    foregroundColor: Colors.white,
-                    child: Icon(Icons.clear),
-
-                  ),
-
-
-                ],
-              ),
-
-              child: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15.0, right: 15, top: 5, bottom: 5),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Obx(() => reservationController.isLoading.value
+                ? const Center(child: CircularProgressIndicator())
+                : reservationController.reservations.isEmpty
+                    ? const Center(child: Text("No recent Reservation"))
+                    : ListView.builder(
+                        itemCount: reservationController.reservations.length,
+                        itemBuilder: (context, index) {
+                          return Slidable(
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Text(
-                                    reservationController
-                                        .reservations[index].customerName!,
-                                    style: customisedStyle(context, Colors.black,
-                                        FontWeight.w400, 15.0),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Text(
-                                    reservationController
-                                        .reservations[index].tableName!,
-                                    style: customisedStyle(context,
-                                        Color(0xff00775E), FontWeight.w400, 15.0),
-                                  ),
+                                // CustomSlidableAction(
+                                //   flex: 2,
+                                //   // An action can be bigger than the others.
+                                //   //  flex: 2,
+                                //   onPressed: (BuildContext context) async {
+                                //
+                                //
+                                //   },
+                                //   //onPressed: doNothing,
+                                //   backgroundColor:Colors.transparent,
+                                //   foregroundColor: Colors.transparent,
+                                //   child: Icon(Icons.clear),
+                                //
+                                // ),
+                                CustomSlidableAction(
+                                  flex: 2,
+                                  // An action can be bigger than the others.
+                                  //  flex: 2,
+                                  onPressed: (BuildContext context) async {},
+                                  //onPressed: doNothing,
+                                  backgroundColor: const Color(0xFFDF1515),
+                                  foregroundColor: Colors.white,
+                                  child: Icon(Icons.clear),
                                 ),
                               ],
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  reservationController.reservations[index].date!,
-                                  style: customisedStyle(context,
-                                      Color(0xffF25F29), FontWeight.w400, 13.0),
+                            child: GestureDetector(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15.0, right: 15, top: 5, bottom: 5),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 12),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 8.0),
+                                                child: Text(
+                                                  reservationController.reservations[index].customerName!,
+                                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 8.0),
+                                                child: Text(
+                                                  reservationController.reservations[index].tableName!,
+                                                  style: customisedStyle(context, Color(0xff00775E), FontWeight.w400, 15.0),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                reservationController.reservations[index].date!,
+                                                style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 13.0),
+                                              ),
+                                              Text(
+                                                "${reservationController.reservations[index].fromTime!} - ${reservationController.reservations[index].toTime!}",
+                                                style: customisedStyle(context, Color(0xffAEAEAE), FontWeight.w500, 15.0),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    DividerStyle()
+                                  ],
                                 ),
-                                Text(
-                                  "${reservationController.reservations[index].fromTime!} - ${reservationController.reservations[index].toTime!}",
-                                  style: customisedStyle(context,
-                                      Color(0xffAEAEAE), FontWeight.w500, 15.0),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      DividerStyle()
-                    ],
-                  ),
-                ),
-              ),
-            );
-
-
-
-          },
-        ))
-
-        )]),
+                              ),
+                            ),
+                          );
+                        },
+                      )))
+      ]),
     );
   }
 

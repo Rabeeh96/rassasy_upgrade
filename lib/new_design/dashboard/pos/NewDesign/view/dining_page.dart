@@ -39,6 +39,7 @@ class _DiningPageState extends State<DiningPage> {
       return Color(0xffEFEFEF); // Default color if status is not recognized
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -47,6 +48,7 @@ class _DiningPageState extends State<DiningPage> {
     diningController.fetchAllData();
     diningController.update();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,10 +69,7 @@ class _DiningPageState extends State<DiningPage> {
           children: [
             Text(
               'Dining'.tr,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500),
+              style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -78,14 +77,12 @@ class _DiningPageState extends State<DiningPage> {
           GestureDetector(
             child: Text(
               'Manager'.tr,
-              style: customisedStyle(
-                  context, Color(0xffF25F29), FontWeight.w400, 13.0),
+              style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 13.0),
             ),
           ),
           IconButton(
               onPressed: () {
                 _asyncConfirmDialog(context);
-
               },
               icon: SvgPicture.asset('assets/svg/logout_mob.svg'))
         ],
@@ -106,28 +103,22 @@ class _DiningPageState extends State<DiningPage> {
                       padding: const EdgeInsets.all(5.0),
                       child: GestureDetector(
                         onTap: () {
-                          diningController.selectedIndexNotifier.value =
-                              index; // Update the selected index
+                          diningController.selectedIndexNotifier.value = index; // Update the selected index
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width / 5,
                           decoration: BoxDecoration(
-                            color: selectedIndex == index
-                                ? const Color(0xffF25F29)
-                                : const Color(0xffF5F5F5),
+                            color: selectedIndex == index ? const Color(0xffF25F29) : const Color(0xffF5F5F5),
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Center(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, right: 8),
+                              padding: const EdgeInsets.only(left: 8.0, right: 8),
                               child: Text(
                                 POSController.labels[index],
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: selectedIndex == index
-                                      ? Colors.white
-                                      : Colors.grey,
+                                  color: selectedIndex == index ? Colors.white : Colors.grey,
                                 ),
                               ),
                             ),
@@ -148,6 +139,8 @@ class _DiningPageState extends State<DiningPage> {
             color: const Color(0xffE9E9E9),
           ),
         ),
+
+
         Expanded(
             child: Obx(() => diningController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
@@ -155,7 +148,8 @@ class _DiningPageState extends State<DiningPage> {
                     ? const Text("No recent orders")
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
-                        child: ListView.builder(
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => DividerStyle(),
                           itemCount: diningController.tableData.length,
                           itemBuilder: (context, index) {
                             return Slidable(
@@ -173,20 +167,13 @@ class _DiningPageState extends State<DiningPage> {
                                     backgroundColor: const Color(0xFF00775E),
                                     foregroundColor: Colors.green,
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         SvgPicture.asset(
                                           'assets/svg/bxs-calendar-check.svg', //
                                         ),
-                                        Text("Reserve",
-                                            style: customisedStyleBold(
-                                                context,
-                                                Colors.white,
-                                                FontWeight.w400,
-                                                10.0))
+                                        Text("Reserve", style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0))
                                       ],
                                     ),
                                   ),
@@ -196,21 +183,15 @@ class _DiningPageState extends State<DiningPage> {
                                     backgroundColor: const Color(0xFF034FC1),
                                     foregroundColor: Colors.green,
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         SvgPicture.asset(
                                           'assets/svg/print.svg', //
                                         ),
                                         Text(
                                           "Print",
-                                          style: customisedStyleBold(
-                                              context,
-                                              Colors.white,
-                                              FontWeight.w400,
-                                              10.0),
+                                          style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
                                         )
                                       ],
                                     ),
@@ -226,10 +207,8 @@ class _DiningPageState extends State<DiningPage> {
                                     backgroundColor: const Color(0xFFFC3636),
                                     foregroundColor: Colors.green,
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         const Icon(
                                           Icons.clear,
@@ -237,11 +216,7 @@ class _DiningPageState extends State<DiningPage> {
                                         ),
                                         Text(
                                           "Cancel",
-                                          style: customisedStyleBold(
-                                              context,
-                                              Colors.white,
-                                              FontWeight.w400,
-                                              10.0),
+                                          style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
                                         )
                                       ],
                                     ),
@@ -251,10 +226,8 @@ class _DiningPageState extends State<DiningPage> {
                                     backgroundColor: const Color(0xFF10C103),
                                     foregroundColor: Colors.green,
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         const Icon(
                                           Icons.check,
@@ -262,11 +235,7 @@ class _DiningPageState extends State<DiningPage> {
                                         ),
                                         Text(
                                           "Pay",
-                                          style: customisedStyleBold(
-                                              context,
-                                              Colors.white,
-                                              FontWeight.w400,
-                                              10.0),
+                                          style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
                                         )
                                       ],
                                     ),
@@ -292,224 +261,81 @@ class _DiningPageState extends State<DiningPage> {
 
                               child: GestureDetector(
                                 onTap: () {
-                                  if (diningController
-                                          .tableData[index].status ==
-                                      'Vacant') {
+                                  if (diningController.tableData[index].status == 'Vacant') {
                                     Get.to(OrderCreatePage());
-                                  } else {}
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 15.0,
-                                    right: 15,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 12,
-                                      ),
+                                  } else {
 
-                                      ///ccheking vacacnt or not
-                                      // diningController.tableData[index].title ==
-                                      //         "Vacant"
-                                      //     ? Row(
-                                      //       children: [
-                                      //         Padding(
-                                      //           padding: const EdgeInsets.only(
-                                      //               right: 8.0),
-                                      //           child: Text(
-                                      //             diningController
-                                      //                 .tableData[index].title!,
-                                      //             style: customisedStyle(
-                                      //                 context,
-                                      //                 Colors.black,
-                                      //                 FontWeight.w400,
-                                      //                 15.0),
-                                      //           ),
-                                      //         ),
-                                      //         GestureDetector(
-                                      //           onTap: () {
-                                      //             print("here");
-                                      //             print(diningController
-                                      //                 .tableData[index]
-                                      //                 .isReserved);
-                                      //             print(diningController
-                                      //                 .tableData[index]
-                                      //                 .reserved);
-                                      //           },
-                                      //           child: Container(
-                                      //             height: MediaQuery.of(context)
-                                      //                     .size
-                                      //                     .height /
-                                      //                 32,
-                                      //             decoration: BoxDecoration(
-                                      //               color: _getBackgroundColor(
-                                      //                   diningController
-                                      //                       .tableData[index]
-                                      //                       .status!),
-                                      //               borderRadius:
-                                      //                   BorderRadius.circular(
-                                      //                       30),
-                                      //             ),
-                                      //             child: Center(
-                                      //               child: Padding(
-                                      //                 padding:
-                                      //                     const EdgeInsets.only(
-                                      //                         left: 10.0,
-                                      //                         right: 10),
-                                      //                 child: Text(
-                                      //                   diningController
-                                      //                       .tableData[index]
-                                      //                       .status!,
-                                      //                   style: TextStyle(
-                                      //                       fontSize: 11,
-                                      //                       color: diningController
-                                      //                                   .tableData[
-                                      //                                       index]
-                                      //                                   .status ==
-                                      //                               "Vacant"
-                                      //                           ? Colors.black
-                                      //                           : Colors.white),
-                                      //                 ),
-                                      //               ),
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //       ],
-                                      //     )
-                                      //     :
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                  }
+                                },
+                                child: InkWell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 15.0,
+                                      right: 15,
+                                      top: 20,
+                                      bottom: 20
+                                    ),
+                                    child:Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            Row(
+
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 8.0),
-                                                      child: Text(
-                                                        diningController
-                                                            .tableData[index]
-                                                            .title!,
-                                                        style: customisedStyle(
-                                                            context,
-                                                            Colors.black,
-                                                            FontWeight.w400,
-                                                            15.0),
-                                                      ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        print("here");
-                                                        print(diningController
-                                                            .tableData[index]
-                                                            .isReserved);
-                                                        print(diningController
-                                                            .tableData[index]
-                                                            .reserved);
-                                                      },
-                                                      child: Container(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            32,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: _getBackgroundColor(
-                                                              diningController
-                                                                  .tableData[
-                                                                      index]
-                                                                  .status!),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(30),
-                                                        ),
-                                                        child: Center(
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    left: 10.0,
-                                                                    right: 10),
-                                                            child: Text(
-                                                              diningController
-                                                                  .tableData[
-                                                                      index]
-                                                                  .status!,
-                                                              style: TextStyle(
-                                                                  fontSize: 11,
-                                                                  color: diningController
-                                                                              .tableData[
-                                                                                  index]
-                                                                              .status ==
-                                                                          "Vacant"
-                                                                      ? Colors
-                                                                          .black
-                                                                      : Colors
-                                                                          .white),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                Padding(
+                                                  padding: const EdgeInsets.only(right: 8.0),
+                                                  child: Text(
+                                                    diningController.tableData[index].title!,
+                                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                                  ),
                                                 ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      diningController
-                                                          .returnOrderTime(
-                                                              diningController
-                                                                  .tableData[
-                                                                      index]
-                                                                  .orderTime!,
-                                                              diningController
-                                                                  .tableData[
-                                                                      index]
-                                                                  .status!),
-                                                      style: customisedStyle(
-                                                          context,
-                                                          const Color(
-                                                              0xff00775E),
-                                                          FontWeight.w400,
-                                                          13.0),
+                                                Container(
+                                                  height: MediaQuery.of(context).size.height / 32,
+                                                  decoration: BoxDecoration(
+                                                    color: _getBackgroundColor(diningController.tableData[index].status!),
+                                                    borderRadius: BorderRadius.circular(30),
+                                                  ),
+                                                  child: Center(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(left: 15.0, right: 15),
+                                                      child: Text(
+                                                        diningController.tableData[index].status!,
+                                                        style: TextStyle(
+                                                            fontSize: 11,
+                                                            color: diningController.tableData[index].status == "Vacant"
+                                                                ? Colors.black
+                                                                : Colors.white),
+                                                      ),
                                                     ),
-                                                    //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
-                                                  ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            Text(
-                                              "${diningController.currency} ${roundStringWith(diningController.tableData[index].salesOrderGrandTotal!.toString())}",
-                                              style: customisedStyle(
-                                                  context,
-                                                  Colors.black,
-                                                  FontWeight.w500,
-                                                  15.0),
-                                            )
+                                            diningController.returnOrderTime(diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=""?Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  diningController.returnOrderTime(diningController.tableData[index].orderTime!, diningController.tableData[index].status!),
+                                                  style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
+                                                ),
+                                                //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
+                                              ],
+                                            ):Container(
+
+                                            ),
                                           ],
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      DividerStyle()
-                                    ],
+                                        Text(
+                                          "${diningController.currency} ${roundStringWith(diningController.tableData[index].salesOrderGrandTotal!.toString())}",
+                                          style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                        )
+                                      ],
+                                    )
                                   ),
                                 ),
                               ),
@@ -524,9 +350,7 @@ class _DiningPageState extends State<DiningPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffFFF6F2))),
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () {
                   addTable();
                 },
@@ -540,8 +364,7 @@ class _DiningPageState extends State<DiningPage> {
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
                         'Add_Table'.tr,
-                        style: customisedStyle(context, const Color(0xffF25F29),
-                            FontWeight.normal, 12.0),
+                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 12.0),
                       ),
                     )
                   ],
@@ -550,9 +373,7 @@ class _DiningPageState extends State<DiningPage> {
               width: 10,
             ),
             TextButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffEFF6F5))),
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEFF6F5))),
                 onPressed: () {
                   Get.to(ReservationPage());
                 },
@@ -560,8 +381,7 @@ class _DiningPageState extends State<DiningPage> {
                   padding: const EdgeInsets.only(left: 12.0, right: 12),
                   child: Text(
                     'Reservations'.tr,
-                    style: customisedStyle(context, const Color(0xff00775E),
-                        FontWeight.normal, 12.0),
+                    style: customisedStyle(context, const Color(0xff00775E), FontWeight.normal, 12.0),
                   ),
                 )),
           ],
@@ -578,8 +398,7 @@ class _DiningPageState extends State<DiningPage> {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0),
           // Set border radius to the top left corner
-          topRight: Radius.circular(
-              10.0), // Set border radius to the top right corner
+          topRight: Radius.circular(10.0), // Set border radius to the top right corner
         ),
       ),
       backgroundColor: Colors.white,
@@ -595,8 +414,7 @@ class _DiningPageState extends State<DiningPage> {
                 children: [
                   Text(
                     'Add_a_Table'.tr,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w500, 14.0),
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                   ),
                   IconButton(
                       onPressed: () {
@@ -620,34 +438,28 @@ class _DiningPageState extends State<DiningPage> {
                 child: TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: diningController.customerNameController,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w500, 14.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                   focusNode: diningController.customerNode,
                   onEditingComplete: () {
-                    FocusScope.of(context)
-                        .requestFocus(diningController.saveFocusNode);
+                    FocusScope.of(context).requestFocus(diningController.saveFocusNode);
                   },
                   keyboardType: TextInputType.text,
-                  decoration: TextFieldDecoration.defaultTextField(
-                      hintTextStr: 'Table_Name'.tr),
+                  decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'Table_Name'.tr),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0, right: 16, bottom: 16, top: 5),
+              padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
               child: Container(
                 height: MediaQuery.of(context).size.height / 17,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            8.0), // Adjust the radius as needed
+                        borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
                       ),
                     ),
-                    backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffF25F29)),
+                    backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
                   ),
                   onPressed: () {
                     // Do something with the text
@@ -656,8 +468,7 @@ class _DiningPageState extends State<DiningPage> {
                   },
                   child: Text(
                     'save'.tr,
-                    style: customisedStyle(
-                        context, Colors.white, FontWeight.normal, 12.0),
+                    style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0),
                   ),
                 ),
               ),
@@ -676,8 +487,7 @@ class _DiningPageState extends State<DiningPage> {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0),
           // Set border radius to the top left corner
-          topRight: Radius.circular(
-              10.0), // Set border radius to the top right corner
+          topRight: Radius.circular(10.0), // Set border radius to the top right corner
         ),
       ),
       backgroundColor: Colors.white,
@@ -694,8 +504,7 @@ class _DiningPageState extends State<DiningPage> {
                   children: [
                     Text(
                       'reserve_a_table'.tr,
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w500, 14.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     ),
                     IconButton(
                         onPressed: () {
@@ -719,32 +528,26 @@ class _DiningPageState extends State<DiningPage> {
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: diningController.customerNameController,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w500, 14.0),
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     focusNode: diningController.customerNode,
                     onEditingComplete: () {
-                      FocusScope.of(context)
-                          .requestFocus(diningController.saveFocusNode);
+                      FocusScope.of(context).requestFocus(diningController.saveFocusNode);
                     },
                     keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextField(
-                        hintTextStr: 'customer'.tr),
+                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'customer'.tr),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16),
                 child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Color(0xffE6E6E6))),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xffE6E6E6))),
                   height: MediaQuery.of(context).size.height / 4.5,
                   child: Column(
                     children: [
                       ValueListenableBuilder(
                           valueListenable: diningController.reservationDate,
-                          builder:
-                              (BuildContext ctx, DateTime dateNewValue, _) {
+                          builder: (BuildContext ctx, DateTime dateNewValue, _) {
                             return GestureDetector(
                               child: Padding(
                                 padding: const EdgeInsets.all(
@@ -758,34 +561,21 @@ class _DiningPageState extends State<DiningPage> {
                                     ),
                                   ),
                                   //  width: MediaQuery.of(context).size.width / 3,
-                                  height:
-                                      MediaQuery.of(context).size.height / 20,
+                                  height: MediaQuery.of(context).size.height / 20,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5.0, right: 5),
+                                    padding: const EdgeInsets.only(left: 5.0, right: 5),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           'Date'.tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Color(0xff8C8C8C),
-                                              FontWeight.w400,
-                                              14.0),
+                                          style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
+                                          padding: const EdgeInsets.only(right: 8.0),
                                           child: Text(
-                                            diningController.dateFormat
-                                                .format(dateNewValue),
-                                            style: customisedStyle(
-                                                context,
-                                                Colors.black,
-                                                FontWeight.w400,
-                                                14.0),
+                                            diningController.dateFormat.format(dateNewValue),
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                           ),
                                         ),
                                         SvgPicture.asset("assets/svg/Icon.svg")
@@ -795,8 +585,7 @@ class _DiningPageState extends State<DiningPage> {
                                 ),
                               ),
                               onTap: () {
-                                showDatePickerFunction(
-                                    context, diningController.reservationDate);
+                                showDatePickerFunction(context, diningController.reservationDate);
                               },
                             );
                           }),
@@ -817,35 +606,21 @@ class _DiningPageState extends State<DiningPage> {
                                     ),
                                   ),
                                   //  width: MediaQuery.of(context).size.width / 3,
-                                  height:
-                                      MediaQuery.of(context).size.height / 20,
+                                  height: MediaQuery.of(context).size.height / 20,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5.0, right: 5),
+                                    padding: const EdgeInsets.only(left: 5.0, right: 5),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           'from'.tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Color(0xff8C8C8C),
-                                              FontWeight.w400,
-                                              14.0),
+                                          style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 20.0),
+                                          padding: const EdgeInsets.only(right: 20.0),
                                           child: Text(
-                                            diningController.timeFormat.format(
-                                                diningController
-                                                    .fromTimeNotifier.value),
-                                            style: customisedStyle(
-                                                context,
-                                                Colors.black,
-                                                FontWeight.w400,
-                                                14.0),
+                                            diningController.timeFormat.format(diningController.fromTimeNotifier.value),
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                           ),
                                         ),
                                         SvgPicture.asset("assets/svg/Icon.svg")
@@ -856,24 +631,14 @@ class _DiningPageState extends State<DiningPage> {
                               ),
                               onTap: () async {
                                 TimeOfDay? pickedTime = await showTimePicker(
-                                  initialTime: TimeOfDay.fromDateTime(
-                                      diningController.fromTimeNotifier.value),
+                                  initialTime: TimeOfDay.fromDateTime(diningController.fromTimeNotifier.value),
                                   context: context,
                                 );
                                 if (pickedTime != null) {
-                                  final time = TimeOfDay(
-                                      hour: pickedTime.hour,
-                                      minute: pickedTime.minute);
-                                  final currentDateTime =
-                                      diningController.fromTimeNotifier.value;
-                                  final dateTime = DateTime(
-                                      currentDateTime.year,
-                                      currentDateTime.month,
-                                      currentDateTime.day,
-                                      time.hour,
-                                      time.minute);
-                                  diningController.fromTimeNotifier.value =
-                                      dateTime;
+                                  final time = TimeOfDay(hour: pickedTime.hour, minute: pickedTime.minute);
+                                  final currentDateTime = diningController.fromTimeNotifier.value;
+                                  final dateTime = DateTime(currentDateTime.year, currentDateTime.month, currentDateTime.day, time.hour, time.minute);
+                                  diningController.fromTimeNotifier.value = dateTime;
                                   // viewList();
                                 } else {
                                   print("Time is not selected");
@@ -897,32 +662,19 @@ class _DiningPageState extends State<DiningPage> {
                                       width: 2,
                                     ),
                                   ),
-                                  height:
-                                      MediaQuery.of(context).size.height / 20,
+                                  height: MediaQuery.of(context).size.height / 20,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5.0, right: 5),
+                                    padding: const EdgeInsets.only(left: 5.0, right: 5),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           'to'.tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Color(0xff8C8C8C),
-                                              FontWeight.w400,
-                                              14.0),
+                                          style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
                                         ),
                                         Text(
-                                          diningController.timeFormat.format(
-                                              diningController
-                                                  .toTimeNotifier.value),
-                                          style: customisedStyle(
-                                              context,
-                                              Colors.black,
-                                              FontWeight.w400,
-                                              14.0),
+                                          diningController.timeFormat.format(diningController.toTimeNotifier.value),
+                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                         ),
                                         SvgPicture.asset("assets/svg/Icon.svg")
                                       ],
@@ -932,24 +684,14 @@ class _DiningPageState extends State<DiningPage> {
                               ),
                               onTap: () async {
                                 TimeOfDay? pickedTime = await showTimePicker(
-                                  initialTime: TimeOfDay.fromDateTime(
-                                      diningController.toTimeNotifier.value),
+                                  initialTime: TimeOfDay.fromDateTime(diningController.toTimeNotifier.value),
                                   context: context,
                                 );
                                 if (pickedTime != null) {
-                                  final time = TimeOfDay(
-                                      hour: pickedTime.hour,
-                                      minute: pickedTime.minute);
-                                  final currentDateTime =
-                                      diningController.toTimeNotifier.value;
-                                  final dateTime = DateTime(
-                                      currentDateTime.year,
-                                      currentDateTime.month,
-                                      currentDateTime.day,
-                                      time.hour,
-                                      time.minute);
-                                  diningController.toTimeNotifier.value =
-                                      dateTime;
+                                  final time = TimeOfDay(hour: pickedTime.hour, minute: pickedTime.minute);
+                                  final currentDateTime = diningController.toTimeNotifier.value;
+                                  final dateTime = DateTime(currentDateTime.year, currentDateTime.month, currentDateTime.day, time.hour, time.minute);
+                                  diningController.toTimeNotifier.value = dateTime;
                                   // viewList();
                                 } else {
                                   print("Time is not selected");
@@ -962,20 +704,17 @@ class _DiningPageState extends State<DiningPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16, bottom: 16, top: 16),
+                padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 16),
                 child: Container(
                   height: MediaQuery.of(context).size.height / 17,
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              8.0), // Adjust the radius as needed
+                          borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
                         ),
                       ),
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xffF25F29)),
+                      backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
                     ),
                     onPressed: () {
                       // Do something with the text
@@ -984,8 +723,7 @@ class _DiningPageState extends State<DiningPage> {
                     },
                     child: Text(
                       'save'.tr,
-                      style: customisedStyle(
-                          context, Colors.white, FontWeight.normal, 12.0),
+                      style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0),
                     ),
                   ),
                 ),
@@ -1005,8 +743,7 @@ class _DiningPageState extends State<DiningPage> {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0),
           // Set border radius to the top left corner
-          topRight: Radius.circular(
-              10.0), // Set border radius to the top right corner
+          topRight: Radius.circular(10.0), // Set border radius to the top right corner
         ),
       ),
       backgroundColor: Colors.white,
@@ -1023,8 +760,7 @@ class _DiningPageState extends State<DiningPage> {
                   children: [
                     Text(
                       'Options'.tr,
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w500, 14.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     ),
                     IconButton(
                         onPressed: () {
@@ -1042,8 +778,7 @@ class _DiningPageState extends State<DiningPage> {
                 color: const Color(0xffE9E9E9),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, top: 8, bottom: 8, right: 16),
+                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -1055,8 +790,7 @@ class _DiningPageState extends State<DiningPage> {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             'Edit',
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 14.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                           ),
                         ),
                       ],
@@ -1067,8 +801,7 @@ class _DiningPageState extends State<DiningPage> {
               ),
               DividerStyle(),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, top: 8, bottom: 8, right: 16),
+                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -1079,8 +812,7 @@ class _DiningPageState extends State<DiningPage> {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             'Print',
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 14.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                           ),
                         ),
                       ],
@@ -1091,8 +823,7 @@ class _DiningPageState extends State<DiningPage> {
               ),
               DividerStyle(),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, top: 8, bottom: 8, right: 16),
+                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -1103,8 +834,7 @@ class _DiningPageState extends State<DiningPage> {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             'Cancel Order',
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 14.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                           ),
                         ),
                       ],
@@ -1115,8 +845,7 @@ class _DiningPageState extends State<DiningPage> {
               ),
               DividerStyle(),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, top: 8, bottom: 8, right: 16),
+                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -1127,8 +856,7 @@ class _DiningPageState extends State<DiningPage> {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             'Pay',
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 14.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                           ),
                         ),
                       ],
@@ -1139,8 +867,7 @@ class _DiningPageState extends State<DiningPage> {
               ),
               DividerStyle(),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, top: 8, bottom: 8, right: 16),
+                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -1151,8 +878,7 @@ class _DiningPageState extends State<DiningPage> {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             'Reserve',
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 14.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                           ),
                         ),
                       ],

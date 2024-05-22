@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/pos_list_model.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/service/pos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class POSController extends GetxController {
   var tabIndex = 0.obs;
 
@@ -14,31 +15,22 @@ class POSController extends GetxController {
 
   @override
   void onInit() {
-
+    tabIndex.value = 0;
+    print("tabIndex $tabIndex");
     fetchAllData();
-
     update();
     super.onInit();
   }
-clear(){
-  tableData.clear();
-  onlineOrders.clear();
-  takeAwayOrders.clear();
-  carOrders.clear();
-}
-  @override
-  void dispose() {
-    super.dispose();
+
+  clear() {
+    tableData.clear();
+    onlineOrders.clear();
+    takeAwayOrders.clear();
+    carOrders.clear();
   }
 
   var selectedIndex = -1.obs;
-  static final List<String> labels = [
-    'All',
-    'Vacant',
-    'Ordered',
-    'Billed',
-    'Paid'
-  ];
+  static final List<String> labels = ['All', 'Vacant', 'Ordered', 'Paid'];
   final ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
   final ValueNotifier<int> carItemSelectedNotifier = ValueNotifier<int>(0);
 
@@ -46,24 +38,10 @@ clear(){
     'All',
     'Zomato',
     'Swiggy',
-
   ];
 
-  final List<String> menuItemList = [
-    'Shawarma',
-    'Soup',
-    'Dumplings',
-    'Pasta',
-    'Beverage'
-  ];
-  static final List<String> menuItem = [
-    'Shawarma',
-    'Soup',
-    'Dumplings',
-    'Pasta',
-    'Beaverage'
-  ];
-
+  final List<String> menuItemList = ['Shawarma', 'Soup', 'Dumplings', 'Pasta', 'Beverage'];
+  static final List<String> menuItem = ['Shawarma', 'Soup', 'Dumplings', 'Pasta', 'Beaverage'];
 
   final ValueNotifier<bool> isDismiss = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isVeg = ValueNotifier<bool>(true);
@@ -123,8 +101,9 @@ clear(){
     var difference = currentTime.difference(startTime);
     var hours = difference.inHours;
     var remainingMinutes = difference.inMinutes.remainder(60);
-///to get time in hours and minutes
-    if (difference.inHours  > 0) {
+
+    ///to get time in hours and minutes
+    if (difference.inHours > 0) {
       if (remainingMinutes > 0) {
         return "${hours} hour${hours > 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes > 1 ? 's' : ''}";
       } else {
@@ -135,10 +114,9 @@ clear(){
     }
   }
 
-///fetxh all api call
+  ///fetch all api call
   void fetchAllData() async {
     try {
-      print("api");
       isLoading(true);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userID = prefs.getInt('user_id') ?? 0;
@@ -146,29 +124,15 @@ clear(){
       var fetchedData = await _tableService.fetchAllData(accessToken);
 
       tableData.assignAll((fetchedData['data'] as List).map((json) => Data.fromJson(json)).toList());
-      print("tableData.length");
-      print(tableData.length);
-      // Parse online orders
       onlineOrders.assignAll((fetchedData['Online'] as List).map((json) => Online.fromJson(json)).toList());
-      print("onlineOrders.length");
-      print(onlineOrders.length);
-      // Parse take away orders
       takeAwayOrders.assignAll((fetchedData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
-      print("takeAwayOrders.length");
-      print(takeAwayOrders.length);
-      // Parse car orders
       carOrders.assignAll((fetchedData['Car'] as List).map((json) => Car.fromJson(json)).toList());
-      print("carOrders.length");
-      print(carOrders.length);
-
-        } finally {
+    } finally {
       isLoading(false);
     }
   }
-
-
-
 }
+
 enum ConfirmAction { cancel, accept }
 
 Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
