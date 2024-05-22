@@ -28,9 +28,15 @@ class _ProductDetailsState extends State<SelectBranch> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+
+    bool isTablet = screenWidth > 600;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
+        titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -49,10 +55,9 @@ class _ProductDetailsState extends State<SelectBranch> {
 
       body: Center(
         child: Container(
-            height: MediaQuery.of(context).size.height / 1, //height of button
-            width: MediaQuery.of(context).size.width / 3,
+            height: isTablet?screenHeight / 1:screenHeight / 1.1, //height of button
+            width: isTablet? screenWidth/ 3:screenWidth/1,
             color: Colors.grey[100],
-            // color: Colors.grey[100],
             child:categoryLists.isNotEmpty?Padding(
               padding: const EdgeInsets.all (20.0),
               child: ListView.builder(

@@ -204,17 +204,17 @@ class USBPrintClass {
   //   // TODO Don't forget to choose printer's paper size
   //   const PaperSize paper = PaperSize.mm80;
   //
-  //   var profile;
+  //   var profile_mobile;
   //   if (capabilities == "default") {
-  //     profile = await CapabilityProfile.load();
+  //     profile_mobile = await CapabilityProfile.load();
   //   } else {
-  //     profile = await CapabilityProfile.load(name: capabilities);
+  //     profile_mobile = await CapabilityProfile.load(name: capabilities);
   //   }
   //
   //     if (temp == 'template4') {
-  //       await invoicePrintTemplate4(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
+  //       await invoicePrintTemplate4(printerIp,profile_mobile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
   //     } else if (temp == 'template3') {
-  //       await invoicePrintTemplate3(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
+  //       await invoicePrintTemplate3(printerIp,profile_mobile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint);
   //     } else {
   //
   //     }

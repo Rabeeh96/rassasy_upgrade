@@ -1,17 +1,18 @@
 import 'dart:convert';
-import 'package:get/get.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/dashboard/dashboard.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/new_method/pos_list_section.dart';
 import 'package:rassasy_new/new_design/organization/list_organization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class EnterPinNumber extends StatefulWidget {
   const EnterPinNumber({Key? key}) : super(key: key);
@@ -21,7 +22,6 @@ class EnterPinNumber extends StatefulWidget {
 }
 
 class _EnterPinNumberState extends State<EnterPinNumber> {
-
   Color c1 = Colors.white;
   Color c2 = Colors.white;
   Color c3 = Colors.white;
@@ -30,9 +30,45 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
   Color c6 = Colors.white;
 
   List<int> num = [];
+  final FocusNode _focusNode = FocusNode();
+  final ValueNotifier<String> _enteredNumbersNotifier = ValueNotifier<String>('');
 
   @override
+  void initState() {
+    super.initState();
+    // Request focus when the widget is first initialized
+    _focusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _enteredNumbersNotifier.dispose();
+    super.dispose();
+  }
+
+
+  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    // Check if the event is a RawKeyDownEvent
+    final logicalKey = event.logicalKey;
+    // Check if the key is a numeric key and the entered numbers length is less than 6
+    if (RegExp('[0-9]').hasMatch(logicalKey.keyLabel!) &&
+        _enteredNumbersNotifier.value.length < 6) {
+      // Append numeric keys to the entered numbers
+      _enteredNumbersNotifier.value += logicalKey.keyLabel!;
+    }
+    return KeyEventResult.handled;
+  }
+  void _clearEnteredNumbers() {
+    _enteredNumbersNotifier.value = '';
+  }
+  @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+
+    bool isTablet = screenWidth > 600;
     return Scaffold(
         // appBar: AppBar(
         //   elevation: 0.0,
@@ -50,59 +86,96 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         //   ],
         // ),
         body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/png/coverpage.png"),
-                fit: BoxFit.cover),
-          ),
-          child: Center(
-              child: SizedBox(
-                  height:
-                      MediaQuery.of(context).size.height / 1, //height of button
-                  width: MediaQuery.of(context).size.width / 1.1,
-                  child: Column(
-                  //  crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: IconButton(
-                                onPressed: () {
-                                  _asyncConfirmDialog(context);
-                                },
-                                icon: SvgPicture.asset('assets/svg/logout_from_pinNo.svg')),
-                          ),
-                      SizedBox(
-                        // height: MediaQuery.of(context).size.height / 1.3, //height of button
-                        width: MediaQuery.of(context).size.width / 3,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  alignment: Alignment.center,
-                                  height: MediaQuery.of(context).size.height /
-                                      16, //height of button
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  child:   Text(
-                                    'enter_pin'.tr,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
-                                  )),
-                              passwordEnteringField(),
-                              oneToThreeNumbers(),
-                              fourToSixNumber(),
-                              sevenToNineNumber(), //
-                              zeroNumberAndClearButton(),
-                            ]),
-                      ),
-                    ],
-                  ))),
-        ));
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/png/coverpage.png"), fit: BoxFit.cover),
+      ),
+      child: Center(
+          child: SizedBox(
+              height: isTablet?screenHeight/ 1:screenHeight/1, //height of button
+              width: isTablet?screenWidth / 1.1:screenWidth/1,
+              child: Column(
+                //  crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                        onPressed: () {
+                          _asyncConfirmDialog(context);
+                        },
+                        icon: SvgPicture.asset(
+                            'assets/svg/logout_from_pinNo.svg')),
+                  ),
+                  // DefaultTextStyle(
+                  //
+                  //   style:const TextStyle(fontSize: 16,color: Colors.red),
+                  //   child: Focus(
+                  //     focusNode: _focusNode,
+                  //     onKeyEvent: (node, event) => _handleKeyEvent(node, event),
+                  //
+                  //     // onKey: _handleKeyEvent,
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         ListenableBuilder(
+                  //           listenable: _enteredNumbersNotifier,
+                  //           builder: (context, enteredNumbers) {
+                  //             return Text(
+                  //               'Entered Numbers: ${_enteredNumbersNotifier.value.padRight(6, ' ')}',
+                  //               textAlign: TextAlign.center,
+                  //             );
+                  //           },
+                  //         ),
+                  //         SizedBox(height: 50),
+                  //         ElevatedButton(
+                  //           onPressed: _clearEnteredNumbers,
+                  //           child: Text('Clear'),
+                  //         ),
+                  //         ElevatedButton(
+                  //           onPressed: () {
+                  //             print(_enteredNumbersNotifier.value.padRight(6, ' '));
+                  //             //2233 print(Platform.isWindows);
+                  //           },
+                  //           child: Text('Print'),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  Container(
+
+                    // height: MediaQuery.of(context).size.height / 1.3, //height of button
+                    width:  isTablet?screenWidth/ 3:screenWidth/1,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              alignment: Alignment.center,
+                              height: MediaQuery.of(context).size.height /
+                                  16, //height of button
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Text(
+                                'enter_pin'.tr,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 14),
+                              )),
+                          passwordEnteringField(),
+
+                          oneToThreeNumbers(),
+                          fourToSixNumber(),
+                          sevenToNineNumber(), //
+                          zeroNumberAndClearButton(),
+                        ]),
+                  ),
+                ],
+              ))),
+    ));
   }
+
   Future<Null> userTypeData(roleID) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -135,45 +208,44 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         print(response.body);
         print(token);
         var status = n["StatusCode"];
-        var userRollData = n["data"]??[];
+        var userRollData = n["data"] ?? [];
         if (status == 6000) {
           for (var i = 0; i < userRollData.length; i++) {
-
-             if(userRollData[i]["Key"] =="other"||userRollData[i]["Key"] =="report"){
-               prefs.setBool(userRollData[i]["Name"],userRollData[i]["Value"]);
-             }
-             else{
-               prefs.setBool(userRollData[i]["Name"]+userRollData[i]["Key"],userRollData[i]["Value"]);
-             }
-
+            if (userRollData[i]["Key"] == "other" ||
+                userRollData[i]["Key"] == "report") {
+              prefs.setBool(userRollData[i]["Name"], userRollData[i]["Value"]);
+            } else {
+              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"],
+                  userRollData[i]["Value"]);
+            }
           }
 
           stop();
 
+          await Future.delayed(Duration(seconds: 1), () {
+            print("start   01");
 
-         await Future.delayed(Duration(seconds: 1), () {
-           print("start   01");
+            bool result = checkConditions(userRollData);
+            if (result) {
+              prefs.setBool('IsSelectPos', false) ?? '';
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => DashboardNew()),
+              );
+            } else {
+              prefs.setBool('IsSelectPos', true) ?? '';
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => POSListItemsSection()),
+              );
+            }
+            print("result__________________________$result");
+          });
 
-           bool result = checkConditions(userRollData);
-           if(result){
-             prefs.setBool('IsSelectPos',false) ?? '';
-             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardNew()),);
-           }
-           else{
-             prefs.setBool('IsSelectPos',true) ?? '';
-             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => POSListItemsSection()),);
-           }
-           print("result__________________________$result");
-         });
-
-
-
-
-         // await Future.delayed(Duration(seconds: 1), () {
-         //    stop();
-         //    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardNew()),);
-         //  });
-
+          // await Future.delayed(Duration(seconds: 1), () {
+          //    stop();
+          //    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardNew()),);
+          //  });
 
           print("__________________________________");
 
@@ -205,20 +277,15 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
           //   }
           // });
         } else if (status == 6001) {
-
           stop();
-        } else {
-
-        }
+        } else {}
       } catch (e) {
         stop();
       }
     }
   }
 
-
   bool checkConditions(data) {
-
     // Initialize flags for the required conditions
     bool diningView = false;
     bool takeAwayView = false;
@@ -226,34 +293,25 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
     // Iterate through the data list and check the conditions
     for (var item in data) {
-
       if (item["Name"] == "Dining" && item["Key"] == "view") {
         diningView = item["Value"];
-
       } else if (item["Name"] == "Take away" && item["Key"] == "view") {
         takeAwayView = item["Value"];
-
       } else if (item["Name"] == "Car" && item["Key"] == "view") {
         carView = item["Value"];
-
       }
     }
 
-
-
-
-
     if (diningView || takeAwayView || carView) {
-
       // Check if any one true exists in the remaining items
       for (var item in data) {
-
-        if(item["Name"] !="Dining"&&item["Name"] !="Take away"&&item["Name"] !="Car"){
-          if(item["Value"] ==true){
+        if (item["Name"] != "Dining" &&
+            item["Name"] != "Take away" &&
+            item["Name"] != "Car") {
+          if (item["Value"] == true) {
             print(item["Name"]);
             return true;
           }
-
         }
 
         // if (item["Value"] && item["Name"] != "Dining" && item["Name"] != "Take away" && item["Name"] != "Car") {
@@ -262,9 +320,9 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
       }
     }
 
-
     return false;
   }
+
   ///color changing
   changeColor() {
     setState(() {
@@ -329,17 +387,24 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
   ///number enter field
   Widget passwordEnteringField() {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+
+    bool isTablet = screenWidth > 600;
     return Container(
+     // color: Colors.red,
       alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height / 16, //height of button
-      width: MediaQuery.of(context).size.width / 3.5,
+      height: isTablet?screenHeight/16:screenHeight/16,
+      width: isTablet?screenWidth/ 6:screenWidth/2,
+
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 38, //height of button
-            width: MediaQuery.of(context).size.width / 38,
+            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
+            width:   isTablet?screenWidth / 38:screenWidth/17,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: c1,
@@ -347,40 +412,39 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
             child: const Text(''),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 38, //height of button
-            width: MediaQuery.of(context).size.width / 38,
-            decoration: BoxDecoration(
+            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
+            width:   isTablet?screenWidth / 38:screenWidth/17,            decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: c2,
                 border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 38, //height of button
-            width: MediaQuery.of(context).size.width / 38,
+            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
+            width:   isTablet?screenWidth / 38:screenWidth/17,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: c3,
                 border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 38, //height of button
-            width: MediaQuery.of(context).size.width / 38,
+              height: isTablet?screenHeight / 38:screenHeight/17,
+            width:   isTablet?screenWidth / 38:screenWidth/17,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: c4,
                 border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 38, //height of button
-            width: MediaQuery.of(context).size.width / 38,
+              height: isTablet?screenHeight / 38:screenHeight/17,
+            width:   isTablet?screenWidth / 38:screenWidth/17,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: c5,
                 border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 38, //height of button
-            width: MediaQuery.of(context).size.width / 38,
+            height: isTablet?screenHeight / 38:screenHeight/17, ///height of button
+            width:   isTablet?screenWidth / 38:screenWidth/17,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: c6,
@@ -393,17 +457,26 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
   ///first row
   Widget oneToThreeNumbers() {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+
+    bool isTablet = screenWidth > 600;
     return Container(
-      width: MediaQuery.of(context).size.width / 3.5,
-      height: MediaQuery.of(context).size.height / 9,
+
+      height: isTablet?screenHeight/9:screenHeight/9,
+      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
+
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
+
+
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: const Color(0xffFFFFFF),
@@ -426,8 +499,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 )),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -450,8 +523,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 )),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -481,17 +554,23 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
   ///second row
   Widget fourToSixNumber() {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+
+    bool isTablet = screenWidth > 600;
     return Container(
-      width: MediaQuery.of(context).size.width / 3.5,
-      height: MediaQuery.of(context).size.height / 9,
+    //  color: Colors.yellow,
+      height: isTablet?screenHeight/9:screenHeight/9,
+      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -517,8 +596,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 )),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -542,8 +621,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 )),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -573,17 +652,23 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
   ///third row
   Widget sevenToNineNumber() {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+
+    bool isTablet = screenWidth > 600;
     return Container(
-      width: MediaQuery.of(context).size.width / 3.5,
-      height: MediaQuery.of(context).size.height / 9,
+    // color: Colors.purple,
+      height: isTablet?screenHeight/9:screenHeight/9,
+      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -608,8 +693,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 )),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -633,8 +718,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 )),
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -664,21 +749,26 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
   ///clear button
   Widget zeroNumberAndClearButton() {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+    bool isTablet = screenWidth > 600;
     return Container(
-      width: MediaQuery.of(context).size.width / 3.5,
-      height: MediaQuery.of(context).size.height / 9,
+     // color: Colors.amber,
+      height: isTablet?screenHeight/9:screenHeight/9,
+      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -702,8 +792,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 )),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height / 12, //height of button
-            width: MediaQuery.of(context).size.width / 17,
+            height: isTablet?screenHeight/12:screenHeight/ 13,
+            width: isTablet?screenWidth/ 17:screenWidth/5,
 
             child: IconButton(
               tooltip: 'clear fields',
@@ -737,10 +827,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-
-        dialogBox(context, "Connect to internet");
-        stop();
-
+      dialogBox(context, "Connect to internet");
+      stop();
     } else {
       try {
         print('1');
@@ -777,7 +865,6 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         print(response.body);
         print('6');
         if (status == 6000) {
-
           setState(() {
             stop();
             prefs.setString('pos_user_id', n["user_id"]);
@@ -785,6 +872,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
             prefs.setString('role', n["role"]);
             prefs.setString('role_name', n["role_name"]);
             prefs.setInt('employee_ID', n["EmployeeID"]);
+
             /// employee ID save to
             userTypeData(n["role"]);
 
@@ -806,7 +894,6 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
             // );
           });
         } else if (status == 6001) {
-
           dialogBox(context, " Please Enter Correct Password");
           //    dialogBox(context," Please Enter Correct Password");
           setState(() {
@@ -824,20 +911,16 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
           print('222');
 
           //  changeColor();
-
         } else {
           print('333');
           stop();
         }
       } catch (e) {
-
-          print('444');
-          stop();
-
+        print('444');
+        stop();
       }
     }
   }
-
 
   Future<void> selectedItem(BuildContext context, item) async {
     switch (item) {

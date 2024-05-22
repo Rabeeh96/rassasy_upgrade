@@ -340,7 +340,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
   ////
 
-  Future<Null> updateList(String type, apiVal, key) async {
+  Future<Null> updateList(String apiKeyValue, apiData, sharedPreferenceKey) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       stop();
@@ -356,7 +356,7 @@ class _SettingsPageState extends State<SettingsPage> {
         final String url = '$baseUrl/posholds/pos-hold-settings/';
         print("$url");
 
-        Map data = {"CompanyID": companyID, "key": type, "value": apiVal, "action": 1,"BranchID":branchID};
+        Map data = {"CompanyID": companyID, "key": apiKeyValue, "value": apiData, "action": 1,"BranchID":branchID};
         print(data);
 
         var body = json.encode(data);
@@ -373,20 +373,20 @@ class _SettingsPageState extends State<SettingsPage> {
 
         if (status == 6000) {
 
-          if (type != "InitialTokenNo") {
+          if (apiKeyValue != "InitialTokenNo") {
             dialogBox(context, "Updated successfully");
           }
-          if (type == "InitialTokenNo") {
-            initialTokenNoController.text =apiVal;
+          if (apiKeyValue == "InitialTokenNo") {
+            initialTokenNoController.text =apiData;
           }
 
           stop();
           setState(() {});
-          if (type == "TokenResetTime"||type == "InitialTokenNo"||type == "CompensationHour") {
+          if (apiKeyValue == "TokenResetTime"||apiKeyValue == "InitialTokenNo"||apiKeyValue == "CompensationHour") {
 
           }
           else {
-            switchStatus(key, apiVal);
+            switchStatus(sharedPreferenceKey, apiData);
           }
 
         }
@@ -6137,7 +6137,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
 
               SelectableText(
-                """When you visit the Application, you may collect the following data  \n \u2022 Your IP addresses \n \u2022 Your contact information and email address \n \u2022 Other information such as interests and preference \n \u2022 Data profile regarding your online behavior on our Application.
+                """When you visit the Application, you may collect the following data  \n \u2022 Your IP addresses \n \u2022 Your contact information and email address \n \u2022 Other information such as interests and preference \n \u2022 Data profile_mobile regarding your online behavior on our Application.
    
 """,
                 textAlign: TextAlign.justify,

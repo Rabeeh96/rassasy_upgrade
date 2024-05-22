@@ -55,9 +55,9 @@
 //     // TODO Don't forget to choose printer's paper size
 //     const PaperSize paper = PaperSize.mm80;
 //     print("1 ");
-//     final profile = await CapabilityProfile.load();
+//     final profile_mobile = await CapabilityProfile.load();
 //     print("2");
-//     final printer = NetworkPrinter(paper, profile);
+//     final printer = NetworkPrinter(paper, profile_mobile);
 //     print("3");
 //     final PosPrintResult res = await printer.connect(printerIp, port: 9100);
 //     print("4");
@@ -77,9 +77,9 @@
 //     // TODO Don't forget to choose printer's paper size
 //     const PaperSize paper = PaperSize.mm80;
 //     print("1 ");
-//     final profile = await CapabilityProfile.load();
+//     final profile_mobile = await CapabilityProfile.load();
 //     print("2");
-//     final printer = NetworkPrinter(paper, profile);
+//     final printer = NetworkPrinter(paper, profile_mobile);
 //     print("3");
 //     final PosPrintResult res = await printer.connect(printerIp, port: 9100);
 //     print("4");

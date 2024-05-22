@@ -67,10 +67,10 @@
 //           print(
 //               "----------------------4---------------------------------------------");
 //           var paperSize = PaperSize.mm80;
-//           var profile = await CapabilityProfile.load();
+//           var profile_mobile = await CapabilityProfile.load();
 //
 //           var manager =
-//               BluetoothPrinterManager(_printers[index], paperSize, profile);
+//               BluetoothPrinterManager(_printers[index], paperSize, profile_mobile);
 //           var printResult = await manager.connect();
 //
 //           _printers[index].connected = true;
@@ -80,16 +80,16 @@
 //         if (_manager != null) {
 //           print("isConnected ${_manager.isConnected}");
 //           if (_manager.isConnected == false) {
-//             var profile = await CapabilityProfile.load();
+//             var profile_mobile = await CapabilityProfile.load();
 //             var manager =
-//                 BluetoothPrinterManager(_printers[index], paperSize, profile);
+//                 BluetoothPrinterManager(_printers[index], paperSize, profile_mobile);
 //             await manager.disconnect();
 //             return 3;
 //           } else {
 //             print(
 //                 "---------------------9----------------------------------------------");
 //
-//             var profile = await CapabilityProfile.load();
+//             var profile_mobile = await CapabilityProfile.load();
 //             var paperSize = PaperSize.mm80;
 //             var paper = "80mm";
 //             var copies = "1";
@@ -125,7 +125,7 @@
 //             }
 //
 //             data = await service.getBytes(
-//                 paperSize: PaperSize.mm80, profile: profile);
+//                 paperSize: PaperSize.mm80, profile_mobile: profile_mobile);
 //
 //             if (no_of_copies == 0) {
 //               no_of_copies = 1;
@@ -176,8 +176,8 @@
 //     // }
 //     // else {
 //     //   var paperSize = PaperSize.mm80;
-//     //   var profile = await CapabilityProfile.load();
-//     //   var manager = BluetoothPrinterManager(printer, paperSize, profile);
+//     //   var profile_mobile = await CapabilityProfile.load();
+//     //   var manager = BluetoothPrinterManager(printer, paperSize, profile_mobile);
 //     //   await manager.connect();
 //     //   print(" -==== connected =====- ");
 //     //   setState(() {
@@ -190,8 +190,8 @@
 //
 //   disconnect(BluetoothPrinter printer) async {
 //     var paperSize = PaperSize.mm80;
-//     var profile = await CapabilityProfile.load();
-//     var manager = BluetoothPrinterManager(printer, paperSize, profile);
+//     var profile_mobile = await CapabilityProfile.load();
+//     var manager = BluetoothPrinterManager(printer, paperSize, profile_mobile);
 //     await manager.disconnect();
 //     print(" -==== connected =====- ");
 //     setState(() {
@@ -226,7 +226,7 @@
 //             },
 //           ), //
 //           title: const Text(
-//             'Print settings',
+//             'printer_set'.tr,
 //             style: TextStyle(
 //               fontWeight: FontWeight.bold,
 //               color: Colors.black,
@@ -360,11 +360,11 @@
 //
 //   Future<List<int>> getBytes({
 //     PaperSize paperSize = PaperSize.mm80,
-//     required CapabilityProfile profile,
+//     required CapabilityProfile profile_mobile,
 //     String name = "default",
 //   }) async {
 //     List<int> bytes = [];
-//     _profile = profile;
+//     _profile = profile_mobile;
 //     _paperSize = paperSize;
 //     Generator generator = Generator(_paperSize!, _profile!);
 //     var textStyleSwitch = true;
@@ -798,11 +798,11 @@
 //
 //   Future<List<int>> getBytes({
 //     PaperSize paperSize = PaperSize.mm80,
-//     required CapabilityProfile profile,
+//     required CapabilityProfile profile_mobile,
 //     String name = "default",
 //   }) async {
 //     List<int> bytes = [];
-//     _profile = profile;
+//     _profile = profile_mobile;
 //     _paperSize = paperSize;
 //     Generator generator = Generator(_paperSize!, _profile!);
 //     var textStyleSwitch = true;

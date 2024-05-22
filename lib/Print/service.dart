@@ -12,10 +12,10 @@
 //
 //   ESCPrinterService(this.receipt);
 //
-//   Future<List<int>> getBytes({PaperSize paperSize = PaperSize.mm80, required CapabilityProfile profile, String name = "default",
+//   Future<List<int>> getBytes({PaperSize paperSize = PaperSize.mm80, required CapabilityProfile profile_mobile, String name = "default",
 //   }) async {
 //     List<int> bytes = [];
-//     _profile = profile;
+//     _profile = profile_mobile;
 //     _paperSize = paperSize;
 //       Generator generator = Generator(_paperSize!, _profile!);
 //
@@ -44,11 +44,11 @@
 //
 //   Future<List<int>> getBytes({
 //     PaperSize paperSize = PaperSize.mm80,
-//     CapabilityProfile ? profile,
+//     CapabilityProfile ? profile_mobile,
 //     String name = "default",
 //   }) async {
 //     List<int> bytes = [];
-//     _profile = profile ?? (await CapabilityProfile.load(name: name));
+//     _profile = profile_mobile ?? (await CapabilityProfile.load(name: name));
 //
 //     _paperSize = paperSize;
 //     assert(receipt != null);
@@ -91,11 +91,11 @@
 // //
 // //   Future<List<int>> getBytes({
 // //     PaperSize paperSize: PaperSize.mm80,
-// //     CapabilityProfile profile,
+// //     CapabilityProfile profile_mobile,
 // //     String name = "default",
 // //   }) async {
 // //     List<int> bytes = [];
-// //     _profile = profile ?? (await CapabilityProfile.load(name: name));
+// //     _profile = profile_mobile ?? (await CapabilityProfile.load(name: name));
 // //     print(_profile.name);
 // //     _paperSize = paperSize;
 // //     assert(receipt != null);
