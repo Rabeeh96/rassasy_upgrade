@@ -46,10 +46,10 @@ class AppBlocsBT {
     //     if (_printers[index].connected == true) {
     //     } else {
     //       var paperSize = PaperSize.mm80;
-    //       var profile = await CapabilityProfile.load();
+    //       var profile_mobile = await CapabilityProfile.load();
     //
     //       var manager =
-    //           BluetoothPrinterManager(_printers[index], paperSize, profile);
+    //           BluetoothPrinterManager(_printers[index], paperSize, profile_mobile);
     //       await manager.connect();
     //       _printers[index].connected = true;
     //       _manager = manager;
@@ -58,9 +58,9 @@ class AppBlocsBT {
     //     if (_manager != null) {
     //       print("isConnected ${_manager.isConnected}");
     //       if (_manager.isConnected == false) {
-    //         var profile = await CapabilityProfile.load();
+    //         var profile_mobile = await CapabilityProfile.load();
     //         var manager =
-    //             BluetoothPrinterManager(_printers[index], paperSize, profile);
+    //             BluetoothPrinterManager(_printers[index], paperSize, profile_mobile);
     //         await manager.disconnect();
     //         return 3;
     //       } else {
@@ -245,8 +245,8 @@ class AppBlocsBT {
     //   if (a.id!.toLowerCase().contains(ip.toLowerCase())) printDevice = a;
     // });
     //
-    // var profile = await CapabilityProfile.load();
-    // var manager = BluetoothPrinterManager(printDevice, paperSize, profile);
+    // var profile_mobile = await CapabilityProfile.load();
+    // var manager = BluetoothPrinterManager(printDevice, paperSize, profile_mobile);
     // await manager.connect();
     //
     // print(printListData[index].items);

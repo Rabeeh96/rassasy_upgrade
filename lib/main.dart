@@ -21,14 +21,42 @@ import 'test/testingIp.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
+  runApp(MyApp());
+  // SystemChrome.setPreferredOrientations([
+  //
+  //   DeviceOrientation.landscapeLeft,
+  //   DeviceOrientation.landscapeRight,
+  // ]).then((_) {
+  //   runApp(MyApp());
+  // });
+  bool isTablet = isTabletDevice();
 
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
-  ]).then((_) {
-    runApp(MyApp());
-  });
+  // Set preferred orientations based on the device type
+  if (isTablet) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]).then((_) {
+      runApp(MyApp());
+    });
+  } else {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]).then((_) {
+      runApp(MyApp());
+    });
+  }
 }
+bool isTabletDevice() {
+  // Determine if the device is a tablet based on the screen width
+  double screenWidth = MediaQueryData.fromWindow(WidgetsBinding.instance!.window).size.width;
+
+  // Example threshold for tablet
+  // You may need to adjust this threshold based on your requirements
+  return screenWidth > 600;
+}
+
 
 class MyApp extends StatelessWidget {
   @override

@@ -91,6 +91,12 @@ dev_dependencies:
   quickalert: ^1.1.0
   usb_esc_printer_windows: ^0.0.3
   flutter_reorderable_grid_view: ^4.0.0
+  responsive_builder: ^0.4.0
+  flutter_slidable: ^3.0.0
+  readmore: ^3.0.0
+
+
+
 
 
 
@@ -235,6 +241,62 @@ flutter:
     - assets/svg/Edit_Icon.svg
     - assets/png/EmptyCompany.png
     - assets/png/Edit_Icon_png.png
+    - assets/svg/dine.svg
+    - assets/svg/takeout_dining.svg
+    - assets/svg/smartphone.svg
+    - assets/svg/car_img.svg
+    - assets/svg/Vector.svg
+    - assets/svg/online_img.svg
+    - assets/svg/car_inmgs.svg
+    - assets/svg/Icon.svg
+    - assets/svg/logout_mob.svg
+    - assets/svg/calendar_new.svg
+    - assets/svg/Vector (1).svg
+    - assets/svg/edit_mob.svg
+    - assets/svg/print_mob.svg
+    - assets/svg/cancel_order_mob.svg
+    - assets/svg/pay_mob.svg
+    - assets/svg/reserve_mob.svg
+    - assets/svg/Info_mob.svg
+    - assets/svg/menu_mob.svg
+    - assets/svg/search-normal.svg
+    - assets/svg/veg_mob.svg
+    - assets/svg/plus_mob.svg
+    - assets/svg/minus_mob.svg
+    - assets/svg/save_mob.svg
+    - assets/svg/close-circle.svg
+    - assets/svg/drop_arrow.svg
+    - assets/svg/payment_mob.svg
+    - assets/svg/_mobhome.svg
+    - assets/svg/profile_mob.svg
+    - assets/svg/edit_mobile.svg
+    - assets/svg/delete_mobile.svg
+    - assets/svg/logout_mobile.svg
+    - assets/svg/settings_mobile.svg
+    - assets/svg/brand-hipchat.svg
+    - assets/svg/about_us_mob.svg
+    - assets/svg/language-hiragana.svg
+    - assets/svg/phone_about.svg
+    - assets/svg/email-open.svg
+    - assets/svg/shield-security.svg
+    - assets/svg/document-text.svg
+    - assets/svg/version_history.svg
+    - assets/svg/logo_vikn.svg
+    - assets/svg/instagram.svg
+    - assets/svg/facebook.svg
+    - assets/svg/twitter.svg
+    - assets/svg/youtube.svg
+    - assets/svg/settings-2.svg
+    - assets/svg/printer_mob.svg
+    - assets/svg/Add printer.svg
+    - assets/svg/tools-kitchen.svg
+    - assets/svg/takeout_dining_mobile.svg
+    - assets/svg/settinhs_mobile.svg
+    - assets/png/gst.png
+    - assets/png/vat.png
+    - assets/svg/bxs-calendar-check.svg
+    - assets/svg/print.svg
+    - assets/svg/edit_new.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

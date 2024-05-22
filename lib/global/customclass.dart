@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:rassasy_new/global/global.dart';
 
 DateTime dateTime =DateTime.now();
 //  DateFormat dateFormat = DateFormat("dd/MM/yyy");
@@ -87,7 +89,7 @@ showDatePickerFunction(context,ValueNotifier dateNotifier) {
 
                 Navigator.pop(context);
               },
-              initialDate: DateTime.now(),
+              initialDate: dateNotifier.value,
               firstDate: DateTime.now().add(
                 const Duration(days: -100000000),
               ),
@@ -100,4 +102,87 @@ showDatePickerFunction(context,ValueNotifier dateNotifier) {
   );
 }
 
+ DividerStyle(){
+  // Color(0xffE8E8E8): Color(0xff1C3347)
+  Color lightgrey = const Color(0xFFE8E8E8);
+  Color grey= const Color(0xFFE8E8E8).withOpacity(.3);
+//  themeChangeController.isDarkMode.value ? Color(0xffE8E8E8): Color(0xff1C3347)
+  return Container(
+    height: 1,
+    width: double.infinity,
+    decoration: BoxDecoration(
+        gradient:LinearGradient(colors: [
+          grey, // Transparent color
+          lightgrey, // Middle color
+          grey, // Transparent color
+        ],
+          stops: [0.1,0.4,1.0],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        )
+    ),
+  );
+}
+class SearchFieldWidgetNew extends StatelessWidget {
+  SearchFieldWidgetNew(
+      {super.key,
+        required this.mHeight,
+        required this.hintText,
+        required this.controller,
+        this.onChanged,
+        required this.autoFocus});
 
+  final double mHeight;
+  final String hintText;
+  final TextEditingController controller;
+  final bool autoFocus;
+  Function(String)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final mHeight = MediaQuery.of(context).size.height;
+    final mWidth = MediaQuery.of(context).size.width;
+    return Container(
+
+        margin: const EdgeInsets.only(left: 15, right: 10,
+        ),
+        height: mHeight * .055,
+        // decoration: BoxDecoration(
+        //
+        //   border: Border.all(width: .1, color: const Color(0xffE8E8E8)),
+        // ),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                  autofocus: autoFocus,
+                  textCapitalization: TextCapitalization.words,
+                  onChanged: onChanged,
+                  controller: controller,
+
+                  style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
+                  decoration: InputDecoration(
+                    filled: true,
+                      fillColor: Color(0xffFBFBFB),
+                      hintText: hintText,
+                      hintStyle: customisedStyle(context, const Color(0xff929292), FontWeight.normal, 15.0),
+                      contentPadding:
+                      const EdgeInsets.only(left: 10.0, bottom: 10, top: 8),
+                      border: InputBorder.none)
+              ),
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                'assets/svg/search-normal.svg',color: Color(0xffB4B4B4),
+                width: mWidth * .02,
+                height: mHeight * .02,
+
+              ),
+              onPressed: (){
+
+              },
+            ),
+          ],
+        ));
+  }
+}

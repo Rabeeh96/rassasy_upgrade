@@ -1480,7 +1480,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
   List<int> testTicket(profile) {
     List<int> bytes = [];
-    // Using default profile
+    // Using default profile_mobile
     final generator = Generator(PaperSize.mm80, profile);
     bytes += generator.text('Bold text', styles: PosStyles(bold: true));
     bytes += generator.feed(2);
@@ -1594,8 +1594,8 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
   // connectionReconnect(printerIp)async{
   //   const PaperSize paper = PaperSize.mm80;
   //
-  //   final profile = await CapabilityProfile.load();
-  //   final printer = NetworkPrinter(paper, profile);
+  //   final profile_mobile = await CapabilityProfile.load();
+  //   final printer = NetworkPrinter(paper, profile_mobile);
   //
   //   var  port = int.parse(portController.text);
   //   final PosPrintResult res = await printer.connect(printerIp, port: port);

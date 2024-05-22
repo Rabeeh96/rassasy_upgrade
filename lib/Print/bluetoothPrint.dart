@@ -325,8 +325,8 @@
 //     }
 //     else{
 //       var paperSize = PaperSize.mm80;
-//       var profile = await CapabilityProfile.load();
-//       var manager = NetworkPrinterManager(printer, paperSize, profile);
+//       var profile_mobile = await CapabilityProfile.load();
+//       var manager = NetworkPrinterManager(printer, paperSize, profile_mobile);
 //       await manager.connect();
 //       setState(() {
 //         _manager = manager;
@@ -378,8 +378,8 @@
 //       }
 //
 //     }
-//     var profile = await CapabilityProfile.load();
-//     var data = await service.getBytes(profile: profile);
+//     var profile_mobile = await CapabilityProfile.load();
+//     var data = await service.getBytes(profile_mobile: profile_mobile);
 //      if (_manager != null) {
 //       print("isConnected ${_manager!.isConnected}");
 //       _manager!.writeBytes(data, isDisconnect: false);
@@ -401,8 +401,8 @@
 //
 //   disconnect(NetWorkPrinter printer) async {
 //     var paperSize = PaperSize.mm80;
-//     var profile = await CapabilityProfile.load();
-//     var manager = NetworkPrinterManager(printer, paperSize, profile);
+//     var profile_mobile = await CapabilityProfile.load();
+//     var manager = NetworkPrinterManager(printer, paperSize, profile_mobile);
 //     await manager.disconnect();
 //     print(" -==== connected =====- ");
 //     setState(() {
