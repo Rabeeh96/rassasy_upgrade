@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/order/order_detail_page.dart';
 import 'package:popover/popover.dart';
@@ -19,7 +20,7 @@ class OrderCreatePage extends StatefulWidget {
 }
 
 class _OrderCreatePageState extends State<OrderCreatePage> {
-  POSController orderController = Get.put(POSController());
+  OrderController orderController = Get.put(OrderController());
   var selectedItem = '';
   final ValueNotifier<int> _counter = ValueNotifier<int>(1);
 
@@ -243,7 +244,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                       image:
                                           'https://picsum.photos/250?image=9',
                                       name: "Shwarama plate Mexican",
-                                      isColor: orderController.isVeg.value,
+                                      isColor: orderController.isVegNotifier.value,
                                       total: '909.00',
                                     ));
                                   },
@@ -255,7 +256,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                       SvgPicture.asset(
                                         "assets/svg/veg_mob.svg",
                                         color:
-                                            orderController.isVeg.value == true
+                                            orderController.isVegNotifier.value == true
                                                 ? const Color(0xff00775E)
                                                 : const Color(0xffDF1515),
                                       ),
@@ -575,9 +576,17 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                       child: ValueListenableBuilder<int>(
                         valueListenable: orderController.selectedIndexNotifier,
                         builder: (context, selectedIndex, child) {
-                          return ListView.builder(
+                          return Obx(() =>
+
+                          orderController.isLoading.value
+                              ? const Center(child: CircularProgressIndicator())
+                              : orderController.flavourList.isEmpty
+                              ? Center(child: const Text("Flavours Not Found!"))
+                              :
+
+                          ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: POSController.labels.length,
+                            itemCount: orderController.flavourList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: () {
@@ -597,7 +606,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                       padding: const EdgeInsets.only(
                                           left: 12.0, right: 12),
                                       child: Text(
-                                        orderController.menuItemList[index],
+                                        orderController.flavourList[index].flavourName,
                                         style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey,
@@ -608,7 +617,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                 ),
                               );
                             },
-                          );
+                          ));
                         },
                       ),
                     ),
@@ -694,36 +703,6 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
     );
   }
 
-  void _showPopupAlert(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Menu Items'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-
-            children: orderController.menuItemList
-                .map(
-                  (item) => ListTile(
-                    title: Text(item),
-                  ),
-                )
-                .toList(),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   void addDetails() {
     Get.bottomSheet(

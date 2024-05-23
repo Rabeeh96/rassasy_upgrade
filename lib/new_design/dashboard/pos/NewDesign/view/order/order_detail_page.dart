@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/order/add_order_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/payment/payment_page.dart';
 
 import 'product_detail_page.dart';
@@ -16,7 +18,7 @@ class OrderDetailPage extends StatefulWidget {
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
-  POSController orderController = Get.put(POSController());
+  OrderController orderController = Get.put(OrderController());
   var selectedItem = '';
   final ValueNotifier<int> _counter = ValueNotifier<int>(1);
   Color _getBackgroundColor(String? status) {
@@ -137,7 +139,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       image:
                                           'https://picsum.photos/250?image=9',
                                       name: "Shwarama plate Mexican",
-                                      isColor: orderController.isVeg.value,
+                                      isColor: orderController.isVegNotifier.value,
                                       total: '909.00',
                                     ));
                                   },
@@ -154,7 +156,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           SvgPicture.asset(
                                             "assets/svg/veg_mob.svg",
                                             color:
-                                            orderController.isVeg.value == true
+                                            orderController.isVegNotifier.value == true
                                                 ? const Color(0xff00775E)
                                                 : const Color(0xffDF1515),
                                           ),
