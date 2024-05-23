@@ -8,7 +8,6 @@ import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/reservation_list.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
-
 import 'order/add_order_page.dart';
 
 class DiningPage extends StatefulWidget {
@@ -24,25 +23,26 @@ class DiningPage extends StatefulWidget {
 class _DiningPageState extends State<DiningPage> {
   final POSController diningController = Get.put(POSController());
 
-  ///this func used to get the colors
-  ///to chnage back color of status showing in list
+   ///this func used to get the colors
+  ///to change back color of status showing in list
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
-      return Color(0xffEFEFEF); // Set your desired color for pending status
+      return const Color(0xffEFEFEF); // Set your desired color for pending status
     } else if (status == 'Ordered') {
-      return Color(0xff03C1C1); // Set your desired color for completed status
+      return const Color(0xff03C1C1); // Set your desired color for completed status
     } else if (status == 'Paid') {
-      return Color(0xff10C103); // Set your desired color for cancelled status
+      return const Color(0xff10C103); // Set your desired color for cancelled status
     } else if (status == 'Billed') {
-      return Color(0xff034FC1); // Set your desired color for cancelled status
-    } else {
-      return Color(0xffEFEFEF); // Default color if status is not recognized
+      return const Color(0xff034FC1); // Set your desired color for cancelled status
+    }
+    else {
+      return const Color(0xffEFEFEF); // Default color if status is not recognized
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
+    /// TODO: implement initState
     super.initState();
     diningController.tableData.clear();
     diningController.fetchAllData();
@@ -390,7 +390,7 @@ class _DiningPageState extends State<DiningPage> {
     );
   }
 
-  ///add table option  working not complete
+  ///add table option working not complete
   void addTable() {
     Get.bottomSheet(
       isDismissible: true,
@@ -479,7 +479,7 @@ class _DiningPageState extends State<DiningPage> {
     );
   }
 
-  ///add reservation bottomsheet currently not using herre
+  ///add reservation bottom sheet currently not using here
   void addReservationTable() {
     Get.bottomSheet(
       isDismissible: true,

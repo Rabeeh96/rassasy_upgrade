@@ -7,7 +7,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
-
+//
 class CompanyExpired extends StatefulWidget {
   @override
   State<CompanyExpired> createState() => _CompanyExpiredState();
@@ -18,8 +18,9 @@ class _CompanyExpiredState extends State<CompanyExpired> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer.periodic(Duration(seconds: 10), (timer) {
+    Timer.periodic(const Duration(seconds: 10), (timer) {
       myFunction();
+
     });
     expiryDateCheck();
   }
