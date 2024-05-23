@@ -33,13 +33,12 @@ class POSController extends GetxController {
     takeAwayOrders.clear();
     carOrders.clear();
   }
-  ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(false); // Initialize with initial value
-  ValueNotifier<bool> isOrderCreate = ValueNotifier<bool>(false); // Initialize with initial value
 
   var selectedIndex = -1.obs;
   static final List<String> labels = ['All', 'Vacant', 'Ordered', 'Paid'];
-  final ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
+
   final ValueNotifier<int> carItemSelectedNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
 
   static final List<String> carItems = [
     'All',
@@ -47,12 +46,11 @@ class POSController extends GetxController {
     'Swiggy',
   ];
 
-  final List<String> menuItemList = ['Shawarma', 'Soup', 'Dumplings', 'Pasta', 'Beverage'];
+
   static final List<String> menuItem = ['Shawarma', 'Soup', 'Dumplings', 'Pasta', 'Beaverage'];
 
   final ValueNotifier<bool> isDismiss = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> isVeg = ValueNotifier<bool>(true);
-  final ValueNotifier<bool> isAddItem = ValueNotifier<bool>(false);
+
   TextEditingController customerNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController deliveryManController = TextEditingController();

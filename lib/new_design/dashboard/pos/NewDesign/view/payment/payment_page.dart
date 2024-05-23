@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/payment_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  POSController orderController = Get.put(POSController());
+  POSPaymentController orderController = Get.put(POSPaymentController());
   var selectedItem = '';
   final ValueNotifier<int> _counter = ValueNotifier<int>(1);
 

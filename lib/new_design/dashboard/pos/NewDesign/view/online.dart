@@ -87,7 +87,6 @@ class _OnlinePageState extends State<OnlinePage> {
                                 index; // Update the selected index
                           },
                           child: Container(
-                            width: MediaQuery.of(context).size.width / 5,
                             decoration: BoxDecoration(
                               color: selectedIndex == index
                                   ? const Color(0xffF25F29)
@@ -97,7 +96,7 @@ class _OnlinePageState extends State<OnlinePage> {
                             child: Center(
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.only(left: 8.0, right: 8),
+                                    const EdgeInsets.only(left:20.0, right: 20),
                                 child: Text(
                                   onlinePlatformController
                                       .dataList[index].name!,
