@@ -629,7 +629,8 @@ class _DashboardNewState extends State<DashboardNew> {
           //     ),
           //   ),
           // ),
-          Theme(
+
+          isTablet==true?Theme(
             data: Theme.of(context).copyWith(
                 textTheme: const TextTheme().apply(bodyColor: Colors.black),
                 dividerColor: Colors.white,
@@ -760,7 +761,7 @@ class _DashboardNewState extends State<DashboardNew> {
               ),
               onSelected: (item) => selectedItem(context, item),
             ),
-          ),
+          ):Container(),
         ],
       ),
       body: networkConnection == true
@@ -1141,7 +1142,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              POSMobilePage()));
+                                              POSMobilePage(key: Key(""),)));
                                 } else {
                                   var dinePerm =
                                       await checkingPerm("Diningview");

@@ -130,7 +130,7 @@ class _OnlinePageState extends State<OnlinePage> {
               child: Obx(() => onlineController.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
                   : onlineController.onlineOrders.isEmpty
-                      ? const Text("No recent orders")
+                      ? Center(child: const Text("No recent orders"))
                       : ListView.builder(
                           itemCount: onlineController.carOrders.length,
                           itemBuilder: (context, index) {

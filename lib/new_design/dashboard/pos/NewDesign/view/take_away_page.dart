@@ -74,7 +74,7 @@ class _TakeAwayState extends State<TakeAway> {
             child: Obx(() => takeAwayController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
                 : takeAwayController.takeAwayOrders.isEmpty?
-                 const Text("No recent orders"):ListView.builder(
+                 Center(child: const Text("No recent orders")):ListView.builder(
                     itemCount: takeAwayController.takeAwayOrders.length,
                     itemBuilder: (context, index) {
 

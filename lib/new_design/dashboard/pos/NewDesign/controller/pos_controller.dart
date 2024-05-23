@@ -7,10 +7,15 @@ import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/service/pos_servi
 import 'package:shared_preferences/shared_preferences.dart';
 
 class POSController extends GetxController {
-  var tabIndex = 0.obs;
+  RxInt tabIndex=0.obs;
+
+  POSController({int defaultIndex = 0}) : tabIndex = defaultIndex.obs;
+
+ // var tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
     tabIndex.value = index;
+
   }
 
   @override
@@ -28,6 +33,8 @@ class POSController extends GetxController {
     takeAwayOrders.clear();
     carOrders.clear();
   }
+  ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(false); // Initialize with initial value
+  ValueNotifier<bool> isOrderCreate = ValueNotifier<bool>(false); // Initialize with initial value
 
   var selectedIndex = -1.obs;
   static final List<String> labels = ['All', 'Vacant', 'Ordered', 'Paid'];

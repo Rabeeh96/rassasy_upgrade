@@ -145,7 +145,7 @@ class _DiningPageState extends State<DiningPage> {
             child: Obx(() => diningController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
                 : diningController.tableData.isEmpty
-                    ? const Text("No recent orders")
+                    ? Center(child: const Text("No recent orders"))
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: ListView.separated(

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -103,28 +105,25 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                               context, Colors.black, FontWeight.w500, 16.0),
                         ),
                       ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 3.2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: GestureDetector(
+                      ValueListenableBuilder<bool>(
+                        valueListenable: orderController.isVegNotifier,
+                        builder: (context, isVegValue, child) {
+                          return GestureDetector(
                             onTap: () {
-                              orderController.isVeg.value = false;
+                              orderController. isVegNotifier.value = !isVegValue; // Toggle the value
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xffDBDBDB)),
+                                border: Border.all(color: const Color(0xffDBDBDB)),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, top: 4, bottom: 4),
+                                padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(
                                       "assets/svg/veg_mob.svg",
-                                      color: orderController.isVeg.value == true
+                                      color: isVegValue
                                           ? const Color(0xff00775E)
                                           : const Color(0xffDF1515),
                                     ),
@@ -142,9 +141,51 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
+                          );
+                        },
+                      )
+                      // SizedBox(
+                      //   width: MediaQuery.of(context).size.width / 3.2,
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(5.0),
+                      //     child: GestureDetector(
+                      //       onTap: () {
+                      //         orderController.isVeg.value = false;
+                      //       },
+                      //       child: Container(
+                      //         decoration: BoxDecoration(
+                      //           border:
+                      //               Border.all(color: const Color(0xffDBDBDB)),
+                      //           borderRadius: BorderRadius.circular(5),
+                      //         ),
+                      //         child: Padding(
+                      //           padding: const EdgeInsets.only(
+                      //               left: 8, right: 8, top: 4, bottom: 4),
+                      //           child: Row(
+                      //             children: [
+                      //               SvgPicture.asset(
+                      //                 "assets/svg/veg_mob.svg",
+                      //                 color: orderController.isVeg.value == true
+                      //                     ? const Color(0xff00775E)
+                      //                     : const Color(0xffDF1515),
+                      //               ),
+                      //               const Padding(
+                      //                 padding: EdgeInsets.only(left: 8.0),
+                      //                 child: Text(
+                      //                   "Veg Only",
+                      //                   style: TextStyle(
+                      //                     fontSize: 12,
+                      //                     color: Color(0xff585858),
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   GestureDetector(
@@ -337,14 +378,14 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                                             _counter.value--;
                                                           }
                                                         },
-                                                        child: Icon(
+                                                        child: const Icon(
                                                           Icons.remove,
                                                           color: Colors.white,
                                                         ),
                                                       ),
                                                       Text(
                                                         '$value',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 18,
                                                           color: Colors.white,
                                                         ),
@@ -353,7 +394,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                                         onTap: () {
                                                           _counter.value++;
                                                         },
-                                                        child: Icon(
+                                                        child: const Icon(
                                                           Icons.add,
                                                           color: Colors.white,
                                                         ),
@@ -373,54 +414,39 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                     alignment: Alignment.bottomCenter,
                                     children: <Widget>[
                                       Container(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                7,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                4,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          mainAxisSize: MainAxisSize.min,
+                                        height: MediaQuery.of(context).size.height / 9,
+                                        width: MediaQuery.of(context).size.width / 4,
+                                        child: Stack(
+                                          fit: StackFit.expand,
                                           children: [
-                                            Positioned.fill(
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  'https://picsum.photos/250?image=9',
-                                                  fit: BoxFit.cover,
-                                                ),
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(10),
+                                              child: Image.network(
+                                                'https://picsum.photos/250?image=9',
+                                                fit: BoxFit.cover,
                                               ),
-                                            )
+                                            ),
+                                            // Other widgets inside the container, if any
                                           ],
                                         ),
                                       ),
                                       Positioned(
-                                        bottom: 15,
+                                        top: 70,
+
                                         child: GestureDetector(
                                           onTap: () {
                                             print("gjhdfghdf");
-                                            orderController.isAddItem.value =
-                                                true;
+                                            orderController.isAddItem.value = true;
+                                            orderController.isOrderCreate.value = true;
                                           },
                                           child: SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                30,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                6,
+                                            height: MediaQuery.of(context).size.height / 30,
+                                            width: MediaQuery.of(context).size.width / 6,
                                             child: DecoratedBox(
                                               decoration: ShapeDecoration(
                                                 shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      color: Color(0xffF25F29)),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                                  side: const BorderSide(color: Color(0xffF25F29)),
+                                                  borderRadius: BorderRadius.circular(10),
                                                 ),
                                                 color: Colors.white,
                                               ),
@@ -439,6 +465,77 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                                       ),
                                     ],
                                   )
+///old
+                                // Stack(
+                                  //   alignment: Alignment.bottomCenter,
+                                  //   children: <Widget>[
+                                  //     Container(
+                                  //       height:
+                                  //           MediaQuery.of(context).size.height /
+                                  //               7,
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width /
+                                  //               4,
+                                  //       child: Column(
+                                  //         crossAxisAlignment:
+                                  //             CrossAxisAlignment.stretch,
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: [
+                                  //           Positioned.fill(
+                                  //             child: ClipRRect(
+                                  //               borderRadius:
+                                  //                   BorderRadius.circular(10),
+                                  //               child: Image.network(
+                                  //                 'https://picsum.photos/250?image=9',
+                                  //                 fit: BoxFit.cover,
+                                  //               ),
+                                  //             ),
+                                  //           )
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //     Positioned(
+                                  //       bottom: 15,
+                                  //       child: GestureDetector(
+                                  //         onTap: () {
+                                  //           print("gjhdfghdf");
+                                  //           orderController.isAddItem.value =      true;
+                                  //           orderController.isOrderCreate.value=true;
+                                  //         },
+                                  //         child: SizedBox(
+                                  //           height: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .height /
+                                  //               30,
+                                  //           width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width /
+                                  //               6,
+                                  //           child: DecoratedBox(
+                                  //             decoration: ShapeDecoration(
+                                  //               shape: RoundedRectangleBorder(
+                                  //                 side: const BorderSide(
+                                  //                     color: Color(0xffF25F29)),
+                                  //                 borderRadius:
+                                  //                     BorderRadius.circular(10),
+                                  //               ),
+                                  //               color: Colors.white,
+                                  //             ),
+                                  //             child: const Center(
+                                  //               child: Text(
+                                  //                 'Add',
+                                  //                 style: TextStyle(
+                                  //                   color: Color(0xffF25F29),
+                                  //                 ),
+                                  //                 textAlign: TextAlign.center,
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // )
                               ],
                             ),
                             const SizedBox(
@@ -456,8 +553,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: MediaQuery.of(context).size.height / 5.9,
+      bottomNavigationBar: SizedBox(
+        height:orderController.isOrderCreate.value==true?MediaQuery.of(context).size.height /5.9 :MediaQuery.of(context).size.height / 11,
         child: Column(
           children: [
             Container(
@@ -549,48 +646,48 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Get.to(OrderDetailPage());
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height / 12,
-                decoration: const BoxDecoration(color: Color(0xff00775E)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Text(
-                        '2 Items Added',
-                        style: customisedStyle(context, const Color(0xffFfffff),
-                            FontWeight.normal, 16.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${orderController.currency} ',
-                            style: customisedStyle(context,
-                                const Color(0xffFfffff), FontWeight.w500, 16.0),
-                          ),
-                          Text(
-                            '18.00',
-                            style: customisedStyle(context,
-                                const Color(0xffFfffff), FontWeight.w500, 18.0),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
+            // orderController.isItemAdded.value==true?GestureDetector(
+            //   onTap: () {
+            //     Get.to(OrderDetailPage());
+            //   },
+            //   child: Container(
+            //     height: MediaQuery.of(context).size.height / 12,
+            //     decoration: const BoxDecoration(color: Color(0xff00775E)),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.center,
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Padding(
+            //           padding: const EdgeInsets.only(left: 8.0, right: 8),
+            //           child: Text(
+            //             '2 Items Added',
+            //             style: customisedStyle(context, const Color(0xffFfffff),
+            //                 FontWeight.normal, 16.0),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.only(left: 8.0, right: 8),
+            //           child: Row(
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               Text(
+            //                 '${orderController.currency} ',
+            //                 style: customisedStyle(context,
+            //                     const Color(0xffFfffff), FontWeight.w500, 16.0),
+            //               ),
+            //               Text(
+            //                 '18.00',
+            //                 style: customisedStyle(context,
+            //                     const Color(0xffFfffff), FontWeight.w500, 18.0),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ):Container()
           ],
         ),
       ),

@@ -74,7 +74,7 @@ class _TakeAwayState extends State<CarPage> {
         Expanded(
             child: Obx(() => carController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
-                : carController.carOrders.isEmpty?const Text("No recent orders"):ListView.builder(
+                : carController.carOrders.isEmpty?const Center(child: Text("No recent orders")):ListView.builder(
               itemCount: carController.carOrders.length,
               itemBuilder: (context, index) {
 
