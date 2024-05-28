@@ -28,7 +28,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   final ValueNotifier<int> _counter = ValueNotifier<int>(1);
   ValueNotifier<List> _choices = ValueNotifier<List>(['Spicy', 'Arabic', 'Cold', ]) ;
   String selected = "Arabic";
-//listview working
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
