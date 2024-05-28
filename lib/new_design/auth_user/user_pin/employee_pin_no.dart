@@ -483,6 +483,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -507,6 +509,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -531,6 +535,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -577,6 +583,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   setState(() {
                     if (num.length >= 6) {
@@ -604,6 +612,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -629,6 +639,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -675,6 +687,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   //  passList.add(7);
                   if (num.length >= 6) {
@@ -701,6 +715,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -726,6 +742,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+                highlightColor: Colors.transparent,
+
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -775,6 +793,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
+              highlightColor: Colors.transparent,
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -796,6 +815,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
             width: isTablet?screenWidth/ 17:screenWidth/5,
 
             child: IconButton(
+
               tooltip: 'clear fields',
               onPressed: () {
                 setState(() {
