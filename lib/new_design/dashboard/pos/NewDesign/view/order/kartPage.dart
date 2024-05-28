@@ -8,11 +8,18 @@ import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/order/add_order_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/payment/payment_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/new_method/model/roundFunc.dart';
 
 import 'product_detail_page.dart';
 import 'search_items.dart';
 
 class OrderDetailPage extends StatefulWidget {
+
+  final String uID, tableID, sectionType, tableHead;
+  final int orderType;
+
+  const OrderDetailPage({super.key, required this.tableID, required this.tableHead, required this.uID, required this.sectionType, required this.orderType,});
+
   @override
   State<OrderDetailPage> createState() => _OrderDetailPageState();
 }
@@ -20,18 +27,8 @@ class OrderDetailPage extends StatefulWidget {
 class _OrderDetailPageState extends State<OrderDetailPage> {
   OrderController orderController = Get.put(OrderController());
   var selectedItem = '';
-  final ValueNotifier<int> _counter = ValueNotifier<int>(1);
-  Color _getBackgroundColor(String? status) {
-    if (status == 'Pending') {
-      return Color(0xffECAC08); // Set your desired color for pending status
-    } else if (status == 'Delivered') {
-      return Color(0xff000000); // Set your desired color for completed status
-    } else if (status == 'Takeaway') {
-      return Color(0xff034FC1); // Set your desired color for cancelled status
-    } else {
-      return Color(0xffECAC08); // Default color if status is not recognized
-    }
-  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,10 +45,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         ),
         titleSpacing: 0,
         elevation: 0,
-        title: const Row(
+        title:   Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Table Order',
               style: TextStyle(
                   color: Colors.black,
@@ -62,19 +59,20 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   'Table Order',
                   style: TextStyle(
                       color: Color(0xff585858),
                       fontSize: 14,
                       fontWeight: FontWeight.w400),
                 ),
-                Text(
-                  'Token No',
-                  style: TextStyle(
+                Obx(() =>Text(
+                  orderController.tokenNumber.value,
+                  style: const TextStyle(
                       color: Colors.black,
                       fontSize: 14,
-                      fontWeight: FontWeight.w400),
+                      fontWeight: FontWeight.w400), )
+
                 ),
               ],
             ),
@@ -106,309 +104,270 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ),
           DividerStyle(),
 
-
-          Expanded(
-            child: ValueListenableBuilder<int>(
-              valueListenable: orderController.selectedIndexNotifier,
-              builder: (context, selectedIndex, child) {
-                return ListView.builder(
-                  itemCount:5,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        orderController.selectedIndexNotifier.value = index;
-                      },
+          Obx(() => Expanded(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => DividerStyle(),
+                itemCount: orderController.orderItemList.length,
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                    key: Key(orderController.orderItemList[index]["unq_id"].toString()),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      // Remove the item from your data source.
+                     ///  orderController.deleteOrderItem(index: index);
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {},
                       child: Padding(
                         padding: const EdgeInsets.only(
-                          left: 15.0,
-                          right:5,
-                        ),
-                        child: Column(
+                            left: 15.0, right: 5, top: 10, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(Icons.check_circle,color: Color(0xffF25F29),),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(ProductDetailPage(
-                                      image:
-                                          'https://picsum.photos/250?image=9',
-                                      name: "Shwarama plate Mexican",
-                                      isColor: orderController.isVegNotifier.value,
-                                      total: '909.00',
-                                    ));
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                            const Icon(Icons.check_circle, color: Color(0xffF25F29)),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(ProductDetailPage());
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/svg/veg_mob.svg",
-                                            color:
-                                            orderController.isVegNotifier.value == true
-                                                ? const Color(0xff00775E)
-                                                : const Color(0xffDF1515),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 10.0, top: 8),
-                                            child: Container(
-
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.35,
-                                              child: Text(
-                                                "Shwarama plate Mexican",
-                                                style: customisedStyle(
-                                                    context,
-                                                    Colors.black,
-                                                    FontWeight.w400,
-                                                    15.0),
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                      SvgPicture.asset("assets/svg/veg_mob.svg"),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20.0,right: 5),
-                                              child: Text(
-                                                "Extra spicy",
-                                                style: customisedStyle(
-                                                    context,
-                                                    Color(0xffF25F29),
-                                                    FontWeight.w400,
-                                                    13.0),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-
-                                              },
-                                              child: Container(
-                                                height: MediaQuery.of(
-                                                    context)
-                                                    .size
-                                                    .height /
-                                                    32,
-                                                decoration:
-                                                BoxDecoration(
-                                                  color: _getBackgroundColor(
-                                                      'Delivery'),
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(30),
-                                                ),
-                                                child: Center(
-                                                  child: Padding(
-                                                    padding:
-                                                    const EdgeInsets
-                                                        .only(
-                                                        left: 10.0,
-                                                        right: 10),
-                                                    child: Text(
-                                                     "Delivery",
-                                                      style: TextStyle(
-                                                          fontSize: 11,
-                                                        color: Colors.white
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                        padding: const EdgeInsets.only(
+                                            right: 10.0, top: 0, left: 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context).size.width * 0.35,
+                                          child: Text(
+                                            orderController.orderItemList[index]["ProductName"],
+                                            style: customisedStyle(
+                                                context, Colors.black, FontWeight.w400, 15.0),
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Column(
-                                  children: [
-                                    Row(
+                                  orderController.orderItemList[index]["Description"] != ""
+                                      ? Padding(
+                                    padding: const EdgeInsets.only(left: 20.0, right: 5),
+                                    child: Text(
+                                      orderController.orderItemList[index]["Description"],
+                                      style: customisedStyle(
+                                          context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                    ),
+                                  )
+                                      : Container(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          orderController.currency,
-                                          style: customisedStyle(
-                                              context, const Color(0xffA5A5A5), FontWeight.w400, 14.0),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 3.0),
+                                        orderController.orderItemList[index]["Flavour_Name"] != ""
+                                            ? Padding(
+                                          padding:
+                                          const EdgeInsets.only(left: 20.0, right: 5),
                                           child: Text(
-                                            " 0.00",
+                                            orderController.orderItemList[index]["Flavour_Name"]??"",
                                             style: customisedStyle(
-                                                context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                                context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                          ),
+                                        )
+                                            : Container(),
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: Container(
+                                            height: MediaQuery.of(context).size.height / 32,
+                                            decoration: BoxDecoration(
+                                              color: orderController.returnIconStatus(
+                                                  orderController.orderItemList[index]["Status"]),
+                                              borderRadius: BorderRadius.circular(30),
+                                            ),
+                                            child: Center(
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets.only(left: 10.0, right: 10),
+                                                child: Text(
+                                                  orderController.orderItemList[index]["Status"],
+                                                  style: const TextStyle(
+                                                      fontSize: 11, color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    ValueListenableBuilder(
-                                      valueListenable: _counter,
-                                      builder: (context, int value, child) {
-                                        return Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            IconButton(
-                                              icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
-
-                                              onPressed: () {
-                                                if (value > 1) {
-                                                  _counter.value--;
-                                                }
-                                              },
-                                            ),
-                                            Container(
-                                              height: MediaQuery.of(context).size.height/21,
-                                              width: MediaQuery.of(context).size.width/7,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(8),
-                                                  border: Border.all(color: Color(0xffE7E7E7))
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  '$value',
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            IconButton(
-                                              icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
-
-
-                                              onPressed: () {
-                                                _counter.value++;
-                                              },
-                                            ),
-                                          ],
-                                        );
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      orderController.currency.value,
+                                      style: customisedStyle(context, const Color(0xffA5A5A5),
+                                          FontWeight.w400, 14.0),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 3.0),
+                                      child: Text(
+                                        roundStringWith(orderController.orderItemList[index]["NetAmount"].toString()),
+                                        style: customisedStyle(context, const Color(0xff000000),
+                                            FontWeight.w500, 16.0),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    IconButton(
+                                      icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
+                                      onPressed: () {
+                                        orderController.updateQty(index: index, type: 0);
+                                      },
+                                    ),
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 21,
+                                      width: MediaQuery.of(context).size.width / 7,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: const Color(0xffE7E7E7))),
+                                      child: Center(
+                                        child: Text(
+                                          roundStringWith(orderController.orderItemList[index]["Qty"].toString()),
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
+                                      onPressed: () {
+                                        orderController.updateQty(index: index, type: 1);
                                       },
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            DividerStyle()
                           ],
                         ),
                       ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
+                    ),
+                  );
+                },
+              )
+
+          ), )
+
+
 
 
         ],
       ),
       bottomNavigationBar: Container(
 
-        height: MediaQuery.of(context).size.height / 5,
+        height: MediaQuery.of(context).size.height / 8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffEEF5FF))),
-                    onPressed: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 5.0, right: 5),
-                      child: Text(
-                        "TakeAway",
-                        style: customisedStyle(
-                            context,
-                            const Color(0xff034FC1),
-                            FontWeight.normal,
-                            12.0),
-                      ),
-                    ),),
-                const SizedBox(
-                  width: 7,
-                ),
-                TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffF0F0F0))),
-                    onPressed: () {},
-                    child:  Padding(
-                      padding: const EdgeInsets.only(left: 5.0, right: 5),
-                      child: Text(
-                        'Delivered',
-                        style: customisedStyle(
-                            context,
-                            const Color(0xff000000),
-                            FontWeight.normal,
-                            12.0),
-                      ),
-                    )),
-                const SizedBox(
-                  width: 7,
-                ),
-                TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffFFF6F2))),
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(Icons.add,color: Color(0xffF25F29),),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0, right: 5),
-                          child: Text(
-                            'Items',
-                            style: customisedStyle(
-                                context,
-                                const Color(0xffF25F29),
-                                FontWeight.normal,
-                                12.0),
-                          ),
-                        )
-                      ],
-                    )),
-              ],
-            ),
-            const SizedBox(
-              height: 9,
-            ),
+
+            /// status chnageing commented
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: [
+            //     TextButton(
+            //         style: ButtonStyle(
+            //             backgroundColor:
+            //             MaterialStateProperty.all(const Color(0xffEEF5FF))),
+            //         onPressed: () {},
+            //         child: Padding(
+            //           padding: const EdgeInsets.only(left: 5.0, right: 5),
+            //           child: Text(
+            //             "TakeAway",
+            //             style: customisedStyle(
+            //                 context,
+            //                 const Color(0xff034FC1),
+            //                 FontWeight.normal,
+            //                 12.0),
+            //           ),
+            //         ),),
+            //     const SizedBox(
+            //       width: 7,
+            //     ),
+            //     TextButton(
+            //         style: ButtonStyle(
+            //             backgroundColor:
+            //             MaterialStateProperty.all(const Color(0xffF0F0F0))),
+            //         onPressed: () {},
+            //         child:  Padding(
+            //           padding: const EdgeInsets.only(left: 5.0, right: 5),
+            //           child: Text(
+            //             'Delivered',
+            //             style: customisedStyle(
+            //                 context,
+            //                 const Color(0xff000000),
+            //                 FontWeight.normal,
+            //                 12.0),
+            //           ),
+            //         )),
+            //     const SizedBox(
+            //       width: 7,
+            //     ),
+            //     TextButton(
+            //         style: ButtonStyle(
+            //             backgroundColor:
+            //             MaterialStateProperty.all(const Color(0xffFFF6F2))),
+            //         onPressed: () {
+            //           Get.back();
+            //         },
+            //         child: Row(
+            //           children: [
+            //             const Icon(Icons.add,color: Color(0xffF25F29),),
+            //             Padding(
+            //               padding: const EdgeInsets.only(left: 5.0, right: 5),
+            //               child: Text(
+            //                 'Items',
+            //                 style: customisedStyle(
+            //                     context,
+            //                     const Color(0xffF25F29),
+            //                     FontWeight.normal,
+            //                     12.0),
+            //               ),
+            //             )
+            //           ],
+            //         )),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 9,
+            // ),
             Container(
               height: 1,
               color: const Color(0xffE9E9E9),
@@ -416,7 +375,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             const SizedBox(
               height: 8,
             ),
-            Row(
+            Obx(() => Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -429,20 +388,21 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ),
                 ),
                 Text(
-                  orderController.currency,
+                  orderController.currency.value,
                   style: customisedStyle(
                       context, const Color(0xff000000), FontWeight.w400, 16.0),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 3.0),
                   child: Text(
-                    " 0.00",
+                    roundStringWith(orderController.totalNetP.toString()),
                     style: customisedStyle(
                         context, const Color(0xff000000), FontWeight.w500, 18.0),
                   ),
                 ),
               ],
-            ),
+            ),),
+
             const SizedBox(
               height: 8,
             ),
@@ -454,7 +414,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xffDF1515))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.back();
+                    },
                     child: Row(
                       children: [
                         SvgPicture.asset("assets/svg/close-circle.svg"),
@@ -478,7 +440,29 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff10C103))),
-                    onPressed: () {},
+                    onPressed: () async{
+
+                      var netWork = await checkNetwork();
+                      if (netWork) {
+                        if (orderController.orderItemList.isEmpty) {
+
+                          popAlert(head: "Waring",message: "At least one product",position: SnackPosition.TOP);
+                        } else {
+                          bool val = await orderController.checkNonRatableItem();
+                          if (val) {
+                            orderController.createSalesOrderRequest(context:context,isPayment:false,orderType: widget.orderType,tableHead: widget.tableHead,tableID: widget.tableID );
+                          } else {
+                            popAlert(head: "Waring",message: "Price must be greater than 0",position: SnackPosition.TOP);
+
+                          }
+                        }
+                      } else {
+                        popAlert(head: "Alert",message: "You are connected to the internet",position: SnackPosition.TOP);
+                      }
+
+
+
+                    },
                     child: Row(
                       children: [
                         SvgPicture.asset('assets/svg/save_mob.svg'),
@@ -606,7 +590,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
-                      orderController.currency,
+                      orderController.currency.value,
                       style: customisedStyle(
                           context, const Color(0xff8C8C8C), FontWeight.w400, 15.0),
                     ),

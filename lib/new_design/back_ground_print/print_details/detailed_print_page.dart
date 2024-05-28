@@ -1822,7 +1822,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
               //       )),
               // ),
 
-              // const SizedBox(height: 100),
+              const SizedBox(height: 100),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -820,8 +820,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
       if (result[1]) {
         if (pay_perm) {
-          navigateToPaymentFromOrder(
-              UUID: result[2], tableID: result[3], tableHead: result[4]);
+          navigateToPaymentFromOrder(UUID: result[2], tableID: result[3], tableHead: result[4]);
         } else {
           posFunctions(callFunction: true);
         }
@@ -1013,8 +1012,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                             currency +
                                 ". " +
                                 roundStringWith(
-                                    diningOrderList[dineIndex].status !=
-                                            "Vacant"
+                                    diningOrderList[dineIndex].status != "Vacant"
                                         ? diningOrderList[dineIndex].status !=
                                                 "Paid"
                                             ? diningOrderList[dineIndex]
@@ -1301,8 +1299,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                           navigateToOrderSection(
                                               tableID: "",
                                               sectionType: "Edit",
-                                              UUID: diningOrderList[tableIndex]
-                                                  .salesOrderID,
+                                              UUID: diningOrderList[tableIndex].salesOrderID,
                                               tableHead: "Order");
                                         } else if (sectionType == 2) {
                                           navigateToOrderSection(

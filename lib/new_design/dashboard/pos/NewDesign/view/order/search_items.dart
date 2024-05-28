@@ -65,7 +65,9 @@ class _SearchItemsState extends State<SearchItems> {
             mHeight: MediaQuery.of(context).size.height / 18,
             hintText: 'Search',
             controller: orderController.searchController,
-            onChanged: (quary) async {},
+            onChanged: (quary) async {
+
+            },
           ),
           DividerStyle(),
 
@@ -95,284 +97,164 @@ class _SearchItemsState extends State<SearchItems> {
           DividerStyle(),
 
           Expanded(
-            child: ValueListenableBuilder<int>(
-              valueListenable: orderController.selectedIndexNotifier,
-              builder: (context, selectedIndex, child) {
-                return ListView.builder(
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        orderController.selectedIndexNotifier.value = index;
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          right: 20,
-                        ),
+            child: ListView.separated(
+              separatorBuilder: (context, index) => DividerStyle(),
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    right: 20,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // Get.to(ProductDetailPage(
+                          //   image:
+                          //       'https://picsum.photos/250?image=9',
+                          //   name: "Shwarama plate Mexican",
+                          //   isColor: orderController.isVegNotifier.value,
+                          //   total: '909.00',
+                          // ));
+                        },
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              height: 12,
+                            SvgPicture.asset(
+                              "assets/svg/veg_mob.svg",
+                              // color: orderController.isVegNotifier.value == true ? const Color(0xff00775E) :
+                              // const Color(0xffDF1515),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(ProductDetailPage(
-                                      image:
-                                          'https://picsum.photos/250?image=9',
-                                      name: "Shwarama plate Mexican",
-                                      isColor: orderController.isVegNotifier.value,
-                                      total: '909.00',
-                                    ));
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/svg/veg_mob.svg",
-                                        color:
-                                            orderController.isVegNotifier.value == true
-                                                ? const Color(0xff00775E)
-                                                : const Color(0xffDF1515),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 8.0, top: 8),
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.5,
-                                          child: Text(
-                                            "Shwarama plate Mexican",
-                                            style: customisedStyle(
-                                                context,
-                                                Colors.black,
-                                                FontWeight.w400,
-                                                15.0),
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              orderController.currency,
-                                              style: customisedStyle(
-                                                  context,
-                                                  const Color(0xffA5A5A5),
-                                                  FontWeight.w400,
-                                                  13.0),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 5.0),
-                                              child: Text(
-                                                "909.00",
-                                                style: customisedStyle(
-                                                    context,
-                                                    Colors.black,
-                                                    FontWeight.w400,
-                                                    15.0),
-                                              ),
-                                            ),
-                                            //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0, top: 8),
+                              child: Container(
+                                width: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                    0.5,
+                                child: Text(
+                                  "Shwarama plate Mexican",
+                                  style: customisedStyle(
+                                      context,
+                                      Colors.black,
+                                      FontWeight.w400,
+                                      15.0),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                // Check if the current index is the selected index and the additem is true
-                                if (selectedIndex == index &&
-                                    orderController.isAddItem.value)
-                                  Container(
-                                    height: MediaQuery.of(context).size.height /
-                                        8.5,
-                                    width:
-                                        MediaQuery.of(context).size.width / 4,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      // Set border radius to make the Container round
-                                    ),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Positioned.fill(
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            // Clip image to match the rounded corners of the Container
-                                            child: Image.network(
-                                              'https://picsum.photos/250?image=9',
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                30,
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xffF25F29),
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(10),
-                                                // Match the bottom left and right corners of the Container
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: ValueListenableBuilder(
-                                              valueListenable: _counter,
-                                              builder:
-                                                  (context, int value, child) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 3.0, right: 3),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          if (value > 1) {
-                                                            _counter.value--;
-                                                          }
-                                                        },
-                                                        child: Icon(
-                                                          Icons.remove,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        '$value',
-                                                        style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          _counter.value++;
-                                                        },
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                else
-                                  Stack(
-                                    alignment: Alignment.bottomCenter,
-                                    children: <Widget>[
-                                      Container(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                7,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                4,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Positioned.fill(
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  'https://picsum.photos/250?image=9',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 15,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            print("gjhdfghdf");
-                                            orderController.isAddItem.value =
-                                                true;
-                                          },
-                                          child: SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                30,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                6,
-                                            child: DecoratedBox(
-                                              decoration: ShapeDecoration(
-                                                shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      color: Color(0xffF25F29)),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                color: Colors.white,
-                                              ),
-                                              child: const Center(
-                                                child: Text(
-                                                  'Add',
-                                                  style: TextStyle(
-                                                    color: Color(0xffF25F29),
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                              ],
+                              ),
                             ),
-                            const SizedBox(
-                              height: 8,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    orderController.currency.value,
+                                    style: customisedStyle(
+                                        context,
+                                        const Color(0xffA5A5A5),
+                                        FontWeight.w400,
+                                        13.0),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5.0),
+                                    child: Text(
+                                      "909.00",
+                                      style: customisedStyle(
+                                          context,
+                                          Colors.black,
+                                          FontWeight.w400,
+                                          15.0),
+                                    ),
+                                  ),
+                                  //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
+                                ],
+                              ),
                             ),
-                            DividerStyle()
                           ],
                         ),
                       ),
-                    );
-                  },
+
+                      Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: <Widget>[
+                            Container(
+                              height:
+                                  MediaQuery.of(context).size.height /
+                                      7,
+                              width:
+                                  MediaQuery.of(context).size.width /
+                                      4,
+                              child: Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.stretch,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Positioned.fill(
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(10),
+                                      child: Image.network(
+                                        'https://picsum.photos/250?image=9',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 15,
+                              child: GestureDetector(
+                                onTap: () {
+
+                                },
+                                child: SizedBox(
+                                  height: MediaQuery.of(context)
+                                          .size
+                                          .height /
+                                      30,
+                                  width: MediaQuery.of(context)
+                                          .size
+                                          .width /
+                                      6,
+                                  child: DecoratedBox(
+                                    decoration: ShapeDecoration(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Color(0xffF25F29)),
+                                        borderRadius:
+                                            BorderRadius.circular(10),
+                                      ),
+                                      color: Colors.white,
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Add',
+                                        style: TextStyle(
+                                          color: Color(0xffF25F29),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                    ],
+                  ),
                 );
               },
             ),

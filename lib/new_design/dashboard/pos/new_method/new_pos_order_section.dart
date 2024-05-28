@@ -176,7 +176,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   }
 
   Future<Null> posFunctions() async {
-    print("____________________order type   ${widget.orderType}");
 
     start(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -197,8 +196,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
        ledgerID = prefs.getInt("Cash_Account") ?? 1;
        isComplimentory = prefs.getBool("complimentary_bill") ?? false;
 
-       print("*/-*/-*/-*/-*/-*/-*/-*/ledgerisComplimentory  $isComplimentory");
-      networkConnection = true;
+       networkConnection = true;
       if (widget.sectionType == "Create") {
         mainPageIndex = 7;
       } else if (widget.sectionType == "Edit") {
@@ -2978,8 +2976,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       var checkGst = prefs.getBool("check_GST") ?? false;
 
                       var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
-                      // var selectedPrinter = prefs.getString('printer') ?? '';
-                      // var kot = prefs.getBool('KOT') ?? false;
 
                       unitPriceAmountWR = productList[i].defaultSalesPrice;
                       inclusiveUnitPriceAmountWR = productList[i].defaultSalesPrice;
@@ -2992,8 +2988,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       unitName = productList[i].defaultUnitName;
 
 
-                      print(productList[i].taxDetails);
-
                       var taxDetails = productList[i].taxDetails;
                       if(taxDetails !=""){
                         productTaxID = taxDetails["TaxID"];
@@ -3001,16 +2995,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       }
 
 
-                      // if (checkVat == true) {
-                      //   productTaxName = productList[i].vATTaxName;
-                      //   productTaxID = productList[i].vatID;
-                      // } else if (checkGst == true) {
-                      //   productTaxName = productList[i].gSTTaxName;
-                      //   productTaxID = productList[i].gstID;
-                      // } else {
-                      //   productTaxName = "None";
-                      //   productTaxID = 1;
-                      // }
+
 
                       detailID = 1;
                       salesPrice = productList[i].defaultSalesPrice;
@@ -3026,8 +3011,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                       var newTax = productList[i].exciseData;
 
-                      print(newTax);
-                      print("excise brfore $isExciseProduct");
+
                       if (newTax != "") {
                         isExciseProduct = true;
                         exciseTaxID = newTax["TaxID"];
@@ -4518,7 +4502,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     orderDetTable.clear();
 
     parsingJson.insert(0, data);
-    //  parsingJson.add(data);
+
     setState(() {
       for (Map user in parsingJson) {
         orderDetTable.add(PassingDetails.fromJson(user));
@@ -5334,10 +5318,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       }
     }
   }
-
-
-
-
 
   changeQtyTextField(BuildContext context) async {
     return showDialog(

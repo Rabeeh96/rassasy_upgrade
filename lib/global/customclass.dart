@@ -37,6 +37,16 @@ btmDialogueFunction({required BuildContext context,required String textMsg,requi
 }
 
 
+popAlert({required String head,required String message,required SnackPosition position}){
+  Get.snackbar(
+    head,
+    message,
+
+    snackPosition: position,
+      animationDuration:const Duration(seconds: 2)
+  );
+}
+
 checkNetwork() async {
   var connectivityResult = await (Connectivity().checkConnectivity());
   if (connectivityResult == ConnectivityResult.none) {
