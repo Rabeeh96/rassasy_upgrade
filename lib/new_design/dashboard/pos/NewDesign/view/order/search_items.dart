@@ -85,7 +85,9 @@ class _SearchItemsState extends State<SearchItems> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0,right: 8),
-                        child: Text("Code",style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 12.0),),
+                        child: Text("Code",
+                          style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 12.0),
+                        ),
                       ),
                       SvgPicture.asset("assets/svg/drop_arrow.svg"),
                     ],
@@ -114,7 +116,7 @@ class _SearchItemsState extends State<SearchItems> {
                         onTap: () {
                           // Get.to(ProductDetailPage(
                           //   image:
-                          //       'https://picsum.photos/250?image=9',
+                          //       'https://www.api.viknbooks.com/media/uploads/Rassasy.png',
                           //   name: "Shwarama plate Mexican",
                           //   isColor: orderController.isVegNotifier.value,
                           //   total: '909.00',
@@ -205,7 +207,7 @@ class _SearchItemsState extends State<SearchItems> {
                                       borderRadius:
                                           BorderRadius.circular(10),
                                       child: Image.network(
-                                        'https://picsum.photos/250?image=9',
+                                        'https://www.api.viknbooks.com/media/uploads/Rassasy.png',
                                         fit: BoxFit.cover,
                                       ),
                                     ),

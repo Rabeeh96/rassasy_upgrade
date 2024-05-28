@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,21 +9,86 @@ import 'package:rassasy_new/global/textfield_decoration.dart';
 
 import 'package:get/get.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
+
 class ProductDetailPage extends StatefulWidget {
+  final int index;
+  final String image;
 
-
-  ProductDetailPage(
-      {super.key});
+  const ProductDetailPage({super.key, required this.index, required this.image});
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
-  OrderController productDetailController=Get.put(OrderController());
-  final ValueNotifier<int> _counter = ValueNotifier<int>(1);
-  ValueNotifier<List> _choices = ValueNotifier<List>(['Spicy', 'Arabic', 'Cold', ]) ;
-  String selected = "Arabic";
+  OrderController orderController = Get.put(OrderController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+  loadData() {
+
+    print(orderController.orderItemList[widget.index]);
+    orderController.productName.value = orderController.orderItemList[widget.index]["ProductName"];
+    orderController.item_status.value = orderController.orderItemList[widget.index]["Status"];
+    orderController.unitName.value = orderController.orderItemList[widget.index]["UnitName"];
+    orderController.quantity.value = double.parse(orderController.orderItemList[widget.index]["Qty"].toString());
+    orderController.productTaxName.value = orderController.orderItemList[widget.index]["ProductTaxName"];
+    orderController.productTaxID.value = orderController.orderItemList[widget.index]["ProductTaxID"];
+    orderController.salesPrice.value = orderController.orderItemList[widget.index]["SalesPrice"];
+    orderController.productID.value = orderController.orderItemList[widget.index]["ProductID"];
+    orderController.actualProductTaxName.value = orderController.orderItemList[widget.index]["ActualProductTaxName"];
+    orderController.actualProductTaxID.value = orderController.orderItemList[widget.index]["ActualProductTaxID"];
+    orderController.branchID.value = orderController.orderItemList[widget.index]["BranchID"];
+    orderController.unique_id.value = orderController.orderItemList[widget.index]["unq_id"];
+    orderController.unitPriceAmountWR.value = orderController.orderItemList[widget.index]["UnitPrice"];
+    orderController.rateWithTax.value = double.parse(orderController.orderItemList[widget.index]["RateWithTax"].toString());
+    orderController.costPerPrice.value = orderController.orderItemList[widget.index]["CostPerPrice"];
+    orderController.priceListID.value = orderController.orderItemList[widget.index]["PriceListID"];
+    orderController.discountPer.value = orderController.orderItemList[widget.index]["DiscountPerc"].toString();
+    orderController.discountAmount.value = double.parse(orderController.orderItemList[widget.index]["DiscountAmount"].toString());
+    orderController.grossAmountWR.value = orderController.orderItemList[widget.index]["GrossAmount"].toString();
+    orderController.vatPer.value = double.parse(orderController.orderItemList[widget.index]["VATPerc"].toString());
+    orderController.vatAmount.value = double.parse(orderController.orderItemList[widget.index]["VATAmount"].toString());
+    orderController.netAmount.value = double.parse(orderController.orderItemList[widget.index]["NetAmount"].toString());
+    orderController.detailID.value = orderController.orderItemList[widget.index]["detailID"];
+    orderController.sGSTPer.value = double.parse(orderController.orderItemList[widget.index]["SGSTPerc"].toString());
+    orderController.sGSTAmount.value = double.parse(orderController.orderItemList[widget.index]["SGSTAmount"].toString());
+    orderController.cGSTPer.value = double.parse(orderController.orderItemList[widget.index]["CGSTPerc"].toString());
+    orderController.cGSTAmount.value = double.parse(orderController.orderItemList[widget.index]["CGSTAmount"].toString());
+    orderController.iGSTPer.value = double.parse(orderController.orderItemList[widget.index]["IGSTPerc"].toString());
+    orderController.iGSTAmount.value = double.parse(orderController.orderItemList[widget.index]["IGSTAmount"].toString());
+    orderController.createdUserID.value = orderController.orderItemList[widget.index]["CreatedUserID"];
+    orderController.dataBase.value = orderController.orderItemList[widget.index]["DataBase"];
+    orderController.flavourID.value = orderController.orderItemList[widget.index]["flavour"];
+    orderController.flavourName.value = orderController.orderItemList[widget.index]["Flavour_Name"];
+    orderController.taxableAmountPost.value = double.parse(orderController.orderItemList[widget.index]["TaxableAmount"].toString());
+    var gst = orderController.orderItemList[widget.index]["gstPer"]??'0';
+    orderController.gstPer.value = double.parse(gst.toString());
+    orderController.isInclusive.value = orderController.orderItemList[widget.index]["is_inclusive"];
+    orderController.inclusiveUnitPriceAmountWR.value = orderController.orderItemList[widget.index]["InclusivePrice"].toString();
+    orderController.totalTax.value = double.parse(orderController.orderItemList[widget.index]["TotalTaxRounded"].toString());
+    /// excise tax not working
+    // orderController.exciseTaxID.value = orderController.orderItemList[widget.index]["ExciseTaxID"];
+    // orderController.exciseTaxName.value = orderController.orderItemList[widget.index]["ExciseTaxName"];
+    // orderController.BPValue.value = orderController.orderItemList[widget.index]["BPValue"];
+    // orderController.exciseTaxBefore.value = orderController.orderItemList[widget.index]["ExciseTaxBefore"];
+    // orderController.isAmountTaxAfter.value = orderController.orderItemList[widget.index]["IsAmountTaxAfter"];
+    // orderController.isAmountTaxBefore.value = orderController.orderItemList[widget.index]["IsAmountTaxBefore"];
+    // orderController.isExciseProduct.value = orderController.orderItemList[widget.index]["IsExciseProduct"];
+    // orderController.exciseTaxAfter.value = orderController.orderItemList[widget.index]["ExciseTaxAfter"];
+    orderController.exciseTaxAmount.value = double.parse(orderController.orderItemList[widget.index]["ExciseTax"].toString());
+    orderController.unitPriceChangingController.text = roundStringWith(orderController.unitPriceAmountWR.value);
+    orderController.quantityForDetailsSection.value = double.parse(orderController.quantity.value.toString());
+//    orderController.calculationOnEditing(index: widget.index, isQuantityButton: false, value: orderController.unitPriceAmountWR.value.toString());
+
+
+  }
+
 //listview working
   @override
   Widget build(BuildContext context) {
@@ -39,10 +106,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
         titleSpacing: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Product Details',
-          style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
         ),
       ),
       body: Column(
@@ -57,7 +123,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           Padding(
             padding: const EdgeInsets.only(
               left: 20.0,
-              right:20,
+              right: 20,
             ),
             child: Column(
               children: [
@@ -69,33 +135,30 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     /// image commented
-                    // Container(
-                    //   height: MediaQuery.of(context).size.height / 11,
-                    //   width: MediaQuery.of(context).size.width / 5,
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(10),
-                    //     // Set border radius to make the Container round
-                    //   ),
-                    //   child:  Positioned.fill(
-                    //     child: ClipRRect(
-                    //       borderRadius: BorderRadius.circular(10),
-                    //       // Clip image to match the rounded corners of the Container
-                    //       child: Image.network(
-                    //         widget.image!,
-                    //         fit: BoxFit.cover,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 11,
+                      width: MediaQuery.of(context).size.width / 5,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        // Set border radius to make the Container round
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        // Clip image to match the rounded corners of the Container
+                        child: Image.network(
+                          "https://www.api.viknbooks.com/media/uploads/Rassasy.png",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
 
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0, top: 8),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(
-                          "",
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.w400, 15.0),
+                          orderController.orderItemList[widget.index]["ProductName"],
+                          style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -103,7 +166,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                     SvgPicture.asset(
                       "assets/svg/veg_mob.svg",
-               //       color: widget.isColor == true ? const Color(0xff00775E) : const Color(0xffDF1515),
+                      //       color: widget.isColor == true ? const Color(0xff00775E) : const Color(0xffDF1515),
                     ),
                     // Check if the current index is the selected index and the additem is true
                   ],
@@ -111,186 +174,180 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 const SizedBox(
                   height: 20,
                 ),
-
-
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(
               left: 20.0,
-              right:5,
-            ),            child: Row(
+              right: 5,
+            ),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(productDetailController.currency.value,style: customisedStyle(context, Color(0xffA5A5A5), FontWeight.w400, 15.0),),
-                    )
-                    ,Container(
-                      height: MediaQuery.of(context).size.height/19,
-                      width: MediaQuery.of(context).size.height/7,
+                      child: Text(
+                        orderController.currency.value,
+                        style: customisedStyle(context, Color(0xffA5A5A5), FontWeight.w400, 15.0),
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 19,
+                      width: MediaQuery.of(context).size.height / 7,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         // border: Border.all(color: Color(0xffE7E7E7))
                       ),
                       child: TextField(
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: productDetailController.grandTotalController,
-                        style: customisedStyle(
-                            context, Colors.black, FontWeight.w500, 14.0),
-
-                        onEditingComplete: () {
-
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                        onTap: () => orderController.unitPriceChangingController.selection =
+                            TextSelection(baseOffset: 0, extentOffset: orderController.unitPriceChangingController.value.text.length),
+                        onChanged: (value) {
+                          if (value != "") {
+                            orderController.quantity.value = double.parse(orderController.orderItemList[widget.index]["Qty"].toString());
+                            orderController.calculationOnEditing(index: widget.index, isQuantityButton: false, value: value.toString());
+                          }
                         },
-
-                        decoration: TextFieldDecoration.defaultTextField(
-                            hintTextStr: ""),
+                        controller: orderController.unitPriceChangingController,
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
+                        decoration: TextFieldDecoration.defaultTextField(hintTextStr: ""),
                       ),
                     )
                   ],
                 ),
-
-                ValueListenableBuilder(
-                  valueListenable: _counter,
-                  builder: (context, int value, child) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        IconButton(
-                          icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
-
-                          onPressed: () {
-                            if (value > 1) {
-                              _counter.value--;
-                            }
-                          },
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height/19,
-                          width: MediaQuery.of(context).size.width/5,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Color(0xffE7E7E7))
-                          ),
-                          child: Center(
-                            child: Text(
-                              '$value',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
-
-
-                          onPressed: () {
-                            _counter.value++;
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
-
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              right:20,
-              top: 15,bottom: 10
-            ),            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Select a Flavour",style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
-              ],
-            ),
-          ),
-          DividerStyle(),
-          Expanded(child: ListView.builder(
-              itemCount: _choices.value.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: ()async {
-                    // setState(()  {
-                    selected = _choices.value[index];
-
-
-                  },
-                  child: Column(
-                    children: [
-                      SizedBox(
-
-                        height: MediaQuery.of(context).size.height * .06,
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 15.0, right: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  _choices.value[index],
-                                  style: customisedStyle(
-                                      context,
-                                       Colors.black,
-                                      FontWeight.w400,
-                                      13.0),
-                                ),
-                                selected == _choices.value[index]
-                                    ? Icon(Icons.check_circle,color: Color(0xffF25F29),)
-                                    : Container()
-                              ],
-                            ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      icon: SvgPicture.asset(
+                        "assets/svg/minus_mob.svg",
+                      ),
+                      onPressed: () {
+                        if (orderController.quantityForDetailsSection.value != 1.0) {
+                          orderController.quantityForDetailsSection.value = orderController.quantityForDetailsSection.value - 1;
+                          orderController.calculationOnEditing(index: widget.index, isQuantityButton: true, value: orderController.quantityForDetailsSection.value.toString());
+                        }
+                      },
+                    ),
+                    Obx(
+                      () => Container(
+                        height: MediaQuery.of(context).size.height / 19,
+                        width: MediaQuery.of(context).size.width / 5,
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: Color(0xffE7E7E7))),
+                        child: Center(
+                          child: Text(
+                            roundStringWith(orderController.quantityForDetailsSection.value.toString()),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
+                            // style: TextStyle(
+                            //   fontSize: 18,
+                            //   color: Colors.black,
+                            // ),
                           ),
                         ),
                       ),
-                      DividerStyle()
-                    ],
-                  ),
-                );
+                    ),
+                    IconButton(
+                      icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
+                      onPressed: () {
+                        orderController.quantityForDetailsSection.value = orderController.quantityForDetailsSection.value + 1;
+                        orderController.calculationOnEditing(
+                            index: widget.index, isQuantityButton: true, value: orderController.quantityForDetailsSection.value.toString());
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
 
+          /// flavour commented on last
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     left: 20.0,
+          //     right:20,
+          //     top: 15,bottom: 10
+          //   ),            child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.start,
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Text("Select a Flavour",style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
+          //     ],
+          //   ),
+          // ),
+          // DividerStyle(),
 
-
-              }))
+          // Expanded(child: ListView.builder(
+          //     itemCount: _choices.value.length,
+          //     itemBuilder: (BuildContext context, int index) {
+          //       return GestureDetector(
+          //         onTap: ()async {
+          //           // setState(()  {
+          //           selected = _choices.value[index];
+          //
+          //
+          //         },
+          //         child: Column(
+          //           children: [
+          //             SizedBox(
+          //
+          //               height: MediaQuery.of(context).size.height * .06,
+          //               child: Card(
+          //                 color: Colors.transparent,
+          //                 elevation: 0,
+          //                 child: Padding(
+          //                   padding: const EdgeInsets.only(left: 15.0, right: 15),
+          //                   child: Row(
+          //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                     children: [
+          //                       Text(
+          //                         _choices.value[index],
+          //                         style: customisedStyle(
+          //                             context,
+          //                              Colors.black,
+          //                             FontWeight.w400,
+          //                             13.0),
+          //                       ),
+          //                       selected == _choices.value[index]
+          //                           ? Icon(Icons.check_circle,color: Color(0xffF25F29),)
+          //                           : Container()
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             DividerStyle()
+          //           ],
+          //         ),
+          //       );
+          //
+          //
+          //
+          //     }))
         ],
       ),
       bottomNavigationBar: Container(
-
         decoration: BoxDecoration(
-
           border: Border(top: BorderSide(color: Color(0xFFE8E8E8))),
-
         ),
-        height: MediaQuery.of(context).size.height/10,
-
+        height: MediaQuery.of(context).size.height / 10,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffDF1515))),
-                    onPressed: () {},
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
+                    onPressed: () {
+                      Get.back();
+                    },
                     child: Row(
                       children: [
                         SvgPicture.asset("assets/svg/close-circle.svg"),
@@ -298,21 +355,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           padding: const EdgeInsets.only(left: 12.0, right: 12),
                           child: Text(
                             "Cancel",
-                            style: customisedStyle(context, const Color(0xffffffff),
-                                FontWeight.normal, 12.0),
+                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 13.0),
                           ),
                         ),
                       ],
                     )),
-
                 const SizedBox(
                   width: 10,
                 ),
                 TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(const Color(0xff10C103))),
-                    onPressed: () {},
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                    onPressed: () {
+                      orderController.addItemToList(index: widget.index);
+                      Get.back();
+                    },
                     child: Row(
                       children: [
                         SvgPicture.asset('assets/svg/save_mob.svg'),
@@ -320,8 +376,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
                           child: Text(
                             'Save'.tr,
-                            style: customisedStyle(context, const Color(0xffffffff),
-                                FontWeight.normal, 12.0),
+                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
                           ),
                         )
                       ],
