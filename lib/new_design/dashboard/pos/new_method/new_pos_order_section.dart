@@ -3085,15 +3085,15 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                                   child: SvgPicture.asset("assets/svg/Logo.svg"),
                                 )
-                              :
-                          Padding(
+                              : Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
                                     height: MediaQuery.of(context).size.height / 15, //height of button
                                     width: MediaQuery.of(context).size.width / 22,
 
                                     decoration: BoxDecoration(
-                                        image: DecorationImage(image: NetworkImage(productList[i].productImage), fit: BoxFit.cover),
+                                        image: DecorationImage(image:
+                                        NetworkImage(productList[i].productImage), fit: BoxFit.cover),
                                         border: Border.all(
                                           width: .1,
                                           color: const Color(0xffC9C9C9),
