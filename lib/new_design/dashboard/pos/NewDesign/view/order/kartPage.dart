@@ -126,20 +126,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     child: GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 5, top: 10, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.check_circle, color: Color(0xffF25F29)),
-                            GestureDetector(
-                              onTap: () {
-                                Get.to(ProductDetailPage());
-                              },
-                              child: Column(
+                      onTap: () {
+                        Get.to(ProductDetailPage(index: index,image: "",));
+                      },
+                      child: InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15.0, right: 5, top: 10, bottom: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.check_circle, color: Color(0xffF25F29)),
+                              Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -148,15 +147,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       SvgPicture.asset("assets/svg/veg_mob.svg"),
+
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             right: 10.0, top: 0, left: 10),
                                         child: Container(
                                           width: MediaQuery.of(context).size.width * 0.35,
                                           child: Text(
-                                            orderController.orderItemList[index]["ProductName"],
-                                            style: customisedStyle(
-                                                context, Colors.black, FontWeight.w400, 15.0),
+                                            orderController.orderItemList[index]["ProductName"]??'sdsd',
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -218,63 +217,63 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   ),
                                 ],
                               ),
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      orderController.currency.value,
-                                      style: customisedStyle(context, const Color(0xffA5A5A5),
-                                          FontWeight.w400, 14.0),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 3.0),
-                                      child: Text(
-                                        roundStringWith(orderController.orderItemList[index]["NetAmount"].toString()),
-                                        style: customisedStyle(context, const Color(0xff000000),
-                                            FontWeight.w500, 16.0),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        orderController.currency.value,
+                                        style: customisedStyle(context, const Color(0xffA5A5A5),
+                                            FontWeight.w400, 14.0),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
-                                      onPressed: () {
-                                        orderController.updateQty(index: index, type: 0);
-                                      },
-                                    ),
-                                    Container(
-                                      height: MediaQuery.of(context).size.height / 21,
-                                      width: MediaQuery.of(context).size.width / 7,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          border: Border.all(color: const Color(0xffE7E7E7))),
-                                      child: Center(
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 3.0),
                                         child: Text(
-                                          roundStringWith(orderController.orderItemList[index]["Qty"].toString()),
-                                          style: const TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black,
+                                          roundStringWith(orderController.orderItemList[index]["NetAmount"].toString()),
+                                          style: customisedStyle(context, const Color(0xff000000),
+                                              FontWeight.w500, 16.0),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
+                                        onPressed: () {
+                                          orderController.updateQty(index: index, type: 0);
+                                        },
+                                      ),
+                                      Container(
+                                        height: MediaQuery.of(context).size.height / 21,
+                                        width: MediaQuery.of(context).size.width / 7,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(8),
+                                            border: Border.all(color: const Color(0xffE7E7E7))),
+                                        child: Center(
+                                          child: Text(
+                                            roundStringWith(orderController.orderItemList[index]["Qty"].toString()),
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.black,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    IconButton(
-                                      icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
-                                      onPressed: () {
-                                        orderController.updateQty(index: index, type: 1);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                                      IconButton(
+                                        icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
+                                        onPressed: () {
+                                          orderController.updateQty(index: index, type: 1);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -487,7 +486,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff00775E))),
                     onPressed: () {
-                      Get.to(PaymentPage());
+                      Get.to(PaymentPage(uID: widget.uID,));
                     },
                     child: Row(
                       children: [

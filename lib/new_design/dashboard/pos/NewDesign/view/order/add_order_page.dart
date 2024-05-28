@@ -310,7 +310,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                         child: Image.network(
                                           orderController.productList[index].productImage != ""
                                               ? orderController.productList[index].productImage
-                                              : 'https://picsum.photos/250?image=9',
+                                              : 'https://www.api.viknbooks.com/media/uploads/Rassasy.png',
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -353,7 +353,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                               ),
                                              Obx(() =>
                                               alreadyExist[0]?Text(
-                                                orderController.orderItemList[alreadyExist[1]]["Qty"],
+                                                roundStringWith(orderController.orderItemList[alreadyExist[1]]["Qty"].toString()),
                                                 style: customisedStyle(context, Colors.white, FontWeight.w400, 18.0),
                                               ):Container(),
                                             ),
@@ -1003,7 +1003,7 @@ class ListItems extends StatelessWidget {
 //               borderRadius:
 //                   BorderRadius.circular(10),
 //               child: Image.network(
-//                 'https://picsum.photos/250?image=9',
+//                 'https://www.api.viknbooks.com/media/uploads/Rassasy.png',
 //                 fit: BoxFit.cover,
 //               ),
 //             ),

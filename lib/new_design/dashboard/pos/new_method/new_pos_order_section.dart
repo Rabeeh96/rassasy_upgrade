@@ -649,7 +649,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             vatAmountTotalP = double.parse(responseJson["VATAmount"].toString());
             exciseAmountTotalP = double.parse(responseJson["ExciseTaxAmount"].toString());
             netTotal = responseJson["NetTotal"].toString();
-            print("____________________________4");
             ledgerID = responseJson["LedgerID"];
             paymentCustomerSelection.text = responseJson["CustomerName"];
 
