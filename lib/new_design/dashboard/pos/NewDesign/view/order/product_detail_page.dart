@@ -4,27 +4,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
+
 import 'package:get/get.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
 class ProductDetailPage extends StatefulWidget {
-  String? image;
-  String? name;
-  String? total;
-  bool? isColor;
+
 
   ProductDetailPage(
-      {super.key,
-      required this.image,
-      required this.total,
-      required this.name,
-      required this.isColor});
+      {super.key});
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
-  POSController productDetailController=Get.put(POSController());
+  OrderController productDetailController=Get.put(OrderController());
   final ValueNotifier<int> _counter = ValueNotifier<int>(1);
   ValueNotifier<List> _choices = ValueNotifier<List>(['Spicy', 'Arabic', 'Cold', ]) ;
   String selected = "Arabic";
@@ -74,31 +68,32 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height / 11,
-                      width: MediaQuery.of(context).size.width / 5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        // Set border radius to make the Container round
-                      ),
-                      child:  Positioned.fill(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          // Clip image to match the rounded corners of the Container
-                          child: Image.network(
-                            widget.image!,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
+                    /// image commented
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height / 11,
+                    //   width: MediaQuery.of(context).size.width / 5,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(10),
+                    //     // Set border radius to make the Container round
+                    //   ),
+                    //   child:  Positioned.fill(
+                    //     child: ClipRRect(
+                    //       borderRadius: BorderRadius.circular(10),
+                    //       // Clip image to match the rounded corners of the Container
+                    //       child: Image.network(
+                    //         widget.image!,
+                    //         fit: BoxFit.cover,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0, top: 8),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(
-                          widget.name!,
+                          "",
                           style: customisedStyle(
                               context, Colors.black, FontWeight.w400, 15.0),
                           maxLines: 3,
@@ -108,9 +103,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                     SvgPicture.asset(
                       "assets/svg/veg_mob.svg",
-                      color: widget.isColor == true
-                          ? const Color(0xff00775E)
-                          : const Color(0xffDF1515),
+               //       color: widget.isColor == true ? const Color(0xff00775E) : const Color(0xffDF1515),
                     ),
                     // Check if the current index is the selected index and the additem is true
                   ],
@@ -134,7 +127,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(productDetailController.currency,style: customisedStyle(context, Color(0xffA5A5A5), FontWeight.w400, 15.0),),
+                      child: Text(productDetailController.currency.value,style: customisedStyle(context, Color(0xffA5A5A5), FontWeight.w400, 15.0),),
                     )
                     ,Container(
                       height: MediaQuery.of(context).size.height/19,

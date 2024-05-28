@@ -96,7 +96,7 @@ class _ProductDetailsState extends State<SelectPaymentCustomer> {
                 ),
               ),
 
-
+//
               customersLists.isNotEmpty?Container(
                   height: MediaQuery.of(context).size.height / 1.2, //height of button
                //   width: MediaQuery.of(context).size.width / 1,

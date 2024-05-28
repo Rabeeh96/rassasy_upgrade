@@ -8,7 +8,6 @@ import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/reservation_list.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
-
 import 'order/add_order_page.dart';
 
 class DiningPage extends StatefulWidget {
@@ -25,24 +24,24 @@ class _DiningPageState extends State<DiningPage> {
   final POSController diningController = Get.put(POSController());
 
   ///this func used to get the colors
-  ///to chnage back color of status showing in list
+  ///to change back color of status showing in list
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
-      return Color(0xffEFEFEF); // Set your desired color for pending status
+      return const Color(0xffEFEFEF); // Set your desired color for pending status
     } else if (status == 'Ordered') {
-      return Color(0xff03C1C1); // Set your desired color for completed status
+      return const Color(0xff03C1C1); // Set your desired color for completed status
     } else if (status == 'Paid') {
-      return Color(0xff10C103); // Set your desired color for cancelled status
+      return const Color(0xff10C103); // Set your desired color for cancelled status
     } else if (status == 'Billed') {
-      return Color(0xff034FC1); // Set your desired color for cancelled status
+      return const Color(0xff034FC1); // Set your desired color for cancelled status
     } else {
-      return Color(0xffEFEFEF); // Default color if status is not recognized
+      return const Color(0xffEFEFEF); // Default color if status is not recognized
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
+    /// TODO: implement initState
     super.initState();
     diningController.tableData.clear();
     diningController.fetchAllData();
@@ -139,8 +138,6 @@ class _DiningPageState extends State<DiningPage> {
             color: const Color(0xffE9E9E9),
           ),
         ),
-
-
         Expanded(
             child: Obx(() => diningController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
@@ -262,81 +259,92 @@ class _DiningPageState extends State<DiningPage> {
                               child: GestureDetector(
                                 onTap: () {
                                   if (diningController.tableData[index].status == 'Vacant') {
-                                    Get.to(OrderCreatePage());
-                                  } else {
+                                    Get.to(  OrderCreateView(
+                                      orderType: 0,
+                                      sectionType: "Create",
+                                      uID: "",
+                                      tableHead: "Order",
+                                      tableID: diningController.tableData[index].id!,
+                                    ));
+                                  }
+                                  else if (diningController.tableData[index].status == 'Ordered') {
+                                    Get.to(  OrderCreateView(
+                                      orderType: 0,
+                                      sectionType: "Edit",
+                                      uID: diningController.tableData[index].salesOrderID!,
+                                      tableHead: diningController.tableData[index].title!,
+                                      tableID: diningController.tableData[index].id!,
+                                    ));
+                                  }
+
+                                  else {
+
 
                                   }
                                 },
                                 child: InkWell(
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 15.0,
-                                      right: 15,
-                                      top: 20,
-                                      bottom: 20
-                                    ),
-                                    child:Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.only(right: 8.0),
-                                                  child: Text(
-                                                    diningController.tableData[index].title!,
-                                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 20, bottom: 20),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(right: 8.0),
+                                                    child: Text(
+                                                      diningController.tableData[index].title!,
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                                    ),
                                                   ),
-                                                ),
-                                                Container(
-                                                  height: MediaQuery.of(context).size.height / 32,
-                                                  decoration: BoxDecoration(
-                                                    color: _getBackgroundColor(diningController.tableData[index].status!),
-                                                    borderRadius: BorderRadius.circular(30),
-                                                  ),
-                                                  child: Center(
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(left: 15.0, right: 15),
-                                                      child: Text(
-                                                        diningController.tableData[index].status!,
-                                                        style: TextStyle(
-                                                            fontSize: 11,
-                                                            color: diningController.tableData[index].status == "Vacant"
-                                                                ? Colors.black
-                                                                : Colors.white),
+                                                  Container(
+                                                    height: MediaQuery.of(context).size.height / 32,
+                                                    decoration: BoxDecoration(
+                                                      color: _getBackgroundColor(diningController.tableData[index].status!),
+                                                      borderRadius: BorderRadius.circular(30),
+                                                    ),
+                                                    child: Center(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.only(left: 15.0, right: 15),
+                                                        child: Text(
+                                                          diningController.tableData[index].status!,
+                                                          style: TextStyle(
+                                                              fontSize: 11,
+                                                              color:
+                                                                  diningController.tableData[index].status == "Vacant" ? Colors.black : Colors.white),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            diningController.returnOrderTime(diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=""?Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  diningController.returnOrderTime(diningController.tableData[index].orderTime!, diningController.tableData[index].status!),
-                                                  style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
-                                                ),
-                                                //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
-                                              ],
-                                            ):Container(
-
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          "${diningController.currency} ${roundStringWith(diningController.tableData[index].salesOrderGrandTotal!.toString())}",
-                                          style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                        )
-                                      ],
-                                    )
-                                  ),
+                                                ],
+                                              ),
+                                              diningController.returnOrderTime(diningController.tableData[index].orderTime!, diningController.tableData[index].status!) != ""
+                                                  ? Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Text(
+                                                          diningController.returnOrderTime(diningController.tableData[index].orderTime!,
+                                                              diningController.tableData[index].status!),
+                                                          style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
+                                                        ),
+                                                        //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
+                                                      ],
+                                                    )
+                                                  : Container(),
+                                            ],
+                                          ),
+                                          Text(
+                                            "${diningController.currency} ${roundStringWith(diningController.tableData[index].status != "Vacant" ? diningController.tableData[index].status != "Paid" ? diningController.tableData[index].salesOrderGrandTotal.toString() : diningController.tableData[index].salesGrandTotal.toString() : '0')}",
+                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                          )
+                                        ],
+                                      )),
                                 ),
                               ),
                             );
@@ -390,7 +398,7 @@ class _DiningPageState extends State<DiningPage> {
     );
   }
 
-  ///add table option  working not complete
+  ///add table option working not complete
   void addTable() {
     Get.bottomSheet(
       isDismissible: true,
@@ -479,7 +487,7 @@ class _DiningPageState extends State<DiningPage> {
     );
   }
 
-  ///add reservation bottomsheet currently not using herre
+  ///add reservation bottom sheet currently not using here
   void addReservationTable() {
     Get.bottomSheet(
       isDismissible: true,

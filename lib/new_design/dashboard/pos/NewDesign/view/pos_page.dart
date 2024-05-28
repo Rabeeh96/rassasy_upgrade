@@ -95,22 +95,21 @@ class POSMobilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     POSController landingPageController = Get.put(POSController());
-    return SafeArea(
-        child: Scaffold(
-      bottomNavigationBar:
-          buildBottomNavigationMenu(context, landingPageController),
-      body: Obx(() => IndexedStack(
-            index: landingPageController.tabIndex.value,
-            children: [
-              DiningPage(
-                  title: 'Dining', data: landingPageController.tableData),
-              TakeAway(
-                  title: 'Takeout', data: landingPageController.takeAwayOrders),
-              OnlinePage(
-                  title: 'Online', data: landingPageController.onlineOrders),
-              CarPage(title: 'Car', data: landingPageController.carOrders),
-            ],
-          )),
-    ));
+    return Scaffold(
+          bottomNavigationBar:
+      buildBottomNavigationMenu(context, landingPageController),
+          body: Obx(() => IndexedStack(
+        index: landingPageController.tabIndex.value,
+        children: [
+          DiningPage(
+              title: 'Dining', data: landingPageController.tableData),
+          TakeAway(
+              title: 'Takeout', data: landingPageController.takeAwayOrders),
+          OnlinePage(
+              title: 'Online', data: landingPageController.onlineOrders),
+          CarPage(title: 'Car', data: landingPageController.carOrders),
+        ],
+      )),
+        );
   }
 }
