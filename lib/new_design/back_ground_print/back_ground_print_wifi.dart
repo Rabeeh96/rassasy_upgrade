@@ -2893,6 +2893,8 @@ if(taxDetails){
         var branchID = prefs.getInt('branchID') ?? 1;
         final String url = '$baseUrl/posholds/kitchen-print/';
 
+        print("url  $url");
+
         Map data = {
           "OrderID": id,
           "CompanyID": companyID,
@@ -3040,8 +3042,8 @@ if(taxDetails){
     var totalQty = printListData[id].totalQty;
     var tokenNumber = dataPrint[0].tokenNumber;
     var orderType = dataPrint[0].orderTypeI ?? "";
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles( PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+   // printer.setStyles(const PosStyles.defaults());
+    printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
@@ -3057,37 +3059,36 @@ if(taxDetails){
 
     Uint8List typeEng = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
     Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
+    //printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     printer.textEncoded(typeEng,
         styles:
             const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     // printer.text('', styles: PosStyles(align: PosAlign.left));
-    printer.setStyles( PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+    printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     printer.textEncoded(typeArabic,
-        styles:
-            const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+         styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
-    if (isCancelNote) {
-      printer.text(cancelNoteData,
-          styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-      printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-      printer.textEncoded(cancelNoteEnc,
-          styles:
-              const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    }
-
-    if (isUpdate) {
-      printer.text(updateNote,
-          styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-      printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-      printer.textEncoded(updateNoteEnc,
-          styles:
-              const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    }
+    // if (isCancelNote) {
+    //   printer.text(cancelNoteData,
+    //       styles:
+    //           const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    //   printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+    //   printer.textEncoded(cancelNoteEnc,
+    //       styles:
+    //           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+    // }
+    //
+    // if (isUpdate) {
+    //   printer.text(updateNote,
+    //       styles:
+    //           const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    //   printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+    //   printer.textEncoded(updateNoteEnc,
+    //       styles:
+    //           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+    // }
 
     Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     printer.hr();
@@ -3097,18 +3098,18 @@ if(taxDetails){
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     printer.hr();
-    if(showUsernameKot){
-      printer.row([
-        PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-      ]);
-    }
-    if(showDateTimeKot){
-      printer.row([
-        PosColumn(text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(text: convertDateAndTime(currentTime), width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-      ]);
-    }
+    // if(showUsernameKot){
+    //   printer.row([
+    //     PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+    //     PosColumn(text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+    //   ]);
+    // }
+    // if(showDateTimeKot){
+    //   printer.row([
+    //     PosColumn(text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+    //     PosColumn(text: convertDateAndTime(currentTime), width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+    //   ]);
+    // }
     printer.row([
       PosColumn(text: 'Kitchen name :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: kitchenName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
@@ -3126,8 +3127,8 @@ if(taxDetails){
       ]);
     }
 
-    printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(  PosStyles(codeTable: defaultCodePage));
+    // printer.setStyles(const PosStyles.defaults());
+    printer.setStyles(PosStyles(codeTable: defaultCodePage));
     printer.hr();
     printer.row([
       PosColumn(
@@ -3166,9 +3167,7 @@ if(taxDetails){
       if (productDescription != "") {
 
         Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription));
-
-        printer.textEncoded(productDescriptionEnc,
-            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        printer.textEncoded(productDescriptionEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (dataPrint[i].flavour != "") {

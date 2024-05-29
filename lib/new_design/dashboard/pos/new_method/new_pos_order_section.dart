@@ -5125,6 +5125,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       stop();
     } else {
       try {
+
         if (tokenNumber == "") {
           tokenNumber = "001";
         }

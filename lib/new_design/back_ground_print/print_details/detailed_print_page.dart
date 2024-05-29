@@ -65,6 +65,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
       Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكمً'));
       printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       printer.emptyLines(1);
+
     }
 
     printer.cut();

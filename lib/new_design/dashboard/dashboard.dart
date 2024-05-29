@@ -1145,13 +1145,14 @@ class _DashboardNewState extends State<DashboardNew> {
                                 ),
                               ),
                               onTap: () async {
-                                if (isTablet == false) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              POSMobilePage(key: Key(""),)));
-                                } else {
+                                // if (isTablet == false) {
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               POSMobilePage(key: Key(""),)));
+                                // } else {
+
                                   var dinePerm =
                                       await checkingPerm("Diningview");
                                   var takeAwayPerm =
@@ -1169,7 +1170,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   } else {
                                     dialogBoxPermissionDenied(context);
                                   }
-                                }
+                              //  }
                               },
                             ),
                             Padding(
