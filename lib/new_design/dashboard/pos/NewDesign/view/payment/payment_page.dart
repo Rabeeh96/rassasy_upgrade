@@ -46,7 +46,7 @@ class _PaymentPageState extends State<PaymentPage> {
         elevation: 0,
         title:   Text(
           'Payment',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
 
         ),
       ),
@@ -57,7 +57,7 @@ class _PaymentPageState extends State<PaymentPage> {
             color: const Color(0xffE9E9E9),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -70,7 +70,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding:  EdgeInsets.all(8.0),
+                    padding:  EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -92,7 +92,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                   DividerStyle(),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -111,7 +111,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                   DividerStyle(),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -147,7 +147,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -160,7 +160,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -183,7 +183,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                   DividerStyle(),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -209,7 +209,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -222,7 +222,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -253,7 +253,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                   DividerStyle(),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -284,7 +284,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                   DividerStyle(),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -315,7 +315,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                   DividerStyle(),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -349,7 +349,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -362,7 +362,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Column(
                       children: [
                         Row(
@@ -492,7 +492,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -505,7 +505,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Column(
                       children: [
                         Row(

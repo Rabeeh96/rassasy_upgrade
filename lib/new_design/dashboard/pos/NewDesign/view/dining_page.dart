@@ -74,6 +74,9 @@ class _DiningPageState extends State<DiningPage> {
         ),
         actions: [
           GestureDetector(
+            onTap: (){
+
+            },
             child: Text(
               'Manager'.tr,
               style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 13.0),

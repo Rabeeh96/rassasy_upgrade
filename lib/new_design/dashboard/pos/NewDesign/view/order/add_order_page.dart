@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
@@ -8,9 +9,11 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/select_deliveryman.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/order/kartPage.dart';
 import 'package:popover/popover.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../detail_page/customer_detail.dart';
 import 'product_detail_page.dart';
 import 'search_items.dart';
 
@@ -823,9 +826,14 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.customerNameController,
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    onEditingComplete: () {
-                      FocusScope.of(context).requestFocus();
-                    },
+                      onTap: () async {
+                        final result = await Get.to(CustomerDetailPage());
+
+                        if (result != null) {
+                          orderController.customerNameController.text = result[0];
+
+                        }
+                      },
                     keyboardType: TextInputType.text,
                     decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'Customer'),
                   ),
@@ -863,10 +871,9 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.phoneNumberController,
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    onEditingComplete: () {
-                      FocusScope.of(context).requestFocus();
-                    },
-                    keyboardType: TextInputType.text,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                    ], keyboardType: TextInputType.number,
                     decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'Phone No'),
                   ),
                 ),
@@ -879,9 +886,14 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.deliveryManController,
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    onEditingComplete: () {
-                      FocusScope.of(context).requestFocus();
-                    },
+                  onTap: () async {
+                    final result = await Get.to(SelectDeliveryMan());
+
+                    if (result != null) {
+                      orderController.deliveryManController.text = result[0];
+
+                    }
+                  },
                     keyboardType: TextInputType.text,
                     decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Delivery Man'),
                   ),
