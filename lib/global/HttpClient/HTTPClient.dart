@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:rassasy_new/global/global.dart';
@@ -118,7 +119,7 @@ Future defaultDataInitial({context}) async {
         },
         body: body);
     Map n = json.decode(response.body);
-    print(response.body);
+    log("res ${response.body}");
 
 
     var status = n["StatusCode"];
@@ -138,6 +139,8 @@ Future defaultDataInitial({context}) async {
       prefs.setBool("checkVat", settingsData["VAT"]);
       prefs.setBool("check_GST", settingsData["GST"]);
       prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
+
+      prefs.setString("expiryDate", settingsData["ExpiryDate"]);
       prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
       prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
       prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"]??false);

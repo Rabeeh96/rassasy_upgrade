@@ -3027,6 +3027,7 @@ if(taxDetails){
     var userName = prefs.getString('user_name')??"";
     bool showUsernameKot = prefs.getBool('show_username_kot')??false;
     bool showDateTimeKot = prefs.getBool('show_date_time_kot')??false;
+    bool extraDetailsInKOT = prefs.getBool('extraDetailsInKOT')??false;
     var defaultCodePage = prefs.getString("default_code_page") ?? "CP864";
     var currentTime = DateTime.now();
     print("----------------$currentTime");
@@ -3070,25 +3071,30 @@ if(taxDetails){
          styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
-    // if (isCancelNote) {
-    //   printer.text(cancelNoteData,
-    //       styles:
-    //           const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-    //   printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-    //   printer.textEncoded(cancelNoteEnc,
-    //       styles:
-    //           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    // }
-    //
-    // if (isUpdate) {
-    //   printer.text(updateNote,
-    //       styles:
-    //           const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-    //   printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-    //   printer.textEncoded(updateNoteEnc,
-    //       styles:
-    //           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    // }
+    if(extraDetailsInKOT){
+
+      if (isCancelNote) {
+        printer.text(cancelNoteData,
+            styles:
+                const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        printer.textEncoded(cancelNoteEnc,
+            styles:
+                const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+      }
+
+      if (isUpdate) {
+        printer.text(updateNote,
+            styles:
+                const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        printer.textEncoded(updateNoteEnc,
+            styles:
+                const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+      }
+    }
+
+
 
     Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     printer.hr();
@@ -3098,6 +3104,7 @@ if(taxDetails){
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     printer.hr();
+
     // if(showUsernameKot){
     //   printer.row([
     //     PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),

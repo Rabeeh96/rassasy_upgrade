@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
 
- String appVersion = "1.1.19";
+ String appVersion = "1.1.20";
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),
@@ -381,7 +381,7 @@ class BaseUrl{
   // static String baseUrlV11 = "http://192.168.1.77:8002/api/v11";
   // static String imageURL = 'http://192.168.1.77:8002';
 
-  static String currentAppVersion ="1.1.4";
+
 
   static int priceRounding=2;
 }

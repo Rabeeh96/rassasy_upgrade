@@ -104,6 +104,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool show_date_time_kot = false;
   bool show_username_kot = false;
   bool hideTaxDetails = false;
+  bool extraDetailsInKOT = false;
 
   bool time_in_invoice = false;
 
@@ -335,6 +336,7 @@ class _SettingsPageState extends State<SettingsPage> {
       show_date_time_kot = prefs.getBool("show_date_time_kot")??false;
       show_username_kot = prefs.getBool("show_username_kot")??false;
       hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
+      extraDetailsInKOT = prefs.getBool("extraDetailsInKOT")??false;
 
 
 
@@ -1769,6 +1771,53 @@ class _SettingsPageState extends State<SettingsPage> {
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('hideTaxDetails', val);
+
+
+                      // setState(() {
+                      //   printAfterPayment = val;
+                      //   switchStatus("printAfterPayment", printAfterPayment);
+                      // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'extraDetailsInKOT'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: extraDetailsInKOT,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        extraDetailsInKOT = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('extraDetailsInKOT', val);
 
 
                       // setState(() {
@@ -6703,7 +6752,7 @@ At some point, you might wish to restrict the use and collection of your persona
                         'Current App Version:',
                         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       ),
-                      Text(BaseUrl.currentAppVersion, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),)
+                      Text(appVersion, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),)
                     ],
                   ),
                 ),
