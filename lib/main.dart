@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
                   //  selectionHandleColor: Colors.blue,
                 )),
             debugShowCheckedModeBanner: false,
-         home: MyHomePage (),
+            home: MyHomePage (),
                //  home: WaiterApi (),
       //       home: DragableList (),
 
@@ -115,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Future.delayed(Duration.zero, () {
   //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => IpTest()));
-   navigateUser();
+     navigateUser();
     });
   }
 

@@ -91,13 +91,13 @@ class _ViewFlavourState extends State<ViewFlavour> {
           stop();
           flavourNameController.clear();
           flavourList.clear();
-          dialogBox(context, "Flavour $msg successfully");
+
           getAllFlavours();
 
         } else if (status == 6001) {
           stop();
-          var msg = n["message"]??"";
-          dialogBox(context, msg);
+          // var msg = n["message"]??"";
+          // dialogBox(context, msg);
         }
         //DB Error
         else {
@@ -273,8 +273,8 @@ class _ViewFlavourState extends State<ViewFlavour> {
           });
         } else if (status == 6001) {
           stop();
-          var msg = n["error"]??"";
-          dialogBox(context, msg);
+          // var msg = n["error"]??"";
+          // dialogBox(context, msg);
         }
         //DB Error
         else {
@@ -377,7 +377,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
                                   title: Text(flavourList[index].flavourName),
                                 ),
                               );
-                            }):Container(),
+                            }):Container(child: Center(child: Text("No flavour in list",style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),)),),
                       ),
                     ),
                   ),
