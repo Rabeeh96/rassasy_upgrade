@@ -62,17 +62,19 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 /// demo print
   Future<void> DemoPrint(NetworkPrinter printer,codepage) async {
     print(codepage);
-    //printer.setStyles(PosStyles(codeTable: codepage, align: PosAlign.center));
+    if(codepage !=""){
+      printer.setStyles(PosStyles(codeTable: codepage, align: PosAlign.center));
+      printer.setGlobalFont(PosFontType.fontA);
+      Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكم صباح الخير عزيزتي جميعاً'));
+      printer.textEncoded(salam, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+      printer.emptyLines(1);
+    }
 
-    printer.setGlobalFont(PosFontType.fontA);
-    // Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكم صباح الخير عزيزتي جميعاً'));
-    // printer.textEncoded(salam, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    // printer.emptyLines(1);
+
 
     printer.hr();
-    //printer.text("hgadkjhagsdkjhsadgkjadgakdjhgaksdjhgdkjhagsdkgdkahdgkadhgadkislsdkjhkhbkjakiudygabakjxbhlaiuxcliaaasd",);
+    printer.text("Test print viknvcodes ",);
     printer.hr(ch: '-',len: 12);
-    printer.hr(ch: '-',len: 64);
     printer.cut();
   }
 
@@ -1676,10 +1678,9 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
             ElevatedButton(onPressed: (){
               setState(() {
-
                 withCapabilities  =!withCapabilities;
               });
-            }, child: Text("Capabilities",style: TextStyle(color:withCapabilities?Colors.red:Colors.white10),)),
+            }, child: Text("Codepage",style: TextStyle(color:withCapabilities?Colors.red:Colors.white10),)),
 
           ]),
 
@@ -1689,140 +1690,9 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
         builder: (BuildContext context) {
           return  ListView(
             children: <Widget>[
-              // Screenshot(
-              //   controller: screenshotController1,
-              //   child: Container(
-              //       width: 300,
-              //       child: Column(
-              //         children: [
-              //           Row(
-              //             children: [
-              //               Text(
-              //                 "محمد نعم 臺灣  ",
-              //                 style: TextStyle(
-              //                     fontSize: 30, fontWeight: FontWeight.bold),
-              //               ),
-              //             ],
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //           ),
-              //           Text(
-              //               "----------------------------------------------------------------------------------"),
-              //           Padding(
-              //             padding: const EdgeInsets.only(bottom: 20.0),
-              //             child: Row(
-              //               mainAxisAlignment: MainAxisAlignment.center,
-              //               children: [
-              //                 Text(
-              //                   "(  汉字 )",
-              //                   style: TextStyle(
-              //                       fontSize: 40, fontWeight: FontWeight.bold),
-              //                 ),
-              //                 SizedBox(
-              //                   width: 10,
-              //                 ),
-              //                 Text(
-              //                   "رقم الطلب",
-              //                   style: TextStyle(
-              //                       fontSize: 30, fontWeight: FontWeight.bold),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //           SizedBox(
-              //             height: 20,
-              //             child: Text(
-              //                 "-------------------------------------------------------------------------------------"),
-              //           ),
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             crossAxisAlignment: CrossAxisAlignment.start,
-              //             children: [
-              //               Expanded(
-              //                 child: Center(
-              //                   child: Text(
-              //                     "التفاصيل",
-              //                     style: TextStyle(
-              //                         fontSize: 25,
-              //                         fontWeight: FontWeight.bold),
-              //                   ),
-              //                 ),
-              //                 flex: 6,
-              //               ),
-              //               Expanded(
-              //                 child: Center(
-              //                   child: Text(
-              //                     "السعر ",
-              //                     style: TextStyle(
-              //                         fontSize: 25,
-              //                         fontWeight: FontWeight.bold),
-              //                   ),
-              //                 ),
-              //                 flex: 2,
-              //               ),
-              //               Expanded(
-              //                 child: Center(
-              //                   child: Text(
-              //                     "العدد",
-              //                     style: TextStyle(
-              //                         fontSize: 25,
-              //                         fontWeight: FontWeight.bold),
-              //                   ),
-              //                 ),
-              //                 flex: 2,
-              //               ),
-              //             ],
-              //           ),
-              //           ListView.builder(
-              //             scrollDirection: Axis.vertical,
-              //             shrinkWrap: true,
-              //             physics: ScrollPhysics(),
-              //             itemCount: 4,
-              //             itemBuilder: (context, index) {
-              //               return Card(
-              //                 child: Row(
-              //                   mainAxisAlignment:
-              //                   MainAxisAlignment.spaceBetween,
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     Expanded(
-              //                       child: Center(
-              //                         child: Text(
-              //                           "臺灣",
-              //                           style: TextStyle(fontSize: 25),
-              //                         ),
-              //                       ),
-              //                       flex: 6,
-              //                     ),
-              //                     Expanded(
-              //                       child: Center(
-              //                         child: Text(
-              //                           "تجربة عيوني انتة ",
-              //                           style: TextStyle(fontSize: 25),
-              //                         ),
-              //                       ),
-              //                       flex: 2,
-              //                     ),
-              //                     Expanded(
-              //                       child: Center(
-              //                         child: Text(
-              //                           "Test My little pice of huny",
-              //                           style: TextStyle(fontSize: 25),
-              //                         ),
-              //                       ),
-              //                       flex: 2,
-              //                     ),
-              //                   ],
-              //                 ),
-              //               );
-              //             },
-              //           ),
-              //           Text(
-              //               "----------------------------------------------------------------------------------"),
-              //         ],
-              //       )),
-              // ),
 
-              const SizedBox(height: 100),
+
+              const SizedBox(height: 50),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1855,7 +1725,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   Container(
                     width: 300,
                     height: 50,
-                    color: Colors.redAccent,
+                    color: Colors.white24,
                     child: TextField(
                         style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                         onTap: () async {

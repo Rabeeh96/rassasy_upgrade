@@ -23,8 +23,16 @@ class _select_code_pageState extends State<select_code_page> {
     "ISO_8859-6",
     "CP864",
     "ISO-8859-6",
-    ""
+    "PC850",
+    "PC860",
+    "PC858",
+    "PC863",
+    "CP1251",
+    "PC863",
+    "",
+    "",
   ];
+
 
   customisedStyle(context,Colors,FontWeight,fontSize){
     return GoogleFonts.poppins(textStyle:TextStyle(fontWeight: FontWeight,color: Colors,fontSize: fontSize));
