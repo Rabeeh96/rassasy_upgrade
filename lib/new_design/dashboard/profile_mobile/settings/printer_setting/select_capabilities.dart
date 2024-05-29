@@ -16,7 +16,7 @@ class SelectCapabilitiesMob extends StatefulWidget {
 class _SelectCapabilitiesMobState extends State<SelectCapabilitiesMob> {
   PrintSettingController capabilitiesController = Get.put(PrintSettingController());
 
-
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
