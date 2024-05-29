@@ -368,6 +368,7 @@ class _DashboardNewState extends State<DashboardNew> {
                 //  style: TextStyle(color: Colors.black, fontSize: 24),
               ),
         actions: [
+
           /// select waiter role is commented
           // Theme(
           //   data: Theme.of(context).copyWith(
