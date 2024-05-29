@@ -29,9 +29,6 @@ class OrderController extends GetxController {
   TextEditingController platformController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController categoryNameController = TextEditingController();
-  TextEditingController customerNameKartController = TextEditingController();
-  TextEditingController phoneNumberKartController = TextEditingController();
-  TextEditingController deliveryManKartController = TextEditingController();
   TextEditingController platformKartController = TextEditingController();
   TextEditingController searchKartController = TextEditingController();
   TextEditingController categoryNameKartController = TextEditingController();
@@ -43,6 +40,7 @@ class OrderController extends GetxController {
 
   RxString user_name = "".obs;
   RxString tokenNumber = "".obs;
+  RxString customerBalance = "0.0".obs;
 
   RxBool isGst = false.obs;
   RxInt ledgerID = 1.obs;
@@ -1508,7 +1506,6 @@ class OrderController extends GetxController {
       "CompanyID": companyID,
       "CreatedUserID": userID,
       "PriceRounding": BaseUrl.priceRounding,
-
       "load_data": true,
       "type_invoice": "SalesInvoice",
       "ledger_name": "",
@@ -1521,6 +1518,7 @@ class OrderController extends GetxController {
       'Authorization': 'Bearer $accessToken', // Add the token here
     }, body: json.encode(payload));
 
+    print(response.body);
 
 
     if (response.statusCode == 200) {

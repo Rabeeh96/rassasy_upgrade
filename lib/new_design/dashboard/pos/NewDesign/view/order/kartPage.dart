@@ -636,13 +636,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       final result = await Get.to(CustomerDetailPage());
 
                       if (result != null) {
-                        orderController.customerNameKartController.text = result[0];
+                        orderController.customerNameController.text = result[0];
 
                       }
 
                     },
                     textCapitalization: TextCapitalization.words,
-                    controller: orderController.customerNameKartController,
+                    controller: orderController.customerNameController,
                     style: customisedStyle(
                         context, Colors.black, FontWeight.w500, 14.0),
 
@@ -680,6 +680,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ),
                 ],
               ),
+              //
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
                 child: Container(
@@ -688,10 +689,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
                     ], keyboardType: TextInputType.number,
-                    controller: orderController.phoneNumberKartController,
+                    controller: orderController.phoneNumberController,
                     style: customisedStyle(
                         context, Colors.black, FontWeight.w500, 14.0),
-
 
                     decoration: TextFieldDecoration.defaultTextField(
                         hintTextStr: 'Phone No'),
@@ -708,13 +708,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       final result = await Get.to(SelectDeliveryMan());
 
                       if (result != null) {
-                        orderController.deliveryManKartController.text = result[0];
+                        orderController.deliveryManController.text = result[0];
 
                       }
                     }
                     ,
                     textCapitalization: TextCapitalization.words,
-                    controller: orderController.deliveryManKartController,
+                    controller: orderController.deliveryManController,
                     style: customisedStyle(
                         context, Colors.black, FontWeight.w500, 14.0),
 
@@ -732,9 +732,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.platformKartController,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w500, 14.0),
-
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     keyboardType: TextInputType.text,
                     decoration: TextFieldDecoration.defaultTextFieldIcon(
                         hintTextStr: 'Platform(Online Only)'),

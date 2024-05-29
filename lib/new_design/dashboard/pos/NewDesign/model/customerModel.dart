@@ -1,20 +1,20 @@
 class CustomerModel {
-  final int id;
-  final String userName;
+  final int ledgerID;
+  final String ledgerName;
   final String openingBalance;
   final String customerLedgerBalance;
 
   CustomerModel({
-    required this.id,
-    required this.userName,
+    required this.ledgerID,
+    required this.ledgerName,
     required this.openingBalance,
     required this.customerLedgerBalance,
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
     return CustomerModel(
-      id: json['LedgerID'],
-      userName: json['LedgerName'],
+      ledgerID: json['LedgerID'],
+      ledgerName: json['LedgerName'],
       openingBalance: json['OpeningBalance'].toString(),
       customerLedgerBalance: json['CustomerLedgerBalance'].toString(),
 
