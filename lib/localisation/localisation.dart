@@ -342,7 +342,8 @@ class LocaleChange extends Translations {
           'clear_table_after': 'Clear Table After Payment',
           'select_a_template': 'Select a Template',
           'enable_wifi': 'Enable Wifi Printer',
-          'select_code_page': 'Select code page'
+          'select_code_page': 'Select code page',
+          'extraDetailsInKOT': 'extra Details In KOT'
         },
 
         ///
@@ -687,7 +688,9 @@ class LocaleChange extends Translations {
           'tak_awy_rep': 'تقرير الوجبات الجاهزة',
           'excise_tax': 'الضريبة',
           'total_vat': 'ضريبة القيمة المضافة',
-          'select_code_page': 'حدد صفحة الرموز'
+          'select_code_page': 'حدد صفحة الرموز',
+          'extraDetailsInKOT': 'extraDetailsInKOT'
+
         },
       };
 }

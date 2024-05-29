@@ -130,11 +130,9 @@ class _DashboardNewState extends State<DashboardNew> {
             prefs.setBool("check_GST", settingsData["GST"]);
             prefs.setInt("Cash_Account", n["Cash_Account"] ?? 1);
             prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
-            prefs.setString(
-                "PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
+            prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
             prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
-            prefs.setBool(
-                "EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
+            prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
             prefs.setInt("user_type", n["user_type"]);
           });
           stop();
