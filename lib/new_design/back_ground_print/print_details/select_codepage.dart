@@ -30,7 +30,7 @@ class _select_code_pageState extends State<select_code_page> {
     "CP1251",
     "PC863",
     "",
-    "",
+
   ];
 
 

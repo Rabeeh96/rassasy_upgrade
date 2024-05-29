@@ -56,20 +56,17 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
   bool connectionTesting = false;
 
   /// demo print
-  Future<void> DemoPrint(NetworkPrinter printer, codepage) async {
+  Future<void> DemoPrint(NetworkPrinter printer, codepage,capabilities) async {
     print(codepage);
     if (codepage != "") {
+      printer.emptyLines(2);
+      printer.text("Test print code Page  $codepage capabilities $capabilities ",);
       printer.setStyles(PosStyles(codeTable: codepage, align: PosAlign.center));
-      Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكم ً'));
-      printer.textEncoded(salam, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, bold: true));
+      Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكمً'));
+      printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       printer.emptyLines(1);
     }
 
-    printer.hr();
-    printer.text(
-      "Test print viknvcodes ",
-    );
-    printer.hr(ch: '-', len: 12);
     printer.cut();
   }
 
@@ -380,9 +377,9 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                 ),
                 companyDescription != ""
                     ? Text(
-                        companyDescription,
-                        style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
-                      )
+                  companyDescription,
+                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                )
                     : Container(),
                 Text(
                   companyAddress1 + companyAddress2,
@@ -406,18 +403,18 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             ),
             companyCrNumber != ""
                 ? Row(
-                    children: [
-                      Text(
-                        companyCrNumber + " :",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "س. ت",
-                        style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  )
+              children: [
+                Text(
+                  companyCrNumber + " :",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "س. ت",
+                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            )
                 : Container(),
             Row(
               children: [
@@ -547,105 +544,105 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             ),
             customerCrNumber != ""
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "CR Number",
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            customerCrNumber,
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "س. ت",
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                    ],
-                  )
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      "CR Number",
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      customerCrNumber,
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      "س. ت",
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+              ],
+            )
                 : Container(),
             customerVatNumber != ""
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "VAT No",
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            customerVatNumber,
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "الرقم الضريبي",
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                    ],
-                  )
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      "VAT No",
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      customerVatNumber,
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      "الرقم الضريبي",
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+              ],
+            )
                 : Container(),
             phone != ""
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "Phone",
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            phone,
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "هاتف",
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                    ],
-                  )
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      "Phone",
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      phone,
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      "هاتف",
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  flex: 1,
+                ),
+              ],
+            )
                 : Container(),
             SizedBox(
               height: 20,
@@ -1304,7 +1301,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     print(res.msg);
     if (res == PosPrintResult.success) {
       //  function for printing purpose
-      await DemoPrint(printer, codePage);
+      await DemoPrint(printer, codePage,capability);
       printer.disconnect();
     }
   }
@@ -1320,7 +1317,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     final PosPrintResult res = await printer.connect(printerIp, port: port);
 
     if (res == PosPrintResult.success) {
-      await DemoPrint(printer, "");
+      await DemoPrint(printer, "",capability);
       printer.disconnect();
     }
   }
@@ -1563,11 +1560,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
                                     print("--------withCodePage--$withCodePage--");
 
-                                    // if (withCodePage) {
-                                    //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
-                                    // } else {
-                                    //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
-                                    // }
+                                    if (withCodePage) {
+                                      testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
+                                    } else {
+                                      testPrint2(ctx: context, capability: printerModels[index], codePage: '');
+                                    }
 
                                   },
                                   title: Row(
@@ -2077,7 +2074,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     return res;
   }
 
-  /// new method
+/// new method
 }
 
 List<ProductDetailsModel> printDalesDetails = [];

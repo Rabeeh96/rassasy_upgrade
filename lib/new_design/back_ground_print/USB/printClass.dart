@@ -227,7 +227,7 @@ class USBPrintClass {
   }
 
 
-  
+
   Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails) async {
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, profile);
