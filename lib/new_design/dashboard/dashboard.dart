@@ -368,6 +368,7 @@ class _DashboardNewState extends State<DashboardNew> {
                 //  style: TextStyle(color: Colors.black, fontSize: 24),
               ),
         actions: [
+
           /// select waiter role is commented
           // Theme(
           //   data: Theme.of(context).copyWith(
@@ -768,7 +769,7 @@ class _DashboardNewState extends State<DashboardNew> {
           ? dashboardPage()
           : noNetworkConnectionPage(),
       bottomNavigationBar: isTablet == true
-          ? Container()
+          ? Container(height: 1,)
           : Container(
               decoration: BoxDecoration(
                   border: Border(
