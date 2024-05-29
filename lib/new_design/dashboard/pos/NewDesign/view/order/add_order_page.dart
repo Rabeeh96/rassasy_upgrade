@@ -825,6 +825,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.customerNameController,
+                    readOnly: true,
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       onTap: () async {
                         final result = await Get.to(CustomerDetailPage());
@@ -835,7 +836,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                         }
                       },
                     keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'Customer'),
+                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Customer'),
                   ),
                 ),
               ),
@@ -894,6 +895,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
 
                     }
                   },
+                    readOnly: true,
                     keyboardType: TextInputType.text,
                     decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Delivery Man'),
                   ),
@@ -907,9 +909,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.platformController,
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    onEditingComplete: () {
-                      FocusScope.of(context).requestFocus();
-                    },
+                   readOnly: true,
                     keyboardType: TextInputType.text,
                     decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Platform(Online Only)'),
                   ),
