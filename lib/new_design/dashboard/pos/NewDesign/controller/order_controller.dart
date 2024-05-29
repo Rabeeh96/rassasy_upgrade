@@ -4,12 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/deliveryMan.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/flavour.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/groupModel.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/productModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
+
+import '../model/customerModel.dart';
 
 class OrderController extends GetxController {
   ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(false); // Initialize with initial value
@@ -26,6 +29,12 @@ class OrderController extends GetxController {
   TextEditingController platformController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController categoryNameController = TextEditingController();
+  TextEditingController customerNameKartController = TextEditingController();
+  TextEditingController phoneNumberKartController = TextEditingController();
+  TextEditingController deliveryManKartController = TextEditingController();
+  TextEditingController platformKartController = TextEditingController();
+  TextEditingController searchKartController = TextEditingController();
+  TextEditingController categoryNameKartController = TextEditingController();
   TextEditingController unitPriceChangingController = TextEditingController();
   late ValueNotifier<int> productSearchNotifier;
   RxBool printAfterPayment = false.obs;
@@ -1435,6 +1444,92 @@ class OrderController extends GetxController {
     } catch (e) {
       stop();
       dialogBox(context, e.toString());
+    }
+  }
+
+
+  ///deliveryman
+  var isCustomerLoading=true.obs;
+
+  var users = <DeliveryManModel>[].obs;
+
+  Future<void> fetchUsers() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isCustomerLoading.value=true;
+    String baseUrl = BaseUrl.baseUrl;
+    var userID = prefs.getInt('user_id') ?? 0;
+    var accessToken = prefs.getString('access') ?? '';
+    var companyID = prefs.getString('companyID') ?? 0;
+    var branchID = prefs.getInt('branchID') ?? 1;
+    final url = Uri.parse('$baseUrl/posholds/list/pos-users/');
+    final payload = {
+      "BranchID": branchID,
+      "CompanyID": companyID,
+      "CreatedUserID": userID,
+      "PriceRounding": BaseUrl.priceRounding,
+      "search": "",
+      "is_deliveryman": true
+    };
+
+
+    final response = await http.post(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken', // Add the token here
+    }, body: json.encode(payload));
+
+
+
+    if (response.statusCode == 200) {
+      isCustomerLoading.value=false;
+      final jsonResponse = json.decode(response.body);
+      users.assignAll((jsonResponse['data'] as List).map((data) => DeliveryManModel.fromJson(data)).toList());
+    } else {
+      isCustomerLoading.value=false;
+      throw Exception('Failed to load users');
+    }
+  }
+
+///customer
+  var isLoadingValue=true.obs;
+
+  var customerList = <CustomerModel>[].obs;
+
+  Future<void> fetchCustomers() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLoadingValue.value=true;
+    String baseUrl = BaseUrl.baseUrl;
+    var userID = prefs.getInt('user_id') ?? 0;
+    var accessToken = prefs.getString('access') ?? '';
+    var companyID = prefs.getString('companyID') ?? 0;
+    var branchID = prefs.getInt('branchID') ?? 1;
+    final url = Uri.parse('$baseUrl/posholds/pos-ledgerListByID/');
+    final payload = {
+      "BranchID": branchID,
+      "CompanyID": companyID,
+      "CreatedUserID": userID,
+      "PriceRounding": BaseUrl.priceRounding,
+
+      "load_data": true,
+      "type_invoice": "SalesInvoice",
+      "ledger_name": "",
+      "length": ""
+    };
+
+
+    final response = await http.post(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken', // Add the token here
+    }, body: json.encode(payload));
+
+
+
+    if (response.statusCode == 200) {
+      isLoadingValue.value=false;
+      final jsonResponse = json.decode(response.body);
+      customerList.assignAll((jsonResponse['data'] as List).map((data) => CustomerModel.fromJson(data)).toList());
+    } else {
+      isLoadingValue.value=false;
+      throw Exception('Failed to load users');
     }
   }
 }

@@ -46,7 +46,7 @@ class _SearchItemsState extends State<SearchItems> {
         title: const Text(
           'Search',
           style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
         ),
         actions: [
           Padding(

@@ -9,7 +9,6 @@ import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_co
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/reservation_list.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'order/add_order_page.dart';
-import 'un_wanted/new_detail_page.dart';
 
 class DiningPage extends StatefulWidget {
   final String title;
@@ -76,7 +75,7 @@ class _DiningPageState extends State<DiningPage> {
         actions: [
           GestureDetector(
             onTap: (){
-              Get.to(DetailPageCustomer());
+
             },
             child: Text(
               'Manager'.tr,
