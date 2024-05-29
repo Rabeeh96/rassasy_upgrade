@@ -768,7 +768,7 @@ class _DashboardNewState extends State<DashboardNew> {
           ? dashboardPage()
           : noNetworkConnectionPage(),
       bottomNavigationBar: isTablet == true
-          ? Container()
+          ? Container(height: 1,)
           : Container(
               decoration: BoxDecoration(
                   border: Border(

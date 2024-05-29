@@ -72,7 +72,7 @@ class DeliveryManState extends State<SelectPaymentDeliveryMan> {
     );
   }
 
-  Future<Null> getEmployeeDetails() async {
+  Future<Null> getEmployeeDetails() async  {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       stop();
