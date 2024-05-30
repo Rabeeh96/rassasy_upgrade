@@ -161,6 +161,7 @@ class _AboutUsState extends State<AboutUs> {
                             TextButton(
                                 onPressed: () {
 Get.to(VersionDetailPage());
+//,
                                 },
                                 child: Text(
                                   'vertion_history'.tr,

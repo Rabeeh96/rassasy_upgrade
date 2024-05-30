@@ -21,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 import 'Default/select_printer.dart';
+import 'select/code_page.dart';
 import 'select/select_capabilities.dart';
 import 'user_detail/select_role.dart';
 import 'user_detail/select_user_name.dart';
@@ -103,6 +104,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool show_date_time_kot = false;
   bool show_username_kot = false;
   bool hideTaxDetails = false;
+  bool extraDetailsInKOT = false;
 
   bool time_in_invoice = false;
 
@@ -206,6 +208,7 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController organizationCityController = TextEditingController();
   TextEditingController defaultSalesOrderController = TextEditingController();
   TextEditingController capabilitiesController = TextEditingController();
+  TextEditingController codePageController = TextEditingController();
   TextEditingController termsAndConditionController = TextEditingController();
   TextEditingController defaultSalesInvoiceController = TextEditingController();
   TextEditingController kitchenNameController = TextEditingController();
@@ -320,6 +323,7 @@ class _SettingsPageState extends State<SettingsPage> {
         print_type_value = false;
       }
       capabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
+      codePageController.text = prefs.getString('default_code_page') ?? "CP864";
       defaultSalesInvoiceController.text = prefs.getString('defaultIP') ?? "";
       defaultSalesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
 
@@ -332,9 +336,10 @@ class _SettingsPageState extends State<SettingsPage> {
       show_date_time_kot = prefs.getBool("show_date_time_kot")??false;
       show_username_kot = prefs.getBool("show_username_kot")??false;
       hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
+      extraDetailsInKOT = prefs.getBool("extraDetailsInKOT")??false;
 
 
-      print("------show_date_time_kot---$show_date_time_kot--------show_username_kot-$show_username_kot-------------------------");
+
 
     });
   }
@@ -1347,6 +1352,65 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
+
+          Card(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+
+              ),
+              padding: const EdgeInsets.all(6),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 5,
+                    child: Text('select_code_page'.tr,style:  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),),
+                  ),
+                  const SizedBox(
+                    width: 25,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 5,
+                    child: TextField(
+                      readOnly: true,
+                      onTap: () async{
+                        var result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SelectCodePage()),
+                        );
+                        if (result != null) {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.setString('default_code_page',result) ?? '';
+                          codePageController.text = result;
+                        }
+                      },
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                      controller: codePageController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(13),
+                        hintText: 'select_code_page'.tr,
+                        suffixIcon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.black,
+                        ),
+                        hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
+                        labelText: 'select_code_page'.tr,
+                        labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
+                        focusedBorder:
+                        const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                        isDense: true,
+                        border: const OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
@@ -1707,6 +1771,53 @@ class _SettingsPageState extends State<SettingsPage> {
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('hideTaxDetails', val);
+
+
+                      // setState(() {
+                      //   printAfterPayment = val;
+                      //   switchStatus("printAfterPayment", printAfterPayment);
+                      // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'extraDetailsInKOT'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: extraDetailsInKOT,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        extraDetailsInKOT = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('extraDetailsInKOT', val);
 
 
                       // setState(() {
@@ -6641,7 +6752,7 @@ At some point, you might wish to restrict the use and collection of your persona
                         'Current App Version:',
                         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       ),
-                      Text(BaseUrl.currentAppVersion, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),)
+                      Text(appVersion, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),)
                     ],
                   ),
                 ),

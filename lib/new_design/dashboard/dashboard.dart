@@ -15,6 +15,7 @@ import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/auth_user/profie/profile.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/usb_test_page.dart';
+import 'package:rassasy_new/new_design/back_ground_print/print_details/detailed_print_page.dart';
 import 'package:rassasy_new/new_design/back_ground_print/test_page.dart';
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/pos_page.dart';
@@ -129,11 +130,9 @@ class _DashboardNewState extends State<DashboardNew> {
             prefs.setBool("check_GST", settingsData["GST"]);
             prefs.setInt("Cash_Account", n["Cash_Account"] ?? 1);
             prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
-            prefs.setString(
-                "PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
+            prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
             prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
-            prefs.setBool(
-                "EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
+            prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
             prefs.setInt("user_type", n["user_type"]);
           });
           stop();
@@ -189,8 +188,13 @@ class _DashboardNewState extends State<DashboardNew> {
         var printType = prefs.getString('PrintType') ?? "Wifi";
 
         if (printType == "Wifi") {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => PrintSettings()),
+          /// re paced with detailed settings
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(builder: (context) => PrintSettings()),
+          // );
+
+    Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => PrintSettingsDetailed()),
           );
         } else {
           Navigator.of(context).push(
@@ -880,40 +884,41 @@ class _DashboardNewState extends State<DashboardNew> {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Positioned(
-                bottom: 565,
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 1,
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(width: .1, color: Colors.grey))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(MobOrganizationList());
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.circle,
-                            color: Color(0xffF4F4F4),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              "Organization",
-                              style: customisedStyleBold(
-                                  context, Colors.black, FontWeight.w400, 15.0),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )),
+            /// commented
+            // Positioned(
+            //     bottom: 565,
+            //     child: Container(
+            //       width: MediaQuery.of(context).size.width / 1,
+            //       decoration: const BoxDecoration(
+            //           border: Border(
+            //               bottom: BorderSide(width: .1, color: Colors.grey))),
+            //       child: Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: GestureDetector(
+            //           onTap: () {
+            //             Get.to(MobOrganizationList());
+            //           },
+            //           child: Row(
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               const Icon(
+            //                 Icons.circle,
+            //                 color: Color(0xffF4F4F4),
+            //               ),
+            //               Padding(
+            //                 padding: const EdgeInsets.only(left: 8.0),
+            //                 child: Text(
+            //                   "Organization",
+            //                   style: customisedStyleBold(
+            //                       context, Colors.black, FontWeight.w400, 15.0),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //     )),
             Container(
               width: isTablet ? screenWidth / 4 : screenWidth / 1,
               height: isTablet ? screenHeight / 1.4 : screenHeight / 1.5,
@@ -1138,13 +1143,14 @@ class _DashboardNewState extends State<DashboardNew> {
                                 ),
                               ),
                               onTap: () async {
-                                if (isTablet == false) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              POSMobilePage(key: Key(""),)));
-                                } else {
+                                // if (isTablet == false) {
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               POSMobilePage(key: Key(""),)));
+                                // } else {
+
                                   var dinePerm =
                                       await checkingPerm("Diningview");
                                   var takeAwayPerm =
@@ -1162,7 +1168,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   } else {
                                     dialogBoxPermissionDenied(context);
                                   }
-                                }
+                              //  }
                               },
                             ),
                             Padding(
@@ -1440,65 +1446,66 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                //     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            const DragableList()));
-
-                                // var invoices = await checkingPerm('Invoices'.tr);
-                                //
-                                // if (invoices == true) {
-                                //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
-                                //
-                                // } else {
-                                //   dialogBoxPermissionDenied(context);
-                                // }
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: isTablet
-                                    ? screenHeight / 12
-                                    : screenHeight / 15,
-                                width: isTablet
-                                    ? screenWidth / 17
-                                    : screenWidth / 6,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/report.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'Daily Report'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
+                   /// daily report commented
+                   //      Column(
+                   //        children: [
+                   //          GestureDetector(
+                   //            onTap: () async {
+                   //              //     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+                   //              Navigator.push(
+                   //                  context,
+                   //                  MaterialPageRoute(
+                   //                      builder: (BuildContext context) =>
+                   //                          const DragableList()));
+                   //
+                   //              // var invoices = await checkingPerm('Invoices'.tr);
+                   //              //
+                   //              // if (invoices == true) {
+                   //              //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                   //              //
+                   //              // } else {
+                   //              //   dialogBoxPermissionDenied(context);
+                   //              // }
+                   //            },
+                   //            child: Container(
+                   //              decoration: const BoxDecoration(
+                   //                  color: Color(0xffEEEEEE),
+                   //                  borderRadius:
+                   //                      BorderRadius.all(Radius.circular(20))),
+                   //              height: isTablet
+                   //                  ? screenHeight / 12
+                   //                  : screenHeight / 15,
+                   //              width: isTablet
+                   //                  ? screenWidth / 17
+                   //                  : screenWidth / 6,
+                   //              child: Row(
+                   //                mainAxisAlignment: MainAxisAlignment.center,
+                   //                crossAxisAlignment: CrossAxisAlignment.center,
+                   //                children: [
+                   //                  Container(
+                   //                    height:
+                   //                        MediaQuery.of(context).size.height /
+                   //                            20,
+                   //                    width: MediaQuery.of(context).size.width /
+                   //                        20,
+                   //                    child: SvgPicture.asset(
+                   //                        'assets/svg/report.svg'),
+                   //                  ),
+                   //                ],
+                   //              ),
+                   //            ),
+                   //          ),
+                   //          Padding(
+                   //            padding: const EdgeInsets.only(
+                   //              top: 12,
+                   //            ),
+                   //            child: Text(
+                   //              'Daily Report'.tr,
+                   //              style: const TextStyle(fontSize: 12),
+                   //            ),
+                   //          )
+                   //        ],
+                   //      ),
 
                         /// new taxz commented
                         // Column(

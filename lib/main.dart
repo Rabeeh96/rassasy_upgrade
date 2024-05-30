@@ -32,21 +32,23 @@ void main() {
   bool isTablet = isTabletDevice();
 
   // Set preferred orientations based on the device type
-  if (isTablet) {
+  // if (isTablet) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]).then((_) {
       runApp(MyApp());
     });
-  } else {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]).then((_) {
-      runApp(MyApp());
-    });
-  }
+
+
+  // } else {
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.portraitUp,
+  //     DeviceOrientation.portraitDown,
+  //   ]).then((_) {
+  //     runApp(MyApp());
+  //   });
+  // }
 }
 bool isTabletDevice() {
   // Determine if the device is a tablet based on the screen width
@@ -92,7 +94,7 @@ class MyApp extends StatelessWidget {
                   //  selectionHandleColor: Colors.blue,
                 )),
             debugShowCheckedModeBanner: false,
-         home: MyHomePage (),
+            home: MyHomePage (),
                //  home: WaiterApi (),
       //       home: DragableList (),
 
@@ -115,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Future.delayed(Duration.zero, () {
   //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => IpTest()));
-   navigateUser();
+     navigateUser();
     });
   }
 

@@ -795,13 +795,13 @@ class _OrderCreateViewState extends State<OrderCreateView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 14),
+                padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Details",
-                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w700, 18.0),
                     ),
                     IconButton(
                         onPressed: () {
@@ -814,12 +814,9 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   ],
                 ),
               ),
-              Container(
-                height: 1,
-                color: const Color(0xffE9E9E9),
-              ),
+             DividerStyle(),
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
@@ -832,7 +829,8 @@ class _OrderCreateViewState extends State<OrderCreateView> {
 
                         if (result != null) {
                           orderController.customerNameController.text = result[0];
-
+                          orderController.customerBalance.value = result[1];
+                          orderController.update();
                         }
                       },
                     keyboardType: TextInputType.text,
@@ -840,6 +838,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   ),
                 ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -858,14 +857,14 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                       style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 15.0),
                     ),
                   ),
-                  Padding(
+                  Obx(() => Padding(
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: Text("00.0", style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
-                  ),
+                    child: Text(orderController.customerBalance.value, style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
+                  ),)
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 15,bottom: 15),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
@@ -879,42 +878,49 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 4,
-                  child: TextField(
-                    textCapitalization: TextCapitalization.words,
-                    controller: orderController.deliveryManController,
-                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                  onTap: () async {
-                    final result = await Get.to(SelectDeliveryMan());
 
-                    if (result != null) {
-                      orderController.deliveryManController.text = result[0];
 
-                    }
-                  },
-                    readOnly: true,
-                    keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Delivery Man'),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 4,
-                  child: TextField(
-                    textCapitalization: TextCapitalization.words,
-                    controller: orderController.platformController,
-                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                   readOnly: true,
-                    keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Platform(Online Only)'),
-                  ),
-                ),
-              ),
+              /// delivery man section
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width / 4,
+              //     child: TextField(
+              //       textCapitalization: TextCapitalization.words,
+              //       controller: orderController.deliveryManController,
+              //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              //     onTap: () async {
+              //       final result = await Get.to(SelectDeliveryMan());
+              //
+              //       if (result != null) {
+              //         orderController.deliveryManController.text = result[0];
+              //
+              //       }
+              //     },
+              //       readOnly: true,
+              //       keyboardType: TextInputType.text,
+              //       decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Delivery Man'),
+              //     ),
+              //   ),
+              // ),
+
+
+
+              /// online plat form is commented
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width / 4,
+              //     child: TextField(
+              //       textCapitalization: TextCapitalization.words,
+              //       controller: orderController.platformController,
+              //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              //      readOnly: true,
+              //       keyboardType: TextInputType.text,
+              //       decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Platform(Online Only)'),
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
                 child: Container(
@@ -935,7 +941,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                     },
                     child: Text(
                       'save'.tr,
-                      style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0),
+                      style: customisedStyle(context, Colors.white, FontWeight.normal, 15.0),
                     ),
                   ),
                 ),
