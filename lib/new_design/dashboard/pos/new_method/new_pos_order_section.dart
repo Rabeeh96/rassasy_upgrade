@@ -5197,6 +5197,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           time = "";
         } else {}
 
+
         final String url = '$baseUrl/posholds/create-pos/salesOrder/';
 
         Map data = {
