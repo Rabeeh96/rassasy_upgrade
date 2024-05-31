@@ -6,6 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/car_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/payment/payment_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/pos_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'global/global.dart';

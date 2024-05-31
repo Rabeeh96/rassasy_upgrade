@@ -2969,7 +2969,9 @@ if(taxDetails){
           //  Alert(message: "Some Network Error");
           stop();
         }
-      } catch (e) {}
+      } catch (e) {
+        print("got error in kot api ${e.toString()}");
+      }
     }
   }
 
@@ -3005,10 +3007,10 @@ if(taxDetails){
           await printArabicKot(printer, id, items);
         }
 
-        Future.delayed(const Duration(seconds: 1), ()async {
-          print("------after delay----------------------------strting for printing process");
-          printer.disconnect();
-        });
+        // Future.delayed(const Duration(seconds: 1), ()async {
+        //   print("------after delay----------------------------strting for printing process");
+        //   printer.disconnect();
+        // });
 
 
 
@@ -3197,6 +3199,7 @@ if(taxDetails){
               (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
+    printer.disconnect();
 
   }
   /// Direct text method for Gst company
