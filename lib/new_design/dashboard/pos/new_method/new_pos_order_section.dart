@@ -756,7 +756,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var printType = prefs.getString('PrintType') ?? 'Wifi';
       if (printType == 'Wifi') {
-        printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate);
+        printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
       } else {
         printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
         /// commented bluetooth
@@ -5528,6 +5528,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var status = n["StatusCode"];
 
         var cancelPrint = n["final_data"] ?? [];
+
+        print("Cancel print -----------Cancel print-----Cancel print--$cancelPrint");
+
+
 
         if (status == 6000) {
           stop();
