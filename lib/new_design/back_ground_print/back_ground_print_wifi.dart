@@ -2879,7 +2879,7 @@ if(taxDetails){
 
 
 
-  printKotPrint(var id, rePrint, cancelOrder, isUpdate) async {
+  printKotPrint(var id, rePrint, cancelOrder, isUpdate,isCancelled) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
     } else {
@@ -2901,6 +2901,7 @@ if(taxDetails){
           "CreatedUserID": userID,
           "BranchID": branchID,
           "KitchenPrint": rePrint,
+
         };
         print(data);
         //encode Map to JSON
@@ -2937,7 +2938,7 @@ if(taxDetails){
             try {
               print('------------------ index $i');
                dataPrint.clear();
-               await kotPrintConnect(printListData[i].ip, i, printListData[i].items, false, isUpdate);
+               await kotPrintConnect(printListData[i].ip, i, printListData[i].items, false, isUpdate,isCancelled);
                await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
             } catch (e) {
               print('log ${e.toString()}');
@@ -2949,7 +2950,7 @@ if(taxDetails){
             try {
               print('------------------ index $i');
               dataPrint.clear();
-              await kotPrintConnect(printListDataCancel[i].ip, i, printListDataCancel[i].items, true, false);
+              await kotPrintConnect(printListDataCancel[i].ip, i, printListDataCancel[i].items, true, false,false);
               await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
             } catch (e) {
               print('log ${e.toString()}');
@@ -2974,7 +2975,7 @@ if(taxDetails){
       }
     }
   }
-  Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate) async {
+  Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate,isCancelled) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var temp = prefs.getString("template") ?? "template4";
@@ -3011,7 +3012,7 @@ if(taxDetails){
 
       if (res == PosPrintResult.success) {
         if (temp == 'template4') {
-          await kotPrint(printer, id, items, isCancelNote, isUpdate);
+          await kotPrint(printer, id, items, isCancelNote, isUpdate,isCancelled);
         } else if (temp == 'template3') {
           await kotPrintGst(printer, id, items, isCancelNote, isUpdate);
         } else {
@@ -3091,7 +3092,7 @@ if(taxDetails){
 
 
   /// Direct text method
-  Future<void> kotPrint(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate) async {
+  Future<void> kotPrint(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate,isCancelled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userName = prefs.getString('user_name')??"";
     bool showUsernameKot = prefs.getBool('show_username_kot')??false;
@@ -3131,13 +3132,15 @@ if(taxDetails){
     Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
     //printer.text('', styles: const PosStyles(align: PosAlign.left));
 
-    printer.textEncoded(typeEng,
-        styles:
-            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    printer.textEncoded(typeEng, styles: const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     // printer.text('', styles: PosStyles(align: PosAlign.left));
+
+    if(isCancelled){
+      printer.text("ORDER CANCELLED", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size3, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    }
+
     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-    printer.textEncoded(typeArabic,
-         styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+    printer.textEncoded(typeArabic, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     if(extraDetailsInKOT){
@@ -3265,6 +3268,9 @@ if(taxDetails){
           styles:
               (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
+
+
+
     printer.cut();
 
 

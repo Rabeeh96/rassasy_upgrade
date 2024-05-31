@@ -1241,7 +1241,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     if (printType == 'Wifi') {
-      printHelperIP.printKotPrint(orderID, true, [], false);
+      printHelperIP.printKotPrint(orderID, true, [], false,true);
     } else {
       var loadData = printHelperUsb.printKotPrint(orderID, true, [], false);
       //  var loadData = await bluetoothHelper.bluetoothPrintKOT(context,true,orderID);
@@ -1482,12 +1482,9 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                   .status ==
                                               "Ordered") {
                                             if (cancel_order_perm) {
-                                              cancelId =
-                                                  diningOrderList[tableIndex]
-                                                      .tableId;
+                                              cancelId = diningOrderList[tableIndex].tableId;
                                               Navigator.pop(context);
-                                              cancelReason(context, tableIndex,
-                                                  sectionType);
+                                              cancelReason(context, tableIndex, sectionType,diningOrderList[tableIndex].salesOrderID);
                                             } else {
                                               Navigator.pop(context);
                                               dialogBoxPermissionDenied(
@@ -1502,7 +1499,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     .tableId;
                                             var type = "Dining";
                                             Navigator.pop(context);
-                                            delete(type, deleteId, "");
+                                            delete(type, deleteId, "","");
                                           }
                                         } else if (sectionType == 2) {
                                           if (takeAwayOrderLists[tableIndex]
@@ -1514,7 +1511,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                       .salesOrderId;
                                               Navigator.pop(context);
                                               cancelReason(context, tableIndex,
-                                                  sectionType);
+                                                  sectionType,takeAwayOrderLists[tableIndex].salesOrderId);
                                             } else {
                                               Navigator.pop(context);
                                               dialogBoxPermissionDenied(
@@ -1529,7 +1526,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     .salesOrderId;
                                             var type = "TakeAway";
                                             Navigator.pop(context);
-                                            delete(type, deleteId, "");
+                                            delete(type, deleteId, "","");
                                           }
                                         } else if (sectionType == 3) {
                                           if (onlineOrderLists[tableIndex]
@@ -1541,7 +1538,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                       .salesOrderId;
                                               Navigator.pop(context);
                                               cancelReason(context, tableIndex,
-                                                  sectionType);
+                                                  sectionType,onlineOrderLists[tableIndex].salesOrderId);
                                             } else {
                                               Navigator.pop(context);
                                               dialogBoxPermissionDenied(
@@ -1557,7 +1554,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     .salesOrderId;
                                             var type = "Online";
                                             Navigator.pop(context);
-                                            delete(type, deleteId, "");
+                                            delete(type, deleteId, "","");
                                             // OnlineCar
                                           }
                                         } else if (sectionType == 4) {
@@ -1570,7 +1567,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                       .salesOrderId;
                                               Navigator.pop(context);
                                               cancelReason(context, tableIndex,
-                                                  sectionType);
+                                                  sectionType,carOrderLists[tableIndex].salesOrderId);
                                             } else {
                                               Navigator.pop(context);
                                               dialogBoxPermissionDenied(
@@ -1585,7 +1582,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     .salesOrderId;
                                             var type = "Car";
                                             Navigator.pop(context);
-                                            delete(type, deleteId, "");
+                                            delete(type, deleteId, "","");
                                           }
                                         }
                                       });
@@ -2838,7 +2835,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     });
   }
 
-  void cancelReason(BuildContext context, ind, section_type) {
+  void cancelReason(BuildContext context, ind, section_type,orderID) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -2888,7 +2885,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         }
 
                         Navigator.pop(context);
-                        delete(cancelType, id, cancelReportList[index].id);
+                        delete(cancelType, id, cancelReportList[index].id,orderID);
                         // delete()
                       },
                     ),
@@ -2965,18 +2962,18 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
   String cancelId = "";
 
-  Future<Null> delete(String type, String id, cancelReasonId) async {
+  Future<Null> delete(String type, String id, cancelReasonId,orderID) async {
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       stop();
       dialogBox(context, "Check Your Connection");
     } else {
+
+
+
       try {
-        if (type == "TakeAway" ||
-            type == "Dining" ||
-            type == "Online" ||
-            type == "Car") {
+        if (type == "TakeAway" || type == "Dining" || type == "Online" || type == "Car") {
           cancelReasonId = "";
         }
         HttpOverrides.global = MyHttpOverrides();
@@ -2988,6 +2985,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
+
+        print("---------------------------------${id}");
         final String url = '$baseUrl/posholds/reset-status/';
         print(url);
         Map data = {
@@ -3015,6 +3014,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         var status = n["StatusCode"];
         if (status == 6000) {
           stop();
+          if(orderID !=""){
+            await ReprintKOT(orderID);
+          }
+
           getTableOrderList();
         } else if (status == 6001) {
           stop();
