@@ -2974,14 +2974,12 @@ if(taxDetails){
       }
     }
   }
-
   Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var temp = prefs.getString("template") ?? "template4";
-      var userName = prefs.getString('user_name')??"";
+      var userName = prefs.getString('user_name') ?? "";
       var capabilities = prefs.getString("default_capabilities") ?? "default";
-
 
       print("template =---------------------- $temp");
       var profile;
@@ -2993,27 +2991,37 @@ if(taxDetails){
       const PaperSize paper = PaperSize.mm80;
       final printer = NetworkPrinter(paper, profile);
       var port = int.parse("9100");
-      final PosPrintResult res = await printer.connect(printerIp, port: port);
+
+      // Function to connect to printer with retries
+      Future<PosPrintResult> connectPrinter() async {
+        int retries = 3;
+        for (int i = 0; i < retries; i++) {
+          final PosPrintResult res = await printer.connect(printerIp, port: port);
+          if (res == PosPrintResult.success) {
+            return res;
+          } else {
+            print("Attempt ${i + 1} failed: ${res.msg}");
+          }
+        }
+        return PosPrintResult.timeout; // or any other error you wish to return
+      }
+
+      final PosPrintResult res = await connectPrinter();
       print("print result ${res.msg}");
 
       if (res == PosPrintResult.success) {
         if (temp == 'template4') {
           await kotPrint(printer, id, items, isCancelNote, isUpdate);
-        }
-        else if (temp == 'template3') {
+        } else if (temp == 'template3') {
           await kotPrintGst(printer, id, items, isCancelNote, isUpdate);
-        }
-        else {
+        } else {
           await printArabicKot(printer, id, items);
         }
 
-        // Future.delayed(const Duration(seconds: 1), ()async {
-        //   print("------after delay----------------------------strting for printing process");
-        //   printer.disconnect();
-        // });
-
-
-
+        // Disconnecting printer properly
+        await Future.delayed(const Duration(seconds: 1));
+        printer.disconnect();
+        print("Printer disconnected successfully.");
       } else {
         print('---${res.msg}----d------------');
       }
@@ -3022,10 +3030,69 @@ if(taxDetails){
     }
   }
 
+  // Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate) async {
+  //   try {
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     var temp = prefs.getString("template") ?? "template4";
+  //     var userName = prefs.getString('user_name')??"";
+  //     var capabilities = prefs.getString("default_capabilities") ?? "default";
+  //
+  //
+  //     print("template =---------------------- $temp");
+  //     var profile;
+  //     if (capabilities == "default") {
+  //       profile = await CapabilityProfile.load();
+  //     } else {
+  //       profile = await CapabilityProfile.load(name: capabilities);
+  //     }
+  //     const PaperSize paper = PaperSize.mm80;
+  //     final printer = NetworkPrinter(paper, profile);
+  //
+  //     var port = int.parse("9100");
+  //     final PosPrintResult reconnect = await printer.connect(printerIp, port: port);
+  //     if(reconnect == PosPrintResult.success){
+  //       printer.disconnect();
+  //     }
+  //
+  //     final PosPrintResult res = await printer.connect(printerIp, port: port);
+  //     print("print result ${res.msg}");
+  //
+  //     if (res == PosPrintResult.success) {
+  //       if (temp == 'template4') {
+  //         await kotPrint(printer, id, items, isCancelNote, isUpdate);
+  //      //   await disconnectWithPrinter(printer);
+  //       }
+  //       else if (temp == 'template3') {
+  //         await kotPrintGst(printer, id, items, isCancelNote, isUpdate);
+  //       }
+  //       else {
+  //         await printArabicKot(printer, id, items);
+  //       }
+  //
+  //       // Future.delayed(const Duration(seconds: 1), ()async {
+  //       //   print("------after delay----------------------------strting for printing process");
+  //       //   printer.disconnect();
+  //       // });
+  //
+  //
+  //
+  //     } else {
+  //       print('---${res.msg}----d------------');
+  //     }
+  //   } catch (e) {
+  //     print('------------------------------${e.toString()}');
+  //   }
+  // }
+
+  disconnectWithPrinter(NetworkPrinter printer){
+    print("------after delay----------------------------strting for printing process");
+    printer.disconnect(delayMs: 10);
+  }
+
+
   /// Direct text method
   Future<void> kotPrint(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     var userName = prefs.getString('user_name')??"";
     bool showUsernameKot = prefs.getBool('show_username_kot')??false;
     bool showDateTimeKot = prefs.getBool('show_date_time_kot')??false;
@@ -3199,7 +3266,7 @@ if(taxDetails){
               (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
-    printer.disconnect();
+
 
   }
   /// Direct text method for Gst company
@@ -3348,6 +3415,7 @@ if(taxDetails){
           (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
+    printer.disconnect();
 
   }
 
