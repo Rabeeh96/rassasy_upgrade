@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
+import 'package:rassasy_new/new_design/dashboard/dashboard.dart';
+import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'about_us/about_us_page.dart';
@@ -500,7 +502,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           )),
-    ));
+    ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+            border: Border(
+                top: BorderSide(color: Color(0xffE9E9E9), width: 1))),
+        height: MediaQuery.of(context).size.height / 10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: (){
+                Get.to(DashboardNew());
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset("assets/svg/_mobhome.svg",color: Color(0xff9E9E9E),),
+                  Text(
+                    "Home",
+                    style: customisedStyleBold(context, Color(0xff9E9E9E),
+                        FontWeight.normal, 12.0),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 50,
+            ),
+            GestureDetector(
+              onTap: () {
+               // Get.to(ProfileScreen());
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset("assets/svg/profile_mob.svg",color: Color(0xffF25F29),),
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.0),
+                    child: Text(
+                      'Profile'.tr,
+                      style: customisedStyleBold(context,
+                          Color(0xffF25F29) , FontWeight.normal, 12.0),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+
+
+    );
   }
 }
 

@@ -121,7 +121,7 @@ class _VersionDetailPageState extends State<VersionDetailPage> {
           title: Text(
             "Version History",
             style:
-            customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
+            customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
           ),
         ),
         body: ListView(

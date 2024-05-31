@@ -41,7 +41,7 @@ class _AboutUsState extends State<AboutUs> {
                       context,
                       Colors.black,
                       FontWeight.w500,
-                      18.0)),
+                      20.0)),
             ),
           ],
         ),
@@ -161,6 +161,7 @@ class _AboutUsState extends State<AboutUs> {
                             TextButton(
                                 onPressed: () {
 Get.to(VersionDetailPage());
+//,
                                 },
                                 child: Text(
                                   'vertion_history'.tr,

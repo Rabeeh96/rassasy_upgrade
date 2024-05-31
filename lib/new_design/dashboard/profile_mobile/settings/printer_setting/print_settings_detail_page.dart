@@ -42,7 +42,7 @@ class _PrinterSettingsDetailPageMobileState
         centerTitle: false,
         title: Text(
           'printer_set'.tr,
-          style: TextStyle(color: Color(0xff000000), fontSize: 16),
+          style: TextStyle(color: Color(0xff000000), fontSize: 20),
         ),
         actions: [
           TextButton(

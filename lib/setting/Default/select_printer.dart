@@ -40,7 +40,7 @@ class SelectPrinterState extends State<SelectPrinter> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,
-              fontSize: 23,
+              fontSize: 20,
             ),
           ),
           backgroundColor: Colors.grey[300],

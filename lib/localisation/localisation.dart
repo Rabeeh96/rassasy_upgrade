@@ -343,7 +343,18 @@ class LocaleChange extends Translations {
           'select_a_template': 'Select a Template',
           'enable_wifi': 'Enable Wifi Printer',
           'select_code_page': 'Select code page',
-          'extraDetailsInKOT': 'extra Details In KOT'
+          'extraDetailsInKOT': 'extra Details In KOT',
+          'balance1': 'Balance',
+          'Deliveryman':'Deliveryman',
+          'Platform':'Platform',
+          'Full':'Full',
+          'Discount':'Discount',
+          'add':'Add',
+          'Product_Details':'Product Details',
+          'Table_Order':'Table Order',
+          'Details':'Details',
+          'Platform(Online Only)':'Platform(Online Only)'
+
         },
 
         ///
@@ -351,6 +362,16 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+  'Platform(Online Only)':'النظام الأساسي (عبر الإنترنت فقط)',
+  'Details':'تفاصيل',
+  'Table_Order':'ترتيب الجدول',
+  'Product_Details':'تفاصيل المنتج',
+  'add':'يضيف',
+          'Discount':'تخفيض',
+          'Full':'ممتلىء',
+          'Platform':'منصة',
+          'Deliveryman':'رجل التوصيل',
+          'balance1': 'توازن ',
           'enable_wifi': 'تمكين طابعة واي فاي',
           'select_a_template': "اختر قالبًا",
           'clear_table_after': 'إظهار الفاتورة',

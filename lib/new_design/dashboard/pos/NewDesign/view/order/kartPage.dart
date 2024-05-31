@@ -52,8 +52,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Table Order',
+             Text(
+              'Table_Order'.tr,
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -63,8 +63,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text(
-                  'Table Order',
+                 Text(
+                  'Table_Order'.tr,
                   style: TextStyle(
                       color: Color(0xff585858),
                       fontSize: 14,
@@ -103,7 +103,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           SearchFieldWidgetNew(
             autoFocus: false,
             mHeight: MediaQuery.of(context).size.height / 18,
-            hintText: 'Search',
+            hintText: 'search'.tr,
             controller: orderController.searchController,
             onChanged: (quary) async {},
           ),
@@ -438,7 +438,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
-                      "To be paid",
+                      'to_be_paid'.tr,
                       style: customisedStyle(context, const Color(0xff9E9E9E),
                           FontWeight.w400, 17.0),
                     ),
@@ -480,7 +480,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0, right: 5),
                           child: Text(
-                            "Cancel",
+                            'cancel'.tr,
                             style: customisedStyle(
                                 context,
                                 const Color(0xffffffff),
@@ -564,7 +564,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0, right: 5),
                           child: Text(
-                            'Payment',
+                            'payment'.tr,
                             style: customisedStyle(
                                 context,
                                 const Color(0xffffffff),
@@ -606,7 +606,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Details",
+                      'Details'.tr,
                       style: customisedStyle(
                           context, Colors.black, FontWeight.w500, 14.0),
                     ),
@@ -648,7 +648,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                     keyboardType: TextInputType.text,
                     decoration: TextFieldDecoration.defaultTextFieldIcon(
-                        hintTextStr: 'Customer'),
+                        hintTextStr: 'customer'.tr),
                   ),
                 ),
               ),
@@ -659,7 +659,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
-                      "Balance",
+                      'balance1'.tr,
                       style: customisedStyle(context, const Color(0xff8C8C8C),
                           FontWeight.w400, 14.0),
                     ),
@@ -694,7 +694,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         context, Colors.black, FontWeight.w500, 14.0),
 
                     decoration: TextFieldDecoration.defaultTextField(
-                        hintTextStr: 'Phone No'),
+                        hintTextStr: 'ph_no'.tr),
                   ),
                 ),
               ),
@@ -720,7 +720,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                     keyboardType: TextInputType.text,
                     decoration: TextFieldDecoration.defaultTextFieldIcon(
-                        hintTextStr: 'Delivery Man'),
+                        hintTextStr: 'delivery_man'.tr),
                   ),
                 ),
               ),
@@ -735,7 +735,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     keyboardType: TextInputType.text,
                     decoration: TextFieldDecoration.defaultTextFieldIcon(
-                        hintTextStr: 'Platform(Online Only)'),
+                        hintTextStr: 'Platform(Online Only)'.tr),
                   ),
                 ),
               ),

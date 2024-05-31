@@ -43,6 +43,12 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
   //bool isAlert = false;
   bool showPassword = true;
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
 
   ///alert icon not working
   @override
@@ -53,9 +59,10 @@ class _LoginPageNewState extends State<LoginPageNew> {
     double screenHeight = screenSize.height;
 
     /// chaged
-    bool isTablet = true;
-    // bool isTablet = screenWidth > 600;
+    //bool isTablet = true;
+    bool isTablet = screenWidth > 600;
     print("screenWidth $screenWidth");
+    print("screenWidth $isTablet");
     return Scaffold(
       body: Container(
         width: double.infinity,

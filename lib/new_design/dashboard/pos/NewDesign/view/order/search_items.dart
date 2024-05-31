@@ -43,8 +43,8 @@ class _SearchItemsState extends State<SearchItems> {
         ),
         titleSpacing: 0,
         elevation: 0,
-        title: const Text(
-          'Search',
+        title:  Text(
+          'search'.tr,
           style: TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
         ),
@@ -72,7 +72,7 @@ class _SearchItemsState extends State<SearchItems> {
           SearchFieldWidgetNew(
             autoFocus: false,
             mHeight: MediaQuery.of(context).size.height / 18,
-            hintText: 'Search',
+            hintText: 'search'.tr,
             controller: searchOrderController.searchController,
             onChanged: (quary) async {
               searchOrderController.fetchProducts(
@@ -261,9 +261,9 @@ class _SearchItemsState extends State<SearchItems> {
                                       ),
                                       color: Colors.white,
                                     ),
-                                    child: const Center(
+                                    child:  Center(
                                       child: Text(
-                                        'Add',
+                                        'add'.tr,
                                         style: TextStyle(
                                           color: Color(0xffF25F29),
                                         ),

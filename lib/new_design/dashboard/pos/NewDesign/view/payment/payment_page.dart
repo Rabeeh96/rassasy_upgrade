@@ -45,7 +45,7 @@ class _PaymentPageState extends State<PaymentPage> {
         titleSpacing: 0,
         elevation: 0,
         title:   Text(
-          'Payment',
+          'payment'.tr,
           style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
 
         ),
@@ -75,7 +75,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Customer",
+                            'customer'.tr,
                             style: customisedStyle(context, const Color(0xff8C8C8C),
                                 FontWeight.w400, 14.0),
                           ),
@@ -97,7 +97,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "PhoneNo",
+                            'ph_no'.tr,
                             style: customisedStyle(context, const Color(0xff8C8C8C),
                                 FontWeight.w400, 14.0),
                           ),
@@ -116,7 +116,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Balance",
+                           'balance1'.tr,
                             style: customisedStyle(context, const Color(0xff8C8C8C),
                                 FontWeight.w400, 14.0),
                           ),
@@ -165,7 +165,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Deliveryman",
+                            'Deliveryman'.tr,
                             style: customisedStyle(context, const Color(0xff8C8C8C),
                                 FontWeight.w400, 14.0),
                           ),
@@ -188,7 +188,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Platform",
+                            'Platform'.tr,
                             style: customisedStyle(context, const Color(0xff8C8C8C),
                                 FontWeight.w400, 14.0),
                           ),
@@ -227,7 +227,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "To be Paid",
+                            'to_be_paid'.tr,
                             style: customisedStyle(context, const Color(0xff8C8C8C),
                                 FontWeight.w400, 14.0),
                           ),
@@ -258,7 +258,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Total Tax",
+                            'total_tax'.tr,
                             style: customisedStyle(context, const Color(0xff8C8C8C),
                                 FontWeight.w400, 14.0),
                           ),
@@ -289,7 +289,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Net Total",
+                            'net_total'.tr,
                             style: customisedStyle(context, const Color(0xff8C8C8C),
                                 FontWeight.w400, 14.0),
                           ),
@@ -320,7 +320,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Grand Total",
+                            'grand_total'.tr,
                             style: customisedStyle(context, const Color(0xff000000),
                                 FontWeight.w400, 14.0),
                           ),
@@ -370,7 +370,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             children: [
 
                               Text(
-                                "Cash",
+                                'cash'.tr,
                                 style: customisedStyle(context, Color(0xff000000),
                                     FontWeight.w500, 15.0),
                               ),
@@ -397,7 +397,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                   },
                                   keyboardType: TextInputType.text,
                                   decoration: TextFieldDecoration.defaultTextField(
-                                      hintTextStr:"Amount"),
+                                      hintTextStr:'amount'.tr),
                                 ),
                               ),
                             ),
@@ -411,7 +411,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 child:          Padding(
                                   padding: const EdgeInsets.only(left: 12.0, right: 12),
                                   child: Text(
-                                    "Full",
+                                    'Full'.tr,
                                     style: customisedStyle(
                                         context,
                                         const Color(0xffffffff),
@@ -430,7 +430,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             children: [
 
                               Text(
-                                "Bank",
+                                'bank'.tr,
                                 style: customisedStyle(context, Color(0xff000000),
                                     FontWeight.w500, 15.0),
                               ),
@@ -457,7 +457,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                   },
                                   keyboardType: TextInputType.text,
                                   decoration: TextFieldDecoration.defaultTextField(
-                                      hintTextStr:"Amount"),
+                                      hintTextStr:'amount'.tr),
                                 ),
                               ),
                             ),
@@ -471,7 +471,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 child:          Padding(
                                   padding: const EdgeInsets.only(left: 12.0, right: 12),
                                   child: Text(
-                                    "Full",
+                                   'Full'.tr,
                                     style: customisedStyle(
                                         context,
                                         const Color(0xffffffff),
@@ -513,7 +513,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             children: [
 
                               Text(
-                                "Discount",
+                                'Discount'.tr,
                                 style: customisedStyle(context, Color(0xff000000),
                                     FontWeight.w500, 15.0),
                               ),
@@ -540,7 +540,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                   },
                                   keyboardType: TextInputType.text,
                                   decoration: TextFieldDecoration.defaultTextField(
-                                      hintTextStr:"Amount"),
+                                      hintTextStr:'amount'.tr),
                                 ),
                               ),
                             ),
@@ -605,7 +605,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 12.0, right: 12),
                           child: Text(
-                            "Cancel",
+                            'cancel'.tr,
                             style: customisedStyle(
                                 context,
                                 const Color(0xffffffff),

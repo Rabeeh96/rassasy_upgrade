@@ -39,7 +39,7 @@ class _ProductDetailsState extends State<SelectGroup> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
-            fontSize: 23,
+            fontSize: 20,
           ),
         ),
         backgroundColor: Colors.grey[300],

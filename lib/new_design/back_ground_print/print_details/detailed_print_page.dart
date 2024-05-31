@@ -984,7 +984,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Total Tax",
+                              'total_tax'.tr,
                               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                             ),
                             Text(
