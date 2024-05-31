@@ -32,6 +32,7 @@ class POSPaymentController extends GetxController{
 
 
   RxString dateOnly = "".obs;
+  RxInt deliveryManID = 0.obs;
   RxString tokenNumber = "".obs;
   RxString taxType = "".obs;
   TextEditingController cashReceivedController = TextEditingController();
@@ -149,6 +150,114 @@ class POSPaymentController extends GetxController{
       update();
       //  balanceCalculation();
 
+  }
+
+  Future<Null> createSaleInvoice({required bool printSave,required BuildContext context,required String tableID,required String uUID,required int orderType}) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      stop();
+    } else {
+      try {
+        start(context);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String baseUrl = BaseUrl.baseUrl;
+        var userID = prefs.getInt('user_id') ?? 0;
+        var accessToken = prefs.getString('access') ?? '';
+        var companyID = prefs.getString('companyID') ?? "0";
+
+        var branchID = prefs.getInt('branchID') ?? 1;
+        var countryID = prefs.getString('Country') ?? "1";
+        var stateID = prefs.getString('State') ?? "1";
+        var tableVacant = prefs.getBool("tableClearAfterPayment") ?? false;
+        var employeeID = prefs.getInt('employee_ID') ?? 1;
+
+        DateTime selectedDateAndTime = DateTime.now();
+        String convertedDate = "$selectedDateAndTime";
+        dateOnly.value = convertedDate.substring(0, 10);
+
+        // var loyalty;
+        // if (loyaltyCustomerID == 0) {
+        //   loyalty = null;
+        // } else {
+        //   loyalty = loyaltyCustomerID;
+        // }
+
+        var autoC = true;
+
+        var cardNumber = "";
+
+        final String url = '$baseUrl/posholds/create-pos/salesInvoice/';
+        print(url);
+        Map data = {
+          "EmployeeID": employeeID,
+          'LoyaltyCustomerID': null,
+          "table_vacant": tableVacant,
+          "Paid": autoC,
+          "CompanyID": companyID,
+          "Table":tableID,
+          "CreatedUserID": userID,
+          "BranchID": branchID,
+          "LedgerID": ledgerID.value,
+          "GrandTotal": grandTotalAmount.value,
+          "BillDiscPercent": "$billDiscPercent",
+          "BidillDiscAmt": "$disCount",
+          "CashReceived": "${cashReceived.value}",
+          "BankAmount": "${bankReceived.value}",
+          "CardTypeID": 0,
+          "CardNumber": "",
+          "SalesOrderID": uUID,
+          "TotalDiscount": "${disCount.value}",
+          "Date": dateOnly.value,
+          "RoundOff": "0.0",
+          "Balance": "${balance.value}",
+          "TotalTax":totalTaxMP.value,
+          "DeliveryManID": deliveryManID.value,
+          "AllowCashReceiptMoreSaleAmt": false,
+        };
+        print(data);
+        //encode Map to JSON
+        var body = json.encode(data);
+
+        var response = await http.post(Uri.parse(url),
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': 'Bearer $accessToken',
+            },
+            body: body);
+
+        print("${response.statusCode}");
+        print("${response.body}");
+        Map n = json.decode(utf8.decode(response.bodyBytes));
+        var status = n["StatusCode"];
+        var responseJson = n["data"];
+
+        print(responseJson);
+        if (status == 6000) {
+          stop();
+          dialogBoxHide(context, "Sales created successfully!!!");
+          Navigator.pop(context, [orderType, false]);
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (printSave == true) {
+              // PrintDataDetails.type = "SI";
+              // PrintDataDetails.id = n["invoice_id"];
+              // printDetail(context);
+            }
+          });
+        } else if (status == 6001) {
+          stop();
+          var errorMessage = n["message"]??"";
+          dialogBox(context, errorMessage);
+        }
+        //DB Error
+        else {
+          stop();
+        }
+      } catch (e) {
+        dialogBox(context, "Some Network Error");
+        stop();
+      }
+    }
   }
 
   checkNan(value) {

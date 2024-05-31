@@ -206,7 +206,7 @@ class _ReportPageState extends State<ReportPageNew> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
-                fontSize: 23,
+                fontSize: 20,
               ),
             ),
             backgroundColor: const Color(0xffF3F3F3),

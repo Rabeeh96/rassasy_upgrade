@@ -18,10 +18,17 @@ import 'product_detail_page.dart';
 import 'search_items.dart';
 
 class OrderCreateView extends StatefulWidget {
- final String uID, tableID, sectionType, tableHead;
- final int orderType;
+  final String uID, tableID, sectionType, tableHead;
+  final int orderType;
 
-  const OrderCreateView({super.key, required this.tableID, required this.tableHead, required this.uID, required this.sectionType, required this.orderType,});
+  const OrderCreateView({
+    super.key,
+    required this.tableID,
+    required this.tableHead,
+    required this.uID,
+    required this.sectionType,
+    required this.orderType,
+  });
 
   @override
   State<OrderCreateView> createState() => _OrderCreateViewState();
@@ -34,7 +41,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    orderController.posFunctions(sectionType: widget.sectionType,uUID: widget.uID);
+    orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
   }
 
   @override
@@ -58,22 +65,20 @@ class _OrderCreateViewState extends State<OrderCreateView> {
           children: [
             Text(
               widget.tableHead,
-             style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
-             // style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+              style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
+              // style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'Table Order',
+                  'Table_Order'.tr,
                   style: customisedStyle(context, Color(0xff585858), FontWeight.w400, 14.0),
-
                 ),
                 Obx(() => Text(
                       orderController.tokenNumber.value,
-                  style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     )),
               ],
             ),
@@ -108,7 +113,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          "Choose items",
+                          'choose_item'.tr,
                           style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
                         ),
                       ),
@@ -132,10 +137,10 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                       "assets/svg/veg_mob.svg",
                                       color: isVegValue ? const Color(0xff00775E) : const Color(0xffDF1515),
                                     ),
-                                    const Padding(
+                                    Padding(
                                       padding: EdgeInsets.only(left: 8.0),
                                       child: Text(
-                                        "Veg Only",
+                                        'veg_only'.tr,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xff585858),
@@ -227,553 +232,541 @@ class _OrderCreateViewState extends State<OrderCreateView> {
           Obx(() => orderController.productIsLoading.value
               ? Container(height: 500, child: const Center(child: CircularProgressIndicator()))
               : Expanded(
-                  child:
-
-                Obx(() =>   ListView.separated(separatorBuilder: (context, index) => DividerStyle(),
-                  itemCount: orderController.productList.length,
-                  itemBuilder: (context, index) {
-                    var alreadyExist =  orderController.checking(orderController.productList[index].productID);
-                    print("-----------------------already $alreadyExist");
-                    return GestureDetector(
-                      onTap: () async {
-
-                      },
-                      child: InkWell(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0,
-                              right: 20,
-                              top: 10,
-                              bottom: 10
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/svg/veg_mob.svg",
-                                    color: orderController.productList[index].vegOrNonVeg == "Non-veg"
-                                        ? const Color(0xff00775E)
-                                        : const Color(0xffDF1515),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0, top: 8),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width * 0.5,
-                                      child: Text(
-                                        orderController.productList[index].productName,
-                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10.0),
-                                    child: Row(
+                  child: Obx(() => ListView.separated(
+                        separatorBuilder: (context, index) => DividerStyle(),
+                        itemCount: orderController.productList.length,
+                        itemBuilder: (context, index) {
+                          var alreadyExist = orderController.checking(orderController.productList[index].productID);
+                          print("-----------------------already $alreadyExist");
+                          return GestureDetector(
+                            onTap: () async {},
+                            child: InkWell(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 10, bottom: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          orderController.currency.value,
-                                          style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 13.0),
+                                        SvgPicture.asset(
+                                          "assets/svg/veg_mob.svg",
+                                          color: orderController.productList[index].vegOrNonVeg == "Non-veg"
+                                              ? const Color(0xff00775E)
+                                              : const Color(0xffDF1515),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 5.0),
-                                          child: Text(
-                                            roundStringWith(orderController.productList[index].defaultSalesPrice),
-                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                                          ),
-                                        ),
-                                        //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Obx(() =>  Container(
-                                height: MediaQuery.of(context).size.height / 8.5,
-                                width: MediaQuery.of(context).size.width / 4,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  // Set border radius to make the Container round
-                                ),
-                                child:
-
-                                Stack(
-                                  children: <Widget>[
-                                    Positioned.fill(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        // Clip image to match the rounded corners of the Container
-                                        child: Image.network(
-                                          orderController.productList[index].productImage != ""
-                                              ? orderController.productList[index].productImage
-                                              : 'https://www.api.viknbooks.com/media/uploads/Rassasy.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    /// Quantity increment on case
-
-
-
-
-                                    orderController.quantityIncrement.value?
-                                    /// The quantity increment is on here, so make sure this product has been added already.
-                                    alreadyExist[0] ?
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Container(
-                                        height: MediaQuery.of(context).size.height / 30,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xffF25F29),
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(10),
-                                            // Match the bottom left and right corners of the Container
-                                            bottomRight: Radius.circular(10),
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 3.0, right: 3),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: <Widget>[
-                                              GestureDetector(
-                                                onTap: () {
-                                                  var alreadyExist =  orderController.checking(orderController.productList[index].productID);
-                                                  orderController.updateQty(index: alreadyExist[1], type: 0);
-                                                },
-                                                child: const Icon(
-                                                  Icons.remove,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                             Obx(() =>
-                                              alreadyExist[0]?Text(
-                                                roundStringWith(orderController.orderItemList[alreadyExist[1]]["Qty"].toString()),
-                                                style: customisedStyle(context, Colors.white, FontWeight.w400, 18.0),
-                                              ):Container(),
+                                          padding: const EdgeInsets.only(right: 8.0, top: 8),
+                                          child: Container(
+                                            width: MediaQuery.of(context).size.width * 0.5,
+                                            child: Text(
+                                              orderController.productList[index].productName,
+                                              style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-
-                                              GestureDetector(
-                                                onTap: () {
-                                                  var alreadyExist =  orderController.checking(orderController.productList[index].productID);
-                                                  orderController.updateQty(index: alreadyExist[1], type: 1);
-
-                                                },
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color: Colors.white,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                orderController.currency.value,
+                                                style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 13.0),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 5.0),
+                                                child: Text(
+                                                  roundStringWith(orderController.productList[index].defaultSalesPrice),
+                                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                                                 ),
                                               ),
+                                              //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
                                             ],
                                           ),
                                         ),
-                                      ),
-                                    ):
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: GestureDetector(
-                                        onTap: ()async{
-                                          SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                                          var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
-
-                                          orderController.unitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
-                                          orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
-
-                                          orderController.priceListID.value = orderController.productList[index].defaultUnitID;
-                                          orderController.productName.value = orderController.productList[index].productName;
-                                          orderController.item_status.value = "pending";
-                                          orderController.unitName.value = orderController.productList[index].defaultUnitName;
-
-                                          var taxDetails = orderController.productList[index].taxDetails;
-                                          if (taxDetails != "") {
-                                            orderController.productTaxID.value = taxDetails["TaxID"];
-                                            orderController.productTaxName.value = taxDetails["TaxName"];
-                                          }
-
-                                          orderController.detailID.value = 1;
-                                          orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.purchasePrice.value = orderController.productList[index].defaultPurchasePrice;
-                                          orderController.productID.value = orderController.productList[index].productID;
-                                          orderController.isInclusive.value = orderController.productList[index].isInclusive;
-
-                                          orderController.detailIdEdit.value = 0;
-                                          orderController.flavourID.value = "";
-                                          orderController.flavourName.value = "";
-
-                                          var newTax = orderController.productList[index].exciseData;
-
-                                          if (newTax != "") {
-                                            orderController.isExciseProduct.value = true;
-                                            orderController.exciseTaxID.value = newTax["TaxID"];
-                                            orderController.exciseTaxName.value = newTax["TaxName"];
-                                            orderController.BPValue.value = newTax["BPValue"].toString();
-                                            orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
-                                            orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
-                                            orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
-                                            orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
-                                          } else {
-                                            orderController.exciseTaxID.value = 0;
-                                            orderController.exciseTaxName.value = "";
-                                            orderController.BPValue.value = "0";
-                                            orderController.exciseTaxBefore.value = "0";
-                                            orderController.isAmountTaxBefore.value = false;
-                                            orderController.isAmountTaxAfter.value = false;
-                                            orderController.isExciseProduct.value = false;
-                                            orderController.exciseTaxAfter.value = "0";
-                                          }
-                                          orderController.unique_id.value = "0";
-
-                                          orderController.calculation();
-
-                                          setState(() {
-
-                                          });
-
-
-                                          /// commented for new tax working
-
-                                          /// qty increment
-
-                                          // if (qtyIncrement == true) {
-                                          //   var checkingAlready = orderController.checking(orderController.priceListID.value);
-                                          //   if (checkingAlready[0]) {
-                                          //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
-                                          //     orderController.updateQty(type: 1,index:checkingAlready[1]);
-                                          //   } else {
-                                          //     orderController.unique_id.value = "0";
-                                          //     orderController.calculation();
-                                          //   }
-                                          // } else {
-                                          //   orderController.unique_id.value = "0";
-                                          //   orderController.calculation();
-                                          // }
-                                        },
-                                        child: InkWell(
-                                          child: Container(
-                                            height: MediaQuery.of(context).size.height / 30,
-                                            width: 75,
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(10),
-
-                                                bottomRight: Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: DecoratedBox(
-                                              decoration: ShapeDecoration(
-                                                shape: RoundedRectangleBorder(
-                                                  side: const BorderSide(
-                                                      color: Color(0xffF25F29)),
-                                                  borderRadius:
-                                                  BorderRadius.circular(10),
-                                                ),
-                                                color: Colors.white,
-                                              ),
-                                              child:   Center(
-                                                child: Text(
-                                                  'Add',
-                                                  style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 15.0),
-                                                  // style: TextStyle(
-                                                  //   color: Color(0xffF25F29),
-                                                  // ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ):
-                                    /// Quantity increment off case
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: GestureDetector(
-                                        onTap: ()async{
-                                          SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                                          var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
-
-                                          orderController.unitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
-                                          orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
-
-                                          orderController.priceListID.value = orderController.productList[index].defaultUnitID;
-                                          orderController.productName.value = orderController.productList[index].productName;
-                                          orderController.item_status.value = "pending";
-                                          orderController.unitName.value = orderController.productList[index].defaultUnitName;
-
-                                          var taxDetails = orderController.productList[index].taxDetails;
-                                          if (taxDetails != "") {
-                                            orderController.productTaxID.value = taxDetails["TaxID"];
-                                            orderController.productTaxName.value = taxDetails["TaxName"];
-                                          }
-
-                                          orderController.detailID.value = 1;
-                                          orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.purchasePrice.value = orderController.productList[index].defaultPurchasePrice;
-                                          orderController.productID.value = orderController.productList[index].productID;
-                                          orderController.isInclusive.value = orderController.productList[index].isInclusive;
-
-                                          orderController.detailIdEdit.value = 0;
-                                          orderController.flavourID.value = "";
-                                          orderController.flavourName.value = "";
-
-                                          var newTax = orderController.productList[index].exciseData;
-
-                                          if (newTax != "") {
-                                            orderController.isExciseProduct.value = true;
-                                            orderController.exciseTaxID.value = newTax["TaxID"];
-                                            orderController.exciseTaxName.value = newTax["TaxName"];
-                                            orderController.BPValue.value = newTax["BPValue"].toString();
-                                            orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
-                                            orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
-                                            orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
-                                            orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
-                                          } else {
-                                            orderController.exciseTaxID.value = 0;
-                                            orderController.exciseTaxName.value = "";
-                                            orderController.BPValue.value = "0";
-                                            orderController.exciseTaxBefore.value = "0";
-                                            orderController.isAmountTaxBefore.value = false;
-                                            orderController.isAmountTaxAfter.value = false;
-                                            orderController.isExciseProduct.value = false;
-                                            orderController.exciseTaxAfter.value = "0";
-                                          }
-                                          orderController.unique_id.value = "0";
-                                          orderController.calculation();
-
-                                          /// commented for new tax working
-
-                                          /// qty increment
-
-                                          // if (qtyIncrement == true) {
-                                          //   var checkingAlready = orderController.checking(orderController.priceListID.value);
-                                          //   if (checkingAlready[0]) {
-                                          //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
-                                          //     orderController.updateQty(type: 1,index:checkingAlready[1]);
-                                          //   } else {
-                                          //     orderController.unique_id.value = "0";
-                                          //     orderController.calculation();
-                                          //   }
-                                          // } else {
-                                          //   orderController.unique_id.value = "0";
-                                          //   orderController.calculation();
-                                          // }
-                                        },
-                                        child: InkWell(
-                                          child: Container(
-                                            height: MediaQuery.of(context).size.height / 30,
-                                            width: 75,
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(10),
-
-                                                bottomRight: Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: DecoratedBox(
-                                              decoration: ShapeDecoration(
-                                                shape: RoundedRectangleBorder(
-                                                  side: const BorderSide(
-                                                      color: Color(0xffF25F29)),
-                                                  borderRadius:
-                                                  BorderRadius.circular(10),
-                                                ),
-                                                color: Colors.white,
-                                              ),
-                                              child:   Center(
-                                                child: Text(
-                                                  'Add',
-                                                  style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 15.0),
-                                                  // style: TextStyle(
-                                                  //   color: Color(0xffF25F29),
-                                                  // ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                      ],
                                     ),
+                                    Obx(() => Container(
+                                          height: MediaQuery.of(context).size.height / 8.5,
+                                          width: MediaQuery.of(context).size.width / 4,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            // Set border radius to make the Container round
+                                          ),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Positioned.fill(
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  // Clip image to match the rounded corners of the Container
+                                                  child: Image.network(
+                                                    orderController.productList[index].productImage != ""
+                                                        ? orderController.productList[index].productImage
+                                                        : 'https://www.api.viknbooks.com/media/uploads/Rassasy.png',
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
 
+                                              /// Quantity increment on case
 
+                                              orderController.quantityIncrement.value
+                                                  ?
+
+                                                  /// The quantity increment is on here, so make sure this product has been added already.
+                                                  alreadyExist[0]
+                                                      ? Align(
+                                                          alignment: Alignment.bottomCenter,
+                                                          child: Container(
+                                                            height: MediaQuery.of(context).size.height / 30,
+                                                            decoration: const BoxDecoration(
+                                                              color: Color(0xffF25F29),
+                                                              borderRadius: BorderRadius.only(
+                                                                bottomLeft: Radius.circular(10),
+                                                                // Match the bottom left and right corners of the Container
+                                                                bottomRight: Radius.circular(10),
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 3.0, right: 3),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                                children: <Widget>[
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      var alreadyExist =
+                                                                          orderController.checking(orderController.productList[index].productID);
+                                                                      orderController.updateQty(index: alreadyExist[1], type: 0);
+                                                                    },
+                                                                    child: const Icon(
+                                                                      Icons.remove,
+                                                                      color: Colors.white,
+                                                                    ),
+                                                                  ),
+                                                                  Obx(
+                                                                    () => alreadyExist[0]
+                                                                        ? Text(
+                                                                            roundStringWith(
+                                                                                orderController.orderItemList[alreadyExist[1]]["Qty"].toString()),
+                                                                            style: customisedStyle(context, Colors.white, FontWeight.w400, 18.0),
+                                                                          )
+                                                                        : Container(),
+                                                                  ),
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      var alreadyExist =
+                                                                          orderController.checking(orderController.productList[index].productID);
+                                                                      orderController.updateQty(index: alreadyExist[1], type: 1);
+                                                                    },
+                                                                    child: const Icon(
+                                                                      Icons.add,
+                                                                      color: Colors.white,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Align(
+                                                          alignment: Alignment.bottomCenter,
+                                                          child: GestureDetector(
+                                                            onTap: () async {
+                                                              SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                                                              var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
+
+                                                              orderController.unitPriceAmountWR.value =
+                                                                  orderController.productList[index].defaultSalesPrice;
+                                                              orderController.inclusiveUnitPriceAmountWR.value =
+                                                                  orderController.productList[index].defaultSalesPrice;
+                                                              orderController.vatPer.value =
+                                                                  double.parse(orderController.productList[index].vatsSalesTax);
+                                                              orderController.gstPer.value =
+                                                                  double.parse(orderController.productList[index].gSTSalesTax);
+
+                                                              orderController.priceListID.value = orderController.productList[index].defaultUnitID;
+                                                              orderController.productName.value = orderController.productList[index].productName;
+                                                              orderController.item_status.value = "pending";
+                                                              orderController.unitName.value = orderController.productList[index].defaultUnitName;
+
+                                                              var taxDetails = orderController.productList[index].taxDetails;
+                                                              if (taxDetails != "") {
+                                                                orderController.productTaxID.value = taxDetails["TaxID"];
+                                                                orderController.productTaxName.value = taxDetails["TaxName"];
+                                                              }
+
+                                                              orderController.detailID.value = 1;
+                                                              orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
+                                                              orderController.purchasePrice.value =
+                                                                  orderController.productList[index].defaultPurchasePrice;
+                                                              orderController.productID.value = orderController.productList[index].productID;
+                                                              orderController.isInclusive.value = orderController.productList[index].isInclusive;
+
+                                                              orderController.detailIdEdit.value = 0;
+                                                              orderController.flavourID.value = "";
+                                                              orderController.flavourName.value = "";
+
+                                                              var newTax = orderController.productList[index].exciseData;
+
+                                                              if (newTax != "") {
+                                                                orderController.isExciseProduct.value = true;
+                                                                orderController.exciseTaxID.value = newTax["TaxID"];
+                                                                orderController.exciseTaxName.value = newTax["TaxName"];
+                                                                orderController.BPValue.value = newTax["BPValue"].toString();
+                                                                orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
+                                                                orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
+                                                                orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
+                                                                orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
+                                                              } else {
+                                                                orderController.exciseTaxID.value = 0;
+                                                                orderController.exciseTaxName.value = "";
+                                                                orderController.BPValue.value = "0";
+                                                                orderController.exciseTaxBefore.value = "0";
+                                                                orderController.isAmountTaxBefore.value = false;
+                                                                orderController.isAmountTaxAfter.value = false;
+                                                                orderController.isExciseProduct.value = false;
+                                                                orderController.exciseTaxAfter.value = "0";
+                                                              }
+                                                              orderController.unique_id.value = "0";
+
+                                                              orderController.calculation();
+
+                                                              setState(() {});
+
+                                                              /// commented for new tax working
+
+                                                              /// qty increment
+
+                                                              // if (qtyIncrement == true) {
+                                                              //   var checkingAlready = orderController.checking(orderController.priceListID.value);
+                                                              //   if (checkingAlready[0]) {
+                                                              //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
+                                                              //     orderController.updateQty(type: 1,index:checkingAlready[1]);
+                                                              //   } else {
+                                                              //     orderController.unique_id.value = "0";
+                                                              //     orderController.calculation();
+                                                              //   }
+                                                              // } else {
+                                                              //   orderController.unique_id.value = "0";
+                                                              //   orderController.calculation();
+                                                              // }
+                                                            },
+                                                            child: InkWell(
+                                                              child: Container(
+                                                                height: MediaQuery.of(context).size.height / 30,
+                                                                width: 75,
+                                                                decoration: const BoxDecoration(
+                                                                  borderRadius: BorderRadius.only(
+                                                                    bottomLeft: Radius.circular(10),
+                                                                    bottomRight: Radius.circular(10),
+                                                                  ),
+                                                                ),
+                                                                child: DecoratedBox(
+                                                                  decoration: ShapeDecoration(
+                                                                    shape: RoundedRectangleBorder(
+                                                                      side: const BorderSide(color: Color(0xffF25F29)),
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                    ),
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      'add'.tr,
+                                                                      style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 15.0),
+                                                                      // style: TextStyle(
+                                                                      //   color: Color(0xffF25F29),
+                                                                      // ),
+                                                                      textAlign: TextAlign.center,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                  :
+
+                                                  /// Quantity increment off case
+                                                  Align(
+                                                      alignment: Alignment.bottomCenter,
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                                                          var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
+
+                                                          orderController.unitPriceAmountWR.value =
+                                                              orderController.productList[index].defaultSalesPrice;
+                                                          orderController.inclusiveUnitPriceAmountWR.value =
+                                                              orderController.productList[index].defaultSalesPrice;
+                                                          orderController.vatPer.value =
+                                                              double.parse(orderController.productList[index].vatsSalesTax);
+                                                          orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
+
+                                                          orderController.priceListID.value = orderController.productList[index].defaultUnitID;
+                                                          orderController.productName.value = orderController.productList[index].productName;
+                                                          orderController.item_status.value = "pending";
+                                                          orderController.unitName.value = orderController.productList[index].defaultUnitName;
+
+                                                          var taxDetails = orderController.productList[index].taxDetails;
+                                                          if (taxDetails != "") {
+                                                            orderController.productTaxID.value = taxDetails["TaxID"];
+                                                            orderController.productTaxName.value = taxDetails["TaxName"];
+                                                          }
+
+                                                          orderController.detailID.value = 1;
+                                                          orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
+                                                          orderController.purchasePrice.value =
+                                                              orderController.productList[index].defaultPurchasePrice;
+                                                          orderController.productID.value = orderController.productList[index].productID;
+                                                          orderController.isInclusive.value = orderController.productList[index].isInclusive;
+
+                                                          orderController.detailIdEdit.value = 0;
+                                                          orderController.flavourID.value = "";
+                                                          orderController.flavourName.value = "";
+
+                                                          var newTax = orderController.productList[index].exciseData;
+
+                                                          if (newTax != "") {
+                                                            orderController.isExciseProduct.value = true;
+                                                            orderController.exciseTaxID.value = newTax["TaxID"];
+                                                            orderController.exciseTaxName.value = newTax["TaxName"];
+                                                            orderController.BPValue.value = newTax["BPValue"].toString();
+                                                            orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
+                                                            orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
+                                                            orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
+                                                            orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
+                                                          } else {
+                                                            orderController.exciseTaxID.value = 0;
+                                                            orderController.exciseTaxName.value = "";
+                                                            orderController.BPValue.value = "0";
+                                                            orderController.exciseTaxBefore.value = "0";
+                                                            orderController.isAmountTaxBefore.value = false;
+                                                            orderController.isAmountTaxAfter.value = false;
+                                                            orderController.isExciseProduct.value = false;
+                                                            orderController.exciseTaxAfter.value = "0";
+                                                          }
+                                                          orderController.unique_id.value = "0";
+                                                          orderController.calculation();
+
+                                                          /// commented for new tax working
+
+                                                          /// qty increment
+
+                                                          // if (qtyIncrement == true) {
+                                                          //   var checkingAlready = orderController.checking(orderController.priceListID.value);
+                                                          //   if (checkingAlready[0]) {
+                                                          //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
+                                                          //     orderController.updateQty(type: 1,index:checkingAlready[1]);
+                                                          //   } else {
+                                                          //     orderController.unique_id.value = "0";
+                                                          //     orderController.calculation();
+                                                          //   }
+                                                          // } else {
+                                                          //   orderController.unique_id.value = "0";
+                                                          //   orderController.calculation();
+                                                          // }
+                                                        },
+                                                        child: InkWell(
+                                                          child: Container(
+                                                            height: MediaQuery.of(context).size.height / 30,
+                                                            width: 75,
+                                                            decoration: const BoxDecoration(
+                                                              borderRadius: BorderRadius.only(
+                                                                bottomLeft: Radius.circular(10),
+                                                                bottomRight: Radius.circular(10),
+                                                              ),
+                                                            ),
+                                                            child: DecoratedBox(
+                                                              decoration: ShapeDecoration(
+                                                                shape: RoundedRectangleBorder(
+                                                                  side: const BorderSide(color: Color(0xffF25F29)),
+                                                                  borderRadius: BorderRadius.circular(10),
+                                                                ),
+                                                                color: Colors.white,
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  'add'.tr,
+                                                                  style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 15.0),
+                                                                  // style: TextStyle(
+                                                                  //   color: Color(0xffF25F29),
+                                                                  // ),
+                                                                  textAlign: TextAlign.center,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                            ],
+                                          ),
+                                        )),
+                                    // else
                                   ],
                                 ),
-                              ))
-                              ,
-                              // else
+                              ),
+                            ),
+                          );
+                        },
+                      ))))
+        ],
+      ),
+      bottomNavigationBar: Obx(() => SizedBox(
+            height: orderController.orderItemList.isNotEmpty ? MediaQuery.of(context).size.height / 5.9 : MediaQuery.of(context).size.height / 11,
+            child: Column(
+              children: [
+                Container(
+                  height: 1,
+                  color: const Color(0xffE9E9E9),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 12,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ///group list section
+
+                        Container(
+                            alignment: Alignment.center,
+                            height: MediaQuery.of(context).size.height / 25,
+                            width: MediaQuery.of(context).size.height / 3.5,
+                            child: Obx(() => orderController.groupIsLoading.value
+                                ? const Center(child: CircularProgressIndicator())
+                                : orderController.groupList.isEmpty
+                                    ? const Center(child: Text("Group Not Found!"))
+                                    : ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: orderController.groupList.length,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              orderController.selectedGroup.value = index;
+                                              orderController.productIsLoading.value = true;
+                                              orderController.getProductListDetail(orderController.groupList[index].groupID);
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              /// width: MediaQuery.of(context).size.width / 5,
+                                              decoration: BoxDecoration(
+                                                color: orderController.selectedGroup.value == index ? Colors.black : Colors.transparent,
+                                                borderRadius: BorderRadius.circular(30),
+                                              ),
+                                              child: Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 12.0, right: 12),
+                                                  child: Text(
+                                                    orderController.groupList[index].groupName,
+                                                    style: customisedStyle(
+                                                        context,
+                                                        orderController.selectedGroup.value == index ? Colors.white : Colors.black,
+                                                        FontWeight.w400,
+                                                        13.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ))),
+                        GestureDetector(
+                            onTap: () {
+                              // _showPopupAlert(context);
+                              //  showPopover(
+                              //
+                              //    context: context,
+                              //    bodyBuilder: (context) =>  ListItems(),
+                              //    onPop: () => print('Popover was popped! here'),
+                              //    direction: PopoverDirection.top,
+                              //    width: 200,
+                              //    height: 400,
+                              //    arrowHeight: 15,
+                              //    arrowWidth: 30,
+                              //  );
+                              //
+                            },
+                            child: SvgPicture.asset("assets/svg/menu_mob.svg"))
+                        //
+                        //     GestureDetector(
+                        //       onTap: () {
+                        //         _showPopupAlert(context);
+                        //
+                        //       },
+                        //       child:SvgPicture.asset("assets/svg/menu_mob.svg")
+                        //     )
+                      ],
+                    ),
+                  ),
+                ),
+                orderController.orderItemList.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () async {
 
 
+                       var resultData = await Get.to(OrderDetailPage(
+                            tableID: widget.tableID,
+                            tableHead: widget.tableHead,
+                            uID: widget.uID,
+                            sectionType: widget.sectionType,
+                            orderType: widget.orderType,
+                          ));
 
 
+                       if(resultData != null){
+                         Get.back(result: resultData);
+                       }
 
-
-
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 12,
+                          decoration: const BoxDecoration(color: Color(0xff00775E)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                                child: Text(
+                                  '${orderController.orderItemList.length} Items Added',
+                                  style: customisedStyle(context, const Color(0xffFfffff), FontWeight.normal, 16.0),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${orderController.currency} ',
+                                      style: customisedStyle(context, const Color(0xffFfffff), FontWeight.w500, 16.0),
+                                    ),
+                                    Text(
+                                      roundStringWith(orderController.totalNetP.toString()),
+                                      style: customisedStyle(context, const Color(0xffFfffff), FontWeight.w500, 18.0),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ))
-
-          )
-
-          )
-        ],
-      ),
-      bottomNavigationBar:
-      Obx(() => SizedBox(
-        height: orderController.orderItemList.isNotEmpty ?
-        MediaQuery.of(context).size.height / 5.9 :
-        MediaQuery.of(context).size.height / 11,
-        child: Column(
-          children: [
-            Container(
-              height: 1,
-              color: const Color(0xffE9E9E9),
+                      )
+                    : Container()
+              ],
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 12,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ///group list section
-
-                    Container(
-                        alignment: Alignment.center,
-                        height: MediaQuery.of(context).size.height / 25,
-                        width: MediaQuery.of(context).size.height / 3.5,
-                        child: Obx(() => orderController.groupIsLoading.value
-                            ? const Center(child: CircularProgressIndicator())
-                            : orderController.groupList.isEmpty
-                            ? const Center(child: Text("Group Not Found!"))
-                            : ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: orderController.groupList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                orderController.selectedGroup.value = index;
-                                orderController.productIsLoading.value = true;
-                                orderController.getProductListDetail(orderController.groupList[index].groupID);
-                                setState(() {});
-                              },
-                              child: Container(
-                                /// width: MediaQuery.of(context).size.width / 5,
-                                decoration: BoxDecoration(
-                                  color: orderController.selectedGroup.value == index ? Colors.black : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 12.0, right: 12),
-                                    child: Text(
-                                      orderController.groupList[index].groupName,
-                                      style: customisedStyle(
-                                          context,
-                                          orderController.selectedGroup.value == index ? Colors.white : Colors.black,
-                                          FontWeight.w400,
-                                          13.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ))),
-                    GestureDetector(
-                        onTap: () {
-                          // _showPopupAlert(context);
-                          //  showPopover(
-                          //
-                          //    context: context,
-                          //    bodyBuilder: (context) =>  ListItems(),
-                          //    onPop: () => print('Popover was popped! here'),
-                          //    direction: PopoverDirection.top,
-                          //    width: 200,
-                          //    height: 400,
-                          //    arrowHeight: 15,
-                          //    arrowWidth: 30,
-                          //  );
-                          //
-                        },
-                        child: SvgPicture.asset("assets/svg/menu_mob.svg"))
-                    //
-                    //     GestureDetector(
-                    //       onTap: () {
-                    //         _showPopupAlert(context);
-                    //
-                    //       },
-                    //       child:SvgPicture.asset("assets/svg/menu_mob.svg")
-                    //     )
-                  ],
-                ),
-              ),
-            ),
-            orderController.orderItemList.isNotEmpty
-                ? GestureDetector(
-              onTap: () async{
-                Get.to(OrderDetailPage(tableID: widget.tableID,tableHead: widget.tableHead,uID: widget.uID,sectionType: widget.sectionType,orderType: widget.orderType,));
-
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height / 12,
-                decoration: const BoxDecoration(
-                      color: Color(0xff00775E)
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Text(
-                        '${orderController.orderItemList.length} Items Added',
-                        style: customisedStyle(context, const Color(0xffFfffff), FontWeight.normal, 16.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${orderController.currency} ',
-                            style: customisedStyle(context, const Color(0xffFfffff), FontWeight.w500, 16.0),
-                          ),
-                          Text(
-                            roundStringWith(orderController.totalNetP.toString()),
-                            style: customisedStyle(context, const Color(0xffFfffff), FontWeight.w500, 18.0),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-                : Container()
-          ],
-        ),
-      ))
-      ,
+          )),
     );
   }
 
@@ -800,7 +793,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Details",
+                      'Details'.tr,
                       style: customisedStyle(context, Colors.black, FontWeight.w700, 18.0),
                     ),
                     IconButton(
@@ -814,7 +807,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   ],
                 ),
               ),
-             DividerStyle(),
+              DividerStyle(),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
@@ -824,17 +817,17 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                     controller: orderController.customerNameController,
                     readOnly: true,
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                      onTap: () async {
-                        final result = await Get.to(CustomerDetailPage());
+                    onTap: () async {
+                      final result = await Get.to(CustomerDetailPage());
 
-                        if (result != null) {
-                          orderController.customerNameController.text = result[0];
-                          orderController.customerBalance.value = result[1];
-                          orderController.update();
-                        }
-                      },
+                      if (result != null) {
+                        orderController.customerNameController.text = result[0];
+                        orderController.customerBalance.value = result[1];
+                        orderController.update();
+                      }
+                    },
                     keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Customer'),
+                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'customer'.tr),
                   ),
                 ),
               ),
@@ -846,7 +839,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
-                      "Balance",
+                      'balance'.tr,
                       style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
                     ),
                   ),
@@ -857,28 +850,28 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                       style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 15.0),
                     ),
                   ),
-                  Obx(() => Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Text(orderController.customerBalance.value, style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
-                  ),)
+                  Obx(
+                    () => Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(orderController.customerBalance.value, style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
+                    ),
+                  )
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 15,bottom: 15),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.phoneNumberController,
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                    ], keyboardType: TextInputType.number,
-                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'Phone No'),
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+                    keyboardType: TextInputType.number,
+                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'ph_no'.tr),
                   ),
                 ),
               ),
-
 
               /// delivery man section
               // Padding(
@@ -903,8 +896,6 @@ class _OrderCreateViewState extends State<OrderCreateView> {
               //     ),
               //   ),
               // ),
-
-
 
               /// online plat form is commented
               // Padding(
@@ -999,6 +990,7 @@ class ListItems extends StatelessWidget {
     );
   }
 }
+
 /// old stack
 ///old
 // Stack(

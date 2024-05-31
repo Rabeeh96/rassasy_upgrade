@@ -42,10 +42,7 @@ class _PrinterListState extends State<PrinterList> {
             children: [
               Text(
                 'Printers'.tr,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500),
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
               ),
             ],
           ),

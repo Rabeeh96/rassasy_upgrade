@@ -32,11 +32,11 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
           },
         ),
         titleSpacing: 0,
-        title: const Row(
+        title:  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Customer',
+              'customer'.tr,
               style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],

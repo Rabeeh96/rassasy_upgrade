@@ -9,6 +9,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_co
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/reservation_list.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'order/add_order_page.dart';
+import 'payment/payment_page.dart';
 
 class DiningPage extends StatefulWidget {
   final String title;
@@ -260,24 +261,52 @@ class _DiningPageState extends State<DiningPage> {
                               ),
 
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: ()async {
                                   if (diningController.tableData[index].status == 'Vacant') {
-                                    Get.to(  OrderCreateView(
+                                  var result =await Get.to(OrderCreateView(
                                       orderType: 0,
                                       sectionType: "Create",
                                       uID: "",
                                       tableHead: "Order",
                                       tableID: diningController.tableData[index].id!,
                                     ));
+
+                                  if(result !=null){
+                                    if(result[1]){
+
+                                      var resultPayment =await  Get.to(PaymentPage(uID:result[2],));
+
+                                        diningController.tableData.clear();
+                                        diningController.fetchAllData();
+                                        diningController.update();
+
+                                    }
+                                    else{
+                                      diningController.tableData.clear();
+                                      diningController.fetchAllData();
+                                      diningController.update();
+                                    }
+
+                                  }
+
+
                                   }
                                   else if (diningController.tableData[index].status == 'Ordered') {
-                                    Get.to(  OrderCreateView(
+                                    var result =  await  Get.to(OrderCreateView(
                                       orderType: 0,
                                       sectionType: "Edit",
                                       uID: diningController.tableData[index].salesOrderID!,
                                       tableHead: diningController.tableData[index].title!,
                                       tableID: diningController.tableData[index].id!,
                                     ));
+
+                                    if(result !=null){
+                                      if(result[1]){
+                                        Get.to(PaymentPage(uID:result[2]));
+                                      }
+                                    }
+
+
                                   }
 
                                   else {

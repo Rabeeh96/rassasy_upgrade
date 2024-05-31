@@ -41,7 +41,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
         centerTitle: false,
         title: const Text(
           'General Settings',
-          style: TextStyle(color: Color(0xff000000), fontSize: 16),
+          style: TextStyle(color: Color(0xff000000), fontSize: 20),
         ),
         actions: [
           GestureDetector(
