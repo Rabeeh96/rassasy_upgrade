@@ -2946,11 +2946,12 @@ if(taxDetails){
             }
           }
 /// cancel order print
-          for (var i = 0; i < cancelOrder.length; i++) {
+          print("------------------------cancelOrder-----$cancelOrder---------cancelOrder---------------");
+          for (var index = 0; index < cancelOrder.length; index++) {
             try {
-              print('------------------ index $i');
+              print('------------------ index $index');
               dataPrint.clear();
-              await kotPrintConnect(printListDataCancel[i].ip, i, printListDataCancel[i].items, true, false,false);
+              await kotPrintConnect(printListDataCancel[index].ip, index, printListDataCancel[index].items, true, false,false);
               await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
             } catch (e) {
               print('log ${e.toString()}');
@@ -2993,10 +2994,12 @@ if(taxDetails){
       final printer = NetworkPrinter(paper, profile);
       var port = int.parse("9100");
 
+      print("-------------------------------1------------------------------------------");
       // Function to connect to printer with retries
       Future<PosPrintResult> connectPrinter() async {
         int retries = 3;
         for (int i = 0; i < retries; i++) {
+          print("-------------------------------1.5------------------------------------------");
           final PosPrintResult res = await printer.connect(printerIp, port: port);
           if (res == PosPrintResult.success) {
             return res;
@@ -3006,19 +3009,20 @@ if(taxDetails){
         }
         return PosPrintResult.timeout; // or any other error you wish to return
       }
-
+      print("-------------------------------2------------------------------------------");
       final PosPrintResult res = await connectPrinter();
       print("print result ${res.msg}");
 
       if (res == PosPrintResult.success) {
         if (temp == 'template4') {
+          print("-------------------------------3------------------------------------------");
           await kotPrint(printer, id, items, isCancelNote, isUpdate,isCancelled);
         } else if (temp == 'template3') {
           await kotPrintGst(printer, id, items, isCancelNote, isUpdate);
         } else {
           await printArabicKot(printer, id, items);
         }
-
+        print("-------------------------------4------------------------------------------");
         // Disconnecting printer properly
         await Future.delayed(const Duration(seconds: 1));
         printer.disconnect();
@@ -3027,7 +3031,7 @@ if(taxDetails){
         print('---${res.msg}----d------------');
       }
     } catch (e) {
-      print('------------------------------${e.toString()}');
+      print('--------******************----------------------${e.toString()}');
     }
   }
 
@@ -3103,14 +3107,28 @@ if(taxDetails){
     print("----------------$currentTime");
     List<ItemsDetails> dataPrint = [];
     dataPrint.clear();
-
+    print("-------------------------------10------------------------------------------");
     for (Map user in items) {
       dataPrint.add(ItemsDetails.fromJson(user));
     }
+    var kitchenName ="";
+    var totalQty = dataPrint[0].qty;
+    print("-------------------------------10 00000---${printListData[0]}---------------------------------------");
 
-    var kitchenName = printListData[id].kitchenName;
+    if(isCancelNote ==false){
+      if(printListData.isNotEmpty){
+        print("-------------------------------10 00000----------- $id -------------------------------");
+
+        kitchenName = printListData[id].kitchenName??"";
+        print("-------------------------------10 00000------------------------------------------");
+        totalQty = printListData[id].totalQty;
+      }
+    }
+
+
+
+
     var tableName = dataPrint[0].tableName;
-    var totalQty = printListData[id].totalQty;
     var tokenNumber = dataPrint[0].tokenNumber;
     var orderType = dataPrint[0].orderTypeI ?? "";
    // printer.setStyles(const PosStyles.defaults());
@@ -3138,7 +3156,7 @@ if(taxDetails){
     if(isCancelled){
       printer.text("ORDER CANCELLED", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size3, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
-
+    print("-------------------------------12------------------------------------------");
     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     printer.textEncoded(typeArabic, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
@@ -3156,13 +3174,9 @@ if(taxDetails){
       }
 
       if (isUpdate) {
-        printer.text(updateNote,
-            styles:
-                const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        printer.text(updateNote, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
         printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-        printer.textEncoded(updateNoteEnc,
-            styles:
-                const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+        printer.textEncoded(updateNoteEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
       }
     }
 
@@ -3225,10 +3239,10 @@ if(taxDetails){
       PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     printer.hr();
-
+    print("-------------------------------13------------------------------------------");
     for (var i = 0; i < dataPrint.length; i++) {
       var slNo = i + 1;
-
+      print("-------------------------------14------------------------------------------");
       var productDescription = dataPrint[i].productDescription??'';
       Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
 

@@ -1567,10 +1567,16 @@ class USBPrintClass {
     for (Map user in items) {
       dataPrint.add(ItemsDetails.fromJson(user));
     }
+    var kitchenName ="";
+    var totalQty = dataPrint[0].qty;
+    if(printListData.isNotEmpty){
+      kitchenName = printListData[id].kitchenName??"";
+      totalQty = printListData[id].totalQty;
+    }
 
-    var kitchenName = printListData[id].kitchenName;
+
     var tableName = dataPrint[0].tableName;
-    var totalQty = printListData[id].totalQty;
+
     var tokenNumber = dataPrint[0].tokenNumber;
     var orderType = dataPrint[0].orderTypeI ?? "";
 
