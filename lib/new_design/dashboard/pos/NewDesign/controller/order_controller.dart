@@ -938,13 +938,12 @@ class OrderController extends GetxController {
   }
 
   Future<Null> posFunctions({required String sectionType, required String uUID}) async {
-    // loader
+    // loader dd
     // start(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     productSearchNotifier = ValueNotifier(2);
     // productList.clear();
     groupList.clear();
-
     //changeVal(widget.orderType);
     printAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
     currency.value = prefs.getString('CurrencySymbol') ?? "";
@@ -959,7 +958,8 @@ class OrderController extends GetxController {
     // networkConnection = true;
     if (sectionType == "Create") {
       // mainPageIndex = 7;
-    } else if (sectionType == "Edit") {
+    }
+     else if (sectionType == "Edit") {
       await getOrderDetails(uID: uUID);
     } else {
       /// payment section

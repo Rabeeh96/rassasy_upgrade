@@ -33,21 +33,21 @@ void main() {
 
   // Set preferred orientations based on the device type
   // if (isTablet) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]).then((_) {
-      runApp(MyApp());
-    });
-
-
-  // } else {
   //   SystemChrome.setPreferredOrientations([
-  //     DeviceOrientation.portraitUp,
-  //     DeviceOrientation.portraitDown,
+  //     DeviceOrientation.landscapeLeft,
+  //     DeviceOrientation.landscapeRight,
   //   ]).then((_) {
   //     runApp(MyApp());
   //   });
+
+
+  // } else {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]).then((_) {
+      runApp(MyApp());
+    });
   // }
 }
 bool isTabletDevice() {
