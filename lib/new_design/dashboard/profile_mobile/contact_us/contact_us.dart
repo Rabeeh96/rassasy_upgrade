@@ -79,7 +79,7 @@ class _SaleListState extends State<Contact_us> {
           centerTitle: false,
           title: Text(
             'Contact_Us'.tr,
-            style: TextStyle(color: Color(0xff000000), fontSize: 20),
+            style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
           ),
         ),
         body:ListView(

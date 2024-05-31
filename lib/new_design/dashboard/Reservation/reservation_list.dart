@@ -329,7 +329,7 @@ class _ReservationListState extends State<ReservationList> {
             children:   [
               Text(
                 'Reservation'.tr,
-                style:customisedStyle(context, Colors.black, FontWeight.bold, 18.0),
+                style:customisedStyle(context, Colors.black, FontWeight.bold, 20.0),
               ),
             ],
           ),

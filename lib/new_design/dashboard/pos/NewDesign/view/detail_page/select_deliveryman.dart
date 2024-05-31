@@ -34,11 +34,11 @@ class _SelectDeliveryManState extends State<SelectDeliveryMan> {
           },
         ),
         titleSpacing: 0,
-        title: const Row(
+        title:  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Delivery Man',
+              'delivery_man'.tr,
               style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],

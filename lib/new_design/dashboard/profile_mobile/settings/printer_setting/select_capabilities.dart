@@ -24,7 +24,7 @@ class _SelectCapabilitiesMobState extends State<SelectCapabilitiesMob> {
         titleSpacing: 0,
         title: Text(
           'select_capability'.tr,
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
         ),
       ),
       body: SingleChildScrollView(

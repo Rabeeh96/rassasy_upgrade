@@ -66,7 +66,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'Table Order',
+                  'Table_Order'.tr,
                   style: customisedStyle(context, Color(0xff585858), FontWeight.w400, 14.0),
 
                 ),
@@ -108,7 +108,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          "Choose items",
+                          'choose_item'.tr,
                           style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
                         ),
                       ),
@@ -132,10 +132,10 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                       "assets/svg/veg_mob.svg",
                                       color: isVegValue ? const Color(0xff00775E) : const Color(0xffDF1515),
                                     ),
-                                    const Padding(
+                                     Padding(
                                       padding: EdgeInsets.only(left: 8.0),
                                       child: Text(
-                                        "Veg Only",
+                                        'veg_only'.tr,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xff585858),
@@ -482,7 +482,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                               ),
                                               child:   Center(
                                                 child: Text(
-                                                  'Add',
+                                                  'add'.tr,
                                                   style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 15.0),
                                                   // style: TextStyle(
                                                   //   color: Color(0xffF25F29),
@@ -595,7 +595,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                               ),
                                               child:   Center(
                                                 child: Text(
-                                                  'Add',
+                                                  'add'.tr,
                                                   style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 15.0),
                                                   // style: TextStyle(
                                                   //   color: Color(0xffF25F29),
@@ -800,7 +800,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Details",
+                      'Details'.tr,
                       style: customisedStyle(context, Colors.black, FontWeight.w700, 18.0),
                     ),
                     IconButton(
@@ -834,7 +834,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                         }
                       },
                     keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Customer'),
+                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'customer'.tr),
                   ),
                 ),
               ),
@@ -846,7 +846,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
-                      "Balance",
+                      'balance'.tr,
                       style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
                     ),
                   ),
@@ -874,7 +874,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
                     ], keyboardType: TextInputType.number,
-                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'Phone No'),
+                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'ph_no'.tr),
                   ),
                 ),
               ),

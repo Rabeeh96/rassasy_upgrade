@@ -26,7 +26,8 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Organizations",style:customisedStyle(context, Colors.black, FontWeight.w500, 16.0) ,),
+        titleSpacing: 0,
+        title: Text("Organizations",style:customisedStyle(context, Colors.black, FontWeight.w500, 20.0) ,),
       ),
       body: Container(
         color: Colors.white,

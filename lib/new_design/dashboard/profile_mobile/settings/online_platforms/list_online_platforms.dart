@@ -41,7 +41,7 @@ class _OnlinePlatformState extends State<OnlinePlatform> {
         centerTitle: false,
         title: const Text(
           'Online Platform',
-          style: TextStyle(color: Color(0xff000000), fontSize: 16),
+          style: TextStyle(color: Color(0xff000000), fontSize: 20),
         ),
       ),
       body: Column(

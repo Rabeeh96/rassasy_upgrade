@@ -107,7 +107,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         titleSpacing: 0,
         elevation: 0,
         title: Text(
-          'Product Details',
+          'Product_Details'.tr,
           style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
         ),
       ),
@@ -354,7 +354,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 12.0, right: 12),
                           child: Text(
-                            "Cancel",
+                           'cancel'.tr,
                             style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 13.0),
                           ),
                         ),
