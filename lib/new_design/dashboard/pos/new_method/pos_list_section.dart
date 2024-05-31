@@ -3014,11 +3014,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         var status = n["StatusCode"];
         if (status == 6000) {
           stop();
+          await getTableOrderList();
           if(orderID !=""){
             await ReprintKOT(orderID);
           }
 
-          getTableOrderList();
+
         } else if (status == 6001) {
           stop();
         } else {

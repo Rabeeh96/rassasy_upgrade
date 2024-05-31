@@ -338,7 +338,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 600;
+    bool isTablet = true;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
