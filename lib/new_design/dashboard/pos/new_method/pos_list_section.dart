@@ -765,7 +765,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         if (status == 6000) {
           reservationCustomerNameController.clear();
           Navigator.pop(context);
-
           dialogBoxHide(context, "Table reserved successfully");
           getTableOrderList();
           stop();

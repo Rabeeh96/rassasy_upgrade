@@ -283,6 +283,10 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(key, value);
   }
+  void switchStatusString(key, value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, value);
+  }
 
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -388,7 +392,9 @@ class _SettingsPageState extends State<SettingsPage> {
           stop();
           setState(() {});
           if (apiKeyValue == "TokenResetTime"||apiKeyValue == "InitialTokenNo"||apiKeyValue == "CompensationHour") {
-
+            if(apiKeyValue == "CompensationHour"){
+              switchStatusString("CompensationHour",apiData.toString());
+            }
           }
           else {
             switchStatus(sharedPreferenceKey, apiData);
@@ -3558,7 +3564,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   }).toList(),
                   onChanged: (newValue) {
                     compensationHour = newValue!;
-                    updateList("CompensationHour", newValue, "");
+                    print("object   $newValue");
+              updateList("CompensationHour", newValue, "");
                   },
                 ),
                 onTap: () {

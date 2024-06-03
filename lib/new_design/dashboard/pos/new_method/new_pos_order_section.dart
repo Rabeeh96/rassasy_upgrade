@@ -216,8 +216,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   final double _width = 520;
 
   void _animateToIndex(int index) {
-    print(index);
-    print("_width_width_width_width_width_width_width_width_width     $_width");
+
     categoryController.animateTo(
       index * _width,
       duration: const Duration(milliseconds: 10),
@@ -511,6 +510,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             if (checkVat == true) {
               taxType = "VAT";
             }
+
             if (checkGst == true) {
               taxType = "GST Intra-state B2C";
             }
@@ -3828,8 +3828,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             dialogBox(context, "At least one product");
                           } else {
                             bool val = await checkNonRatableItem();
-
-
                             if (val) {
                               postingData(true);
                             } else {
@@ -6567,6 +6565,24 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     }
   }
 
+
+  DateTime getDateAfterHours(int hours) {
+    final now = DateTime.now();
+    final noonToday = DateTime(now.year, now.month, now.day, 12, 0, 0);
+
+    DateTime result;
+
+    if (now.isBefore(noonToday)) {
+      // If current time is before noon, add the given hours to the noon of today
+      result = noonToday.add(Duration(hours: hours));
+    } else {
+      // If current time is after noon, add the given hours to the noon of tomorrow
+      final noonTomorrow = noonToday.add(const Duration(days: 1));
+      result = noonTomorrow.add(Duration(hours: hours));
+    }
+
+    return result;
+  }
   Future<Null> getCategoryListDetail() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -6616,7 +6632,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
             if (widget.sectionType != "Edit") {
               tokenNumber = n["TokenNumber"];
-            }
+              }
           });
         } else if (status == 6001) {
           stop();
