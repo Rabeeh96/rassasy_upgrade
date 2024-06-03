@@ -31,7 +31,7 @@ class ItemsDetails {
       qty: json['Qty'].toString(),
       tableName: json['TableName']??"",
       orderTypeI: json['OrderType'],
-      tokenNumber: json['TokenNumber'],
+      tokenNumber: json['TokenNumber'].toString(),
       voucherNo: json['VoucherNo'],
       flavour: json['flavour'] ?? '',
     );
