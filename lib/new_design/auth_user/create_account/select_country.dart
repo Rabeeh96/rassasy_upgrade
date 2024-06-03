@@ -17,7 +17,7 @@ class _SelectCountryState extends State<SelectCountry> {
 
       print(url);
 
-      //encode Map to JSON
+      //encode Map to JSON//
       var response = await http.get(
         Uri.parse(url),
         headers: {
