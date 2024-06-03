@@ -1164,7 +1164,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   var printHelperIP = AppBlocs();
   var bluetoothHelper = AppBlocsBT();
 
-  printDetail() async {
+  printDetail(isCancelled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
     var printType = prefs.getString('PrintType') ?? 'Wifi';
@@ -1183,7 +1183,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             ip = defaultIp;
           }
 
-          printHelperIP.print_receipt(ip, context);
+          printHelperIP.print_receipt(ip, context,isCancelled);
         } else {
           dialogBox(context, 'Please try again later1');
         }
@@ -1235,12 +1235,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   //   printHelper.printKotPrintRe(id);
   // }
 
-  ReprintKOT(orderID) async {
+  ReprintKOT(orderID,isCancelled) async {
     print("___orderID_____orderID_____orderID____orderID_____$orderID");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     if (printType == 'Wifi') {
-      printHelperIP.printKotPrint(orderID, true, [], false,true);
+      printHelperIP.printKotPrint(orderID, true, [], false,isCancelled);
     } else {
       var loadData = printHelperUsb.printKotPrint(orderID, true, [], false);
       //  var loadData = await bluetoothHelper.bluetoothPrintKOT(context,true,orderID);
@@ -1365,7 +1365,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                 PrintDataDetails.id =
                                                     diningOrderList[tableIndex]
                                                         .salesOrderID;
-                                                printDetail();
+                                                printDetail(false);
                                               }
                                               if (diningOrderList[tableIndex]
                                                       .status ==
@@ -1376,7 +1376,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     diningOrderList[tableIndex]
                                                         .salesMasterID;
 
-                                                printDetail();
+                                                printDetail(false);
                                               }
                                             } else if (sectionType == 2) {
                                               if (takeAwayOrderLists[tableIndex]
@@ -1388,7 +1388,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     takeAwayOrderLists[
                                                             tableIndex]
                                                         .salesOrderId;
-                                                printDetail();
+                                                printDetail(false);
                                               }
                                               if (takeAwayOrderLists[tableIndex]
                                                       .status ==
@@ -1399,7 +1399,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     takeAwayOrderLists[
                                                             tableIndex]
                                                         .salesId;
-                                                printDetail();
+                                                printDetail(false);
                                               }
                                             } else if (sectionType == 3) {
                                               if (onlineOrderLists[tableIndex]
@@ -1411,7 +1411,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     onlineOrderLists[tableIndex]
                                                         .salesOrderId;
 
-                                                printDetail();
+                                                printDetail(false);
                                               }
 
                                               if (onlineOrderLists[tableIndex]
@@ -1423,7 +1423,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     onlineOrderLists[tableIndex]
                                                         .salesId;
 
-                                                printDetail();
+                                                printDetail(false);
                                               }
                                             } else if (sectionType == 4) {
                                               if (carOrderLists[tableIndex]
@@ -1435,7 +1435,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     carOrderLists[tableIndex]
                                                         .salesOrderId;
 
-                                                printDetail();
+                                                printDetail(false);
                                               }
                                               if (carOrderLists[tableIndex]
                                                       .status ==
@@ -1446,7 +1446,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     carOrderLists[tableIndex]
                                                         .salesId;
 
-                                                printDetail();
+                                                printDetail(false);
                                               }
                                             }
                                           });
@@ -1726,7 +1726,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     Navigator.pop(context);
                                                     ReprintKOT(diningOrderList[
                                                             tableIndex]
-                                                        .salesOrderID);
+                                                        .salesOrderID,false);
                                                   }
                                                 } else if (sectionType == 2) {
                                                   if (takeAwayOrderLists[
@@ -1737,7 +1737,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     ReprintKOT(
                                                         takeAwayOrderLists[
                                                                 tableIndex]
-                                                            .salesOrderId);
+                                                            .salesOrderId,false);
                                                   }
                                                 } else if (sectionType == 3) {
                                                   if (onlineOrderLists[
@@ -1747,7 +1747,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     Navigator.pop(context);
                                                     ReprintKOT(onlineOrderLists[
                                                             tableIndex]
-                                                        .salesOrderId);
+                                                        .salesOrderId,false);
                                                   }
                                                 } else if (sectionType == 4) {
                                                   if (carOrderLists[tableIndex]
@@ -1756,7 +1756,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                     Navigator.pop(context);
                                                     ReprintKOT(carOrderLists[
                                                             tableIndex]
-                                                        .salesOrderId);
+                                                        .salesOrderId,false);
                                                   }
                                                 }
                                               });
@@ -2983,7 +2983,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         var accessToken = prefs.getString('access') ?? '';
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
-
+        bool printForCancellOrder = prefs.getBool('print_for_cancel_order') ?? false;
 
         print("---------------------------------${id}");
         final String url = '$baseUrl/posholds/reset-status/';
@@ -3014,9 +3014,17 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         if (status == 6000) {
           stop();
           await getTableOrderList();
-          if(orderID !=""){
-            await ReprintKOT(orderID);
+
+          if(printForCancellOrder){
+            PrintDataDetails.type = "SO";
+            PrintDataDetails.id =orderID;
+            await printDetail(true);
           }
+          if(orderID !=""){
+            await ReprintKOT(orderID,true);
+          }
+
+
 
 
         } else if (status == 6001) {

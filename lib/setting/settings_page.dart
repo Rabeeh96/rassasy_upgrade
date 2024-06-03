@@ -107,6 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool extraDetailsInKOT = false;
 
   bool time_in_invoice = false;
+  bool printForCancellOrder = false;
 
   bool printAfterOrder = false;
   bool isComplimentaryBill = false;
@@ -311,6 +312,7 @@ class _SettingsPageState extends State<SettingsPage> {
       printPreview = prefs.getBool('print_preview') ?? false;
       // payment_method = prefs.getBool('payment_method') ?? false;
       time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
+      printForCancellOrder = prefs.getBool('print_for_cancel_order') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
 
 
@@ -1824,6 +1826,53 @@ class _SettingsPageState extends State<SettingsPage> {
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('extraDetailsInKOT', val);
+
+
+                      // setState(() {
+                      //   printAfterPayment = val;
+                      //   switchStatus("printAfterPayment", printAfterPayment);
+                      // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Print For Cancelled Order'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: printForCancellOrder,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        printForCancellOrder = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('print_for_cancel_order', val);
 
 
                       // setState(() {

@@ -155,7 +155,7 @@ class AppBlocs {
     return printer;
   }
 /// print order and invoice
-  void print_receipt(String printerIp, BuildContext ctx) async {
+  void print_receipt(String printerIp, BuildContext ctx,isCancelled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var temp = prefs.getString("template") ?? "template4";
     var capabilities = prefs.getString("default_capabilities") ?? "default";
@@ -185,7 +185,7 @@ class AppBlocs {
 
     if (res == PosPrintResult.success) {
       if (temp == 'template4') {
-        await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage);
+        await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage,isCancelled);
       } else if (temp == 'template3') {
         await englishInvoicePrint(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails);
       }
@@ -206,7 +206,7 @@ class AppBlocs {
     return response.bodyBytes;
   }
   /// template supported  english and arabic template
-  Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,taxDetails,defaultCodePage) async {
+  Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,taxDetails,defaultCodePage,isCancelled) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -277,6 +277,12 @@ class AppBlocs {
     var tableName = BluetoothPrintThermalDetails.tableName;
 
 
+
+    if(isCancelled){
+      var cancelNoteData = "THIS ORDER WAS CANCELLED BY THE CUSTOMER.";
+      printer.text(cancelNoteData, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+
+    }
     //
     /// image print commented
 
@@ -3105,14 +3111,19 @@ if(taxDetails){
     var defaultCodePage = prefs.getString("default_code_page") ?? "CP864";
     var currentTime = DateTime.now();
     print("----------------$currentTime");
-    List<ItemsDetails> dataPrint = [];
-    dataPrint.clear();
-    print("-------------------------------10------------------------------------------");
-    for (Map user in items) {
-      dataPrint.add(ItemsDetails.fromJson(user));
-    }
+
+    List kotList =[];
+
+ //   List<ItemsDetails> dataPrints = [];
+    kotList.clear();
+    kotList = items;
+    print("-------------------------------10----------------------------$items--------------");
+    // for (Map user in items) {
+    //   dataPrints.add(ItemsDetails.fromJson(user));
+    // }
     var kitchenName ="";
-    var totalQty = dataPrint[0].qty;
+  //  var totalQty = kotList[0]["Qty"].toString()??"0";
+    var totalQty = (kotList[0]["Qty"]?.toString() ?? "0");
     print("-------------------------------10 00000---${printListData[0]}---------------------------------------");
 
     if(isCancelNote ==false){
@@ -3121,16 +3132,17 @@ if(taxDetails){
 
         kitchenName = printListData[id].kitchenName??"";
         print("-------------------------------10 00000------------------------------------------");
-        totalQty = printListData[id].totalQty;
+        totalQty = printListData[id].totalQty??"0";
       }
     }
 
 
-
-
-    var tableName = dataPrint[0].tableName;
-    var tokenNumber = dataPrint[0].tokenNumber;
-    var orderType = dataPrint[0].orderTypeI ?? "";
+    var tableName = kotList[0]["TableName"]??"";
+    // var tableName = dataPrints[0].tableName;
+    var tokenNumber = kotList[0]["TokenNumber"].toString();
+    // var tokenNumber = dataPrints[0].tokenNumber;
+    var orderType = kotList[0]["OrderType"] ?? "";
+    // var orderType = dataPrints[0].orderTypeI ?? "";
    // printer.setStyles(const PosStyles.defaults());
     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
@@ -3144,9 +3156,9 @@ if(taxDetails){
     Uint8List updateNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(updateNoteArabic));
 
     var invoiceType = "KOT";
-    var invoiceTypeArabic = "(طباعة المطب";
+    var invoiceTypeArabic = "طباعة المطب";
 
-    Uint8List typeEng = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    Uint8List typeEng =    await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
     Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
     //printer.text('', styles: const PosStyles(align: PosAlign.left));
 
@@ -3244,11 +3256,11 @@ if(taxDetails){
     ]);
     printer.hr();
     print("-------------------------------13------------------------------------------");
-    for (var i = 0; i < dataPrint.length; i++) {
+    for (var i = 0; i < kotList.length; i++) {
       var slNo = i + 1;
       print("-------------------------------14------------------------------------------");
-      var productDescription = dataPrint[i].productDescription??'';
-      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
+      var productDescription = kotList[i]["ProductDescription"]??'';
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(kotList[i]["ProductName"]));
 
       printer.row([
         PosColumn(
@@ -3258,7 +3270,7 @@ if(taxDetails){
               height: PosTextSize.size1,
             )),
         PosColumn(textEncoded: productName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(text: dataPrint[i].qty, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: kotList[i]["Qty"].toString(), width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       if (productDescription != "") {
@@ -3267,8 +3279,8 @@ if(taxDetails){
         printer.textEncoded(productDescriptionEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-      if (dataPrint[i].flavour != "") {
-        Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].flavour));
+      if (kotList[i]["flavour"] != "") {
+        Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(kotList[i]["flavour"]));
         printer.textEncoded(flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
       printer.hr();
