@@ -970,6 +970,7 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
+
                         Column(
                           children: [
                             GestureDetector(
@@ -1320,6 +1321,9 @@ class _DashboardNewState extends State<DashboardNew> {
           ],
         ));
   }
+
+
+
 
   Widget dashboardPageMobile() {
     Size screenSize = MediaQuery.of(context).size;

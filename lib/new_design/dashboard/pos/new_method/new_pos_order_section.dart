@@ -709,7 +709,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             ip = defaultIp;
           }
 
-          printHelper.print_receipt(ip, context);
+          printHelper.print_receipt(ip, context,false);
         } else {
           dialogBox(context, 'Please try again later');
         }
@@ -5159,11 +5159,16 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var stateID = prefs.getString('State') ?? 1;
         var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
+        var dateTime = getDateWithHourCondition(DateTime.now(),1);
+        print(dateTime);
+
+
         DateTime selectedDateAndTime = DateTime.now();
-        String convertedDate = "$selectedDateAndTime";
+        String convertedDate = "$dateTime";
         dateOnly = convertedDate.substring(0, 10);
         var orderTime = "$selectedDateAndTime";
-
+//a function for flutter that return data, with condition that hour is parameter of function
+        // if passing hour is 2 then check the time , if time is greater than 2 am , then return current date till 2 am befor 2 am date return previous day,
         print("__________________________________$orderTime");
 
         var type = "Dining";
@@ -5315,6 +5320,25 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         stop();
         dialogBox(context, e.toString());
       }
+    }
+  }
+
+  DateTime getDateWithHourCondition(DateTime date, int hour) {
+
+    // Ensure the hour is within valid range (0 to 23)
+    if (hour < 0 || hour > 23) {
+      throw ArgumentError('Hour must be between 0 and 23');
+    }
+
+    DateTime specifiedTime = DateTime(date.year, date.month, date.day, hour);
+
+    if (date.isAfter(specifiedTime)) {
+      // If current time is after the specified hour, return the current date
+      return DateTime(date.year, date.month, date.day);
+    } else {
+      // If current time is before the specified hour, return the previous day
+      DateTime previousDay = date.subtract(Duration(days: 1));
+      return DateTime(previousDay.year, previousDay.month, previousDay.day);
     }
   }
 
@@ -6566,23 +6590,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   }
 
 
-  DateTime getDateAfterHours(int hours) {
-    final now = DateTime.now();
-    final noonToday = DateTime(now.year, now.month, now.day, 12, 0, 0);
 
-    DateTime result;
-
-    if (now.isBefore(noonToday)) {
-      // If current time is before noon, add the given hours to the noon of today
-      result = noonToday.add(Duration(hours: hours));
-    } else {
-      // If current time is after noon, add the given hours to the noon of tomorrow
-      final noonTomorrow = noonToday.add(const Duration(days: 1));
-      result = noonTomorrow.add(Duration(hours: hours));
-    }
-
-    return result;
-  }
   Future<Null> getCategoryListDetail() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
