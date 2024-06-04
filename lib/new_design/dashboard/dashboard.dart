@@ -348,7 +348,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > 800;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -876,7 +876,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > 800;
     print(isTablet);
     print(screenWidth);
     print("dash");
@@ -1348,7 +1348,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
     // bool isTablet = true;
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > 800;
     print(isTablet);
     print(screenWidth);
     print("dash");

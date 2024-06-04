@@ -60,7 +60,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > 800;
     print("screenWidth $screenWidth");
     print("screenWidth $isTablet");
     return Scaffold(
