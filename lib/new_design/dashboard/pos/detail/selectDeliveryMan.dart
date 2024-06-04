@@ -92,7 +92,8 @@ class DeliveryManState extends State<SelectPaymentDeliveryMan> {
           "CompanyID": companyID,
           "BranchID": branchID,
           "CreatedUserID": userID,
-          "PriceRounding": 2,"search":"",
+          "PriceRounding": 2,
+          "search":"",
           "is_deliveryman":true
         };
         print(data);
@@ -165,7 +166,6 @@ class EmployeeModel {
     return EmployeeModel(
       name: json['UserName'],
       employeeID: json['EmployeeID'],
-
     );
   }
 }

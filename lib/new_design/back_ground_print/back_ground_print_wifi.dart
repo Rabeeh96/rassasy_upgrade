@@ -3167,43 +3167,32 @@ if(taxDetails){
     if(isCancelled){
       printer.text("ORDER CANCELLED", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size3, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
-    print("-------------------------------12------------------------------------------");
-    print("******************************************************************************************************************");
+
     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     printer.textEncoded(typeArabic, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
-    print("******************************************************************************************************************1");
     if(extraDetailsInKOT){
-      print("******************************************************************************************************************2");
       if (isCancelNote) {
-        print("******************************************************************************************************************3");
         printer.text(cancelNoteData, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-        print("******************************************************************************************************************4");
         printer.setStyles( PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-        print("******************************************************************************************************************5");
         printer.textEncoded(cancelNoteEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
       }
 
       if (isUpdate) {
-        print("******************************************************************************************************************4");
         printer.text(updateNote, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
         printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
         printer.textEncoded(updateNoteEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
       }
     }
 
-    print("*****************************************************************************************************************6");
 
     Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     printer.hr();
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-    print("*****************************************************************************************************************7");
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
-    print("*****************************************************************************************************************8");
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-    print("*****************************************************************************************************************8");
     printer.hr();
     print("******************************************************************************************************************7");
     // if(showUsernameKot){

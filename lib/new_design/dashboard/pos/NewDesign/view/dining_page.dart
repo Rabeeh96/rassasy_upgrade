@@ -223,7 +223,17 @@ class _DiningPageState extends State<DiningPage> {
                                     ),
                                   ),
                                   CustomSlidableAction(
-                                    onPressed: (BuildContext context) async {},
+                                    onPressed: (BuildContext context) async {
+                                      var resultPayment =await Get.to(PaymentPage(uID: diningController.tableData[index].salesOrderID!,
+                                        tableID:diningController.tableData[index].id!,
+                                       orderType: 0,));
+
+                                      diningController.tableData.clear();
+                                      diningController.fetchAllData();
+                                      diningController.update();
+
+
+                                    },
                                     backgroundColor: const Color(0xFF10C103),
                                     foregroundColor: Colors.green,
                                     child: Column(
@@ -274,8 +284,7 @@ class _DiningPageState extends State<DiningPage> {
                                   if(result !=null){
                                     if(result[1]){
 
-                                      var resultPayment =await  Get.to(PaymentPage(uID:result[2],));
-
+                                      var resultPayment =await  Get.to(PaymentPage(uID:result[2],tableID: diningController.tableData[index].id!,orderType: 0,));
                                         diningController.tableData.clear();
                                         diningController.fetchAllData();
                                         diningController.update();
@@ -288,8 +297,6 @@ class _DiningPageState extends State<DiningPage> {
                                     }
 
                                   }
-
-
                                   }
                                   else if (diningController.tableData[index].status == 'Ordered') {
                                     var result =  await  Get.to(OrderCreateView(
@@ -302,15 +309,11 @@ class _DiningPageState extends State<DiningPage> {
 
                                     if(result !=null){
                                       if(result[1]){
-                                        Get.to(PaymentPage(uID:result[2]));
+                                        Get.to(PaymentPage(uID:result[2],tableID:diningController.tableData[index].id!,orderType: 0,));
                                       }
                                     }
-
-
                                   }
-
                                   else {
-
 
                                   }
                                 },

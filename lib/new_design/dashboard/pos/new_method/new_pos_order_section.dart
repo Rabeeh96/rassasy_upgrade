@@ -5301,6 +5301,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             } else {}
           });
         } else if (status == 6001) {
+          stop();
           var errorMessage = n["message"];
           dialogBox(context, errorMessage);
         } else if (status == 6003) {
