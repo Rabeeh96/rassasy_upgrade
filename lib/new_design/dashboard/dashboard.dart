@@ -1053,6 +1053,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   dialogBoxPermissionDenied(context);
                                 }
 
+
                                 //
                                 // if(waiterController.text ==""){
                                 // //  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSPage()));
