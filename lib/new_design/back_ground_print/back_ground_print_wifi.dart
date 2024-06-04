@@ -3124,7 +3124,6 @@ if(taxDetails){
     var kitchenName ="";
   //  var totalQty = kotList[0]["Qty"].toString()??"0";
     var totalQty = (kotList[0]["Qty"]?.toString() ?? "0");
-    print("-------------------------------10 00000---${printListData[0]}---------------------------------------");
 
     if(isCancelNote ==false){
       if(printListData.isNotEmpty){

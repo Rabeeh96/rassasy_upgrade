@@ -705,10 +705,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           var ip = "";
           if (PrintDataDetails.type == "SO") {
             ip = defaultOrderIP;
-          } else {
+          }
+          else {
             ip = defaultIp;
           }
-
           printHelper.print_receipt(ip, context,false);
         } else {
           dialogBox(context, 'Please try again later');
