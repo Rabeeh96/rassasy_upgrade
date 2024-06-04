@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
 //////
- String appVersion = "1.1.22";
+ String appVersion = "1.1.23";
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),

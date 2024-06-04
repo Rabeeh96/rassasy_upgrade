@@ -176,6 +176,7 @@ class LocaleChange extends Translations {
           'closing_balance': 'Closing Balance',
           'sales_summary': 'Sales Invoice Summary',
           'Gross': 'Gross',
+          'gross_amount': 'Gross Amount',
           'Total': 'Total',
           'sale_return_sum': 'Sales Return Summary',
           'Effective_Sale': 'Effective Sale',
@@ -620,6 +621,8 @@ class LocaleChange extends Translations {
           'closing_balance': 'الرصيد الختامي',
           'sales_summary': 'ملخص فاتورة المبيعات',
           'Gross': 'إجمالي',
+          'gross_amount': 'المبلغ الإجمالي',
+
           'Total': 'المجموع',
           'sale_return_sum': 'ملخص إرجاع المبيعات',
           'Effective_Sale': 'البيع الفعال',

@@ -34,7 +34,7 @@ class _SelectDeliveryManState extends State<SelectDeliveryMan> {
           },
         ),
         titleSpacing: 0,
-        title:  Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -63,7 +63,7 @@ class _SelectDeliveryManState extends State<SelectDeliveryMan> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.pop(context, [controller.users[index].userName]);
+                              Navigator.pop(context, [controller.users[index].userName,controller.users[index].deliveryManID]);
                             },
                             child: InkWell(
                               child: Padding(
@@ -86,7 +86,7 @@ class _SelectDeliveryManState extends State<SelectDeliveryMan> {
                                         Padding(
                                           padding: const EdgeInsets.only(right: 8.0),
                                           child: Text(
-                                            controller.users[index].roleName,
+                                            controller.users[index].userName,
                                             style: customisedStyle(context, Color(0xff878787), FontWeight.normal, 13.0),
                                           ),
                                         ),

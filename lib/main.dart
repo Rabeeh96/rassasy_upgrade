@@ -17,69 +17,67 @@ import 'new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'new_design/organization/list_organization.dart';
 
 ///code commented here
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-
-  bool isTablet = isTabletDevice();
-  print("main  $isTablet");
-  /// Set preferred orientations based on the device type
-  ///
-  if (isTablet) {
-
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]).then((_) {
-      runApp(MyApp());
-    });
-
-
-  } else {
-    print("else  $isTablet");
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]).then((_) {
-      runApp(MyApp());
-    });
-  }
-}
-
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
 //
-//   SharedPreferences.getInstance().then((prefs) {
-//     bool isTablet = isTabletDevice();
-//     prefs.setBool(
-//         'isTablet', isTablet); // Save isTablet value to SharedPreferences
-//     print("main isTablet: $isTablet");
+//
+//   bool isTablet = isTabletDevice();
+//   print("main  $isTablet");
+//   /// Set preferred orientations based on the device type
+//   ///
+//   if (isTablet) {
+//
 //
 //     SystemChrome.setPreferredOrientations([
-//       isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
-//       isTablet
-//           ? DeviceOrientation.landscapeRight
-//           : DeviceOrientation.portraitDown,
+//       DeviceOrientation.landscapeLeft,
+//       DeviceOrientation.landscapeRight,
 //     ]).then((_) {
-//       runApp(MyApp(isTablet: isTablet));
+//       runApp(MyApp());
 //     });
-//   });
+//
+//
+//   } else {
+//     print("else  $isTablet");
+//     SystemChrome.setPreferredOrientations([
+//       DeviceOrientation.portraitUp,
+//       DeviceOrientation.portraitDown,
+//     ]).then((_) {
+//       runApp(MyApp());
+//     });
+//   }
 // }
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences.getInstance().then((prefs) {
+  //  bool isTablet = true;
+    bool isTablet = isTabletDevice();
+    prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
+    print("main isTablet: $isTablet");
+
+    SystemChrome.setPreferredOrientations([
+      isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
+      isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
+    ]).then((_) {
+      runApp(MyApp(isTablet: isTablet));
+    });
+  });
+}
 
 bool isTabletDevice() {
   /// Determine if the device is a tablet based on the screen width
-  double screenWidth =    MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
+  double screenWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
   print("screenWidth  is tablet device  $screenWidth");
 
   /// You may need to adjust this threshold based on your requirements
-  return screenWidth > 800;
+  return screenWidth > 600;
 }
 
 class MyApp extends StatelessWidget {
-  // final bool isTablet;
-  //
-  // MyApp({required this.isTablet});
+  final bool isTablet;
+
+  MyApp({required this.isTablet});
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +111,7 @@ class MyApp extends StatelessWidget {
                   //  selectionHandleColor: Colors.blue,
                 )),
             debugShowCheckedModeBanner: false,
-            home: MyHomePage(),
+            home: MyHomePage(isTablet: isTablet),
             //  home: WaiterApi (),
             //       home: DragableList (),
           );
@@ -124,9 +122,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  // final bool isTablet;
-  //
-  // MyHomePage({required this.isTablet});
+  final bool isTablet;
+
+  MyHomePage({required this.isTablet});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

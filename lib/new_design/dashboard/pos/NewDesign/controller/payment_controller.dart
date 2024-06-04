@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -9,8 +10,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class POSPaymentController extends GetxController{
+class POSPaymentController extends GetxController {
   String currency = "SR";
+  RxString deliveryManName = "".obs;
 
   RxInt ledgerID = 1.obs;
   RxString totalNetP = "0.0".obs;
@@ -30,7 +32,6 @@ class POSPaymentController extends GetxController{
   RxDouble bankReceived = 0.0.obs;
   RxDouble balance = 0.0.obs;
 
-
   RxString dateOnly = "".obs;
   RxInt deliveryManID = 0.obs;
   RxString tokenNumber = "".obs;
@@ -43,11 +44,13 @@ class POSPaymentController extends GetxController{
   TextEditingController discountAmountController = TextEditingController();
 
 
+  var detailLoading = false.obs;
   Future<Null> getOrderDetails({required String uID}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
     } else {
       try {
+        detailLoading.value = true;
         print("_________________________________________________________________its called");
 
         String baseUrl = BaseUrl.baseUrl;
@@ -58,7 +61,7 @@ class POSPaymentController extends GetxController{
         var branchID = prefs.getInt('branchID') ?? 1;
 
         final String url = '$baseUrl/posholds/view-pos/salesOrder/$uID/';
-        print(url);
+
         Map data = {"BranchID": branchID, "CompanyID": companyID, "CreatedUserID": userID, "PriceRounding": 2};
         print(data);
         print(accessToken);
@@ -72,7 +75,7 @@ class POSPaymentController extends GetxController{
             body: body);
 
         Map n = json.decode(utf8.decode(response.bodyBytes));
-        print(response.body);
+        log("----${response.body}");
         var status = n["StatusCode"];
         var message = n["message"] ?? "";
         var responseJson = n["data"];
@@ -84,36 +87,34 @@ class POSPaymentController extends GetxController{
           discountPerController.text = "0.00";
           discountAmountController.text = "0.00";
 
-
-
-
           grandTotalAmount.value = responseJson["GrandTotal"].toString();
           totalTaxMP.value = responseJson["TotalTax"].toString();
           vatAmountTotalP.value = double.parse(responseJson["VATAmount"].toString());
           exciseAmountTotalP.value = double.parse(responseJson["ExciseTaxAmount"].toString());
           totalNetP.value = (responseJson["NetTotal"].toString());
           ledgerID.value = responseJson["LedgerID"];
-          paymentCustomerSelection.text = responseJson["CustomerName"]??"";
-          customerPhoneSelection.text = responseJson["CustomerName"]??"";
-
+          paymentCustomerSelection.text = responseJson["CustomerName"] ?? "";
+          customerPhoneSelection.text = responseJson["Phone"] ?? "";
           cashReceived.value = 0.0;
           bankReceived.value = 0.0;
           balance.value = 0.0;
           totalDiscount.value = "0.0";
           roundOff.value = "0.0";
-          update();
           calculationOnPayment();
-
-          //   getLoyaltyCustomer();
+          detailLoading.value = false;
+          update();
         } else if (status == 6001) {
+          detailLoading.value = false;
           popAlert(head: "Waring", message: message ?? "", position: SnackPosition.TOP);
         }
 
         //DB Error
         else {
+          detailLoading.value = false;
           popAlert(head: "Error", message: "Some Network Error please try again Later", position: SnackPosition.TOP);
         }
       } catch (e) {
+        detailLoading.value = false;
         print("-------${e.toString()}");
         popAlert(head: "Error", message: e.toString(), position: SnackPosition.TOP);
       }
@@ -124,10 +125,8 @@ class POSPaymentController extends GetxController{
     var net = double.parse(totalNetP.value.toString());
 
     if (discountAmountController.text == "") {
-
       disCount.value = 0.0;
     } else {
-
       disCount.value = double.parse(discountAmountController.text);
     }
     print(disCount);
@@ -143,21 +142,22 @@ class POSPaymentController extends GetxController{
       bankReceived.value = double.parse(bankReceivedController.text);
     }
 
-      var gt = (net - disCount.value).toString();
-      grandTotalAmount.value = roundStringWith(gt).toString();
-      billDiscPercent.value = (disCount * 100 / double.parse(grandTotalAmount.value));
-      balance.value = (net - disCount.value) - (cashReceived.value + bankReceived.value);
-      update();
-      //  balanceCalculation();
-
+    var gt = (net - disCount.value).toString();
+    grandTotalAmount.value = roundStringWith(gt).toString();
+    billDiscPercent.value = (disCount * 100 / double.parse(grandTotalAmount.value));
+    balance.value = (net - disCount.value) - (cashReceived.value + bankReceived.value);
+    update();
+    //  balanceCalculation();
   }
 
-  Future<Null> createSaleInvoice({required bool printSave,required BuildContext context,required String tableID,required String uUID,required int orderType}) async {
+  Future<Null> createSaleInvoice(
+      {required bool printSave, required BuildContext context, required String tableID, required String uUID, required int orderType}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       stop();
     } else {
       try {
+        print("cash account----");
         start(context);
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -171,11 +171,11 @@ class POSPaymentController extends GetxController{
         var stateID = prefs.getString('State') ?? "1";
         var tableVacant = prefs.getBool("tableClearAfterPayment") ?? false;
         var employeeID = prefs.getInt('employee_ID') ?? 1;
-
+        print("cash account-------");
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$selectedDateAndTime";
         dateOnly.value = convertedDate.substring(0, 10);
-
+        print("cash account after date");
         // var loyalty;
         // if (loyaltyCustomerID == 0) {
         //   loyalty = null;
@@ -195,7 +195,7 @@ class POSPaymentController extends GetxController{
           "table_vacant": tableVacant,
           "Paid": autoC,
           "CompanyID": companyID,
-          "Table":tableID,
+          "Table": tableID,
           "CreatedUserID": userID,
           "BranchID": branchID,
           "LedgerID": ledgerID.value,
@@ -211,7 +211,7 @@ class POSPaymentController extends GetxController{
           "Date": dateOnly.value,
           "RoundOff": "0.0",
           "Balance": "${balance.value}",
-          "TotalTax":totalTaxMP.value,
+          "TotalTax": totalTaxMP.value,
           "DeliveryManID": deliveryManID.value,
           "AllowCashReceiptMoreSaleAmt": false,
         };
@@ -246,7 +246,7 @@ class POSPaymentController extends GetxController{
           });
         } else if (status == 6001) {
           stop();
-          var errorMessage = n["message"]??"";
+          var errorMessage = n["message"] ?? "";
           dialogBox(context, errorMessage);
         }
         //DB Error
@@ -254,6 +254,7 @@ class POSPaymentController extends GetxController{
           stop();
         }
       } catch (e) {
+        print("erro got from api $e");
         dialogBox(context, "Some Network Error");
         stop();
       }
@@ -269,5 +270,4 @@ class POSPaymentController extends GetxController{
       return val2;
     }
   }
-
 }
