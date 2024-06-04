@@ -9,8 +9,8 @@ import 'package:intl/intl.dart';
 // dialogBox(BuildContext context, msg) {
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
-
- String appVersion = "1.1.20";
+//////
+ String appVersion = "1.1.22";
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),

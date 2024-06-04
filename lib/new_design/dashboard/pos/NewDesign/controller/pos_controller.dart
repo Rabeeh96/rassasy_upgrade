@@ -21,7 +21,6 @@ class POSController extends GetxController {
   @override
   void onInit() {
     tabIndex.value = 0;
-    print("tabIndex $tabIndex");
     fetchAllData();
     update();
     super.onInit();

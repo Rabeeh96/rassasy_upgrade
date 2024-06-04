@@ -17,7 +17,7 @@ class _SelectCountryState extends State<SelectCountry> {
 
       print(url);
 
-      //encode Map to JSON
+      //encode Map to JSON//
       var response = await http.get(
         Uri.parse(url),
         headers: {
@@ -34,7 +34,7 @@ class _SelectCountryState extends State<SelectCountry> {
       var responseJson = n["data"];
       print(responseJson);
       var message = n["message"];
-
+//
       if (status == 6000) {
         setState(() {
           for (Map aq in responseJson) {

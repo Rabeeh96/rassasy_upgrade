@@ -43,7 +43,9 @@ class _TakeAwayState extends State<CarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:
+
+      AppBar(
         titleSpacing: 0,
         title:  Text('Car'.tr,style:  TextStyle(
             color: Colors.black,
@@ -62,7 +64,9 @@ class _TakeAwayState extends State<CarPage> {
               icon: SvgPicture.asset('assets/svg/logout_mob.svg'))
         ],
       ),
-      body:Column(children: [
+      body:
+
+      Column(children: [
 
         Padding(
           padding: const EdgeInsets.only(top: 10.0, bottom: 10),
@@ -199,7 +203,8 @@ class _TakeAwayState extends State<CarPage> {
               },
             )))
       ]) ,
-      bottomNavigationBar: Padding(
+      bottomNavigationBar:
+      Padding(
         padding: const EdgeInsets.only(top: 10.0, bottom: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

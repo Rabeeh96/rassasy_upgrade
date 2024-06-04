@@ -502,7 +502,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           } else {
             ip = defaultIp;
           }
-          printHelperIP.print_receipt(ip, context);
+          printHelperIP.print_receipt(ip, context,false);
         } else {
           dialogBox(context, 'Please try again later');
         }

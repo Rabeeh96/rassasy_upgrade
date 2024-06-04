@@ -18,8 +18,8 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage> {
   POSPaymentController paymentController = Get.put(POSPaymentController());
-  var selectedItem = '';
-  final ValueNotifier<int> _counter = ValueNotifier<int>(1);
+
+
 
   @override
   void initState() {
@@ -50,7 +50,8 @@ class _PaymentPageState extends State<PaymentPage> {
 
         ),
       ),
-      body: SingleChildScrollView(child: Column(
+      body:
+      SingleChildScrollView(child: Column(
         children: [
           Container(
             height: 1,
@@ -581,7 +582,8 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         ],
       ),),
-      bottomNavigationBar: Container(
+      bottomNavigationBar:
+      Container(
         decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: Color(0xFFE8E8E8))),
         ),
@@ -598,7 +600,9 @@ class _PaymentPageState extends State<PaymentPage> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xffDF1515))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.back();
+                    },
                     child: Row(
                       children: [
                         SvgPicture.asset("assets/svg/close-circle.svg"),
@@ -622,7 +626,9 @@ class _PaymentPageState extends State<PaymentPage> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff10C103))),
-                    onPressed: () {},
+                    onPressed: () {
+
+                    },
                     child: Row(
                       children: [
                         SvgPicture.asset('assets/svg/save_mob.svg'),

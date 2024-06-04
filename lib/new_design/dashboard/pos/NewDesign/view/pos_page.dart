@@ -10,7 +10,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/take_away_pa
 class POSMobilePage extends StatelessWidget {
   final POSController landingPageController;
 
-  POSMobilePage({required Key key})
+  POSMobilePage()
       : landingPageController = Get.put(POSController(defaultIndex: 0));
   final TextStyle unselectedLabelStyle = TextStyle(
       color: Colors.white.withOpacity(0.5),

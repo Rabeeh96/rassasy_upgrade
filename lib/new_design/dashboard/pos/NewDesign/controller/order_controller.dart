@@ -8,6 +8,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/deliveryMan
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/flavour.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/groupModel.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/productModel.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/payment/payment_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -938,13 +939,12 @@ class OrderController extends GetxController {
   }
 
   Future<Null> posFunctions({required String sectionType, required String uUID}) async {
-    // loader
+    // loader dd
     // start(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     productSearchNotifier = ValueNotifier(2);
     // productList.clear();
     groupList.clear();
-
     //changeVal(widget.orderType);
     printAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
     currency.value = prefs.getString('CurrencySymbol') ?? "";
@@ -959,9 +959,11 @@ class OrderController extends GetxController {
     // networkConnection = true;
     if (sectionType == "Create") {
       // mainPageIndex = 7;
-    } else if (sectionType == "Edit") {
+    }
+     else if (sectionType == "Edit") {
       await getOrderDetails(uID: uUID);
     } else {
+
       /// payment section
       // mainPageIndex = 6;
       // listItemDetails(widget.UUID);
@@ -991,7 +993,6 @@ class OrderController extends GetxController {
       print(data);
       //encode Map to JSON
       var body = json.encode(data);
-
       var response = await http.post(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
@@ -1014,6 +1015,7 @@ class OrderController extends GetxController {
         if (groupList.isNotEmpty) {
           getProductListDetail(groupList[2].groupID);
         }
+
       } else if (status == 6001) {
         // Show error message
         var msg = n["error"] ?? "";
@@ -1107,6 +1109,8 @@ class OrderController extends GetxController {
 
     return returnVal;
   }
+/// update list
+
 
   /// crete order function
 //   postingData(isPayment) {
@@ -1252,10 +1256,56 @@ class OrderController extends GetxController {
       }
     }
   }
+  /// create section
+ createMethod({
+    required BuildContext context,
+   required int orderType,
+   required String tableHead,
+   required String sectionType,
+   required bool isPayment,
+   required String tableID,
+ })async{
+   var netWork = await checkNetwork();
+   if (netWork) {
+     if (orderItemList.isEmpty) {
+       popAlert(
+           head: "Waring",
+           message: "At least one product",
+           position: SnackPosition.TOP);
+     } else {
+       bool val = await checkNonRatableItem();
+       if (val) {
+          createSalesOrderRequest(
+             context: context,
+             isPayment: isPayment,
+             sectionType: sectionType,
+             orderType: orderType,
+             tableHead:tableHead,
+             tableID: tableID);
+       } else {
+         popAlert(
+             head: "Waring",
+             message: "Price must be greater than 0",
+             position: SnackPosition.TOP);
+       }
+     }
+   } else {
+     popAlert(
+         head: "Alert",
+         message: "You are connected to the internet",
+         position: SnackPosition.TOP);
+   }
+ }
 
   /// function for create
   Future<Null> createSalesOrderRequest(
-      {required BuildContext context, required bool isPayment, required int orderType, required String tableID, required String tableHead}) async {
+      {required BuildContext context,
+        required bool isPayment,
+        required int orderType,
+        required String tableID,
+        required String tableHead,
+        required String sectionType,
+      }) async {
     start(context);
     try {
       if (tokenNumber.value == "") {
@@ -1327,8 +1377,11 @@ class OrderController extends GetxController {
         time = "";
       } else {}
 
-      final String url = '$baseUrl/posholds/create-pos/salesOrder/';
+        String url = '$baseUrl/posholds/create-pos/salesOrder/';
 
+      if(sectionType =="Edit") {
+        url = '$baseUrl/posholds/edit/pos/salesOrder/';
+      }
       Map data = {
         "Table": tableID,
         "EmployeeID": employeeID,
@@ -1358,6 +1411,7 @@ class OrderController extends GetxController {
         "TokenNumber": tokenNumber.value,
         "Phone": phoneNumber,
         "saleOrdersDetails": orderItemList,
+        "deleted_data": deletedList,
         "VoucherNo": "",
         "BillDiscAmt": "0",
         "BillDiscPercent": "0",
@@ -1379,6 +1433,8 @@ class OrderController extends GetxController {
         "RoundOff": "0",
         "IsActive": true,
         "IsInvoiced": "N",
+
+
       };
       log_data(data);
       //encode Map to JSON
@@ -1401,9 +1457,10 @@ class OrderController extends GetxController {
         stop();
         var id = n["OrderID"];
 
-        Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
 
+        Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
         if (printAfterOrder) {
+
           /// printing section
           // PrintDataDetails.type = "SO";
           // PrintDataDetails.id = n["OrderID"];
@@ -1420,8 +1477,27 @@ class OrderController extends GetxController {
             // PrintDataDetails.type = "SO";
             // PrintDataDetails.id = id;
             // printKOT(id, false, [], false);
-          } else {}
+          } else {
+
+          }
         });
+
+
+
+        // if(isPayment){
+        //
+        //   Get.to(PaymentPage(uID:n["OrderID"],));
+        //  // Navigator.popUntil(context, (route) => route.isFirst);
+        // }
+        // else{
+        //
+        // }
+
+
+
+
+
+
       } else if (status == 6001) {
         var errorMessage = n["message"];
         dialogBox(context, errorMessage);

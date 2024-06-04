@@ -90,11 +90,7 @@ class _DashboardNewState extends State<DashboardNew> {
 
         final String url = '$baseUrl/users/get-default-values/';
         print(url);
-        Map data = {
-          "CompanyID": companyID,
-          "userId": userID,
-          "BranchID": branchID
-        };
+        Map data = {"CompanyID": companyID, "userId": userID, "BranchID": branchID};
         print(data);
         print(accessToken);
         //encode Map to JSON
@@ -166,8 +162,7 @@ class _DashboardNewState extends State<DashboardNew> {
         break;
       case 1:
         if (settingsPermission) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const SettingsPage()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsPage()));
         } else {
           dialogBoxPermissionDenied(context);
         }
@@ -177,8 +172,7 @@ class _DashboardNewState extends State<DashboardNew> {
         company_info(context);
         break;
       case 3:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfilePage()));
 
         break;
 
@@ -193,7 +187,7 @@ class _DashboardNewState extends State<DashboardNew> {
           //   MaterialPageRoute(builder: (context) => PrintSettings()),
           // );
 
-    Navigator.of(context).push(
+          Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => PrintSettingsDetailed()),
           );
         } else {
@@ -252,10 +246,7 @@ class _DashboardNewState extends State<DashboardNew> {
               ),
               Text(
                 companyName,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold),
+                style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
@@ -275,8 +266,7 @@ class _DashboardNewState extends State<DashboardNew> {
               ),
               Text(
                 'call_us'.tr,
-                style: const TextStyle(
-                    color: Colors.blueAccent, fontWeight: FontWeight.w700),
+                style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w700),
               ),
               const SizedBox(
                 height: 4,
@@ -348,32 +338,28 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 800;
+    bool isTablet = true;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: const Color(0xffF3F3F3),
-
         title: isTablet == true
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Dashboard'.tr,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.normal, 24.0),
+                    style: customisedStyle(context, Colors.black, FontWeight.normal, 24.0),
                     //  style: TextStyle(color: Colors.black, fontSize: 24),
                   ),
                 ],
               )
             : Text(
                 'Home',
-                style: customisedStyle(
-                    context, Colors.black, FontWeight.w500, 20.0),
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
                 //  style: TextStyle(color: Colors.black, fontSize: 24),
               ),
         actions: [
-
           /// select waiter role is commented
           // Theme(
           //   data: Theme.of(context).copyWith(
@@ -636,149 +622,150 @@ class _DashboardNewState extends State<DashboardNew> {
           //   ),
           // ),
 
-          isTablet==true?Theme(
-            data: Theme.of(context).copyWith(
-                textTheme: const TextTheme().apply(bodyColor: Colors.black),
-                dividerColor: Colors.white,
-                iconTheme: const IconThemeData(color: Colors.black)),
-            child: PopupMenuButton<int>(
-              color: Colors.white,
-              itemBuilder: (context) => [
-                PopupMenuItem<int>(
-                    value: 0,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.refresh,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          'Refresh'.tr,
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.normal, 14.0),
-                        )
-                      ],
-                    )),
-                const PopupMenuDivider(),
+          isTablet == true
+              ? Theme(
+                  data: Theme.of(context).copyWith(
+                      textTheme: const TextTheme().apply(bodyColor: Colors.black),
+                      dividerColor: Colors.white,
+                      iconTheme: const IconThemeData(color: Colors.black)),
+                  child: PopupMenuButton<int>(
+                    color: Colors.white,
+                    itemBuilder: (context) => [
+                      PopupMenuItem<int>(
+                          value: 0,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.refresh,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              Text(
+                                'Refresh'.tr,
+                                style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                              )
+                            ],
+                          )),
+                      const PopupMenuDivider(),
 
-                // settings permission
+                      // settings permission
 
-                PopupMenuItem<int>(
-                    value: 1,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.settings,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          'Settings'.tr,
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.normal, 14.0),
-                        )
-                      ],
-                    )),
-                const PopupMenuDivider(),
-                PopupMenuItem<int>(
-                    value: 2,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.info,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          'com_info'.tr,
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.normal, 14.0),
-                        )
-                      ],
-                    )),
-                const PopupMenuDivider(),
-                PopupMenuItem<int>(
-                    value: 3,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.manage_accounts,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          'Profile'.tr,
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.normal, 14.0),
-                        )
-                      ],
-                    )),
-                const PopupMenuDivider(),
-                PopupMenuItem<int>(
-                    value: 4,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.print,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          "Print test page".tr,
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.normal, 14.0),
-                        )
-                      ],
-                    )),
-                const PopupMenuDivider(),
-                PopupMenuItem<int>(
-                    value: 5,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.info,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          'user_log_out'.tr,
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.normal, 14.0),
-                        )
-                      ],
-                    )),
-              ],
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.black,
-              ),
-              onSelected: (item) => selectedItem(context, item),
-            ),
-          ):Icon(Icons.remove,color: Colors.transparent,),
+                      PopupMenuItem<int>(
+                          value: 1,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.settings,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              Text(
+                                'Settings'.tr,
+                                style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                              )
+                            ],
+                          )),
+                      const PopupMenuDivider(),
+                      PopupMenuItem<int>(
+                          value: 2,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.info,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              Text(
+                                'com_info'.tr,
+                                style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                              )
+                            ],
+                          )),
+                      const PopupMenuDivider(),
+                      PopupMenuItem<int>(
+                          value: 3,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.manage_accounts,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              Text(
+                                'Profile'.tr,
+                                style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                              )
+                            ],
+                          )),
+                      const PopupMenuDivider(),
+                      PopupMenuItem<int>(
+                          value: 4,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.print,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              Text(
+                                "Print test page".tr,
+                                style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                              )
+                            ],
+                          )),
+                      const PopupMenuDivider(),
+                      PopupMenuItem<int>(
+                          value: 5,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.info,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              Text(
+                                'user_log_out'.tr,
+                                style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                              )
+                            ],
+                          )),
+                    ],
+                    icon: const Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
+                    ),
+                    onSelected: (item) => selectedItem(context, item),
+                  ),
+                )
+              : Icon(
+                  Icons.remove,
+                  color: Colors.transparent,
+                ),
         ],
       ),
       body: networkConnection == true
-          ?  isTablet == true?dashboardPage():dashboardPageMobile()
+          ? isTablet == true
+              ? dashboardPage()
+              : dashboardPageMobile()
           : noNetworkConnectionPage(),
       bottomNavigationBar: isTablet == true
-          ? Container(height: 1,)
+          ? Container(
+              height: 1,
+            )
           : Container(
-              decoration: BoxDecoration(
-                  border: Border(
-                      top: BorderSide(color: Color(0xffE9E9E9), width: 1))),
+              decoration: BoxDecoration(border: Border(top: BorderSide(color: Color(0xffE9E9E9), width: 1))),
               height: MediaQuery.of(context).size.height / 10,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -792,8 +779,7 @@ class _DashboardNewState extends State<DashboardNew> {
                         SvgPicture.asset("assets/svg/_mobhome.svg"),
                         Text(
                           "Home",
-                          style: customisedStyleBold(context, Color(0xffF25F29),
-                              FontWeight.normal, 12.0),
+                          style: customisedStyleBold(context, Color(0xffF25F29), FontWeight.normal, 12.0),
                         )
                       ],
                     ),
@@ -814,8 +800,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           padding: EdgeInsets.only(top: 2.0),
                           child: Text(
                             'Profile'.tr,
-                            style: customisedStyleBold(context,
-                                Color(0xff9E9E9E), FontWeight.normal, 12.0),
+                            style: customisedStyleBold(context, Color(0xff9E9E9E), FontWeight.normal, 12.0),
                           ),
                         )
                       ],
@@ -846,8 +831,7 @@ class _DashboardNewState extends State<DashboardNew> {
           ),
           Text(
             'no_network'.tr,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
           const SizedBox(
             height: 10,
@@ -863,20 +847,19 @@ class _DashboardNewState extends State<DashboardNew> {
                 style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(const Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEE830C))),
           ),
         ],
       ),
     );
   }
+
   Widget dashboardPage() {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 800;
+    bool isTablet = screenWidth > 600;
     print(isTablet);
     print(screenWidth);
     print("dash");
@@ -894,8 +877,6 @@ class _DashboardNewState extends State<DashboardNew> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
-
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Row(
@@ -989,6 +970,7 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
+
                         Column(
                           children: [
                             GestureDetector(
@@ -1062,7 +1044,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                 var carPerm = await checkingPerm("Carview");
 
                                 if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
+                                  isTablet
+                                      ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()))
+                                      : Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1189,9 +1173,6 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
-
-
-
                       ],
                     ),
                   ),
@@ -1200,7 +1181,6 @@ class _DashboardNewState extends State<DashboardNew> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-
                         Column(
                           children: [
                             GestureDetector(
@@ -1212,7 +1192,6 @@ class _DashboardNewState extends State<DashboardNew> {
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
-
 
                                 // Navigator.push(
                                 //   context,
@@ -1256,7 +1235,6 @@ class _DashboardNewState extends State<DashboardNew> {
 
                                 if (invoices == true) {
                                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
-
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1343,19 +1321,23 @@ class _DashboardNewState extends State<DashboardNew> {
           ],
         ));
   }
+
+
+
+
   Widget dashboardPageMobile() {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
     // bool isTablet = true;
-    bool isTablet = screenWidth > 800;
+    bool isTablet = screenWidth > 600;
     print(isTablet);
     print(screenWidth);
     print("dash");
     return Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration( ),
+        decoration: BoxDecoration(),
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -1364,9 +1346,7 @@ class _DashboardNewState extends State<DashboardNew> {
                 bottom: 565,
                 child: Container(
                   width: MediaQuery.of(context).size.width / 1,
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(width: .1, color: Colors.grey))),
+                  decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: .1, color: Colors.grey))),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
@@ -1385,8 +1365,7 @@ class _DashboardNewState extends State<DashboardNew> {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
                               "Organization",
-                              style: customisedStyleBold(
-                                  context, Colors.black, FontWeight.w400, 15.0),
+                              style: customisedStyleBold(context, Colors.black, FontWeight.w400, 15.0),
                             ),
                           ),
                         ],
@@ -1395,9 +1374,8 @@ class _DashboardNewState extends State<DashboardNew> {
                   ),
                 )),
             Container(
-
-              width:  screenWidth / 1.1,
-              height:  screenHeight / 1.5,
+              width: screenWidth / 1.1,
+              height: screenHeight / 1.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1415,11 +1393,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 print(perm);
                                 if (perm) {
                                   // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>  RMS()));
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                          const AddProductGroup()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddProductGroup()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1432,24 +1406,17 @@ class _DashboardNewState extends State<DashboardNew> {
                                 //            testing()));
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height:  screenHeight / 13,
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: screenHeight / 13,
                                 width: screenWidth / 5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/product_group.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/product_group.svg'),
                                     ),
                                   ],
                                 ),
@@ -1473,34 +1440,23 @@ class _DashboardNewState extends State<DashboardNew> {
                                 var perm = await checkingPerm("Productview");
                                 print(perm);
                                 if (perm) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              CreateProductNew()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CreateProductNew()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height:  screenHeight / 13,
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: screenHeight / 13,
                                 width: screenWidth / 5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/product.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/product.svg'),
                                     ),
                                   ],
                                 ),
@@ -1524,34 +1480,23 @@ class _DashboardNewState extends State<DashboardNew> {
                                 var perm = await checkingPerm("Customerview");
                                 print(perm);
                                 if (perm) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              AddCustomerNew()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCustomerNew()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height:  screenHeight / 13,
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: screenHeight / 13,
                                 width: screenWidth / 5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/customer.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/customer.svg'),
                                     ),
                                   ],
                                 ),
@@ -1580,55 +1525,31 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height:  screenHeight / 13,
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: screenHeight / 13,
                                 width: screenWidth / 5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/POS.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/POS.svg'),
                                     ),
                                   ],
                                 ),
                               ),
                               onTap: () async {
-                                // if (isTablet == false) {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (BuildContext context) =>
-                                //               POSMobilePage(key: Key(""),)));
-                                // } else {
-
-                                var dinePerm =
-                                await checkingPerm("Diningview");
-                                var takeAwayPerm =
-                                await checkingPerm("Take awayview");
+                                var dinePerm = await checkingPerm("Diningview");
+                                var takeAwayPerm = await checkingPerm("Take awayview");
                                 var carPerm = await checkingPerm("Carview");
 
-                                if (dinePerm == true ||
-                                    takeAwayPerm == true ||
-                                    carPerm == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                          const POSListItemsSection()));
+                                if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
+                                  Get.to(POSMobilePage());
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
-                                //  }
                               },
                             ),
                             Padding(
@@ -1646,24 +1567,17 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var salesReport =
-                                await checkingPerm("Sale Report");
-                                var tableWiseReport =
-                                await checkingPerm("Table Wise Report");
-                                var productReport =
-                                await checkingPerm("Product Report");
+                                var salesReport = await checkingPerm("Sale Report");
+                                var tableWiseReport = await checkingPerm("Table Wise Report");
+                                var productReport = await checkingPerm("Product Report");
 
-                                var rmsReport =
-                                await checkingPerm("RMS Report");
+                                var rmsReport = await checkingPerm("RMS Report");
 
-                                var diningReport =
-                                await checkingPerm("Dining Report");
+                                var diningReport = await checkingPerm("Dining Report");
 
-                                var takeAwayReport =
-                                await checkingPerm("Take Away Report");
+                                var takeAwayReport = await checkingPerm("Take Away Report");
 
-                                var carReport =
-                                await checkingPerm("Car Report");
+                                var carReport = await checkingPerm("Car Report");
 
                                 ///     var salesReport = await checkingPerm("Online Report");
 
@@ -1674,34 +1588,23 @@ class _DashboardNewState extends State<DashboardNew> {
                                     diningReport == true ||
                                     takeAwayReport == true ||
                                     carReport == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                          const ReportPageNew()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ReportPageNew()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height:  screenHeight / 13,
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: screenHeight / 13,
                                 width: screenWidth / 5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/report.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/report.svg'),
                                     ),
                                   ],
                                 ),
@@ -1729,29 +1632,21 @@ class _DashboardNewState extends State<DashboardNew> {
 
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddTax()),
+                                  MaterialPageRoute(builder: (context) => AddTax()),
                                 );
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height:  screenHeight / 13,
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: screenHeight / 13,
                                 width: screenWidth / 5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/tax.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/tax.svg'),
                                     ),
                                   ],
                                 ),
@@ -1783,11 +1678,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 var flavour = await checkingPerm("Flavourview");
 
                                 if (flavour == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ViewFlavour()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewFlavour()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1799,24 +1690,17 @@ class _DashboardNewState extends State<DashboardNew> {
                                 //
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height:  screenHeight / 13,
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: screenHeight / 13,
                                 width: screenWidth / 5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/flavour.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/flavour.svg'),
                                     ),
                                   ],
                                 ),
@@ -1833,20 +1717,17 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
-                        SizedBox(width: 35,),
+                        SizedBox(
+                          width: 35,
+                        ),
                         Column(
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var invoices =
-                                await checkingPerm('Invoices'.tr);
+                                var invoices = await checkingPerm('Invoices'.tr);
 
                                 if (invoices == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ViewInvoice()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1857,24 +1738,17 @@ class _DashboardNewState extends State<DashboardNew> {
                                 // );
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height:  screenHeight / 13,
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                height: screenHeight / 13,
                                 width: screenWidth / 5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/invoice.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/invoice.svg'),
                                     ),
                                   ],
                                 ),
@@ -1891,6 +1765,7 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
+
                         /// daily report commented
                         //      Column(
                         //        children: [
@@ -2022,11 +1897,7 @@ class _DashboardNewState extends State<DashboardNew> {
         var roleID = prefs.getString('role') ?? '';
         final String url = '$baseUrl/posholds/list-detail/pos-role/';
         print(url);
-        Map data = {
-          "CompanyID": companyID,
-          "Role_id": roleID,
-          "BranchID": branchID
-        };
+        Map data = {"CompanyID": companyID, "Role_id": roleID, "BranchID": branchID};
         print(data);
         var body = json.encode(data);
         var response = await http.post(Uri.parse(url),
@@ -2043,12 +1914,10 @@ class _DashboardNewState extends State<DashboardNew> {
         var userRollData = n["data"] ?? [];
         if (status == 6000) {
           for (var i = 0; i < userRollData.length; i++) {
-            if (userRollData[i]["Key"] == "other" ||
-                userRollData[i]["Key"] == "report") {
+            if (userRollData[i]["Key"] == "other" || userRollData[i]["Key"] == "report") {
               prefs.setBool(userRollData[i]["Name"], userRollData[i]["Value"]);
             } else {
-              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"],
-                  userRollData[i]["Value"]);
+              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"], userRollData[i]["Value"]);
             }
           }
           dataForStaff();

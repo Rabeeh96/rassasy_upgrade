@@ -16,6 +16,7 @@ class OrderDetailPage extends StatefulWidget {
   final String uID, tableID, sectionType, tableHead;
   final int orderType;
 
+
   const OrderDetailPage({
     super.key,
     required this.tableID,
@@ -498,38 +499,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff10C103))),
                     onPressed: () async {
-                      var netWork = await checkNetwork();
-                      if (netWork) {
-                        if (orderController.orderItemList.isEmpty) {
-                          popAlert(
-                              head: "Waring",
-                              message: "At least one product",
-                              position: SnackPosition.TOP);
-                        } else {
-                          bool val =
-                              await orderController.checkNonRatableItem();
-                          if (val) {
-                            orderController.createSalesOrderRequest(
-                                context: context,
-                                isPayment: false,
-                                orderType: widget.orderType,
-                                tableHead: widget.tableHead,
-                                tableID: widget.tableID);
-                          } else {
-                            popAlert(
-                                head: "Waring",
-                                message: "Price must be greater than 0",
-                                position: SnackPosition.TOP);
-                          }
-                        }
-                      } else {
-                        popAlert(
-                            head: "Alert",
-                            message: "You are connected to the internet",
-                            position: SnackPosition.TOP);
-                      }
+
+
+                      orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,orderType: widget.orderType,context: context,isPayment: false,sectionType: widget.sectionType);
+
                     },
-                    //
+
                     child: Row(
                       children: [
                         SvgPicture.asset('assets/svg/save_mob.svg'),
@@ -554,9 +529,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff00775E))),
                     onPressed: () {
-                      Get.to(PaymentPage(
-                        uID: widget.uID,
-                      ));
+                      orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,orderType: widget.orderType,context: context,isPayment: true,sectionType: widget.sectionType);
                     },
                     child: Row(
                       children: [

@@ -216,8 +216,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   final double _width = 520;
 
   void _animateToIndex(int index) {
-    print(index);
-    print("_width_width_width_width_width_width_width_width_width     $_width");
+
     categoryController.animateTo(
       index * _width,
       duration: const Duration(milliseconds: 10),
@@ -511,6 +510,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             if (checkVat == true) {
               taxType = "VAT";
             }
+
             if (checkGst == true) {
               taxType = "GST Intra-state B2C";
             }
@@ -705,11 +705,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           var ip = "";
           if (PrintDataDetails.type == "SO") {
             ip = defaultOrderIP;
-          } else {
+          }
+          else {
             ip = defaultIp;
           }
-
-          printHelper.print_receipt(ip, context);
+          printHelper.print_receipt(ip, context,false);
         } else {
           dialogBox(context, 'Please try again later');
         }
@@ -756,7 +756,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var printType = prefs.getString('PrintType') ?? 'Wifi';
       if (printType == 'Wifi') {
-        printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate);
+        printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
       } else {
         printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
         /// commented bluetooth
@@ -3828,8 +3828,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             dialogBox(context, "At least one product");
                           } else {
                             bool val = await checkNonRatableItem();
-
-
                             if (val) {
                               postingData(true);
                             } else {
@@ -5161,11 +5159,16 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var stateID = prefs.getString('State') ?? 1;
         var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
+        var dateTime = getDateWithHourCondition(DateTime.now(),1);
+        print(dateTime);
+
+
         DateTime selectedDateAndTime = DateTime.now();
-        String convertedDate = "$selectedDateAndTime";
+        String convertedDate = "$dateTime";
         dateOnly = convertedDate.substring(0, 10);
         var orderTime = "$selectedDateAndTime";
-
+//a function for flutter that return data, with condition that hour is parameter of function
+        // if passing hour is 2 then check the time , if time is greater than 2 am , then return current date till 2 am befor 2 am date return previous day,
         print("__________________________________$orderTime");
 
         var type = "Dining";
@@ -5317,6 +5320,25 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         stop();
         dialogBox(context, e.toString());
       }
+    }
+  }
+
+  DateTime getDateWithHourCondition(DateTime date, int hour) {
+
+    // Ensure the hour is within valid range (0 to 23)
+    if (hour < 0 || hour > 23) {
+      throw ArgumentError('Hour must be between 0 and 23');
+    }
+
+    DateTime specifiedTime = DateTime(date.year, date.month, date.day, hour);
+
+    if (date.isAfter(specifiedTime)) {
+      // If current time is after the specified hour, return the current date
+      return DateTime(date.year, date.month, date.day);
+    } else {
+      // If current time is before the specified hour, return the previous day
+      DateTime previousDay = date.subtract(Duration(days: 1));
+      return DateTime(previousDay.year, previousDay.month, previousDay.day);
     }
   }
 
@@ -5528,6 +5550,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var status = n["StatusCode"];
 
         var cancelPrint = n["final_data"] ?? [];
+
+        print("Cancel print -----------Cancel print-----Cancel print--$cancelPrint");
+
+
 
         if (status == 6000) {
           stop();
@@ -6563,6 +6589,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     }
   }
 
+
+
   Future<Null> getCategoryListDetail() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -6612,7 +6640,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
             if (widget.sectionType != "Edit") {
               tokenNumber = n["TokenNumber"];
-            }
+              }
           });
         } else if (status == 6001) {
           stop();

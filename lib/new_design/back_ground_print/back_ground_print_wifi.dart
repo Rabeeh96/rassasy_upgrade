@@ -155,7 +155,7 @@ class AppBlocs {
     return printer;
   }
 /// print order and invoice
-  void print_receipt(String printerIp, BuildContext ctx) async {
+  void print_receipt(String printerIp, BuildContext ctx,isCancelled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var temp = prefs.getString("template") ?? "template4";
     var capabilities = prefs.getString("default_capabilities") ?? "default";
@@ -185,7 +185,7 @@ class AppBlocs {
 
     if (res == PosPrintResult.success) {
       if (temp == 'template4') {
-        await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage);
+        await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage,isCancelled);
       } else if (temp == 'template3') {
         await englishInvoicePrint(printer,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails);
       }
@@ -206,7 +206,7 @@ class AppBlocs {
     return response.bodyBytes;
   }
   /// template supported  english and arabic template
-  Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,taxDetails,defaultCodePage) async {
+  Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,taxDetails,defaultCodePage,isCancelled) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -277,6 +277,12 @@ class AppBlocs {
     var tableName = BluetoothPrintThermalDetails.tableName;
 
 
+
+    if(isCancelled){
+      var cancelNoteData = "THIS ORDER WAS CANCELLED BY THE CUSTOMER.";
+      printer.text(cancelNoteData, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+
+    }
     //
     /// image print commented
 
@@ -2879,7 +2885,7 @@ if(taxDetails){
 
 
 
-  printKotPrint(var id, rePrint, cancelOrder, isUpdate) async {
+  printKotPrint(var id, rePrint, cancelOrder, isUpdate,isCancelled) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
     } else {
@@ -2901,6 +2907,7 @@ if(taxDetails){
           "CreatedUserID": userID,
           "BranchID": branchID,
           "KitchenPrint": rePrint,
+
         };
         print(data);
         //encode Map to JSON
@@ -2937,7 +2944,7 @@ if(taxDetails){
             try {
               print('------------------ index $i');
                dataPrint.clear();
-               await kotPrintConnect(printListData[i].ip, i, printListData[i].items, false, isUpdate);
+               await kotPrintConnect(printListData[i].ip, i, printListData[i].items, false, isUpdate,isCancelled);
                await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
             } catch (e) {
               print('log ${e.toString()}');
@@ -2945,11 +2952,12 @@ if(taxDetails){
             }
           }
 /// cancel order print
-          for (var i = 0; i < cancelOrder.length; i++) {
+          print("------------------------cancelOrder-----$cancelOrder---------cancelOrder---------------");
+          for (var index = 0; index < cancelOrder.length; index++) {
             try {
-              print('------------------ index $i');
+              print('------------------ index $index');
               dataPrint.clear();
-              await kotPrintConnect(printListDataCancel[i].ip, i, printListDataCancel[i].items, true, false);
+              await kotPrintConnect(printListDataCancel[index].ip, index, printListDataCancel[index].items, true, false,false);
               await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
             } catch (e) {
               print('log ${e.toString()}');
@@ -2969,17 +2977,17 @@ if(taxDetails){
           //  Alert(message: "Some Network Error");
           stop();
         }
-      } catch (e) {}
+      } catch (e) {
+        print("got error in kot api ${e.toString()}");
+      }
     }
   }
-
-  Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate) async {
+  Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate,isCancelled) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var temp = prefs.getString("template") ?? "template4";
-      var userName = prefs.getString('user_name')??"";
+      var userName = prefs.getString('user_name') ?? "";
       var capabilities = prefs.getString("default_capabilities") ?? "default";
-
 
       print("template =---------------------- $temp");
       var profile;
@@ -2991,39 +2999,111 @@ if(taxDetails){
       const PaperSize paper = PaperSize.mm80;
       final printer = NetworkPrinter(paper, profile);
       var port = int.parse("9100");
-      final PosPrintResult res = await printer.connect(printerIp, port: port);
+
+      print("-------------------------------1------------------------------------------");
+      // Function to connect to printer with retries
+      Future<PosPrintResult> connectPrinter() async {
+        int retries = 3;
+        for (int i = 0; i < retries; i++) {
+          print("-------------------------------1.5------------------------------------------");
+          final PosPrintResult res = await printer.connect(printerIp, port: port);
+          if (res == PosPrintResult.success) {
+            return res;
+          } else {
+            print("Attempt ${i + 1} failed: ${res.msg}");
+          }
+        }
+        return PosPrintResult.timeout; // or any other error you wish to return
+      }
+      print("-------------------------------2------------------------------------------");
+      final PosPrintResult res = await connectPrinter();
       print("print result ${res.msg}");
 
       if (res == PosPrintResult.success) {
         if (temp == 'template4') {
-          await kotPrint(printer, id, items, isCancelNote, isUpdate);
-        }
-        else if (temp == 'template3') {
+          print("-------------------------------3------------------------------------------");
+          await kotPrint(printer, id, items, isCancelNote, isUpdate,isCancelled);
+        } else if (temp == 'template3') {
           await kotPrintGst(printer, id, items, isCancelNote, isUpdate);
-        }
-        else {
+        } else {
           await printArabicKot(printer, id, items);
         }
-
-        Future.delayed(const Duration(seconds: 1), ()async {
-          print("------after delay----------------------------strting for printing process");
-          printer.disconnect();
-        });
-
-
-
+        print("-------------------------------4------------------------------------------");
+        // Disconnecting printer properly
+        await Future.delayed(const Duration(seconds: 1));
+        printer.disconnect();
+        print("Printer disconnected successfully.");
       } else {
         print('---${res.msg}----d------------');
       }
     } catch (e) {
-      print('------------------------------${e.toString()}');
+      print('--------******************----------------------${e.toString()}');
     }
   }
 
-  /// Direct text method
-  Future<void> kotPrint(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate) async {
+  //   try {
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     var temp = prefs.getString("template") ?? "template4";
+  //     var userName = prefs.getString('user_name')??"";
+  //     var capabilities = prefs.getString("default_capabilities") ?? "default";
+  //
+  //
+  //     print("template =---------------------- $temp");
+  //     var profile;
+  //     if (capabilities == "default") {
+  //       profile = await CapabilityProfile.load();
+  //     } else {
+  //       profile = await CapabilityProfile.load(name: capabilities);
+  //     }
+  //     const PaperSize paper = PaperSize.mm80;
+  //     final printer = NetworkPrinter(paper, profile);
+  //
+  //     var port = int.parse("9100");
+  //     final PosPrintResult reconnect = await printer.connect(printerIp, port: port);
+  //     if(reconnect == PosPrintResult.success){
+  //       printer.disconnect();
+  //     }
+  //
+  //     final PosPrintResult res = await printer.connect(printerIp, port: port);
+  //     print("print result ${res.msg}");
+  //
+  //     if (res == PosPrintResult.success) {
+  //       if (temp == 'template4') {
+  //         await kotPrint(printer, id, items, isCancelNote, isUpdate);
+  //      //   await disconnectWithPrinter(printer);
+  //       }
+  //       else if (temp == 'template3') {
+  //         await kotPrintGst(printer, id, items, isCancelNote, isUpdate);
+  //       }
+  //       else {
+  //         await printArabicKot(printer, id, items);
+  //       }
+  //
+  //       // Future.delayed(const Duration(seconds: 1), ()async {
+  //       //   print("------after delay----------------------------strting for printing process");
+  //       //   printer.disconnect();
+  //       // });
+  //
+  //
+  //
+  //     } else {
+  //       print('---${res.msg}----d------------');
+  //     }
+  //   } catch (e) {
+  //     print('------------------------------${e.toString()}');
+  //   }
+  // }
 
+  disconnectWithPrinter(NetworkPrinter printer){
+    print("------after delay----------------------------strting for printing process");
+    printer.disconnect(delayMs: 10);
+  }
+
+
+  /// Direct text method
+  Future<void> kotPrint(NetworkPrinter printer, id, items, bool isCancelNote, isUpdate,isCancelled) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var userName = prefs.getString('user_name')??"";
     bool showUsernameKot = prefs.getBool('show_username_kot')??false;
     bool showDateTimeKot = prefs.getBool('show_date_time_kot')??false;
@@ -3031,18 +3111,37 @@ if(taxDetails){
     var defaultCodePage = prefs.getString("default_code_page") ?? "CP864";
     var currentTime = DateTime.now();
     print("----------------$currentTime");
-    List<ItemsDetails> dataPrint = [];
-    dataPrint.clear();
 
-    for (Map user in items) {
-      dataPrint.add(ItemsDetails.fromJson(user));
+    List kotList =[];
+
+ //   List<ItemsDetails> dataPrints = [];
+    kotList.clear();
+    kotList = items;
+    print("-------------------------------10----------------------------$items--------------");
+    // for (Map user in items) {
+    //   dataPrints.add(ItemsDetails.fromJson(user));
+    // }
+    var kitchenName ="";
+  //  var totalQty = kotList[0]["Qty"].toString()??"0";
+    var totalQty = (kotList[0]["Qty"]?.toString() ?? "0");
+
+    if(isCancelNote ==false){
+      if(printListData.isNotEmpty){
+        print("-------------------------------10 00000----------- $id -------------------------------");
+
+        kitchenName = printListData[id].kitchenName??"";
+        print("-------------------------------10 00000------------------------------------------");
+        totalQty = printListData[id].totalQty??"0";
+      }
     }
 
-    var kitchenName = printListData[id].kitchenName;
-    var tableName = dataPrint[0].tableName;
-    var totalQty = printListData[id].totalQty;
-    var tokenNumber = dataPrint[0].tokenNumber;
-    var orderType = dataPrint[0].orderTypeI ?? "";
+
+    var tableName = kotList[0]["TableName"]??"";
+    // var tableName = dataPrints[0].tableName;
+    var tokenNumber = kotList[0]["TokenNumber"].toString();
+    // var tokenNumber = dataPrints[0].tokenNumber;
+    var orderType = kotList[0]["OrderType"] ?? "";
+    // var orderType = dataPrints[0].orderTypeI ?? "";
    // printer.setStyles(const PosStyles.defaults());
     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
@@ -3056,55 +3155,57 @@ if(taxDetails){
     Uint8List updateNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(updateNoteArabic));
 
     var invoiceType = "KOT";
-    var invoiceTypeArabic = "(طباعة المطب";
+    var invoiceTypeArabic = "طباعة المطب";
 
-    Uint8List typeEng = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    Uint8List typeEng =    await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
     Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
     //printer.text('', styles: const PosStyles(align: PosAlign.left));
 
-    printer.textEncoded(typeEng,
-        styles:
-            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    printer.textEncoded(typeEng, styles: const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     // printer.text('', styles: PosStyles(align: PosAlign.left));
+
+    if(isCancelled){
+      printer.text("ORDER CANCELLED", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size3, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    }
+    print("-------------------------------12------------------------------------------");
+    print("******************************************************************************************************************");
     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-    printer.textEncoded(typeArabic,
-         styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+    printer.textEncoded(typeArabic, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
-
+    print("******************************************************************************************************************1");
     if(extraDetailsInKOT){
-
+      print("******************************************************************************************************************2");
       if (isCancelNote) {
-        printer.text(cancelNoteData,
-            styles:
-                const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-        printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-        printer.textEncoded(cancelNoteEnc,
-            styles:
-                const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+        print("******************************************************************************************************************3");
+        printer.text(cancelNoteData, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        print("******************************************************************************************************************4");
+        printer.setStyles( PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        print("******************************************************************************************************************5");
+        printer.textEncoded(cancelNoteEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
       }
 
       if (isUpdate) {
-        printer.text(updateNote,
-            styles:
-                const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-        printer.setStyles(  PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
-        printer.textEncoded(updateNoteEnc,
-            styles:
-                const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+        print("******************************************************************************************************************4");
+        printer.text(updateNote, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        printer.textEncoded(updateNoteEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
       }
     }
 
-
+    print("*****************************************************************************************************************6");
 
     Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     printer.hr();
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
+    print("*****************************************************************************************************************7");
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+    print("*****************************************************************************************************************8");
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+    print("*****************************************************************************************************************8");
     printer.hr();
-
+    print("******************************************************************************************************************7");
     // if(showUsernameKot){
     //   printer.row([
     //     PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
@@ -3153,12 +3254,12 @@ if(taxDetails){
       PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     printer.hr();
-
-    for (var i = 0; i < dataPrint.length; i++) {
+    print("-------------------------------13------------------------------------------");
+    for (var i = 0; i < kotList.length; i++) {
       var slNo = i + 1;
-
-      var productDescription = dataPrint[i].productDescription??'';
-      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
+      print("-------------------------------14------------------------------------------");
+      var productDescription = kotList[i]["ProductDescription"]??'';
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(kotList[i]["ProductName"]));
 
       printer.row([
         PosColumn(
@@ -3168,7 +3269,7 @@ if(taxDetails){
               height: PosTextSize.size1,
             )),
         PosColumn(textEncoded: productName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(text: dataPrint[i].qty, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: kotList[i]["Qty"].toString(), width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       if (productDescription != "") {
@@ -3177,8 +3278,8 @@ if(taxDetails){
         printer.textEncoded(productDescriptionEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-      if (dataPrint[i].flavour != "") {
-        Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].flavour));
+      if (kotList[i]["flavour"] != "") {
+        Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(kotList[i]["flavour"]));
         printer.textEncoded(flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
       printer.hr();
@@ -3196,7 +3297,11 @@ if(taxDetails){
           styles:
               (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
+
+
+
     printer.cut();
+
 
   }
   /// Direct text method for Gst company
@@ -3345,6 +3450,7 @@ if(taxDetails){
           (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
+    printer.disconnect();
 
   }
 
