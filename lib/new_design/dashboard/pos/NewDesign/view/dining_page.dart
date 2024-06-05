@@ -395,6 +395,7 @@ class _DiningPageState extends State<DiningPage> {
             TextButton(
                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () {
+
                   addTable();
                 },
                 child: Row(
@@ -506,9 +507,14 @@ class _DiningPageState extends State<DiningPage> {
                     backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
                   ),
                   onPressed: () {
-                    // Do something with the text
+                    if (diningController.customerNameController.text == "") {
+                      dialogBox(context, "Please enter table name");
+                    } else {
+                      diningController.createTableApi();
+                   Get.back();
+                    }
 
-                    Get.back(); // Close the bottom sheet
+
                   },
                   child: Text(
                     'save'.tr,
