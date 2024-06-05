@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,10 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/pos_list_model.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/service/pos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import '../../../../../global/global.dart';
 
 class POSController extends GetxController {
   RxInt tabIndex=0.obs;
-
+final isLoadTable=false.obs;
   POSController({int defaultIndex = 0}) : tabIndex = defaultIndex.obs;
 
  // var tabIndex = 0.obs;
@@ -131,6 +135,65 @@ class POSController extends GetxController {
       onlineOrders.assignAll((fetchedData['Online'] as List).map((json) => Online.fromJson(json)).toList());
       takeAwayOrders.assignAll((fetchedData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
       carOrders.assignAll((fetchedData['Car'] as List).map((json) => Car.fromJson(json)).toList());
+    } finally {
+      isLoading(false);
+    }
+  }
+  Future<void> createTableApi() async {
+    try {
+      isLoading(true);
+
+
+      String baseUrl = BaseUrl.baseUrl;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var companyID = prefs.getString('companyID') ?? '0'; // Change to string
+      var branchID = prefs.getInt('branchID') ?? 1;
+
+      var accessToken = prefs.getString('access') ?? '';
+      final String url = '$baseUrl/posholds/table-create/';
+      var suffix = "";
+
+      var tableName = customerNameController.text;
+      var name = suffix + tableName;
+
+
+      Map<String, dynamic> data = {
+        "CompanyID": companyID,
+        "BranchID": branchID,
+        "TableName": name,
+        "IsActive": true,
+        "PriceCategoryID": "",
+      };
+
+      //encode Map to JSON
+      var body = json.encode(data);
+
+      var response = await http.post(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: body,
+      );
+
+      print(response.body);
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+      var status = responseData["StatusCode"];
+
+      if (status == 6000) {
+
+        fetchAllData();
+        customerNameController.clear();
+
+      } else if (status == 6001) {
+        var msg = responseData["message"];
+        Get.snackbar('Error', msg); // Show error message
+      } else {
+        // Handle other cases
+      }
+    } catch (e) {
+      // Handle exceptions
     } finally {
       isLoading(false);
     }
