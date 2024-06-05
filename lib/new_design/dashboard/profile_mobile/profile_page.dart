@@ -63,23 +63,23 @@ ProfileController profileController=Get.put(ProfileController());
                                 width: 1, color: const Color(0xffE6E6E6)),
                             // const Color(0xffE6E6E6)
                             borderRadius: BorderRadius.circular(25)),
-                        child: Column(
+                        child: Obx(() => Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                  top: 16.0, left: 6, right: 6),
+                                  top: 16.0, left:0, right: 6),
                               child: Container(
                                 height: mqh * .090,
-                                width: mqw * .845,
+                                width: mqw * .846,
                                 decoration: const BoxDecoration(
-                                    // border: Border.all(color: Colors.black,width: 1),
-                                    ),
+                                  // border: Border.all(color: Colors.black,width: 1),
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       left: 8.0, right: 4),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         height: mqh * .080,
@@ -87,17 +87,17 @@ ProfileController profileController=Get.put(ProfileController());
                                         decoration: BoxDecoration(
                                             color: Colors.white38,
                                             borderRadius:
-                                                BorderRadius.circular(22)),
+                                            BorderRadius.circular(22)),
                                         child: ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(20),
+                                            BorderRadius.circular(20),
                                             child: Image.network(
                                                 "https://www.gravatar.com/avatar/1?s=46&d=identicon&r=PG&f=1")),
                                         // child: Image.network(photo)),
                                       ),
                                       Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(
                                             height: 21,
@@ -122,10 +122,10 @@ ProfileController profileController=Get.put(ProfileController());
                                           )
                                         ],
                                       ),
-                                      const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                      ),
+                                      // const SizedBox(
+                                      //   height: 20,
+                                      //   width: 15,
+                                      // ),
                                       IconButton(
                                           onPressed: () {},
                                           icon: SvgPicture.asset(
@@ -149,16 +149,16 @@ ProfileController profileController=Get.put(ProfileController());
                                     borderRadius: BorderRadius.circular(11)),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Padding(
                                       padding:
-                                          const EdgeInsets.only(left: 16.0),
+                                      const EdgeInsets.only(left: 16.0),
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             'Organization',
@@ -195,7 +195,7 @@ ProfileController profileController=Get.put(ProfileController());
                                                   isDismissible: true,
                                                   context: context,
                                                   textMsg:
-                                                      ' Change organisation ?',
+                                                  ' Change organisation ?',
                                                   fistBtnOnPressed: () {
                                                     Navigator.of(context)
                                                         .pop(true);
@@ -231,7 +231,7 @@ ProfileController profileController=Get.put(ProfileController());
                               padding: const EdgeInsets.only(top: 15.0),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                MainAxisAlignment.spaceAround,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
@@ -256,10 +256,10 @@ ProfileController profileController=Get.put(ProfileController());
                                       decoration: BoxDecoration(
                                           color: const Color(0xffFfffff),
                                           borderRadius:
-                                              BorderRadius.circular(25)),
+                                          BorderRadius.circular(25)),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           SvgPicture.asset(
                                             "assets/svg/delete_mobile.svg",
@@ -306,10 +306,10 @@ ProfileController profileController=Get.put(ProfileController());
                                       decoration: BoxDecoration(
                                           color: const Color(0xffFFCFCF),
                                           borderRadius:
-                                              BorderRadius.circular(25)),
+                                          BorderRadius.circular(25)),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           SvgPicture.asset(
                                               "assets/svg/logout_mobile.svg"),
@@ -334,7 +334,7 @@ ProfileController profileController=Get.put(ProfileController());
                             ),
                             const SizedBox(height: 20)
                           ],
-                        ),
+                        )),
                       ),
                     ],
                   ),
@@ -352,7 +352,7 @@ ProfileController profileController=Get.put(ProfileController());
                     elevation: 0,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 8.0, right: 8, top: 10, bottom: 10),
+                          left: 10.0, right: 8, top: 10, bottom: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -364,6 +364,7 @@ ProfileController profileController=Get.put(ProfileController());
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Text(
                                   'Settings',
+
                                   style: customisedStyle(context, Colors.black,
                                       FontWeight.w400, 16.0),
                                 ),
