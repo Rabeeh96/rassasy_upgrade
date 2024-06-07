@@ -78,7 +78,7 @@ class _DashboardNewState extends State<DashboardNew> {
       });
     } else {
       try {
-        HttpOverrides.global = MyHttpOverrides();
+      //  HttpOverrides.global = MyHttpOverrides();
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
         var userID = prefs.getInt('user_id') ?? 0;

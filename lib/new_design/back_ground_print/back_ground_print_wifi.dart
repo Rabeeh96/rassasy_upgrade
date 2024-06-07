@@ -20,7 +20,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'Templates/template3.dart';
-
+import 'package:image/image.dart' as img;
+import 'dart:ui' as ui;
 class AppBlocs {
   List<ProductDetailsModel> printDalesDetails = [];
 
@@ -146,14 +147,7 @@ class AppBlocs {
       }
     }
   }
-  funcRest(String printerIp) async {
-    const PaperSize paper = PaperSize.mm80;
 
-    final profile = await CapabilityProfile.load();
-    final printer = NetworkPrinter(paper, profile);
-
-    return printer;
-  }
 /// print order and invoice
   void print_receipt(String printerIp, BuildContext ctx,isCancelled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -585,6 +579,7 @@ class AppBlocs {
     // printer.setStyles(PosStyles(align: PosAlign.center));
     // printer.setStyles(PosStyles(align: PosAlign.left));
 
+
     printer.row([
       PosColumn(
           text: 'SL',
@@ -785,7 +780,10 @@ if(taxDetails){
       }
     }
   }
-/// template supported only english
+
+
+
+  /// template supported only english
   Future<void> englishInvoicePrint(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,taxDetails) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
@@ -1319,8 +1317,6 @@ if(taxDetails){
       }
     }
   }
-
-  /// daily Report
 
 
 
@@ -3491,6 +3487,18 @@ if(taxDetails){
   }
 
   Future<void> testPrint(NetworkPrinter printer) async {
+
+    // final ByteData data = await rootBundle.load('assets/fonts/CustomArabicFont.ttf');
+    // final Uint8List fontData = data.buffer.asUint8List();
+
+    // Render text to image
+    // final img.Image image = img.Image(width: 200,height: 400);
+    // img.fill(image,  color: Colors.black);
+    // final ttf = img.BitmapFont.fromTtf(fontData, 24);
+    // img.drawString(image, ttf, 20, 'السلام عليكم وصباح الخير 98', font: ttf);
+
+
+
     printer.setStyles(const PosStyles.defaults());
     printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
     printer.text('Test kot', styles: const PosStyles(align: PosAlign.left));

@@ -50,79 +50,76 @@ class _DetailPageState extends State<DetailPage> {
               color: const Color(0xffE9E9E9),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8),
-            child: Expanded(
-              child: Obx(() => printController.isLoading.value
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                      color: Color(0xffF25F29),
-                    ))
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: printController.printDetailList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            ListTile(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    printController
-                                        .printDetailList[index].printerName,
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 14.0),
-                                  ),
-                                  Text(
-                                    printController
-                                        .printDetailList[index].iPAddress,
-                                    style: customisedStyle(context, Colors.grey,
-                                        FontWeight.normal, 12.0),
-                                  ),
-                                ],
-                              ),
-                              onTap: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-
-                                if (widget.type == "SI") {
-                                  prefs.setString(
-                                          'defaultIP',
-                                          printController.printDetailList[index]
-                                              .iPAddress) ??
-                                      '';
-                                } else if (widget.type == "SO") {
-                                  prefs.setString(
-                                          'defaultOrderIP',
-                                          printController.printDetailList[index]
-                                              .iPAddress) ??
-                                      '';
-                                } else {
-                                  prefs.setString(
-                                          'defaultOrderIP',
-                                          printController.printDetailList[index]
-                                              .iPAddress) ??
-                                      '';
-                                  prefs.setString(
-                                          'defaultIP',
-                                          printController.printDetailList[index]
-                                              .iPAddress) ??
-                                      '';
-                                }
-
-                                Navigator.pop(
-                                    context,
-                                    printController
-                                        .printDetailList[index].printerName);
-                              },
+          Expanded(
+            child: Obx(() => printController.isLoading.value
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    color: Color(0xffF25F29),
+                  ))
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: printController.printDetailList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  printController
+                                      .printDetailList[index].printerName,
+                                  style: customisedStyle(context,
+                                      Colors.black, FontWeight.w400, 14.0),
+                                ),
+                                Text(
+                                  printController
+                                      .printDetailList[index].iPAddress,
+                                  style: customisedStyle(context, Colors.grey,
+                                      FontWeight.normal, 12.0),
+                                ),
+                              ],
                             ),
-                            DividerStyle()
-                          ],
-                        );
-                      })),
-            ),
+                            onTap: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+
+                              if (widget.type == "SI") {
+                                prefs.setString(
+                                        'defaultIP',
+                                        printController.printDetailList[index]
+                                            .iPAddress) ??
+                                    '';
+                              } else if (widget.type == "SO") {
+                                prefs.setString(
+                                        'defaultOrderIP',
+                                        printController.printDetailList[index]
+                                            .iPAddress) ??
+                                    '';
+                              } else {
+                                prefs.setString(
+                                        'defaultOrderIP',
+                                        printController.printDetailList[index]
+                                            .iPAddress) ??
+                                    '';
+                                prefs.setString(
+                                        'defaultIP',
+                                        printController.printDetailList[index]
+                                            .iPAddress) ??
+                                    '';
+                              }
+
+                              Navigator.pop(
+                                  context,
+                                  printController
+                                      .printDetailList[index].printerName);
+                            },
+                          ),
+                          DividerStyle()
+                        ],
+                      );
+                    })),
           )
         ],
       ),
