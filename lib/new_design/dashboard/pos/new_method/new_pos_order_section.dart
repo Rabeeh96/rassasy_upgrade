@@ -5300,6 +5300,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               printKOT(id, false, [], false);
             } else {}
           });
+
+
         } else if (status == 6001) {
           stop();
           var errorMessage = n["message"];

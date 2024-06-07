@@ -147,14 +147,7 @@ class AppBlocs {
       }
     }
   }
-  funcRest(String printerIp) async {
-    const PaperSize paper = PaperSize.mm80;
 
-    final profile = await CapabilityProfile.load();
-    final printer = NetworkPrinter(paper, profile);
-
-    return printer;
-  }
 /// print order and invoice
   void print_receipt(String printerIp, BuildContext ctx,isCancelled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -586,6 +579,7 @@ class AppBlocs {
     // printer.setStyles(PosStyles(align: PosAlign.center));
     // printer.setStyles(PosStyles(align: PosAlign.left));
 
+
     printer.row([
       PosColumn(
           text: 'SL',
@@ -786,7 +780,10 @@ if(taxDetails){
       }
     }
   }
-/// template supported only english
+
+
+
+  /// template supported only english
   Future<void> englishInvoicePrint(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,taxDetails) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
@@ -1320,8 +1317,6 @@ if(taxDetails){
       }
     }
   }
-
-  /// daily Report
 
 
 
@@ -3493,8 +3488,8 @@ if(taxDetails){
 
   Future<void> testPrint(NetworkPrinter printer) async {
 
-    final ByteData data = await rootBundle.load('assets/fonts/CustomArabicFont.ttf');
-    final Uint8List fontData = data.buffer.asUint8List();
+    // final ByteData data = await rootBundle.load('assets/fonts/CustomArabicFont.ttf');
+    // final Uint8List fontData = data.buffer.asUint8List();
 
     // Render text to image
     // final img.Image image = img.Image(width: 200,height: 400);

@@ -1494,8 +1494,47 @@ class OrderController extends GetxController {
   var isCustomerLoading = true.obs;
 
   var users = <DeliveryManModel>[].obs;
-
+/// list employee
   Future<void> fetchUsers() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isCustomerLoading.value = true;
+    String baseUrl = BaseUrl.baseUrlV11;
+    var userID = prefs.getInt('user_id') ?? 0;
+    var accessToken = prefs.getString('access') ?? '';
+    var companyID = prefs.getString('companyID') ?? 0;
+    var branchID = prefs.getInt('branchID') ?? 1;
+    final url = Uri.parse('$baseUrl/posholds/list/pos-users/');
+    final payload = {
+      "BranchID": branchID,
+      "CompanyID": companyID,
+      "CreatedUserID": userID,
+      "PriceRounding": BaseUrl.priceRounding,
+      "search": "",
+      "is_deliveryman": true,
+    };
+
+
+    print("----url  $url");
+    print("----payload  $payload");
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Add the token here
+        },
+        body: json.encode(payload));
+
+    if (response.statusCode == 200) {
+      isCustomerLoading.value = false;
+      final jsonResponse = json.decode(response.body);
+
+      users.assignAll((jsonResponse['data'] as List).map((data) => DeliveryManModel.fromJson(data)).toList());
+    } else {
+      isCustomerLoading.value = false;
+      throw Exception('Failed to load users');
+    }
+  }
+  ///
+  Future<void> fetchCancelReason() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isCustomerLoading.value = true;
     String baseUrl = BaseUrl.baseUrlV11;

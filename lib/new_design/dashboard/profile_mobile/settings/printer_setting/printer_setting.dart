@@ -153,27 +153,7 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
               ],
             ),
           ),
-          // Expanded(
-          //   child: ListView
-          //       .builder(
-          //     scrollDirection: Axis.horizontal,
-          //     itemCount: 5,
-          //     itemBuilder: (BuildContext context, int index) {
-          //       return
-          //         Padding(
-          //         padding: const EdgeInsets.only(
-          //             left: 20.0, right: 20, top: 20, bottom: 20),
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             color: Color(0xffEBEBEB),
-          //             borderRadius: BorderRadius.circular(4),
-          //           ),
-          //           width: MediaQuery.of(context).size.width / 1.3,
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
+
         ],
       ),
       bottomNavigationBar: SizedBox(

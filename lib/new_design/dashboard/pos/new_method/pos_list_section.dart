@@ -34,8 +34,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   Color borderColor = const Color(0xffB8B8B8);
 
   TextEditingController tableNameController = TextEditingController();
-  TextEditingController reservationCustomerNameController =
-      TextEditingController();
+  TextEditingController reservationCustomerNameController = TextEditingController();
 
   bool networkConnection = true;
   bool hide_payment = false;
@@ -137,6 +136,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   bool kotLoad = false;
 
   ReloadAllData({required bool callFunction}) async {
+    print("----------------------------------------------------------------1");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     cancelReportList.clear();
     cardList.clear();
@@ -173,7 +173,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           mainPageIndex = 4;
         }
       }
-
+      print("----------------------------------------------------------------2");
       cancel_order_perm = prefs.getBool('Cancel Order') ?? true;
       pay_perm = prefs.getBool('Payment') ?? true;
 
@@ -197,13 +197,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   }
 
   bool checkPermissions() {
-    bool anyPermissionTrue = print_perm ||
-        cancel_order_perm ||
-        pay_perm ||
-        reservation_perm ||
-        kitchen_print_perm ||
-        remove_table_perm ||
-        convert_type_perm;
+    bool anyPermissionTrue =
+        print_perm || cancel_order_perm || pay_perm || reservation_perm || kitchen_print_perm || remove_table_perm || convert_type_perm;
 
     if (anyPermissionTrue) {
       return false;
@@ -298,8 +293,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     ),
                     child: Text(
                       'No',
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w500, 14.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop(false);
@@ -312,8 +306,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     ),
                     child: Text(
                       'Yes'.tr,
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w500, 14.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop(true);
@@ -397,8 +390,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           ),
           Text(
             'no_network'.tr,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
           const SizedBox(
             height: 10,
@@ -411,9 +403,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(const Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEE830C))),
           ),
         ],
       ),
@@ -429,8 +419,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
               child: Center(
                   child: Text(
                 "No permission to dining section",
-                style: customisedStyle(
-                    context, Colors.black, FontWeight.w500, 14.0),
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
               )),
             );
     } else if (index == 2) {
@@ -440,8 +429,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
               child: Center(
                   child: Text(
                 "No permission to Take away section",
-                style: customisedStyle(
-                    context, Colors.black, FontWeight.w500, 14.0),
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
               )),
             );
     } else if (index == 3) {
@@ -453,8 +441,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
               child: Center(
                   child: Text(
                 "No permission to Car section",
-                style: customisedStyle(
-                    context, Colors.black, FontWeight.w500, 14.0),
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
               )),
             );
       ;
@@ -486,8 +473,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     children: [
                       Container(
                         alignment: Alignment.centerLeft,
-                        height: MediaQuery.of(context).size.height /
-                            11, //height of button
+                        height: MediaQuery.of(context).size.height / 11, //height of button
                         width: MediaQuery.of(context).size.width / 3,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -495,19 +481,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           children: [
                             Text(
                               'Dining'.tr,
-                              style: customisedStyle(
-                                  context,
-                                  const Color(0xff717171),
-                                  FontWeight.bold,
-                                  15.00),
+                              style: customisedStyle(context, const Color(0xff717171), FontWeight.bold, 15.00),
                             ),
                             Text(
                               'choose_table'.tr,
-                              style: customisedStyle(
-                                  context,
-                                  const Color(0xff000000),
-                                  FontWeight.w700,
-                                  12.00),
+                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 12.00),
                             )
                           ],
                         ),
@@ -528,15 +506,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       Container(
                         width: 100,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff0347A1)),
+                          style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
                           onPressed: () {
                             posFunctions(callFunction: true);
                           },
                           child: Text(
                             'Refresh'.tr,
-                            style: customisedStyle(
-                                context, Colors.white, FontWeight.w500, 12.0),
+                            style: customisedStyle(context, Colors.white, FontWeight.w500, 12.0),
                           ),
                         ),
                       ),
@@ -552,8 +528,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             // color: Colors.grey,),
             child: GridView.builder(
                 // physics: NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(
-                    left: 4, top: 20, right: 0, bottom: 6),
+                padding: const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
@@ -580,130 +555,115 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 }),
           ),
           Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xffD6D6D6), width: 0.5)),
+            decoration: BoxDecoration(border: Border.all(color: const Color(0xffD6D6D6), width: 0.5)),
             height: MediaQuery.of(context).size.height / 14, //height of button
             //width: MediaQuery.of(context).size.width / 1,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height /
-                                12, //height of button
-                            // width: MediaQuery.of(context).size.width / 18,
-                            child: IconButton(
-                                onPressed: () {
-                                  createTable(context);
-                                },
-                                icon: SvgPicture.asset(
-                                  'assets/svg/addmore.svg',
-                                ),
-                                iconSize: 35),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                                top: 16, right: 16, bottom: 16),
-                            height: MediaQuery.of(context).size.height /
-                                14, //height of button
-                            // width: MediaQuery.of(context).size.width / 10,
-
-                            child: Text(
-                              'add_table'.tr,
-                              style: customisedStyle(context, Colors.black,
-                                  FontWeight.w500, 14.00),
+                      Container(
+                        height: MediaQuery.of(context).size.height / 12, //height of button
+                        // width: MediaQuery.of(context).size.width / 18,
+                        child: IconButton(
+                            onPressed: () {
+                              createTable(context);
+                            },
+                            icon: SvgPicture.asset(
+                              'assets/svg/addmore.svg',
                             ),
-                          ),
-                        ],
+                            iconSize: 35),
                       ),
+                      Container(
+                        padding: const EdgeInsets.only(top: 16, right: 16, bottom: 16),
+                        height: MediaQuery.of(context).size.height / 14, //height of button
+                        // width: MediaQuery.of(context).size.width / 10,
 
-                      /// remove table commented
-
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     Container(
-                      //       height: MediaQuery.of(context).size.height / 12, //height of button
-                      //       // width: MediaQuery.of(context).size.width / 18,
-                      //       child: IconButton(
-                      //           onPressed: () {
-                      //
-                      //           },
-                      //           icon: SvgPicture.asset(
-                      //             'assets/svg/remove_item.svg',
-                      //           ),
-                      //           iconSize: 35),
-                      //     ),
-                      //     Container(
-                      //       padding: const EdgeInsets.only(top: 16, right: 16, bottom: 16),
-                      //       height: MediaQuery.of(context).size.height / 14, //height of button
-                      //       // width: MediaQuery.of(context).size.width / 10,
-                      //
-                      //       child: Text(
-                      //         'Remove table',
-                      //         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.00),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
+                        child: Text(
+                          'add_table'.tr,
+                          style: customisedStyle(context, Colors.black, FontWeight.w500, 14.00),
+                        ),
+                      ),
                     ],
                   ),
 
-                  ///icon
+                  /// remove table commented
 
-                  reservation_view_perm == true
-                      ? GestureDetector(
-                          onTap: () async {
-                            var result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ReservationList()),
-                            );
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: [
+                  //     Container(
+                  //       height: MediaQuery.of(context).size.height / 12, //height of button
+                  //       // width: MediaQuery.of(context).size.width / 18,
+                  //       child: IconButton(
+                  //           onPressed: () {
+                  //
+                  //           },
+                  //           icon: SvgPicture.asset(
+                  //             'assets/svg/remove_item.svg',
+                  //           ),
+                  //           iconSize: 35),
+                  //     ),
+                  //     Container(
+                  //       padding: const EdgeInsets.only(top: 16, right: 16, bottom: 16),
+                  //       height: MediaQuery.of(context).size.height / 14, //height of button
+                  //       // width: MediaQuery.of(context).size.width / 10,
+                  //
+                  //       child: Text(
+                  //         'Remove table',
+                  //         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.00),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                ],
+              ),
 
-                            posFunctions(callFunction: false);
-                          },
-                          child: AbsorbPointer(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: MediaQuery.of(context).size.height /
-                                      12, //height of button
-                                  // width: MediaQuery.of(context).size.width / 18,
-                                  child: IconButton(
-                                      onPressed: () {},
-                                      icon: SvgPicture.asset(
-                                        'assets/svg/reserve.svg',
-                                      ),
-                                      iconSize: 35),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 16, right: 16, bottom: 16),
-                                  height: MediaQuery.of(context).size.height /
-                                      14, //height of button
-                                  // width: MediaQuery.of(context).size.width / 10,
+              ///icon
 
-                                  child: Text(
-                                    'Reservation'.tr,
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xff00775E),
-                                        FontWeight.w500,
-                                        14.00),
+              reservation_view_perm == true
+                  ? GestureDetector(
+                      onTap: () async {
+                        var result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ReservationList()),
+                        );
+
+                        posFunctions(callFunction: false);
+                      },
+                      child: AbsorbPointer(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height / 12, //height of button
+                              // width: MediaQuery.of(context).size.width / 18,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: SvgPicture.asset(
+                                    'assets/svg/reserve.svg',
                                   ),
-                                ),
-                              ],
+                                  iconSize: 35),
                             ),
-                          ))
-                      : Container(),
-                ]),
+                            Container(
+                              padding: const EdgeInsets.only(top: 16, right: 16, bottom: 16),
+                              height: MediaQuery.of(context).size.height / 14, //height of button
+                              // width: MediaQuery.of(context).size.width / 10,
+
+                              child: Text(
+                                'Reservation'.tr,
+                                style: customisedStyle(context, const Color(0xff00775E), FontWeight.w500, 14.00),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ))
+                  : Container(),
+            ]),
           )
         ],
       ),
@@ -793,11 +753,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   late ValueNotifier<DateTime> timeNotifierFromTime;
   late ValueNotifier<DateTime> timeNotifierToTime;
 
-  navigateToOrderSection(
-      {required sectionType,
-      required tableID,
-      required UUID,
-      required tableHead}) async {
+  navigateToOrderSection({required sectionType, required tableID, required UUID, required tableHead}) async {
     var result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -811,8 +767,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     );
 
     if (result != null) {
-      print('llllllllll $result');
-
       setState(() {
         mainPageIndex = result[0];
       });
@@ -829,8 +783,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     }
   }
 
-  navigateToPaymentFromOrder(
-      {required tableID, required tableHead, required UUID}) async {
+  navigateToPaymentFromOrder({required tableID, required tableHead, required UUID}) async {
     var result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -872,10 +825,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
             if (dining_create_perm) {
               navigateToOrderSection(
-                  tableID: diningOrderList[dineIndex].tableId,
-                  sectionType: "Create",
-                  UUID: "",
-                  tableHead: diningOrderList[dineIndex].title);
+                  tableID: diningOrderList[dineIndex].tableId, sectionType: "Create", UUID: "", tableHead: diningOrderList[dineIndex].title);
             } else {
               dialogBoxPermissionDenied(context);
             }
@@ -965,18 +915,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(diningOrderList[dineIndex].title,
-                                style: const TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w800)),
-                            Text(
-                                returnOrderTime(
-                                    diningOrderList[dineIndex].orderTime,
-                                    diningOrderList[dineIndex].status),
+                            Text(diningOrderList[dineIndex].title, style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.w800)),
+                            Text(returnOrderTime(diningOrderList[dineIndex].orderTime, diningOrderList[dineIndex].status),
                                 //'Table 1',
-                                style: const TextStyle(
-                                    fontSize: 10.0,
-                                    fontWeight: FontWeight.w800)),
+                                style: const TextStyle(fontSize: 10.0, fontWeight: FontWeight.w800)),
                           ],
                         ),
                       ),
@@ -991,9 +933,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(returnText(diningOrderList[dineIndex].status),
-                        style: customisedStyle(
-                            context, Colors.black, FontWeight.w700, 12.00)),
+                    Text(returnText(diningOrderList[dineIndex].status), style: customisedStyle(context, Colors.black, FontWeight.w700, 12.00)),
                     // Row(
                     //   children: [
                     //     Text(currency + ". " +
@@ -1010,17 +950,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         Text(
                             currency +
                                 ". " +
-                                roundStringWith(
-                                    diningOrderList[dineIndex].status != "Vacant"
-                                        ? diningOrderList[dineIndex].status !=
-                                                "Paid"
-                                            ? diningOrderList[dineIndex]
-                                                .salesOrderGrandTotal
-                                            : diningOrderList[dineIndex]
-                                                .salesGrandTotal
-                                        : '0'),
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.bold, 12.00)),
+                                roundStringWith(diningOrderList[dineIndex].status != "Vacant"
+                                    ? diningOrderList[dineIndex].status != "Paid"
+                                        ? diningOrderList[dineIndex].salesOrderGrandTotal
+                                        : diningOrderList[dineIndex].salesGrandTotal
+                                    : '0'),
+                            style: customisedStyle(context, Colors.black, FontWeight.bold, 12.00)),
                         // Text
                       ],
                     ),
@@ -1033,13 +968,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 child: Row(
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width /
-                          returnWidth(dineIndex),
+                      width: MediaQuery.of(context).size.width / returnWidth(dineIndex),
                       height: MediaQuery.of(context).size.height / 15,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor:
-                              buttonColor(diningOrderList[dineIndex].status),
+                          backgroundColor: buttonColor(diningOrderList[dineIndex].status),
                           textStyle: const TextStyle(
                             fontSize: 12,
                           ),
@@ -1047,8 +980,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         onPressed: () {},
                         child: Text(
                           diningOrderList[dineIndex].status,
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.w400, 13.00),
+                          style: customisedStyle(context, Colors.black, FontWeight.w400, 13.00),
                         ),
                       ),
                     ),
@@ -1063,39 +995,20 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                 children: [
                                   Text(
                                     'Reservation'.tr,
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xff00775E),
-                                        FontWeight.w500,
-                                        10.0),
+                                    style: customisedStyle(context, const Color(0xff00775E), FontWeight.w500, 10.0),
                                   ),
                                   Column(
                                     // mainAxisAlignment:MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        dateConverter(diningOrderList[dineIndex]
-                                            .reserved[0]["Date"]),
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff707070),
-                                            FontWeight.w500,
-                                            10.0),
+                                        dateConverter(diningOrderList[dineIndex].reserved[0]["Date"]),
+                                        style: customisedStyle(context, const Color(0xff707070), FontWeight.w500, 10.0),
                                       ),
                                       Text(
-                                        ReturnDate(
-                                            diningOrderList[dineIndex]
-                                                .reserved[0]["Date"],
-                                            diningOrderList[dineIndex]
-                                                .reserved[0]["FromTime"],
-                                            diningOrderList[dineIndex]
-                                                .reserved[0]["ToTime"]),
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff707070),
-                                            FontWeight.w500,
-                                            9.0),
+                                        ReturnDate(diningOrderList[dineIndex].reserved[0]["Date"], diningOrderList[dineIndex].reserved[0]["FromTime"],
+                                            diningOrderList[dineIndex].reserved[0]["ToTime"]),
+                                        style: customisedStyle(context, const Color(0xff707070), FontWeight.w500, 9.0),
                                       ),
                                     ],
                                   )
@@ -1183,7 +1096,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             ip = defaultIp;
           }
 
-          printHelperIP.print_receipt(ip, context,isCancelled);
+          printHelperIP.print_receipt(ip, context, isCancelled);
         } else {
           dialogBox(context, 'Please try again later1');
         }
@@ -1231,16 +1144,18 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     }
   }
 
+
+
   // ReprintKOT(id) async {
   //   printHelper.printKotPrintRe(id);
   // }
 
-  ReprintKOT(orderID,isCancelled) async {
+  ReprintKOT(orderID, isCancelled) async {
     print("___orderID_____orderID_____orderID____orderID_____$orderID");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     if (printType == 'Wifi') {
-      printHelperIP.printKotPrint(orderID, true, [], false,isCancelled);
+      printHelperIP.printKotPrint(orderID, true, [], false, isCancelled);
     } else {
       var loadData = printHelperUsb.printKotPrint(orderID, true, [], false);
       //  var loadData = await bluetoothHelper.bluetoothPrintKOT(context,true,orderID);
@@ -1274,8 +1189,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         barrierColor: Colors.black.withAlpha(1),
         backgroundColor: Colors.transparent,
         builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter state) {
+          return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
             return SingleChildScrollView(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1286,56 +1200,36 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           ? SizedBox(
                               height: MediaQuery.of(context).size.height / 5,
                               width: MediaQuery.of(context).size.width / 13,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        selectedDiningIndex = 1000;
-                                        if (sectionType == 1) {
-                                          navigateToOrderSection(
-                                              tableID: "",
-                                              sectionType: "Edit",
-                                              UUID: diningOrderList[tableIndex].salesOrderID,
-                                              tableHead: "Order");
-                                        } else if (sectionType == 2) {
-                                          navigateToOrderSection(
-                                              tableID: "",
-                                              sectionType: "Edit",
-                                              UUID:
-                                                  takeAwayOrderLists[tableIndex]
-                                                      .salesOrderId,
-                                              tableHead: "Order");
-                                        } else if (sectionType == 3) {
-                                          navigateToOrderSection(
-                                              tableID: "",
-                                              sectionType: "Edit",
-                                              UUID: onlineOrderLists[tableIndex]
-                                                  .salesOrderId,
-                                              tableHead: "Order");
-                                        } else if (sectionType == 4) {
-                                          navigateToOrderSection(
-                                              tableID: "",
-                                              sectionType: "Edit",
-                                              UUID: carOrderLists[tableIndex]
-                                                  .salesOrderId,
-                                              tableHead: "Order");
-                                        }
-                                      },
-                                      icon: SvgPicture.asset(
-                                        'assets/svg/Edit_Icon.svg',
-                                      ),
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    selectedDiningIndex = 1000;
+                                    if (sectionType == 1) {
+                                      navigateToOrderSection(
+                                          tableID: "", sectionType: "Edit", UUID: diningOrderList[tableIndex].salesOrderID, tableHead: "Order");
+                                    } else if (sectionType == 2) {
+                                      navigateToOrderSection(
+                                          tableID: "", sectionType: "Edit", UUID: takeAwayOrderLists[tableIndex].salesOrderId, tableHead: "Order");
+                                    } else if (sectionType == 3) {
+                                      navigateToOrderSection(
+                                          tableID: "", sectionType: "Edit", UUID: onlineOrderLists[tableIndex].salesOrderId, tableHead: "Order");
+                                    } else if (sectionType == 4) {
+                                      navigateToOrderSection(
+                                          tableID: "", sectionType: "Edit", UUID: carOrderLists[tableIndex].salesOrderId, tableHead: "Order");
+                                    }
+                                  },
+                                  icon: SvgPicture.asset(
+                                    'assets/svg/Edit_Icon.svg',
+                                  ),
 
-                                      // iconSize: 50
-                                    ),
-                                    Text(
-                                      "edit".tr,
-                                      style: customisedStyle(context,
-                                          Colors.black, FontWeight.w600, 12.00),
-                                    )
-                                  ]))
+                                  // iconSize: 50
+                                ),
+                                Text(
+                                  "edit".tr,
+                                  style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                                )
+                              ]))
                           : Container()
                       : Container(),
 
@@ -1344,123 +1238,83 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           ? SizedBox(
                               height: MediaQuery.of(context).size.height / 5,
                               width: MediaQuery.of(context).size.width / 13,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            selectedDiningIndex = 1000;
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedDiningIndex = 1000;
 
-                                            if (sectionType == 1) {
-                                              if (diningOrderList[tableIndex]
-                                                      .status ==
-                                                  "Ordered") {
-                                                print(
-                                                    diningOrderList[tableIndex]
-                                                        .salesOrderID);
-                                                Navigator.pop(context);
-                                                PrintDataDetails.type = "SO";
-                                                PrintDataDetails.id =
-                                                    diningOrderList[tableIndex]
-                                                        .salesOrderID;
-                                                printDetail(false);
-                                              }
-                                              if (diningOrderList[tableIndex]
-                                                      .status ==
-                                                  "Paid") {
-                                                Navigator.pop(context);
-                                                PrintDataDetails.type = "SI";
-                                                PrintDataDetails.id =
-                                                    diningOrderList[tableIndex]
-                                                        .salesMasterID;
+                                        if (sectionType == 1) {
+                                          if (diningOrderList[tableIndex].status == "Ordered") {
+                                            print(diningOrderList[tableIndex].salesOrderID);
+                                            Navigator.pop(context);
+                                            PrintDataDetails.type = "SO";
+                                            PrintDataDetails.id = diningOrderList[tableIndex].salesOrderID;
+                                            printDetail(false);
+                                          }
+                                          if (diningOrderList[tableIndex].status == "Paid") {
+                                            Navigator.pop(context);
+                                            PrintDataDetails.type = "SI";
+                                            PrintDataDetails.id = diningOrderList[tableIndex].salesMasterID;
 
-                                                printDetail(false);
-                                              }
-                                            } else if (sectionType == 2) {
-                                              if (takeAwayOrderLists[tableIndex]
-                                                      .status ==
-                                                  "Ordered") {
-                                                Navigator.pop(context);
-                                                PrintDataDetails.type = "SO";
-                                                PrintDataDetails.id =
-                                                    takeAwayOrderLists[
-                                                            tableIndex]
-                                                        .salesOrderId;
-                                                printDetail(false);
-                                              }
-                                              if (takeAwayOrderLists[tableIndex]
-                                                      .status ==
-                                                  "Paid") {
-                                                Navigator.pop(context);
-                                                PrintDataDetails.type = "SI";
-                                                PrintDataDetails.id =
-                                                    takeAwayOrderLists[
-                                                            tableIndex]
-                                                        .salesId;
-                                                printDetail(false);
-                                              }
-                                            } else if (sectionType == 3) {
-                                              if (onlineOrderLists[tableIndex]
-                                                      .status ==
-                                                  "Ordered") {
-                                                Navigator.pop(context);
-                                                PrintDataDetails.type = "SO";
-                                                PrintDataDetails.id =
-                                                    onlineOrderLists[tableIndex]
-                                                        .salesOrderId;
+                                            printDetail(false);
+                                          }
+                                        } else if (sectionType == 2) {
+                                          if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+                                            Navigator.pop(context);
+                                            PrintDataDetails.type = "SO";
+                                            PrintDataDetails.id = takeAwayOrderLists[tableIndex].salesOrderId;
+                                            printDetail(false);
+                                          }
+                                          if (takeAwayOrderLists[tableIndex].status == "Paid") {
+                                            Navigator.pop(context);
+                                            PrintDataDetails.type = "SI";
+                                            PrintDataDetails.id = takeAwayOrderLists[tableIndex].salesId;
+                                            printDetail(false);
+                                          }
+                                        } else if (sectionType == 3) {
+                                          if (onlineOrderLists[tableIndex].status == "Ordered") {
+                                            Navigator.pop(context);
+                                            PrintDataDetails.type = "SO";
+                                            PrintDataDetails.id = onlineOrderLists[tableIndex].salesOrderId;
 
-                                                printDetail(false);
-                                              }
+                                            printDetail(false);
+                                          }
 
-                                              if (onlineOrderLists[tableIndex]
-                                                      .status ==
-                                                  "Paid") {
-                                                Navigator.pop(context);
-                                                PrintDataDetails.type = "SI";
-                                                PrintDataDetails.id =
-                                                    onlineOrderLists[tableIndex]
-                                                        .salesId;
+                                          if (onlineOrderLists[tableIndex].status == "Paid") {
+                                            Navigator.pop(context);
+                                            PrintDataDetails.type = "SI";
+                                            PrintDataDetails.id = onlineOrderLists[tableIndex].salesId;
 
-                                                printDetail(false);
-                                              }
-                                            } else if (sectionType == 4) {
-                                              if (carOrderLists[tableIndex]
-                                                      .status ==
-                                                  "Ordered") {
-                                                Navigator.pop(context);
-                                                PrintDataDetails.type = "SO";
-                                                PrintDataDetails.id =
-                                                    carOrderLists[tableIndex]
-                                                        .salesOrderId;
+                                            printDetail(false);
+                                          }
+                                        } else if (sectionType == 4) {
+                                          if (carOrderLists[tableIndex].status == "Ordered") {
+                                            Navigator.pop(context);
+                                            PrintDataDetails.type = "SO";
+                                            PrintDataDetails.id = carOrderLists[tableIndex].salesOrderId;
 
-                                                printDetail(false);
-                                              }
-                                              if (carOrderLists[tableIndex]
-                                                      .status ==
-                                                  "Paid") {
-                                                Navigator.pop(context);
-                                                PrintDataDetails.type = "SI";
-                                                PrintDataDetails.id =
-                                                    carOrderLists[tableIndex]
-                                                        .salesId;
+                                            printDetail(false);
+                                          }
+                                          if (carOrderLists[tableIndex].status == "Paid") {
+                                            Navigator.pop(context);
+                                            PrintDataDetails.type = "SI";
+                                            PrintDataDetails.id = carOrderLists[tableIndex].salesId;
 
-                                                printDetail(false);
-                                              }
-                                            }
-                                          });
-                                        },
-                                        icon: SvgPicture.asset(
-                                          'assets/svg/print_image.svg',
-                                        ),
-                                        iconSize: 60),
-                                    Text(
-                                      "print".tr,
-                                      style: customisedStyle(context,
-                                          Colors.black, FontWeight.w600, 12.00),
-                                    )
-                                  ]))
+                                            printDetail(false);
+                                          }
+                                        }
+                                      });
+                                    },
+                                    icon: SvgPicture.asset(
+                                      'assets/svg/print_image.svg',
+                                    ),
+                                    iconSize: 60),
+                                Text(
+                                  "print".tr,
+                                  style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                                )
+                              ]))
                           : Container()
                       : Container(),
 
@@ -1468,229 +1322,159 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ? SizedBox(
                           height: MediaQuery.of(context).size.height / 5,
                           width: MediaQuery.of(context).size.width / 13,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        selectedDiningIndex = 1000;
-                                        if (sectionType == 1) {
-                                          if (diningOrderList[tableIndex]
-                                                  .status ==
-                                              "Ordered") {
-                                            if (cancel_order_perm) {
-                                              cancelId = diningOrderList[tableIndex].tableId;
-                                              Navigator.pop(context);
-                                              cancelReason(context, tableIndex, sectionType,diningOrderList[tableIndex].salesOrderID);
-                                            } else {
-                                              Navigator.pop(context);
-                                              dialogBoxPermissionDenied(
-                                                  context);
-                                            }
-                                          }
-                                          if (diningOrderList[tableIndex]
-                                                  .status ==
-                                              "Paid") {
-                                            var deleteId =
-                                                diningOrderList[tableIndex]
-                                                    .tableId;
-                                            var type = "Dining";
-                                            Navigator.pop(context);
-                                            delete(type, deleteId, "","");
-                                          }
-                                        } else if (sectionType == 2) {
-                                          if (takeAwayOrderLists[tableIndex]
-                                                  .status ==
-                                              "Ordered") {
-                                            if (cancel_order_perm) {
-                                              cancelId =
-                                                  takeAwayOrderLists[tableIndex]
-                                                      .salesOrderId;
-                                              Navigator.pop(context);
-                                              cancelReason(context, tableIndex,
-                                                  sectionType,takeAwayOrderLists[tableIndex].salesOrderId);
-                                            } else {
-                                              Navigator.pop(context);
-                                              dialogBoxPermissionDenied(
-                                                  context);
-                                            }
-                                          }
-                                          if (takeAwayOrderLists[tableIndex]
-                                                  .status ==
-                                              "Paid") {
-                                            var deleteId =
-                                                takeAwayOrderLists[tableIndex]
-                                                    .salesOrderId;
-                                            var type = "TakeAway";
-                                            Navigator.pop(context);
-                                            delete(type, deleteId, "","");
-                                          }
-                                        } else if (sectionType == 3) {
-                                          if (onlineOrderLists[tableIndex]
-                                                  .status ==
-                                              "Ordered") {
-                                            if (cancel_order_perm) {
-                                              cancelId =
-                                                  onlineOrderLists[tableIndex]
-                                                      .salesOrderId;
-                                              Navigator.pop(context);
-                                              cancelReason(context, tableIndex,
-                                                  sectionType,onlineOrderLists[tableIndex].salesOrderId);
-                                            } else {
-                                              Navigator.pop(context);
-                                              dialogBoxPermissionDenied(
-                                                  context);
-                                            }
-                                          }
-
-                                          if (onlineOrderLists[tableIndex]
-                                                  .status ==
-                                              "Paid") {
-                                            var deleteId =
-                                                onlineOrderLists[tableIndex]
-                                                    .salesOrderId;
-                                            var type = "Online";
-                                            Navigator.pop(context);
-                                            delete(type, deleteId, "","");
-                                            // OnlineCar
-                                          }
-                                        } else if (sectionType == 4) {
-                                          if (carOrderLists[tableIndex]
-                                                  .status ==
-                                              "Ordered") {
-                                            if (cancel_order_perm) {
-                                              cancelId =
-                                                  carOrderLists[tableIndex]
-                                                      .salesOrderId;
-                                              Navigator.pop(context);
-                                              cancelReason(context, tableIndex,
-                                                  sectionType,carOrderLists[tableIndex].salesOrderId);
-                                            } else {
-                                              Navigator.pop(context);
-                                              dialogBoxPermissionDenied(
-                                                  context);
-                                            }
-                                          }
-                                          if (carOrderLists[tableIndex]
-                                                  .status ==
-                                              "Paid") {
-                                            var deleteId =
-                                                carOrderLists[tableIndex]
-                                                    .salesOrderId;
-                                            var type = "Car";
-                                            Navigator.pop(context);
-                                            delete(type, deleteId, "","");
-                                          }
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    selectedDiningIndex = 1000;
+                                    if (sectionType == 1) {
+                                      if (diningOrderList[tableIndex].status == "Ordered") {
+                                        if (cancel_order_perm) {
+                                          cancelId = diningOrderList[tableIndex].tableId;
+                                          Navigator.pop(context);
+                                          cancelReason(context, sectionType, diningOrderList[tableIndex].salesOrderID);
+                                        } else {
+                                          Navigator.pop(context);
+                                          dialogBoxPermissionDenied(context);
                                         }
-                                      });
-                                    },
-                                    icon: SvgPicture.asset(
-                                      'assets/svg/cancelorder.svg',
-                                    ),
-                                    iconSize: 60),
-                                Text(
-                                  returnCancelHead(status),
-                                  style: customisedStyle(context, Colors.black,
-                                      FontWeight.w600, 12.00),
-                                )
-                              ]))
+                                      }
+                                      if (diningOrderList[tableIndex].status == "Paid") {
+                                        var deleteId = diningOrderList[tableIndex].tableId;
+                                        var type = "Dining";
+                                        Navigator.pop(context);
+                                        delete(type, deleteId, "", "");
+                                      }
+                                    } else if (sectionType == 2) {
+                                      if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+                                        if (cancel_order_perm) {
+                                          cancelId = takeAwayOrderLists[tableIndex].salesOrderId;
+                                          Navigator.pop(context);
+                                          cancelReason(context, sectionType, takeAwayOrderLists[tableIndex].salesOrderId);
+                                        } else {
+                                          Navigator.pop(context);
+                                          dialogBoxPermissionDenied(context);
+                                        }
+                                      }
+                                      if (takeAwayOrderLists[tableIndex].status == "Paid") {
+                                        var deleteId = takeAwayOrderLists[tableIndex].salesOrderId;
+                                        var type = "TakeAway";
+                                        Navigator.pop(context);
+                                        delete(type, deleteId, "", "");
+                                      }
+                                    } else if (sectionType == 3) {
+                                      if (onlineOrderLists[tableIndex].status == "Ordered") {
+                                        if (cancel_order_perm) {
+                                          cancelId = onlineOrderLists[tableIndex].salesOrderId;
+                                          Navigator.pop(context);
+                                          cancelReason(context, sectionType, onlineOrderLists[tableIndex].salesOrderId);
+                                        } else {
+                                          Navigator.pop(context);
+                                          dialogBoxPermissionDenied(context);
+                                        }
+                                      }
+
+                                      if (onlineOrderLists[tableIndex].status == "Paid") {
+                                        var deleteId = onlineOrderLists[tableIndex].salesOrderId;
+                                        var type = "Online";
+                                        Navigator.pop(context);
+                                        delete(type, deleteId, "", "");
+                                        // OnlineCar
+                                      }
+                                    } else if (sectionType == 4) {
+                                      if (carOrderLists[tableIndex].status == "Ordered") {
+                                        if (cancel_order_perm) {
+                                          cancelId = carOrderLists[tableIndex].salesOrderId;
+                                          Navigator.pop(context);
+                                          cancelReason(context, sectionType, carOrderLists[tableIndex].salesOrderId);
+                                        } else {
+                                          Navigator.pop(context);
+                                          dialogBoxPermissionDenied(context);
+                                        }
+                                      }
+                                      if (carOrderLists[tableIndex].status == "Paid") {
+                                        var deleteId = carOrderLists[tableIndex].salesOrderId;
+                                        var type = "Car";
+                                        Navigator.pop(context);
+                                        delete(type, deleteId, "", "");
+                                      }
+                                    }
+                                  });
+                                },
+                                icon: SvgPicture.asset(
+                                  'assets/svg/cancelorder.svg',
+                                ),
+                                iconSize: 60),
+                            Text(
+                              returnCancelHead(status),
+                              style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                            )
+                          ]))
                       : Container(),
 
                   pay_perm
                       ? paymentSection == false
                           ? isInvoice == false
                               ? SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 5,
+                                  height: MediaQuery.of(context).size.height / 5,
                                   width: MediaQuery.of(context).size.width / 13,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              if (sectionType == 1) {
-                                                if (diningOrderList[tableIndex]
-                                                        .status ==
-                                                    "Ordered") {
-                                                  tableID = diningOrderList[
-                                                          tableIndex]
-                                                      .tableId;
-                                                  Navigator.pop(context);
-                                                  navigateToOrderSection(
-                                                      tableID: tableID,
-                                                      sectionType: "Payment",
-                                                      UUID: diningOrderList[
-                                                              tableIndex]
-                                                          .salesOrderID,
-                                                      tableHead: "");
-                                                }
-                                              } else if (sectionType == 2) {
-                                                if (takeAwayOrderLists[
-                                                            tableIndex]
-                                                        .status ==
-                                                    "Ordered") {
-                                                  tableID = "";
-                                                  //   mainPageIndex = 6;
-                                                  Navigator.pop(context);
-                                                  //  navigateToOrderSection(tableID:tableID,sectionType: "Payment",UUID:diningOrderList[tableIndex].salesOrderID,tableHead:"Parcel");
-                                                  navigateToOrderSection(
-                                                      tableID: "",
-                                                      sectionType: "Payment",
-                                                      UUID: takeAwayOrderLists[
-                                                              tableIndex]
-                                                          .salesOrderId,
-                                                      tableHead: "Parcel ");
-                                                }
-                                              } else if (sectionType == 3) {
-                                                if (onlineOrderLists[tableIndex]
-                                                        .status ==
-                                                    "Ordered") {
-                                                  tableID = "";
-                                                  //     mainPageIndex = 6;
-                                                  Navigator.pop(context);
-                                                  navigateToOrderSection(
-                                                      tableID: "",
-                                                      sectionType: "Payment",
-                                                      UUID: onlineOrderLists[
-                                                              tableIndex]
-                                                          .salesOrderId,
-                                                      tableHead: "Online ");
-                                                }
-                                              } else if (sectionType == 4) {
-                                                if (carOrderLists[tableIndex]
-                                                        .status ==
-                                                    "Ordered") {
-                                                  tableID = "";
-                                                  // mainPageIndex = 6;
-                                                  Navigator.pop(context);
-                                                  navigateToOrderSection(
-                                                      tableID: "",
-                                                      sectionType: "Payment",
-                                                      UUID: carOrderLists[
-                                                              tableIndex]
-                                                          .salesOrderId,
-                                                      tableHead: "Online ");
-                                                }
-                                              }
-                                            },
-                                            icon: SvgPicture.asset(
-                                              'assets/svg/pay.svg',
-                                            ),
-                                            iconSize: 60),
-                                        Text(
-                                          "pay".tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Colors.black,
-                                              FontWeight.w600,
-                                              12.00),
-                                        )
-                                      ]))
+                                  child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          if (sectionType == 1) {
+                                            if (diningOrderList[tableIndex].status == "Ordered") {
+                                              tableID = diningOrderList[tableIndex].tableId;
+                                              Navigator.pop(context);
+                                              navigateToOrderSection(
+                                                  tableID: tableID,
+                                                  sectionType: "Payment",
+                                                  UUID: diningOrderList[tableIndex].salesOrderID,
+                                                  tableHead: "");
+                                            }
+                                          } else if (sectionType == 2) {
+                                            if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+                                              tableID = "";
+                                              //   mainPageIndex = 6;
+                                              Navigator.pop(context);
+                                              //  navigateToOrderSection(tableID:tableID,sectionType: "Payment",UUID:diningOrderList[tableIndex].salesOrderID,tableHead:"Parcel");
+                                              navigateToOrderSection(
+                                                  tableID: "",
+                                                  sectionType: "Payment",
+                                                  UUID: takeAwayOrderLists[tableIndex].salesOrderId,
+                                                  tableHead: "Parcel ");
+                                            }
+                                          } else if (sectionType == 3) {
+                                            if (onlineOrderLists[tableIndex].status == "Ordered") {
+                                              tableID = "";
+                                              //     mainPageIndex = 6;
+                                              Navigator.pop(context);
+                                              navigateToOrderSection(
+                                                  tableID: "",
+                                                  sectionType: "Payment",
+                                                  UUID: onlineOrderLists[tableIndex].salesOrderId,
+                                                  tableHead: "Online ");
+                                            }
+                                          } else if (sectionType == 4) {
+                                            if (carOrderLists[tableIndex].status == "Ordered") {
+                                              tableID = "";
+                                              // mainPageIndex = 6;
+                                              Navigator.pop(context);
+                                              navigateToOrderSection(
+                                                  tableID: "",
+                                                  sectionType: "Payment",
+                                                  UUID: carOrderLists[tableIndex].salesOrderId,
+                                                  tableHead: "Online ");
+                                            }
+                                          }
+                                        },
+                                        icon: SvgPicture.asset(
+                                          'assets/svg/pay.svg',
+                                        ),
+                                        iconSize: 60),
+                                    Text(
+                                      "pay".tr,
+                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                                    )
+                                  ]))
                               : Container()
                           : Container()
                       : Container(),
@@ -1699,81 +1483,48 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ? paymentSection == false
                           ? isInvoice == false
                               ? SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 5,
+                                  height: MediaQuery.of(context).size.height / 5,
                                   width: MediaQuery.of(context).size.width / 13,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              print(
-                                                  "objectobjectobjectobjectobjectobjectobjectobject");
-                                              setState(() {
-                                                selectedDiningIndex = 1000;
+                                  child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          print("objectobjectobjectobjectobjectobjectobjectobject");
+                                          setState(() {
+                                            selectedDiningIndex = 1000;
 
-                                                print(
-                                                    diningOrderList[tableIndex]
-                                                        .salesOrderID);
-                                                if (sectionType == 1) {
-                                                  if (diningOrderList[
-                                                              tableIndex]
-                                                          .status ==
-                                                      "Ordered") {
-                                                    Navigator.pop(context);
-                                                    ReprintKOT(diningOrderList[
-                                                            tableIndex]
-                                                        .salesOrderID,false);
-                                                  }
-                                                } else if (sectionType == 2) {
-                                                  if (takeAwayOrderLists[
-                                                              tableIndex]
-                                                          .status ==
-                                                      "Ordered") {
-                                                    Navigator.pop(context);
-                                                    ReprintKOT(
-                                                        takeAwayOrderLists[
-                                                                tableIndex]
-                                                            .salesOrderId,false);
-                                                  }
-                                                } else if (sectionType == 3) {
-                                                  if (onlineOrderLists[
-                                                              tableIndex]
-                                                          .status ==
-                                                      "Ordered") {
-                                                    Navigator.pop(context);
-                                                    ReprintKOT(onlineOrderLists[
-                                                            tableIndex]
-                                                        .salesOrderId,false);
-                                                  }
-                                                } else if (sectionType == 4) {
-                                                  if (carOrderLists[tableIndex]
-                                                          .status ==
-                                                      "Ordered") {
-                                                    Navigator.pop(context);
-                                                    ReprintKOT(carOrderLists[
-                                                            tableIndex]
-                                                        .salesOrderId,false);
-                                                  }
-                                                }
-                                              });
-                                            },
-                                            icon: SvgPicture.asset(
-                                              'assets/svg/KOT.svg',
-                                            ),
-                                            iconSize: 60),
-                                        Text(
-                                          "kit_print".tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Colors.black,
-                                              FontWeight.w600,
-                                              12.00),
-                                        )
-                                      ]))
+                                            print(diningOrderList[tableIndex].salesOrderID);
+                                            if (sectionType == 1) {
+                                              if (diningOrderList[tableIndex].status == "Ordered") {
+                                                Navigator.pop(context);
+                                                ReprintKOT(diningOrderList[tableIndex].salesOrderID, false);
+                                              }
+                                            } else if (sectionType == 2) {
+                                              if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+                                                Navigator.pop(context);
+                                                ReprintKOT(takeAwayOrderLists[tableIndex].salesOrderId, false);
+                                              }
+                                            } else if (sectionType == 3) {
+                                              if (onlineOrderLists[tableIndex].status == "Ordered") {
+                                                Navigator.pop(context);
+                                                ReprintKOT(onlineOrderLists[tableIndex].salesOrderId, false);
+                                              }
+                                            } else if (sectionType == 4) {
+                                              if (carOrderLists[tableIndex].status == "Ordered") {
+                                                Navigator.pop(context);
+                                                ReprintKOT(carOrderLists[tableIndex].salesOrderId, false);
+                                              }
+                                            }
+                                          });
+                                        },
+                                        icon: SvgPicture.asset(
+                                          'assets/svg/KOT.svg',
+                                        ),
+                                        iconSize: 60),
+                                    Text(
+                                      "kit_print".tr,
+                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                                    )
+                                  ]))
                               : Container()
                           : Container()
                       : Container(),
@@ -1783,29 +1534,22 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           ? SizedBox(
                               height: MediaQuery.of(context).size.height / 5,
                               width: MediaQuery.of(context).size.width / 13,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      icon: SvgPicture.asset(
-                                        'assets/svg/reserve.svg',
-                                      ),
-                                      iconSize: 60,
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        showPopup(
-                                            context,
-                                            diningOrderList[tableIndex]
-                                                .tableId);
-                                      },
-                                    ),
-                                    Text(
-                                      "reserve".tr,
-                                      style: customisedStyle(context,
-                                          Colors.black, FontWeight.w600, 12.00),
-                                    )
-                                  ]))
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                                IconButton(
+                                  icon: SvgPicture.asset(
+                                    'assets/svg/reserve.svg',
+                                  ),
+                                  iconSize: 60,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    showPopup(context, diningOrderList[tableIndex].tableId);
+                                  },
+                                ),
+                                Text(
+                                  "reserve".tr,
+                                  style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                                )
+                              ]))
                           : Container()
                       : Container(),
 
@@ -1814,30 +1558,24 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           ? SizedBox(
                               height: MediaQuery.of(context).size.height / 5,
                               width: MediaQuery.of(context).size.width / 12,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      icon: SvgPicture.asset(
-                                        "assets/svg/remove_table.svg",
-                                      ),
-                                      iconSize: 60,
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        removeTable(
-                                            diningOrderList[tableIndex].status,
-                                            diningOrderList[tableIndex].title);
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                                IconButton(
+                                  icon: SvgPicture.asset(
+                                    "assets/svg/remove_table.svg",
+                                  ),
+                                  iconSize: 60,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    removeTable(diningOrderList[tableIndex].status, diningOrderList[tableIndex].title);
 
-                                        //   showPopup(context,diningOrderList[tableIndex].tableId);
-                                      },
-                                    ),
-                                    Text(
-                                      "Remove_table".tr,
-                                      style: customisedStyle(context,
-                                          Colors.black, FontWeight.w600, 12.00),
-                                    )
-                                  ]))
+                                    //   showPopup(context,diningOrderList[tableIndex].tableId);
+                                  },
+                                ),
+                                Text(
+                                  "Remove_table".tr,
+                                  style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                                )
+                              ]))
                           : Container()
                       : Container(),
 
@@ -1846,74 +1584,46 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           ? SizedBox(
                               height: MediaQuery.of(context).size.height / 5,
                               width: MediaQuery.of(context).size.width / 13,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          if (sectionType == 1) {
-                                            Navigator.pop(context);
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+                                IconButton(
+                                    onPressed: () {
+                                      if (sectionType == 1) {
+                                        Navigator.pop(context);
 
-                                            convertSalesType(
-                                                sectionType: sectionType,
-                                                tableID:
-                                                    diningOrderList[tableIndex]
-                                                        .tableId,
-                                                voucherNumber: "token",
-                                                salesOrderID:
-                                                    diningOrderList[tableIndex]
-                                                        .salesOrderID);
-                                          } else if (sectionType == 2) {
-                                            if (takeAwayOrderLists[tableIndex]
-                                                    .status ==
-                                                "Ordered") {
-                                              Navigator.pop(context);
-                                              convertSalesType(
-                                                  sectionType: sectionType,
-                                                  tableID: "",
-                                                  salesOrderID:
-                                                      takeAwayOrderLists[
-                                                              tableIndex]
-                                                          .salesOrderId);
-                                            }
-                                          } else if (sectionType == 3) {
-                                            if (onlineOrderLists[tableIndex]
-                                                    .status ==
-                                                "Ordered") {
-                                              Navigator.pop(context);
-                                              convertSalesType(
-                                                  sectionType: sectionType,
-                                                  tableID: "",
-                                                  salesOrderID:
-                                                      onlineOrderLists[
-                                                              tableIndex]
-                                                          .salesOrderId);
-                                            }
-                                          } else if (sectionType == 4) {
-                                            if (carOrderLists[tableIndex]
-                                                    .status ==
-                                                "Ordered") {
-                                              Navigator.pop(context);
-                                              convertSalesType(
-                                                  sectionType: sectionType,
-                                                  tableID: "",
-                                                  salesOrderID:
-                                                      carOrderLists[tableIndex]
-                                                          .salesOrderId);
-                                            }
-                                          }
-                                        },
-                                        icon: SvgPicture.asset(
-                                          'assets/svg/convert.svg',
-                                        ),
-                                        iconSize: 60),
-                                    Text(
-                                      "convert".tr,
-                                      style: customisedStyle(context,
-                                          Colors.black, FontWeight.w600, 12.00),
-                                    )
-                                  ]))
+                                        convertSalesType(
+                                            sectionType: sectionType,
+                                            tableID: diningOrderList[tableIndex].tableId,
+                                            voucherNumber: "token",
+                                            salesOrderID: diningOrderList[tableIndex].salesOrderID);
+                                      } else if (sectionType == 2) {
+                                        if (takeAwayOrderLists[tableIndex].status == "Ordered") {
+                                          Navigator.pop(context);
+                                          convertSalesType(
+                                              sectionType: sectionType, tableID: "", salesOrderID: takeAwayOrderLists[tableIndex].salesOrderId);
+                                        }
+                                      } else if (sectionType == 3) {
+                                        if (onlineOrderLists[tableIndex].status == "Ordered") {
+                                          Navigator.pop(context);
+                                          convertSalesType(
+                                              sectionType: sectionType, tableID: "", salesOrderID: onlineOrderLists[tableIndex].salesOrderId);
+                                        }
+                                      } else if (sectionType == 4) {
+                                        if (carOrderLists[tableIndex].status == "Ordered") {
+                                          Navigator.pop(context);
+                                          convertSalesType(
+                                              sectionType: sectionType, tableID: "", salesOrderID: carOrderLists[tableIndex].salesOrderId);
+                                        }
+                                      }
+                                    },
+                                    icon: SvgPicture.asset(
+                                      'assets/svg/convert.svg',
+                                    ),
+                                    iconSize: 60),
+                                Text(
+                                  "convert".tr,
+                                  style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
+                                )
+                              ]))
                           : Container()
                       : Container()
 
@@ -1940,36 +1650,26 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: const Color(0xff415369),
-            title: Text("Are you sure?",
-                style: customisedStyle(
-                    context, Colors.white, FontWeight.w600, 14.0)),
-            content: Text("Want to delete $tableName from list",
-                style: customisedStyle(
-                    context, Colors.white, FontWeight.normal, 12.0)),
+            title: Text("Are you sure?", style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
+            content: Text("Want to delete $tableName from list", style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0)),
             actions: <Widget>[
               TextButton(
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.all(16.0),
-                  textStyle: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () => Navigator.of(context).pop(false),
-                child: Text("No",
-                    style: customisedStyle(
-                        context, Colors.white, FontWeight.w600, 14.0)),
+                child: Text("No", style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
               ),
               TextButton(
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.all(16.0),
-                  textStyle: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () => Navigator.of(context).pop(true),
-                child: Text("Yes",
-                    style: customisedStyle(
-                        context, Colors.white, FontWeight.w600, 14.0)),
+                child: Text("Yes", style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
               ),
             ],
           );
@@ -2003,12 +1703,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
         final String url = '$baseUrl/posholds/table-delete/';
         print(url);
-        Map data = {
-          "CreatedUserID": userID,
-          "CompanyID": companyID,
-          "BranchID": branchID,
-          "TableName": tableName
-        };
+        Map data = {"CreatedUserID": userID, "CompanyID": companyID, "BranchID": branchID, "TableName": tableName};
 
         print(data);
         var body = json.encode(data);
@@ -2052,19 +1747,15 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           child: AlertDialog(
               title: Text(
                 'Select table',
-                style: customisedStyle(
-                    context, Colors.black, FontWeight.w600, 15.0),
+                style: customisedStyle(context, Colors.black, FontWeight.w600, 15.0),
               ),
               content: Container(
-                width: MediaQuery.of(context).size.width /
-                    1.2, // Set the width of the alert box
+                width: MediaQuery.of(context).size.width / 1.2, // Set the width of the alert box
                 child: GridView.builder(
                     // physics: NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.only(
-                        left: 4, top: 20, right: 0, bottom: 6),
+                    padding: const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
                     shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
                       childAspectRatio: 1.6,
                       crossAxisSpacing: 10,
@@ -2073,9 +1764,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     itemCount: diningOrderList.length,
                     itemBuilder: (BuildContext context, int dineIndex) {
                       return Opacity(
-                          opacity: diningOrderList[dineIndex].status == "Vacant"
-                              ? 1
-                              : 0.10,
+                          opacity: diningOrderList[dineIndex].status == "Vacant" ? 1 : 0.10,
                           child: Container(
                               decoration: BoxDecoration(
                                   border: Border.all(
@@ -2084,8 +1773,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               )),
                               child: GestureDetector(
                                   onTap: () async {
-                                    if (diningOrderList[dineIndex].status !=
-                                        "Vacant") {
+                                    if (diningOrderList[dineIndex].status != "Vacant") {
                                       // Navigator.pop(context);
                                       // dialogBox(context, "this table is not vacant");
                                     } else {
@@ -2094,12 +1782,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                           type: "Dining",
                                           is_table_vacant: false,
                                           salesOrderID: salesOrderID,
-                                          table_id: diningOrderList[dineIndex]
-                                              .tableId);
+                                          table_id: diningOrderList[dineIndex].tableId);
                                       if (response[0] == 6000) {
                                         Navigator.pop(context);
-                                        dialogBoxHide(context,
-                                            "SaleType Changed Successfully");
+                                        dialogBoxHide(context, "SaleType Changed Successfully");
                                         posFunctions(callFunction: true);
                                       } else {
                                         Navigator.pop(context);
@@ -2109,24 +1795,15 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                   },
                                   child: AbsorbPointer(
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              5,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              18,
+                                          width: MediaQuery.of(context).size.width / 5,
+                                          height: MediaQuery.of(context).size.height / 18,
                                           child: DottedBorder(
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 const SizedBox(
                                                   width: 6,
@@ -2140,39 +1817,16 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                                   width: 6,
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 5),
+                                                  padding: const EdgeInsets.only(left: 5),
                                                   child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text(
-                                                          diningOrderList[
-                                                                  dineIndex]
-                                                              .title,
-                                                          style: const TextStyle(
-                                                              fontSize: 12.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800)),
-                                                      Text(
-                                                          returnOrderTime(
-                                                              diningOrderList[
-                                                                      dineIndex]
-                                                                  .orderTime,
-                                                              diningOrderList[
-                                                                      dineIndex]
-                                                                  .status),
+                                                      Text(diningOrderList[dineIndex].title,
+                                                          style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.w800)),
+                                                      Text(returnOrderTime(diningOrderList[dineIndex].orderTime, diningOrderList[dineIndex].status),
                                                           //'Table 1',
-                                                          style: const TextStyle(
-                                                              fontSize: 10.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800)),
+                                                          style: const TextStyle(fontSize: 10.0, fontWeight: FontWeight.w800)),
                                                     ],
                                                   ),
                                                 ),
@@ -2184,38 +1838,20 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                  returnText(
-                                                      diningOrderList[dineIndex]
-                                                          .status),
-                                                  style: customisedStyle(
-                                                      context,
-                                                      Colors.black,
-                                                      FontWeight.w700,
-                                                      12.00)),
+                                              Text(returnText(diningOrderList[dineIndex].status),
+                                                  style: customisedStyle(context, Colors.black, FontWeight.w700, 12.00)),
                                               Row(
                                                 children: [
                                                   Text(
                                                       currency +
                                                           ". " +
-                                                          roundStringWith(diningOrderList[
-                                                                          dineIndex]
-                                                                      .status !=
-                                                                  "Vacant"
-                                                              ? diningOrderList[
-                                                                      dineIndex]
-                                                                  .salesOrderGrandTotal
+                                                          roundStringWith(diningOrderList[dineIndex].status != "Vacant"
+                                                              ? diningOrderList[dineIndex].salesOrderGrandTotal
                                                               : '0'),
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.bold,
-                                                          12.00)),
+                                                      style: customisedStyle(context, Colors.black, FontWeight.bold, 12.00)),
                                                   // Text
                                                 ],
                                               ),
@@ -2223,19 +1859,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                           ),
                                         ),
                                         Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              returnWidth(dineIndex),
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              15,
+                                          width: MediaQuery.of(context).size.width / returnWidth(dineIndex),
+                                          height: MediaQuery.of(context).size.height / 15,
                                           child: TextButton(
                                             style: TextButton.styleFrom(
-                                              backgroundColor: buttonColor(
-                                                  diningOrderList[dineIndex]
-                                                      .status),
+                                              backgroundColor: buttonColor(diningOrderList[dineIndex].status),
                                               textStyle: const TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -2243,11 +1871,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                             onPressed: () {},
                                             child: Text(
                                               diningOrderList[dineIndex].status,
-                                              style: customisedStyle(
-                                                  context,
-                                                  Colors.black,
-                                                  FontWeight.w400,
-                                                  13.00),
+                                              style: customisedStyle(context, Colors.black, FontWeight.w400, 13.00),
                                             ),
                                           ),
                                         )
@@ -2261,42 +1885,32 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     );
   }
 
-  void convertSalesType(
-      {sectionType, voucherNumber, tableID, required salesOrderID}) async {
+  void convertSalesType({sectionType, voucherNumber, tableID, required salesOrderID}) async {
     showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
             backgroundColor: const Color(0xff415369),
-            title: Text("Are you sure?",
-                style: customisedStyle(
-                    context, Colors.white, FontWeight.w600, 14.0)),
+            title: Text("Are you sure?", style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
             content: Container(
               height: MediaQuery.of(context).size.height / 10,
               child: Row(
                 children: [
-                  Text("Select an type to Convert order",
-                      style: customisedStyle(
-                          context, Colors.white, FontWeight.normal, 12.0)),
+                  Text("Select an type to Convert order", style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0)),
                   sectionType != 1
                       ? ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 0.0,
-                            backgroundColor:
-                                Colors.transparent, // Background color
+                            backgroundColor: Colors.transparent, // Background color
                           ),
                           child: Text(
                             'Dining'.tr,
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 14.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                           ),
                           onPressed: () {
                             Navigator.pop(context);
-                            diningDesign(
-                                context: context,
-                                section_type: sectionType,
-                                salesOrderID: salesOrderID);
+                            diningDesign(context: context, section_type: sectionType, salesOrderID: salesOrderID);
                             // convertDiningTo(context: context,section_type: sectionType,salesOrderID:salesOrderID);
                             // Dining
                           },
@@ -2306,26 +1920,22 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ? ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 0.0,
-                            backgroundColor:
-                                Colors.transparent, // Background color
+                            backgroundColor: Colors.transparent, // Background color
                           ),
                           child: Text(
                             'Take_awy'.tr,
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 14.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                           ),
                           onPressed: () async {
                             var response = await convertSalesTypeAPI(
                                 context: context,
                                 type: "TakeAway",
-                                is_table_vacant:
-                                    sectionType == 1 ? true : false,
+                                is_table_vacant: sectionType == 1 ? true : false,
                                 salesOrderID: salesOrderID,
                                 table_id: tableID);
                             if (response[0] == 6000) {
                               Navigator.pop(context);
-                              dialogBoxHide(
-                                  context, "SaleType Changed Successfully");
+                              dialogBoxHide(context, "SaleType Changed Successfully");
                               posFunctions(callFunction: true);
                             } else {
                               Navigator.pop(context);
@@ -2338,26 +1948,22 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ? ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 0.0,
-                            backgroundColor:
-                                Colors.transparent, // Background color
+                            backgroundColor: Colors.transparent, // Background color
                           ),
                           child: Text(
                             'Car'.tr,
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 14.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                           ),
                           onPressed: () async {
                             var response = await convertSalesTypeAPI(
                                 context: context,
                                 type: "Car",
-                                is_table_vacant:
-                                    sectionType == 1 ? true : false,
+                                is_table_vacant: sectionType == 1 ? true : false,
                                 salesOrderID: salesOrderID,
                                 table_id: tableID);
                             if (response[0] == 6000) {
                               Navigator.pop(context);
-                              dialogBoxHide(
-                                  context, "SaleType Changed Successfully");
+                              dialogBoxHide(context, "SaleType Changed Successfully");
                               posFunctions(callFunction: true);
                             } else {
                               Navigator.pop(context);
@@ -2379,8 +1985,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 ),
                 child: Text(
                   'cancel'.tr,
-                  style: customisedStyle(
-                      context, Colors.red, FontWeight.w500, 14.0),
+                  style: customisedStyle(context, Colors.red, FontWeight.w500, 14.0),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -2451,12 +2056,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     );
   }
 
-  convertSalesTypeAPI(
-      {required context,
-      required salesOrderID,
-      required type,
-      required is_table_vacant,
-      required table_id}) async {
+  convertSalesTypeAPI({required context, required salesOrderID, required type, required is_table_vacant, required table_id}) async {
     final response;
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -2520,27 +2120,21 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     width: MediaQuery.of(context).size.width / 4,
                     height: MediaQuery.of(context).size.height / 16,
                     child: TextField(
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w400, 14.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                       controller: tableNameController,
                       //  focusNode: nameFcNode,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          disabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20, top: 10, right: 10, bottom: 10),
+                          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
                           filled: true,
                           suffixStyle: const TextStyle(
                             color: Colors.red,
                           ),
-                          hintStyle: customisedStyle(context,
-                              const Color(0xff858585), FontWeight.w400, 14.0),
+                          hintStyle: customisedStyle(context, const Color(0xff858585), FontWeight.w400, 14.0),
                           hintText: "Table name",
                           fillColor: const Color(0xffffffff)),
                     ),
@@ -2551,9 +2145,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                   Container(
                     height: MediaQuery.of(context).size.height / 20,
-                    decoration: BoxDecoration(
-                        color: const Color(0xffF25F29),
-                        borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(color: const Color(0xffF25F29), borderRadius: BorderRadius.circular(4)),
                     child: TextButton(
                       onPressed: () {
                         if (tableNameController.text == "") {
@@ -2573,9 +2165,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height / 18,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(4)),
                     child: TextButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -2612,27 +2202,21 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     width: MediaQuery.of(context).size.width / 4,
                     height: MediaQuery.of(context).size.height / 20,
                     child: TextField(
-                      style: customisedStyle(
-                          context, Colors.grey, FontWeight.w400, 14.0),
+                      style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
                       controller: reservationCustomerNameController,
                       //  focusNode: nameFcNode,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          disabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20, top: 10, right: 10, bottom: 10),
+                          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                          contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
                           filled: true,
                           suffixStyle: const TextStyle(
                             color: Colors.red,
                           ),
-                          hintStyle: customisedStyle(context,
-                              const Color(0xff858585), FontWeight.w400, 14.0),
+                          hintStyle: customisedStyle(context, const Color(0xff858585), FontWeight.w400, 14.0),
                           hintText: "Customer name",
                           fillColor: const Color(0xffffffff)),
                     ),
@@ -2660,15 +2244,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               children: [
                                 Text(
                                   "  Date",
-                                  style: customisedStyle(context, Colors.black,
-                                      FontWeight.w400, 14.0),
+                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
                                     dateFormat.format(dateNewValue),
-                                    style: customisedStyle(context, Colors.grey,
-                                        FontWeight.w400, 14.0),
+                                    style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
                                   ),
                                 )
                               ],
@@ -2703,15 +2285,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               children: [
                                 Text(
                                   "  From",
-                                  style: customisedStyle(context, Colors.black,
-                                      FontWeight.w400, 14.0),
+                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
                                     timeFormat.format(dateNewValue),
-                                    style: customisedStyle(context, Colors.grey,
-                                        FontWeight.w400, 14.0),
+                                    style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
                                   ),
                                 )
                               ],
@@ -2723,8 +2303,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               context: context,
                             );
                             if (pickedTime != null) {
-                              timeNotifierFromTime.value = DateFormat.jm()
-                                  .parse(pickedTime.format(context).toString());
+                              timeNotifierFromTime.value = DateFormat.jm().parse(pickedTime.format(context).toString());
                             } else {
                               print("Time is not selected");
                             }
@@ -2754,15 +2333,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               children: [
                                 Text(
                                   "  To",
-                                  style: customisedStyle(context, Colors.black,
-                                      FontWeight.w400, 14.0),
+                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
                                     timeFormat.format(dateNewValue),
-                                    style: customisedStyle(context, Colors.grey,
-                                        FontWeight.w400, 14.0),
+                                    style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
                                   ),
                                 )
                               ],
@@ -2774,8 +2351,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                               context: context,
                             );
                             if (pickedTime != null) {
-                              timeNotifierToTime.value = DateFormat.jm()
-                                  .parse(pickedTime.format(context).toString());
+                              timeNotifierToTime.value = DateFormat.jm().parse(pickedTime.format(context).toString());
                             } else {
                               print("Time is not selected");
                             }
@@ -2788,16 +2364,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height / 18,
-                    decoration: BoxDecoration(
-                        color: const Color(0xffF25F29),
-                        borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(color: const Color(0xffF25F29), borderRadius: BorderRadius.circular(4)),
                     child: TextButton(
                       onPressed: () {
                         if (reservationCustomerNameController.text == "") {
                           dialogBox(context, "Please enter customer name");
                         } else {
-                          reserveTable(
-                              reservationCustomerNameController.text, tableID);
+                          reserveTable(reservationCustomerNameController.text, tableID);
                         }
                       },
                       child: const Text(
@@ -2809,9 +2382,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                   Container(
                     height: MediaQuery.of(context).size.height / 18,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(4)),
                     child: TextButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -2834,7 +2405,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     });
   }
 
-  void cancelReason(BuildContext context, ind, section_type,orderID) {
+  void cancelReason(BuildContext context, section_type, orderID) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -2842,12 +2413,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           child: AlertDialog(
             title: Text(
               'Select an reason for cancel',
-              style:
-                  customisedStyle(context, Colors.black, FontWeight.w600, 15.0),
+              style: customisedStyle(context, Colors.black, FontWeight.w600, 15.0),
             ),
             content: Container(
-              width: MediaQuery.of(context).size.width /
-                  3, // Set the width of the alert box
+              width: MediaQuery.of(context).size.width / 3, // Set the width of the alert box
               child: ListView.builder(
                 itemExtent: MediaQuery.of(context).size.height / 16,
                 itemCount: cancelReportList.length,
@@ -2861,8 +2430,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                             children: [
                               Text(
                                 cancelReportList[index].reason,
-                                style: customisedStyle(context, Colors.black,
-                                    FontWeight.w500, 13.0),
+                                style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                               ),
                             ],
                           ),
@@ -2884,7 +2452,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         }
 
                         Navigator.pop(context);
-                        delete(cancelType, id, cancelReportList[index].id,orderID);
+                        delete(cancelType, id, cancelReportList[index].id, orderID);
                         // delete()
                       },
                     ),
@@ -2961,16 +2529,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
   String cancelId = "";
 
-  Future<Null> delete(String type, String id, cancelReasonId,orderID) async {
+  Future<Null> delete(String type, String id, cancelReasonId, orderID) async {
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       stop();
       dialogBox(context, "Check Your Connection");
     } else {
-
-
-
       try {
         if (type == "TakeAway" || type == "Dining" || type == "Online" || type == "Car") {
           cancelReasonId = "";
@@ -3015,18 +2580,14 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           stop();
           await getTableOrderList();
 
-          if(printForCancellOrder){
+          if (printForCancellOrder) {
             PrintDataDetails.type = "SO";
-            PrintDataDetails.id =orderID;
+            PrintDataDetails.id = orderID;
             await printDetail(true);
           }
-          if(orderID !=""){
-            await ReprintKOT(orderID,true);
+          if (orderID != "") {
+            await ReprintKOT(orderID, true);
           }
-
-
-
-
         } else if (status == 6001) {
           stop();
         } else {
@@ -3113,6 +2674,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       stop();
     } else {
       try {
+        print("----------------------------------------------------------------3");
         start(context);
         HttpOverrides.global = MyHttpOverrides();
         String baseUrl = BaseUrl.baseUrl;
@@ -3122,15 +2684,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         var accessToken = prefs.getString('access') ?? '';
         var showInvoice = prefs.getBool('AutoClear') ?? true;
         final String url = '$baseUrl/posholds/pos-table-list/';
-
+        print("----------------------------------------------------------------4");
         print(accessToken);
         print(url);
-        Map data = {
-          "CompanyID": companyID,
-          "BranchID": branchID,
-          "type": "user",
-          "paid": showInvoice
-        };
+        Map data = {"CompanyID": companyID, "BranchID": branchID, "type": "user", "paid": showInvoice};
         print(data);
         //encode Map to JSON
         var body = json.encode(data);
@@ -3167,30 +2724,32 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         // var Car = n["Car"];
 
         if (status == 6000) {
-          print("a");
-
-          ///  check expiry date
-          // var expiryDate = prefs.getString('expDate') ?? '';
-          // print("=============+++++++++++++++============");
-          // var dt = DateTime.parse(expiryDate);
-          // print(dt);
-          // print("=============+++++++++++++++============");
-          //
-          // var now = new DateTime.now();
-          // print("__________________now");
-          // print(now);
-          // print("__________________dt");
-          // print(dt);
-          //
-          print("u");
-          diningOrderList.clear();
-          takeAwayOrderLists.clear();
-          carOrderLists.clear();
-          print("j");
-          onlineOrderLists.clear();
-          cancelReportList.clear();
-          print("w");
           setState(() {
+            print("a");
+            print("----------------------------------------------------------------5");
+
+            ///  check expiry date
+            // var expiryDate = prefs.getString('expDate') ?? '';
+            // print("=============+++++++++++++++============");
+            // var dt = DateTime.parse(expiryDate);
+            // print(dt);
+            // print("=============+++++++++++++++============");
+            //
+            // var now = new DateTime.now();
+            // print("__________________now");
+            // print(now);
+            // print("__________________dt");
+            // print(dt);
+            //
+            print("u");
+            diningOrderList.clear();
+            takeAwayOrderLists.clear();
+            carOrderLists.clear();
+            print("j");
+            onlineOrderLists.clear();
+            cancelReportList.clear();
+            print("w");
+
             currency = prefs.getString('CurrencySymbol') ?? "";
             stop();
             if (statusTable == 6000) {
@@ -3250,8 +2809,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             height: MediaQuery.of(context).size.height / 11,
             //height of button
             width: MediaQuery.of(context).size.width / 1,
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xffD6D6D6))),
+            decoration: BoxDecoration(border: Border.all(color: const Color(0xffD6D6D6))),
             //color: Colors.grey,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -3259,8 +2817,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 BackButtonAppBar(),
                 Container(
                   alignment: Alignment.centerLeft,
-                  height: MediaQuery.of(context).size.height /
-                      11, //height of button
+                  height: MediaQuery.of(context).size.height / 11, //height of button
                   width: MediaQuery.of(context).size.width / 3.3,
 
                   child: Column(
@@ -3270,13 +2827,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       Text(
                         'Take_awy'.tr,
                         //  style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171), fontSize: 15),
-                        style: customisedStyle(context, const Color(0xff717171),
-                            FontWeight.bold, 15.00),
+                        style: customisedStyle(context, const Color(0xff717171), FontWeight.bold, 15.00),
                       ),
                       Text('Create a parcel',
                           // style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff000000), fontSize: 11.0),
-                          style: customisedStyle(context,
-                              const Color(0xff000000), FontWeight.w700, 12.00))
+                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 12.00))
                     ],
                   ),
                 ),
@@ -3295,15 +2850,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 Container(
                   width: 100,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff0347A1)),
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
                     onPressed: () {
                       posFunctions(callFunction: true);
                     },
                     child: Text(
                       'Refresh'.tr,
-                      style: customisedStyle(
-                          context, Colors.white, FontWeight.w500, 12.0),
+                      style: customisedStyle(context, Colors.white, FontWeight.w500, 12.0),
                     ),
                   ),
                 ),
@@ -3344,8 +2897,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     if (takeAwayOrderLists.isEmpty) {
       return GestureDetector(
         child: Card(
-            margin:
-                const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
+            margin: const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
             child: DottedBorder(
                 color: const Color(0xff8D8D8D),
                 strokeWidth: 1,
@@ -3359,8 +2911,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     child: Container(
                       //      color: Colors.red,
                       //  padding: EdgeInsets.all(7),
-                      height: MediaQuery.of(context).size.height /
-                          13, //height of button
+                      height: MediaQuery.of(context).size.height / 13, //height of button
                       width: MediaQuery.of(context).size.width / 18,
                       child: GestureDetector(
                         child: Container(
@@ -3376,11 +2927,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         ),
                         onTap: () {
                           if (take_away_create_perm) {
-                            navigateToOrderSection(
-                                tableID: "",
-                                sectionType: "Create",
-                                UUID: "",
-                                tableHead: "Parcel");
+                            navigateToOrderSection(tableID: "", sectionType: "Create", UUID: "", tableHead: "Parcel");
                           } else {
                             dialogBoxPermissionDenied(context);
                           }
@@ -3393,8 +2940,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     } else {
       if (takeIndex == takeAwayOrderLists.length) {
         return Card(
-            margin:
-                const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
+            margin: const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
             child: DottedBorder(
                 color: const Color(0xff8D8D8D),
                 strokeWidth: 1,
@@ -3406,8 +2952,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     child: Container(
                       //   color: Colors.red,
                       //  padding: EdgeInsets.all(7),
-                      height: MediaQuery.of(context).size.height /
-                          12, //height of button
+                      height: MediaQuery.of(context).size.height / 12, //height of button
                       width: MediaQuery.of(context).size.width / 16,
 
                       child: Container(
@@ -3418,11 +2963,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         child: IconButton(
                           onPressed: () {
                             if (take_away_create_perm) {
-                              navigateToOrderSection(
-                                  tableID: "",
-                                  sectionType: "Create",
-                                  UUID: "",
-                                  tableHead: "Parcel");
+                              navigateToOrderSection(tableID: "", sectionType: "Create", UUID: "", tableHead: "Parcel");
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -3454,10 +2995,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 isConvert = true;
               }
 
-              print(
-                  "isInvoice _____________________________________________________    $isInvoice     ");
-              print(
-                  "paymentSection __________________________________________________  $paymentSection");
+              print("isInvoice _____________________________________________________    $isInvoice     ");
+              print("paymentSection __________________________________________________  $paymentSection");
 
               setState(() {
                 selectedTakeAwayIndex = takeIndex;
@@ -3490,11 +3029,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             onLongPress: () {
               if (takeAwayOrderLists[takeIndex].status == "Ordered") {
                 if (take_away_edit_perm) {
-                  navigateToOrderSection(
-                      tableID: "",
-                      sectionType: "Edit",
-                      UUID: takeAwayOrderLists[takeIndex].salesOrderId,
-                      tableHead: "Parcel ");
+                  navigateToOrderSection(tableID: "", sectionType: "Edit", UUID: takeAwayOrderLists[takeIndex].salesOrderId, tableHead: "Parcel ");
                 } else {
                   dialogBoxPermissionDenied(context);
                 }
@@ -3507,8 +3042,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ? 1
                       : 0.30,
               child: Card(
-                margin: const EdgeInsets.only(
-                    left: 4, top: 20, right: 0, bottom: 6),
+                margin: const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
                 shape: const RoundedRectangleBorder(
                   side: BorderSide(color: Color(0xff8D8D8D), width: 1),
                 ),
@@ -3517,53 +3051,37 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height /
-                          9, //height of button
+                      height: MediaQuery.of(context).size.height / 9, //height of button
                       width: MediaQuery.of(context).size.width / 4.9,
 
                       child: Center(
                         child: Column(
                           children: [
                             Container(
-                              height: MediaQuery.of(context).size.height /
-                                  19, //height of button
+                              height: MediaQuery.of(context).size.height / 19, //height of button
                               width: MediaQuery.of(context).size.width / 5.1,
                               child: DottedBorder(
                                 strokeWidth: .5,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
                                         IconButton(
                                           onPressed: () {},
-                                          icon: SvgPicture.asset(
-                                              'assets/svg/takeaway.svg'),
+                                          icon: SvgPicture.asset('assets/svg/takeaway.svg'),
                                         ),
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Parcel ${takeAwayOrderLists.length - takeIndex}',
                                               //   style: TextStyle(fontSize: 11, color: Color(0xff000000), fontWeight: FontWeight.w700),
-                                              style: customisedStyle(
-                                                  context,
-                                                  const Color(0xff000000),
-                                                  FontWeight.w700,
-                                                  11.00),
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.00),
                                             ),
-                                            Text(
-                                                takeAwayOrderLists[takeIndex]
-                                                    .custName,
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xff2B2B2B),
-                                                    FontWeight.w400,
-                                                    10.00)
+                                            Text(takeAwayOrderLists[takeIndex].custName,
+                                                style: customisedStyle(context, const Color(0xff2B2B2B), FontWeight.w400, 10.00)
                                                 // style: TextStyle(
                                                 //     fontSize: 10,
                                                 //     color: Color(0xff2B2B2B)),
@@ -3573,28 +3091,18 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                       ],
                                     ),
                                     Text(
-                                      currency +
-                                          ". " +
-                                          roundStringWith(
-                                              takeAwayOrderLists[takeIndex]
-                                                  .salesOrderGrandTotal),
+                                      currency + ". " + roundStringWith(takeAwayOrderLists[takeIndex].salesOrderGrandTotal),
                                       //style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xff005B37)),
-                                      style: customisedStyle(
-                                          context,
-                                          const Color(0xff005B37),
-                                          FontWeight.w600,
-                                          12.00),
+                                      style: customisedStyle(context, const Color(0xff005B37), FontWeight.w600, 12.00),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 6, top: 6, right: 6, bottom: 0),
+                              padding: const EdgeInsets.only(left: 6, top: 6, right: 6, bottom: 0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -3602,36 +3110,21 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                       Text(
                                         'Token',
                                         //style: TextStyle(fontSize: 12, color: Color(0xff000000), fontWeight: FontWeight.w600),
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff000000),
-                                            FontWeight.w600,
-                                            12.00),
+                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 12.00),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 5.0),
+                                        padding: const EdgeInsets.only(left: 5.0),
                                         child: Text(
                                           takeAwayOrderLists[takeIndex].tokenNo,
                                           //  style: const TextStyle(fontSize: 12, color: Color(0xff4E4E4E), fontWeight: FontWeight.w500),
-                                          style: customisedStyle(
-                                              context,
-                                              const Color(0xff4E4E4E),
-                                              FontWeight.w600,
-                                              12.00),
+                                          style: customisedStyle(context, const Color(0xff4E4E4E), FontWeight.w600, 12.00),
                                         ),
                                       )
                                     ],
                                   ),
                                   Text(
-                                    returnOrderTime(
-                                        takeAwayOrderLists[takeIndex].orderTime,
-                                        takeAwayOrderLists[takeIndex].status),
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xff929292),
-                                        FontWeight.w400,
-                                        11.00),
+                                    returnOrderTime(takeAwayOrderLists[takeIndex].orderTime, takeAwayOrderLists[takeIndex].status),
+                                    style: customisedStyle(context, const Color(0xff929292), FontWeight.w400, 11.00),
                                   ),
                                 ],
                               ),
@@ -3642,16 +3135,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     ),
 
                     Container(
-                      color:
-                          takeAwayButton(takeAwayOrderLists[takeIndex].status),
-                      height: MediaQuery.of(context).size.height /
-                          18, //height of button
+                      color: takeAwayButton(takeAwayOrderLists[takeIndex].status),
+                      height: MediaQuery.of(context).size.height / 18, //height of button
                       width: MediaQuery.of(context).size.width / 4.8,
                       child: Center(
                         child: Text(
                           takeAwayOrderLists[takeIndex].status,
-                          style: customisedStyle(
-                              context, Colors.white, FontWeight.w400, 13.0),
+                          style: customisedStyle(context, Colors.white, FontWeight.w400, 13.0),
                         ),
                       ),
                     ),
@@ -3697,8 +3187,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       child: ListView(
         children: [
           Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xffD6D6D6))),
+            decoration: BoxDecoration(border: Border.all(color: const Color(0xffD6D6D6))),
             padding: const EdgeInsets.all(10),
             height: MediaQuery.of(context).size.height / 11,
             //height of button
@@ -3710,8 +3199,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 BackButtonAppBar(),
                 Container(
                   alignment: Alignment.centerLeft,
-                  height: MediaQuery.of(context).size.height /
-                      11, //height of button
+                  height: MediaQuery.of(context).size.height / 11, //height of button
                   width: MediaQuery.of(context).size.width / 3,
 
                   child: Column(
@@ -3721,14 +3209,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       Text(
                         'Online'.tr,
                         //    style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171), fontSize: 15),
-                        style: customisedStyle(context, const Color(0xff717171),
-                            FontWeight.w600, 15.0),
+                        style: customisedStyle(context, const Color(0xff717171), FontWeight.w600, 15.0),
                       ),
                       Text(
                         'Create a Order',
                         // style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff000000), fontSize: 11.0),
-                        style: customisedStyle(context, const Color(0xff000000),
-                            FontWeight.w700, 11.0),
+                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.0),
                       )
                     ],
                   ),
@@ -3737,15 +3223,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 Container(
                   width: 100,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff0347A1)),
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
                     onPressed: () {
                       posFunctions(callFunction: true);
                     },
                     child: Text(
                       'Refresh'.tr,
-                      style: customisedStyle(
-                          context, Colors.white, FontWeight.w500, 12.0),
+                      style: customisedStyle(context, Colors.white, FontWeight.w500, 12.0),
                     ),
                   ),
                 ),
@@ -3800,8 +3284,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   child: Container(
                     color: Colors.white,
                     //  padding: EdgeInsets.all(7),
-                    height: MediaQuery.of(context).size.height /
-                        20, //height of button
+                    height: MediaQuery.of(context).size.height / 20, //height of button
                     width: MediaQuery.of(context).size.width / 20,
 
                     child: Container(
@@ -3811,11 +3294,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ),
                       child: IconButton(
                         onPressed: () {
-                          navigateToOrderSection(
-                              tableID: "",
-                              sectionType: "Create",
-                              UUID: "",
-                              tableHead: "Order ");
+                          navigateToOrderSection(tableID: "", sectionType: "Create", UUID: "", tableHead: "Order ");
                         },
                         icon: const Icon(
                           Icons.add,
@@ -3830,8 +3309,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     } else {
       if (onlineIndex == onlineOrderLists.length) {
         return Card(
-            margin:
-                const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
+            margin: const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
             child: DottedBorder(
                 color: const Color(0xff8D8D8D),
                 strokeWidth: 1,
@@ -3845,8 +3323,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       child: Container(
                         color: Colors.white,
                         //  padding: EdgeInsets.all(7),
-                        height: MediaQuery.of(context).size.height /
-                            20, //height of button
+                        height: MediaQuery.of(context).size.height / 20, //height of button
                         width: MediaQuery.of(context).size.width / 20,
 
                         child: Container(
@@ -3856,11 +3333,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              navigateToOrderSection(
-                                  tableID: "",
-                                  sectionType: "Create",
-                                  UUID: "",
-                                  tableHead: "Order");
+                              navigateToOrderSection(tableID: "", sectionType: "Create", UUID: "", tableHead: "Order");
                             },
                             icon: const Icon(
                               Icons.add,
@@ -3905,11 +3378,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             },
             onLongPress: () {
               if (onlineOrderLists[onlineIndex].status == "Ordered") {
-                navigateToOrderSection(
-                    tableID: "",
-                    sectionType: "Edit",
-                    UUID: onlineOrderLists[onlineIndex].salesOrderId,
-                    tableHead: "Order");
+                navigateToOrderSection(tableID: "", sectionType: "Edit", UUID: onlineOrderLists[onlineIndex].salesOrderId, tableHead: "Order");
               }
             },
             child: Opacity(
@@ -3919,8 +3388,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ? 1
                       : 0.30,
               child: Card(
-                margin: const EdgeInsets.only(
-                    left: 4, top: 20, right: 0, bottom: 6),
+                margin: const EdgeInsets.only(left: 4, top: 20, right: 0, bottom: 6),
                 shape: const RoundedRectangleBorder(
                   side: BorderSide(color: Color(0xff8D8D8D), width: 1),
                 ),
@@ -3929,8 +3397,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height /
-                          9, //height of button
+                      height: MediaQuery.of(context).size.height / 9, //height of button
                       width: MediaQuery.of(context).size.width / 4.9,
 
                       child: Column(
@@ -3938,90 +3405,59 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                19, //height of button
+                            height: MediaQuery.of(context).size.height / 19, //height of button
                             width: MediaQuery.of(context).size.width / 4.9,
                             child: DottedBorder(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
                                       IconButton(
                                         onPressed: () {},
-                                        icon: SvgPicture.asset(
-                                            'assets/svg/online.svg'),
+                                        icon: SvgPicture.asset('assets/svg/online.svg'),
                                       ),
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Order ${onlineOrderLists.length - onlineIndex}',
                                             //style: TextStyle(fontSize: 11, color: Color(0xff000000), fontWeight: FontWeight.w700),
-                                            style: customisedStyle(
-                                                context,
-                                                const Color(0xff000000),
-                                                FontWeight.w700,
-                                                11.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.0),
                                           ),
                                           Text(
-                                            onlineOrderLists[onlineIndex]
-                                                .custName,
-                                            style: customisedStyle(
-                                                context,
-                                                const Color(0xff2B2B2B),
-                                                FontWeight.w400,
-                                                10.0),
+                                            onlineOrderLists[onlineIndex].custName,
+                                            style: customisedStyle(context, const Color(0xff2B2B2B), FontWeight.w400, 10.0),
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
                                   Text(
-                                    currency +
-                                        ". " +
-                                        roundStringWith(
-                                            onlineOrderLists[onlineIndex]
-                                                .salesOrderGrandTotal),
+                                    currency + ". " + roundStringWith(onlineOrderLists[onlineIndex].salesOrderGrandTotal),
                                     // 'Rs.23455',
                                     //  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xff005B37))
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xff005B37),
-                                        FontWeight.w600,
-                                        12.0),
+                                    style: customisedStyle(context, const Color(0xff005B37), FontWeight.w600, 12.0),
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 4, top: 2, right: 2, bottom: 4),
+                            padding: const EdgeInsets.only(left: 4, top: 2, right: 2, bottom: 4),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'Token',
-                                  style: customisedStyle(
-                                      context,
-                                      const Color(0xff000000),
-                                      FontWeight.w600,
-                                      12.0),
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 12.0),
                                 ),
                                 Text(
                                   onlineOrderLists[onlineIndex].tokenNo,
                                   // 'Order $index',
 
-                                  style: customisedStyle(
-                                      context,
-                                      const Color(0xff000000),
-                                      FontWeight.w600,
-                                      12.0),
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 12.0),
                                 )
                               ],
                             ),
@@ -4029,16 +3465,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           Container(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              returnOrderTime(
-                                  onlineOrderLists[onlineIndex].orderTime,
-                                  onlineOrderLists[onlineIndex].status),
+                              returnOrderTime(onlineOrderLists[onlineIndex].orderTime, onlineOrderLists[onlineIndex].status),
 
                               // '23 Minutes Ago',
-                              style: customisedStyle(
-                                  context,
-                                  const Color(0xff929292),
-                                  FontWeight.w600,
-                                  10.0),
+                              style: customisedStyle(context, const Color(0xff929292), FontWeight.w600, 10.0),
                             ),
                           ),
                         ],
@@ -4046,20 +3476,17 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     ),
 
                     SizedBox(
-                      height: MediaQuery.of(context).size.height /
-                          18, //height of button
+                      height: MediaQuery.of(context).size.height / 18, //height of button
                       width: MediaQuery.of(context).size.width / 4.8,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor: onlineButton(
-                              onlineOrderLists[onlineIndex].status),
+                          backgroundColor: onlineButton(onlineOrderLists[onlineIndex].status),
                           textStyle: const TextStyle(fontSize: 20),
                         ),
                         onPressed: () {},
                         child: Text(
                           onlineOrderLists[onlineIndex].status,
-                          style: customisedStyle(
-                              context, Colors.white, FontWeight.w400, 13.0),
+                          style: customisedStyle(context, Colors.white, FontWeight.w400, 13.0),
                         ),
                       ),
                     ),
@@ -4083,8 +3510,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       child: ListView(
         children: [
           Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xffD6D6D6))),
+            decoration: BoxDecoration(border: Border.all(color: const Color(0xffD6D6D6))),
             padding: const EdgeInsets.all(10),
             height: MediaQuery.of(context).size.height / 11,
             //height of button
@@ -4096,8 +3522,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 BackButtonAppBar(),
                 Container(
                   alignment: Alignment.centerLeft,
-                  height: MediaQuery.of(context).size.height /
-                      11, //height of button
+                  height: MediaQuery.of(context).size.height / 11, //height of button
                   width: MediaQuery.of(context).size.width / 3,
 
                   child: Column(
@@ -4106,11 +3531,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     children: [
                       Text('Car'.tr,
                           // style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171), fontSize: 15),
-                          style: customisedStyle(context,
-                              const Color(0xff717171), FontWeight.bold, 15.0)),
-                      Text('Create a Parcel',
-                          style: customisedStyle(context,
-                              const Color(0xff000000), FontWeight.w700, 11.0))
+                          style: customisedStyle(context, const Color(0xff717171), FontWeight.bold, 15.0)),
+                      Text('Create a Parcel', style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.0))
                     ],
                   ),
                 ),
@@ -4118,15 +3540,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 Container(
                   width: 100,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff0347A1)),
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
                     onPressed: () {
                       posFunctions(callFunction: true);
                     },
                     child: Text(
                       'Refresh'.tr,
-                      style: customisedStyle(
-                          context, Colors.white, FontWeight.w500, 12.0),
+                      style: customisedStyle(context, Colors.white, FontWeight.w500, 12.0),
                     ),
                   ),
                 ),
@@ -4181,8 +3601,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                   child: Container(
                     color: Colors.white,
                     //  padding: EdgeInsets.all(7),
-                    height: MediaQuery.of(context).size.height /
-                        14, //height of button
+                    height: MediaQuery.of(context).size.height / 14, //height of button
                     width: MediaQuery.of(context).size.width / 18,
 
                     child: Container(
@@ -4193,11 +3612,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       child: IconButton(
                         onPressed: () {
                           if (car_create_perm) {
-                            navigateToOrderSection(
-                                tableID: "",
-                                sectionType: "Create",
-                                UUID: "",
-                                tableHead: "Order ");
+                            navigateToOrderSection(tableID: "", sectionType: "Create", UUID: "", tableHead: "Order ");
                           } else {
                             dialogBoxPermissionDenied(context);
                           }
@@ -4215,8 +3630,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     } else {
       if (carIndex == carOrderLists.length) {
         return Card(
-            margin:
-                const EdgeInsets.only(left: 4, top: 15, right: 0, bottom: 7),
+            margin: const EdgeInsets.only(left: 4, top: 15, right: 0, bottom: 7),
             child: DottedBorder(
                 color: const Color(0xff8D8D8D),
                 strokeWidth: 1,
@@ -4230,8 +3644,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     child: Container(
                       color: Colors.white,
                       //  padding: EdgeInsets.all(7),
-                      height: MediaQuery.of(context).size.height /
-                          14, //height of button
+                      height: MediaQuery.of(context).size.height / 14, //height of button
                       width: MediaQuery.of(context).size.width / 18,
 
                       child: Container(
@@ -4242,11 +3655,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         child: IconButton(
                           onPressed: () {
                             if (car_create_perm) {
-                              navigateToOrderSection(
-                                  tableID: "",
-                                  sectionType: "Create",
-                                  UUID: "",
-                                  tableHead: "Order ");
+                              navigateToOrderSection(tableID: "", sectionType: "Create", UUID: "", tableHead: "Order ");
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -4299,11 +3708,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             onLongPress: () {
               if (carOrderLists[carIndex].status == "Ordered") {
                 if (car_edit_perm) {
-                  navigateToOrderSection(
-                      tableID: "",
-                      sectionType: "Edit",
-                      UUID: carOrderLists[carIndex].salesOrderId,
-                      tableHead: "Order");
+                  navigateToOrderSection(tableID: "", sectionType: "Edit", UUID: carOrderLists[carIndex].salesOrderId, tableHead: "Order");
                 } else {
                   dialogBoxPermissionDenied(context);
                 }
@@ -4317,8 +3722,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         ? 1
                         : 0.30,
                 child: Card(
-                  margin: const EdgeInsets.only(
-                      left: 4, top: 15, right: 0, bottom: 7),
+                  margin: const EdgeInsets.only(left: 4, top: 15, right: 0, bottom: 7),
                   shape: const RoundedRectangleBorder(
                     side: BorderSide(color: Color(0xff8D8D8D), width: 1),
                   ),
@@ -4330,8 +3734,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         height: 6,
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height /
-                            9.2, //height of button
+                        height: MediaQuery.of(context).size.height / 9.2, //height of button
                         width: MediaQuery.of(context).size.width / 4.9,
 
                         child: Column(
@@ -4339,59 +3742,34 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SizedBox(
-                              height: MediaQuery.of(context).size.height /
-                                  19, //height of button
+                              height: MediaQuery.of(context).size.height / 19, //height of button
                               width: MediaQuery.of(context).size.width / 4.9,
                               child: DottedBorder(
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
                                         IconButton(
                                           onPressed: () {},
-                                          icon: SvgPicture.asset(
-                                              'assets/svg/car.svg'),
+                                          icon: SvgPicture.asset('assets/svg/car.svg'),
                                         ),
                                         Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Text(
-                                                'Order ${carOrderLists.length - carIndex}',
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xff000000),
-                                                    FontWeight.w700,
-                                                    11.0)),
-                                            Text(
-                                                carOrderLists[carIndex]
-                                                    .custName,
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xff2B2B2B),
-                                                    FontWeight.w400,
-                                                    10.0)),
+                                            Text('Order ${carOrderLists.length - carIndex}',
+                                                style: customisedStyle(context, const Color(0xff000000), FontWeight.w700, 11.0)),
+                                            Text(carOrderLists[carIndex].custName,
+                                                style: customisedStyle(context, const Color(0xff2B2B2B), FontWeight.w400, 10.0)),
                                           ],
                                         ),
                                       ],
                                     ),
-                                    Text(
-                                        currency +
-                                            "." +
-                                            roundStringWith(
-                                                carOrderLists[carIndex]
-                                                    .salesOrderGrandTotal),
+                                    Text(currency + "." + roundStringWith(carOrderLists[carIndex].salesOrderGrandTotal),
 
                                         //'Rs.23455',
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff005B37),
-                                            FontWeight.w600,
-                                            12.0)),
+                                        style: customisedStyle(context, const Color(0xff005B37), FontWeight.w600, 12.0)),
                                   ],
                                 ),
                               ),
@@ -4399,50 +3777,33 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                             SizedBox(
                               //   padding: EdgeInsets.all(2),
                               //alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height /
-                                  35, //height of button
+                              height: MediaQuery.of(context).size.height / 35, //height of button
                               width: MediaQuery.of(context).size.width / 5,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Token',
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xff000000),
-                                        FontWeight.w600,
-                                        12.0),
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 12.0),
                                   ),
                                   Text(
                                     carOrderLists[carIndex].tokenNo,
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xff4E4E4E),
-                                        FontWeight.w500,
-                                        13.0),
+                                    style: customisedStyle(context, const Color(0xff4E4E4E), FontWeight.w500, 13.0),
                                   )
                                 ],
                               ),
                             ),
                             Container(
                               alignment: Alignment.centerRight,
-                              height: MediaQuery.of(context).size.height /
-                                  37, //height of button
+                              height: MediaQuery.of(context).size.height / 37, //height of button
                               width: MediaQuery.of(context).size.width / 5,
                               child: Text(
                                 //carOrderLists[ind].orderTime,
-                                returnOrderTime(
-                                    carOrderLists[carIndex].orderTime,
-                                    carOrderLists[carIndex].status),
+                                returnOrderTime(carOrderLists[carIndex].orderTime, carOrderLists[carIndex].status),
 
                                 //'23 Minutes Ago',
 
-                                style: customisedStyle(
-                                    context,
-                                    const Color(0xff929292),
-                                    FontWeight.w500,
-                                    12.0),
+                                style: customisedStyle(context, const Color(0xff929292), FontWeight.w500, 12.0),
                               ),
                             ),
                           ],
@@ -4454,14 +3815,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                       Container(
                         color: carButton(carOrderLists[carIndex].status),
-                        height: MediaQuery.of(context).size.height /
-                            18, //height of button
+                        height: MediaQuery.of(context).size.height / 18, //height of button
                         width: MediaQuery.of(context).size.width / 4.8,
                         child: Center(
                           child: Text(
                             carOrderLists[carIndex].status,
-                            style: customisedStyle(
-                                context, Colors.white, FontWeight.w400, 13.0),
+                            style: customisedStyle(context, Colors.white, FontWeight.w400, 13.0),
                           ),
                         ),
                       ),
@@ -4501,7 +3860,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     if (status == "Vacant") {
       return "";
     }
-    print("---value------value-------data-------$data");
 
     var t = data;
     var yy = int.parse(t.substring(0, 4));
@@ -4521,7 +3879,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     var dH = currentTime.difference(startTime).inHours;
     String value = "$dMnt" + " " + "" + "Minutes";
 
-    print("---value------value-------value-------$value");
     return value;
   }
 
@@ -4677,8 +4034,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 width: 50,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color:
-                        mainPageIndex == 1 ? Colors.black : Colors.transparent,
+                    color: mainPageIndex == 1 ? Colors.black : Colors.transparent,
                     width: 1,
                   ),
                   borderRadius: const BorderRadius.all(
@@ -4705,8 +4061,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 padding: const EdgeInsets.only(top: 3.0, bottom: 15.0),
                 child: Text(
                   'Dining'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w500, 11.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w500, 11.0),
                 ),
               )
             : const SizedBox(),
@@ -4717,8 +4072,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 width: 50,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color:
-                        mainPageIndex == 2 ? Colors.black : Colors.transparent,
+                    color: mainPageIndex == 2 ? Colors.black : Colors.transparent,
                     width: 1,
                   ),
                   borderRadius: const BorderRadius.all(
@@ -4741,8 +4095,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 padding: const EdgeInsets.only(top: 3.0, bottom: 15.0),
                 child: Text(
                   'Take_awy'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w500, 11.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w500, 11.0),
                 ),
               )
             : const SizedBox(),
@@ -4788,8 +4141,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 width: 50,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color:
-                        mainPageIndex == 4 ? Colors.black : Colors.transparent,
+                    color: mainPageIndex == 4 ? Colors.black : Colors.transparent,
                     width: 1,
                   ),
                   borderRadius: const BorderRadius.all(
@@ -4811,8 +4163,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 padding: const EdgeInsets.only(top: 3.0, bottom: 15.0),
                 child: Text(
                   'Car'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w500, 11.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w500, 11.0),
                 ),
               )
             : const SizedBox(),
@@ -4904,8 +4255,7 @@ class UserDetailsAppBar extends StatelessWidget {
           children: [
             Text(
               user_name,
-              style:
-                  customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
             ),
             IconButton(
               icon: const Icon(Icons.login_outlined),
@@ -4921,34 +4271,23 @@ class UserDetailsAppBar extends StatelessWidget {
                             padding: const EdgeInsets.all(0),
                             child: Text(
                               "Alert!",
-                              style: customisedStyle(context, Colors.black,
-                                  FontWeight.w600, 15.00),
+                              style: customisedStyle(context, Colors.black, FontWeight.w600, 15.00),
                               textAlign: TextAlign.center,
                             ),
                           ),
-                          content: Text("Log out from POS",
-                              style: customisedStyle(context, Colors.black,
-                                  FontWeight.w500, 15.0)),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
+                          content: Text("Log out from POS", style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0)),
+                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
                           actions: <Widget>[
                             TextButton(
                                 onPressed: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
+                                  SharedPreferences prefs = await SharedPreferences.getInstance();
                                   prefs.setBool('IsSelectPos', false);
                                   Navigator.pop(context);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              const EnterPinNumber()));
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                 },
                                 child: Text(
                                   'Ok',
-                                  style: customisedStyle(context, Colors.black,
-                                      FontWeight.w400, 12.00),
+                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 12.00),
                                 )),
                             TextButton(
                                 onPressed: () => {
@@ -4956,8 +4295,7 @@ class UserDetailsAppBar extends StatelessWidget {
                                     },
                                 child: Text(
                                   'cancel'.tr,
-                                  style: customisedStyle(context, Colors.black,
-                                      FontWeight.w400, 12.00),
+                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 12.00),
                                 )),
                           ],
                         ),
@@ -5002,13 +4340,11 @@ class BackButtonAppBar extends StatelessWidget {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               elevation: 0.0,
-                              backgroundColor:
-                                  Colors.transparent, // Background color
+                              backgroundColor: Colors.transparent, // Background color
                             ),
                             child: Text(
                               'No',
-                              style: customisedStyle(
-                                  context, Colors.black, FontWeight.w500, 14.0),
+                              style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                             ),
                             onPressed: () {
                               Navigator.of(context).pop(false);
@@ -5017,13 +4353,11 @@ class BackButtonAppBar extends StatelessWidget {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               elevation: 0.0,
-                              backgroundColor:
-                                  Colors.transparent, // Background color
+                              backgroundColor: Colors.transparent, // Background color
                             ),
                             child: Text(
                               'Yes'.tr,
-                              style: customisedStyle(
-                                  context, Colors.black, FontWeight.w500, 14.0),
+                              style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                             ),
                             onPressed: () {
                               Navigator.of(context).pop(true);

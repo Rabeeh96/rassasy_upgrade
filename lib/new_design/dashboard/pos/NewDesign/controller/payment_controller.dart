@@ -157,7 +157,7 @@ class POSPaymentController extends GetxController {
       stop();
     } else {
       try {
-        print("cash account----");
+        print("---------------printSave--------------$printSave----------tableID--------$tableID------------uUID--------$uUID-------orderType---------$orderType-------------------------");
         start(context);
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
