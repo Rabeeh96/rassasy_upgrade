@@ -13,11 +13,7 @@ class PaymentPage extends StatefulWidget {
   final String uID, tableID;
   final int orderType;
 
-  const PaymentPage(
-      {super.key,
-      required this.uID,
-      required this.tableID,
-      required this.orderType});
+  const PaymentPage({super.key, required this.uID, required this.tableID, required this.orderType});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -63,9 +59,7 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
       body: SingleChildScrollView(
           child: Obx(() => paymentController.detailLoading.value
-              ? Container(
-                  height: 500,
-                  child: const Center(child: CircularProgressIndicator()))
+              ? Container(height: 500, child: const Center(child: CircularProgressIndicator()))
               : Column(
                   children: [
                     Container(
@@ -79,118 +73,70 @@ class _PaymentPageState extends State<PaymentPage> {
                       () => Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 20),
                         child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(11),
-                              border:
-                                  Border.all(color: const Color(0xffE6E6E6))),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Padding(
                                 padding: EdgeInsets.all(12.0),
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'customer'.tr,
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff8C8C8C),
-                                            FontWeight.w400,
-                                            16.0),
-                                      ),
-                                      Text(
-                                        paymentController
-                                                .paymentCustomerSelection
-                                                .text ??
-                                            "",
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff000000),
-                                            FontWeight.w500,
-                                            18.0),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.black,
-                                        size: 15,
-                                      )
-                                    ]),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                  Text(
+                                    'customer'.tr,
+                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                  ),
+                                  Text(
+                                    paymentController.paymentCustomerSelection.text ?? "",
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.black,
+                                    size: 15,
+                                  )
+                                ]),
                               ),
                               DividerStyle(),
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'ph_no'.tr,
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff8C8C8C),
-                                            FontWeight.w400,
-                                            16.0),
-                                      ),
-                                      Text(
-                                        paymentController
-                                                .customerPhoneSelection.text ??
-                                            "",
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff000000),
-                                            FontWeight.w500,
-                                            18.0),
-                                      ),
-                                    ]),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                  Text(
+                                    'ph_no'.tr,
+                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                  ),
+                                  Text(
+                                    paymentController.customerPhoneSelection.text ?? "",
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                  ),
+                                ]),
                               ),
                               DividerStyle(),
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                  Text(
+                                    'balance1'.tr,
+                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                  ),
+                                  Row(
                                     children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 8.0),
+                                        child: Text(
+                                          paymentController.currency,
+                                          style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                        ),
+                                      ),
                                       Text(
-                                        'balance1'.tr,
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff8C8C8C),
-                                            FontWeight.w400,
-                                            16.0),
+                                        roundStringWith(paymentController.balance.toString()),
+                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
                                       ),
-                                      Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: Text(
-                                              paymentController.currency,
-                                              style: customisedStyle(
-                                                  context,
-                                                  const Color(0xff8C8C8C),
-                                                  FontWeight.w400,
-                                                  18.0),
-                                            ),
-                                          ),
-                                          Text(
-                                            roundStringWith(paymentController
-                                                .balance
-                                                .toString()),
-                                            style: customisedStyle(
-                                                context,
-                                                const Color(0xff000000),
-                                                FontWeight.w500,
-                                                18.0),
-                                          ),
-                                        ],
-                                      ),
-                                      const Text(
-                                        "",
-                                      ),
-                                    ]),
+                                    ],
+                                  ),
+                                  const Text(
+                                    "",
+                                  ),
+                                ]),
                               ),
                             ],
                           ),
@@ -203,55 +149,38 @@ class _PaymentPageState extends State<PaymentPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(11),
-                            border: Border.all(color: const Color(0xffE6E6E6))),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                final result =
-                                    await Get.to(SelectDeliveryMan());
+                                final result = await Get.to(SelectDeliveryMan());
                                 if (result != null) {
-                                  paymentController.deliveryManName.value =
-                                      result[0];
-                                  paymentController.deliveryManID.value =
-                                      result[1];
+                                  paymentController.deliveryManName.value = result[0];
+                                  paymentController.deliveryManID.value = result[1];
                                   paymentController.update();
                                 }
                               },
                               child: InkWell(
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Deliveryman'.tr,
-                                          style: customisedStyle(
-                                              context,
-                                              const Color(0xff8C8C8C),
-                                              FontWeight.w400,
-                                              16.0),
-                                        ),
-                                        Text(
-                                          paymentController
-                                              .deliveryManName.value,
-                                          style: customisedStyle(
-                                              context,
-                                              const Color(0xff000000),
-                                              FontWeight.w500,
-                                              18.0),
-                                        ),
-                                        const Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Colors.black,
-                                          size: 15,
-                                        )
-                                      ]),
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                    Text(
+                                      'Deliveryman'.tr,
+                                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                    ),
+                                    Text(
+                                      paymentController.deliveryManName.value,
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.black,
+                                      size: 15,
+                                    )
+                                  ]),
                                 ),
                               ),
                             ),
@@ -286,9 +215,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(11),
-                            border: Border.all(color: Color(0xffE6E6E6))),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: Color(0xffE6E6E6))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
@@ -297,83 +224,48 @@ class _PaymentPageState extends State<PaymentPage> {
                               padding: const EdgeInsets.all(12.0),
                               child: Column(
                                 children: [
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                    Text(
+                                      'Discount'.tr,
+                                      style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0),
+                                    ),
+                                  ]),
                                   Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Discount'.tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Color(0xff000000),
-                                              FontWeight.w500,
-                                              15.0),
-                                        ),
-                                      ]),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 18.0),
+                                        padding: const EdgeInsets.only(top: 18.0),
                                         child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.5,
+                                          width: MediaQuery.of(context).size.width / 2.5,
                                           child: TextField(
-                                            textCapitalization:
-                                                TextCapitalization.words,
-                                            controller: paymentController
-                                                .discountAmountController,
-                                            style: customisedStyle(
-                                                context,
-                                                Colors.black,
-                                                FontWeight.w500,
-                                                14.0),
+                                            textCapitalization: TextCapitalization.words,
+                                            controller: paymentController.discountAmountController,
+                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                                             // focusNode: diningController.customerNode,
                                             onEditingComplete: () {
-                                              FocusScope.of(context)
-                                                  .requestFocus();
+                                              FocusScope.of(context).requestFocus();
                                             },
                                             keyboardType: TextInputType.text,
-                                            decoration: TextFieldDecoration
-                                                .defaultTextField(
-                                                    hintTextStr: 'amount'.tr),
+                                            decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
                                           ),
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 18.0),
+                                        padding: const EdgeInsets.only(top: 18.0),
                                         child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.5,
+                                          width: MediaQuery.of(context).size.width / 2.5,
                                           child: TextField(
-                                            textCapitalization:
-                                                TextCapitalization.words,
-                                            controller: paymentController
-                                                .discountPerController,
+                                            textCapitalization: TextCapitalization.words,
+                                            controller: paymentController.discountPerController,
 
-                                            style: customisedStyle(
-                                                context,
-                                                Colors.black,
-                                                FontWeight.w500,
-                                                14.0),
+                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                                             // focusNode: diningController.customerNode,
                                             onEditingComplete: () {
-                                              FocusScope.of(context)
-                                                  .requestFocus();
+                                              FocusScope.of(context).requestFocus();
                                             },
                                             keyboardType: TextInputType.text,
-                                            decoration: TextFieldDecoration
-                                                .defaultTextField(
-                                                    hintTextStr: ""),
+                                            decoration: TextFieldDecoration.defaultTextField(hintTextStr: ""),
                                           ),
                                         ),
                                       ),
@@ -395,49 +287,30 @@ class _PaymentPageState extends State<PaymentPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(11),
-                            border: Border.all(color: const Color(0xffE6E6E6))),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                            Text(
+                              'gross_amount'.tr,
+                              style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                            ),
+                            Row(
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Text(
+                                    paymentController.currency,
+                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                  ),
+                                ),
                                 Text(
-                                  'gross_amount'.tr,
-                                  style: customisedStyle(
-                                      context,
-                                      const Color(0xff8C8C8C),
-                                      FontWeight.w400,
-                                      16.0),
+                                  roundStringWith(paymentController.totalGrossP.value.toString()),
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
                                 ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: Text(
-                                        paymentController.currency,
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff8C8C8C),
-                                            FontWeight.w400,
-                                            18.0),
-                                      ),
-                                    ),
-                                    Text(
-                                      roundStringWith(paymentController
-                                          .totalGrossP.value
-                                          .toString()),
-                                      style: customisedStyle(
-                                          context,
-                                          const Color(0xff000000),
-                                          FontWeight.w500,
-                                          18.0),
-                                    ),
-                                  ],
-                                ),
-                              ]),
+                              ],
+                            ),
+                          ]),
                         ),
                       ),
                     ),
@@ -447,9 +320,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(11),
-                            border: Border.all(color: const Color(0xffE6E6E6))),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
@@ -482,128 +353,77 @@ class _PaymentPageState extends State<PaymentPage> {
                             // DividerStyle(),
                             Padding(
                               padding: const EdgeInsets.all(12.0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                Text(
+                                  'total_tax'.tr,
+                                  style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                ),
+                                Row(
                                   children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: Text(
+                                        paymentController.currency,
+                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                      ),
+                                    ),
                                     Text(
-                                      'total_tax'.tr,
-                                      style: customisedStyle(
-                                          context,
-                                          const Color(0xff8C8C8C),
-                                          FontWeight.w400,
-                                          16.0),
+                                      roundStringWith(paymentController.totalTaxMP.value),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
                                     ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: Text(
-                                            paymentController.currency,
-                                            style: customisedStyle(
-                                                context,
-                                                const Color(0xff8C8C8C),
-                                                FontWeight.w400,
-                                                18.0),
-                                          ),
-                                        ),
-                                        Text(
-                                          roundStringWith(paymentController
-                                              .totalTaxMP.value),
-                                          style: customisedStyle(
-                                              context,
-                                              const Color(0xff000000),
-                                              FontWeight.w500,
-                                              18.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
+                                  ],
+                                ),
+                              ]),
                             ),
                             DividerStyle(),
                             Padding(
                               padding: const EdgeInsets.all(12.0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                Text(
+                                  'net_total'.tr,
+                                  style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                ),
+                                Row(
                                   children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: Text(
+                                        paymentController.currency,
+                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                      ),
+                                    ),
                                     Text(
-                                      'net_total'.tr,
-                                      style: customisedStyle(
-                                          context,
-                                          const Color(0xff8C8C8C),
-                                          FontWeight.w400,
-                                          16.0),
+                                      roundStringWith(paymentController.totalNetP.value),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
                                     ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: Text(
-                                            paymentController.currency,
-                                            style: customisedStyle(
-                                                context,
-                                                const Color(0xff8C8C8C),
-                                                FontWeight.w400,
-                                                18.0),
-                                          ),
-                                        ),
-                                        Text(
-                                          roundStringWith(paymentController
-                                              .totalNetP.value),
-                                          style: customisedStyle(
-                                              context,
-                                              const Color(0xff000000),
-                                              FontWeight.w500,
-                                              18.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
+                                  ],
+                                ),
+                              ]),
                             ),
                             DividerStyle(),
                             Padding(
                               padding: const EdgeInsets.all(12.0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                Text(
+                                  'grand_total'.tr,
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 16.5),
+                                ),
+                                Row(
                                   children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: Text(
+                                        paymentController.currency,
+                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                      ),
+                                    ),
                                     Text(
-                                      'grand_total'.tr,
-                                      style: customisedStyle(
-                                          context,
-                                          const Color(0xff000000),
-                                          FontWeight.w600,
-                                          16.5),
+                                      roundStringWith(paymentController.grandTotalAmount.value),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 18.0),
                                     ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: Text(
-                                            paymentController.currency,
-                                            style: customisedStyle(
-                                                context,
-                                                const Color(0xff8C8C8C),
-                                                FontWeight.w400,
-                                                18.0),
-                                          ),
-                                        ),
-                                        Text(
-                                          roundStringWith(paymentController
-                                              .grandTotalAmount.value),
-                                          style: customisedStyle(
-                                              context,
-                                              const Color(0xff000000),
-                                              FontWeight.w600,
-                                              18.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
+                                  ],
+                                ),
+                              ]),
                             ),
                           ],
                         ),
@@ -615,9 +435,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(11),
-                            border: Border.all(color: Color(0xffE6E6E6))),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: Color(0xffE6E6E6))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
@@ -626,111 +444,61 @@ class _PaymentPageState extends State<PaymentPage> {
                               padding: const EdgeInsets.all(12.0),
                               child: Column(
                                 children: [
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'cash'.tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Color(0xff000000),
-                                              FontWeight.w500,
-                                              18.0),
-                                        ),
-                                      ]),
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                    Text(
+                                      'cash'.tr,
+                                      style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 16.5),
+                                    ),
+                                  ]),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 18.0),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          width: MediaQuery.of(context)
-                                              .size
-                                              .width /
-                                              2,
+                                          width: MediaQuery.of(context).size.width / 2,
                                           child: TextField(
-                                            controller: paymentController
-                                                .cashReceivedController,
-                                            keyboardType: const TextInputType
-                                                .numberWithOptions(
-                                                decimal: true),
+                                            controller: paymentController.cashReceivedController,
+                                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                             inputFormatters: [
-                                              FilteringTextInputFormatter.allow(
-                                                  RegExp(r'^\d+\.?\d{0,8}')),
+                                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                                             ],
                                             onChanged: (val) {
                                               if (val.isEmpty) {
                                                 val = "0";
                                               } else {
-                                                paymentController
-                                                    .calculationOnPayment();
+                                                paymentController.calculationOnPayment();
                                               }
                                             },
-                                            textCapitalization:
-                                            TextCapitalization.words,
+                                            textCapitalization: TextCapitalization.words,
 
-                                            style: customisedStyle(
-                                                context,
-                                                Colors.black,
-                                                FontWeight.w400,
-                                                18.0),
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
                                             // focusNode: diningController.customerNode,
                                             // onEditingComplete: () {
                                             //   FocusScope.of(context).requestFocus();
                                             // },
-                                            onTap: () => paymentController
-                                                .cashReceivedController
-                                                .selection =
-                                                TextSelection(
-                                                    baseOffset: 0,
-                                                    extentOffset: paymentController
-                                                        .cashReceivedController
-                                                        .value
-                                                        .text
-                                                        .length),
+                                            onTap: () => paymentController.cashReceivedController.selection = TextSelection(
+                                                baseOffset: 0, extentOffset: paymentController.cashReceivedController.value.text.length),
 
-                                            decoration: TextFieldDecoration
-                                                .defaultTextField(
-                                                hintTextStr: 'amount'.tr),
+                                            decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
                                           ),
                                         ),
                                         Container(
-                                          width:
-                                              MediaQuery.of(context).size.width /
-                                                  4,
+                                          width: MediaQuery.of(context).size.width / 4,
                                           child: TextButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        const Color(0xff10C103))),
+                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                                             onPressed: () {
-                                              paymentController
-                                                  .bankReceivedController
-                                                  .text = roundStringWith("0");
-                                              paymentController
-                                                      .cashReceivedController
-                                                      .text =
-                                                  roundStringWith(
-                                                      paymentController
-                                                          .grandTotalAmount.value
-                                                          .toString());
-                                              paymentController
-                                                  .calculationOnPayment();
+                                              paymentController.bankReceivedController.text = roundStringWith("0");
+                                              paymentController.cashReceivedController.text =
+                                                  roundStringWith(paymentController.grandTotalAmount.value.toString());
+                                              paymentController.calculationOnPayment();
                                             },
                                             child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 12.0, right: 12),
+                                              padding: const EdgeInsets.only(left: 12.0, right: 12),
                                               child: Text(
                                                 'Full'.tr,
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xffffffff),
-                                                    FontWeight.normal,
-                                                    17.0),
+                                                style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 16.5),
                                               ),
                                             ),
                                           ),
@@ -745,111 +513,57 @@ class _PaymentPageState extends State<PaymentPage> {
                                   SizedBox(
                                     height: 8,
                                   ),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'bank'.tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Color(0xff000000),
-                                              FontWeight.w500,
-                                              18.0),
-                                        ),
-                                      ]),
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                    Text(
+                                      'bank'.tr,
+                                      style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 16.5),
+                                    ),
+                                  ]),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 18.0),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2,
+                                          width: MediaQuery.of(context).size.width / 2,
                                           child: TextField(
-                                            textCapitalization:
-                                                TextCapitalization.words,
-                                            controller: paymentController
-                                                .bankReceivedController,
-                                            style: customisedStyle(
-                                                context,
-                                                Colors.black,
-                                                FontWeight.w400,
-                                                18.0),
-                                            keyboardType: const TextInputType
-                                                .numberWithOptions(
-                                                decimal: true),
+                                            textCapitalization: TextCapitalization.words,
+                                            controller: paymentController.bankReceivedController,
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
+                                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                             inputFormatters: [
-                                              FilteringTextInputFormatter.allow(
-                                                  RegExp(r'^\d+\.?\d{0,8}')),
+                                              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                                             ],
                                             onChanged: (val) {
                                               if (val.isEmpty) {
                                               } else {
-                                                paymentController
-                                                    .calculationOnPayment();
+                                                paymentController.calculationOnPayment();
                                               }
                                             },
                                             onEditingComplete: () {
-                                              FocusScope.of(context)
-                                                  .requestFocus();
+                                              FocusScope.of(context).requestFocus();
                                             },
-                                            onTap: () => paymentController
-                                                    .bankReceivedController
-                                                    .selection =
-                                                TextSelection(
-                                                    baseOffset: 0,
-                                                    extentOffset: paymentController
-                                                        .bankReceivedController
-                                                        .value
-                                                        .text
-                                                        .length),
-                                            decoration: TextFieldDecoration
-                                                .defaultTextField(
-                                                    hintTextStr: 'amount'.tr),
+                                            onTap: () => paymentController.bankReceivedController.selection = TextSelection(
+                                                baseOffset: 0, extentOffset: paymentController.bankReceivedController.value.text.length),
+                                            decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
                                           ),
                                         ),
                                         Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              4,
+                                          width: MediaQuery.of(context).size.width / 4,
                                           child: TextButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        const Color(
-                                                            0xff10C103))),
+                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                                             onPressed: () {
-                                              paymentController
-                                                  .cashReceivedController
-                                                  .text = roundStringWith("0");
-                                              paymentController
-                                                      .bankReceivedController
-                                                      .text =
-                                                  roundStringWith(
-                                                      paymentController
-                                                          .grandTotalAmount
-                                                          .value
-                                                          .toString());
-                                              paymentController
-                                                  .calculationOnPayment();
+                                              paymentController.cashReceivedController.text = roundStringWith("0");
+                                              paymentController.bankReceivedController.text =
+                                                  roundStringWith(paymentController.grandTotalAmount.value.toString());
+                                              paymentController.calculationOnPayment();
                                             },
                                             child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 12.0, right: 12),
+                                              padding: const EdgeInsets.only(left: 12.0, right: 12),
                                               child: Text(
                                                 'Full'.tr,
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xffffffff),
-                                                    FontWeight.normal,
-                                                    17.0),
+                                                style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 16.5),
                                               ),
                                             ),
                                           ),
@@ -883,9 +597,7 @@ class _PaymentPageState extends State<PaymentPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xffDF1515))),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
                     onPressed: () {
                       Get.back();
                     },
@@ -896,11 +608,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           padding: const EdgeInsets.only(left: 12.0, right: 12),
                           child: Text(
                             'cancel'.tr,
-                            style: customisedStyle(
-                                context,
-                                const Color(0xffffffff),
-                                FontWeight.normal,
-                                12.0),
+                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
                           ),
                         ),
                       ],
@@ -909,40 +617,23 @@ class _PaymentPageState extends State<PaymentPage> {
                   width: 10,
                 ),
                 TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xff10C103))),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                     onPressed: () async {
-                      print("cash account");
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
                       var id = prefs.getInt("Cash_Account") ?? 1;
-                      print("cash account");
+
 
                       if (paymentController.ledgerID.value != id) {
-                        print("cash account");
-                        paymentController.createSaleInvoice(
-                            orderType: widget.orderType,
-                            context: context,
-                            tableID: widget.tableID,
-                            uUID: widget.uID,
-                            printSave: false);
+
+                        paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
                       } else {
-                        if ((paymentController.cashReceived.value +
-                                paymentController.bankReceived.value) >=
-                            double.parse(
-                                paymentController.grandTotalAmount.value)) {
+                        if ((paymentController.cashReceived.value + paymentController.bankReceived.value) >=
+                            double.parse(paymentController.grandTotalAmount.value)) {
                           paymentController.createSaleInvoice(
-                              orderType: widget.orderType,
-                              context: context,
-                              tableID: widget.tableID,
-                              uUID: widget.uID,
-                              printSave: false);
+                              orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
                         } else {
-                          popAlert(
-                              head: "Waring",
-                              message: "You cant make credit sale",
-                              position: SnackPosition.TOP);
+                          popAlert(head: "Waring", message: "You cant make credit sale", position: SnackPosition.TOP);
                         }
                       }
                     },
@@ -953,11 +644,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
                           child: Text(
                             'Save'.tr,
-                            style: customisedStyle(
-                                context,
-                                const Color(0xffffffff),
-                                FontWeight.normal,
-                                12.0),
+                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
                           ),
                         )
                       ],

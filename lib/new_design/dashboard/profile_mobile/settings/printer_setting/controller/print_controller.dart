@@ -10,6 +10,7 @@ class PrintSettingController extends GetxController {
   TextEditingController salesInvoiceController = TextEditingController();
   TextEditingController salesOrderController = TextEditingController();
   TextEditingController selectCapabilitiesController = TextEditingController();
+  TextEditingController selectCodepageController = TextEditingController();
   TextEditingController termsAndConditionController = TextEditingController();
   var isLoading = false.obs;
 
@@ -106,6 +107,19 @@ class PrintSettingController extends GetxController {
     "TUP500",
     "ZJ-5870",
   ];
+  List<String> codepage = [
+    "ISO_8859-6",
+    "CP864",
+    "ISO-8859-6",
+    "PC850",
+    "PC860",
+    "PC858",
+    "PC863",
+    "CP1251",
+    "PC863",
+    "",
+
+  ];
   TextEditingController code_page_controller = TextEditingController();
   ValueNotifier<bool> isHighlightedToken = ValueNotifier<bool>(false);
   ValueNotifier<bool> isPaymentDetail = ValueNotifier<bool>(false);
@@ -117,10 +131,12 @@ class PrintSettingController extends GetxController {
     isHighlightedToken.value = prefs.getBool("hilightTokenNumber") ?? false;
     isPaymentDetail.value = prefs.getBool("paymentDetailsInPrint") ?? false;
     isCompanyDetail.value = prefs.getBool("headerAlignment") ?? false;
-    termsAndConditionController.text =
-        prefs.getString('printTermsAndCondition') ?? "";
+    termsAndConditionController.text = prefs.getString('printTermsAndCondition') ?? "";
     salesInvoiceController.text = prefs.getString('defaultIP') ?? "";
     salesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
+    selectCapabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
+    selectCodepageController.text = prefs.getString('default_code_page') ?? "CP864";
+
   }
 }
 

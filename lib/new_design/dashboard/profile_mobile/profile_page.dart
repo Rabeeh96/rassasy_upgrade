@@ -12,7 +12,7 @@ import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'about_us/about_us_page.dart';
 import 'contact_us/contact_us.dart';
-import 'settings/settings_page.dart';
+import 'settings/new_settingsSection.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);

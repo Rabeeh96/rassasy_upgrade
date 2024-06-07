@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:rassasy_new/Print/bluetoothPrint.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
+import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/pos_list_model.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/service/pos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +53,8 @@ final isLoadTable=false.obs;
   ];
 
 
-  static final List<String> menuItem = ['Shawarma', 'Soup', 'Dumplings', 'Pasta', 'Beaverage'];
+
+
 
   final ValueNotifier<bool> isDismiss = ValueNotifier<bool>(false);
 
@@ -86,6 +90,7 @@ final isLoadTable=false.obs;
   var onlineOrders = <Online>[].obs;
   var takeAwayOrders = <TakeAway>[].obs;
   var carOrders = <Car>[].obs;
+  var cancelOrder = [].obs;
   var isLoading = true.obs;
 
   ///this function used for getting time
@@ -135,10 +140,13 @@ final isLoadTable=false.obs;
       onlineOrders.assignAll((fetchedData['Online'] as List).map((json) => Online.fromJson(json)).toList());
       takeAwayOrders.assignAll((fetchedData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
       carOrders.assignAll((fetchedData['Car'] as List).map((json) => Car.fromJson(json)).toList());
+      cancelOrder.assignAll(fetchedData['Reasons']??[]);
     } finally {
       isLoading(false);
     }
   }
+
+  /// create table
   Future<void> createTableApi() async {
     try {
       isLoading(true);
@@ -182,7 +190,7 @@ final isLoadTable=false.obs;
       var status = responseData["StatusCode"];
 
       if (status == 6000) {
-
+        Get.back();
         fetchAllData();
         customerNameController.clear();
 
@@ -198,6 +206,131 @@ final isLoadTable=false.obs;
       isLoading(false);
     }
   }
+  /// cancel
+
+  Future<void> cancelOrderApi({required String type,required  String tableID,required String cancelReasonId,required String orderID}) async {
+    try {
+      isLoading(true);
+
+
+      String baseUrl = BaseUrl.baseUrl;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var companyID = prefs.getString('companyID') ?? '0'; // Change to string
+      var branchID = prefs.getInt('branchID') ?? 1;
+      bool printForCancelOrder = prefs.getBool('print_for_cancel_order') ?? false;
+      var accessToken = prefs.getString('access') ?? '';
+
+
+
+      final String url = '$baseUrl/posholds/reset-status/';
+      var suffix = "";
+
+      var tableName = customerNameController.text;
+      var name = suffix + tableName;
+
+      if (type == "TakeAway" || type == "Dining" || type == "Online" || type == "Car") {
+        cancelReasonId = "";
+      }
+
+      Map<String, dynamic> data = {
+        "CompanyID": companyID,
+        "BranchID": branchID,
+        "Type": type,
+        "unqid":type=="Dining&Cancel"?tableID:orderID,
+        "reason_id": cancelReasonId,
+      };
+
+      //encode Map to JSON
+      var body = json.encode(data);
+
+      var response = await http.post(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: body,
+      );
+
+      print(response.body);
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+      var status = responseData["StatusCode"];
+
+      if (status == 6000) {
+        fetchAllData();
+
+        /// print section commented
+        // if (printForCancellOrder) {
+        //   PrintDataDetails.type = "SO";
+        //   PrintDataDetails.id = orderID;
+        //   await printDetail(true);
+        // }
+        // if (orderID != "") {
+        //   await ReprintKOT(orderID, true);
+        // }
+      } else if (status == 6001) {
+        var msg = responseData["message"];
+        Get.snackbar('Error', msg); // Show error message
+      } else {
+        // Handle other cases
+      }
+    } catch (e) {
+      // Handle exceptions
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  var printHelperUsb = USBPrintClass();
+  var printHelperIP = AppBlocs();
+
+  printSection({required BuildContext context,required String voucherType,required String id,required bool isCancelled})async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+      var defaultIp = prefs.getString('defaultIP') ?? '';
+      var printType = prefs.getString('PrintType') ?? 'Wifi';
+      var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
+      if (defaultIp == "") {
+        dialogBox(context,"Please select a default printer");
+      } else {
+        if (printType == 'Wifi') {
+          PrintDataDetails.type = voucherType;
+          PrintDataDetails.id = id;
+          var ret = await printHelperIP.printDetails();
+          print("==========ret $ret");
+          if (ret == 2) {
+            var ip = "";
+            if (voucherType == "SO") {
+              ip = defaultOrderIP;
+            } else {
+              ip = defaultIp;
+            }
+
+            printHelperIP.print_receipt(ip, context, isCancelled);
+          } else {
+            dialogBox(context, 'Please try again later1');
+          }
+        } else {
+          print("usb 1");
+          var ret = await printHelperUsb.printDetails();
+          if (ret == 2) {
+            var ip = "";
+            if (voucherType == "SO") {
+              ip = defaultOrderIP;
+            } else {
+              ip = defaultIp;
+            }
+            printHelperUsb.printReceipt(ip, context);
+          } else {
+            dialogBox(context, 'Please try again later');
+          }
+
+        }
+      }
+
+  }
+
+
+
 }
 
 enum ConfirmAction { cancel, accept }
