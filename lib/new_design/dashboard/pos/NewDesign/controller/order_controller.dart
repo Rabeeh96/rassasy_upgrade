@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../model/customerModel.dart';
+import 'pos_controller.dart';
 
 class OrderController extends GetxController {
   ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(false); // Initialize with initial value
@@ -1273,7 +1274,7 @@ class OrderController extends GetxController {
       popAlert(head: "Alert", message: "You are connected to the internet", position: SnackPosition.TOP);
     }
   }
-
+  final POSController posController = Get.put(POSController());
   /// function for create
   Future<Null> createSalesOrderRequest({
     required BuildContext context,
@@ -1430,6 +1431,7 @@ class OrderController extends GetxController {
       Map n = json.decode(utf8.decode(response.bodyBytes));
       var status = n["StatusCode"];
       var responseJson = n["data"];
+      List cancelPrint = n["final_data"] ?? [];
       print(responseJson);
       if (status == 6000) {
         stop();
@@ -1438,17 +1440,19 @@ class OrderController extends GetxController {
         Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
         if (printAfterOrder) {
           /// printing section
-          // PrintDataDetails.type = "SO";
-          // PrintDataDetails.id = n["OrderID"];
-          // await printDetail(context);
+          posController.printSection(
+              context: context,
+              id: n["OrderID"],
+              isCancelled: false,
+              voucherType: "SO");
         }
-
-        // dialogBoxHide(context, 'Order created successfully !!!');
 
         Future.delayed(const Duration(seconds: 1), () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var kot = prefs.getBool("KOT") ?? false;
           if (kot == true) {
+            posController.printKOT(cancelList: cancelPrint,isUpdate:sectionType == "Edit"?true:false,orderID:n["OrderID"],rePrint:false);
+
             /// commented kot print
             // PrintDataDetails.type = "SO";
             // PrintDataDetails.id = id;

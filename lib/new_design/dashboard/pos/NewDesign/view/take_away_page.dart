@@ -152,11 +152,14 @@ class _TakeAwayState extends State<TakeAway> {
                                       if(takeAwayController.takeAwayOrders[index].status == 'Ordered'){
                                         var result = await Get.to(CancelOrderList());
                                         if(result !=null){
-                                          takeAwayController.cancelOrderApi(type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: takeAwayController.takeAwayOrders[index].salesOrderID!);
+                                          takeAwayController.cancelOrderApi(
+                                              context:context,
+                                              type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: takeAwayController.takeAwayOrders[index].salesOrderID!);
                                         }
                                       }
                                       else{
-                                        takeAwayController.cancelOrderApi(type: "TakeAway", tableID: "", cancelReasonId: "", orderID:takeAwayController.takeAwayOrders[index].salesOrderID!);
+                                        takeAwayController.cancelOrderApi(context:context,
+                                            type: "TakeAway", tableID: "", cancelReasonId: "", orderID:takeAwayController.takeAwayOrders[index].salesOrderID!);
                                       }
                                     },
                                     backgroundColor: const Color(0xFFFC3636),

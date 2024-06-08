@@ -154,11 +154,11 @@ class _TakeAwayState extends State<CarPage> {
                               if(carController.carOrders[index].status == 'Ordered'){
                                 var result = await Get.to(CancelOrderList());
                                 if(result !=null){
-                                  carController.cancelOrderApi(type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: carController.carOrders[index].salesOrderID!);
+                                  carController.cancelOrderApi(context:context,type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: carController.carOrders[index].salesOrderID!);
                                 }
                               }
                               else{
-                                carController.cancelOrderApi(type: "Car", tableID: "", cancelReasonId: "", orderID:carController.carOrders[index].salesOrderID!);
+                                carController.cancelOrderApi(context:context,type: "Car", tableID: "", cancelReasonId: "", orderID:carController.carOrders[index].salesOrderID!);
                               }
 
 

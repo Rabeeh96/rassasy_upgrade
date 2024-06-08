@@ -223,6 +223,7 @@ class _DiningPageState extends State<DiningPage> {
                                         var result = await Get.to(CancelOrderList());
                                         if (result != null) {
                                           diningController.cancelOrderApi(
+                                              context:context,
                                               type: "Dining&Cancel",
                                               tableID: diningController.tableData[index].id!,
                                               cancelReasonId: result[1],
@@ -230,6 +231,7 @@ class _DiningPageState extends State<DiningPage> {
                                         }
                                       } else {
                                         diningController.cancelOrderApi(
+                                            context:context,
                                             type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: "");
                                       }
                                     },

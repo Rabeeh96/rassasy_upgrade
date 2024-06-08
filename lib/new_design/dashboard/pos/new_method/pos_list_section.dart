@@ -1151,15 +1151,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   // }
 
   ReprintKOT(orderID, isCancelled) async {
-    print("___orderID_____orderID_____orderID____orderID_____$orderID");
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     if (printType == 'Wifi') {
-      printHelperIP.printKotPrint(orderID, true, [], false, isCancelled);
+      var loadData = printHelperIP.printKotPrint(orderID, true, [], false, isCancelled);
     } else {
       var loadData = printHelperUsb.printKotPrint(orderID, true, [], false);
-      //  var loadData = await bluetoothHelper.bluetoothPrintKOT(context,true,orderID);
-      print('-loadData-------------$loadData');
     }
   }
 
@@ -1246,7 +1244,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                                         if (sectionType == 1) {
                                           if (diningOrderList[tableIndex].status == "Ordered") {
-                                            print(diningOrderList[tableIndex].salesOrderID);
+
                                             Navigator.pop(context);
                                             PrintDataDetails.type = "SO";
                                             PrintDataDetails.id = diningOrderList[tableIndex].salesOrderID;
@@ -1256,7 +1254,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                             Navigator.pop(context);
                                             PrintDataDetails.type = "SI";
                                             PrintDataDetails.id = diningOrderList[tableIndex].salesMasterID;
-
                                             printDetail(false);
                                           }
                                         } else if (sectionType == 2) {
