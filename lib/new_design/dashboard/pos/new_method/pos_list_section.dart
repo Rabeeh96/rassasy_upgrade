@@ -785,6 +785,22 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     }
   }
 
+  redirectToOrder(sectionType)async{
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => POSOrderSection(
+            sectionType: sectionType,
+            orderType: mainPageIndex,
+            tableID: "",
+            UUID: "",
+            tableHead: "Take away",
+          )
+      ),
+    );
+    posFunctions(callFunction: true);
+  }
+
   navigateToPaymentFromOrder({required tableID, required tableHead, required UUID}) async {
     var result = await Navigator.push(
       context,
@@ -805,13 +821,11 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     }
 
     if(directOrderOption){
-
+      redirectToOrder("Create");
     }
     else{
       posFunctions(callFunction: true);
     }
-
-
   }
 
   returnDiningListItem(dineIndex) {
@@ -2587,13 +2601,16 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           stop();
           await getTableOrderList();
 
-          if (printForCancellOrder) {
-            PrintDataDetails.type = "SO";
-            PrintDataDetails.id = orderID;
-            await printDetail(true);
-          }
-          if (orderID != "") {
-            await ReprintKOT(orderID, true);
+          if(cancelReasonId!=""){
+            if(printForCancellOrder) {
+              PrintDataDetails.type = "SO";
+              PrintDataDetails.id = orderID;
+              await printDetail(true);
+              if (orderID != "") {
+                await ReprintKOT(orderID, true);
+              }
+            }
+
           }
         } else if (status == 6001) {
           stop();
