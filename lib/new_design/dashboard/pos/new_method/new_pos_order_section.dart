@@ -5568,8 +5568,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           // dialogBoxHide(context, 'Order updated successfully !!!');
 
           Future.delayed(const Duration(seconds: 1), () async {
-
-
             /// kot section
             SharedPreferences prefs = await SharedPreferences.getInstance();
             var kot = prefs.getBool("KOT") ?? false;
