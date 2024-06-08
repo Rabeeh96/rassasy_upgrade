@@ -62,6 +62,7 @@ class USBPrintClass {
         if (status == 6000) {
           stop();
 
+          print("============================================================1");
           printDalesDetails.clear();
           BluetoothPrintThermalDetails.voucherNumber = responseJson["VoucherNo"].toString();
           BluetoothPrintThermalDetails.customerName = responseJson["CustomerName"] ?? 'Cash In Hand';
@@ -76,12 +77,16 @@ class USBPrintClass {
           BluetoothPrintThermalDetails.grandTotal = responseJson["GrandTotal_print"].toString();
           BluetoothPrintThermalDetails.qrCodeImage = responseJson["qr_image"];
           BluetoothPrintThermalDetails.customerTaxNumber = responseJson["TaxNo"].toString();
+          print("============================================================4");
+
           BluetoothPrintThermalDetails.ledgerName = responseJson["LedgerName"] ?? '';
           BluetoothPrintThermalDetails.customerAddress = responseJson["Address1"];
           BluetoothPrintThermalDetails.customerAddress2 = responseJson["Address2"];
           BluetoothPrintThermalDetails.customerCrNumber = responseJson["CustomerCRNo"] ?? "";
           BluetoothPrintThermalDetails.cashReceived = responseJson["CashReceived"].toString() ?? "0";
           BluetoothPrintThermalDetails.bankReceived = responseJson["BankAmount"].toString() ?? "0";
+          print("============================================================5");
+
           BluetoothPrintThermalDetails.balance = responseJson["Balance"].toString() ?? "";
           BluetoothPrintThermalDetails.salesType = responseJson["OrderType"] ?? "";
           BluetoothPrintThermalDetails.salesDetails = responseJson["SalesDetails"];
@@ -89,12 +94,17 @@ class USBPrintClass {
           BluetoothPrintThermalDetails.totalExciseAmount = responseJson["ExciseTaxAmount"] ?? "0";
           BluetoothPrintThermalDetails.totalTax = responseJson["TotalTax_print"].toString();
           var companyDetails = responseJson["CompanyDetails"];
+          print("============================================================7");
+
+
           BluetoothPrintThermalDetails.companyName = companyDetails["CompanyName"] ?? '';
           BluetoothPrintThermalDetails.buildingNumber = companyDetails["Address1"] ?? '';
           BluetoothPrintThermalDetails.secondName = companyDetails["CompanyNameSec"] ?? '';
           BluetoothPrintThermalDetails.streetName = companyDetails["Street"] ?? '';
           BluetoothPrintThermalDetails.state = companyDetails["StateName"] ?? '';
           BluetoothPrintThermalDetails.postalCodeCompany = companyDetails["PostalCode"] ?? '';
+          print("============================================================4");
+
           BluetoothPrintThermalDetails.phoneCompany = companyDetails["Phone"] ?? '';
           BluetoothPrintThermalDetails.mobileCompany = companyDetails["Mobile"] ?? '';
           BluetoothPrintThermalDetails.vatNumberCompany = companyDetails["VATNumber"] ?? '';
@@ -102,12 +112,19 @@ class USBPrintClass {
           BluetoothPrintThermalDetails.cRNumberCompany = companyDetails["CRNumber"] ?? '';
           // BluetoothPrintThermalDetails.descriptionCompany= companyDetails["Description"]?? '';
           BluetoothPrintThermalDetails.countryNameCompany = companyDetails["CountryName"] ?? '';
+          print("============================================================4");
+
           BluetoothPrintThermalDetails.stateNameCompany = companyDetails["StateName"] ?? '';
           BluetoothPrintThermalDetails.companyLogoCompany = companyDetails["CompanyLogo"] ?? '';
           BluetoothPrintThermalDetails.countyCodeCompany = companyDetails["CountryCode"] ?? '';
           BluetoothPrintThermalDetails.buildingNumberCompany = companyDetails["Address1"] ?? '';
-          BluetoothPrintThermalDetails.tableName = responseJson["TableName"];
-          BluetoothPrintThermalDetails.time = responseJson["CreatedDate"];
+          print("============================================================4");
+
+          BluetoothPrintThermalDetails.tableName = responseJson["TableName"]??'';
+          BluetoothPrintThermalDetails.time = responseJson["CreatedDate"]??"${DateTime.now()}";
+
+          print("============================================================4");
+
           BluetoothPrintThermalDetails.currency = currency;
           print("-------------  everything is fine-------------  ");
           return 2;

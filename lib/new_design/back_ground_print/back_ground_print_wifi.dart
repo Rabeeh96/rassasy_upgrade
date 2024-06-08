@@ -67,6 +67,7 @@ class AppBlocs {
         if (status == 6000) {
           stop();
 
+          print("==================================================");
           printDalesDetails.clear();
 
           BluetoothPrintThermalDetails.voucherNumber = responseJson["VoucherNo"].toString();
