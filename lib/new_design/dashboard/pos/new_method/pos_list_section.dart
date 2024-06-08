@@ -70,6 +70,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   String userName = "";
   bool dining_view_perm = false;
   bool reservation_view_perm = false;
+  bool directOrderOption = false;
   bool take_away_view_perm = false;
   bool car_view_perm = false;
 
@@ -148,6 +149,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       userName = prefs.getString('user_name')!;
       dining_view_perm = prefs.getBool('Diningview') ?? true;
       reservation_view_perm = prefs.getBool('View Reservation') ?? true;
+      directOrderOption = prefs.getBool('directOrderOption') ?? false;
       take_away_view_perm = prefs.getBool('Take awayview') ?? true;
       car_view_perm = prefs.getBool('Carview') ?? true;
 
@@ -801,7 +803,15 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         mainPageIndex = result[0];
       });
     }
-    posFunctions(callFunction: true);
+
+    if(directOrderOption){
+
+    }
+    else{
+      posFunctions(callFunction: true);
+    }
+
+
   }
 
   returnDiningListItem(dineIndex) {
