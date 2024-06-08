@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
+import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/printer_setting/select_code_page.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controller/print_controller.dart';
 import 'printer_select_page.dart';
@@ -76,7 +78,7 @@ class _PrinterSettingsDetailPageMobileState
                       type: 'SI',
                     ));
 
-                    print(result);
+
 
                     if (result != null) {
                       printController.salesInvoiceController.text = result;
@@ -105,8 +107,6 @@ class _PrinterSettingsDetailPageMobileState
                     var result = await Get.to(DetailPage(
                       type: 'SO',
                     ));
-
-                    print(result);
 
                     if (result != null) {
                       printController.salesOrderController.text = result;
@@ -138,8 +138,6 @@ class _PrinterSettingsDetailPageMobileState
                       var result = await Get.to(DetailPage(
                         type: '',
                       ));
-
-                      print(result);
 
                       if (result != null) {
                         printController.salesInvoiceController.text = result;
@@ -179,6 +177,7 @@ class _PrinterSettingsDetailPageMobileState
                 ),
               ],
             ),
+
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: Container(
@@ -190,8 +189,9 @@ class _PrinterSettingsDetailPageMobileState
                     print(result);
 
                     if (result != null) {
-                      printController.selectCapabilitiesController.text =
-                          result;
+                      printController.selectCapabilitiesController.text = result;
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setString('default_capabilities',result);
                     } else {}
                   },
 
@@ -210,6 +210,55 @@ class _PrinterSettingsDetailPageMobileState
               ),
             ),
             DividerStyle(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                  const EdgeInsets.only(left: 20.0, top: 10, bottom: 15),
+                  child: Text(
+                    "Select Code page",
+                    style: customisedStyleBold(
+                        context, Colors.black, FontWeight.w500, 14.0),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              child: Container(
+                child: TextField(
+                  readOnly: true,
+                  onTap: () async {
+                    var result = await Get.to(SelectCodePage());
+
+
+                    if (result != null) {
+                      printController.selectCodepageController.text = result;
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setString('default_code_page',result);
+                    } else {
+
+                    }
+                  },
+
+                  textCapitalization: TextCapitalization.words,
+                  controller: printController.selectCodepageController,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w500, 14.0),
+                  //  focusNode: diningController.customerNode,
+                  onEditingComplete: () {
+                    FocusScope.of(context).requestFocus();
+                  },
+                  keyboardType: TextInputType.text,
+                  decoration:
+                      TextFieldDecoration.defaultTextFieldIcon(hintTextStr: ''),
+                ),
+              ),
+            ),
+            DividerStyle(),
+
             Padding(
               padding: const EdgeInsets.only(
                   left: 20.0, right: 15, top: 15, bottom: 5),
@@ -309,7 +358,6 @@ class _PrinterSettingsDetailPageMobileState
                               printController.isPaymentDetail.value = val;
                               SharedPreferences prefs = await SharedPreferences.getInstance();
                               prefs.setBool('paymentDetailsInPrint', val);
-
                             },
                           );
                         },

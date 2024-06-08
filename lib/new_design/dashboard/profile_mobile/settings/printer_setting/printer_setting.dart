@@ -4,6 +4,8 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/printer_setting/controller/print_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'print_settings_detail_page.dart';
 
@@ -15,6 +17,10 @@ class PrinterSettingsMobilePage extends StatefulWidget {
 
 class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
   ValueNotifier<bool> isEnablewifiPrinter = ValueNotifier<bool>(false);
+
+  // Initialize it with the default selected index
+  PrintSettingController printSettingController =
+      Get.put(PrintSettingController());
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +37,9 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
           ),
         ),
         centerTitle: false,
-        title:  Text(
+        title: Text(
           'printer_set'.tr,
-          style: TextStyle(color: Color(0xff000000), fontSize:20),
+          style: TextStyle(color: Color(0xff000000), fontSize: 20),
         ),
       ),
       body: Column(
@@ -84,8 +90,16 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
                           toggleColor: const Color(0xffffffff),
                           inactiveTextColor: Color(0xffffffff),
                           inactiveColor: const Color(0xffD9D9D9),
-                          onToggle: (val) {
+                          onToggle: (val) async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
                             isEnablewifiPrinter.value = val;
+
+                            if (val == true) {
+                              prefs.setString("PrintType", "Wifi");
+                            } else {
+                              prefs.setString("PrintType", "USB");
+                            }
                           },
                         );
                       },
@@ -123,57 +137,51 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
             height: 20,
           ),
           Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20, top: 20, bottom: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xffEBEBEB),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                   // width: MediaQuery.of(context).size.width / 1.3,
-                    child: Image.asset('assets/png/gst.png'),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20, top: 20, bottom: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xffEBEBEB),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  //  width: MediaQuery.of(context).size.width / 1.3,
-                    child: Image.asset('assets/png/vat.png'),
-                  ),
-                ),
-              ],
-            ),
+            child: Obx(() => ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: printSettingController.imagePaths.length,
+                  itemBuilder: (context, index) {
+                    String imagePath = printSettingController.imagePaths[index];
+                    print("Rebuilding Obx");
+                    print(
+                        "imagePaths length: ${printSettingController.imagePaths.length}");
+                    return GestureDetector(
+                      onTap: () {
+                        printSettingController.setSelectedIndex(index);
+
+                        print("ind$index");
+
+
+                        if (index == 0) {
+                          printSettingController.setTemplate(3);
+                        } else {
+                          printSettingController.setTemplate(4);
+                        }
+
+                        setState(() {});
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 20, top: 20, bottom: 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xffEBEBEB),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                              color:
+                                  printSettingController.selectedIndex.value ==
+                                          index
+                                      ? Colors.red
+                                      : Colors.transparent,
+                            ),
+                          ),
+                          child: Image.asset(imagePath),
+                        ),
+                      ),
+                    );
+                  },
+                )),
           ),
-          // Expanded(
-          //   child: ListView
-          //       .builder(
-          //     scrollDirection: Axis.horizontal,
-          //     itemCount: 5,
-          //     itemBuilder: (BuildContext context, int index) {
-          //       return
-          //         Padding(
-          //         padding: const EdgeInsets.only(
-          //             left: 20.0, right: 20, top: 20, bottom: 20),
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             color: Color(0xffEBEBEB),
-          //             borderRadius: BorderRadius.circular(4),
-          //           ),
-          //           width: MediaQuery.of(context).size.width / 1.3,
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
         ],
       ),
       bottomNavigationBar: SizedBox(

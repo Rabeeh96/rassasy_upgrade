@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
+import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
+import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/cancel_reason_list.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/reservation_list.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'order/add_order_page.dart';
 import 'payment/payment_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DiningPage extends StatefulWidget {
   final String title;
@@ -75,9 +81,7 @@ class _DiningPageState extends State<DiningPage> {
         ),
         actions: [
           GestureDetector(
-            onTap: (){
-
-            },
+            onTap: () {},
             child: Text(
               'Manager'.tr,
               style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 13.0),
@@ -135,18 +139,19 @@ class _DiningPageState extends State<DiningPage> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-          child: Container(
-            height: 1,
-            color: const Color(0xffE9E9E9),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+        //   child: Container(
+        //     height: 1,
+        //     color: const Color(0xffE9E9E9),
+        //   ),
+        // ),
+        DividerStyle(),
         Expanded(
             child: Obx(() => diningController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
                 : diningController.tableData.isEmpty
-                    ? Center(child: const Text("No recent orders"))
+                    ? const Center(child: Text("No recent orders"))
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: ListView.separated(
@@ -154,6 +159,7 @@ class _DiningPageState extends State<DiningPage> {
                           itemCount: diningController.tableData.length,
                           itemBuilder: (context, index) {
                             return Slidable(
+                              enabled: diningController.tableData[index].status != 'Vacant' ? true : false,
                               key: ValueKey(diningController.tableData[index]),
 
                               // The start action pane is the one at the left or the top side.
@@ -180,7 +186,15 @@ class _DiningPageState extends State<DiningPage> {
                                   ),
                                   CustomSlidableAction(
                                     flex: 2,
-                                    onPressed: (BuildContext context) async {},
+                                    onPressed: (BuildContext context) async {
+                                      diningController.printSection(
+                                          context: context,
+                                          id: diningController.tableData[index].status == 'Ordered'
+                                              ? diningController.tableData[index].salesOrderID!
+                                              : diningController.tableData[index].salesMasterID!,
+                                          isCancelled: false,
+                                          voucherType: diningController.tableData[index].status == 'Ordered'?"SO":"SI");
+                                    },
                                     backgroundColor: const Color(0xFF034FC1),
                                     foregroundColor: Colors.green,
                                     child: Column(
@@ -204,7 +218,23 @@ class _DiningPageState extends State<DiningPage> {
                                 motion: const ScrollMotion(),
                                 children: [
                                   CustomSlidableAction(
-                                    onPressed: (BuildContext context) async {},
+                                    onPressed: (BuildContext context) async {
+                                      if (diningController.tableData[index].status == 'Ordered') {
+                                        var result = await Get.to(CancelOrderList());
+                                        if (result != null) {
+                                          diningController.cancelOrderApi(
+                                              context:context,
+                                              type: "Dining&Cancel",
+                                              tableID: diningController.tableData[index].id!,
+                                              cancelReasonId: result[1],
+                                              orderID: diningController.tableData[index].salesOrderID!);
+                                        }
+                                      } else {
+                                        diningController.cancelOrderApi(
+                                            context:context,
+                                            type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: "");
+                                      }
+                                    },
                                     backgroundColor: const Color(0xFFFC3636),
                                     foregroundColor: Colors.green,
                                     child: Column(
@@ -216,31 +246,44 @@ class _DiningPageState extends State<DiningPage> {
                                           color: Colors.white,
                                         ),
                                         Text(
-                                          "Cancel",
+                                          diningController.tableData[index].status == 'Ordered' ? "Cancel" : "Clear",
                                           style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
                                         )
                                       ],
                                     ),
                                   ),
-                                  CustomSlidableAction(
-                                    onPressed: (BuildContext context) async {},
-                                    backgroundColor: const Color(0xFF10C103),
-                                    foregroundColor: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.check,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          "Pay",
-                                          style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
+
+                                  diningController.tableData[index].status == 'Ordered'
+                                      ? CustomSlidableAction(
+                                          onPressed: (BuildContext context) async {
+                                            var resultPayment = await Get.to(PaymentPage(
+                                              uID: diningController.tableData[index].salesOrderID!,
+                                              tableID: diningController.tableData[index].id!,
+                                              orderType: 0,
+                                            ));
+
+                                            diningController.tableData.clear();
+                                            diningController.fetchAllData();
+                                            diningController.update();
+                                          },
+                                          backgroundColor: const Color(0xFF10C103),
+                                          foregroundColor: Colors.green,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              const Icon(
+                                                Icons.check,
+                                                color: Colors.white,
+                                              ),
+                                              Text(
+                                                "Pay",
+                                                style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
+                                              )
+                                            ],
+                                          ),
                                         )
-                                      ],
-                                    ),
-                                  ),
+                                      : Container(),
 
                                   ///kot commented here
                                   // CustomSlidableAction(
@@ -261,62 +304,57 @@ class _DiningPageState extends State<DiningPage> {
                               ),
 
                               child: GestureDetector(
-                                onTap: ()async {
+                                onTap: () async {
                                   if (diningController.tableData[index].status == 'Vacant') {
-                                  var result =await Get.to(OrderCreateView(
-                                      orderType: 0,
+                                    var result = await Get.to(OrderCreateView(
+                                      orderType: 1,
                                       sectionType: "Create",
                                       uID: "",
                                       tableHead: "Order",
+                                      cancelOrder: diningController.cancelOrder,
                                       tableID: diningController.tableData[index].id!,
                                     ));
 
-                                  if(result !=null){
-                                    if(result[1]){
-
-                                      var resultPayment =await  Get.to(PaymentPage(uID:result[2],));
-
+                                    if (result != null) {
+                                      if (result[1]) {
+                                        var resultPayment = await Get.to(PaymentPage(
+                                          uID: result[2],
+                                          tableID: diningController.tableData[index].id!,
+                                          orderType: 0,
+                                        ));
                                         diningController.tableData.clear();
                                         diningController.fetchAllData();
                                         diningController.update();
-
+                                      } else {
+                                        diningController.tableData.clear();
+                                        diningController.fetchAllData();
+                                        diningController.update();
+                                      }
                                     }
-                                    else{
-                                      diningController.tableData.clear();
-                                      diningController.fetchAllData();
-                                      diningController.update();
-                                    }
-
-                                  }
-
-
-                                  }
-                                  else if (diningController.tableData[index].status == 'Ordered') {
-                                    var result =  await  Get.to(OrderCreateView(
-                                      orderType: 0,
+                                  } else if (diningController.tableData[index].status == 'Ordered') {
+                                    var result = await Get.to(OrderCreateView(
+                                      orderType: 1,
                                       sectionType: "Edit",
                                       uID: diningController.tableData[index].salesOrderID!,
                                       tableHead: diningController.tableData[index].title!,
                                       tableID: diningController.tableData[index].id!,
+                                      cancelOrder: diningController.cancelOrder,
                                     ));
 
-                                    if(result !=null){
-                                      if(result[1]){
-                                        Get.to(PaymentPage(uID:result[2]));
+                                    if (result != null) {
+                                      if (result[1]) {
+                                        Get.to(PaymentPage(
+                                          uID: result[2],
+                                          tableID: diningController.tableData[index].id!,
+                                          orderType: 1,
+                                        ));
                                       }
                                     }
-
-
-                                  }
-
-                                  else {
-
-
-                                  }
+                                  } else {}
                                 },
                                 child: InkWell(
                                   child: Padding(
-                                      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 20, bottom: 20),
+                                      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 15, bottom: 15),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -355,7 +393,9 @@ class _DiningPageState extends State<DiningPage> {
                                                   ),
                                                 ],
                                               ),
-                                              diningController.returnOrderTime(diningController.tableData[index].orderTime!, diningController.tableData[index].status!) != ""
+                                              diningController.returnOrderTime(
+                                                          diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=
+                                                      ""
                                                   ? Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -502,9 +542,11 @@ class _DiningPageState extends State<DiningPage> {
                     backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
                   ),
                   onPressed: () {
-                    // Do something with the text
-
-                    Get.back(); // Close the bottom sheet
+                    if (diningController.customerNameController.text == "") {
+                      dialogBox(context, "Please enter table name");
+                    } else {
+                      diningController.createTableApi();
+                    }
                   },
                   child: Text(
                     'save'.tr,

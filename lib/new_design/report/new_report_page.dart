@@ -462,6 +462,8 @@ class _ReportPageState extends State<ReportPageNew> {
                                               ),
                                             ),
                                             onTap: () {
+                                              print(fromDateNotifier);
+                                              print(fromTimeNotifier);
                                               showDatePickerFunction(context, fromDateNotifier, fromTimeNotifier);
                                             },
                                           );
@@ -1254,6 +1256,8 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                       ),
                                       onTap: () {
+                                        print(fromDateNotifier);
+                                        print(fromTimeNotifier);
                                         showDatePickerFunction(context, fromDateNotifier, fromTimeNotifier);
                                       },
                                     );

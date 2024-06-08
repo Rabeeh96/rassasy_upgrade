@@ -24,13 +24,13 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
         ),
         centerTitle: false,
-        title: Text(
+        title: const Text(
           'Settings',
           style: TextStyle(color: Color(0xff000000), fontSize: 20),
         ),

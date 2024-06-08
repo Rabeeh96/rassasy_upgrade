@@ -43,11 +43,11 @@ class POSMobilePage extends StatelessWidget {
             items: [
               BottomNavigationBarItem(
                 icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
+                  margin: const EdgeInsets.only(bottom: 7),
                   child: SvgPicture.asset(
                     "assets/svg/dine.svg",
                     color: landingPageController.tabIndex.value == 0
-                        ? Color(0xffF25F29)
+                        ? const Color(0xffF25F29)
                         : Colors.grey,
                   ),
                 ),
@@ -56,32 +56,32 @@ class POSMobilePage extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
+                  margin: const EdgeInsets.only(bottom: 7),
                   child: SvgPicture.asset("assets/svg/takeout_dining.svg",
                       color: landingPageController.tabIndex.value == 1
-                          ? Color(0xffF25F29)
+                          ? const Color(0xffF25F29)
                           : Colors.grey),
                 ),
                 label: 'Takeout',
                 backgroundColor: Colors.white,
               ),
+              // BottomNavigationBarItem(
+              //   icon: Container(
+              //     margin: EdgeInsets.only(bottom: 7),
+              //     child: SvgPicture.asset("assets/svg/online_img.svg",
+              //         color: landingPageController.tabIndex.value == 2
+              //             ? Color(0xffF25F29)
+              //             : Colors.grey),
+              //   ),
+              //   label: 'Online',
+              //   backgroundColor: Colors.white,
+              // ),
               BottomNavigationBarItem(
                 icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
-                  child: SvgPicture.asset("assets/svg/online_img.svg",
-                      color: landingPageController.tabIndex.value == 2
-                          ? Color(0xffF25F29)
-                          : Colors.grey),
-                ),
-                label: 'Online',
-                backgroundColor: Colors.white,
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
+                  margin: const EdgeInsets.only(bottom: 7),
                   child: SvgPicture.asset("assets/svg/car_inmgs.svg",
-                      color: landingPageController.tabIndex.value == 3
-                          ? Color(0xffF25F29)
+                      color: landingPageController.tabIndex.value == 2
+                          ? const Color(0xffF25F29)
                           : Colors.grey),
                 ),
                 label: 'Car',
@@ -105,8 +105,7 @@ class POSMobilePage extends StatelessWidget {
               title: 'Dining', data: landingPageController.tableData),
           TakeAway(
               title: 'Takeout', data: landingPageController.takeAwayOrders),
-          OnlinePage(
-              title: 'Online', data: landingPageController.onlineOrders),
+    //      OnlinePage(title: 'Online', data: landingPageController.onlineOrders),
           CarPage(title: 'Car', data: landingPageController.carOrders),
         ],
       )),

@@ -127,6 +127,7 @@ class TextFieldDecoration {
 
 
         hintStyle: const TextStyle(color:Colors.grey,fontSize: 14),
+
         hintText: hintTextStr,
         fillColor: const Color(0xffffffff));
 

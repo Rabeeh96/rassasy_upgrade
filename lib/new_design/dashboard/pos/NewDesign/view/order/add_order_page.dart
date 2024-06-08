@@ -20,13 +20,15 @@ import 'search_items.dart';
 class OrderCreateView extends StatefulWidget {
   final String uID, tableID, sectionType, tableHead;
   final int orderType;
+  final List cancelOrder;
 
-  const OrderCreateView({
+   OrderCreateView({
     super.key,
     required this.tableID,
     required this.tableHead,
     required this.uID,
     required this.sectionType,
+    required this.cancelOrder,
     required this.orderType,
   });
 
@@ -619,6 +621,8 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                           );
                         },
                       ))))
+
+
         ],
       ),
       bottomNavigationBar: Obx(() => SizedBox(

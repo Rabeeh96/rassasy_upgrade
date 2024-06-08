@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
 //////
- String appVersion = "1.1.22";
+ String appVersion = "1.1.23";
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),
@@ -366,7 +366,7 @@ class BaseUrl{
   static String baseUrl = "https://www.api.viknbooks.com/api/v10";
   static String baseUrlV11 = "https://www.api.viknbooks.com/api/v11";
   static String imageURL = 'https://www.api.viknbooks.com';
-
+///
  // // api.accounts.vikncodes.in
 
   // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
@@ -375,11 +375,11 @@ class BaseUrl{
   // static String baseUrlV11 = "https://www.api.viknbooks.in/api/v11";
 
  // local
-
-  // static String baseUrlAuth = 'http://192.168.1.77:8000/api/v1';
-  // static String baseUrl = "http://192.168.1.77:8002/api/v10";
-  // static String baseUrlV11 = "http://192.168.1.77:8002/api/v11";
-  // static String imageURL = 'http://192.168.1.77:8002';
+ // http://192.168.1.52:8002/
+ //  static String baseUrlAuth = 'http://192.168.1.81:8000/api/v1';
+ //  static String baseUrl = "http://192.168.1.81:8002/api/v10";
+ //  static String baseUrlV11 = "http://192.168.1.81:8002/api/v11";
+ //  static String imageURL = 'http://192.168.1.81:8002';
 
 
 

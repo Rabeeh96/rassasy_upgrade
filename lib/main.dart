@@ -51,16 +51,14 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
+  //  bool isTablet = true;
     bool isTablet = isTabletDevice();
-    prefs.setBool(
-        'isTablet', isTablet); // Save isTablet value to SharedPreferences
+    prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
     print("main isTablet: $isTablet");
 
     SystemChrome.setPreferredOrientations([
       isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
-      isTablet
-          ? DeviceOrientation.landscapeRight
-          : DeviceOrientation.portraitDown,
+      isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
     ]).then((_) {
       runApp(MyApp(isTablet: isTablet));
     });
@@ -69,8 +67,7 @@ void main() {
 
 bool isTabletDevice() {
   /// Determine if the device is a tablet based on the screen width
-  double screenWidth =
-      MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
+  double screenWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
   print("screenWidth  is tablet device  $screenWidth");
 
   /// You may need to adjust this threshold based on your requirements

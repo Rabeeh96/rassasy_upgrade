@@ -69,6 +69,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenHeight = screenSize.height;
 
 
+   // bool isTablet = true;
     bool isTablet = screenWidth > 600;
     return Scaffold(
         // appBar: AppBar(

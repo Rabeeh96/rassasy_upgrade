@@ -59,13 +59,13 @@ class _OrganizationDetailState extends State<OrganizationList> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-   // bool isTablet = true;
-    bool isTablet = screenWidth > 600;
+  //  bool isTablet = true;
+   bool isTablet = screenWidth > 600;
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: isTablet? BoxDecoration(
+        decoration: isTablet? const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/png/coverpage.png"), fit:BoxFit.cover),
         ):BoxDecoration(),
@@ -169,8 +169,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                 IconButton(
                                   icon: Icon(Icons.login_outlined),
                                   onPressed: () async {
-                                    final Future<ConfirmAction?> action =
-                                    await _asyncConfirmDialog(context);
+                                    final Future<ConfirmAction?> action = await _asyncConfirmDialog(context);
 
                                   },
                                 ),

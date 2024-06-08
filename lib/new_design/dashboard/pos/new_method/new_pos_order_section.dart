@@ -705,10 +705,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           var ip = "";
           if (PrintDataDetails.type == "SO") {
             ip = defaultOrderIP;
-          } else {
+          }
+          else {
             ip = defaultIp;
           }
-
           printHelper.print_receipt(ip, context,false);
         } else {
           dialogBox(context, 'Please try again later');
@@ -5281,16 +5281,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
 
           if(printAfterOrder){
-
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = n["OrderID"];
             await printDetail(context);
           }
 
-
-
          // dialogBoxHide(context, 'Order created successfully !!!');
-
           Future.delayed(const Duration(seconds: 1), () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             var kot = prefs.getBool("KOT") ?? false;
@@ -5300,7 +5296,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               printKOT(id, false, [], false);
             } else {}
           });
+
+
         } else if (status == 6001) {
+          stop();
           var errorMessage = n["message"];
           dialogBox(context, errorMessage);
         } else if (status == 6003) {
@@ -5569,9 +5568,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           // dialogBoxHide(context, 'Order updated successfully !!!');
 
           Future.delayed(const Duration(seconds: 1), () async {
-            print("-------id-------");
-            print(id);
-            print("-------id-------");
+
 
             /// kot section
             SharedPreferences prefs = await SharedPreferences.getInstance();

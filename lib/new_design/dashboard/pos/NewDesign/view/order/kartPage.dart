@@ -501,7 +501,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     onPressed: () async {
 
 
-                      orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,orderType: widget.orderType,context: context,isPayment: false,sectionType: widget.sectionType);
+                      orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                          orderType: widget.orderType,context: context,
+                          orderID: widget.uID,
+                          isPayment: false,sectionType: widget.sectionType);
 
                     },
 
@@ -529,7 +532,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff00775E))),
                     onPressed: () {
-                      orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,orderType: widget.orderType,context: context,isPayment: true,sectionType: widget.sectionType);
+                      orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                         orderID: widget.uID,
+                          orderType: widget.orderType,context: context,isPayment: true,sectionType: widget.sectionType);
                     },
                     child: Row(
                       children: [
@@ -682,6 +687,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                       if (result != null) {
                         orderController.deliveryManController.text = result[0];
+
+
 
                       }
                     }

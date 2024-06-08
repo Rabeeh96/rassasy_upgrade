@@ -100,6 +100,7 @@ class _SearchItemsState extends State<SearchItems> {
                 // Down Arrow Icon
                 icon: SvgPicture.asset("assets/svg/drop_arrow.svg"),
                 // Array list of items
+
                 items: searchOrderController.items.map((String items) {
                   return DropdownMenuItem(
                     value: items,

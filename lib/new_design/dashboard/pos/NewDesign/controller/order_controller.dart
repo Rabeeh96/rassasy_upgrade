@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../model/customerModel.dart';
+import 'pos_controller.dart';
 
 class OrderController extends GetxController {
   ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(false); // Initialize with initial value
@@ -210,7 +212,6 @@ class OrderController extends GetxController {
 
     gstAmount.value = (taxableAmountPost.value * gstPer.value / 100);
 
-
     if (checkVat == false) {
       vatAmount.value = 0.0;
       print(vatAmount);
@@ -270,8 +271,8 @@ class OrderController extends GetxController {
     percentageDiscount.value = (discount * 100 / netAmount.value);
     discountAmount.value = discount.value;
     update();
-
   }
+
   addItemToList({required int index}) {
     Map data = {
       "ProductName": productName.value,
@@ -317,15 +318,15 @@ class OrderController extends GetxController {
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
       "TotalTaxRounded": "${totalTax.value}",
       "Description": "",
-      "ExciseTaxID":exciseTaxID.value,
-      "ExciseTaxName":exciseTaxName.value,
-      "BPValue":BPValue.value,
-      "ExciseTaxBefore":exciseTaxBefore.value,
-      "IsAmountTaxAfter":isAmountTaxAfter.value,
-      "IsAmountTaxBefore":isAmountTaxBefore.value,
-      "IsExciseProduct":isExciseProduct.value,
-      "ExciseTaxAfter":exciseTaxAfter.value,
-      "ExciseTax":exciseTaxAmount.value.toString()
+      "ExciseTaxID": exciseTaxID.value,
+      "ExciseTaxName": exciseTaxName.value,
+      "BPValue": BPValue.value,
+      "ExciseTaxBefore": exciseTaxBefore.value,
+      "IsAmountTaxAfter": isAmountTaxAfter.value,
+      "IsAmountTaxBefore": isAmountTaxBefore.value,
+      "IsExciseProduct": isExciseProduct.value,
+      "ExciseTaxAfter": exciseTaxAfter.value,
+      "ExciseTax": exciseTaxAmount.value.toString()
     };
     print(" data $data");
     orderItemList[index] = data;
@@ -333,70 +334,65 @@ class OrderController extends GetxController {
     totalAmount();
   }
 
-
-
-
-  clearDetails(){
-
-
-     item_status = "".obs;
-     unique_id = "".obs;
-     detailID = 1.obs;
-     unitName = "".obs;
-     productId = 0.obs;
-     actualProductTaxID = 0.obs;
-     productID = 0.obs;
-     salesDetailsID = 0.obs;
-     productTaxID = 0.obs;
-     priceListID = 0.obs;
-     productTaxName = "".obs;
-     productName = "".obs;
-     flavourID = "".obs;
-     flavourName = "".obs;
-     salesPrice = "".obs;
-     purchasePrice = "".obs;
-     id = "".obs;
-     freeQty = "".obs;
-     rateWithTax = 0.0.obs;
-     costPerPrice = "".obs;
-     discountPer = "".obs;
-     discountAmount = 0.0.obs;
-     percentageDiscount = 0.0.obs;
-     taxableAmountPost = 0.0.obs;
-     grossAmount = "".obs;
-     vatPer = 0.0.obs;
-     quantity = 1.0.obs;
-     vatAmount = 0.0.obs;
-     netAmount = 0.0.obs;
-     sGSTPer = 0.0.obs;
-     sGSTAmount = 0.0.obs;
-     cGSTPer = 0.0.obs;
-     cGSTAmount = 0.0.obs;
-     iGSTPer = 0.0.obs;
-     iGSTAmount = 0.0.obs;
-     totalTax = 0.0.obs;
-     dataBase = "".obs;
-     taxableAmount = "".obs;
-     addDiscPer = "".obs;
-     addDiscAmt = "".obs;
-     gstPer = 0.0.obs;
-     gstAmount = 0.0.obs;
-     isInclusive = false.obs;
-     actualProductTaxName = "".obs;
-     unitPriceAmountWR = "0.00".obs;
-     inclusiveUnitPriceAmountWR = "0.00".obs;
-     grossAmountWR = "0.00".obs;
-     exciseTaxAmount = 0.0.obs;
-     exciseTaxID = 0.obs;
-     detailIdEdit = 0.obs;
-     exciseTaxName = "".obs;
-     BPValue = "".obs;
-     exciseTaxBefore = "".obs;
-     isAmountTaxBefore = false.obs;
-     isAmountTaxAfter = false.obs;
-     isExciseProduct = false.obs;
-     exciseTaxAfter = "".obs;
-     update();
+  clearDetails() {
+    item_status = "".obs;
+    unique_id = "".obs;
+    detailID = 1.obs;
+    unitName = "".obs;
+    productId = 0.obs;
+    actualProductTaxID = 0.obs;
+    productID = 0.obs;
+    salesDetailsID = 0.obs;
+    productTaxID = 0.obs;
+    priceListID = 0.obs;
+    productTaxName = "".obs;
+    productName = "".obs;
+    flavourID = "".obs;
+    flavourName = "".obs;
+    salesPrice = "".obs;
+    purchasePrice = "".obs;
+    id = "".obs;
+    freeQty = "".obs;
+    rateWithTax = 0.0.obs;
+    costPerPrice = "".obs;
+    discountPer = "".obs;
+    discountAmount = 0.0.obs;
+    percentageDiscount = 0.0.obs;
+    taxableAmountPost = 0.0.obs;
+    grossAmount = "".obs;
+    vatPer = 0.0.obs;
+    quantity = 1.0.obs;
+    vatAmount = 0.0.obs;
+    netAmount = 0.0.obs;
+    sGSTPer = 0.0.obs;
+    sGSTAmount = 0.0.obs;
+    cGSTPer = 0.0.obs;
+    cGSTAmount = 0.0.obs;
+    iGSTPer = 0.0.obs;
+    iGSTAmount = 0.0.obs;
+    totalTax = 0.0.obs;
+    dataBase = "".obs;
+    taxableAmount = "".obs;
+    addDiscPer = "".obs;
+    addDiscAmt = "".obs;
+    gstPer = 0.0.obs;
+    gstAmount = 0.0.obs;
+    isInclusive = false.obs;
+    actualProductTaxName = "".obs;
+    unitPriceAmountWR = "0.00".obs;
+    inclusiveUnitPriceAmountWR = "0.00".obs;
+    grossAmountWR = "0.00".obs;
+    exciseTaxAmount = 0.0.obs;
+    exciseTaxID = 0.obs;
+    detailIdEdit = 0.obs;
+    exciseTaxName = "".obs;
+    BPValue = "".obs;
+    exciseTaxBefore = "".obs;
+    isAmountTaxBefore = false.obs;
+    isAmountTaxAfter = false.obs;
+    isExciseProduct = false.obs;
+    exciseTaxAfter = "".obs;
+    update();
   }
 
   calculation() async {
@@ -955,15 +951,12 @@ class OrderController extends GetxController {
     isComplimentary.value = prefs.getBool("complimentary_bill") ?? false;
     quantityIncrement.value = prefs.getBool("qtyIncrement") ?? false;
 
-
     // networkConnection = true;
     if (sectionType == "Create") {
       // mainPageIndex = 7;
-    }
-     else if (sectionType == "Edit") {
+    } else if (sectionType == "Edit") {
       await getOrderDetails(uID: uUID);
     } else {
-
       /// payment section
       // mainPageIndex = 6;
       // listItemDetails(widget.UUID);
@@ -1015,7 +1008,6 @@ class OrderController extends GetxController {
         if (groupList.isNotEmpty) {
           getProductListDetail(groupList[2].groupID);
         }
-
       } else if (status == 6001) {
         // Show error message
         var msg = n["error"] ?? "";
@@ -1100,7 +1092,7 @@ class OrderController extends GetxController {
   checkNonRatableItem() {
     bool returnVal = true;
     for (var i = 0; i < orderItemList.length; i++) {
-      if (double.parse(orderItemList[i]["UnitPrice"]) > 0.0) {
+      if (double.parse(orderItemList[i]["UnitPrice"].toString()) > 0.0) {
         returnVal = true;
       } else {
         return false;
@@ -1109,8 +1101,8 @@ class OrderController extends GetxController {
 
     return returnVal;
   }
-/// update list
 
+  /// update list
 
   /// crete order function
 //   postingData(isPayment) {
@@ -1212,7 +1204,6 @@ class OrderController extends GetxController {
         var responseJson = n["data"];
 
         if (status == 6000) {
-
           ledgerID.value = responseJson["LedgerID"];
           totalNetP.value = double.parse(responseJson["NetTotal"].toString());
           totalTaxMP.value = double.parse(responseJson["TotalTax"].toString());
@@ -1222,10 +1213,10 @@ class OrderController extends GetxController {
           sGstAmountTotalP.value = double.parse(responseJson["SGSTAmount"].toString());
           iGstAmountTotalP.value = double.parse(responseJson["IGSTAmount"].toString());
           iGstAmountTotalP.value = double.parse(responseJson["IGSTAmount"].toString());
-          dateOnly.value = responseJson["Date"]??"";
-          tokenNumber.value = responseJson["TokenNumber"]??"";
-          phoneNumberController.text = responseJson["Phone"]??"";
-          customerNameController.text = responseJson["CustomerName"]??"";
+          dateOnly.value = responseJson["Date"] ?? "";
+          tokenNumber.value = responseJson["TokenNumber"] ?? "";
+          phoneNumberController.text = responseJson["Phone"] ?? "";
+          customerNameController.text = responseJson["CustomerName"] ?? "";
           print("_________________________________________________________________12");
           var checkVat = prefs.getBool("checkVat") ?? false;
           var checkGst = prefs.getBool("check_GST") ?? false;
@@ -1256,56 +1247,44 @@ class OrderController extends GetxController {
       }
     }
   }
-  /// create section
- createMethod({
-    required BuildContext context,
-   required int orderType,
-   required String tableHead,
-   required String sectionType,
-   required bool isPayment,
-   required String tableID,
- })async{
-   var netWork = await checkNetwork();
-   if (netWork) {
-     if (orderItemList.isEmpty) {
-       popAlert(
-           head: "Waring",
-           message: "At least one product",
-           position: SnackPosition.TOP);
-     } else {
-       bool val = await checkNonRatableItem();
-       if (val) {
-          createSalesOrderRequest(
-             context: context,
-             isPayment: isPayment,
-             sectionType: sectionType,
-             orderType: orderType,
-             tableHead:tableHead,
-             tableID: tableID);
-       } else {
-         popAlert(
-             head: "Waring",
-             message: "Price must be greater than 0",
-             position: SnackPosition.TOP);
-       }
-     }
-   } else {
-     popAlert(
-         head: "Alert",
-         message: "You are connected to the internet",
-         position: SnackPosition.TOP);
-   }
- }
 
+  /// create section
+  createMethod({
+    required BuildContext context,
+    required int orderType,
+    required String tableHead,
+    required String sectionType,
+    required bool isPayment,
+    required String tableID,
+    required String orderID,
+  }) async {
+    var netWork = await checkNetwork();
+    if (netWork) {
+      if (orderItemList.isEmpty) {
+        popAlert(head: "Waring", message: "At least one product", position: SnackPosition.TOP);
+      } else {
+        bool val = await checkNonRatableItem();
+        if (val) {
+          createSalesOrderRequest(context: context, isPayment: isPayment, sectionType: sectionType, orderType: orderType, tableHead: tableHead, tableID: tableID,orderID:orderID );
+        } else {
+          popAlert(head: "Waring", message: "Price must be greater than 0", position: SnackPosition.TOP);
+        }
+      }
+    } else {
+      popAlert(head: "Alert", message: "You are connected to the internet", position: SnackPosition.TOP);
+    }
+  }
+  final POSController posController = Get.put(POSController());
   /// function for create
-  Future<Null> createSalesOrderRequest(
-      {required BuildContext context,
-        required bool isPayment,
-        required int orderType,
-        required String tableID,
-        required String tableHead,
-        required String sectionType,
-      }) async {
+  Future<Null> createSalesOrderRequest({
+    required BuildContext context,
+    required bool isPayment,
+    required int orderType,
+    required String tableID,
+    required String tableHead,
+    required String sectionType,
+    required String orderID,
+  }) async {
     start(context);
     try {
       if (tokenNumber.value == "") {
@@ -1377,11 +1356,13 @@ class OrderController extends GetxController {
         time = "";
       } else {}
 
-        String url = '$baseUrl/posholds/create-pos/salesOrder/';
+      String url = '$baseUrl/posholds/create-pos/salesOrder/';
 
-      if(sectionType =="Edit") {
-        url = '$baseUrl/posholds/edit/pos/salesOrder/';
+      if (sectionType == "Edit") {
+        url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
       }
+
+      print("--------------------------url   $url");
       Map data = {
         "Table": tableID,
         "EmployeeID": employeeID,
@@ -1433,8 +1414,6 @@ class OrderController extends GetxController {
         "RoundOff": "0",
         "IsActive": true,
         "IsInvoiced": "N",
-
-
       };
       log_data(data);
       //encode Map to JSON
@@ -1452,37 +1431,34 @@ class OrderController extends GetxController {
       Map n = json.decode(utf8.decode(response.bodyBytes));
       var status = n["StatusCode"];
       var responseJson = n["data"];
+      List cancelPrint = n["final_data"] ?? [];
       print(responseJson);
       if (status == 6000) {
         stop();
         var id = n["OrderID"];
 
-
         Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
         if (printAfterOrder) {
-
           /// printing section
-          // PrintDataDetails.type = "SO";
-          // PrintDataDetails.id = n["OrderID"];
-          // await printDetail(context);
+          posController.printSection(
+              context: context,
+              id: n["OrderID"],
+              isCancelled: false,
+              voucherType: "SO");
         }
-
-        // dialogBoxHide(context, 'Order created successfully !!!');
 
         Future.delayed(const Duration(seconds: 1), () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var kot = prefs.getBool("KOT") ?? false;
           if (kot == true) {
+            posController.printKOT(cancelList: cancelPrint,isUpdate:sectionType == "Edit"?true:false,orderID:n["OrderID"],rePrint:false);
+
             /// commented kot print
             // PrintDataDetails.type = "SO";
             // PrintDataDetails.id = id;
             // printKOT(id, false, [], false);
-          } else {
-
-          }
+          } else {}
         });
-
-
 
         // if(isPayment){
         //
@@ -1492,18 +1468,13 @@ class OrderController extends GetxController {
         // else{
         //
         // }
-
-
-
-
-
-
       } else if (status == 6001) {
-        var errorMessage = n["message"];
-        dialogBox(context, errorMessage);
+        var errorMessage = n["message"]??"";
+        popAlert(head: "Waring", message: errorMessage, position: SnackPosition.TOP);
       } else if (status == 6003) {
         stop();
-        dialogBox(context, "Change token number and retry please");
+        popAlert(head: "Waring", message: "Change token number and retry please", position: SnackPosition.TOP);
+
 
         /// commented repeated token number issuer solution
         // tokenNumberController.text = "$tokenNumber";
@@ -1513,24 +1484,25 @@ class OrderController extends GetxController {
       //DB Error
       else {
         stop();
-        dialogBox(context, "Please try again later");
+        popAlert(head: "Error", message: "Please try again later", position: SnackPosition.TOP);
+
       }
     } catch (e) {
       stop();
-      dialogBox(context, e.toString());
+      popAlert(head: "Error", message:  e.toString(), position: SnackPosition.TOP);
+
     }
   }
 
-
   ///deliveryman
-  var isCustomerLoading=true.obs;
+  var isCustomerLoading = true.obs;
 
   var users = <DeliveryManModel>[].obs;
-
+/// list employee
   Future<void> fetchUsers() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isCustomerLoading.value=true;
-    String baseUrl = BaseUrl.baseUrl;
+    isCustomerLoading.value = true;
+    String baseUrl = BaseUrl.baseUrlV11;
     var userID = prefs.getInt('user_id') ?? 0;
     var accessToken = prefs.getString('access') ?? '';
     var companyID = prefs.getString('companyID') ?? 0;
@@ -1542,35 +1514,77 @@ class OrderController extends GetxController {
       "CreatedUserID": userID,
       "PriceRounding": BaseUrl.priceRounding,
       "search": "",
-      "is_deliveryman": true
+      "is_deliveryman": true,
     };
 
 
-    final response = await http.post(url, headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $accessToken', // Add the token here
-    }, body: json.encode(payload));
-
-
+    print("----url  $url");
+    print("----payload  $payload");
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Add the token here
+        },
+        body: json.encode(payload));
 
     if (response.statusCode == 200) {
-      isCustomerLoading.value=false;
+      isCustomerLoading.value = false;
       final jsonResponse = json.decode(response.body);
+
       users.assignAll((jsonResponse['data'] as List).map((data) => DeliveryManModel.fromJson(data)).toList());
     } else {
-      isCustomerLoading.value=false;
+      isCustomerLoading.value = false;
+      throw Exception('Failed to load users');
+    }
+  }
+  ///
+  Future<void> fetchCancelReason() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isCustomerLoading.value = true;
+    String baseUrl = BaseUrl.baseUrlV11;
+    var userID = prefs.getInt('user_id') ?? 0;
+    var accessToken = prefs.getString('access') ?? '';
+    var companyID = prefs.getString('companyID') ?? 0;
+    var branchID = prefs.getInt('branchID') ?? 1;
+    final url = Uri.parse('$baseUrl/posholds/list/pos-users/');
+    final payload = {
+      "BranchID": branchID,
+      "CompanyID": companyID,
+      "CreatedUserID": userID,
+      "PriceRounding": BaseUrl.priceRounding,
+      "search": "",
+      "is_deliveryman": true,
+    };
+
+
+    print("----url  $url");
+    print("----payload  $payload");
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Add the token here
+        },
+        body: json.encode(payload));
+
+    if (response.statusCode == 200) {
+      isCustomerLoading.value = false;
+      final jsonResponse = json.decode(response.body);
+
+      users.assignAll((jsonResponse['data'] as List).map((data) => DeliveryManModel.fromJson(data)).toList());
+    } else {
+      isCustomerLoading.value = false;
       throw Exception('Failed to load users');
     }
   }
 
-///customer
-  var isLoadingValue=true.obs;
+  ///customer
+  var isLoadingValue = true.obs;
 
   var customerList = <CustomerModel>[].obs;
 
   Future<void> fetchCustomers() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isLoadingValue.value=true;
+    isLoadingValue.value = true;
     String baseUrl = BaseUrl.baseUrl;
     var userID = prefs.getInt('user_id') ?? 0;
     var accessToken = prefs.getString('access') ?? '';
@@ -1588,21 +1602,21 @@ class OrderController extends GetxController {
       "length": ""
     };
 
-
-    final response = await http.post(url, headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $accessToken', // Add the token here
-    }, body: json.encode(payload));
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Add the token here
+        },
+        body: json.encode(payload));
 
     print(response.body);
 
-
     if (response.statusCode == 200) {
-      isLoadingValue.value=false;
+      isLoadingValue.value = false;
       final jsonResponse = json.decode(response.body);
       customerList.assignAll((jsonResponse['data'] as List).map((data) => CustomerModel.fromJson(data)).toList());
     } else {
-      isLoadingValue.value=false;
+      isLoadingValue.value = false;
       throw Exception('Failed to load users');
     }
   }

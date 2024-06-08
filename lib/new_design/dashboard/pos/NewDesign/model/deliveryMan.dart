@@ -1,28 +1,21 @@
 class DeliveryManModel {
-  final String id;
-  final String userId;
+  final int deliveryManID;
+
   final String userName;
-  final String role;
-  final String roleName;
-  final String pinNo;
 
   DeliveryManModel({
-    required this.id,
-    required this.userId,
+
     required this.userName,
-    required this.role,
-    required this.roleName,
-    required this.pinNo,
+    required this.deliveryManID,
   });
 
   factory DeliveryManModel.fromJson(Map<String, dynamic> json) {
     return DeliveryManModel(
-      id: json['id'],
-      userId: json['User'],
+
       userName: json['UserName'],
-      role: json['Role'],
-      roleName: json['RoleName'],
-      pinNo: json['PinNo'],
+      deliveryManID: json['EmployeeID'],
     );
   }
 }
+
+
