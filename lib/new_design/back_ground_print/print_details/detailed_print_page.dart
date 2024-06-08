@@ -2006,7 +2006,6 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
       print("set function error ${e.toString()}");
     }
   }
-
   bool isArabic(String text) {
     if (text == "") {}
 
@@ -2022,7 +2021,6 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     }
     return true;
   }
-
   bool isEnglish(String text) {
     if (text == "") {}
 
@@ -2038,7 +2036,6 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     }
     return onlyEnglish;
   }
-
   bool isN(String value) {
     if (value == "") {
       print("str is nll");
@@ -2047,7 +2044,6 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     val = double.tryParse(value) != null;
     return val;
   }
-
   getBytes(int id, value) {
     if (value == "") {}
     int datas = value.length;

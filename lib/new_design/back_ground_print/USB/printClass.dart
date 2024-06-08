@@ -173,6 +173,7 @@ class USBPrintClass {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var temp = prefs.getString("template") ?? "template4";
     var capabilities = prefs.getString("default_capabilities") ?? "default";
+    var defaultCodePage = prefs.getString("default_code_page") ?? "CP864";
     var hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
     var paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
     var headerAlignment = prefs.getBool("headerAlignment") ?? false;
@@ -193,7 +194,7 @@ class USBPrintClass {
     }
 
       if (temp == 'template4') {
-        await invoicePrintTemplate4(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails);
+        await invoicePrintTemplate4(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage);
       } else if (temp == 'template3') {
         await invoicePrintTemplate3(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails);
       } else {
@@ -245,7 +246,7 @@ class USBPrintClass {
 
 
 
-  Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails) async {
+  Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage) async {
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, profile);
     List<ProductDetailsModel> tableDataDetailsPrint = [];
@@ -318,7 +319,7 @@ class USBPrintClass {
     var tableName = BluetoothPrintThermalDetails.tableName;
 
 
-    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+    bytes +=generator.setStyles( PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     if (PrintDataDetails.type == "SI") {
       if (companyLogo != "") {
@@ -560,14 +561,14 @@ class USBPrintClass {
       ]);
     }
 
-    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864'));
+    bytes +=generator.setStyles( PosStyles(codeTable: defaultCodePage));
     bytes +=generator.row([
       PosColumn(text: 'Order type    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(textEncoded: typeEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(text: orderType, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
-    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864'));
+    bytes +=generator.setStyles( PosStyles(codeTable: defaultCodePage));
 
     if (tableName != "") {
       bytes +=generator.row([
@@ -1545,7 +1546,6 @@ class USBPrintClass {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var temp = prefs.getString("template") ?? "template4";
       var capabilities = prefs.getString("default_capabilities") ?? "default";
-
       print("template =---------------------- $temp");
       var profile;
       if (capabilities == "default") {
@@ -1574,6 +1574,7 @@ class USBPrintClass {
     var userName = prefs.getString('user_name')??"";
     bool showUsernameKot = prefs.getBool('show_username_kot')??false;
     bool showDateTimeKot = prefs.getBool('show_date_time_kot')??false;
+    var defaultCodePage = prefs.getString("default_code_page") ?? "CP864";
     var currentTime = DateTime.now();
     List<int> bytes = [];
 
@@ -1598,7 +1599,7 @@ class USBPrintClass {
     var orderType = dataPrint[0].orderTypeI ?? "";
 
     bytes +=generator.setStyles(const PosStyles.defaults());
-    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+    bytes +=generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
@@ -1618,7 +1619,7 @@ class USBPrintClass {
 
     bytes +=generator.textEncoded(typeEng, styles:
         const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
+    bytes +=generator.setStyles( PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     bytes +=generator.textEncoded(typeArabic,
         styles:
         const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
@@ -1628,7 +1629,7 @@ class USBPrintClass {
       bytes +=generator.text(cancelNoteData,
           styles:
           const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-      bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
+      bytes +=generator.setStyles( PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       bytes +=generator.textEncoded(cancelNoteEnc,
           styles:
           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
@@ -1638,7 +1639,7 @@ class USBPrintClass {
       bytes +=generator.text(updateNote,
           styles:
           const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
-      bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.left));
+      bytes +=generator.setStyles( PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       bytes +=generator.textEncoded(updateNoteEnc,
           styles:
           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
@@ -1684,7 +1685,7 @@ class USBPrintClass {
     }
     print("-----5");
     bytes +=generator.setStyles(const PosStyles.defaults());
-    bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864'));
+    bytes +=generator.setStyles(  PosStyles(codeTable: defaultCodePage));
     bytes +=generator.hr();
     bytes +=generator.row([
       PosColumn(

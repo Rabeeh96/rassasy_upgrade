@@ -354,10 +354,12 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
     bytes += generator.setGlobalCodeTable(code_page_controller.text);
 
 
-    Uint8List salam = await CharsetConverter.encode("ISO-8859-6", 'السلام عليكم صباح الخير عزيزتي جميعاً');
+    Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكم صباح الخير عزيزتي جميعاً'));
     bytes += generator.textEncoded(salam);
+
     bytes += generator.text("Test page data");
     bytes += generator.text("Test page data");
+    bytes += generator.text("with code page ${code_page_controller.text}  capabilities ${capabilities}  ");
     bytes += generator.text("Test page data");
     bytes += generator.text("Test page data");
     bytes += generator.cut();
@@ -394,4 +396,206 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
 
 
   }
+
+  returnBlankSpace(length) {
+    List<String> list = [];
+    for (int i = 0; i < length; i++) {
+      list.add('');
+    }
+    return list;
+  }
+  setString(String tex) {
+    if (tex == "") {}
+    String value = "";
+    try {
+      var listSplit = [];
+      var beforeSplit = [];
+
+      if (Check(tex)) {
+        beforeSplit = set(tex);
+        listSplit = beforeSplit.reversed.toList();
+      } else {
+        listSplit = set(tex);
+      }
+      for (int i = 0; i < listSplit.length; i++) {
+        if (listSplit[i] == null)
+          value += "";
+        else if (isArabic(listSplit[i])) {
+          if (value == "")
+            value += listSplit[i];
+          else
+            value += "" + listSplit[i];
+        } else if (isN(listSplit[i])) {
+          if (value == "")
+            value += listSplit[i].toString().split('').reversed.join();
+          else
+            value += "" + listSplit[i].toString().split('').reversed.join();
+        } else {
+          if (value == "")
+            value += listSplit[i].toString().split('').reversed.join();
+          else
+            value += "" + listSplit[i].toString().split('').reversed.join();
+        }
+      }
+    } catch (e) {
+      return e.toString();
+    }
+    return value;
+  }
+
+  bool Check(String text) {
+    var val = false;
+    bool both = true;
+    if (text.contains(RegExp(r'[A-Z,a-z]'))) {
+      for (int i = 0; i < text.length;) {
+        int c = text.codeUnitAt(i);
+        if (c >= 0x0600 && c <= 0x06FF || (c >= 0xFE70 && c <= 0xFEFF)) {
+          both = false;
+          return both;
+        } else {
+          both = true;
+          return both;
+        }
+      }
+    } else {
+      val = false;
+      for (int i = 0; i < text.length; i++) {
+        if (val = double.tryParse(text[i]) != null) {
+          if (val == true) {
+            both = false;
+          } else {
+            both = true;
+          }
+          return both;
+        }
+      }
+
+      // both = true;
+    }
+    print('result of check $both');
+
+    return both;
+  }
+
+  set(String str) {
+    try {
+      if (str == "") {}
+
+      var listData = [];
+      List<String> test = [];
+
+      List<String> splitA = str.split('');
+      test = returnBlankSpace(splitA.length);
+
+      // test.length = splitA.length;
+
+      if (str.contains('')) {
+        for (int i = 0; i < splitA.length; i++) {
+          test[i] = splitA[splitA.length - 1 - i];
+          print(splitA);
+        }
+        splitA = test;
+      }
+
+      listData.length = splitA.length;
+      bool ar = false;
+      int index = 0;
+
+      for (int i = 0; i < splitA.length; i++) {
+        if (isArabic(splitA[i])) {
+          if (ar) {
+            if (listData[index] == null)
+              listData[index] = splitA[i];
+            else
+              listData[index] += "" + splitA[i];
+          } else {
+            if (listData[index] == null)
+              listData[index] = splitA[i];
+            else {
+              index++;
+              listData[index] = splitA[i];
+            }
+          }
+          ar = true;
+        } else if (isEnglish(splitA[i])) {
+          if (!ar) {
+            if (listData[index] == null)
+              listData[index] = splitA[i];
+            else
+              listData[index] += "" + splitA[i];
+          } else {
+            index++;
+            listData[index] = splitA[i];
+          }
+          ar = false;
+        } else if (isN(splitA[i])) {
+          if (!ar) {
+            if (listData[index] == null)
+              listData[index] = splitA[i];
+            else
+              listData[index] += "" + splitA[i];
+          } else {
+            index++;
+            listData[index] = splitA[i];
+          }
+          ar = false;
+        }
+      }
+
+      return listData;
+    } catch (e) {
+      print("set function error ${e.toString()}");
+    }
+  }
+  bool isArabic(String text) {
+    if (text == "") {}
+
+    String arabicText = text.trim().replaceAll(" ", "");
+    for (int i = 0; i < arabicText.length;) {
+      int c = arabicText.codeUnitAt(i);
+      //range of arabic chars/symbols is from 0x0600 to 0x06ff
+      //the arabic letter 'لا' is special case having the range from 0xFE70 to 0xFEFF
+      if (c >= 0x0600 && c <= 0x06FF || (c >= 0xFE70 && c <= 0xFEFF))
+        i++;
+      else
+        return false;
+    }
+    return true;
+  }
+  bool isEnglish(String text) {
+    if (text == "") {}
+
+    bool onlyEnglish = false;
+
+    String englishText = text.trim().replaceAll(" ", "");
+    if (englishText.contains(RegExp(r'[A-Z,a-z]'))) {
+      onlyEnglish = true;
+      print(onlyEnglish);
+    } else {
+      onlyEnglish = false;
+      print(onlyEnglish);
+    }
+    return onlyEnglish;
+  }
+  bool isN(String value) {
+    if (value == "") {
+      print("str is nll");
+    }
+    var val = false;
+    val = double.tryParse(value) != null;
+    return val;
+  }
+  getBytes(int id, value) {
+    if (value == "") {}
+    int datas = value.length;
+    Uint8List va = Uint8List(2 + datas);
+    va[0] = id;
+    va[1] = value.length;
+
+    for (var i = 0; i < value.length; i++) {
+      va[2 + i] = value[i];
+    }
+    return va;
+  }
+
 }
