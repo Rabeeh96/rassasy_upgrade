@@ -110,6 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool printForCancellOrder = false;
 
   bool printAfterOrder = false;
+  bool directOrderOption = false;
   bool isComplimentaryBill = false;
   bool printPreview = false;
   String printType = "Wifi";
@@ -308,6 +309,7 @@ class _SettingsPageState extends State<SettingsPage> {
       clearTable = prefs.getBool("tableClearAfterPayment") ?? false;
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
 
+      directOrderOption = prefs.getBool("directOrderOption") ?? false;
       printAfterOrder = prefs.getBool("print_after_order") ?? false;
       printPreview = prefs.getBool('print_preview') ?? false;
       // payment_method = prefs.getBool('payment_method') ?? false;
@@ -3107,6 +3109,51 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           printAfterOrder = val;
                           switchStatus("print_after_order", printAfterOrder);
+                        });
+
+                        // setState(() {
+                        //   printAfterPayment = val;
+                        //   switchStatus("printAfterPayment", printAfterPayment);
+                        // });
+                      },
+                    ),
+                  ),
+                ),
+
+              ),
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'direct_order_option'.tr,
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: directOrderOption,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        setState(() {
+                          directOrderOption = val;
+                          switchStatus("directOrderOption", directOrderOption);
                         });
 
                         // setState(() {
