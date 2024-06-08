@@ -124,7 +124,8 @@ class PrintSettingController extends GetxController {
   ValueNotifier<bool> isHighlightedToken = ValueNotifier<bool>(false);
   ValueNotifier<bool> isPaymentDetail = ValueNotifier<bool>(false);
   ValueNotifier<bool> isCompanyDetail = ValueNotifier<bool>(false);
-
+  String printType = "Wifi";
+  bool  print_type_value = true;
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -137,6 +138,22 @@ class PrintSettingController extends GetxController {
     selectCapabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
     selectCodepageController.text = prefs.getString('default_code_page') ?? "CP864";
 
+  }
+///print template
+  RxInt selectedIndex = 0.obs;
+  List<String> imagePaths = [
+    'assets/png/gst.png',
+    'assets/png/vat.png',
+  ].obs;
+  void setSelectedIndex(int index) {
+    selectedIndex.value = index;
+    update();
+  }
+
+  setTemplate(id) async {
+    print("template$id");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("template", "template$id");
   }
 }
 
