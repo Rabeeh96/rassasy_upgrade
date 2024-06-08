@@ -5558,7 +5558,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           var id = n["OrderID"];
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
-
+//
           if(printAfterOrder){
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = id;
