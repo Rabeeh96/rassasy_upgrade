@@ -14,9 +14,14 @@ class DetailedPrintSettingController extends GetxController {
   TextEditingController selectCodepageController = TextEditingController();
   TextEditingController termsAndConditionController = TextEditingController();
   var isLoading = false.obs;
-
+  ValueNotifier<bool> isKOTPrint = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isPrintAfterPayment = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isPrintAfterOrder = ValueNotifier<bool>(false);
   List<PrinterListModel> printDetailList = [];
-
+  void switchStatus(key, value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
   Future<Null> listAllPrinter() async {
     try {
       isLoading.value = true;

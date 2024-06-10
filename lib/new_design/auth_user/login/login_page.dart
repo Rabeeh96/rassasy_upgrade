@@ -1,20 +1,20 @@
-import 'package:flutter_svg/svg.dart';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:rassasy_new/new_design/organization/list_organization.dart';
-import 'package:rassasy_new/global/global.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/main.dart';
+import 'package:rassasy_new/new_design/organization/list_organization.dart';
+import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../create_account/create_new_account.dart';
 import '../create_account/select_country.dart';
-import '../password/forgot_password.dart';
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rassasy_new/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPageNew extends StatefulWidget {
   @override
@@ -22,13 +22,13 @@ class LoginPageNew extends StatefulWidget {
 }
 
 class _LoginPageNewState extends State<LoginPageNew> {
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
- TextEditingController userNameController = TextEditingController();
- TextEditingController passwordController = TextEditingController();
   // TextEditingController userNameController = TextEditingController()..text = "bawanland";
   // TextEditingController passwordController = TextEditingController()..text = "bawan@123";
   //  bawanland bawan@123
- //dogiwo78 aA@123456
+  //dogiwo78 aA@123456
   // TextEditingController userNameController = TextEditingController()
   //   ..text = "dogiwo78";
   //  TextEditingController passwordController = TextEditingController()
@@ -43,17 +43,16 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
   //bool isAlert = false;
   bool showPassword = true;
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
 
   ///alert icon not working
   @override
   Widget build(BuildContext context) {
-
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
@@ -67,47 +66,38 @@ class _LoginPageNewState extends State<LoginPageNew> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-
-
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/png/coverpage.png"), fit: isTablet?BoxFit.cover:BoxFit.fitHeight),
+              image: AssetImage("assets/png/coverpage.png"),
+              fit: isTablet ? BoxFit.cover : BoxFit.fitHeight),
         ),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Container(
-
-              width: isTablet ? screenWidth /3.5 : screenWidth / 1.2,
+              width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
               // width: isTablet ? screenWidth /3.5 : screenWidth / 1.5,
-
 
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-
                 child: SingleChildScrollView(
                   child: Column(
-
                     children: [
                       Container(
-
-                        child:isTablet? SvgPicture.asset(
-                          'assets/svg/logoimg.svg',
-
-                        ):SvgPicture.asset(
-                          'assets/svg/logoimg.svg',
-                          height: screenHeight *.05,
-
-                        ),
+                        child: isTablet
+                            ? SvgPicture.asset(
+                                'assets/svg/logoimg.svg',
+                              )
+                            : SvgPicture.asset(
+                                'assets/svg/logoimg.svg',
+                                height: screenHeight * .05,
+                              ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 12,bottom: 8),
+                        padding: const EdgeInsets.only(top: 12, bottom: 8),
                         child: Container(
                           alignment: Alignment.center,
-                          width: isTablet ? screenWidth /4 : screenWidth /1.7,
-
-
-
+                          width: isTablet ? screenWidth / 4 : screenWidth / 1.7,
                           child: Text(
                             'sign_in_vikn_account'.tr,
                             style: const TextStyle(fontWeight: FontWeight.w800),
@@ -115,13 +105,10 @@ class _LoginPageNewState extends State<LoginPageNew> {
                         ),
                       ),
 
-
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
-                          onChanged: (v) {
-
-                          },
+                          onChanged: (v) {},
                           textCapitalization: TextCapitalization.words,
                           keyboardType: TextInputType.text,
                           controller: userNameController,
@@ -130,27 +117,26 @@ class _LoginPageNewState extends State<LoginPageNew> {
                             FocusScope.of(context).requestFocus(passwordFcNode);
                           },
                           decoration: InputDecoration(
-
                               focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  const BorderRadius.all(Radius.circular(30.0)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(30.0)),
                                   borderSide: BorderSide(
-                                      color:const Color(0xffC9C9C9))),
+                                      color: const Color(0xffC9C9C9))),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  const BorderRadius.all(Radius.circular(30.0)),
-                                  borderSide: BorderSide(
-                                      color:Color(0xffC9C9C9))),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(30.0)),
+                                  borderSide:
+                                      BorderSide(color: Color(0xffC9C9C9))),
                               disabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  const BorderRadius.all(Radius.circular(30.0)),
-                                  borderSide: BorderSide(
-                                      color:  Color(0xffC9C9C9))),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(30.0)),
+                                  borderSide:
+                                      BorderSide(color: Color(0xffC9C9C9))),
                               contentPadding: const EdgeInsets.only(
-                                  left: 20, top: 10,right: 15, bottom: 10),
+                                  left: 20, top: 10, right: 15, bottom: 10),
                               filled: true,
-                              hintStyle:                             const TextStyle(color: Color(
-                                  0xff000000), fontSize: 14),
+                              hintStyle: const TextStyle(
+                                  color: Color(0xff000000), fontSize: 14),
                               hintText: 'username'.tr,
                               fillColor: const Color(0xffffffff)),
                         ),
@@ -158,13 +144,11 @@ class _LoginPageNewState extends State<LoginPageNew> {
                       passwordField(),
                       MaterialButton(
                         shape: const CircleBorder(),
-                        onPressed: () async{
-                          if (userNameController.text == '' || passwordController.text == '') {
+                        onPressed: () async {
+                          if (userNameController.text == '' ||
+                              passwordController.text == '') {
                             dialogBox(context, 'please_enter_details'.tr);
-
-
                           } else {
-
                             loginAccount(context);
 
                             // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -179,17 +163,14 @@ class _LoginPageNewState extends State<LoginPageNew> {
                             //     context,
                             //     MaterialPageRoute(
                             //         builder: (BuildContext context) => OrganizationList()));
-
-
-
                           }
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(0),
-                          child:
-                          SvgPicture.asset('assets/svg/roundarrow.svg'),
+                          child: SvgPicture.asset('assets/svg/roundarrow.svg'),
                         ),
                       )
+
                       /// commented
                       // TextButton(
                       //     onPressed: () {
@@ -290,7 +271,6 @@ class _LoginPageNewState extends State<LoginPageNew> {
     );
   }
 
-
   Widget passwordField() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -322,23 +302,26 @@ class _LoginPageNewState extends State<LoginPageNew> {
               disabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   borderSide: BorderSide(color: Color(0xffC9C9C9))),
-              contentPadding:
-                  const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+              contentPadding: const EdgeInsets.only(
+                  left: 20, top: 10, right: 10, bottom: 10),
               filled: true,
-              hintStyle: const TextStyle(color: Color(0xff000000), fontSize: 14),
+              hintStyle:
+                  const TextStyle(color: Color(0xff000000), fontSize: 14),
               hintText: 'Password'.tr,
               fillColor: const Color(0xffffffff))),
     );
   }
 
-
-/// working
+  /// working
   Future<Null> loginAccount(BuildContext context) async {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    bool isTablet = screenWidth > 800;
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-        dialogBox(context, "Connect to internet");
-        stop();
+      dialogBox(context, "Connect to internet");
+      stop();
     } else {
       try {
         HttpOverrides.global = MyHttpOverrides();
@@ -364,27 +347,29 @@ class _LoginPageNewState extends State<LoginPageNew> {
         Map n = json.decode(utf8.decode(response.bodyBytes));
         print("${response.statusCode}");
         print("${response.body}");
-   //     var status = n["success"];
-        var status =  n["success"];;
+        //     var status = n["success"];
+        var status = n["success"];
+        ;
 
         if (status == 6000) {
-
           var datas = n["data"];
-            print(datas);
-            stop();
-            prefs.setBool('isLoggedIn', true);
-            prefs.setString('access', datas["access"]);
-            prefs.setInt('user_id', datas["user_id"]);
-            prefs.setString('user_name', userNameController.text);
-
+          print(datas);
+          stop();
+          prefs.setBool('isLoggedIn', true);
+          prefs.setString('access', datas["access"]);
+          prefs.setInt('user_id', datas["user_id"]);
+          prefs.setString('user_name', userNameController.text);
+          ///here checking tab or mobile
+          if (isTablet) {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => OrganizationList()));
-
-
+          } else {
+            Get.to(MobOrganizationList());
+          }
         } else if (status == 6001) {
-          var msg = n["error"]??"";
+          var msg = n["error"] ?? "";
           print('3');
           dialogBox(context, msg);
           if (msg == "Please Verify Your Email to Login") {
@@ -398,22 +383,17 @@ class _LoginPageNewState extends State<LoginPageNew> {
           }
 
           stop();
-        }
-        else {
+        } else {
           print('4');
           stop();
           dialogBox(context, "Some thing went wrong");
         }
-      }
-      catch (e) {
+      } catch (e) {
         stop();
         print({e.toString()});
         print('5');
         dialogBox(context, "Some thing went wrong ${e.toString()}");
-
-
       }
     }
   }
 }
-

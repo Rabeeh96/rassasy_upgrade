@@ -59,8 +59,7 @@ ProfileController profileController=Get.put(ProfileController());
                         width: mqw * .92,
                         decoration: BoxDecoration(
                             color: const Color(0xffFFF6F2),
-                            border: Border.all(
-                                width: 1, color: const Color(0xffE6E6E6)),
+
                             // const Color(0xffE6E6E6)
                             borderRadius: BorderRadius.circular(25)),
                         child: Obx(() => Column(
@@ -80,6 +79,7 @@ ProfileController profileController=Get.put(ProfileController());
                                   child: Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         height: mqh * .080,
@@ -98,10 +98,9 @@ ProfileController profileController=Get.put(ProfileController());
                                       Column(
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          const SizedBox(
-                                            height: 21,
-                                          ),
+
                                           Text(
                                             profileController.userName.value,
                                             style: customisedStyle(
@@ -151,7 +150,7 @@ ProfileController profileController=Get.put(ProfileController());
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Padding(
+                                    Expanded(child: Padding(
                                       padding:
                                       const EdgeInsets.only(left: 16.0),
                                       child: Column(
@@ -166,7 +165,7 @@ ProfileController profileController=Get.put(ProfileController());
                                                 context,
                                                 const Color(0xff7D7D7D),
                                                 FontWeight.w400,
-                                                13.0),
+                                                14.0),
                                             textAlign: TextAlign.left,
                                           ),
                                           Text(
@@ -174,13 +173,13 @@ ProfileController profileController=Get.put(ProfileController());
                                             style: customisedStyle(
                                                 context,
                                                 Colors.black,
-                                                FontWeight.w400,
+                                                FontWeight.w500,
                                                 15.0),
                                             textAlign: TextAlign.left,
                                           )
                                         ],
                                       ),
-                                    ),
+                                    )),
                                     Column(
                                       children: [
                                         const Text(""),
@@ -211,12 +210,12 @@ ProfileController profileController=Get.put(ProfileController());
                                                   secondBtnText: 'Yes');
                                             },
                                             child: Text(
-                                              'Change',
+                                              'change'.tr,
                                               style: customisedStyle(
                                                   context,
                                                   const Color(0xffF25F29),
                                                   FontWeight.w400,
-                                                  14.0),
+                                                  15.0),
                                               textAlign: TextAlign.left,
                                             ),
                                           ),
@@ -261,19 +260,22 @@ ProfileController profileController=Get.put(ProfileController());
                                         mainAxisAlignment:
                                         MainAxisAlignment.center,
                                         children: [
-                                          SvgPicture.asset(
-                                            "assets/svg/delete_mobile.svg",
+                                          Padding(
+                                            padding: const EdgeInsets.only( left: 6.0,),
+                                            child: SvgPicture.asset(
+                                              "assets/svg/delete_mobile.svg",
+                                            ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 8.0),
+                                                left: 5.0,right: 6),
                                             child: Text(
-                                              'Delete Account',
+                                              'dlt_acnt'.tr,
                                               style: customisedStyle(
                                                   context,
                                                   const Color(0xffC80000),
                                                   FontWeight.w400,
-                                                  13.5),
+                                                  15.0),
                                             ),
                                           ),
                                         ],
@@ -317,12 +319,12 @@ ProfileController profileController=Get.put(ProfileController());
                                             padding: const EdgeInsets.only(
                                                 left: 8.0),
                                             child: Text(
-                                              'Logout',
+                                              'logout'.tr,
                                               style: customisedStyle(
                                                   context,
                                                   const Color(0xffEA6262),
                                                   FontWeight.w400,
-                                                  13.5),
+                                                  15.0),
                                             ),
                                           ),
                                         ],
@@ -363,7 +365,7 @@ ProfileController profileController=Get.put(ProfileController());
                               Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Text(
-                                  'Settings',
+                                  'Settings'.tr,
 
                                   style: customisedStyle(context, Colors.black,
                                       FontWeight.w400, 16.0),
@@ -406,7 +408,7 @@ ProfileController profileController=Get.put(ProfileController());
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
-                                    'Contact Us',
+                                    'contact_us'.tr,
                                     style: customisedStyle(context,
                                         Colors.black, FontWeight.w400, 16.0),
                                   ),
@@ -447,7 +449,7 @@ ProfileController profileController=Get.put(ProfileController());
                               Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Text(
-                                  'About Us',
+                                  'about_us'.tr,
                                   style: customisedStyle(context, Colors.black,
                                       FontWeight.w400, 16.0),
                                 ),
@@ -466,7 +468,9 @@ ProfileController profileController=Get.put(ProfileController());
                 ),
                 DividerStyle(),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    ///
+                  },
                   child: Card(
                     color: Colors.transparent,
                     elevation: 0,
@@ -484,7 +488,7 @@ ProfileController profileController=Get.put(ProfileController());
                               Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Text(
-                                  'Language',
+                                  'lng'.tr,
                                   style: customisedStyle(context, Colors.black,
                                       FontWeight.w400, 16.0),
                                 ),

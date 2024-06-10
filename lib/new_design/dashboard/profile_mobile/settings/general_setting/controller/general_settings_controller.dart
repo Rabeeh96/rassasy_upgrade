@@ -12,11 +12,12 @@ class GeneralController extends GetxController{
   ValueNotifier<bool> isAutoFocus = ValueNotifier<bool>(false);
   ValueNotifier<bool> isArabic = ValueNotifier<bool>(false);
   ValueNotifier<bool> isKOTPrint = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isPrintAfterPayment = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isPrintAfterOrder = ValueNotifier<bool>(false);
   ValueNotifier<bool> isQuantityIncrement = ValueNotifier<bool>(false);
   ValueNotifier<bool> isShowInvoice = ValueNotifier<bool>(false);
   ValueNotifier<bool> isClear = ValueNotifier<bool>(false);
-  ValueNotifier<bool> isPrintAfterPayment = ValueNotifier<bool>(false);
-  ValueNotifier<bool> isPrintAfterOrder = ValueNotifier<bool>(false);
+
   TextEditingController tokenController = TextEditingController();
   TextEditingController compensationController = TextEditingController();
   FocusNode initialTokenNode=FocusNode();
