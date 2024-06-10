@@ -29,7 +29,7 @@ class DiningPage extends StatefulWidget {
 
 class _DiningPageState extends State<DiningPage> {
   final POSController diningController = Get.put(POSController());
-
+  final POSController posController = Get.put(POSController());
   ///this func used to get the colors
   ///to change back color of status showing in list
   Color _getBackgroundColor(String? status) {
@@ -50,6 +50,7 @@ class _DiningPageState extends State<DiningPage> {
   void initState() {
     /// TODO: implement initState
     super.initState();
+    diningController.selectedIndexNotifier.value = 0;
     diningController.tableData.clear();
     diningController.fetchAllData();
     diningController.update();
@@ -111,6 +112,27 @@ class _DiningPageState extends State<DiningPage> {
                       child: GestureDetector(
                         onTap: () {
                           diningController.selectedIndexNotifier.value = index; // Update the selected index
+
+                          if(index ==0){
+                            diningController.tableData.clear();
+                            diningController.tableData.assignAll(diningController.fullOrderData);
+
+                          }
+                          else if(index ==1){
+                            diningController.tableData.clear();
+                            diningController.tableData.value = diningController.fullOrderData.where((data) => data.status == "Vacant").toList();
+
+                          }
+                          else if(index ==2){
+                            diningController.tableData.clear();
+                            diningController.tableData.value = diningController.fullOrderData.where((data) => data.status == "Ordered").toList();
+                          }
+                          else{
+                            diningController.tableData.clear();
+                            diningController.tableData.value = diningController.fullOrderData.where((data) => data.status == "Paid").toList();
+
+                          }
+
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width / 5,
@@ -154,273 +176,296 @@ class _DiningPageState extends State<DiningPage> {
                     ? const Center(child: Text("No recent orders"))
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
-                        child: ListView.separated(
-                          separatorBuilder: (context, index) => DividerStyle(),
-                          itemCount: diningController.tableData.length,
-                          itemBuilder: (context, index) {
-                            return Slidable(
-                              enabled: diningController.tableData[index].status != 'Vacant' ? true : false,
-                              key: ValueKey(diningController.tableData[index]),
+                        child: RefreshIndicator(
+                          onRefresh: ()async{
+                            diningController.selectedIndexNotifier.value = 0;
+                            diningController.tableData.clear();
+                            diningController.fetchAllData();
+                            diningController.update();
+                          },
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) => DividerStyle(),
+                            itemCount: diningController.tableData.length,
+                            itemBuilder: (context, index) {
+                              return Slidable(
+                                enabled: diningController.tableData[index].status != 'Vacant' ? true : false,
+                                key: ValueKey(diningController.tableData[index]),
 
-                              // The start action pane is the one at the left or the top side.
-                              startActionPane: ActionPane(
-                                // A motion is a widget used to control how the pane animates.
-                                motion: const ScrollMotion(),
+                                // The start action pane is the one at the left or the top side.
+                                startActionPane: ActionPane(
+                                  // A motion is a widget used to control how the pane animates.
+                                  motion: const ScrollMotion(),
 
-                                children: [
-                                  CustomSlidableAction(
-                                    flex: 2,
-                                    onPressed: (BuildContext context) async {},
-                                    backgroundColor: const Color(0xFF00775E),
-                                    foregroundColor: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/svg/bxs-calendar-check.svg', //
-                                        ),
-                                        Text("Reserve", style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0))
-                                      ],
-                                    ),
-                                  ),
-                                  CustomSlidableAction(
-                                    flex: 2,
-                                    onPressed: (BuildContext context) async {
-                                      diningController.printSection(
-                                          context: context,
-                                          id: diningController.tableData[index].status == 'Ordered'
-                                              ? diningController.tableData[index].salesOrderID!
-                                              : diningController.tableData[index].salesMasterID!,
-                                          isCancelled: false,
-                                          voucherType: diningController.tableData[index].status == 'Ordered'?"SO":"SI");
-                                    },
-                                    backgroundColor: const Color(0xFF034FC1),
-                                    foregroundColor: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/svg/print.svg', //
-                                        ),
-                                        Text(
-                                          "Print",
-                                          style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              endActionPane: ActionPane(
-                                motion: const ScrollMotion(),
-                                children: [
-                                  CustomSlidableAction(
-                                    onPressed: (BuildContext context) async {
-                                      if (diningController.tableData[index].status == 'Ordered') {
-                                        var result = await Get.to(CancelOrderList());
-                                        if (result != null) {
-                                          diningController.cancelOrderApi(
-                                              context:context,
-                                              type: "Dining&Cancel",
-                                              tableID: diningController.tableData[index].id!,
-                                              cancelReasonId: result[1],
-                                              orderID: diningController.tableData[index].salesOrderID!);
-                                        }
-                                      } else {
-                                        diningController.cancelOrderApi(
-                                            context:context,
-                                            type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: "");
-                                      }
-                                    },
-                                    backgroundColor: const Color(0xFFFC3636),
-                                    foregroundColor: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.clear,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          diningController.tableData[index].status == 'Ordered' ? "Cancel" : "Clear",
-                                          style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-
-                                  diningController.tableData[index].status == 'Ordered'
-                                      ? CustomSlidableAction(
-                                          onPressed: (BuildContext context) async {
-                                            var resultPayment = await Get.to(PaymentPage(
-                                              uID: diningController.tableData[index].salesOrderID!,
-                                              tableID: diningController.tableData[index].id!,
-                                              orderType: 0,
-                                            ));
-
-                                            diningController.tableData.clear();
-                                            diningController.fetchAllData();
-                                            diningController.update();
-                                          },
-                                          backgroundColor: const Color(0xFF10C103),
-                                          foregroundColor: Colors.green,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              const Icon(
-                                                Icons.check,
-                                                color: Colors.white,
-                                              ),
-                                              Text(
-                                                "Pay",
-                                                style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      : Container(),
-
-                                  ///kot commented here
-                                  // CustomSlidableAction(
-                                  //
-                                  //   onPressed: (BuildContext context) async {},
-                                  //   backgroundColor: const Color(0xFF0C98FF),
-                                  //   foregroundColor: Colors.green,
-                                  //   child: Column(
-                                  //     mainAxisAlignment: MainAxisAlignment.center,
-                                  //     crossAxisAlignment: CrossAxisAlignment.center,
-                                  //     children: [
-                                  //       SvgPicture.asset("assets/svg/edit_new.svg"),
-                                  //       Text("KOT",style: customisedStyleBold(context, Colors.white, FontWeight.w400, 10.0),)
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-
-                              child: GestureDetector(
-                                onTap: () async {
-                                  if (diningController.tableData[index].status == 'Vacant') {
-                                    var result = await Get.to(OrderCreateView(
-                                      orderType: 1,
-                                      sectionType: "Create",
-                                      uID: "",
-                                      tableHead: "Order",
-                                      cancelOrder: diningController.cancelOrder,
-                                      tableID: diningController.tableData[index].id!,
-                                    ));
-
-                                    if (result != null) {
-                                      if (result[1]) {
-                                        var resultPayment = await Get.to(PaymentPage(
-                                          uID: result[2],
-                                          tableID: diningController.tableData[index].id!,
-                                          orderType: 0,
-                                        ));
-                                        diningController.tableData.clear();
-                                        diningController.fetchAllData();
-                                        diningController.update();
-                                      } else {
-                                        diningController.tableData.clear();
-                                        diningController.fetchAllData();
-                                        diningController.update();
-                                      }
-                                    }
-                                  } else if (diningController.tableData[index].status == 'Ordered') {
-                                    var result = await Get.to(OrderCreateView(
-                                      orderType: 1,
-                                      sectionType: "Edit",
-                                      uID: diningController.tableData[index].salesOrderID!,
-                                      tableHead: diningController.tableData[index].title!,
-                                      tableID: diningController.tableData[index].id!,
-                                      cancelOrder: diningController.cancelOrder,
-                                    ));
-
-                                    if (result != null) {
-                                      if (result[1]) {
-                                        Get.to(PaymentPage(
-                                          uID: result[2],
-                                          tableID: diningController.tableData[index].id!,
-                                          orderType: 1,
-                                        ));
-                                      }
-                                    }
-                                  } else {}
-                                },
-                                child: InkWell(
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 15, bottom: 15),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    diningController.tableData[index].status == 'Ordered'?  CustomSlidableAction(
+                                      flex: 1,
+                                      onPressed: (BuildContext context) async {
+                                        posController.printKOT(cancelList: [],isUpdate:false,orderID:diningController.tableData[index].salesOrderID!,rePrint:true);
+                                      },
+                                      backgroundColor: const Color(0xFF00775E),
+                                      foregroundColor: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(right: 8.0),
-                                                    child: Text(
-                                                      diningController.tableData[index].title!,
-                                                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                          SvgPicture.asset(
+                                            'assets/svg/kot_print.svg',
+                                            height: 25,
+                                            width: 25,
+                                            //
+                                          ),
+                                          Text("Kot", style: customisedStyleBold(context, Colors.white, FontWeight.w400, 12.0))
+                                        ],
+                                      ),
+                                    ):Container(),
+                                    CustomSlidableAction(
+                                      flex: 1,
+                                      onPressed: (BuildContext context) async {
+                                        diningController.printSection(
+                                            context: context,
+                                            id: diningController.tableData[index].status == 'Ordered'
+                                                ? diningController.tableData[index].salesOrderID!
+                                                : diningController.tableData[index].salesMasterID!,
+                                            isCancelled: false,
+                                            voucherType: diningController.tableData[index].status == 'Ordered'?"SO":"SI");
+                                      },
+                                      backgroundColor: const Color(0xFF034FC1),
+                                      foregroundColor: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/svg/print.svg',
+                                            height: 23,
+                                            width: 23,
+                                            //
+                                          ),
+                                          Text(
+                                            "Print",
+                                            style: customisedStyle(context, Colors.white, FontWeight.w400, 12.0),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                endActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    CustomSlidableAction(
+                                      onPressed: (BuildContext context) async {
+
+
+                                        if (diningController.tableData[index].status == 'Ordered') {
+                                          var result = await Get.to(CancelOrderList());
+                                          if (result != null) {
+                                            diningController.cancelOrderApi(
+                                                context:context,
+                                                type: "Dining&Cancel",
+                                                tableID: diningController.tableData[index].id!,
+                                                cancelReasonId: result[1],
+                                                orderID: diningController.tableData[index].salesOrderID!);
+                                          }
+                                        } else {
+                                          diningController.cancelOrderApi(
+                                              context:context,
+                                              type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: diningController.tableData[index].salesOrderID!);
+                                        }
+                                      },
+                                      backgroundColor: const Color(0xFFFC3636),
+                                      foregroundColor: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+
+
+
+                                          const Icon(
+                                            Icons.clear,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            diningController.tableData[index].status == 'Ordered' ? "Cancel" : "Clear",
+                                            style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+
+                                    diningController.tableData[index].status == 'Ordered'
+                                        ? CustomSlidableAction(
+                                            onPressed: (BuildContext context) async {
+                                              var resultPayment = await Get.to(PaymentPage(
+                                                uID: diningController.tableData[index].salesOrderID!,
+                                                tableID: diningController.tableData[index].id!,
+                                                orderType: 0,
+                                              ));
+
+                                              diningController.tableData.clear();
+                                              diningController.fetchAllData();
+                                              diningController.update();
+                                            },
+                                            backgroundColor: const Color(0xFF10C103),
+                                            foregroundColor: Colors.green,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                const Icon(
+
+                                                  Icons.check,
+                                                  color: Colors.white,
+
+                                                ),
+                                                Text(
+                                                  "Pay",
+                                                  style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        : Container(),
+
+                                    ///kot commented here
+                                    // CustomSlidableAction(
+                                    //
+                                    //   onPressed: (BuildContext context) async {},
+                                    //   backgroundColor: const Color(0xFF0C98FF),
+                                    //   foregroundColor: Colors.green,
+                                    //   child: Column(
+                                    //     mainAxisAlignment: MainAxisAlignment.center,
+                                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                                    //     children: [
+                                    //       SvgPicture.asset("assets/svg/edit_new.svg"),
+                                    //       Text("KOT",style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),)
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    if (diningController.tableData[index].status == 'Vacant') {
+                                      var result = await Get.to(OrderCreateView(
+                                        orderType: 1,
+                                        sectionType: "Create",
+                                        uID: "",
+                                        tableHead: "Order",
+                                        cancelOrder: diningController.cancelOrder,
+                                        tableID: diningController.tableData[index].id!,
+                                      ));
+
+                                      if (result != null) {
+                                        if (result[1]) {
+                                          var resultPayment = await Get.to(PaymentPage(
+                                            uID: result[2],
+                                            tableID: diningController.tableData[index].id!,
+                                            orderType: 0,
+                                          ));
+                                          diningController.tableData.clear();
+                                          diningController.fetchAllData();
+                                          diningController.update();
+                                        } else {
+                                          diningController.tableData.clear();
+                                          diningController.fetchAllData();
+                                          diningController.update();
+                                        }
+                                      }
+                                    } else if (diningController.tableData[index].status == 'Ordered') {
+                                      var result = await Get.to(OrderCreateView(
+                                        orderType: 1,
+                                        sectionType: "Edit",
+                                        uID: diningController.tableData[index].salesOrderID!,
+                                        tableHead: diningController.tableData[index].title!,
+                                        tableID: diningController.tableData[index].id!,
+                                        cancelOrder: diningController.cancelOrder,
+                                      ));
+
+                                      if (result != null) {
+                                        if (result[1]) {
+                                          Get.to(PaymentPage(
+                                            uID: result[2],
+                                            tableID: diningController.tableData[index].id!,
+                                            orderType: 1,
+                                          ));
+                                        }
+                                      }
+                                    } else {}
+                                  },
+                                  child: InkWell(
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(left: 15.0, right: 15, top: 15, bottom: 15),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 8.0),
+                                                      child: Text(
+                                                        diningController.tableData[index].title!,
+                                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    height: MediaQuery.of(context).size.height / 32,
-                                                    decoration: BoxDecoration(
-                                                      color: _getBackgroundColor(diningController.tableData[index].status!),
-                                                      borderRadius: BorderRadius.circular(30),
-                                                    ),
-                                                    child: Center(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 15.0, right: 15),
-                                                        child: Text(
-                                                          diningController.tableData[index].status!,
-                                                          style: TextStyle(
-                                                              fontSize: 11,
-                                                              color:
-                                                                  diningController.tableData[index].status == "Vacant" ? Colors.black : Colors.white),
+                                                    Container(
+                                                      height: MediaQuery.of(context).size.height / 32,
+                                                      decoration: BoxDecoration(
+                                                        color: _getBackgroundColor(diningController.tableData[index].status!),
+                                                        borderRadius: BorderRadius.circular(30),
+                                                      ),
+                                                      child: Center(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 15.0, right: 15),
+                                                          child: Text(
+                                                            diningController.tableData[index].status!,
+                                                            style: TextStyle(
+                                                                fontSize: 11,
+                                                                color:
+                                                                    diningController.tableData[index].status == "Vacant" ? Colors.black : Colors.white),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              diningController.returnOrderTime(
-                                                          diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=
-                                                      ""
-                                                  ? Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Text(
-                                                          diningController.returnOrderTime(diningController.tableData[index].orderTime!,
-                                                              diningController.tableData[index].status!),
-                                                          style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
-                                                        ),
-                                                        //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
-                                                      ],
-                                                    )
-                                                  : Container(),
-                                            ],
-                                          ),
-                                          Text(
-                                            "${diningController.currency} ${roundStringWith(diningController.tableData[index].status != "Vacant" ? diningController.tableData[index].status != "Paid" ? diningController.tableData[index].salesOrderGrandTotal.toString() : diningController.tableData[index].salesGrandTotal.toString() : '0')}",
-                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                          )
-                                        ],
-                                      )),
+                                                  ],
+                                                ),
+                                                diningController.returnOrderTime(
+                                                            diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=
+                                                        ""
+                                                    ? Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          Text(
+                                                            diningController.returnOrderTime(diningController.tableData[index].orderTime!,
+                                                                diningController.tableData[index].status!),
+                                                            style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
+                                                          ),
+                                                          //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
+                                                        ],
+                                                      )
+                                                    : Container(),
+                                              ],
+                                            ),
+                                            Text(
+                                              "${diningController.currency} ${roundStringWith(diningController.tableData[index].status != "Vacant" ? diningController.tableData[index].status != "Paid" ? diningController.tableData[index].salesOrderGrandTotal.toString() : diningController.tableData[index].salesGrandTotal.toString() : '0')}",
+                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                            )
+                                          ],
+                                        )),
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ))))
       ]),
       bottomNavigationBar: Padding(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/printer_setting/controller/print_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/printer_setting/controller/detailed_print_controlle.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +11,7 @@ class SelectCapabilitiesMob extends StatefulWidget {
 }
 
 class _SelectCapabilitiesMobState extends State<SelectCapabilitiesMob> {
-  PrintSettingController capabilitiesController = Get.put(PrintSettingController());
+  DetailedPrintSettingController capabilitiesController = Get.put(DetailedPrintSettingController());
 
 //
   @override

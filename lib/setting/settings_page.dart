@@ -319,6 +319,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
 
 
+
+
       hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
       paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
       headerAlignment = prefs.getBool("headerAlignment") ?? false;

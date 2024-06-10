@@ -8,7 +8,7 @@ import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/printer
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'controller/print_controller.dart';
+import 'controller/detailed_print_controlle.dart';
 import 'printer_select_page.dart';
 import 'select_capabilities.dart';
 
@@ -20,7 +20,7 @@ class PrinterSettingsDetailPageMobile extends StatefulWidget {
 
 class _PrinterSettingsDetailPageMobileState
     extends State<PrinterSettingsDetailPageMobile> {
-  PrintSettingController printController = Get.put(PrintSettingController());
+  DetailedPrintSettingController printController = Get.put(DetailedPrintSettingController());
 @override
   void initState() {
     // TODO: implement initState

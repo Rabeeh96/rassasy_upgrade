@@ -320,8 +320,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
 
                                               orderController.quantityIncrement.value
                                                   ?
-
-                                                  /// The quantity increment is on here, so make sure this product has been added already.
+                                                   /// The quantity increment is on here, so make sure this product has been added already.
                                                   alreadyExist[0]
                                                       ? Align(
                                                           alignment: Alignment.bottomCenter,

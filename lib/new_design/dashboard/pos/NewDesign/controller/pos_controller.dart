@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ final isLoadTable=false.obs;
 
   @override
   void onInit() {
+
     tabIndex.value = 0;
     fetchAllData();
     update();
@@ -87,6 +89,7 @@ final isLoadTable=false.obs;
 
   final TableService _tableService = TableService();
   var tableData = <Data>[].obs;
+  var fullOrderData = <Data>[].obs;
   var onlineOrders = <Online>[].obs;
   var takeAwayOrders = <TakeAway>[].obs;
   var carOrders = <Car>[].obs;
@@ -135,8 +138,9 @@ final isLoadTable=false.obs;
       var userID = prefs.getInt('user_id') ?? 0;
       var accessToken = prefs.getString('access') ?? '';
       var fetchedData = await _tableService.fetchAllData(accessToken);
-
+      selectedIndexNotifier.value = 0;
       tableData.assignAll((fetchedData['data'] as List).map((json) => Data.fromJson(json)).toList());
+      fullOrderData.assignAll((fetchedData['data'] as List).map((json) => Data.fromJson(json)).toList());
       onlineOrders.assignAll((fetchedData['Online'] as List).map((json) => Online.fromJson(json)).toList());
       takeAwayOrders.assignAll((fetchedData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
       carOrders.assignAll((fetchedData['Car'] as List).map((json) => Car.fromJson(json)).toList());
@@ -236,10 +240,12 @@ final isLoadTable=false.obs;
         "CompanyID": companyID,
         "BranchID": branchID,
         "Type": type,
-        "unqid":type=="Dining&Cancel"?tableID:orderID,
+        "unqid":type=="Dining&Cancel"||type=="Dining"?tableID:orderID,
         "reason_id": cancelReasonId,
       };
 
+      print("type  $type");
+      print(data);
       //encode Map to JSON
       var body = json.encode(data);
 

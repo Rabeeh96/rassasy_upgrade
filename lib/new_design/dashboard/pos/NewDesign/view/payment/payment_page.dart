@@ -99,7 +99,8 @@ class _PaymentPageState extends State<PaymentPage> {
                               DividerStyle(),
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                   Text(
                                     'ph_no'.tr,
                                     style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
@@ -108,6 +109,19 @@ class _PaymentPageState extends State<PaymentPage> {
                                     paymentController.customerPhoneSelection.text ?? "",
                                     style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
                                   ),
+
+                                  Text(
+                                    "",
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                  ),
+                                  // const Icon(
+                                  //   Icons.arrow_forward_ios,
+                                  //   color: Colors.black,
+                                  //   size: 15,
+                                  // )
+                                  //
+
+
                                 ]),
                               ),
                               DividerStyle(),

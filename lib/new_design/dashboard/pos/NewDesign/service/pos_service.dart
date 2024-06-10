@@ -15,6 +15,7 @@ class TableService {
         'Authorization': 'Bearer $token',
       },
 
+
       body: jsonEncode({
         "CompanyID": companyID,
         "type": "user",
@@ -23,7 +24,7 @@ class TableService {
       }),
 
     );
-    print(response);
+
     print(response);
     if (response.statusCode == 200) {
       final parsed = jsonDecode(response.body);

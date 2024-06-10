@@ -883,6 +883,7 @@ class OrderController extends GetxController {
   var flavourList = <FlavourListModelClass>[].obs;
   var groupList = <GroupListModelClass>[].obs;
   var productList = <ProductListModel>[].obs;
+  var searchProductList = <ProductListModel>[].obs;
 
   Future<void> getAllFlavours() async {
     try {
@@ -1006,7 +1007,7 @@ class OrderController extends GetxController {
         tokenNumber.value = n["TokenNumber"] ?? "";
         groupIsLoading.value = false;
         if (groupList.isNotEmpty) {
-          getProductListDetail(groupList[2].groupID);
+          getProductListDetail(groupList[0].groupID);
         }
       } else if (status == 6001) {
         // Show error message
@@ -1496,6 +1497,76 @@ class OrderController extends GetxController {
 
   ///deliveryman
   var isCustomerLoading = true.obs;
+
+
+  /// search item
+  String dropdownvalue = 'Code';
+  var items = [
+    'Code',
+    'Name',
+    'Description',
+  ];
+
+
+  var isLoading = false.obs;
+  void searchItems({required String productName,required bool isCode,required bool isDescription}) async {
+    isLoading.value=true;
+    String baseUrl = BaseUrl.baseUrl;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var companyID = prefs.getString('companyID') ;
+    var userID = prefs.getInt('user_id') ?? 0;
+    var branchID = prefs.getInt('branchID') ?? 1;
+    print("2");
+    var accessToken = prefs.getString('access') ?? '';
+    var url = '$baseUrl/posholds/products-search-pos/';
+    print("3");
+
+    var payload = {
+      "IsCode": isCode,
+      "IsDescription": isDescription,
+      "BranchID": branchID,
+      "CompanyID":companyID,
+      "CreatedUserID": userID,
+      "PriceRounding": BaseUrl.priceRounding,
+      "product_name": productName,
+      "length":  productName.length,
+      "type": ""
+    };
+
+    try {
+      print("payload   $payload");
+      var response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(payload),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Add token to headers
+        },
+      );
+
+      if (response.statusCode == 200) {
+        isLoading.value=false;
+        print("3d");
+        var data = jsonDecode(response.body);
+        Map n = json.decode(utf8.decode(response.bodyBytes));
+        var responseJson = n["data"];
+        searchProductList.clear();
+        for (Map user in responseJson) {
+          searchProductList.add(ProductListModel.fromJson(user));
+        }
+
+
+      //  productList.assignAll(data['data']);
+        update();
+        print("7");
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    } catch (e) {
+      isLoading.value=false;
+      print('Exception occurred: $e');
+    }
+  }
 
   var users = <DeliveryManModel>[].obs;
 /// list employee

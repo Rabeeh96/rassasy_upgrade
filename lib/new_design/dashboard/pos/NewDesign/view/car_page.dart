@@ -23,7 +23,7 @@ class CarPage extends StatefulWidget {
 
 class _TakeAwayState extends State<CarPage> {
   final POSController carController = Get.put(POSController());
-
+  final POSController posController = Get.put(POSController());
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
       return const Color(0xffEFEFEF); // Set your desired color for pending status
@@ -82,246 +82,256 @@ class _TakeAwayState extends State<CarPage> {
                 ? const Center(child: Text("No recent orders"))
                 : SlidableAutoCloseBehavior(
                 closeWhenOpened: true,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => DividerStyle(),
-                  itemCount: carController.carOrders.length,
-                  itemBuilder: (context, index) {
-                    return Slidable(
-                      key: ValueKey(carController.carOrders[index]),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    carController.tableData.clear();
+                    carController.fetchAllData();
+                    carController.update();
+                  },
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => DividerStyle(),
+                    itemCount: carController.carOrders.length,
+                    itemBuilder: (context, index) {
+                      return Slidable(
+                        key: ValueKey(carController.carOrders[index]),
 
-                      // The start action pane is the one at the left or the top side.
-                      startActionPane: ActionPane(
-                        // A motion is a widget used to control how the pane animates.
-                        motion: const ScrollMotion(),
+                        // The start action pane is the one at the left or the top side.
+                        startActionPane: ActionPane(
+                          // A motion is a widget used to control how the pane animates.
+                          motion: const ScrollMotion(),
 
-                        children: [
-                          CustomSlidableAction(
-                            flex: 2,
-                            onPressed: (BuildContext context) async {
+                          children: [
+                            carController.carOrders[index].status == 'Ordered'?  CustomSlidableAction(
+                              flex: 1,
+                              onPressed: (BuildContext context) async {
+                                posController.printKOT(cancelList: [],isUpdate:false,orderID:carController.carOrders[index].salesOrderID!,rePrint:true);
+                              },
+                              backgroundColor: const Color(0xFF00775E),
+                              foregroundColor: Colors.green,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/svg/kot_print.svg',
+                                    height: 25,
+                                    width: 25,
+                                    //
+                                  ),
+                                  Text("Kot", style: customisedStyle(context, Colors.white, FontWeight.w400, 12.0))
+                                ],
+                              ),
+                            ):Container(),
+                            CustomSlidableAction(
+                              flex: 1,
+                              onPressed: (BuildContext context) async {
 
-                            },
-                            backgroundColor: const Color(0xFF00775E),
-                            foregroundColor: Colors.green,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/svg/print.svg', //
-                                ),
-                                Text("KOT", style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0))
-                              ],
+
+                                carController.printSection(
+                                    context: context,
+                                    id: carController.carOrders[index].status == 'Ordered'
+                                        ? carController.carOrders[index].salesOrderID!
+                                        : carController.carOrders[index].salesID!,
+                                    isCancelled: false,
+                                    voucherType: carController.carOrders[index].status == 'Ordered'?"SO":"SI");
+
+                              },
+                              backgroundColor: const Color(0xFF034FC1),
+                              foregroundColor: Colors.green,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/svg/print.svg', //
+                                  ),
+                                  Text(
+                                    "Print",
+                                    style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          CustomSlidableAction(
-                            flex: 2,
-                            onPressed: (BuildContext context) async {
+                          ],
+                        ),
 
-
-                              carController.printSection(
-                                  context: context,
-                                  id: carController.carOrders[index].status == 'Ordered'
-                                      ? carController.carOrders[index].salesOrderID!
-                                      : carController.carOrders[index].salesID!,
-                                  isCancelled: false,
-                                  voucherType: carController.carOrders[index].status == 'Ordered'?"SO":"SI");
-
-                            },
-                            backgroundColor: const Color(0xFF034FC1),
-                            foregroundColor: Colors.green,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/svg/print.svg', //
-                                ),
-                                Text(
-                                  "Print",
-                                  style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        children: [
-                          CustomSlidableAction(
-                            onPressed: (BuildContext context) async {
-                              if(carController.carOrders[index].status == 'Ordered'){
-                                var result = await Get.to(CancelOrderList());
-                                if(result !=null){
-                                  carController.cancelOrderApi(context:context,type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: carController.carOrders[index].salesOrderID!);
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            CustomSlidableAction(
+                              onPressed: (BuildContext context) async {
+                                if(carController.carOrders[index].status == 'Ordered'){
+                                  var result = await Get.to(CancelOrderList());
+                                  if(result !=null){
+                                    carController.cancelOrderApi(context:context,type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: carController.carOrders[index].salesOrderID!);
+                                  }
                                 }
-                              }
-                              else{
-                                carController.cancelOrderApi(context:context,type: "Car", tableID: "", cancelReasonId: "", orderID:carController.carOrders[index].salesOrderID!);
-                              }
+                                else{
+                                  carController.cancelOrderApi(context:context,type: "Car", tableID: "", cancelReasonId: "", orderID:carController.carOrders[index].salesOrderID!);
+                                }
 
 
-                            },
-                            backgroundColor: const Color(0xFFFC3636),
-                            foregroundColor: Colors.green,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.clear,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  carController.carOrders[index].status == 'Ordered'?"Cancel":"Clear",
-                                  style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
-                                )
-                              ],
+                              },
+                              backgroundColor: const Color(0xFFFC3636),
+                              foregroundColor: Colors.green,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.clear,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    carController.carOrders[index].status == 'Ordered'?"Cancel":"Clear",
+                                    style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          CustomSlidableAction(
-                            onPressed: (BuildContext context) async {
-                              var resultPayment = await Get.to(PaymentPage(
-                                uID: carController.carOrders[index].salesOrderID!,
-                                tableID: "",
-                                orderType: 2,
-                              ));
+                            CustomSlidableAction(
+                              onPressed: (BuildContext context) async {
+                                var resultPayment = await Get.to(PaymentPage(
+                                  uID: carController.carOrders[index].salesOrderID!,
+                                  tableID: "",
+                                  orderType: 2,
+                                ));
 
-                              carController.carOrders.clear();
-                              carController.fetchAllData();
-                              carController.update();
-                            },
-                            backgroundColor: const Color(0xFF10C103),
-                            foregroundColor: Colors.green,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  "Pay",
-                                  style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
-                                )
-                              ],
+                                carController.carOrders.clear();
+                                carController.fetchAllData();
+                                carController.update();
+                              },
+                              backgroundColor: const Color(0xFF10C103),
+                              foregroundColor: Colors.green,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    "Pay",
+                                    style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
 
 
-                        ],
-                      ),
+                          ],
+                        ),
 
-                      child: GestureDetector(
-                        onTap: () async {
-                          // if (carController.takeAwayOrders[index].status == 'Ordered') {
-                          //   var result = await Get.to(OrderCreateView(
-                          //     orderType: 2,
-                          //     sectionType: "Edit",
-                          //     uID: takeAwayController.carOrders[index].salesOrderID!,
-                          //     tableHead: "Parcel",
-                          //     tableID: "",
-                          //   ));
-                          //
-                          //   if (result != null) {
-                          //     if (result[1]) {
-                          //       Get.to(PaymentPage(
-                          //         uID: result[2],
-                          //         tableID: takeAwayController.carOrders[index].salesOrderID!,
-                          //         orderType: 2,
-                          //       ));
-                          //     }
-                          //   }
-                          // }
-                        },
-                        child: InkWell(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 8.0),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "Car Order ${index + 1} -",
-                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                                              ),
-                                              Text(
-                                                " #",
-                                                style: customisedStyle(context, const Color(0xff9B9B9B), FontWeight.w400, 14.0),
-                                              ),
-                                              Text(
-                                                "Token ${carController.carOrders[index].tokenNumber!}",
-                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-
-                                          },
-                                          child: Container(
-                                            height: MediaQuery.of(context).size.height / 32,
-                                            decoration: BoxDecoration(
-                                              color: _getBackgroundColor(carController.carOrders[index].status!),
-                                              borderRadius: BorderRadius.circular(30),
+                        child: GestureDetector(
+                          onTap: () async {
+                            // if (carController.takeAwayOrders[index].status == 'Ordered') {
+                            //   var result = await Get.to(OrderCreateView(
+                            //     orderType: 2,
+                            //     sectionType: "Edit",
+                            //     uID: takeAwayController.carOrders[index].salesOrderID!,
+                            //     tableHead: "Parcel",
+                            //     tableID: "",
+                            //   ));
+                            //
+                            //   if (result != null) {
+                            //     if (result[1]) {
+                            //       Get.to(PaymentPage(
+                            //         uID: result[2],
+                            //         tableID: takeAwayController.carOrders[index].salesOrderID!,
+                            //         orderType: 2,
+                            //       ));
+                            //     }
+                            //   }
+                            // }
+                          },
+                          child: InkWell(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 8.0),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Car Order ${index + 1} -",
+                                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                ),
+                                                Text(
+                                                  " #",
+                                                  style: customisedStyle(context, const Color(0xff9B9B9B), FontWeight.w400, 14.0),
+                                                ),
+                                                Text(
+                                                  "Token ${carController.carOrders[index].tokenNumber!}",
+                                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                ),
+                                              ],
                                             ),
-                                            child: Center(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(left: 10.0, right: 10),
-                                                child: Text(
-                                                  carController.carOrders[index].status!,
-                                                  style: TextStyle(
-                                                      fontSize: 11,
-                                                      color: carController.carOrders[index].status == "Vacant" ? Colors.black : Colors.white),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+
+                                            },
+                                            child: Container(
+                                              height: MediaQuery.of(context).size.height / 32,
+                                              decoration: BoxDecoration(
+                                                color: _getBackgroundColor(carController.carOrders[index].status!),
+                                                borderRadius: BorderRadius.circular(30),
+                                              ),
+                                              child: Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0, right: 10),
+                                                  child: Text(
+                                                    carController.carOrders[index].status!,
+                                                    style: TextStyle(
+                                                        fontSize: 11,
+                                                        color: carController.carOrders[index].status == "Vacant" ? Colors.black : Colors.white),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 8.0),
-                                          child: Text(
-                                            carController.carOrders[index].customerName!,
-                                            style: customisedStyle(context, const Color(0xffA0A0A0), FontWeight.w400, 13.0),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 8.0),
+                                            child: Text(
+                                              carController.carOrders[index].customerName!,
+                                              style: customisedStyle(context, const Color(0xffA0A0A0), FontWeight.w400, 13.0),
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          carController.returnOrderTime(
-                                              carController.carOrders[index].orderTime!, carController.carOrders[index].status!),
-                                          style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  roundStringWith(carController.carOrders[index].salesOrderGrandTotal!),
-                                  style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                )
-                              ],
+                                          Text(
+                                            carController.returnOrderTime(
+                                                carController.carOrders[index].orderTime!, carController.carOrders[index].status!),
+                                            style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    roundStringWith(carController.carOrders[index].salesOrderGrandTotal!),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 )))),
 
 
