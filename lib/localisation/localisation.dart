@@ -355,7 +355,8 @@ class LocaleChange extends Translations {
           'Table_Order':'Table Order',
           'Details':'Details',
           'Platform(Online Only)':'Platform(Online Only)',
-          'Print For Cancelled Order': 'Print For Cancelled Order'
+          'Print For Cancelled Order': 'Print For Cancelled Order',
+          'direct_order_option': 'Direct order option'
         },
 
         ///
@@ -364,6 +365,7 @@ class LocaleChange extends Translations {
         ///
         'ar': {
   'Print For Cancelled Order':'طباعة للطلب الملغى',
+  'direct_order_option': 'خيار الطلب المباشر',
   'Platform(Online Only)':'النظام الأساسي (عبر الإنترنت فقط)',
   'Details':'تفاصيل',
   'Table_Order':'ترتيب الجدول',

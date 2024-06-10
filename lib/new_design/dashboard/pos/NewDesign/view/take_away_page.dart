@@ -21,7 +21,7 @@ class TakeAway extends StatefulWidget {
 
 class _TakeAwayState extends State<TakeAway> {
   final POSController takeAwayController = Get.put(POSController());
-
+  final POSController posController = Get.put(POSController());
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
       return Color(0xffEFEFEF); // Set your desired color for pending status
@@ -69,7 +69,6 @@ class _TakeAwayState extends State<TakeAway> {
         ],
       ),
       body: Column(children: [
-
         DividerStyle(),
         Expanded(
             child: Obx(() => takeAwayController.isLoading.value
@@ -78,261 +77,277 @@ class _TakeAwayState extends State<TakeAway> {
                     ? const Center(child: Text("No recent orders"))
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
-                        child: ListView.separated(
-                          separatorBuilder: (context, index) => DividerStyle(),
-                          itemCount: takeAwayController.takeAwayOrders.length,
-                          itemBuilder: (context, index) {
-                            return Slidable(
-                              key: ValueKey(takeAwayController.takeAwayOrders[index]),
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            takeAwayController.tableData.clear();
+                            takeAwayController.fetchAllData();
+                            takeAwayController.update();
+                          },
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) => DividerStyle(),
+                            itemCount: takeAwayController.takeAwayOrders.length,
+                            itemBuilder: (context, index) {
+                              return Slidable(
+                                key: ValueKey(takeAwayController.takeAwayOrders[index]),
 
-                              // The start action pane is the one at the left or the top side.
-                              startActionPane: ActionPane(
-                                // A motion is a widget used to control how the pane animates.
-                                motion: const ScrollMotion(),
+                                // The start action pane is the one at the left or the top side.
+                                startActionPane: ActionPane(
+                                  // A motion is a widget used to control how the pane animates.
+                                  motion: const ScrollMotion(),
 
-                                children: [
-                                  CustomSlidableAction(
-                                    flex: 2,
-                                    onPressed: (BuildContext context) async {},
-                                    backgroundColor: const Color(0xFF00775E),
-                                    foregroundColor: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/svg/print.svg', //
-                                        ),
-                                        Text("KOT", style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0))
-                                      ],
+                                  children: [
+                                    takeAwayController.takeAwayOrders[index].status == 'Ordered'?  CustomSlidableAction(
+                                      flex: 2,
+                                      onPressed: (BuildContext context) async {
+                                        posController.printKOT(cancelList: [],isUpdate:false,orderID:takeAwayController.takeAwayOrders[index].salesOrderID!,rePrint:true);
+                                      },
+                                      backgroundColor: const Color(0xFF00775E),
+                                      foregroundColor: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/svg/kot_print.svg',
+                                            height: 25,
+                                            width: 25,
+                                            //
+                                          ),
+                                          Text("Kot", style: customisedStyle(context, Colors.white, FontWeight.w400, 12.0))
+                                        ],
+                                      ),
+                                    ):Container(),
+                                    CustomSlidableAction(
+                                      flex: 2,
+                                      onPressed: (BuildContext context) async {
+                                        print("${takeAwayController.takeAwayOrders[index].salesID!}");
+
+                                        takeAwayController.printSection(
+                                            context: context,
+                                            id: takeAwayController.takeAwayOrders[index].status == 'Ordered'
+                                                ? takeAwayController.takeAwayOrders[index].salesOrderID!
+                                                : takeAwayController.takeAwayOrders[index].salesID!,
+                                            isCancelled: false,
+                                            voucherType: takeAwayController.takeAwayOrders[index].status == 'Ordered' ? "SO" : "SI");
+                                      },
+                                      backgroundColor: const Color(0xFF034FC1),
+                                      foregroundColor: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/svg/print.svg', //
+                                          ),
+                                          Text(
+                                            "Print",
+                                            style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  CustomSlidableAction(
-                                    flex: 2,
-                                    onPressed: (BuildContext context) async {
+                                  ],
+                                ),
 
-
-                                      print("${takeAwayController.takeAwayOrders[index].salesID!}");
-
-
-                                      takeAwayController.printSection(
-                                          context: context,
-                                          id: takeAwayController.takeAwayOrders[index].status == 'Ordered'
-                                              ? takeAwayController.takeAwayOrders[index].salesOrderID!
-                                              : takeAwayController.takeAwayOrders[index].salesID!,
-                                          isCancelled: false,
-                                          voucherType: takeAwayController.takeAwayOrders[index].status == 'Ordered'?"SO":"SI");
-
-                                    },
-                                    backgroundColor: const Color(0xFF034FC1),
-                                    foregroundColor: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/svg/print.svg', //
-                                        ),
-                                        Text(
-                                          "Print",
-                                          style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              endActionPane: ActionPane(
-                                motion: const ScrollMotion(),
-                                children: [
-                                  CustomSlidableAction(
-                                    onPressed: (BuildContext context) async {
-
-                                      if(takeAwayController.takeAwayOrders[index].status == 'Ordered'){
-                                        var result = await Get.to(CancelOrderList());
-                                        if(result !=null){
-                                          takeAwayController.cancelOrderApi(type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: takeAwayController.takeAwayOrders[index].salesOrderID!);
+                                endActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    CustomSlidableAction(
+                                      onPressed: (BuildContext context) async {
+                                        if (takeAwayController.takeAwayOrders[index].status == 'Ordered') {
+                                          var result = await Get.to(CancelOrderList());
+                                          if (result != null) {
+                                            takeAwayController.cancelOrderApi(
+                                                context: context,
+                                                type: "Cancel",
+                                                tableID: "",
+                                                cancelReasonId: result[1],
+                                                orderID: takeAwayController.takeAwayOrders[index].salesOrderID!);
+                                          }
+                                        } else {
+                                          takeAwayController.cancelOrderApi(
+                                              context: context,
+                                              type: "TakeAway",
+                                              tableID: "",
+                                              cancelReasonId: "",
+                                              orderID: takeAwayController.takeAwayOrders[index].salesOrderID!);
                                         }
-                                      }
-                                      else{
-                                        takeAwayController.cancelOrderApi(type: "TakeAway", tableID: "", cancelReasonId: "", orderID:takeAwayController.takeAwayOrders[index].salesOrderID!);
-                                      }
-                                    },
-                                    backgroundColor: const Color(0xFFFC3636),
-                                    foregroundColor: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.clear,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          takeAwayController.takeAwayOrders[index].status == 'Ordered' ?"Cancel":"Clear",
-                                          style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
-                                        )
-                                      ],
+                                      },
+                                      backgroundColor: const Color(0xFFFC3636),
+                                      foregroundColor: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.clear,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            takeAwayController.takeAwayOrders[index].status == 'Ordered' ? "Cancel" : "Clear",
+                                            style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  CustomSlidableAction(
-                                    onPressed: (BuildContext context) async {
-                                      var resultPayment = await Get.to(PaymentPage(
-                                        uID: takeAwayController.takeAwayOrders[index].salesOrderID!,
-                                        tableID: "",
-                                        orderType: 2,
-                                      ));
-
-                                      takeAwayController.takeAwayOrders.clear();
-                                      takeAwayController.fetchAllData();
-                                      takeAwayController.update();
-                                    },
-                                    backgroundColor: const Color(0xFF10C103),
-                                    foregroundColor: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.check,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          "Pay",
-                                          style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-
-                                  ///kot commented here
-                                  // CustomSlidableAction(
-                                  //
-                                  //   onPressed: (BuildContext context) async {},
-                                  //   backgroundColor: const Color(0xFF0C98FF),
-                                  //   foregroundColor: Colors.green,
-                                  //   child: Column(
-                                  //     mainAxisAlignment: MainAxisAlignment.center,
-                                  //     crossAxisAlignment: CrossAxisAlignment.center,
-                                  //     children: [
-                                  //       SvgPicture.asset("assets/svg/edit_new.svg"),
-                                  //       Text("KOT",style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),)
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-
-                              child: GestureDetector(
-                                onTap: () async {
-                                  if (takeAwayController.takeAwayOrders[index].status == 'Ordered') {
-                                    var result = await Get.to(OrderCreateView(
-                                      orderType: 2,
-                                      sectionType: "Edit",
-                                      uID: takeAwayController.takeAwayOrders[index].salesOrderID!,
-                                      tableHead: "Parcel",
-                                      tableID: "",
-                                      cancelOrder: takeAwayController.cancelOrder,
-                                    ));
-
-                                    if (result != null) {
-                                      if (result[1]) {
-                                        Get.to(PaymentPage(
-                                          uID: result[2],
-                                          tableID: takeAwayController.takeAwayOrders[index].salesOrderID!,
+                                    CustomSlidableAction(
+                                      onPressed: (BuildContext context) async {
+                                        var resultPayment = await Get.to(PaymentPage(
+                                          uID: takeAwayController.takeAwayOrders[index].salesOrderID!,
+                                          tableID: "",
                                           orderType: 2,
                                         ));
+
+                                        takeAwayController.takeAwayOrders.clear();
+                                        takeAwayController.fetchAllData();
+                                        takeAwayController.update();
+                                      },
+                                      backgroundColor: const Color(0xFF10C103),
+                                      foregroundColor: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            "Pay",
+                                            style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+
+                                    ///kot commented here
+                                    // CustomSlidableAction(
+                                    //
+                                    //   onPressed: (BuildContext context) async {},
+                                    //   backgroundColor: const Color(0xFF0C98FF),
+                                    //   foregroundColor: Colors.green,
+                                    //   child: Column(
+                                    //     mainAxisAlignment: MainAxisAlignment.center,
+                                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                                    //     children: [
+                                    //       SvgPicture.asset("assets/svg/edit_new.svg"),
+                                    //       Text("KOT",style: customisedStyle(context, Colors.white, FontWeight.w400, 10.0),)
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    if (takeAwayController.takeAwayOrders[index].status == 'Ordered') {
+                                      var result = await Get.to(OrderCreateView(
+                                        orderType: 2,
+                                        sectionType: "Edit",
+                                        uID: takeAwayController.takeAwayOrders[index].salesOrderID!,
+                                        tableHead: "Parcel",
+                                        tableID: "",
+                                        cancelOrder: takeAwayController.cancelOrder,
+                                      ));
+
+                                      if (result != null) {
+                                        if (result[1]) {
+                                          Get.to(PaymentPage(
+                                            uID: result[2],
+                                            tableID: takeAwayController.takeAwayOrders[index].salesOrderID!,
+                                            orderType: 2,
+                                          ));
+                                        }
                                       }
                                     }
-                                  }
-                                },
-                                child: InkWell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 15.0, right: 15, top: 15, bottom: 15),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.only(right: 8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        "Parcel ${index + 1} -",
-                                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                                                      ),
-                                                      Text(
-                                                        " #",
-                                                        style: customisedStyle(context, Color(0xff9B9B9B), FontWeight.w400, 15.0),
-                                                      ),
-                                                      Text(
-                                                        "Token ${takeAwayController.takeAwayOrders[index].tokenNumber!}",
-                                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {},
-                                                  child: Container(
-                                                    height: MediaQuery.of(context).size.height / 32,
-                                                    decoration: BoxDecoration(
-                                                      color: _getBackgroundColor(takeAwayController.takeAwayOrders[index].status!),
-                                                      borderRadius: BorderRadius.circular(30),
+                                  },
+                                  child: InkWell(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 15, bottom: 15),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(right: 8.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "Parcel ${index + 1} -",
+                                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                                        ),
+                                                        Text(
+                                                          " #",
+                                                          style: customisedStyle(context, Color(0xff9B9B9B), FontWeight.w400, 15.0),
+                                                        ),
+                                                        Text(
+                                                          "Token ${takeAwayController.takeAwayOrders[index].tokenNumber!}",
+                                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    child: Center(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0, right: 10),
-                                                        child: Text(
-                                                          takeAwayController.takeAwayOrders[index].status!,
-                                                          style: TextStyle(
-                                                              fontSize: 11,
-                                                              color: takeAwayController.takeAwayOrders[index].status == "Vacant"
-                                                                  ? Colors.black
-                                                                  : Colors.white),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {},
+                                                    child: Container(
+                                                      height: MediaQuery.of(context).size.height / 32,
+                                                      decoration: BoxDecoration(
+                                                        color: _getBackgroundColor(takeAwayController.takeAwayOrders[index].status!),
+                                                        borderRadius: BorderRadius.circular(30),
+                                                      ),
+                                                      child: Center(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 10.0, right: 10),
+                                                          child: Text(
+                                                            takeAwayController.takeAwayOrders[index].status!,
+                                                            style: TextStyle(
+                                                                fontSize: 11,
+                                                                color: takeAwayController.takeAwayOrders[index].status == "Vacant"
+                                                                    ? Colors.black
+                                                                    : Colors.white),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.only(right: 8.0),
-                                                  child: Text(
-                                                    takeAwayController.takeAwayOrders[index].customerName!,
-                                                    style: customisedStyle(context, Color(0xffA0A0A0), FontWeight.w400, 13.0),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(right: 8.0),
+                                                    child: Text(
+                                                      takeAwayController.takeAwayOrders[index].customerName!,
+                                                      style: customisedStyle(context, Color(0xffA0A0A0), FontWeight.w400, 13.0),
+                                                    ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  takeAwayController.returnOrderTime(takeAwayController.takeAwayOrders[index].orderTime!,
-                                                      takeAwayController.takeAwayOrders[index].status!),
-                                                  style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          roundStringWith(takeAwayController.takeAwayOrders[index].salesOrderGrandTotal!),
-                                          style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                        )
-                                      ],
+                                                  Text(
+                                                    takeAwayController.returnOrderTime(takeAwayController.takeAwayOrders[index].orderTime!,
+                                                        takeAwayController.takeAwayOrders[index].status!),
+                                                    style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            roundStringWith(takeAwayController.takeAwayOrders[index].salesOrderGrandTotal!),
+                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ))))
       ]),
       bottomNavigationBar: Padding(
@@ -344,7 +359,7 @@ class _TakeAwayState extends State<TakeAway> {
             TextButton(
                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () async {
-                  var result = await Get.to(  OrderCreateView(
+                  var result = await Get.to(OrderCreateView(
                     orderType: 2,
                     sectionType: "Create",
                     uID: "",

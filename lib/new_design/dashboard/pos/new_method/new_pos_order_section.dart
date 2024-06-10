@@ -5281,16 +5281,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
 
           if(printAfterOrder){
-
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = n["OrderID"];
             await printDetail(context);
           }
 
-
-
          // dialogBoxHide(context, 'Order created successfully !!!');
-
           Future.delayed(const Duration(seconds: 1), () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             var kot = prefs.getBool("KOT") ?? false;
@@ -5562,7 +5558,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           var id = n["OrderID"];
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
-
+//
           if(printAfterOrder){
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = id;
@@ -5572,10 +5568,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           // dialogBoxHide(context, 'Order updated successfully !!!');
 
           Future.delayed(const Duration(seconds: 1), () async {
-            print("-------id-------");
-            print(id);
-            print("-------id-------");
-
             /// kot section
             SharedPreferences prefs = await SharedPreferences.getInstance();
             var kot = prefs.getBool("KOT") ?? false;
@@ -5584,7 +5576,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               PrintDataDetails.type = "SO";
               PrintDataDetails.id = id;
               printKOT(id, false, cancelPrint, true);
-            } else {}
+            }
+            else {
+
+            }
           });
         } else if (status == 6001) {
           stop();
@@ -5730,12 +5725,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Container(
-                          //    width: MediaQuery.of(context).size.width / 5,
+                          //  width: MediaQuery.of(context).size.width / 5,
                           height: MediaQuery.of(context).size.height / 18,
                           child: const Text(
                             'Loyalty Customer',
                             style: TextStyle(fontSize: 20),
-                          )),
+                          )
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -5755,7 +5751,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               onChanged: (text) {
                                 setState(() {
                                   charLength = text.length;
-
                                   _searchLoyaltyCustomer(text);
                                 });
                               },

@@ -5,7 +5,7 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/search_controlletr.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class SearchItems extends StatefulWidget {
   @override
   State<SearchItems> createState() => _SearchItemsState();
@@ -14,17 +14,14 @@ class SearchItems extends StatefulWidget {
 class _SearchItemsState extends State<SearchItems> {
   OrderController orderController = Get.put(OrderController());
   var selectedItem = '';
-  SearchOrderController searchOrderController =
-      Get.put(SearchOrderController());
+//  orderController orderController = Get.put(orderController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    searchOrderController.fetchProducts(
-        productName: "", isCode: false, isDescription: false);
-
-    searchOrderController.update();
+    orderController.searchItems(productName: "", isCode: false, isDescription: false);
+    orderController.update();
   }
 
   @override
@@ -54,7 +51,7 @@ class _SearchItemsState extends State<SearchItems> {
             child: IconButton(
                 onPressed: () {
                   //Get.back();
-                  print(searchOrderController.products.length);
+                  print(orderController.searchProductList.length);
                 },
                 icon: Icon(
                   Icons.clear,
@@ -73,35 +70,37 @@ class _SearchItemsState extends State<SearchItems> {
             autoFocus: false,
             mHeight: MediaQuery.of(context).size.height / 18,
             hintText: 'search'.tr,
-            controller: searchOrderController.searchController,
+            controller: orderController.searchController,
             onChanged: (quary) async {
-              searchOrderController.fetchProducts(
+              orderController.searchItems(
                   productName: quary, isCode: false, isDescription: false);
               print("search resul :$quary ");
             },
           ),
           DividerStyle(),
           SizedBox(
-            height: 8,
+            height: 10,
           ),
+
+
           Container(
             height: MediaQuery.of(context).size.height / 18,
-            width: MediaQuery.of(context).size.width * 0.35,
+         //   width: MediaQuery.of(context).size.width * 0.35,
             decoration: BoxDecoration(
                 color: Color(0xffFFF6F2),
                 borderRadius: BorderRadius.circular(29)),
             child: Padding(
-              padding: const EdgeInsets.only(left: 6.0),
+              padding: const EdgeInsets.only(left: 8.0,right: 8.0),
               child: DropdownButton(
                 // Initial Value
-                value: searchOrderController.dropdownvalue,
+                value: orderController.dropdownvalue,
                 underline: Container(color: Colors.transparent),
 
                 // Down Arrow Icon
                 icon: SvgPicture.asset("assets/svg/drop_arrow.svg"),
                 // Array list of items
 
-                items: searchOrderController.items.map((String items) {
+                items: orderController.items.map((String items) {
                   return DropdownMenuItem(
                     value: items,
                     child: Padding(
@@ -115,26 +114,27 @@ class _SearchItemsState extends State<SearchItems> {
                 // After selecting the desired option,it will
                 // change button value to selected value
                 onChanged: (String? newValue) {
-                  searchOrderController.dropdownvalue = newValue!;
-                  searchOrderController.update();
+                  orderController.dropdownvalue = newValue!;
+                  print(orderController.dropdownvalue);
+                  orderController.update();
                 },
               ),
             ),
           ),
           SizedBox(
-            height: 8,
+            height: 10,
           ),
           DividerStyle(),
           Expanded(child: Obx(() {
 
-            if (searchOrderController.isLoading.value) {
+            if (orderController.isLoading.value) {
               return Center(child: CircularProgressIndicator());
             } else {
-              return searchOrderController.products.isEmpty?Center(child: Text("No results found")):
+              return orderController.searchProductList.isEmpty?Center(child: Text("No results found")):
 
                 ListView.separated(
                 separatorBuilder: (context, index) => DividerStyle(),
-                itemCount: searchOrderController.products.length,
+                itemCount: orderController.searchProductList.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(
@@ -161,7 +161,7 @@ class _SearchItemsState extends State<SearchItems> {
                             children: [
                               SvgPicture.asset(
                                 "assets/svg/veg_mob.svg",
-                               color:  searchOrderController.products[index]['VegOrNonVeg']=="Non-veg"? const Color(0xff00775E) :
+                               color:  orderController.searchProductList[index].vegOrNonVeg=="Non-veg"? const Color(0xff00775E) :
                                const Color(0xffDF1515),
                               ),
                               Padding(
@@ -171,8 +171,7 @@ class _SearchItemsState extends State<SearchItems> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.5,
                                   child: Text(
-                                    searchOrderController.products[index]['ProductName'],
-
+                                    orderController.searchProductList[index].productName,
                                     style: customisedStyle(context,
                                         Colors.black, FontWeight.w400, 15.0),
                                     maxLines: 3,
@@ -197,7 +196,7 @@ class _SearchItemsState extends State<SearchItems> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 5.0),
                                       child: Text(
-                                        searchOrderController.products[index]['DefaultSalesPrice'].toString(),
+                                        roundStringWith(orderController.searchProductList[index].defaultSalesPrice.toString()),
                                         style: customisedStyle(
                                             context,
                                             Colors.black,
@@ -215,40 +214,103 @@ class _SearchItemsState extends State<SearchItems> {
                         Stack(
                           alignment: Alignment.bottomCenter,
                           children: <Widget>[
-                            Container(
-                              height: MediaQuery.of(context).size.height / 7,
-                              width: MediaQuery.of(context).size.width / 4,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Container(
 
-                                  searchOrderController.products[index]['ProductImage']== ''
-                                      ?  Positioned.fill(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        'https://picsum.photos/250?image=9',
-                                        fit: BoxFit.cover,
+                                height: MediaQuery.of(context).size.height / 7,
+                                width: MediaQuery.of(context).size.width / 4,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    orderController.searchProductList[index].productImage
+                                        ==""?  Positioned.fill(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          'https://picsum.photos/250?image=9',
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                  ):
-                                  Positioned.fill(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        searchOrderController.products[index]['ProductImage'],
-                                        fit: BoxFit.cover,
+                                    ):
+                                    Positioned.fill(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          orderController.searchProductList[index].productImage,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                             Positioned(
                               bottom: 15,
+
                               child: GestureDetector(
-                                onTap: () {},
+                                onTap: ()async {
+                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                                  var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
+
+                                  orderController.unitPriceAmountWR.value = orderController.searchProductList[index].defaultSalesPrice;
+                                  orderController.inclusiveUnitPriceAmountWR.value = orderController.searchProductList[index].defaultSalesPrice;
+                                  orderController.vatPer.value = double.parse(orderController.searchProductList[index].vatsSalesTax);
+                                  orderController.gstPer.value = double.parse(orderController.searchProductList[index].gSTSalesTax);
+
+                                  orderController.priceListID.value = orderController.searchProductList[index].defaultUnitID;
+                                  orderController.productName.value = orderController.searchProductList[index].productName;
+                                  orderController.item_status.value = "pending";
+                                  orderController.unitName.value = orderController.searchProductList[index].defaultUnitName;
+
+                                  var taxDetails = orderController.searchProductList[index].taxDetails;
+                                  if (taxDetails != "") {
+                                    orderController.productTaxID.value = taxDetails["TaxID"];
+                                    orderController.productTaxName.value = taxDetails["TaxName"];
+                                  }
+
+                                  orderController.detailID.value = 1;
+                                  orderController.salesPrice.value = orderController.searchProductList[index].defaultSalesPrice;
+                                  orderController.purchasePrice.value =
+                                      orderController.searchProductList[index].defaultPurchasePrice;
+                                  orderController.productID.value = orderController.searchProductList[index].productID;
+                                  orderController.isInclusive.value = orderController.searchProductList[index].isInclusive;
+
+                                  orderController.detailIdEdit.value = 0;
+                                  orderController.flavourID.value = "";
+                                  orderController.flavourName.value = "";
+
+                                  var newTax = orderController.searchProductList[index].exciseData;
+
+                                  if (newTax != "") {
+                                    orderController.isExciseProduct.value = true;
+                                    orderController.exciseTaxID.value = newTax["TaxID"];
+                                    orderController.exciseTaxName.value = newTax["TaxName"];
+                                    orderController.BPValue.value = newTax["BPValue"].toString();
+                                    orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
+                                    orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
+                                    orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
+                                    orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
+                                  } else {
+                                    orderController.exciseTaxID.value = 0;
+                                    orderController.exciseTaxName.value = "";
+                                    orderController.BPValue.value = "0";
+                                    orderController.exciseTaxBefore.value = "0";
+                                    orderController.isAmountTaxBefore.value = false;
+                                    orderController.isAmountTaxAfter.value = false;
+                                    orderController.isExciseProduct.value = false;
+                                    orderController.exciseTaxAfter.value = "0";
+                                  }
+                                  orderController.unique_id.value = "0";
+                                  orderController.calculation();
+
+                                  Get.back();
+                                 // setState(() {});
+
+                                },
                                 child: SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height / 30,

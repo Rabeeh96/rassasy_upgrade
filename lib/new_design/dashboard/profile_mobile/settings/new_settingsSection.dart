@@ -7,7 +7,7 @@ import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/add_pri
 
 import 'general_setting/general_setting.dart';
 import 'online_platforms/list_online_platforms.dart';
-import 'printer_setting/printer_setting.dart';
+import 'printer_setting/printer_detailed_setting.dart';
 
 class SettingsMobilePage extends StatefulWidget {
   @override

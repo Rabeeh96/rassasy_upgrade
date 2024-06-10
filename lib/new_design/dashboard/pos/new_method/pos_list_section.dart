@@ -70,6 +70,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   String userName = "";
   bool dining_view_perm = false;
   bool reservation_view_perm = false;
+  bool directOrderOption = false;
   bool take_away_view_perm = false;
   bool car_view_perm = false;
 
@@ -148,6 +149,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       userName = prefs.getString('user_name')!;
       dining_view_perm = prefs.getBool('Diningview') ?? true;
       reservation_view_perm = prefs.getBool('View Reservation') ?? true;
+      directOrderOption = prefs.getBool('directOrderOption') ?? false;
       take_away_view_perm = prefs.getBool('Take awayview') ?? true;
       car_view_perm = prefs.getBool('Carview') ?? true;
 
@@ -783,6 +785,22 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     }
   }
 
+  redirectToOrder(sectionType)async{
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => POSOrderSection(
+            sectionType: sectionType,
+            orderType: mainPageIndex,
+            tableID: "",
+            UUID: "",
+            tableHead: "Take away",
+          )
+      ),
+    );
+    posFunctions(callFunction: true);
+  }
+
   navigateToPaymentFromOrder({required tableID, required tableHead, required UUID}) async {
     var result = await Navigator.push(
       context,
@@ -801,7 +819,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         mainPageIndex = result[0];
       });
     }
-    posFunctions(callFunction: true);
+
+    if(directOrderOption){
+      redirectToOrder("Create");
+    }
+    else{
+      posFunctions(callFunction: true);
+    }
   }
 
   returnDiningListItem(dineIndex) {
@@ -1151,15 +1175,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   // }
 
   ReprintKOT(orderID, isCancelled) async {
-    print("___orderID_____orderID_____orderID____orderID_____$orderID");
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     if (printType == 'Wifi') {
-      printHelperIP.printKotPrint(orderID, true, [], false, isCancelled);
+      var loadData = printHelperIP.printKotPrint(orderID, true, [], false, isCancelled);
     } else {
       var loadData = printHelperUsb.printKotPrint(orderID, true, [], false);
-      //  var loadData = await bluetoothHelper.bluetoothPrintKOT(context,true,orderID);
-      print('-loadData-------------$loadData');
     }
   }
 
@@ -1246,7 +1268,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                                         if (sectionType == 1) {
                                           if (diningOrderList[tableIndex].status == "Ordered") {
-                                            print(diningOrderList[tableIndex].salesOrderID);
+
                                             Navigator.pop(context);
                                             PrintDataDetails.type = "SO";
                                             PrintDataDetails.id = diningOrderList[tableIndex].salesOrderID;
@@ -1256,7 +1278,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                             Navigator.pop(context);
                                             PrintDataDetails.type = "SI";
                                             PrintDataDetails.id = diningOrderList[tableIndex].salesMasterID;
-
                                             printDetail(false);
                                           }
                                         } else if (sectionType == 2) {
@@ -2580,13 +2601,16 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           stop();
           await getTableOrderList();
 
-          if (printForCancellOrder) {
-            PrintDataDetails.type = "SO";
-            PrintDataDetails.id = orderID;
-            await printDetail(true);
-          }
-          if (orderID != "") {
-            await ReprintKOT(orderID, true);
+          if(cancelReasonId!=""){
+            if(printForCancellOrder) {
+              PrintDataDetails.type = "SO";
+              PrintDataDetails.id = orderID;
+              await printDetail(true);
+              if (orderID != "") {
+                await ReprintKOT(orderID, true);
+              }
+            }
+
           }
         } else if (status == 6001) {
           stop();

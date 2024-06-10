@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ final isLoadTable=false.obs;
 
   @override
   void onInit() {
+
     tabIndex.value = 0;
     fetchAllData();
     update();
@@ -87,6 +89,7 @@ final isLoadTable=false.obs;
 
   final TableService _tableService = TableService();
   var tableData = <Data>[].obs;
+  var fullOrderData = <Data>[].obs;
   var onlineOrders = <Online>[].obs;
   var takeAwayOrders = <TakeAway>[].obs;
   var carOrders = <Car>[].obs;
@@ -135,8 +138,9 @@ final isLoadTable=false.obs;
       var userID = prefs.getInt('user_id') ?? 0;
       var accessToken = prefs.getString('access') ?? '';
       var fetchedData = await _tableService.fetchAllData(accessToken);
-
+      selectedIndexNotifier.value = 0;
       tableData.assignAll((fetchedData['data'] as List).map((json) => Data.fromJson(json)).toList());
+      fullOrderData.assignAll((fetchedData['data'] as List).map((json) => Data.fromJson(json)).toList());
       onlineOrders.assignAll((fetchedData['Online'] as List).map((json) => Online.fromJson(json)).toList());
       takeAwayOrders.assignAll((fetchedData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
       carOrders.assignAll((fetchedData['Car'] as List).map((json) => Car.fromJson(json)).toList());
@@ -208,7 +212,7 @@ final isLoadTable=false.obs;
   }
   /// cancel
 
-  Future<void> cancelOrderApi({required String type,required  String tableID,required String cancelReasonId,required String orderID}) async {
+  Future<void> cancelOrderApi({required BuildContext context,required String type,required  String tableID,required String cancelReasonId,required String orderID}) async {
     try {
       isLoading(true);
 
@@ -236,10 +240,12 @@ final isLoadTable=false.obs;
         "CompanyID": companyID,
         "BranchID": branchID,
         "Type": type,
-        "unqid":type=="Dining&Cancel"?tableID:orderID,
+        "unqid":type=="Dining&Cancel"||type=="Dining"?tableID:orderID,
         "reason_id": cancelReasonId,
       };
 
+      print("type  $type");
+      print(data);
       //encode Map to JSON
       var body = json.encode(data);
 
@@ -260,11 +266,16 @@ final isLoadTable=false.obs;
         fetchAllData();
 
         /// print section commented
-        // if (printForCancellOrder) {
-        //   PrintDataDetails.type = "SO";
-        //   PrintDataDetails.id = orderID;
-        //   await printDetail(true);
-        // }
+        if (printForCancelOrder) {
+
+         printSection(
+              context: context,
+              id: orderID,
+              isCancelled: false,
+              voucherType: "SO");
+
+         // await printDetail(true);
+        }
         // if (orderID != "") {
         //   await ReprintKOT(orderID, true);
         // }
@@ -283,6 +294,23 @@ final isLoadTable=false.obs;
 
   var printHelperUsb = USBPrintClass();
   var printHelperIP = AppBlocs();
+
+
+
+  printKOT({required String orderID,required bool  rePrint,required List cancelList,required bool isUpdate}) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var printType = prefs.getString('PrintType') ?? 'Wifi';
+      if (printType == 'Wifi') {
+        printHelperIP.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
+      } else {
+        printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
 
   printSection({required BuildContext context,required String voucherType,required String id,required bool isCancelled})async{
     SharedPreferences prefs = await SharedPreferences.getInstance();

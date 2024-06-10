@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../model/customerModel.dart';
+import 'pos_controller.dart';
 
 class OrderController extends GetxController {
   ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(false); // Initialize with initial value
@@ -882,6 +883,7 @@ class OrderController extends GetxController {
   var flavourList = <FlavourListModelClass>[].obs;
   var groupList = <GroupListModelClass>[].obs;
   var productList = <ProductListModel>[].obs;
+  var searchProductList = <ProductListModel>[].obs;
 
   Future<void> getAllFlavours() async {
     try {
@@ -1005,7 +1007,7 @@ class OrderController extends GetxController {
         tokenNumber.value = n["TokenNumber"] ?? "";
         groupIsLoading.value = false;
         if (groupList.isNotEmpty) {
-          getProductListDetail(groupList[2].groupID);
+          getProductListDetail(groupList[0].groupID);
         }
       } else if (status == 6001) {
         // Show error message
@@ -1273,7 +1275,7 @@ class OrderController extends GetxController {
       popAlert(head: "Alert", message: "You are connected to the internet", position: SnackPosition.TOP);
     }
   }
-
+  final POSController posController = Get.put(POSController());
   /// function for create
   Future<Null> createSalesOrderRequest({
     required BuildContext context,
@@ -1430,6 +1432,7 @@ class OrderController extends GetxController {
       Map n = json.decode(utf8.decode(response.bodyBytes));
       var status = n["StatusCode"];
       var responseJson = n["data"];
+      List cancelPrint = n["final_data"] ?? [];
       print(responseJson);
       if (status == 6000) {
         stop();
@@ -1438,17 +1441,19 @@ class OrderController extends GetxController {
         Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
         if (printAfterOrder) {
           /// printing section
-          // PrintDataDetails.type = "SO";
-          // PrintDataDetails.id = n["OrderID"];
-          // await printDetail(context);
+          posController.printSection(
+              context: context,
+              id: n["OrderID"],
+              isCancelled: false,
+              voucherType: "SO");
         }
-
-        // dialogBoxHide(context, 'Order created successfully !!!');
 
         Future.delayed(const Duration(seconds: 1), () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var kot = prefs.getBool("KOT") ?? false;
           if (kot == true) {
+            posController.printKOT(cancelList: cancelPrint,isUpdate:sectionType == "Edit"?true:false,orderID:n["OrderID"],rePrint:false);
+
             /// commented kot print
             // PrintDataDetails.type = "SO";
             // PrintDataDetails.id = id;
@@ -1492,6 +1497,76 @@ class OrderController extends GetxController {
 
   ///deliveryman
   var isCustomerLoading = true.obs;
+
+
+  /// search item
+  String dropdownvalue = 'Code';
+  var items = [
+    'Code',
+    'Name',
+    'Description',
+  ];
+
+
+  var isLoading = false.obs;
+  void searchItems({required String productName,required bool isCode,required bool isDescription}) async {
+    isLoading.value=true;
+    String baseUrl = BaseUrl.baseUrl;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var companyID = prefs.getString('companyID') ;
+    var userID = prefs.getInt('user_id') ?? 0;
+    var branchID = prefs.getInt('branchID') ?? 1;
+    print("2");
+    var accessToken = prefs.getString('access') ?? '';
+    var url = '$baseUrl/posholds/products-search-pos/';
+    print("3");
+
+    var payload = {
+      "IsCode": isCode,
+      "IsDescription": isDescription,
+      "BranchID": branchID,
+      "CompanyID":companyID,
+      "CreatedUserID": userID,
+      "PriceRounding": BaseUrl.priceRounding,
+      "product_name": productName,
+      "length":  productName.length,
+      "type": ""
+    };
+
+    try {
+      print("payload   $payload");
+      var response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(payload),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Add token to headers
+        },
+      );
+
+      if (response.statusCode == 200) {
+        isLoading.value=false;
+        print("3d");
+        var data = jsonDecode(response.body);
+        Map n = json.decode(utf8.decode(response.bodyBytes));
+        var responseJson = n["data"];
+        searchProductList.clear();
+        for (Map user in responseJson) {
+          searchProductList.add(ProductListModel.fromJson(user));
+        }
+
+
+      //  productList.assignAll(data['data']);
+        update();
+        print("7");
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    } catch (e) {
+      isLoading.value=false;
+      print('Exception occurred: $e');
+    }
+  }
 
   var users = <DeliveryManModel>[].obs;
 /// list employee

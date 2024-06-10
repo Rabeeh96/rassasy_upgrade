@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
-import 'controller/print_controller.dart';
+import 'controller/detailed_print_controlle.dart';
 
 class DetailPage extends StatefulWidget {
   String? type;
@@ -22,7 +22,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  PrintSettingController printController = Get.put(PrintSettingController());
+  DetailedPrintSettingController printController = Get.put(DetailedPrintSettingController());
 
   @override
   void initState() {
