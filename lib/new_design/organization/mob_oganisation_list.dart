@@ -64,20 +64,61 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                         return ExpansionTile(
                           onExpansionChanged: (v) async {
 
-                            await defaultDataInitial(context:context);
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                            prefs.setString('companyName', companyController.companyListDAta[index].companyName!);
-                            prefs.setString('companyType', companyController.companyListDAta[index].companyType!);
-                            prefs.setString('expiryDate', companyController.companyListDAta[index].expiryDate!);
-                            prefs.setString('permission', companyController.companyListDAta[index].edition!);
-                            prefs.setString('edition', companyController.companyListDAta[index].edition!);
-                            prefs.setBool('isPosUser', companyController.companyListDAta[index].isPosUser!);
-                            prefs.setString('companyID', companyController.companyListDAta[index].id!);
-                            prefs.setBool('companySelected', true);
-                            await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
 
 
-                          },
+                              var expire =checkExpire(companyController.companyList[index].expiryDate);
+                              if(expire){
+                              dialogBox(context, "${companyController.companyList[index].companyName} Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
+                              }
+                              else{
+
+                              //var branchDetails=companyController.companyList[index].branchList??[];
+
+                              ///print("branchDetails  $branchDetails");
+
+                             /// if(branchDetails.isEmpty){
+                              await defaultDataInitial(context:context);
+
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              prefs.setString('companyName', companyController.companyList[index].companyName);
+                              prefs.setString('companyType', companyController.companyList[index].companyType);
+                              prefs.setString('expiryDate', companyController.companyList[index].expiryDate);
+                              prefs.setString('permission', companyController.companyList[index].permission);
+                              prefs.setString('edition', companyController.companyList[index].permission);
+                              prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
+                              prefs.setString('companyID', companyController.companyList[index].id);
+                              prefs.setBool('companySelected', true);
+                              prefs.setInt('branchID',1);
+
+                              await Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                             const EnterPinNumber()));
+                            ///  }
+                          ///    else{
+
+                              // var result = await  Navigator.push(context, MaterialPageRoute(builder: (context) => SelectBranch(list: branchDetails)),);
+                              // if(result !=null){
+                              // await defaultDataInitial(context:context);
+                              // SharedPreferences prefs = await SharedPreferences.getInstance();
+                              // prefs.setString('companyName', companyController.companyList[index].companyName);
+                              // prefs.setString('companyType', companyController.companyList[index].companyType);
+                              // prefs.setString('expiryDate', companyController.companyList[index].expiryDate);
+                              // prefs.setString('permission', companyController.companyList[index].permission);
+                              // prefs.setString('edition', companyController.companyList[index].permission);
+                              // prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
+                              // prefs.setString('companyID', companyController.companyList[index].id);
+                              // prefs.setBool('companySelected', true);
+                              // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
+                              // }
+                              // else{
+                              // dialogBox(context, "Select branch, before go to next step");
+                              // }
+
+                             /// }
+                              }
+                              },
                           trailing: SizedBox.shrink(),
                           shape: Border.all(
                             // color: Color(0xFFE8E8E8)

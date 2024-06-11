@@ -11,9 +11,8 @@ class GeneralController extends GetxController{
   ValueNotifier<bool> isDrawerOpenNotifier = ValueNotifier<bool>(false);
   ValueNotifier<bool> isAutoFocus = ValueNotifier<bool>(false);
   ValueNotifier<bool> isArabic = ValueNotifier<bool>(false);
-  ValueNotifier<bool> isKOTPrint = ValueNotifier<bool>(false);
-  ValueNotifier<bool> isPrintAfterPayment = ValueNotifier<bool>(false);
-  ValueNotifier<bool> isPrintAfterOrder = ValueNotifier<bool>(false);
+
+   ValueNotifier<bool> isPrintAfterPayment = ValueNotifier<bool>(false);
   ValueNotifier<bool> isQuantityIncrement = ValueNotifier<bool>(false);
   ValueNotifier<bool> isShowInvoice = ValueNotifier<bool>(false);
   ValueNotifier<bool> isClear = ValueNotifier<bool>(false);
@@ -34,7 +33,7 @@ class GeneralController extends GetxController{
       ///
 
       // defaultIp = prefs.getString('defaultIP') ?? '';
-    isKOTPrint.value = prefs.getBool("KOT") ?? false;
+  ///  isKOTPrint.value = prefs.getBool("KOT") ?? false;
        isArabic.value = prefs.getBool("isArabic") ?? false;
     isAutoFocus.value = prefs.getBool("autoFocusField") ?? false;
     isDrawerOpenNotifier.value = prefs.getBool("OpenDrawer") ?? false;
@@ -43,9 +42,9 @@ class GeneralController extends GetxController{
       // userType = prefs.getInt("user_type") ?? 1;
     isShowInvoice.value = prefs.getBool("AutoClear") ?? false;
     isClear.value = prefs.getBool("tableClearAfterPayment") ?? false;
-    isPrintAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
+  ///  isPrintAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
 
-    isPrintAfterOrder.value = prefs.getBool("print_after_order") ?? false;
+  ///  isPrintAfterOrder.value = prefs.getBool("print_after_order") ?? false;
       // printPreview = prefs.getBool('print_preview') ?? false;
       // // payment_method = prefs.getBool('payment_method') ?? false;
       // time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
