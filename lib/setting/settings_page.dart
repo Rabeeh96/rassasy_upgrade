@@ -4821,6 +4821,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 setTemplate(1);
               });
             },
+
             child: Container(
               height: MediaQuery.of(context).size.height / 6,
               width: MediaQuery.of(context).size.width / 8,

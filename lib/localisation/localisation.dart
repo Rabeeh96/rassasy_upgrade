@@ -356,7 +356,10 @@ class LocaleChange extends Translations {
           'Details':'Details',
           'Platform(Online Only)':'Platform(Online Only)',
           'Print For Cancelled Order': 'Print For Cancelled Order',
-          'direct_order_option': 'Direct order option'
+          'direct_order_option': 'Direct order option',
+          'company_alignments':"Company Details Alignments",
+          'token':'Highlighted Token No',
+          'initial_token':'Initial TokenNo'
         },
 
         ///
@@ -364,6 +367,9 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+  'initial_token':'الرمز الأولي ',
+  'token':"الرمز المميز لا",
+          'company_alignments':'تفاصيل الشركة التوافقات',
   'Print For Cancelled Order':'طباعة للطلب الملغى',
   'direct_order_option': 'خيار الطلب المباشر',
   'Platform(Online Only)':'النظام الأساسي (عبر الإنترنت فقط)',

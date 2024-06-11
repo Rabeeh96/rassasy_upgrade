@@ -94,7 +94,7 @@ class _PrinterSettingsDetailPageMobileState
                   },
                   keyboardType: TextInputType.text,
                   decoration: TextFieldDecoration.defaultTextFieldIcon(
-                      hintTextStr: 'Sales Invoice'),
+                      hintTextStr: 'sales_invoice'.tr),
                 ),
               ),
             ),
@@ -123,7 +123,7 @@ class _PrinterSettingsDetailPageMobileState
                   },
                   keyboardType: TextInputType.text,
                   decoration: TextFieldDecoration.defaultTextFieldIcon(
-                      hintTextStr: 'Sales Order'),
+                      hintTextStr: 'sale_order'.tr),
                 ),
               ),
             ),
@@ -153,7 +153,7 @@ class _PrinterSettingsDetailPageMobileState
                         right: 8,
                       ),
                       child: Text(
-                        "Set Default",
+                        'set_def'.tr,
                         style: customisedStyleBold(
                             context, Color(0xffF25F29), FontWeight.w500, 14.0),
                       ),
@@ -170,7 +170,7 @@ class _PrinterSettingsDetailPageMobileState
                   padding:
                       const EdgeInsets.only(left: 20.0, top: 10, bottom: 15),
                   child: Text(
-                    "Select Capabilities",
+                    'select_capability'.tr,
                     style: customisedStyleBold(
                         context, Colors.black, FontWeight.w500, 14.0),
                   ),
@@ -218,7 +218,7 @@ class _PrinterSettingsDetailPageMobileState
                   padding:
                   const EdgeInsets.only(left: 20.0, top: 10, bottom: 15),
                   child: Text(
-                    "Select Code page",
+                    'select_code_page'.tr,
                     style: customisedStyleBold(
                         context, Colors.black, FontWeight.w500, 14.0),
                   ),
@@ -261,7 +261,7 @@ class _PrinterSettingsDetailPageMobileState
 
             Padding(
               padding: const EdgeInsets.only(
-                  left: 20.0, right: 15, top: 15, bottom: 5),
+                  left: 20.0, right: 20, top: 15, bottom: 5),
               child: Container(
                 height:
                     MediaQuery.of(context).size.height / 17, //height of button
@@ -274,7 +274,7 @@ class _PrinterSettingsDetailPageMobileState
                       height: MediaQuery.of(context).size.height /
                           18, //height of button
                       width: MediaQuery.of(context).size.width / 1.5,
-                      child: Text('Highlighted Token No',
+                      child: Text('token'.tr,
                           style: customisedStyle(
                               context, Colors.black, FontWeight.w500, 14.0)),
                     ),
@@ -316,7 +316,7 @@ class _PrinterSettingsDetailPageMobileState
             DividerStyle(),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 20.0, right: 15, top: 5, bottom: 5),
+                  left: 20.0, right: 20, top: 5, bottom: 5),
               child: Container(
                 height:
                     MediaQuery.of(context).size.height / 17, //height of button
@@ -329,7 +329,7 @@ class _PrinterSettingsDetailPageMobileState
                       height: MediaQuery.of(context).size.height /
                           18, //height of button
                       width: MediaQuery.of(context).size.width / 1.5,
-                      child: Text('Payment Details',
+                      child: Text('payment_detail'.tr,
                           style: customisedStyle(
                               context, Colors.black, FontWeight.w500, 14.0)),
                     ),
@@ -370,7 +370,7 @@ class _PrinterSettingsDetailPageMobileState
             DividerStyle(),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 20.0, right: 15, top: 5, bottom: 5),
+                  left: 20.0, right: 20, top: 5, bottom: 5),
               child: Container(
                 height:
                     MediaQuery.of(context).size.height / 17, //height of button
@@ -379,11 +379,12 @@ class _PrinterSettingsDetailPageMobileState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
+
                       alignment: Alignment.centerLeft,
                       height: MediaQuery.of(context).size.height /
                           18, //height of button
                       width: MediaQuery.of(context).size.width / 1.5,
-                      child: Text('Company Details Alignments',
+                      child: Text('company_alignments'.tr,
                           style: customisedStyle(
                               context, Colors.black, FontWeight.w500, 14.0)),
                     ),
@@ -414,6 +415,114 @@ class _PrinterSettingsDetailPageMobileState
                               prefs.setBool('headerAlignment', val);
 
 
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            DividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('kot_print'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.isKOTPrint,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.isKOTPrint.value = val;
+
+                              printController.switchStatus(
+                                  "KOT", printController.isKOTPrint.value);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            DividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('print_after_order'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.isPrintAfterOrder,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.isPrintAfterOrder.value = val;
+
+                              printController.switchStatus("print_after_order", printController.isPrintAfterOrder.value);
                             },
                           );
                         },
@@ -462,6 +571,7 @@ class _PrinterSettingsDetailPageMobileState
                     TextFieldDecoration.defaultTextField(hintTextStr: ''),
               ),
             ),
+            SizedBox(height: 40,)
           ],
         ),
       ),

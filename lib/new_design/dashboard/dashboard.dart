@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
+import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/auth_user/profie/profile.dart';
@@ -351,7 +352,10 @@ class _DashboardNewState extends State<DashboardNew> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: const Color(0xffF3F3F3),
+        automaticallyImplyLeading: false,
+
+        backgroundColor: isTablet == true? Color(0xffF3F3F3):Colors.white,
+        titleSpacing: 25,
         title: isTablet == true
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -784,6 +788,7 @@ class _DashboardNewState extends State<DashboardNew> {
             )
           : Container(
               decoration: BoxDecoration(
+                color: Colors.white,
                   border: Border(
                       top: BorderSide(color: Color(0xffE9E9E9), width: 1))),
               height: MediaQuery.of(context).size.height / 10,
@@ -1458,45 +1463,43 @@ class _DashboardNewState extends State<DashboardNew> {
     return Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(),
-        child: Stack(
-          alignment: Alignment.center,
+        decoration: BoxDecoration(color: Colors.white),
+        child: Column(
           children: [
-            /// commented
-            Positioned(
-                bottom: 565,
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 1,
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(width: .1, color: Colors.grey))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(MobOrganizationList());
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.circle,
-                            color: Color(0xffF4F4F4),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              "Organization",
-                              style: customisedStyleBold(
-                                  context, Colors.black, FontWeight.w400, 15.0),
-                            ),
-                          ),
-                        ],
+            DividerStyle(),
+            Container(
+              height: screenHeight / 12,
+              width: MediaQuery.of(context).size.width / 1,
+              decoration: const BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(width: .1, color: Colors.grey))),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(MobOrganizationList());
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.circle,
+                        color: Color(0xffF4F4F4),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          "Organization",
+                          style: customisedStyleBold(
+                              context, Colors.black, FontWeight.w400, 15.0),
+                        ),
+                      ),
+                    ],
                   ),
-                )),
+                ),
+              ),
+            ),
             Container(
               width: screenWidth / 1.1,
               height: screenHeight / 1.5,
@@ -1538,7 +1541,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     color: Color(0xffEEEEEE),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 13,
+                                height: screenHeight / 12,
                                 width: screenWidth / 5.5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1549,7 +1552,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                           MediaQuery.of(context).size.height /
                                               20,
                                       width: MediaQuery.of(context).size.width /
-                                          18,
+                                         11,
                                       child: SvgPicture.asset(
                                           'assets/svg/product_group.svg'),
                                     ),
@@ -1589,7 +1592,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     color: Color(0xffEEEEEE),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 13,
+                                height: screenHeight / 12,
                                 width: screenWidth / 5.5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1600,7 +1603,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                           MediaQuery.of(context).size.height /
                                               20,
                                       width: MediaQuery.of(context).size.width /
-                                          15,
+                                          10,
                                       child: SvgPicture.asset(
                                           'assets/svg/product.svg'),
                                     ),
@@ -1640,7 +1643,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     color: Color(0xffEEEEEE),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 13,
+                                height: screenHeight / 12,
                                 width: screenWidth / 5.5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1651,7 +1654,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                           MediaQuery.of(context).size.height /
                                               20,
                                       width: MediaQuery.of(context).size.width /
-                                          17,
+                                          12,
                                       child: SvgPicture.asset(
                                           'assets/svg/customer.svg'),
                                     ),
@@ -1686,7 +1689,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     color: Color(0xffEEEEEE),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 13,
+                                height: screenHeight / 12,
                                 width: screenWidth / 5.5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1697,7 +1700,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                           MediaQuery.of(context).size.height /
                                               20,
                                       width: MediaQuery.of(context).size.width /
-                                          22,
+                                          12,
                                       child: SvgPicture.asset(
                                           'assets/svg/POS.svg'),
                                     ),
@@ -1776,7 +1779,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     color: Color(0xffEEEEEE),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 13,
+                                height: screenHeight / 12,
                                 width: screenWidth / 5.5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1787,7 +1790,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                           MediaQuery.of(context).size.height /
                                               20,
                                       width: MediaQuery.of(context).size.width /
-                                          20,
+                                          13,
                                       child: SvgPicture.asset(
                                           'assets/svg/report.svg'),
                                     ),
@@ -1826,7 +1829,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     color: Color(0xffEEEEEE),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 13,
+                                height: screenHeight / 12,
                                 width: screenWidth / 5.5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1837,7 +1840,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                           MediaQuery.of(context).size.height /
                                               20,
                                       width: MediaQuery.of(context).size.width /
-                                          20,
+                                          12,
                                       child: SvgPicture.asset(
                                           'assets/svg/tax.svg'),
                                     ),
@@ -1891,7 +1894,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     color: Color(0xffEEEEEE),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 13,
+                                height: screenHeight / 12,
                                 width: screenWidth / 5.5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1902,7 +1905,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                           MediaQuery.of(context).size.height /
                                               20,
                                       width: MediaQuery.of(context).size.width /
-                                          16,
+                                          10,
                                       child: SvgPicture.asset(
                                           'assets/svg/flavour.svg'),
                                     ),
@@ -1951,7 +1954,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     color: Color(0xffEEEEEE),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 13,
+                                height: screenHeight / 12,
                                 width: screenWidth / 5.5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1962,7 +1965,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                           MediaQuery.of(context).size.height /
                                               20,
                                       width: MediaQuery.of(context).size.width /
-                                          21,
+                                          14,
                                       child: SvgPicture.asset(
                                           'assets/svg/invoice.svg'),
                                     ),
