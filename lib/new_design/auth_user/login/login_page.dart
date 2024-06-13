@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/main.dart';
 import 'package:rassasy_new/new_design/organization/list_organization.dart';
@@ -180,7 +181,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
-                      onChanged: (v) {},
+
                       textCapitalization: TextCapitalization.words,
                       keyboardType: TextInputType.text,
                       controller: userNameController,
@@ -217,7 +218,9 @@ class _LoginPageNewState extends State<LoginPageNew> {
                     onPressed: () async {
                       if (userNameController.text == '' ||
                           passwordController.text == '') {
-                        dialogBox(context, 'please_enter_details'.tr);
+
+                        popAlert(head: "Alert", message:  'please_enter_details'.tr,  position: SnackPosition.TOP);
+
                       } else {
                         loginAccount(context);
 
@@ -396,7 +399,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
                     height: 12,
                   ),
                   TextField(
-                    onChanged: (v) {},
+
                     textCapitalization: TextCapitalization.words,
                     keyboardType: TextInputType.text,
                     controller: userNameController,
@@ -435,6 +438,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
                   TextField(
                       controller: passwordController,
                       focusNode: passwordFcNode,
+                      obscuringCharacter: "*",
                       onEditingComplete: () {
                         FocusScope.of(context).requestFocus(saveFCNode);
                       },
@@ -502,7 +506,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
                     onPressed: () async {
                       if (userNameController.text == '' ||
                           passwordController.text == '') {
-                        dialogBox(context, 'please_enter_details'.tr);
+                        popAlert(head: "Warning", message:  'please_enter_details'.tr,  position: SnackPosition.TOP);
+
                       } else {
                         loginAccount(context);
 
@@ -562,6 +567,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
             FocusScope.of(context).requestFocus(saveFCNode);
           },
           obscureText: showPassword,
+          obscuringCharacter: "*",
           decoration: InputDecoration(
               suffixIcon: IconButton(
                 icon: Icon(
@@ -574,6 +580,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
                   });
                 },
               ),
+
               enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   borderSide: BorderSide(color: Color(0xffC9C9C9))),
@@ -601,7 +608,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      dialogBox(context, "Connect to internet");
+      popAlert(head: "Alert", message: "Connect to internet",  position: SnackPosition.TOP);
       stop();
     } else {
       try {
@@ -654,8 +661,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
           }
         } else if (status == 6001) {
           var msg = n["error"] ?? "";
-          print('3');
-          dialogBox(context, msg);
+          popAlert(head: "Alert", message:  msg,  position: SnackPosition.TOP);
+
           if (msg == "Please Verify Your Email to Login") {
             UserCreation.verifyMail = true;
             prefs.setString('email', n['user_email']);
@@ -668,15 +675,16 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
           stop();
         } else {
-          print('4');
+
           stop();
-          dialogBox(context, "Some thing went wrong");
+          popAlert(head: "Alert", message:  "Some thing went wrong",  position: SnackPosition.TOP);
+
         }
       } catch (e) {
         stop();
-        print({e.toString()});
-        print('5');
-        dialogBox(context, "Some thing went wrong ${e.toString()}");
+
+        popAlert(head: "Alert", message:  "Some thing went wrong ${e.toString()}",  position: SnackPosition.TOP);
+
       }
     }
   }
