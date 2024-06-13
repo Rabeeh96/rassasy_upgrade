@@ -100,6 +100,11 @@ final isLoadTable=false.obs;
   ///this function used for getting time
   ///in hours and minute
   String returnOrderTime(String data, String status) {
+
+    if(status !="Vacant"){
+      print("----data $data   $status");
+    }
+
     if (data == "" || status == "Vacant") {
       return "";
     }
@@ -141,7 +146,9 @@ final isLoadTable=false.obs;
       currency= prefs.getString('CurrencySymbol') ?? "";
       userName.value = prefs.getString('user_name')??"";
       var fetchedData = await _tableService.fetchAllData(accessToken);
+
       selectedIndexNotifier.value = 0;
+      log_data("${fetchedData['data']}");
       tableData.assignAll((fetchedData['data'] as List).map((json) => Data.fromJson(json)).toList());
       fullOrderData.assignAll((fetchedData['data'] as List).map((json) => Data.fromJson(json)).toList());
       onlineOrders.assignAll((fetchedData['Online'] as List).map((json) => Online.fromJson(json)).toList());

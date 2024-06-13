@@ -71,16 +71,15 @@ class _TakeAwayState extends State<CarPage> {
               icon: SvgPicture.asset('assets/svg/logout_mob.svg'))
         ],
       ),
-      body: Column(children: [
-
-
-        DividerStyle(),
+      body: Column(
+          children: [
+            DividerStyle(),
 
         Expanded(
             child: Obx(() => carController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
                 : carController.carOrders.isEmpty
-                ? const Center(child: Text("No recent orders"))
+                ?   Center(child: Text("No recent orders",style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),))
                 : SlidableAutoCloseBehavior(
                 closeWhenOpened: true,
                 child: RefreshIndicator(
@@ -190,7 +189,7 @@ class _TakeAwayState extends State<CarPage> {
                                 ],
                               ),
                             ),
-                            CustomSlidableAction(
+                            carController.carOrders[index].status == 'Ordered'? CustomSlidableAction(
                               onPressed: (BuildContext context) async {
                                 var resultPayment = await Get.to(PaymentPage(
                                   uID: carController.carOrders[index].salesOrderID!,
@@ -218,7 +217,7 @@ class _TakeAwayState extends State<CarPage> {
                                   )
                                 ],
                               ),
-                            ),
+                            ):Container(),
 
 
                           ],
@@ -275,11 +274,11 @@ class _TakeAwayState extends State<CarPage> {
                                                   style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                                 ),
                                                 Text(
-                                                  " #",
+                                                  " # ",
                                                   style: customisedStyle(context, const Color(0xff9B9B9B), FontWeight.w400, 14.0),
                                                 ),
                                                 Text(
-                                                  "Token ${carController.carOrders[index].tokenNumber!}",
+                                                  carController.carOrders[index].tokenNumber!,
                                                   style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                                 ),
                                               ],
@@ -341,7 +340,7 @@ class _TakeAwayState extends State<CarPage> {
                     },
                   ),
                 )))),
-
+        DividerStyle(),
 
 
       ]),
@@ -392,7 +391,7 @@ class _TakeAwayState extends State<CarPage> {
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
                         'Add_Takeaway'.tr,
-                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 12.0),
+                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w500, 14.0),
                       ),
                     )
                   ],

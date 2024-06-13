@@ -13,12 +13,12 @@ import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/payment/paym
 import 'product_detail_page.dart';
 import 'search_items.dart';
 
-class OrderDetailPage extends StatefulWidget {
+class KartPage extends StatefulWidget {
   final String uID, tableID, sectionType, tableHead;
   final int orderType;
 
 
-  const OrderDetailPage({
+  const KartPage({
     super.key,
     required this.tableID,
     required this.tableHead,
@@ -28,10 +28,10 @@ class OrderDetailPage extends StatefulWidget {
   });
 
   @override
-  State<OrderDetailPage> createState() => _OrderDetailPageState();
+  State<KartPage> createState() => _KartPageState();
 }
 
-class _OrderDetailPageState extends State<OrderDetailPage> {
+class _KartPageState extends State<KartPage> {
   OrderController orderController = Get.put(OrderController());
   var selectedItem = '';
 

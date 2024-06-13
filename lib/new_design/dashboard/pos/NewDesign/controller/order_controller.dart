@@ -24,7 +24,7 @@ class OrderController extends GetxController {
   ValueNotifier<bool> isOrderCreate = ValueNotifier<bool>(false); // Initialize with initial value
   var groupIsLoading = false.obs;
   var productIsLoading = false.obs;
-
+  final ScrollController scrollController = ScrollController();
 // var isLoading=false.obs;
   TextEditingController customerNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
@@ -46,6 +46,7 @@ class OrderController extends GetxController {
   RxString customerBalance = "0.0".obs;
 
   RxBool isGst = false.obs;
+  RxBool isVat = false.obs;
   RxInt ledgerID = 1.obs;
   RxBool isComplimentary = false.obs;
   RxBool quantityIncrement = false.obs;
@@ -436,6 +437,8 @@ class OrderController extends GetxController {
         exclusivePer.value = exclusivePer.value + vatPer.value;
       }
     }
+
+    print("------${checkVat}------${inclusivePer.value}----------${vatPer.value}--------${exclusivePer}--------------------------------");
     if (checkGst == true) {
       taxType = "GST Intra-state B2C".obs;
       taxID = 22.obs;
@@ -994,6 +997,10 @@ class OrderController extends GetxController {
     printAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
     currency.value = prefs.getString('CurrencySymbol') ?? "";
     isGst.value = prefs.getBool("check_GST") ?? false;
+    isVat.value = prefs.getBool("checkVat") ?? false;
+
+
+    print("-----isVat------------------------------isVat-----------${isVat.value}");
     ledgerID.value = prefs.getInt("Cash_Account") ?? 1;
     customerNameController.text = "walk in customer";
     phoneNumberController.text = "";
@@ -1011,11 +1018,11 @@ class OrderController extends GetxController {
       // listItemDetails(widget.UUID);
     }
     if (sectionType != "Payment") {
-      await getCategoryListDetail();
+      await getCategoryListDetail(sectionType);
     }
   }
 
-  Future<void> getCategoryListDetail() async {
+  Future<void> getCategoryListDetail(sectionType) async {
     try {
       groupIsLoading.value = true;
       String baseUrl = BaseUrl.baseUrl;
@@ -1052,7 +1059,11 @@ class OrderController extends GetxController {
         for (Map user in responseJson) {
           groupList.add(GroupListModelClass.fromJson(user));
         }
-        tokenNumber.value = n["TokenNumber"] ?? "";
+
+        if(sectionType != "Edit"){
+          tokenNumber.value = n["TokenNumber"] ?? "";
+        }
+
         groupIsLoading.value = false;
         if (groupList.isNotEmpty) {
           getProductListDetail(groupList[0].groupID);
@@ -1412,7 +1423,7 @@ class OrderController extends GetxController {
         url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
       }
 
-      print("--------------------------url   $url");
+      print("--------------------------orderTime    --------------------------orderTime   --------------------------   $orderTime");
       Map data = {
         "Table": tableID,
         "EmployeeID": employeeID,
@@ -1566,11 +1577,9 @@ class OrderController extends GetxController {
     var companyID = prefs.getString('companyID') ;
     var userID = prefs.getInt('user_id') ?? 0;
     var branchID = prefs.getInt('branchID') ?? 1;
-    print("2");
+
     var accessToken = prefs.getString('access') ?? '';
     var url = '$baseUrl/posholds/products-search-pos/';
-    print("3");
-
     var payload = {
       "IsCode": isCode,
       "IsDescription": isDescription,
