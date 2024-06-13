@@ -18,6 +18,7 @@ import 'package:rassasy_new/new_design/back_ground_print/print_details/detailed_
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/pos_page.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
+import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:rassasy_new/new_design/report/new_report_page.dart';
@@ -25,11 +26,13 @@ import 'package:rassasy_new/setting/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'customer/customer_detail_page.dart';
-import 'dailyReport/daily_report.dart';
 import 'flavour/view_flavour.dart';
 import 'pos/new_method/pos_list_section.dart';
 import 'product/create_products.dart';
-import 'profile_mobile/profile_page.dart';
+import 'profile_mobile/about_us/about_us_page.dart';
+import 'profile_mobile/contact_us/contact_us.dart';
+import 'profile_mobile/profile_controller.dart';
+import 'profile_mobile/settings/new_settingsSection.dart';
 import 'tax/create_tax_new.dart';
 
 class DashboardNew extends StatefulWidget {
@@ -45,7 +48,10 @@ class _DashboardNewState extends State<DashboardNew> {
     // TODO: implement initState
     super.initState();
     dataForStaff();
+    profileController.getProfileData();
   }
+
+  ProfileController profileController = Get.put(ProfileController());
 
   dataForStaff() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -61,7 +67,8 @@ class _DashboardNewState extends State<DashboardNew> {
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
       expireDate = prefs.getString('expiryDate') ?? '';
-      organisationLogo = prefs.getString('companyLogo') ?? 'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
+      organisationLogo = prefs.getString('companyLogo') ??
+          'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
       settingsPermission = prefs.getBool('General Setting') ?? false;
     });
   }
@@ -343,6 +350,8 @@ class _DashboardNewState extends State<DashboardNew> {
     );
   }
 
+  ValueNotifier<bool> isProfileNotifier = ValueNotifier<bool>(false);
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -353,433 +362,456 @@ class _DashboardNewState extends State<DashboardNew> {
     //  bool isTable = false;
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        automaticallyImplyLeading: false,
-
-        backgroundColor: isTablet == true? Color(0xffF3F3F3):Colors.white,
-        titleSpacing: 25,
-        title: isTablet == true
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Dashboard'.tr,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.normal, 24.0),
-                    //  style: TextStyle(color: Colors.black, fontSize: 24),
-                  ),
-                ],
-              )
-            : Text(
-                'Home',
-                style: customisedStyle(
-                    context, Colors.black, FontWeight.w500, 20.0),
-                //  style: TextStyle(color: Colors.black, fontSize: 24),
-              ),
-        actions: [
-          /// select waiter role is commented
-          // Theme(
-          //   data: Theme.of(context).copyWith(
-          //       textTheme: const TextTheme().apply(bodyColor: Colors.black),
-          //       dividerColor: Colors.white,
-          //       iconTheme: const IconThemeData(color: Colors.black)),
-          //   child: PopupMenuButton<int>(
-          //     color: Colors.white,
-          //     child: Row(
-          //       children: [
-          //         Icon(
-          //           Icons.settings,
-          //           color: Color(0xff096816),
-          //         ),
-          //         Text(
-          //           " Set waiter Role",
-          //           style:customisedStyle(context,Color(0xff096816),FontWeight.normal,13.0),
-          //
-          //         ),
-          //       ],
-          //     ),
-          //     itemBuilder: (context,) =>
-          //
-          //     [
-          //       PopupMenuItem(
-          //         child: StatefulBuilder(
-          //           builder: (context, setState) {
-          //             return Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Dining",
-          //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
-          //                 ),
-          //                 SizedBox(
-          //                   width: 7,
-          //                 ),
-          //                 SizedBox(
-          //                   width: 100,
-          //                   child: Center(
-          //                     child: FlutterSwitch(
-          //                       width: 40.0,
-          //                       height: 20.0,
-          //                       valueFontSize: 30.0,
-          //                       toggleSize: 15.0,
-          //                       value: diningStatus,
-          //                       borderRadius: 20.0,
-          //                       padding: 1.0,
-          //                       activeColor: Colors.green,
-          //                       activeTextColor: Colors.green,
-          //                       inactiveTextColor: Colors.white,
-          //                       inactiveColor: Colors.grey,
-          //                       onToggle: (val) {
-          //                         setState(() {
-          //                           diningStatus = val;
-          //                         });
-          //                       },
-          //                     ),
-          //                   ),
-          //                 )
-          //
-          //               ],
-          //             );
-          //           },
-          //         ),
-          //       ),
-          //       PopupMenuItem<int>(
-          //         value: 0,
-          //         child: StatefulBuilder(
-          //           builder: (context, setState) {
-          //             return Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Take Away",
-          //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
-          //                 ),
-          //                 SizedBox(
-          //                   width: 7,
-          //                 ),
-          //                 SizedBox(
-          //                   width: 100,
-          //                   child: Center(
-          //                     child: FlutterSwitch(
-          //                       width: 40.0,
-          //                       height: 20.0,
-          //                       valueFontSize: 30.0,
-          //                       toggleSize: 15.0,
-          //                       value: takeawayStatus,
-          //                       borderRadius: 20.0,
-          //                       padding: 1.0,
-          //                       activeColor: Colors.green,
-          //                       activeTextColor: Colors.green,
-          //                       inactiveTextColor: Colors.white,
-          //                       inactiveColor: Colors.grey,
-          //
-          //                       // showOnOff: true,
-          //                       onToggle: (val) {
-          //                         setState(() {
-          //                           takeawayStatus = val;
-          //                         });
-          //                       },
-          //                     ),
-          //                   ),
-          //                 )
-          //               ],
-          //             );
-          //           },
-          //         ),
-          //       ),
-          //       PopupMenuItem<int>(
-          //           value: 0,
-          //           child: StatefulBuilder(builder: (context, setState) {
-          //             return Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Online",
-          //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
-          //                 ),
-          //                 SizedBox(
-          //                   width: 7,
-          //                 ),
-          //                 SizedBox(
-          //                   width: 100,
-          //                   child: Center(
-          //                     child: FlutterSwitch(
-          //                       width: 40.0,
-          //                       height: 20.0,
-          //                       valueFontSize: 30.0,
-          //                       toggleSize: 15.0,
-          //                       value: onlineStatus,
-          //                       borderRadius: 20.0,
-          //                       padding: 1.0,
-          //                       activeColor: Colors.green,
-          //                       activeTextColor: Colors.green,
-          //                       inactiveTextColor: Colors.white,
-          //                       inactiveColor: Colors.grey,
-          //
-          //                       // showOnOff: true,
-          //                       onToggle: (val) {
-          //                         setState(() {
-          //                           onlineStatus = val;
-          //                         });
-          //                       },
-          //                     ),
-          //                   ),
-          //                 )
-          //               ],
-          //             );
-          //           })),
-          //       PopupMenuItem<int>(
-          //           value: 0,
-          //           child: StatefulBuilder(builder: (context, setState) {
-          //             return Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Car",
-          //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
-          //                 ),
-          //                 SizedBox(
-          //                   width: 7,
-          //                 ),
-          //                 SizedBox(
-          //                   width: 100,
-          //                   child: Center(
-          //                     child: FlutterSwitch(
-          //                       width: 40.0,
-          //                       height: 20.0,
-          //                       valueFontSize: 30.0,
-          //                       toggleSize: 15.0,
-          //                       value: carStatus,
-          //                       borderRadius: 20.0,
-          //                       padding: 1.0,
-          //                       activeColor: Colors.green,
-          //                       activeTextColor: Colors.green,
-          //                       inactiveTextColor: Colors.white,
-          //                       inactiveColor: Colors.grey,
-          //
-          //                       // showOnOff: true,
-          //                       onToggle: (val) {
-          //                         setState(() {
-          //                           carStatus = val;
-          //                         });
-          //                       },
-          //                     ),
-          //                   ),
-          //                 )
-          //               ],
-          //             );
-          //           })),
-          //       const PopupMenuDivider(),
-          //     ],
-          //    // onSelected: (item) => selectedItem(context, item),
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width / 4,
-          //     height: MediaQuery.of(context).size.height / 20,
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       crossAxisAlignment: CrossAxisAlignment.center,
-          //       children: [
-          //         Container(
-          //           width: MediaQuery.of(context).size.width / 5,
-          //           child: TextField(
-          //             readOnly: true,
-          //             controller: waiterController,
-          //
-          //             onTap: () async {
-          //
-          //               var result = await Navigator.push(
-          //                 context,
-          //                 MaterialPageRoute(builder: (context) => SelectWaiter()),
-          //               );
-          //
-          //               if (result != null) {
-          //                 waiterController.text = result;
-          //                 setUserRole(3, true);
-          //               } else {
-          //
-          //               }
-          //             },
-          //             style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
-          //             keyboardType: TextInputType.text,
-          //             textCapitalization: TextCapitalization.words,
-          //             decoration: InputDecoration(
-          //                 enabledBorder: OutlineInputBorder(
-          //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
-          //                 focusedBorder: OutlineInputBorder(
-          //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
-          //                 disabledBorder: OutlineInputBorder(
-          //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
-          //                 contentPadding: EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
-          //                 prefixIcon: Icon(
-          //                   Icons.person,
-          //                   color: Color(0xffF25F29),
-          //                 ),
-          //                 filled: true,
-          //                 hintStyle: customisedStyle(context,Colors.grey,FontWeight.normal,12.0),
-          //                 hintText: "Select waiter",
-          //                 fillColor: Color(0xffE6E6E6)),
-          //           ),
-          //         ),
-          //         IconButton(
-          //             onPressed: () {
-          //               popupAlert("Do you really want to remove it",2);
-          //
-          //             },
-          //             icon: Icon(
-          //               Icons.cancel,
-          //               color: Colors.red,
-          //               size: 30,
-          //             ))
-          //       ],
-          //     ),
-          //   ),
-          // ),
-
-          isTablet == true
-              ? Theme(
-                  data: Theme.of(context).copyWith(
-                      textTheme:
-                          const TextTheme().apply(bodyColor: Colors.black),
-                      dividerColor: Colors.white,
-                      iconTheme: const IconThemeData(color: Colors.black)),
-                  child: PopupMenuButton<int>(
-                    color: Colors.white,
-                    itemBuilder: (context) => [
-                      PopupMenuItem<int>(
-                          value: 0,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.refresh,
-                                color: Colors.red,
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'Refresh'.tr,
-                                style: customisedStyle(context, Colors.black,
-                                    FontWeight.normal, 14.0),
-                              )
-                            ],
-                          )),
-                      const PopupMenuDivider(),
-
-                      // settings permission
-
-                      PopupMenuItem<int>(
-                          value: 1,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.settings,
-                                color: Colors.red,
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'Settings'.tr,
-                                style: customisedStyle(context, Colors.black,
-                                    FontWeight.normal, 14.0),
-                              )
-                            ],
-                          )),
-                      const PopupMenuDivider(),
-                      PopupMenuItem<int>(
-                          value: 2,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.info,
-                                color: Colors.red,
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'com_info'.tr,
-                                style: customisedStyle(context, Colors.black,
-                                    FontWeight.normal, 14.0),
-                              )
-                            ],
-                          )),
-                      const PopupMenuDivider(),
-                      PopupMenuItem<int>(
-                          value: 3,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.manage_accounts,
-                                color: Colors.red,
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'Profile'.tr,
-                                style: customisedStyle(context, Colors.black,
-                                    FontWeight.normal, 14.0),
-                              )
-                            ],
-                          )),
-                      const PopupMenuDivider(),
-                      PopupMenuItem<int>(
-                          value: 4,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.print,
-                                color: Colors.red,
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                "Print test page".tr,
-                                style: customisedStyle(context, Colors.black,
-                                    FontWeight.normal, 14.0),
-                              )
-                            ],
-                          )),
-                      const PopupMenuDivider(),
-                      PopupMenuItem<int>(
-                          value: 5,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.info,
-                                color: Colors.red,
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              Text(
-                                'user_log_out'.tr,
-                                style: customisedStyle(context, Colors.black,
-                                    FontWeight.normal, 14.0),
-                              )
-                            ],
-                          )),
-                    ],
-                    icon: const Icon(
-                      Icons.more_vert,
-                      color: Colors.black,
+      appBar: isProfileNotifier.value
+          ? AppBar(
+              toolbarHeight: .1,
+            )
+          : AppBar(
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
+              backgroundColor:
+                  isTablet == true ? Color(0xffF3F3F3) : Colors.white,
+              titleSpacing: 25,
+              title: isTablet == true
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Dashboard'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.normal, 24.0),
+                          //  style: TextStyle(color: Colors.black, fontSize: 24),
+                        ),
+                      ],
+                    )
+                  : Text(
+                      'Home',
+                      style: customisedStyle(
+                          context, Colors.black, FontWeight.w500, 20.0),
+                      //  style: TextStyle(color: Colors.black, fontSize: 24),
                     ),
-                    onSelected: (item) => selectedItem(context, item),
-                  ),
-                )
-              : Icon(
-                  Icons.remove,
-                  color: Colors.transparent,
-                ),
-        ],
-      ),
+              actions: [
+                /// select waiter role is commented
+                // Theme(
+                //   data: Theme.of(context).copyWith(
+                //       textTheme: const TextTheme().apply(bodyColor: Colors.black),
+                //       dividerColor: Colors.white,
+                //       iconTheme: const IconThemeData(color: Colors.black)),
+                //   child: PopupMenuButton<int>(
+                //     color: Colors.white,
+                //     child: Row(
+                //       children: [
+                //         Icon(
+                //           Icons.settings,
+                //           color: Color(0xff096816),
+                //         ),
+                //         Text(
+                //           " Set waiter Role",
+                //           style:customisedStyle(context,Color(0xff096816),FontWeight.normal,13.0),
+                //
+                //         ),
+                //       ],
+                //     ),
+                //     itemBuilder: (context,) =>
+                //
+                //     [
+                //       PopupMenuItem(
+                //         child: StatefulBuilder(
+                //           builder: (context, setState) {
+                //             return Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Text(
+                //                   "Dining",
+                //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
+                //                 ),
+                //                 SizedBox(
+                //                   width: 7,
+                //                 ),
+                //                 SizedBox(
+                //                   width: 100,
+                //                   child: Center(
+                //                     child: FlutterSwitch(
+                //                       width: 40.0,
+                //                       height: 20.0,
+                //                       valueFontSize: 30.0,
+                //                       toggleSize: 15.0,
+                //                       value: diningStatus,
+                //                       borderRadius: 20.0,
+                //                       padding: 1.0,
+                //                       activeColor: Colors.green,
+                //                       activeTextColor: Colors.green,
+                //                       inactiveTextColor: Colors.white,
+                //                       inactiveColor: Colors.grey,
+                //                       onToggle: (val) {
+                //                         setState(() {
+                //                           diningStatus = val;
+                //                         });
+                //                       },
+                //                     ),
+                //                   ),
+                //                 )
+                //
+                //               ],
+                //             );
+                //           },
+                //         ),
+                //       ),
+                //       PopupMenuItem<int>(
+                //         value: 0,
+                //         child: StatefulBuilder(
+                //           builder: (context, setState) {
+                //             return Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Text(
+                //                   "Take Away",
+                //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
+                //                 ),
+                //                 SizedBox(
+                //                   width: 7,
+                //                 ),
+                //                 SizedBox(
+                //                   width: 100,
+                //                   child: Center(
+                //                     child: FlutterSwitch(
+                //                       width: 40.0,
+                //                       height: 20.0,
+                //                       valueFontSize: 30.0,
+                //                       toggleSize: 15.0,
+                //                       value: takeawayStatus,
+                //                       borderRadius: 20.0,
+                //                       padding: 1.0,
+                //                       activeColor: Colors.green,
+                //                       activeTextColor: Colors.green,
+                //                       inactiveTextColor: Colors.white,
+                //                       inactiveColor: Colors.grey,
+                //
+                //                       // showOnOff: true,
+                //                       onToggle: (val) {
+                //                         setState(() {
+                //                           takeawayStatus = val;
+                //                         });
+                //                       },
+                //                     ),
+                //                   ),
+                //                 )
+                //               ],
+                //             );
+                //           },
+                //         ),
+                //       ),
+                //       PopupMenuItem<int>(
+                //           value: 0,
+                //           child: StatefulBuilder(builder: (context, setState) {
+                //             return Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Text(
+                //                   "Online",
+                //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
+                //                 ),
+                //                 SizedBox(
+                //                   width: 7,
+                //                 ),
+                //                 SizedBox(
+                //                   width: 100,
+                //                   child: Center(
+                //                     child: FlutterSwitch(
+                //                       width: 40.0,
+                //                       height: 20.0,
+                //                       valueFontSize: 30.0,
+                //                       toggleSize: 15.0,
+                //                       value: onlineStatus,
+                //                       borderRadius: 20.0,
+                //                       padding: 1.0,
+                //                       activeColor: Colors.green,
+                //                       activeTextColor: Colors.green,
+                //                       inactiveTextColor: Colors.white,
+                //                       inactiveColor: Colors.grey,
+                //
+                //                       // showOnOff: true,
+                //                       onToggle: (val) {
+                //                         setState(() {
+                //                           onlineStatus = val;
+                //                         });
+                //                       },
+                //                     ),
+                //                   ),
+                //                 )
+                //               ],
+                //             );
+                //           })),
+                //       PopupMenuItem<int>(
+                //           value: 0,
+                //           child: StatefulBuilder(builder: (context, setState) {
+                //             return Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Text(
+                //                   "Car",
+                //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
+                //                 ),
+                //                 SizedBox(
+                //                   width: 7,
+                //                 ),
+                //                 SizedBox(
+                //                   width: 100,
+                //                   child: Center(
+                //                     child: FlutterSwitch(
+                //                       width: 40.0,
+                //                       height: 20.0,
+                //                       valueFontSize: 30.0,
+                //                       toggleSize: 15.0,
+                //                       value: carStatus,
+                //                       borderRadius: 20.0,
+                //                       padding: 1.0,
+                //                       activeColor: Colors.green,
+                //                       activeTextColor: Colors.green,
+                //                       inactiveTextColor: Colors.white,
+                //                       inactiveColor: Colors.grey,
+                //
+                //                       // showOnOff: true,
+                //                       onToggle: (val) {
+                //                         setState(() {
+                //                           carStatus = val;
+                //                         });
+                //                       },
+                //                     ),
+                //                   ),
+                //                 )
+                //               ],
+                //             );
+                //           })),
+                //       const PopupMenuDivider(),
+                //     ],
+                //    // onSelected: (item) => selectedItem(context, item),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Container(
+                //     width: MediaQuery.of(context).size.width / 4,
+                //     height: MediaQuery.of(context).size.height / 20,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       children: [
+                //         Container(
+                //           width: MediaQuery.of(context).size.width / 5,
+                //           child: TextField(
+                //             readOnly: true,
+                //             controller: waiterController,
+                //
+                //             onTap: () async {
+                //
+                //               var result = await Navigator.push(
+                //                 context,
+                //                 MaterialPageRoute(builder: (context) => SelectWaiter()),
+                //               );
+                //
+                //               if (result != null) {
+                //                 waiterController.text = result;
+                //                 setUserRole(3, true);
+                //               } else {
+                //
+                //               }
+                //             },
+                //             style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                //             keyboardType: TextInputType.text,
+                //             textCapitalization: TextCapitalization.words,
+                //             decoration: InputDecoration(
+                //                 enabledBorder: OutlineInputBorder(
+                //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                //                 focusedBorder: OutlineInputBorder(
+                //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                //                 disabledBorder: OutlineInputBorder(
+                //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
+                //                 contentPadding: EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+                //                 prefixIcon: Icon(
+                //                   Icons.person,
+                //                   color: Color(0xffF25F29),
+                //                 ),
+                //                 filled: true,
+                //                 hintStyle: customisedStyle(context,Colors.grey,FontWeight.normal,12.0),
+                //                 hintText: "Select waiter",
+                //                 fillColor: Color(0xffE6E6E6)),
+                //           ),
+                //         ),
+                //         IconButton(
+                //             onPressed: () {
+                //               popupAlert("Do you really want to remove it",2);
+                //
+                //             },
+                //             icon: Icon(
+                //               Icons.cancel,
+                //               color: Colors.red,
+                //               size: 30,
+                //             ))
+                //       ],
+                //     ),
+                //   ),
+                // ),
+
+                isTablet == true
+                    ? Theme(
+                        data: Theme.of(context).copyWith(
+                            textTheme: const TextTheme()
+                                .apply(bodyColor: Colors.black),
+                            dividerColor: Colors.white,
+                            iconTheme:
+                                const IconThemeData(color: Colors.black)),
+                        child: PopupMenuButton<int>(
+                          color: Colors.white,
+                          itemBuilder: (context) => [
+                            PopupMenuItem<int>(
+                                value: 0,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.refresh,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      'Refresh'.tr,
+                                      style: customisedStyle(
+                                          context,
+                                          Colors.black,
+                                          FontWeight.normal,
+                                          14.0),
+                                    )
+                                  ],
+                                )),
+                            const PopupMenuDivider(),
+
+                            // settings permission
+
+                            PopupMenuItem<int>(
+                                value: 1,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.settings,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      'Settings'.tr,
+                                      style: customisedStyle(
+                                          context,
+                                          Colors.black,
+                                          FontWeight.normal,
+                                          14.0),
+                                    )
+                                  ],
+                                )),
+                            const PopupMenuDivider(),
+                            PopupMenuItem<int>(
+                                value: 2,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.info,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      'com_info'.tr,
+                                      style: customisedStyle(
+                                          context,
+                                          Colors.black,
+                                          FontWeight.normal,
+                                          14.0),
+                                    )
+                                  ],
+                                )),
+                            const PopupMenuDivider(),
+                            PopupMenuItem<int>(
+                                value: 3,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.manage_accounts,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      'Profile'.tr,
+                                      style: customisedStyle(
+                                          context,
+                                          Colors.black,
+                                          FontWeight.normal,
+                                          14.0),
+                                    )
+                                  ],
+                                )),
+                            const PopupMenuDivider(),
+                            PopupMenuItem<int>(
+                                value: 4,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.print,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      "Print test page".tr,
+                                      style: customisedStyle(
+                                          context,
+                                          Colors.black,
+                                          FontWeight.normal,
+                                          14.0),
+                                    )
+                                  ],
+                                )),
+                            const PopupMenuDivider(),
+                            PopupMenuItem<int>(
+                                value: 5,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.info,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      'user_log_out'.tr,
+                                      style: customisedStyle(
+                                          context,
+                                          Colors.black,
+                                          FontWeight.normal,
+                                          14.0),
+                                    )
+                                  ],
+                                )),
+                          ],
+                          icon: const Icon(
+                            Icons.more_vert,
+                            color: Colors.black,
+                          ),
+                          onSelected: (item) => selectedItem(context, item),
+                        ),
+                      )
+                    : Icon(
+                        Icons.remove,
+                        color: Colors.transparent,
+                      ),
+              ],
+            ),
       body: networkConnection == true
           ? isTablet == true
               ? dashboardPage()
@@ -790,8 +822,8 @@ class _DashboardNewState extends State<DashboardNew> {
               height: 1,
             )
           : Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
+              decoration: const BoxDecoration(
+                  color: Colors.white,
                   border: Border(
                       top: BorderSide(color: Color(0xffE9E9E9), width: 1))),
               height: MediaQuery.of(context).size.height / 10,
@@ -800,37 +832,62 @@ class _DashboardNewState extends State<DashboardNew> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset("assets/svg/_mobhome.svg"),
-                        Text(
-                          "Home",
-                          style: customisedStyleBold(context, Color(0xffF25F29),
-                              FontWeight.normal, 12.0),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 50,
-                  ),
-                  GestureDetector(
                     onTap: () {
-                      Get.to(ProfileScreen());
+                      isProfileNotifier.value = false;
+                      setState(() {});
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SvgPicture.asset("assets/svg/profile_mob.svg"),
+                        SvgPicture.asset(
+                          "assets/svg/_mobhome.svg",
+                          color: isProfileNotifier.value
+                              ? Color(0xff9E9E9E)
+                              : Color(0xffF25F29),
+                        ),
+                        Text(
+                          "Home",
+                          style: customisedStyleBold(
+                              context,
+                              isProfileNotifier.value
+                                  ? Color(0xff9E9E9E)
+                                  : Color(0xffF25F29),
+                              FontWeight.normal,
+                              12.0),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      isProfileNotifier.value = true;
+                      setState(() {});
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/svg/profile_mob.svg",
+                          color: isProfileNotifier.value
+                              ? Color(0xffF25F29)
+                              : Color(0xff9E9E9E),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(top: 2.0),
                           child: Text(
                             'Profile'.tr,
-                            style: customisedStyleBold(context,
-                                Color(0xff9E9E9E), FontWeight.normal, 12.0),
+                            style: customisedStyleBold(
+                                context,
+                                isProfileNotifier.value
+                                    ? Color(0xffF25F29)
+                                    : Color(0xff9E9E9E),
+                                FontWeight.normal,
+                                12.0),
                           ),
                         )
                       ],
@@ -1404,6 +1461,7 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
+
                         /// daily report commented
                         // Column(
                         //   children: [
@@ -1515,6 +1573,9 @@ class _DashboardNewState extends State<DashboardNew> {
   }
 
   Widget dashboardPageMobile() {
+    final mHeight = MediaQuery.of(context).size.height;
+    final mWidth = MediaQuery.of(context).size.width;
+
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
@@ -1523,668 +1584,1287 @@ class _DashboardNewState extends State<DashboardNew> {
     print(isTablet);
     print(screenWidth);
     print("dash");
-    return Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(color: Colors.white),
-        child: Column(
-          children: [
-            DividerStyle(),
-            Container(
-              height: screenHeight / 12,
-              width: MediaQuery.of(context).size.width / 1,
-              decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(width: .1, color: Colors.grey))),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-               //     Get.to(MobOrganizationList());
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+    return isProfileNotifier.value
+        ? SafeArea(
+            child: Container(
+                margin: const EdgeInsets.all(20),
+                height: mHeight,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
                     children: [
-                      organisationLogo == ''
-                          ? Icon(
-                        Icons.circle,
-                        color:  const Color(0xffF4F4F4),
-                        size: 30,
-                      )
-                          : CircleAvatar(
-                          backgroundImage: NetworkImage(organisationLogo),
-                          maxRadius: 13),
+                      SizedBox(
+                        height: mHeight * .03,
+                      ),
+
+                      Center(
+                        child: Column(
+                          children: [
+                            Container(
+                              //  height: mqh * .30,
+                              width: mHeight * .92,
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffFFF6F2),
+
+                                  // const Color(0xffE6E6E6)
+                                  borderRadius: BorderRadius.circular(25)),
+                              child: Obx(() => Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 16.0, left: 0, right: 6),
+                                        child: Container(
+                                          height: mHeight * .090,
+                                          width: mWidth * .846,
+                                          decoration: const BoxDecoration(
+                                              // border: Border.all(color: Colors.black,width: 1),
+                                              ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0, right: 4),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  height: mHeight * .080,
+                                                  width: mWidth * .180,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white38,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              22)),
+                                                  child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      child: Image.network(
+                                                          "https://www.gravatar.com/avatar/1?s=46&d=identicon&r=PG&f=1")),
+                                                  // child: Image.network(photo)),
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      profileController
+                                                          .userName.value,
+                                                      style: customisedStyle(
+                                                          context,
+                                                          Colors.black,
+                                                          FontWeight.w500,
+                                                          15.5),
+                                                      textAlign: TextAlign.left,
+                                                    ),
+                                                    Text(
+                                                      profileController
+                                                          .mail.value,
+                                                      style: customisedStyle(
+                                                          context,
+                                                          const Color(
+                                                              0xff7D7D7D),
+                                                          FontWeight.w400,
+                                                          13.5),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    )
+                                                  ],
+                                                ),
+                                                // const SizedBox(
+                                                //   height: 20,
+                                                //   width: 15,
+                                                // ),
+                                                IconButton(
+                                                    onPressed: () {},
+                                                    icon: SvgPicture.asset(
+                                                      'assets/svg/edit_mobile.svg',
+                                                    ))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 11.0),
+                                        child: Container(
+                                          // height: mqh * .085,
+                                          width: mWidth * .845,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xffffffff),
+                                              border: Border.all(
+                                                  width: 1.5,
+                                                  color: Colors.grey
+                                                      .withOpacity(.05)),
+                                              borderRadius:
+                                                  BorderRadius.circular(11)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                  child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Organization',
+                                                      style: customisedStyle(
+                                                          context,
+                                                          const Color(
+                                                              0xff7D7D7D),
+                                                          FontWeight.w400,
+                                                          14.0),
+                                                      textAlign: TextAlign.left,
+                                                    ),
+                                                    Text(
+                                                      profileController
+                                                          .companyName.value,
+                                                      style: customisedStyle(
+                                                          context,
+                                                          Colors.black,
+                                                          FontWeight.w500,
+                                                          15.0),
+                                                      textAlign: TextAlign.left,
+                                                    )
+                                                  ],
+                                                ),
+                                              )),
+                                              Column(
+                                                children: [
+                                                  const Text(""),
+                                                  Container(
+                                                    height: mHeight * .05,
+                                                    width: mWidth * .3,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                            color: Color(
+                                                                0xffFFFFFF)),
+                                                    child: TextButton(
+                                                      onPressed: () async {
+                                                        bottomDialogueFunction(
+                                                            isDismissible: true,
+                                                            context: context,
+                                                            textMsg:
+                                                                ' Change organisation ?',
+                                                            fistBtnOnPressed:
+                                                                () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(true);
+                                                            },
+                                                            secondBtnPressed:
+                                                                () async {
+                                                              Navigator
+                                                                  .pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            MobOrganizationList()),
+                                                              );
+                                                            },
+                                                            secondBtnText:
+                                                                'Yes');
+                                                      },
+                                                      child: Text(
+                                                        'change'.tr,
+                                                        style: customisedStyle(
+                                                            context,
+                                                            const Color(
+                                                                0xffF25F29),
+                                                            FontWeight.w400,
+                                                            15.0),
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 15.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                bottomDialogueFunction(
+                                                    isDismissible: true,
+                                                    context: context,
+                                                    textMsg:
+                                                        "Sure want to delete",
+                                                    fistBtnOnPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(true);
+                                                    },
+                                                    secondBtnPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pop(true);
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  DeleteAccount()));
+                                                    },
+                                                    secondBtnText: 'Ok');
+                                              },
+                                              child: Container(
+                                                height: mHeight * .06,
+                                                width: mWidth * .43,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffFfffff),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            25)),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        left: 6.0,
+                                                      ),
+                                                      child: SvgPicture.asset(
+                                                        "assets/svg/delete_mobile.svg",
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 5.0,
+                                                              right: 6),
+                                                      child: Text(
+                                                        'dlt_acnt'.tr,
+                                                        style: customisedStyle(
+                                                            context,
+                                                            const Color(
+                                                                0xffC80000),
+                                                            FontWeight.w400,
+                                                            15.0),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                bottomDialogueFunction(
+                                                    isDismissible: true,
+                                                    context: context,
+                                                    textMsg:
+                                                        'Are you sure Logout ?',
+                                                    fistBtnOnPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(true);
+                                                    },
+                                                    secondBtnPressed: () async {
+                                                      SharedPreferences
+                                                          preference =
+                                                          await SharedPreferences
+                                                              .getInstance();
+                                                      preference.clear();
+                                                      Navigator.of(context)
+                                                          .pushAndRemoveUntil(
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        LoginPageNew(),
+                                                              ),
+                                                              (route) => false);
+                                                    },
+                                                    secondBtnText: 'Yes');
+                                              },
+                                              child: Container(
+                                                width: mWidth * .34,
+                                                height: mHeight * .06,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffFFCFCF),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            25)),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                        "assets/svg/logout_mobile.svg"),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8.0),
+                                                      child: Text(
+                                                        'logout'.tr,
+                                                        style: customisedStyle(
+                                                            context,
+                                                            const Color(
+                                                                0xffEA6262),
+                                                            FontWeight.w400,
+                                                            15.0),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20)
+                                    ],
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: mHeight * .01,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(SettingsMobilePage());
+                        },
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10.0, right: 8, top: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                        "assets/svg/settings_mobile.svg"),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: Text(
+                                        'Settings'.tr,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w400,
+                                            16.0),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 18,
+                                  color: Colors.black,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      /// print settings commented
+                      DividerStyle(),
+                      Card(
+                        color: Colors.transparent,
+                        elevation: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, right: 8, top: 15, bottom: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(Contact_us());
+                            },
+                            child: InkWell(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/svg/brand-hipchat.svg",
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10.0),
+                                        child: Text(
+                                          'contact_us'.tr,
+                                          style: customisedStyle(
+                                              context,
+                                              Colors.black,
+                                              FontWeight.w400,
+                                              16.0),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    size: 18,
+                                    color: Colors.black,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      DividerStyle(),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(AboutUs());
+                        },
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/svg/about_us_mob.svg",
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: Text(
+                                        'about_us'.tr,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w400,
+                                            16.0),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 18,
+                                  color: Colors.black,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      DividerStyle(),
+                      GestureDetector(
+                        onTap: () async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          Locale? currentLocale = Get.locale;
+                          if (currentLocale.toString() == "ar") {
+                            prefs.setBool('isArabic', false);
+                            Get.updateLocale(const Locale('en', 'US'));
+                          } else {
+                            prefs.setBool('isArabic', true);
+                            Get.updateLocale(const Locale('ar'));
+                          }
+                        },
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/svg/language-hiragana.svg",
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: Text(
+                                        'lang'.tr,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w400,
+                                            16.0),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  'lang'.tr,
+                                  style: customisedStyle(
+                                      context,
+                                      Color(0xff7D7D7D),
+                                      FontWeight.normal,
+                                      14.0),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     Get.to(ProductListMobile());
+                      //   },
+                      //   child: Card(
+                      //     color: Colors.transparent,
+                      //     elevation: 0,
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.only(
+                      //           left: 8.0, right: 8, top: 15, bottom: 15),
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         children: [
+                      //           Padding(
+                      //             padding: const EdgeInsets.only(left: 10.0),
+                      //             child: Text(
+                      //               'Product',
+                      //               style: customisedStyle(context,
+                      //                   Colors.black, FontWeight.w400, 16.0),
+                      //             ),
+                      //           ),
+                      //           const Icon(
+                      //             Icons.arrow_forward_ios_outlined,
+                      //             size: 18,
+                      //             color: Colors.black,
+                      //           )
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                )),
+          )
+        : Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(color: Colors.white),
+            child: Column(
+              children: [
+                DividerStyle(),
+                Container(
+                  height: screenHeight / 12,
+                  width: MediaQuery.of(context).size.width / 1,
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(width: .1, color: Colors.grey))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        //     Get.to(MobOrganizationList());
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          organisationLogo == ''
+                              ? Icon(
+                                  Icons.circle,
+                                  color: const Color(0xffF4F4F4),
+                                  size: 30,
+                                )
+                              : CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(organisationLogo),
+                                  maxRadius: 13),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              companyName,
+                              style: customisedStyle(
+                                  context, Colors.black, FontWeight.w500, 17.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                      // child: Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //
+                      //
+                      //     const Icon(
+                      //       Icons.circle,
+                      //       color: Color(0xffF4F4F4),
+                      //     ),
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(left: 8.0),
+                      //       child: Text(
+                      //         "Organization",
+                      //         style: customisedStyleBold(
+                      //             context, Colors.black, FontWeight.w400, 15.0),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: screenWidth / 1.1,
+                  height: screenHeight / 1.5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          companyName,
-                          style: customisedStyle(
-                              context,
-                                Colors.black,
-                              FontWeight.w500,
-                              17.0),
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    updateAlert();
+                                    // var perm = await checkingPerm("Groupview");
+                                    // print(perm);
+                                    // if (perm) {
+                                    //   // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>  RMS()));
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (BuildContext context) =>
+                                    //               const AddProductGroup()));
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(context);
+                                    // }
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffEEEEEE),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              11,
+                                          child: SvgPicture.asset(
+                                              'assets/svg/product_group.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    'Group'.tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    updateAlert();
+                                    // var perm = await checkingPerm("Productview");
+                                    // print(perm);
+                                    // if (perm) {
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (BuildContext context) =>
+                                    //               CreateProductNew()));
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(context);
+                                    // }
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffEEEEEE),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              10,
+                                          child: SvgPicture.asset(
+                                              'assets/svg/product.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    'Products'.tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    updateAlert();
+                                    // var perm = await checkingPerm("Customerview");
+                                    // print(perm);
+                                    // if (perm) {
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (BuildContext context) =>
+                                    //               AddCustomerNew()));
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(context);
+                                    // }
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffEEEEEE),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              12,
+                                          child: SvgPicture.asset(
+                                              'assets/svg/customer.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    'customer'.tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffEEEEEE),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              12,
+                                          child: SvgPicture.asset(
+                                              'assets/svg/POS.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    var dinePerm =
+                                        await checkingPerm("Diningview");
+                                    var takeAwayPerm =
+                                        await checkingPerm("Take awayview");
+                                    var carPerm = await checkingPerm("Carview");
+
+                                    if (dinePerm == true ||
+                                        takeAwayPerm == true ||
+                                        carPerm == true) {
+                                      Get.to(POSMobilePage());
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
+                                  },
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    "POS".tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    updateAlert();
+                                    // var salesReport =
+                                    //     await checkingPerm("Sale Report");
+                                    // var tableWiseReport =
+                                    //     await checkingPerm("Table Wise Report");
+                                    // var productReport =
+                                    //     await checkingPerm("Product Report");
+                                    //
+                                    // var rmsReport =
+                                    //     await checkingPerm("RMS Report");
+                                    //
+                                    // var diningReport =
+                                    //     await checkingPerm("Dining Report");
+                                    //
+                                    // var takeAwayReport =
+                                    //     await checkingPerm("Take Away Report");
+                                    //
+                                    // var carReport =
+                                    //     await checkingPerm("Car Report");
+                                    //
+                                    // ///     var salesReport = await checkingPerm("Online Report");
+                                    //
+                                    // if (salesReport == true ||
+                                    //     tableWiseReport == true ||
+                                    //     productReport == true ||
+                                    //     rmsReport == true ||
+                                    //     diningReport == true ||
+                                    //     takeAwayReport == true ||
+                                    //     carReport == true) {
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (BuildContext context) =>
+                                    //               const ReportPageNew()));
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(context);
+                                    // }
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffEEEEEE),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              13,
+                                          child: SvgPicture.asset(
+                                              'assets/svg/report.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    'Report'.tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(builder: (context) => SettingsPageDemo()),
+                                    // );
+                                    updateAlert();
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) => AddTax()),
+                                    // );
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffEEEEEE),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              12,
+                                          child: SvgPicture.asset(
+                                              'assets/svg/tax.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    'tax'.tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    updateAlert();
+                                    // var flavour = await checkingPerm("Flavourview");
+                                    //
+                                    // if (flavour == true) {
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (BuildContext context) =>
+                                    //               ViewFlavour()));
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(context);
+                                    // }
+
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(builder: (context) => MyListView()),
+                                    // );
+                                    //
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffEEEEEE),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              10,
+                                          child: SvgPicture.asset(
+                                              'assets/svg/flavour.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    'Flavour'.tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              width: 35,
+                            ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    updateAlert();
+                                    // var invoices =
+                                    //     await checkingPerm('Invoices'.tr);
+                                    //
+                                    // if (invoices == true) {
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (BuildContext context) =>
+                                    //               ViewInvoice()));
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(context);
+                                    // }
+
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(builder: (context) => AddInvoice()),
+                                    // );
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffEEEEEE),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              14,
+                                          child: SvgPicture.asset(
+                                              'assets/svg/invoice.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    'Invoices'.tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+
+                            /// daily report commented
+                            //      Column(
+                            //        children: [
+                            //          // GestureDetector(
+                            //          //   onTap: () async {
+                            //          //        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+                            //          //
+                            //          //     // Navigator.push(
+                            //          //     //     context,
+                            //          //     //     MaterialPageRoute(
+                            //          //     //         builder: (BuildContext context) =>
+                            //          //     //             const DragableList()));
+                            //          //
+                            //          //     // var invoices = await checkingPerm('Invoices'.tr);
+                            //          //     //
+                            //          //     // if (invoices == true) {
+                            //          //     //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                            //          //     //
+                            //          //     // } else {
+                            //          //     //   dialogBoxPermissionDenied(context);
+                            //          //     // }
+                            //          //   },
+                            //          //   child: Container(
+                            //          //     decoration: const BoxDecoration(
+                            //          //         color: Color(0xffEEEEEE),
+                            //          //         borderRadius:
+                            //          //             BorderRadius.all(Radius.circular(20))),
+                            //          //     height: isTablet
+                            //          //         ? screenHeight / 12
+                            //          //         : screenHeight / 15,
+                            //          //     width: isTablet
+                            //          //         ? screenWidth / 17
+                            //          //         : screenWidth / 6,
+                            //          //     child: Row(
+                            //          //       mainAxisAlignment: MainAxisAlignment.center,
+                            //          //       crossAxisAlignment: CrossAxisAlignment.center,
+                            //          //       children: [
+                            //          //         Container(
+                            //          //           height:
+                            //          //               MediaQuery.of(context).size.height /
+                            //          //                   20,
+                            //          //           width: MediaQuery.of(context).size.width /
+                            //          //               20,
+                            //          //           child: SvgPicture.asset(
+                            //          //               'assets/svg/report.svg'),
+                            //          //         ),
+                            //          //       ],
+                            //          //     ),
+                            //          //   ),
+                            //          // ),
+                            //          // Padding(
+                            //          //   padding: const EdgeInsets.only(
+                            //          //     top: 12,
+                            //          //   ),
+                            //          //   child: Text(
+                            //          //     'Daily Report'.tr,
+                            //          //     style: const TextStyle(fontSize: 12),
+                            //          //   ),
+                            //          // )
+                            //        ],
+                            //      ),
+
+                            /// new taxz commented
+                            // Column(
+                            //   children: [
+                            //     GestureDetector(
+                            //       onTap: () {
+                            //
+                            //         Navigator.push(
+                            //           context,
+                            //           MaterialPageRoute(builder: (context) => TaxCategory()),
+                            //         );
+                            //       },
+                            //       child: Container(
+                            //         decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                            //         height: MediaQuery.of(context).size.height / 12,
+                            //         width: MediaQuery.of(context).size.width / 17,
+                            //         child: Row(
+                            //           mainAxisAlignment: MainAxisAlignment.center,
+                            //           crossAxisAlignment: CrossAxisAlignment.center,
+                            //           children: [
+                            //             Container(
+                            //               height: MediaQuery.of(context).size.height / 20,
+                            //               width: MediaQuery.of(context).size.width / 20,
+                            //               child: SvgPicture.asset('assets/svg/tax.svg'),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     const Padding(
+                            //       padding: EdgeInsets.only(
+                            //         top: 12,
+                            //       ),
+                            //       child: Text(
+                            //         'New tax',
+                            //         style: TextStyle(fontSize: 12),
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                  // child: Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //
-                  //
-                  //     const Icon(
-                  //       Icons.circle,
-                  //       color: Color(0xffF4F4F4),
-                  //     ),
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(left: 8.0),
-                  //       child: Text(
-                  //         "Organization",
-                  //         style: customisedStyleBold(
-                  //             context, Colors.black, FontWeight.w400, 15.0),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                ),
-              ),
-            ),
-            Container(
-              width: screenWidth / 1.1,
-              height: screenHeight / 1.5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                updateAlert();
-                                // var perm = await checkingPerm("Groupview");
-                                // print(perm);
-                                // if (perm) {
-                                //   // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>  RMS()));
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (BuildContext context) =>
-                                //               const AddProductGroup()));
-                                // } else {
-                                //   dialogBoxPermissionDenied(context);
-                                // }
-
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 12,
-                                width: screenWidth / 5.5,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                         11,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/product_group.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'Group'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                updateAlert();
-                                // var perm = await checkingPerm("Productview");
-                                // print(perm);
-                                // if (perm) {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (BuildContext context) =>
-                                //               CreateProductNew()));
-                                // } else {
-                                //   dialogBoxPermissionDenied(context);
-                                // }
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 12,
-                                width: screenWidth / 5.5,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          10,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/product.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'Products'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                updateAlert();
-                                // var perm = await checkingPerm("Customerview");
-                                // print(perm);
-                                // if (perm) {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (BuildContext context) =>
-                                //               AddCustomerNew()));
-                                // } else {
-                                //   dialogBoxPermissionDenied(context);
-                                // }
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 12,
-                                width: screenWidth / 5.5,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          12,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/customer.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'customer'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            GestureDetector(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 12,
-                                width: screenWidth / 5.5,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          12,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/POS.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onTap: () async {
-                                var dinePerm = await checkingPerm("Diningview");
-                                var takeAwayPerm =
-                                    await checkingPerm("Take awayview");
-                                var carPerm = await checkingPerm("Carview");
-
-                                if (dinePerm == true ||
-                                    takeAwayPerm == true ||
-                                    carPerm == true) {
-                                  Get.to(POSMobilePage());
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                "POS".tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                updateAlert();
-                                // var salesReport =
-                                //     await checkingPerm("Sale Report");
-                                // var tableWiseReport =
-                                //     await checkingPerm("Table Wise Report");
-                                // var productReport =
-                                //     await checkingPerm("Product Report");
-                                //
-                                // var rmsReport =
-                                //     await checkingPerm("RMS Report");
-                                //
-                                // var diningReport =
-                                //     await checkingPerm("Dining Report");
-                                //
-                                // var takeAwayReport =
-                                //     await checkingPerm("Take Away Report");
-                                //
-                                // var carReport =
-                                //     await checkingPerm("Car Report");
-                                //
-                                // ///     var salesReport = await checkingPerm("Online Report");
-                                //
-                                // if (salesReport == true ||
-                                //     tableWiseReport == true ||
-                                //     productReport == true ||
-                                //     rmsReport == true ||
-                                //     diningReport == true ||
-                                //     takeAwayReport == true ||
-                                //     carReport == true) {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (BuildContext context) =>
-                                //               const ReportPageNew()));
-                                // } else {
-                                //   dialogBoxPermissionDenied(context);
-                                // }
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 12,
-                                width: screenWidth / 5.5,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          13,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/report.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'Report'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => SettingsPageDemo()),
-                                // );
-                                updateAlert();
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => AddTax()),
-                                // );
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 12,
-                                width: screenWidth / 5.5,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          12,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/tax.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'tax'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                updateAlert();
-                                // var flavour = await checkingPerm("Flavourview");
-                                //
-                                // if (flavour == true) {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (BuildContext context) =>
-                                //               ViewFlavour()));
-                                // } else {
-                                //   dialogBoxPermissionDenied(context);
-                                // }
-
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => MyListView()),
-                                // );
-                                //
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 12,
-                                width: screenWidth / 5.5,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          10,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/flavour.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'Flavour'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: 35,
-                        ),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                updateAlert();
-                                // var invoices =
-                                //     await checkingPerm('Invoices'.tr);
-                                //
-                                // if (invoices == true) {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (BuildContext context) =>
-                                //               ViewInvoice()));
-                                // } else {
-                                //   dialogBoxPermissionDenied(context);
-                                // }
-
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => AddInvoice()),
-                                // );
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                height: screenHeight / 12,
-                                width: screenWidth / 5.5,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          14,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/invoice.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'Invoices'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-
-                        /// daily report commented
-                             Column(
-                               children: [
-                                 GestureDetector(
-                                   onTap: () async {
-                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
-
-                                     // Navigator.push(
-                                     //     context,
-                                     //     MaterialPageRoute(
-                                     //         builder: (BuildContext context) =>
-                                     //             const DragableList()));
-
-                                     // var invoices = await checkingPerm('Invoices'.tr);
-                                     //
-                                     // if (invoices == true) {
-                                     //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
-                                     //
-                                     // } else {
-                                     //   dialogBoxPermissionDenied(context);
-                                     // }
-                                   },
-                                   child: Container(
-                                     decoration: const BoxDecoration(
-                                         color: Color(0xffEEEEEE),
-                                         borderRadius:
-                                             BorderRadius.all(Radius.circular(20))),
-                                     height: isTablet
-                                         ? screenHeight / 12
-                                         : screenHeight / 15,
-                                     width: isTablet
-                                         ? screenWidth / 17
-                                         : screenWidth / 6,
-                                     child: Row(
-                                       mainAxisAlignment: MainAxisAlignment.center,
-                                       crossAxisAlignment: CrossAxisAlignment.center,
-                                       children: [
-                                         Container(
-                                           height:
-                                               MediaQuery.of(context).size.height /
-                                                   20,
-                                           width: MediaQuery.of(context).size.width /
-                                               20,
-                                           child: SvgPicture.asset(
-                                               'assets/svg/report.svg'),
-                                         ),
-                                       ],
-                                     ),
-                                   ),
-                                 ),
-                                 Padding(
-                                   padding: const EdgeInsets.only(
-                                     top: 12,
-                                   ),
-                                   child: Text(
-                                     'Daily Report'.tr,
-                                     style: const TextStyle(fontSize: 12),
-                                   ),
-                                 )
-                               ],
-                             ),
-
-                        /// new taxz commented
-                        // Column(
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () {
-                        //
-                        //         Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(builder: (context) => TaxCategory()),
-                        //         );
-                        //       },
-                        //       child: Container(
-                        //         decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                        //         height: MediaQuery.of(context).size.height / 12,
-                        //         width: MediaQuery.of(context).size.width / 17,
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           crossAxisAlignment: CrossAxisAlignment.center,
-                        //           children: [
-                        //             Container(
-                        //               height: MediaQuery.of(context).size.height / 20,
-                        //               width: MediaQuery.of(context).size.width / 20,
-                        //               child: SvgPicture.asset('assets/svg/tax.svg'),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     const Padding(
-                        //       padding: EdgeInsets.only(
-                        //         top: 12,
-                        //       ),
-                        //       child: Text(
-                        //         'New tax',
-                        //         style: TextStyle(fontSize: 12),
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ));
+                )
+              ],
+            ));
   }
 
   Future<Null> userTypeData(type) async {

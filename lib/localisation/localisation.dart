@@ -363,7 +363,8 @@ class LocaleChange extends Translations {
           'dont_have_account':'Don’t have an Account?',
           'sign_up':'Sign up now!',
           'lang':'English',
-          'login':'Login'
+          'login':'Login',
+          'Add_Product':"Add Product"
 
         },
 
@@ -372,6 +373,7 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+  'Add_Product':"أضف منتج",
   'login':'تسجيل الدخول',
 
   'lang':'عربي',

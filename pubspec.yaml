@@ -304,6 +304,7 @@ flutter:
     - assets/svg/kot_print.svg
     - assets/svg/user-2.svg
     - assets/svg/key-round.svg
+    - assets/svg/no_image.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
