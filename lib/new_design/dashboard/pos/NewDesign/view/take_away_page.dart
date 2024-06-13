@@ -26,15 +26,15 @@ class _TakeAwayState extends State<TakeAway> {
   final POSController posController = Get.put(POSController());
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
-      return Color(0xffEFEFEF); // Set your desired color for pending status
+      return const Color(0xffEFEFEF); // Set your desired color for pending status
     } else if (status == 'Ordered') {
-      return Color(0xff03C1C1); // Set your desired color for completed status
+      return const Color(0xff03C1C1); // Set your desired color for completed status
     } else if (status == 'Paid') {
-      return Color(0xff10C103); // Set your desired color for cancelled status
+      return const Color(0xff10C103); // Set your desired color for cancelled status
     } else if (status == 'Billed') {
-      return Color(0xff034FC1); // Set your desired color for cancelled status
+      return const Color(0xff034FC1); // Set your desired color for cancelled status
     } else {
-      return Color(0xffEFEFEF); // Default color if status is not recognized
+      return const Color(0xffEFEFEF); // Default color if status is not recognized
     }
   }
 
@@ -76,7 +76,7 @@ class _TakeAwayState extends State<TakeAway> {
             child: Obx(() => takeAwayController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
                 : takeAwayController.takeAwayOrders.isEmpty
-                    ? const Center(child: Text("No recent orders"))
+                ?   Center(child: Text("No recent orders",style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),))
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: RefreshIndicator(
@@ -192,7 +192,7 @@ class _TakeAwayState extends State<TakeAway> {
                                         ],
                                       ),
                                     ),
-                                    CustomSlidableAction(
+                                    takeAwayController.takeAwayOrders[index].status == 'Ordered'? CustomSlidableAction(
                                       onPressed: (BuildContext context) async {
                                         var resultPayment = await Get.to(PaymentPage(
                                           uID: takeAwayController.takeAwayOrders[index].salesOrderID!,
@@ -220,7 +220,7 @@ class _TakeAwayState extends State<TakeAway> {
                                           )
                                         ],
                                       ),
-                                    ),
+                                    ):Container(),
 
                                     ///kot commented here
                                     // CustomSlidableAction(
@@ -291,11 +291,11 @@ class _TakeAwayState extends State<TakeAway> {
                                                           style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                                                         ),
                                                         Text(
-                                                          " #",
-                                                          style: customisedStyle(context, Color(0xff9B9B9B), FontWeight.w400, 15.0),
+                                                          " # ",
+                                                          style: customisedStyle(context, const Color(0xff9B9B9B), FontWeight.w400, 15.0),
                                                         ),
                                                         Text(
-                                                          "Token ${takeAwayController.takeAwayOrders[index].tokenNumber!}",
+                                                          takeAwayController.takeAwayOrders[index].tokenNumber!,
                                                           style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                                                         ),
                                                       ],
@@ -332,7 +332,7 @@ class _TakeAwayState extends State<TakeAway> {
                                                     padding: const EdgeInsets.only(right: 8.0),
                                                     child: Text(
                                                       takeAwayController.takeAwayOrders[index].customerName!,
-                                                      style: customisedStyle(context, Color(0xffA0A0A0), FontWeight.w400, 13.0),
+                                                      style: customisedStyle(context, const Color(0xffA0A0A0), FontWeight.w400, 13.0),
                                                     ),
                                                   ),
                                                   Text(
@@ -404,7 +404,7 @@ class _TakeAwayState extends State<TakeAway> {
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
                         'Add_Takeaway'.tr,
-                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 12.0),
+                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w500, 14.0),
                       ),
                     )
                   ],
@@ -426,21 +426,21 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
       return AlertDialog(
         title: Text(
           'msg6'.tr,
-          style: TextStyle(color: Colors.black, fontSize: 13),
+          style: const TextStyle(color: Colors.black, fontSize: 13),
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
+            child: Text('Yes'.tr, style: const TextStyle(color: Colors.red)),
             onPressed: () async {
               Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(
-                CupertinoPageRoute(builder: (context) => EnterPinNumber()),
+                CupertinoPageRoute(builder: (context) => const EnterPinNumber()),
                     (_) => false,
               );
             },
           ),
           TextButton(
-            child: Text('No', style: TextStyle(color: Colors.black)),
+            child: const Text('No', style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.of(context).pop(ConfirmAction.cancel);
             },

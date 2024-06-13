@@ -67,6 +67,7 @@ class POSPaymentController extends GetxController {
         final String url = '$baseUrl/posholds/view-pos/salesOrder/$uID/';
 
         Map data = {"BranchID": branchID, "CompanyID": companyID, "CreatedUserID": userID, "PriceRounding": 2};
+        print(url);
         print(data);
         print(accessToken);
         var body = json.encode(data);

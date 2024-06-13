@@ -453,8 +453,7 @@ class _DiningPageState extends State<DiningPage> {
                                                     ),
                                                   ],
                                                 ),
-                                                diningController.returnOrderTime(
-                                                    diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=
+                                                diningController.returnOrderTime(diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=
                                                         ""
                                                     ? Row(
                                                         mainAxisAlignment: MainAxisAlignment.center,

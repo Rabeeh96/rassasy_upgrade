@@ -84,6 +84,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
                       if (result != null) {
                         paymentController.paymentCustomerSelection.text = result[0];
+                        paymentController.ledgerID.value= result[2];
                         paymentController.customerBalance.value = result[1];
                         paymentController.update();
                         setState(() {
@@ -882,17 +883,12 @@ class _PaymentPageState extends State<PaymentPage> {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       var id = prefs.getInt("Cash_Account") ?? 1;
 
-
-
-                      print("id  $id");
-                      print("ledgerID  ${paymentController.ledgerID}");
                       if (paymentController.paymentCustomerSelection.text != "walk in customer") {
                         paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
                       } else {
                         if ((paymentController.cashReceived.value + paymentController.bankReceived.value) >=
                             double.parse(paymentController.grandTotalAmount.value)) {
-                          paymentController.createSaleInvoice(
-                              orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
+                          paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
                         } else {
                           popAlert(head: "Waring", message: "You cant make credit sale", position: SnackPosition.TOP);
                         }
