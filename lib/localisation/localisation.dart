@@ -28,7 +28,7 @@ class LocaleChange extends Translations {
           'confirm_password': 'Confirm Password',
           'choose_a_country': 'Choose a country',
           'sign_in_vikn_account': 'Sign in with Vikn account',
-          'forgot_account': 'Forgot password?',
+          'forgot_account': 'Forgotten password?',
           'or': 'or',
           'create_an_accnt': 'Create an account',
           'please_enter_details': 'Please enter user details',
@@ -359,7 +359,12 @@ class LocaleChange extends Translations {
           'direct_order_option': 'Direct order option',
           'company_alignments':"Company Details Alignments",
           'token':'Highlighted Token No',
-          'initial_token':'Initial TokenNo'
+          'initial_token':'Initial TokenNo',
+          'dont_have_account':'Don’t have an Account?',
+          'sign_up':'Sign up now!',
+          'lang':'English',
+          'login':'Login'
+
         },
 
         ///
@@ -367,6 +372,11 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+  'login':'تسجيل الدخول',
+
+  'lang':'عربي',
+          'sign_up':'أفتح حساب الأن!',
+  'dont_have_account':"ليس لديك حساب؟",
   'initial_token':'الرمز الأولي ',
   'token':"الرمز المميز لا",
           'company_alignments':'تفاصيل الشركة التوافقات',
