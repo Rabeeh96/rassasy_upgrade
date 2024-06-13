@@ -428,9 +428,10 @@ class _LoginPageNewState extends State<LoginPageNew> {
                       ),
                     ),
                     border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
 
-                    contentPadding: const EdgeInsets.only(
-                        left: 20, top: 10, right: 15, bottom: 10),
+                    // contentPadding: const EdgeInsets.only(
+                    //     left: 20, top: 10, right: 15, bottom: 10),
                     filled: true,
                     hintStyle: const TextStyle(
                         color: Color(0xff7D7D7D), fontSize: 14),
@@ -486,9 +487,10 @@ class _LoginPageNewState extends State<LoginPageNew> {
                       ),
                       border: InputBorder.none,
 
+                      contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
 
-                      contentPadding: const EdgeInsets.only(
-                          left: 20, top: 10, right: 10, bottom: 10),
+                      // contentPadding: const EdgeInsets.only(
+                      //     left: 20, top: 10, right: 10, bottom: 10),
                       filled: true,
                       labelStyle: customisedStyle(context, Color(0xff7D7D7D), FontWeight.w400, 14.0),
                       labelText: 'Password'.tr,
