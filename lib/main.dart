@@ -72,7 +72,7 @@ bool isTabletDevice() {
   print("screenWidth  is tablet device  $screenWidth");
 
   /// You may need to adjust this threshold based on your requirements
-  return screenWidth > 600;
+  return screenWidth > 800;
 }
 
 class MyApp extends StatelessWidget {
