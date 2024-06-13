@@ -8086,10 +8086,10 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
   );
 }
 
-enum Image { gallery, camera }
+enum ImageEnum { gallery, camera }
 
-Future<Image?> _asyncSimpleDialog(BuildContext context) async {
-  return await showDialog<Image>(
+Future<ImageEnum?> _asyncSimpleDialog(BuildContext context) async {
+  return await showDialog<ImageEnum>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
@@ -8098,13 +8098,13 @@ Future<Image?> _asyncSimpleDialog(BuildContext context) async {
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context, Image.gallery);
+                Navigator.pop(context, ImageEnum.gallery);
               },
               child: const Text('Gallery'),
             ),
             SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context, Image.camera);
+                Navigator.pop(context, ImageEnum.camera);
               },
               child: const Text('Camera'),
             ),

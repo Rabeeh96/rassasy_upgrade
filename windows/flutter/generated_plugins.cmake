@@ -8,6 +8,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
   network_info_plus
   printing
+  webview_universal
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
