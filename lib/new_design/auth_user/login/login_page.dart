@@ -349,7 +349,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
         print("${response.body}");
         //     var status = n["success"];
         var status = n["success"];
-        ;
+
 
         if (status == 6000) {
           var datas = n["data"];
