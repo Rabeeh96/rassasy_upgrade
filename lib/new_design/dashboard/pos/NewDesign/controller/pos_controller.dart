@@ -86,6 +86,7 @@ final isLoadTable=false.obs;
   }
 
   String currency = "SR";
+  RxString userName = "".obs;
 
   final TableService _tableService = TableService();
   var tableData = <Data>[].obs;
@@ -137,6 +138,8 @@ final isLoadTable=false.obs;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userID = prefs.getInt('user_id') ?? 0;
       var accessToken = prefs.getString('access') ?? '';
+      currency= prefs.getString('CurrencySymbol') ?? "";
+      userName.value = prefs.getString('user_name')??"";
       var fetchedData = await _tableService.fetchAllData(accessToken);
       selectedIndexNotifier.value = 0;
       tableData.assignAll((fetchedData['data'] as List).map((json) => Data.fromJson(json)).toList());

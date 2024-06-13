@@ -25,6 +25,7 @@ import 'package:rassasy_new/setting/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'customer/customer_detail_page.dart';
+import 'dailyReport/daily_report.dart';
 import 'flavour/view_flavour.dart';
 import 'pos/new_method/pos_list_section.dart';
 import 'product/create_products.dart';
@@ -60,6 +61,7 @@ class _DashboardNewState extends State<DashboardNew> {
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
       expireDate = prefs.getString('expiryDate') ?? '';
+      organisationLogo = prefs.getString('companyLogo') ?? 'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
       settingsPermission = prefs.getBool('General Setting') ?? false;
     });
   }
@@ -229,6 +231,7 @@ class _DashboardNewState extends State<DashboardNew> {
   String ksa = "+966 533133 4959";
   var companyType = "";
   var expireDate = "";
+  var organisationLogo = "";
 
   company_info(BuildContext context) async {
     return showDialog(
@@ -1401,7 +1404,67 @@ class _DashboardNewState extends State<DashboardNew> {
                             )
                           ],
                         ),
-
+                        /// daily report commented
+                        // Column(
+                        //   children: [
+                        //     GestureDetector(
+                        //       onTap: () async {
+                        //         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+                        //
+                        //         // Navigator.push(
+                        //         //     context,
+                        //         //     MaterialPageRoute(
+                        //         //         builder: (BuildContext context) =>
+                        //         //             const DragableList()));
+                        //
+                        //         // var invoices = await checkingPerm('Invoices'.tr);
+                        //         //
+                        //         // if (invoices == true) {
+                        //         //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                        //         //
+                        //         // } else {
+                        //         //   dialogBoxPermissionDenied(context);
+                        //         // }
+                        //       },
+                        //       child: Container(
+                        //         decoration: const BoxDecoration(
+                        //             color: Color(0xffEEEEEE),
+                        //             borderRadius:
+                        //             BorderRadius.all(Radius.circular(20))),
+                        //         height: isTablet
+                        //             ? screenHeight / 12
+                        //             : screenHeight / 15,
+                        //         width: isTablet
+                        //             ? screenWidth / 17
+                        //             : screenWidth / 6,
+                        //         child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           crossAxisAlignment: CrossAxisAlignment.center,
+                        //           children: [
+                        //             Container(
+                        //               height:
+                        //               MediaQuery.of(context).size.height /
+                        //                   20,
+                        //               width: MediaQuery.of(context).size.width /
+                        //                   20,
+                        //               child: SvgPicture.asset(
+                        //                   'assets/svg/report.svg'),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Padding(
+                        //       padding: const EdgeInsets.only(
+                        //         top: 12,
+                        //       ),
+                        //       child: Text(
+                        //         'Daily Report'.tr,
+                        //         style: const TextStyle(fontSize: 12),
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
                         /// new taxz commented
                         // Column(
                         //   children: [
@@ -1477,26 +1540,54 @@ class _DashboardNewState extends State<DashboardNew> {
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(MobOrganizationList());
+               //     Get.to(MobOrganizationList());
                   },
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(
+                      organisationLogo == ''
+                          ? Icon(
                         Icons.circle,
-                        color: Color(0xffF4F4F4),
-                      ),
+                        color:  const Color(0xffF4F4F4),
+                        size: 30,
+                      )
+                          : CircleAvatar(
+                          backgroundImage: NetworkImage(organisationLogo),
+                          maxRadius: 13),
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          "Organization",
-                          style: customisedStyleBold(
-                              context, Colors.black, FontWeight.w400, 15.0),
+                          companyName,
+                          style: customisedStyle(
+                              context,
+                                Colors.black,
+                              FontWeight.w500,
+                              17.0),
                         ),
                       ),
                     ],
                   ),
+                  // child: Row(
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //
+                  //
+                  //     const Icon(
+                  //       Icons.circle,
+                  //       color: Color(0xffF4F4F4),
+                  //     ),
+                  //     Padding(
+                  //       padding: const EdgeInsets.only(left: 8.0),
+                  //       child: Text(
+                  //         "Organization",
+                  //         style: customisedStyleBold(
+                  //             context, Colors.black, FontWeight.w400, 15.0),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ),
               ),
             ),
@@ -1516,25 +1607,20 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var perm = await checkingPerm("Groupview");
-                                print(perm);
-                                if (perm) {
-                                  // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>  RMS()));
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              const AddProductGroup()));
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
+                                updateAlert();
+                                // var perm = await checkingPerm("Groupview");
+                                // print(perm);
+                                // if (perm) {
+                                //   // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>  RMS()));
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               const AddProductGroup()));
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
 
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder:
-                                //             (BuildContext context) =>
-                                //            testing()));
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -1575,17 +1661,18 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var perm = await checkingPerm("Productview");
-                                print(perm);
-                                if (perm) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              CreateProductNew()));
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
+                                updateAlert();
+                                // var perm = await checkingPerm("Productview");
+                                // print(perm);
+                                // if (perm) {
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               CreateProductNew()));
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -1626,17 +1713,18 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var perm = await checkingPerm("Customerview");
-                                print(perm);
-                                if (perm) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              AddCustomerNew()));
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
+                                updateAlert();
+                                // var perm = await checkingPerm("Customerview");
+                                // print(perm);
+                                // if (perm) {
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               AddCustomerNew()));
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -1737,42 +1825,43 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var salesReport =
-                                    await checkingPerm("Sale Report");
-                                var tableWiseReport =
-                                    await checkingPerm("Table Wise Report");
-                                var productReport =
-                                    await checkingPerm("Product Report");
-
-                                var rmsReport =
-                                    await checkingPerm("RMS Report");
-
-                                var diningReport =
-                                    await checkingPerm("Dining Report");
-
-                                var takeAwayReport =
-                                    await checkingPerm("Take Away Report");
-
-                                var carReport =
-                                    await checkingPerm("Car Report");
-
-                                ///     var salesReport = await checkingPerm("Online Report");
-
-                                if (salesReport == true ||
-                                    tableWiseReport == true ||
-                                    productReport == true ||
-                                    rmsReport == true ||
-                                    diningReport == true ||
-                                    takeAwayReport == true ||
-                                    carReport == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              const ReportPageNew()));
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
+                                updateAlert();
+                                // var salesReport =
+                                //     await checkingPerm("Sale Report");
+                                // var tableWiseReport =
+                                //     await checkingPerm("Table Wise Report");
+                                // var productReport =
+                                //     await checkingPerm("Product Report");
+                                //
+                                // var rmsReport =
+                                //     await checkingPerm("RMS Report");
+                                //
+                                // var diningReport =
+                                //     await checkingPerm("Dining Report");
+                                //
+                                // var takeAwayReport =
+                                //     await checkingPerm("Take Away Report");
+                                //
+                                // var carReport =
+                                //     await checkingPerm("Car Report");
+                                //
+                                // ///     var salesReport = await checkingPerm("Online Report");
+                                //
+                                // if (salesReport == true ||
+                                //     tableWiseReport == true ||
+                                //     productReport == true ||
+                                //     rmsReport == true ||
+                                //     diningReport == true ||
+                                //     takeAwayReport == true ||
+                                //     carReport == true) {
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               const ReportPageNew()));
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -1817,12 +1906,12 @@ class _DashboardNewState extends State<DashboardNew> {
                                 //   context,
                                 //   MaterialPageRoute(builder: (context) => SettingsPageDemo()),
                                 // );
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddTax()),
-                                );
+                                updateAlert();
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => AddTax()),
+                                // );
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -1871,17 +1960,18 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var flavour = await checkingPerm("Flavourview");
-
-                                if (flavour == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ViewFlavour()));
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
+                                updateAlert();
+                                // var flavour = await checkingPerm("Flavourview");
+                                //
+                                // if (flavour == true) {
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               ViewFlavour()));
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
 
                                 // Navigator.push(
                                 //   context,
@@ -1931,18 +2021,19 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var invoices =
-                                    await checkingPerm('Invoices'.tr);
-
-                                if (invoices == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ViewInvoice()));
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
+                                updateAlert();
+                                // var invoices =
+                                //     await checkingPerm('Invoices'.tr);
+                                //
+                                // if (invoices == true) {
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               ViewInvoice()));
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
 
                                 // Navigator.push(
                                 //   context,
@@ -1986,65 +2077,66 @@ class _DashboardNewState extends State<DashboardNew> {
                         ),
 
                         /// daily report commented
-                        //      Column(
-                        //        children: [
-                        //          GestureDetector(
-                        //            onTap: () async {
-                        //              //     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
-                        //              Navigator.push(
-                        //                  context,
-                        //                  MaterialPageRoute(
-                        //                      builder: (BuildContext context) =>
-                        //                          const DragableList()));
-                        //
-                        //              // var invoices = await checkingPerm('Invoices'.tr);
-                        //              //
-                        //              // if (invoices == true) {
-                        //              //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
-                        //              //
-                        //              // } else {
-                        //              //   dialogBoxPermissionDenied(context);
-                        //              // }
-                        //            },
-                        //            child: Container(
-                        //              decoration: const BoxDecoration(
-                        //                  color: Color(0xffEEEEEE),
-                        //                  borderRadius:
-                        //                      BorderRadius.all(Radius.circular(20))),
-                        //              height: isTablet
-                        //                  ? screenHeight / 12
-                        //                  : screenHeight / 15,
-                        //              width: isTablet
-                        //                  ? screenWidth / 17
-                        //                  : screenWidth / 6,
-                        //              child: Row(
-                        //                mainAxisAlignment: MainAxisAlignment.center,
-                        //                crossAxisAlignment: CrossAxisAlignment.center,
-                        //                children: [
-                        //                  Container(
-                        //                    height:
-                        //                        MediaQuery.of(context).size.height /
-                        //                            20,
-                        //                    width: MediaQuery.of(context).size.width /
-                        //                        20,
-                        //                    child: SvgPicture.asset(
-                        //                        'assets/svg/report.svg'),
-                        //                  ),
-                        //                ],
-                        //              ),
-                        //            ),
-                        //          ),
-                        //          Padding(
-                        //            padding: const EdgeInsets.only(
-                        //              top: 12,
-                        //            ),
-                        //            child: Text(
-                        //              'Daily Report'.tr,
-                        //              style: const TextStyle(fontSize: 12),
-                        //            ),
-                        //          )
-                        //        ],
-                        //      ),
+                             Column(
+                               children: [
+                                 GestureDetector(
+                                   onTap: () async {
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+
+                                     // Navigator.push(
+                                     //     context,
+                                     //     MaterialPageRoute(
+                                     //         builder: (BuildContext context) =>
+                                     //             const DragableList()));
+
+                                     // var invoices = await checkingPerm('Invoices'.tr);
+                                     //
+                                     // if (invoices == true) {
+                                     //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                                     //
+                                     // } else {
+                                     //   dialogBoxPermissionDenied(context);
+                                     // }
+                                   },
+                                   child: Container(
+                                     decoration: const BoxDecoration(
+                                         color: Color(0xffEEEEEE),
+                                         borderRadius:
+                                             BorderRadius.all(Radius.circular(20))),
+                                     height: isTablet
+                                         ? screenHeight / 12
+                                         : screenHeight / 15,
+                                     width: isTablet
+                                         ? screenWidth / 17
+                                         : screenWidth / 6,
+                                     child: Row(
+                                       mainAxisAlignment: MainAxisAlignment.center,
+                                       crossAxisAlignment: CrossAxisAlignment.center,
+                                       children: [
+                                         Container(
+                                           height:
+                                               MediaQuery.of(context).size.height /
+                                                   20,
+                                           width: MediaQuery.of(context).size.width /
+                                               20,
+                                           child: SvgPicture.asset(
+                                               'assets/svg/report.svg'),
+                                         ),
+                                       ],
+                                     ),
+                                   ),
+                                 ),
+                                 Padding(
+                                   padding: const EdgeInsets.only(
+                                     top: 12,
+                                   ),
+                                   child: Text(
+                                     'Daily Report'.tr,
+                                     style: const TextStyle(fontSize: 12),
+                                   ),
+                                 )
+                               ],
+                             ),
 
                         /// new taxz commented
                         // Column(

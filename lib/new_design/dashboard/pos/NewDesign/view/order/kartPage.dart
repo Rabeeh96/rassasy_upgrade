@@ -11,6 +11,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/payment/payment_page.dart';
 
 import 'product_detail_page.dart';
+import 'search_items.dart';
 
 class OrderDetailPage extends StatefulWidget {
   final String uID, tableID, sectionType, tableHead;
@@ -87,8 +88,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             padding: const EdgeInsets.only(right: 6.0),
             child: IconButton(
                 onPressed: () {
-                  orderController.deliveryManController.clear();
-                  orderController.customerNameController.clear();
+                  // orderController.deliveryManController.clear();
+                  // orderController.customerNameController.clear();
                   addDetails();
                 },
                 icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
@@ -101,13 +102,50 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             height: 1,
             color: const Color(0xffE9E9E9),
           ),
-          SearchFieldWidgetNew(
-            autoFocus: false,
-            mHeight: MediaQuery.of(context).size.height / 18,
-            hintText: 'search'.tr,
-            controller: orderController.searchController,
-            onChanged: (quary) async {},
-          ),
+          Container(
+
+              margin: const EdgeInsets.only(left: 15, right: 10,
+              ),
+              height: MediaQuery.of(context).size.height * .055,
+              // decoration: BoxDecoration(
+              //
+              //   border: Border.all(width: .1, color: const Color(0xffE8E8E8)),
+              // ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                        autofocus: false,
+                        textCapitalization: TextCapitalization.words,
+
+                        onTap: (){
+                          Get.to(SearchItems());
+                        },
+                        readOnly: true,
+                        style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xffFBFBFB),
+                            hintText: "Search",
+                            hintStyle: customisedStyle(context, const Color(0xff929292), FontWeight.normal, 15.0),
+                            contentPadding:
+                            const EdgeInsets.only(left: 10.0, bottom: 10, top: 8),
+                            border: InputBorder.none)
+                    ),
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset(
+                      'assets/svg/search-normal.svg',color: Color(0xffB4B4B4),
+                      width: MediaQuery.of(context).size.width  * .02,
+                      height: MediaQuery.of(context).size.height  * .02,
+
+                    ),
+                    onPressed: (){
+                      Get.to(SearchItems());
+                    },
+                  ),
+                ],
+              )),
           DividerStyle(),
           Obx(
             () => Expanded(
@@ -116,12 +154,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               itemCount: orderController.orderItemList.length,
               itemBuilder: (context, index) {
                 return Dismissible(
-                  key: Key(orderController.orderItemList[index]["unq_id"]
-                      .toString()),
+                  key: Key(orderController.orderItemList[index].toString()),
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) {
                     // Remove the item from your data source.
-                    ///  orderController.deleteOrderItem(index: index);
+                    orderController.deleteOrderItem(index: index);
+
                   },
                   background: Container(
                     color: Colors.red,
@@ -168,7 +206,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         child: Text(
                                           orderController.orderItemList[index]
                                                   ["ProductName"] ??
-                                              'sdsd',
+                                              '',
                                           style: customisedStyle(
                                               context,
                                               Colors.black,
@@ -297,8 +335,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       icon: SvgPicture.asset(
                                           "assets/svg/minus_mob.svg"),
                                       onPressed: () {
-                                        orderController.updateQty(
-                                            index: index, type: 0);
+                                        if(double.parse(orderController.orderItemList[index]["Qty"].toString()) >=2.0){
+                                          orderController.updateQty(index: index, type: 0);
+                                        }
                                       },
                                     ),
                                     Container(
@@ -328,8 +367,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       icon: SvgPicture.asset(
                                           "assets/svg/plus_mob.svg"),
                                       onPressed: () {
-                                        orderController.updateQty(
-                                            index: index, type: 1);
+                                        orderController.updateQty(index: index, type: 1);
                                       },
                                     ),
                                   ],
@@ -348,7 +386,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         ],
       ),
       bottomNavigationBar: Container(
-        height: MediaQuery.of(context).size.height / 8,
+        height: MediaQuery.of(context).size.height / 6,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -428,137 +466,138 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               height: 1,
               color: const Color(0xffE9E9E9),
             ),
-            const SizedBox(
-              height: 8,
+
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0,bottom: 10.0),
+              child: Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        'to_be_paid'.tr,
+                        style: customisedStyle(context, const Color(0xff9E9E9E),
+                            FontWeight.w400, 17.0),
+                      ),
+                    ),
+                    Text(
+                      orderController.currency.value,
+                      style: customisedStyle(context, const Color(0xff000000),
+                          FontWeight.w400, 16.0),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 3.0),
+                      child: Text(
+                        roundStringWith(orderController.totalNetP.toString()),
+                        style: customisedStyle(context, const Color(0xff000000),
+                            FontWeight.w500, 18.0),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Obx(
-              () => Row(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Text(
-                      'to_be_paid'.tr,
-                      style: customisedStyle(context, const Color(0xff9E9E9E),
-                          FontWeight.w400, 17.0),
-                    ),
+                  TextButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(const Color(0xffDF1515))),
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset("assets/svg/close-circle.svg"),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0, right: 5),
+                            child: Text(
+                              'cancel'.tr,
+                              style: customisedStyle(
+                                  context,
+                                  const Color(0xffffffff),
+                                  FontWeight.normal,
+                                  12.0),
+                            ),
+                          ),
+                        ],
+                      )),
+                  const SizedBox(
+                    width: 7,
                   ),
-                  Text(
-                    orderController.currency.value,
-                    style: customisedStyle(context, const Color(0xff000000),
-                        FontWeight.w400, 16.0),
+                  TextButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(const Color(0xff10C103))),
+                      onPressed: () async {
+
+
+                        orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                            orderType: widget.orderType,context: context,
+                            orderID: widget.uID,
+                            isPayment: false,sectionType: widget.sectionType);
+
+                      },
+
+                      child: Row(
+                        children: [
+                          SvgPicture.asset('assets/svg/save_mob.svg'),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0, right: 5),
+                            child: Text(
+                              'Save'.tr,
+                              style: customisedStyle(
+                                  context,
+                                  const Color(0xffffffff),
+                                  FontWeight.normal,
+                                  12.0),
+                            ),
+                          )
+                        ],
+                      )),
+                  const SizedBox(
+                    width: 7,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 3.0),
-                    child: Text(
-                      roundStringWith(orderController.totalNetP.toString()),
-                      style: customisedStyle(context, const Color(0xff000000),
-                          FontWeight.w500, 18.0),
-                    ),
-                  ),
+                  TextButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(const Color(0xff00775E))),
+                      onPressed: () {
+                        orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                           orderID: widget.uID,
+                            orderType: widget.orderType,context: context,isPayment: true,sectionType: widget.sectionType);
+                      },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset('assets/svg/payment_mob.svg'),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0, right: 5),
+                            child: Text(
+                              'payment'.tr,
+                              style: customisedStyle(
+                                  context,
+                                  const Color(0xffffffff),
+                                  FontWeight.normal,
+                                  12.0),
+                            ),
+                          )
+                        ],
+                      )),
                 ],
               ),
-            ),
-
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xffDF1515))),
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: Row(
-                      children: [
-                        SvgPicture.asset("assets/svg/close-circle.svg"),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0, right: 5),
-                          child: Text(
-                            'cancel'.tr,
-                            style: customisedStyle(
-                                context,
-                                const Color(0xffffffff),
-                                FontWeight.normal,
-                                12.0),
-                          ),
-                        ),
-                      ],
-                    )),
-                const SizedBox(
-                  width: 7,
-                ),
-                TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xff10C103))),
-                    onPressed: () async {
-
-
-                      orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
-                          orderType: widget.orderType,context: context,
-                          orderID: widget.uID,
-                          isPayment: false,sectionType: widget.sectionType);
-
-                    },
-
-                    child: Row(
-                      children: [
-                        SvgPicture.asset('assets/svg/save_mob.svg'),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0, right: 5),
-                          child: Text(
-                            'Save'.tr,
-                            style: customisedStyle(
-                                context,
-                                const Color(0xffffffff),
-                                FontWeight.normal,
-                                12.0),
-                          ),
-                        )
-                      ],
-                    )),
-                const SizedBox(
-                  width: 7,
-                ),
-                TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xff00775E))),
-                    onPressed: () {
-                      orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
-                         orderID: widget.uID,
-                          orderType: widget.orderType,context: context,isPayment: true,sectionType: widget.sectionType);
-                    },
-                    child: Row(
-                      children: [
-                        SvgPicture.asset('assets/svg/payment_mob.svg'),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0, right: 5),
-                          child: Text(
-                            'payment'.tr,
-                            style: customisedStyle(
-                                context,
-                                const Color(0xffffffff),
-                                FontWeight.normal,
-                                12.0),
-                          ),
-                        )
-                      ],
-                    )),
-              ],
             ),
           ],
         ),
       ),
     );
   }
+
 
   void addDetails() {
     Get.bottomSheet(
@@ -567,8 +606,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0),
           // Set border radius to the top left corner
-          topRight: Radius.circular(
-              10.0), // Set border radius to the top right corner
+          topRight: Radius.circular(10.0), // Set border radius to the top right corner
         ),
       ),
       backgroundColor: Colors.white,
@@ -579,14 +617,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 14),
+                padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Details'.tr,
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w500, 14.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w700, 18.0),
                     ),
                     IconButton(
                         onPressed: () {
@@ -599,37 +636,31 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ],
                 ),
               ),
-              Container(
-                height: 1,
-                color: const Color(0xffE9E9E9),
-              ),
+              DividerStyle(),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 12, bottom: 12),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: orderController.customerNameController,
                     readOnly: true,
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     onTap: () async {
                       final result = await Get.to(CustomerDetailPage());
 
                       if (result != null) {
                         orderController.customerNameController.text = result[0];
-
+                        orderController.customerBalance.value = result[1];
+                        orderController.update();
                       }
-
                     },
-                    textCapitalization: TextCapitalization.words,
-                    controller: orderController.customerNameController,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w500, 14.0),
-
                     keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextFieldIcon(
-                        hintTextStr: 'customer'.tr),
+                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'customer'.tr),
                   ),
                 ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -637,113 +668,99 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
-                      'balance1'.tr,
-                      style: customisedStyle(context, const Color(0xff8C8C8C),
-                          FontWeight.w400, 14.0),
+                      'balance'.tr,
+                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                       orderController.currency.value,
-                      style: customisedStyle(context, const Color(0xff8C8C8C),
-                          FontWeight.w400, 15.0),
+                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 15.0),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Text("00.0",
-                        style: customisedStyle(context, const Color(0xff000000),
-                            FontWeight.w500, 15.0)),
-                  ),
+                  Obx(
+                        () => Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(orderController.customerBalance.value, style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
+                    ),
+                  )
                 ],
               ),
-              //
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                    ], keyboardType: TextInputType.number,
+                    textCapitalization: TextCapitalization.words,
                     controller: orderController.phoneNumberController,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w500, 14.0),
-
-                    decoration: TextFieldDecoration.defaultTextField(
-                        hintTextStr: 'ph_no'.tr),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 4,
-                  child: TextField(
-                    readOnly: true,
-                    onTap: () async {
-                      final result = await Get.to(SelectDeliveryMan());
-
-                      if (result != null) {
-                        orderController.deliveryManController.text = result[0];
-
-
-
-                      }
-                    }
-                    ,
-                    textCapitalization: TextCapitalization.words,
-                    controller: orderController.deliveryManController,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w500, 14.0),
-
-                    keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextFieldIcon(
-                        hintTextStr: 'delivery_man'.tr),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 12, bottom: 12),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 4,
-                  child: TextField(
-                    textCapitalization: TextCapitalization.words,
-                    controller: orderController.platformKartController,
                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextFieldIcon(
-                        hintTextStr: 'Platform(Online Only)'.tr),
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+                    keyboardType: TextInputType.number,
+                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'ph_no'.tr),
                   ),
                 ),
               ),
+
+              /// delivery man section
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width / 4,
+              //     child: TextField(
+              //       textCapitalization: TextCapitalization.words,
+              //       controller: orderController.deliveryManController,
+              //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              //     onTap: () async {
+              //       final result = await Get.to(SelectDeliveryMan());
+              //
+              //       if (result != null) {
+              //         orderController.deliveryManController.text = result[0];
+              //
+              //       }
+              //     },
+              //       readOnly: true,
+              //       keyboardType: TextInputType.text,
+              //       decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Delivery Man'),
+              //     ),
+              //   ),
+              // ),
+
+              /// online plat form is commented
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width / 4,
+              //     child: TextField(
+              //       textCapitalization: TextCapitalization.words,
+              //       controller: orderController.platformController,
+              //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              //      readOnly: true,
+              //       keyboardType: TextInputType.text,
+              //       decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Platform(Online Only)'),
+              //     ),
+              //   ),
+              // ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16, bottom: 16, top: 5),
+                padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
                 child: Container(
                   height: MediaQuery.of(context).size.height / 17,
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              8.0), // Adjust the radius as needed
+                          borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
                         ),
                       ),
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xffF25F29)),
+                      backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
                     ),
                     onPressed: () {
                       // Do something with the text
-
                       Get.back(); // Close the bottom sheet
                     },
                     child: Text(
                       'save'.tr,
-                      style: customisedStyle(
-                          context, Colors.white, FontWeight.normal, 12.0),
+                      style: customisedStyle(context, Colors.white, FontWeight.normal, 15.0),
                     ),
                   ),
                 ),
@@ -754,4 +771,201 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       ),
     );
   }
+
+  /// details section commented
+  // void addDetails() {
+  //   Get.bottomSheet(
+  //     isDismissible: true,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.only(
+  //         topLeft: Radius.circular(10.0),
+  //         // Set border radius to the top left corner
+  //         topRight: Radius.circular(
+  //             10.0), // Set border radius to the top right corner
+  //       ),
+  //     ),
+  //     backgroundColor: Colors.white,
+  //     Container(
+  //       child: SingleChildScrollView(
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.stretch,
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Padding(
+  //               padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 14),
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Text(
+  //                     'Details'.tr,
+  //                     style: customisedStyle(
+  //                         context, Colors.black, FontWeight.w500, 14.0),
+  //                   ),
+  //                   IconButton(
+  //                       onPressed: () {
+  //                         Get.back();
+  //                       },
+  //                       icon: const Icon(
+  //                         Icons.clear,
+  //                         color: Colors.black,
+  //                       ))
+  //                 ],
+  //               ),
+  //             ),
+  //             Container(
+  //               height: 1,
+  //               color: const Color(0xffE9E9E9),
+  //             ),
+  //             Padding(
+  //               padding: const EdgeInsets.only(
+  //                   left: 16, right: 16, top: 12, bottom: 12),
+  //               child: Container(
+  //                 width: MediaQuery.of(context).size.width / 4,
+  //                 child: TextField(
+  //                   readOnly: true,
+  //                   onTap: () async {
+  //                     final result = await Get.to(CustomerDetailPage());
+  //
+  //                     if (result != null) {
+  //                       orderController.customerNameController.text = result[0];
+  //                     }
+  //
+  //                   },
+  //                   textCapitalization: TextCapitalization.words,
+  //                   controller: orderController.customerNameController,
+  //                   style: customisedStyle(
+  //                       context, Colors.black, FontWeight.w500, 14.0),
+  //
+  //                   keyboardType: TextInputType.text,
+  //                   decoration: TextFieldDecoration.defaultTextFieldIcon(
+  //                       hintTextStr: 'customer'.tr),
+  //                 ),
+  //               ),
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(right: 8.0),
+  //                   child: Text(
+  //                     'balance1'.tr,
+  //                     style: customisedStyle(context, const Color(0xff8C8C8C),
+  //                         FontWeight.w400, 14.0),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(right: 8.0),
+  //                   child: Text(
+  //                     orderController.currency.value,
+  //                     style: customisedStyle(context, const Color(0xff8C8C8C),
+  //                         FontWeight.w400, 15.0),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(right: 8.0),
+  //                   child: Text("00.0",
+  //                       style: customisedStyle(context, const Color(0xff000000),
+  //                           FontWeight.w500, 15.0)),
+  //                 ),
+  //               ],
+  //             ),
+  //             //
+  //             Padding(
+  //               padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+  //               child: Container(
+  //                 width: MediaQuery.of(context).size.width / 4,
+  //                 child: TextField(
+  //                   inputFormatters: [
+  //                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+  //                   ], keyboardType: TextInputType.number,
+  //                   controller: orderController.phoneNumberController,
+  //                   style: customisedStyle(
+  //                       context, Colors.black, FontWeight.w500, 14.0),
+  //
+  //                   decoration: TextFieldDecoration.defaultTextField(
+  //                       hintTextStr: 'ph_no'.tr),
+  //                 ),
+  //               ),
+  //             ),
+  //
+  //             /// commented
+  //             // Padding(
+  //             //   padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+  //             //   child: Container(
+  //             //     width: MediaQuery.of(context).size.width / 4,
+  //             //     child: TextField(
+  //             //       readOnly: true,
+  //             //       onTap: () async {
+  //             //         final result = await Get.to(SelectDeliveryMan());
+  //             //
+  //             //         if (result != null) {
+  //             //           orderController.deliveryManController.text = result[0];
+  //             //
+  //             //
+  //             //
+  //             //         }
+  //             //       }
+  //             //       ,
+  //             //       textCapitalization: TextCapitalization.words,
+  //             //       controller: orderController.deliveryManController,
+  //             //       style: customisedStyle(
+  //             //           context, Colors.black, FontWeight.w500, 14.0),
+  //             //
+  //             //       keyboardType: TextInputType.text,
+  //             //       decoration: TextFieldDecoration.defaultTextFieldIcon(
+  //             //           hintTextStr: 'delivery_man'.tr),
+  //             //     ),
+  //             //   ),
+  //             // ),
+  //             // Padding(
+  //             //   padding: const EdgeInsets.only(
+  //             //       left: 16, right: 16, top: 12, bottom: 12),
+  //             //   child: Container(
+  //             //     width: MediaQuery.of(context).size.width / 4,
+  //             //     child: TextField(
+  //             //       textCapitalization: TextCapitalization.words,
+  //             //       controller: orderController.platformKartController,
+  //             //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+  //             //       keyboardType: TextInputType.text,
+  //             //       decoration: TextFieldDecoration.defaultTextFieldIcon(
+  //             //           hintTextStr: 'Platform(Online Only)'.tr),
+  //             //     ),
+  //             //   ),
+  //             // ),
+  //             Padding(
+  //               padding: const EdgeInsets.only(
+  //                   left: 16.0, right: 16, bottom: 16, top: 5),
+  //               child: Container(
+  //                 height: MediaQuery.of(context).size.height / 17,
+  //                 child: ElevatedButton(
+  //                   style: ButtonStyle(
+  //                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+  //                       RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(
+  //                             8.0), // Adjust the radius as needed
+  //                       ),
+  //                     ),
+  //                     backgroundColor:
+  //                         MaterialStateProperty.all(const Color(0xffF25F29)),
+  //                   ),
+  //                   onPressed: () {
+  //                     // Do something with the text
+  //
+  //                     Get.back(); // Close the bottom sheet
+  //                   },
+  //                   child: Text(
+  //                     'save'.tr,
+  //                     style: customisedStyle(
+  //                         context, Colors.white, FontWeight.normal, 12.0),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

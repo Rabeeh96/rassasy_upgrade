@@ -248,7 +248,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                       prefs.setString('companyType', companyController.companyList[index].companyType);
                                                       prefs.setString('expiryDate', companyController.companyList[index].expiryDate);
                                                       prefs.setString('permission', companyController.companyList[index].permission);
-                                                      prefs.setString('edition', companyController.companyList[index].permission);
+                                                      prefs.setString('edition', companyController.companyList[index].edition);
                                                       prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
                                                       prefs.setString('companyID', companyController.companyList[index].id);
                                                       prefs.setBool('companySelected', true);

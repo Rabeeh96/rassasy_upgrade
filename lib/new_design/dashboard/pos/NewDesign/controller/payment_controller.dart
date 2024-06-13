@@ -10,8 +10,11 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'pos_controller.dart';
+
 class POSPaymentController extends GetxController {
-  String currency = "SR";
+  RxString  currency = "SR".obs;
+  RxString  customerBalance = "0".obs;
   RxString deliveryManName = "".obs;
 
   RxInt ledgerID = 1.obs;
@@ -39,6 +42,7 @@ class POSPaymentController extends GetxController {
   TextEditingController cashReceivedController = TextEditingController();
   TextEditingController paymentCustomerSelection = TextEditingController()..text = "walk in customer";
   TextEditingController customerPhoneSelection = TextEditingController();
+  TextEditingController deliveryManController = TextEditingController();
   TextEditingController bankReceivedController = TextEditingController();
   TextEditingController discountPerController = TextEditingController();
   TextEditingController discountAmountController = TextEditingController();
@@ -59,7 +63,7 @@ class POSPaymentController extends GetxController {
         var accessToken = prefs.getString('access') ?? '';
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
-
+        currency.value = prefs.getString('CurrencySymbol') ?? "";
         final String url = '$baseUrl/posholds/view-pos/salesOrder/$uID/';
 
         Map data = {"BranchID": branchID, "CompanyID": companyID, "CreatedUserID": userID, "PriceRounding": 2};
@@ -91,6 +95,7 @@ class POSPaymentController extends GetxController {
           totalTaxMP.value = responseJson["TotalTax"].toString();
           vatAmountTotalP.value = double.parse(responseJson["VATAmount"].toString());
           exciseAmountTotalP.value = double.parse(responseJson["ExciseTaxAmount"].toString());
+          totalGrossP.value = double.parse(responseJson["TotalGrossAmt"].toString());
           totalNetP.value = (responseJson["NetTotal"].toString());
           ledgerID.value = responseJson["LedgerID"];
           paymentCustomerSelection.text = responseJson["CustomerName"] ?? "";
@@ -121,6 +126,32 @@ class POSPaymentController extends GetxController {
     }
   }
 
+  discountCalc(int i, val) {
+    var net = double.parse(totalNetP.value.toString());
+
+    if (i == 1) {
+      billDiscPercent.value = double.parse(val.toString());
+      disCount.value = (net * billDiscPercent.value / 100);
+
+        var gt = (net - disCount.value).toString();
+        grandTotalAmount.value = roundStringWith(gt).toString();
+        discountAmountController.text = roundStringWith(disCount.toString());
+
+    }
+
+    if (i == 2) {
+      disCount.value = double.parse(val);
+      billDiscPercent.value = (disCount.value * 100 / net);
+        var gt = (net - disCount.value).toString();
+        grandTotalAmount.value = roundStringWith(gt).toString();
+        discountPerController.text = roundStringWith(billDiscPercent.toString());
+
+    }
+
+    calculationOnPayment();
+
+  }
+
   calculationOnPayment() {
     var net = double.parse(totalNetP.value.toString());
 
@@ -149,7 +180,7 @@ class POSPaymentController extends GetxController {
     update();
     //  balanceCalculation();
   }
-
+  final POSController posController = Get.put(POSController());
   Future<Null> createSaleInvoice(
       {required bool printSave, required BuildContext context, required String tableID, required String uUID, required int orderType}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -200,8 +231,8 @@ class POSPaymentController extends GetxController {
           "BranchID": branchID,
           "LedgerID": ledgerID.value,
           "GrandTotal": grandTotalAmount.value,
-          "BillDiscPercent": "$billDiscPercent",
-          "BidillDiscAmt": "$disCount",
+          "BillDiscPercent": "${billDiscPercent.value}",
+          "BidillDiscAmt": "${disCount.value}",
           "CashReceived": "${cashReceived.value}",
           "BankAmount": "${bankReceived.value}",
           "CardTypeID": 0,
@@ -235,27 +266,42 @@ class POSPaymentController extends GetxController {
         print(responseJson);
         if (status == 6000) {
           stop();
-          dialogBoxHide(context, "Sales created successfully!!!");
+          popAlert(head: "Success", message: "Sales created successfully!!!", position: SnackPosition.TOP);
           Navigator.pop(context, [orderType, false]);
           Future.delayed(const Duration(milliseconds: 500), () {
-            if (printSave == true) {
+            if (printSave) {
+
+              posController.printSection(
+                  context: context,
+                  id: n["invoice_id"],
+                  isCancelled: false,
+                  voucherType: "SI");
+
               // PrintDataDetails.type = "SI";
               // PrintDataDetails.id = n["invoice_id"];
               // printDetail(context);
             }
           });
-        } else if (status == 6001) {
+        }
+        else if (status == 6001) {
           stop();
           var errorMessage = n["message"] ?? "";
-          dialogBox(context, errorMessage);
+          popAlert(head: "Error", message: errorMessage, position: SnackPosition.TOP);
         }
+           else if (status == 6002) {
+          stop();
+          var errorMessage = n["error"]??"";
+          popAlert(head: "Error", message: errorMessage, position: SnackPosition.TOP);
+
+        }
+
+
         //DB Error
         else {
           stop();
         }
       } catch (e) {
-        print("erro got from api $e");
-        dialogBox(context, "Some Network Error");
+        popAlert(head: "Error", message: e.toString(), position: SnackPosition.TOP);
         stop();
       }
     }

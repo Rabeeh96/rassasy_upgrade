@@ -139,6 +139,7 @@ class DetailedPrintSettingController extends GetxController {
     print("--------------------------------------4");
     isKOTPrint.value = prefs.getBool("KOT") ?? false;
     isPrintAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
+    isPrintAfterOrder.value = prefs.getBool("print_after_order") ?? false;
     isHighlightedToken.value = prefs.getBool("hilightTokenNumber") ?? false;
     isPaymentDetail.value = prefs.getBool("paymentDetailsInPrint") ?? false;
     isCompanyDetail.value = prefs.getBool("headerAlignment") ?? false;

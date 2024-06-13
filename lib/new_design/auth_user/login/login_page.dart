@@ -60,8 +60,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
     /// chaged
     //bool isTablet = true;
     bool isTablet = screenWidth > 800;
-    print("screenWidth $screenWidth");
-    print("screenWidth $isTablet");
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -366,7 +365,11 @@ class _LoginPageNewState extends State<LoginPageNew> {
                 MaterialPageRoute(
                     builder: (BuildContext context) => OrganizationList()));
           } else {
-            Get.to(MobOrganizationList());
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => MobOrganizationList()));
+
           }
         } else if (status == 6001) {
           var msg = n["error"] ?? "";

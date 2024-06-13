@@ -47,15 +47,15 @@ class _PrinterSettingsDetailPageMobileState
           style: TextStyle(color: Color(0xff000000), fontSize: 20),
         ),
         actions: [
-          TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: Text(
-                'Save'.tr,
-                style: customisedStyle(
-                    context, Color(0xffF25F29), FontWeight.w400, 14.0),
-              ))
+          // TextButton(
+          //     onPressed: () {
+          //       Get.back();
+          //     },
+          //     child: Text(
+          //       'Save'.tr,
+          //       style: customisedStyle(
+          //           context, Color(0xffF25F29), FontWeight.w400, 14.0),
+          //     ))
         ],
       ),
       body: SingleChildScrollView(
@@ -561,9 +561,7 @@ class _PrinterSettingsDetailPageMobileState
                   prefs.setString('printTermsAndCondition', text);
 
                 },
-                onEditingComplete: () {
-                  FocusScope.of(context).requestFocus();
-                },
+
                 keyboardType: TextInputType.text,
                 maxLines: 6,
                 minLines: 1,

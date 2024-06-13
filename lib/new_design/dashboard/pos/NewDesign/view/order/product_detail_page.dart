@@ -39,15 +39,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     orderController.quantity.value = double.parse(orderController.orderItemList[widget.index]["Qty"].toString());
     orderController.productTaxName.value = orderController.orderItemList[widget.index]["ProductTaxName"];
     orderController.productTaxID.value = orderController.orderItemList[widget.index]["ProductTaxID"];
-    orderController.salesPrice.value = orderController.orderItemList[widget.index]["SalesPrice"];
+    orderController.salesPrice.value = orderController.orderItemList[widget.index]["SalesPrice"].toString();
     orderController.productID.value = orderController.orderItemList[widget.index]["ProductID"];
     orderController.actualProductTaxName.value = orderController.orderItemList[widget.index]["ActualProductTaxName"];
     orderController.actualProductTaxID.value = orderController.orderItemList[widget.index]["ActualProductTaxID"];
     orderController.branchID.value = orderController.orderItemList[widget.index]["BranchID"];
     orderController.unique_id.value = orderController.orderItemList[widget.index]["unq_id"];
-    orderController.unitPriceAmountWR.value = orderController.orderItemList[widget.index]["UnitPrice"];
+    orderController.unitPriceAmountWR.value = orderController.orderItemList[widget.index]["UnitPrice"].toString();
     orderController.rateWithTax.value = double.parse(orderController.orderItemList[widget.index]["RateWithTax"].toString());
-    orderController.costPerPrice.value = orderController.orderItemList[widget.index]["CostPerPrice"];
+    orderController.costPerPrice.value = orderController.orderItemList[widget.index]["CostPerPrice"].toString();
     orderController.priceListID.value = orderController.orderItemList[widget.index]["PriceListID"];
     orderController.discountPer.value = orderController.orderItemList[widget.index]["DiscountPerc"].toString();
     orderController.discountAmount.value = double.parse(orderController.orderItemList[widget.index]["DiscountAmount"].toString());
@@ -63,9 +63,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     orderController.iGSTPer.value = double.parse(orderController.orderItemList[widget.index]["IGSTPerc"].toString());
     orderController.iGSTAmount.value = double.parse(orderController.orderItemList[widget.index]["IGSTAmount"].toString());
     orderController.createdUserID.value = orderController.orderItemList[widget.index]["CreatedUserID"];
-    orderController.dataBase.value = orderController.orderItemList[widget.index]["DataBase"];
-    orderController.flavourID.value = orderController.orderItemList[widget.index]["flavour"];
-    orderController.flavourName.value = orderController.orderItemList[widget.index]["Flavour_Name"];
+    orderController.dataBase.value = orderController.orderItemList[widget.index]["DataBase"]??"";
+    orderController.flavourID.value = orderController.orderItemList[widget.index]["flavour"]??"";
+    orderController.flavourName.value = orderController.orderItemList[widget.index]["Flavour_Name"]??"";
     orderController.taxableAmountPost.value = double.parse(orderController.orderItemList[widget.index]["TaxableAmount"].toString());
     var gst = orderController.orderItemList[widget.index]["gstPer"]??'0';
     orderController.gstPer.value = double.parse(gst.toString());
@@ -203,7 +203,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       child: TextField(
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
+                        ],
+                      //  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                         onTap: () => orderController.unitPriceChangingController.selection =
                             TextSelection(baseOffset: 0, extentOffset: orderController.unitPriceChangingController.value.text.length),
                         onChanged: (value) {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +7,7 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/payment_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/customer_detail.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/select_deliveryman.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,6 +31,189 @@ class _PaymentPageState extends State<PaymentPage> {
     paymentController.getOrderDetails(uID: widget.uID);
   }
 
+
+  void addDetails() {
+    Get.bottomSheet(
+      isDismissible: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0),
+          // Set border radius to the top left corner
+          topRight: Radius.circular(10.0), // Set border radius to the top right corner
+        ),
+      ),
+      backgroundColor: Colors.white,
+      Container(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Details'.tr,
+                      style: customisedStyle(context, Colors.black, FontWeight.w700, 18.0),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(
+                          Icons.clear,
+                          color: Colors.black,
+                        ))
+                  ],
+                ),
+              ),
+              DividerStyle(),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 4,
+                  child: TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: paymentController.paymentCustomerSelection,
+                    readOnly: true,
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                    onTap: () async {
+                      final result = await Get.to(CustomerDetailPage());
+
+                      if (result != null) {
+                        paymentController.paymentCustomerSelection.text = result[0];
+                        paymentController.customerBalance.value = result[1];
+                        paymentController.update();
+                        setState(() {
+
+                        });
+                      }
+                    },
+                    keyboardType: TextInputType.text,
+                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'customer'.tr),
+                  ),
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Text(
+                      'balance'.tr,
+                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
+                    ),
+                  ),
+                  Padding(
+                    padding:   EdgeInsets.only(right: 8.0),
+                    child: Text(
+                      paymentController.currency.value,
+                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 15.0),
+                    ),
+                  ),
+                  Obx(
+                        () => Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(paymentController.customerBalance.value, style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 4,
+                  child: TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: paymentController.customerPhoneSelection,
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+                    keyboardType: TextInputType.phone,
+                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'ph_no'.tr),
+                  ),
+                ),
+              ),
+
+              /// delivery man section
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 12,bottom: 12),
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 4,
+                  child: TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: paymentController.deliveryManController,
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  onTap: () async {
+
+
+
+                    final result = await Get.to(SelectDeliveryMan());
+
+                    if (result != null) {
+                      paymentController.deliveryManController.text = result[0];
+                      paymentController.deliveryManName.value = result[0];
+                      paymentController.deliveryManID.value = result[1];
+                      paymentController.update();
+
+                    }
+                  },
+                    readOnly: true,
+                    keyboardType: TextInputType.text,
+                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Delivery Man'),
+                  ),
+                ),
+              ),
+
+              /// online plat form is commented
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width / 4,
+              //     child: TextField(
+              //       textCapitalization: TextCapitalization.words,
+              //       controller: orderController.platformController,
+              //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              //      readOnly: true,
+              //       keyboardType: TextInputType.text,
+              //       decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'Platform(Online Only)'),
+              //     ),
+              //   ),
+              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 17,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
+                    ),
+                    onPressed: () {
+                      // Do something with the text
+
+                      Get.back(); // Close the bottom sheet
+                    },
+                    child: Text(
+                      'save'.tr,
+                      style: customisedStyle(context, Colors.white, FontWeight.normal, 15.0),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,11 +235,11 @@ class _PaymentPageState extends State<PaymentPage> {
           style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
         ),
         actions: [
-          ElevatedButton(
-              onPressed: () {
-                paymentController.getOrderDetails(uID: widget.uID);
-              },
-              child: Text("Retry"))
+          // ElevatedButton(
+          //     onPressed: () {
+          //       paymentController.getOrderDetails(uID: widget.uID);
+          //     },
+          //     child: Text("Retry"))
         ],
       ),
       body: SingleChildScrollView(
@@ -78,52 +263,87 @@ class _PaymentPageState extends State<PaymentPage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.all(12.0),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Text(
-                                    'customer'.tr,
-                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                              GestureDetector(
+                                onTap: ()async{
+                                  addDetails();
+                                  // final result = await Get.to(CustomerDetailPage());
+                                  // if (result != null) {
+                                  //   paymentController.paymentCustomerSelection.text = result[0];
+                                  //   paymentController.ledgerID.value = result[2];
+                                  //   setState(() {
+                                  //
+                                  //   });
+                                  //
+                                  // }
+                                },
+                                child: InkWell(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                      Text(
+                                        'customer'.tr,
+                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                      ),
+                                      Text(
+                                        paymentController.paymentCustomerSelection.text,
+                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.black,
+                                        size: 15,
+                                      )
+                                    ]),
                                   ),
-                                  Text(
-                                    paymentController.paymentCustomerSelection.text ?? "",
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
-                                  ),
-                                  const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.black,
-                                    size: 15,
-                                  )
-                                ]),
+                                )
                               ),
                               DividerStyle(),
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Text(
-                                    'ph_no'.tr,
-                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                  ),
-                                  Text(
-                                    paymentController.customerPhoneSelection.text ?? "",
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
-                                  ),
 
-                                  Text(
-                                    "",
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
-                                  ),
-                                  // const Icon(
-                                  //   Icons.arrow_forward_ios,
-                                  //   color: Colors.black,
-                                  //   size: 15,
-                                  // )
-                                  //
+                              GestureDetector(
+                                  onTap: ()async{
+                                    addDetails();
+                                    // final result = await Get.to(CustomerDetailPage());
+                                    // if (result != null) {
+                                    //   paymentController.paymentCustomerSelection.text = result[0];
+                                    //   paymentController.ledgerID.value = result[2];
+                                    //   setState(() {
+                                    //
+                                    //   });
+                                    //
+                                    // }
+                                  },
+                                  child: InkWell(
+                                    child:  Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                        Text(
+                                          'ph_no'.tr,
+                                          style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                        ),
+                                        Text(
+                                          paymentController.customerPhoneSelection.text ?? "",
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                        ),
+
+                                        Text(
+                                          "",
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                        ),
+                                        // const Icon(
+                                        //   Icons.arrow_forward_ios,
+                                        //   color: Colors.black,
+                                        //   size: 15,
+                                        // )
+                                        //
 
 
-                                ]),
+                                      ]),
+                                    ),
+                                  )
                               ),
+
                               DividerStyle(),
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
@@ -137,7 +357,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                       Padding(
                                         padding: const EdgeInsets.only(right: 8.0),
                                         child: Text(
-                                          paymentController.currency,
+                                          paymentController.currency.value,
                                           style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
                                         ),
                                       ),
@@ -170,12 +390,13 @@ class _PaymentPageState extends State<PaymentPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                final result = await Get.to(SelectDeliveryMan());
-                                if (result != null) {
-                                  paymentController.deliveryManName.value = result[0];
-                                  paymentController.deliveryManID.value = result[1];
-                                  paymentController.update();
-                                }
+                                addDetails();
+                                // final result = await Get.to(SelectDeliveryMan());
+                                // if (result != null) {
+                                //   paymentController.deliveryManName.value = result[0];
+                                //   paymentController.deliveryManID.value = result[1];
+                                //   paymentController.update();
+                                // }
                               },
                               child: InkWell(
                                 child: Padding(
@@ -255,12 +476,24 @@ class _PaymentPageState extends State<PaymentPage> {
                                           child: TextField(
                                             textCapitalization: TextCapitalization.words,
                                             controller: paymentController.discountAmountController,
+                                            keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.deny(RegExp('[-, ]')),
+                                            ],
+                                            onChanged: (value){
+                                              if (value.isEmpty) {
+                                                paymentController.discountCalc(2, "0");
+                                            //    paymentController.discountCalc(2, "0.0");
+                                              } else {
+                                                paymentController.discountCalc(2, value);
+                                              }
+                                            },
+                                            onTap: () => paymentController.discountAmountController.selection = TextSelection(
+                                                baseOffset: 0, extentOffset: paymentController.discountAmountController.value.text.length),
+
                                             style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                                             // focusNode: diningController.customerNode,
-                                            onEditingComplete: () {
-                                              FocusScope.of(context).requestFocus();
-                                            },
-                                            keyboardType: TextInputType.text,
+
                                             decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
                                           ),
                                         ),
@@ -271,21 +504,33 @@ class _PaymentPageState extends State<PaymentPage> {
                                           width: MediaQuery.of(context).size.width / 2.5,
                                           child: TextField(
                                             textCapitalization: TextCapitalization.words,
-                                            controller: paymentController.discountPerController,
+                                            keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.deny(RegExp('[-, ]')),
+                                            ],
+                                            onTap: () => paymentController.discountPerController.selection = TextSelection(
+                                                baseOffset: 0, extentOffset: paymentController.discountPerController.value.text.length),
 
+                                            controller: paymentController.discountPerController,
+                                            onChanged: (value){
+                                              if (value.isEmpty) {
+                                                paymentController.discountCalc(1, "0.0");
+                                              } else {
+                                                paymentController.discountCalc(1, value);
+                                              }
+                                            },
                                             style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                                             // focusNode: diningController.customerNode,
-                                            onEditingComplete: () {
-                                              FocusScope.of(context).requestFocus();
-                                            },
-                                            keyboardType: TextInputType.text,
-                                            decoration: TextFieldDecoration.defaultTextField(hintTextStr: ""),
+                                            // onEditingComplete: () {
+                                            //   FocusScope.of(context).requestFocus();
+                                            // },
+                                            decoration: TextFieldDecoration.defaultTextField(hintTextStr: "Percentage"),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                 ],
@@ -314,7 +559,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
-                                    paymentController.currency,
+                                    paymentController.currency.value,
                                     style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
                                   ),
                                 ),
@@ -377,7 +622,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     Padding(
                                       padding: const EdgeInsets.only(right: 8.0),
                                       child: Text(
-                                        paymentController.currency,
+                                        paymentController.currency.value,
                                         style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
                                       ),
                                     ),
@@ -402,7 +647,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     Padding(
                                       padding: const EdgeInsets.only(right: 8.0),
                                       child: Text(
-                                        paymentController.currency,
+                                        paymentController.currency.value,
                                         style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
                                       ),
                                     ),
@@ -427,7 +672,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     Padding(
                                       padding: const EdgeInsets.only(right: 8.0),
                                       child: Text(
-                                        paymentController.currency,
+                                        paymentController.currency.value,
                                         style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
                                       ),
                                     ),
@@ -638,8 +883,10 @@ class _PaymentPageState extends State<PaymentPage> {
                       var id = prefs.getInt("Cash_Account") ?? 1;
 
 
-                      if (paymentController.ledgerID.value != id) {
 
+                      print("id  $id");
+                      print("ledgerID  ${paymentController.ledgerID}");
+                      if (paymentController.paymentCustomerSelection.text != "walk in customer") {
                         paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
                       } else {
                         if ((paymentController.cashReceived.value + paymentController.bankReceived.value) >=

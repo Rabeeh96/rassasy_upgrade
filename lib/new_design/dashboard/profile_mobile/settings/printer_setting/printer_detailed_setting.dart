@@ -85,8 +85,11 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
                             printSettingController.isEnableWifiPrinter.value = val;
                             if (val == true) {
                               prefs.setString("PrintType", "Wifi");
+
                             } else {
-                              prefs.setString("PrintType", "USB");
+                              printSettingController.isEnableWifiPrinter.value=true;
+                              popAlert(head: "Alert", message: "Currently wifi printer is support",   position: SnackPosition.TOP);
+                           //   prefs.setString("PrintType", "USB");
                             }
                           },
                         );
@@ -108,54 +111,56 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
                 onTap: () {
                   Get.to(PrinterSettingsDetailPageMobile());
                 },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'select_a_template'.tr,
-                      style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
-                    ),
-                    SvgPicture.asset("assets/svg/settinhs_mobile.svg")
-                  ],
+                child: InkWell(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'select_a_template'.tr,
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
+                      ),
+                      SvgPicture.asset("assets/svg/settinhs_mobile.svg")
+                    ],
+                  ),
                 ),
               )),
           DividerStyle(),
           const SizedBox(
             height: 20,
           ),
-          Expanded(
+            Expanded(
             child: Obx(() => ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: printSettingController.imagePaths.length,
-                  itemBuilder: (context, index) {
-                    String imagePath = printSettingController.imagePaths[index];
-                    return GestureDetector(
-                      onTap: () {
-                        printSettingController.setSelectedIndex(index);
-                        if (index == 0) {
-                          printSettingController.setTemplate(3);
-                        } else {
-                          printSettingController.setTemplate(4);
-                        }
+              scrollDirection: Axis.horizontal,
+              itemCount: printSettingController.imagePaths.length,
+              itemBuilder: (context, index) {
+                String imagePath = printSettingController.imagePaths[index];
+                return GestureDetector(
+                  onTap: () {
+                    printSettingController.setSelectedIndex(index);
+                    if (index == 0) {
+                      printSettingController.setTemplate(3);
+                    } else {
+                      printSettingController.setTemplate(4);
+                    }
 
-                        // setState(() {});
-                      },
-                      child: Padding(
-                        padding:  EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 20),
-                        child:Obx(() => Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xffEBEBEB),
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(
-                              color: printSettingController.selectedIndex.value == index ? Colors.red : Colors.transparent,
-                            ),
-                          ),
-                          child: Image.asset(imagePath),
-                        ),)
-                      ),
-                    );
+                    // setState(() {});
                   },
-                )),
+                  child: Padding(
+                      padding:  EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 20),
+                      child:Obx(() => Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xffEBEBEB),
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            color: printSettingController.selectedIndex.value == index ? Colors.red : Colors.transparent,
+                          ),
+                        ),
+                        child: Image.asset(imagePath),
+                      ),)
+                  ),
+                );
+              },
+            )),
           ),
         ],
       ),
