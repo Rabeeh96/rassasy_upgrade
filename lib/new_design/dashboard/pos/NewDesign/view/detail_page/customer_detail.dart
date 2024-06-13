@@ -63,7 +63,7 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: (){
-                   Navigator.pop(context,[controller.customerList[index].ledgerName,controller.customerList[index].customerLedgerBalance]);
+                   Navigator.pop(context,[controller.customerList[index].ledgerName,controller.customerList[index].customerLedgerBalance,controller.customerList[index].ledgerID]);
                   },
                   child: InkWell(
                     child: Padding(

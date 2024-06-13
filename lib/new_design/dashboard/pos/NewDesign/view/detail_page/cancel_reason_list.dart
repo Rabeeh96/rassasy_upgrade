@@ -38,7 +38,7 @@ class _CancelOrderListState extends State<CancelOrderList> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'delivery_man'.tr,
+              'Cancel_order'.tr,
               style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],

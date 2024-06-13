@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/cancel_reason_list.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/order/add_order_page.dart';
@@ -57,7 +59,7 @@ class _TakeAwayState extends State<TakeAway> {
         actions: [
           GestureDetector(
             child: Text(
-              'Manager'.tr,
+              takeAwayController.userName.value,
               style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
             ),
           ),
@@ -256,7 +258,13 @@ class _TakeAwayState extends State<TakeAway> {
                                             uID: result[2],
                                             tableID: takeAwayController.takeAwayOrders[index].salesOrderID!,
                                             orderType: 2,
-                                          ));
+                                          )
+                                          );
+                                        }
+                                        else{
+                                          takeAwayController.takeAwayOrders.clear();
+                                          takeAwayController.fetchAllData();
+                                          takeAwayController.update();
                                         }
                                       }
                                     }
@@ -337,7 +345,8 @@ class _TakeAwayState extends State<TakeAway> {
                                             ],
                                           ),
                                           Text(
-                                            roundStringWith(takeAwayController.takeAwayOrders[index].salesOrderGrandTotal!),
+                                            "${takeAwayController.currency} ${roundStringWith(takeAwayController.takeAwayOrders[index].salesOrderGrandTotal!)}",
+
                                             style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                           )
                                         ],
@@ -423,14 +432,11 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
           TextButton(
             child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
             onPressed: () async {
-              // SharedPreferences prefs = await SharedPreferences.getInstance();
-              // prefs.setBool('isLoggedIn', false);
-              // prefs.setBool('companySelected', false);
-
-              // Navigator.of(context).pushAndRemoveUntil(
-              //   CupertinoPageRoute(builder: (context) => LoginPageNew()),
-              //       (_) => false,
-              // );
+              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                CupertinoPageRoute(builder: (context) => EnterPinNumber()),
+                    (_) => false,
+              );
             },
           ),
           TextButton(

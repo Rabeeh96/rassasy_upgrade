@@ -42,7 +42,7 @@ class _SearchItemsState extends State<SearchItems> {
         elevation: 0,
         title:  Text(
           'search'.tr,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
         ),
         actions: [
@@ -50,10 +50,10 @@ class _SearchItemsState extends State<SearchItems> {
             padding: const EdgeInsets.only(right: 6.0),
             child: IconButton(
                 onPressed: () {
-                  //Get.back();
-                  print(orderController.searchProductList.length);
+                  Get.back();
+
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.clear,
                   color: Colors.black,
                 )),
@@ -67,70 +67,67 @@ class _SearchItemsState extends State<SearchItems> {
             color: const Color(0xffE9E9E9),
           ),
           SearchFieldWidgetNew(
-            autoFocus: false,
+            autoFocus: true,
             mHeight: MediaQuery.of(context).size.height / 18,
             hintText: 'search'.tr,
             controller: orderController.searchController,
             onChanged: (quary) async {
-              orderController.searchItems(
-                  productName: quary, isCode: false, isDescription: false);
-              print("search resul :$quary ");
+
+             // productSearchNotifier.value == 1 ? true : false,
+              orderController.searchItems(productName: quary, isCode: orderController.dropdownvalue.value=="Code"?true:false, isDescription:orderController.dropdownvalue.value=="Description"?true:false);
             },
           ),
           DividerStyle(),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
-
-          Container(
+           Container(
             height: MediaQuery.of(context).size.height / 18,
-         //   width: MediaQuery.of(context).size.width * 0.35,
             decoration: BoxDecoration(
-                color: Color(0xffFFF6F2),
+                color: const Color(0xffFFF6F2),
                 borderRadius: BorderRadius.circular(29)),
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-              child: DropdownButton(
+              child: Obx(() =>   DropdownButton(
                 // Initial Value
-                value: orderController.dropdownvalue,
+                value: orderController.dropdownvalue.value,
                 underline: Container(color: Colors.transparent),
-
                 // Down Arrow Icon
                 icon: SvgPicture.asset("assets/svg/drop_arrow.svg"),
                 // Array list of items
-
-                items: orderController.items.map((String items) {
+                items: orderController.items.map((String item) {
                   return DropdownMenuItem(
-                    value: items,
+                    value: item,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8.0, left: 8),
-                      child: Text(items,
-                          style: customisedStyle(context, Color(0xffF25F29),
-                              FontWeight.w400, 12.0)),
+                      child: Text(item,
+                          style: customisedStyle(
+                              context, const Color(0xffF25F29), FontWeight.w400, 12.0)),
                     ),
                   );
                 }).toList(),
                 // After selecting the desired option,it will
                 // change button value to selected value
                 onChanged: (String? newValue) {
-                  orderController.dropdownvalue = newValue!;
-                  print(orderController.dropdownvalue);
-                  orderController.update();
+
+                  orderController.dropdownvalue.value = newValue!;
+
                 },
-              ),
+              ))
             ),
-          ),
-          SizedBox(
+          )  
+          ,
+          const SizedBox(
             height: 10,
           ),
           DividerStyle(),
           Expanded(child: Obx(() {
 
             if (orderController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else {
-              return orderController.searchProductList.isEmpty?Center(child: Text("No results found")):
+              return orderController.searchProductList.isEmpty?const Center(child: Text("No results found")):
 
                 ListView.separated(
                 separatorBuilder: (context, index) => DividerStyle(),
@@ -179,8 +176,23 @@ class _SearchItemsState extends State<SearchItems> {
                                   ),
                                 ),
                               ),
+                              orderController.searchProductList[index].description !="" ?Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 2.0, top: 2),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Text(
+                                    orderController.searchProductList[index].description,
+                                    style: customisedStyle(context,
+                                        Colors.black, FontWeight.w400, 15.0),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ):Container(),
                               Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
+                                padding: const EdgeInsets.only(top: 8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -224,25 +236,33 @@ class _SearchItemsState extends State<SearchItems> {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    orderController.searchProductList[index].productImage
-                                        ==""?  Positioned.fill(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.network(
-                                          'https://picsum.photos/250?image=9',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ):
-                                    Positioned.fill(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.network(
-                                          orderController.searchProductList[index].productImage,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    )
+
+                                    Image.network(
+                                      orderController.searchProductList[index].productImage != ""
+                                          ? orderController.searchProductList[index].productImage
+                                          : 'https://www.api.viknbooks.com/media/uploads/Rassasy.png',
+                                      fit: BoxFit.cover,
+                                    ),
+
+                                    // orderController.searchProductList[index].productImage
+                                    //     ==""?  Positioned.fill(
+                                    //   child: ClipRRect(
+                                    //     borderRadius: BorderRadius.circular(10),
+                                    //     child: Image.network(
+                                    //       'https://picsum.photos/250?image=9',
+                                    //       fit: BoxFit.cover,
+                                    //     ),
+                                    //   ),
+                                    // ):
+                                    // Positioned.fill(
+                                    //   child: ClipRRect(
+                                    //     borderRadius: BorderRadius.circular(10),
+                                    //     child: Image.network(
+                                    //       orderController.searchProductList[index].productImage,
+                                    //       fit: BoxFit.cover,
+                                    //     ),
+                                    //   ),
+                                    // )
                                   ],
                                 ),
                               ),
@@ -318,7 +338,7 @@ class _SearchItemsState extends State<SearchItems> {
                                   child: DecoratedBox(
                                     decoration: ShapeDecoration(
                                       shape: RoundedRectangleBorder(
-                                        side: BorderSide(
+                                        side: const BorderSide(
                                             color: Color(0xffF25F29)),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -327,7 +347,7 @@ class _SearchItemsState extends State<SearchItems> {
                                     child:  Center(
                                       child: Text(
                                         'add'.tr,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Color(0xffF25F29),
                                         ),
                                         textAlign: TextAlign.center,
@@ -351,3 +371,5 @@ class _SearchItemsState extends State<SearchItems> {
     );
   }
 }
+
+

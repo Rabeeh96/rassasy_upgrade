@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +9,7 @@ import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
+import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
@@ -84,7 +88,7 @@ class _DiningPageState extends State<DiningPage> {
           GestureDetector(
             onTap: () {},
             child: Text(
-              'Manager'.tr,
+              diningController.userName.value,
               style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 13.0),
             ),
           ),
@@ -98,8 +102,9 @@ class _DiningPageState extends State<DiningPage> {
       body: Column(children: [
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height / 19,
+          child: Container(
+           // color: Colors.green,
+            height: MediaQuery.of(context).size.height / 18,
             child: ValueListenableBuilder<int>(
               valueListenable: diningController.selectedIndexNotifier,
               builder: (context, selectedIndex, child) {
@@ -108,7 +113,7 @@ class _DiningPageState extends State<DiningPage> {
                   itemCount: POSController.labels.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         onTap: () {
                           diningController.selectedIndexNotifier.value = index; // Update the selected index
@@ -200,6 +205,7 @@ class _DiningPageState extends State<DiningPage> {
                                     diningController.tableData[index].status == 'Ordered'?  CustomSlidableAction(
                                       flex: 1,
                                       onPressed: (BuildContext context) async {
+
                                         posController.printKOT(cancelList: [],isUpdate:false,orderID:diningController.tableData[index].salesOrderID!,rePrint:true);
                                       },
                                       backgroundColor: const Color(0xFF00775E),
@@ -375,7 +381,8 @@ class _DiningPageState extends State<DiningPage> {
                                           diningController.update();
                                         }
                                       }
-                                    } else if (diningController.tableData[index].status == 'Ordered') {
+                                    }
+                                    else if (diningController.tableData[index].status == 'Ordered') {
                                       var result = await Get.to(OrderCreateView(
                                         orderType: 1,
                                         sectionType: "Edit",
@@ -387,11 +394,20 @@ class _DiningPageState extends State<DiningPage> {
 
                                       if (result != null) {
                                         if (result[1]) {
-                                          Get.to(PaymentPage(
+                                          var res= await Get.to(PaymentPage(
                                             uID: result[2],
                                             tableID: diningController.tableData[index].id!,
                                             orderType: 1,
                                           ));
+
+                                          diningController.tableData.clear();
+                                          diningController.fetchAllData();
+                                          diningController.update();
+                                        }
+                                        else{
+                                          diningController.tableData.clear();
+                                          diningController.fetchAllData();
+                                          diningController.update();
                                         }
                                       }
                                     } else {}
@@ -438,7 +454,7 @@ class _DiningPageState extends State<DiningPage> {
                                                   ],
                                                 ),
                                                 diningController.returnOrderTime(
-                                                            diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=
+                                                    diningController.tableData[index].orderTime!, diningController.tableData[index].status!) !=
                                                         ""
                                                     ? Row(
                                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -457,7 +473,7 @@ class _DiningPageState extends State<DiningPage> {
                                             ),
                                             Text(
                                               "${diningController.currency} ${roundStringWith(diningController.tableData[index].status != "Vacant" ? diningController.tableData[index].status != "Paid" ? diningController.tableData[index].salesOrderGrandTotal.toString() : diningController.tableData[index].salesGrandTotal.toString() : '0')}",
-                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                               style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                             )
                                           ],
                                         )),
@@ -489,7 +505,7 @@ class _DiningPageState extends State<DiningPage> {
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
                         'Add_Table'.tr,
-                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 12.0),
+                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w500, 14.0),
                       ),
                     )
                   ],
@@ -506,9 +522,10 @@ class _DiningPageState extends State<DiningPage> {
                   padding: const EdgeInsets.only(left: 12.0, right: 12),
                   child: Text(
                     'Reservations'.tr,
-                    style: customisedStyle(context, const Color(0xff00775E), FontWeight.normal, 12.0),
+                    style: customisedStyle(context, const Color(0xff00775E),FontWeight.w500, 14.0),
                   ),
-                )),
+                )
+            ),
           ],
         ),
       ),
@@ -1041,6 +1058,13 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
           TextButton(
             child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
             onPressed: () async {
+
+              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                CupertinoPageRoute(builder: (context) => EnterPinNumber()),
+                    (_) => false,
+              );
+
               // SharedPreferences prefs = await SharedPreferences.getInstance();
               // prefs.setBool('isLoggedIn', false);
               // prefs.setBool('companySelected', false);

@@ -4,6 +4,7 @@ import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -59,7 +60,7 @@ class _TakeAwayState extends State<CarPage> {
         actions: [
           GestureDetector(
             child: Text(
-              'Manager'.tr,
+              carController.userName.value,
               style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
             ),
           ),
@@ -194,7 +195,7 @@ class _TakeAwayState extends State<CarPage> {
                                 var resultPayment = await Get.to(PaymentPage(
                                   uID: carController.carOrders[index].salesOrderID!,
                                   tableID: "",
-                                  orderType: 2,
+                                  orderType: 4,
                                 ));
 
                                 carController.carOrders.clear();
@@ -225,25 +226,32 @@ class _TakeAwayState extends State<CarPage> {
 
                         child: GestureDetector(
                           onTap: () async {
-                            // if (carController.takeAwayOrders[index].status == 'Ordered') {
-                            //   var result = await Get.to(OrderCreateView(
-                            //     orderType: 2,
-                            //     sectionType: "Edit",
-                            //     uID: takeAwayController.carOrders[index].salesOrderID!,
-                            //     tableHead: "Parcel",
-                            //     tableID: "",
-                            //   ));
-                            //
-                            //   if (result != null) {
-                            //     if (result[1]) {
-                            //       Get.to(PaymentPage(
-                            //         uID: result[2],
-                            //         tableID: takeAwayController.carOrders[index].salesOrderID!,
-                            //         orderType: 2,
-                            //       ));
-                            //     }
-                            //   }
-                            // }
+                            if (carController.carOrders[index].status == 'Ordered') {
+                              var result = await Get.to(OrderCreateView(
+                                orderType: 4,
+                                sectionType: "Edit",
+                                uID: carController.carOrders[index].salesOrderID!,
+                                tableHead: "Parcel",
+                                tableID: "", cancelOrder: carController.cancelOrder,
+                              ));
+
+                              if (result != null) {
+                                if (result[1]) {
+                                  Get.to(PaymentPage(
+                                    uID: result[2],
+                                    tableID: carController.carOrders[index].salesOrderID!,
+                                    orderType: 4,
+                                  ));
+                                }
+                                else{
+
+                                carController.takeAwayOrders.clear();
+                                carController.fetchAllData();
+                                carController.update();
+
+                                }
+                              }
+                            }
                           },
                           child: InkWell(
                             child: Padding(
@@ -321,7 +329,7 @@ class _TakeAwayState extends State<CarPage> {
                                     ],
                                   ),
                                   Text(
-                                    roundStringWith(carController.carOrders[index].salesOrderGrandTotal!),
+                                    "${carController.currency} ${roundStringWith(carController.carOrders[index].salesOrderGrandTotal!)}",
                                     style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                   )
                                 ],
@@ -412,14 +420,11 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
           TextButton(
             child: Text('Yes'.tr, style: const TextStyle(color: Colors.red)),
             onPressed: () async {
-              // SharedPreferences prefs = await SharedPreferences.getInstance();
-              // prefs.setBool('isLoggedIn', false);
-              // prefs.setBool('companySelected', false);
-
-              // Navigator.of(context).pushAndRemoveUntil(
-              //   CupertinoPageRoute(builder: (context) => LoginPageNew()),
-              //       (_) => false,
-              // );
+              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                CupertinoPageRoute(builder: (context) => const EnterPinNumber()),
+                    (_) => false,
+              );
             },
           ),
           TextButton(

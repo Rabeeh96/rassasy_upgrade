@@ -354,7 +354,7 @@ ProfileController profileController=Get.put(ProfileController());
                     elevation: 0,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 10.0, right: 8, top: 10, bottom: 10),
+                          left: 10.0, right: 8, top: 15, bottom: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -391,7 +391,7 @@ ProfileController profileController=Get.put(ProfileController());
                   elevation: 0,
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 8.0, right: 8, top: 10, bottom: 10),
+                        left: 8.0, right: 8, top: 15, bottom: 15),
                     child: GestureDetector(
                       onTap: () {
                         Get.to(Contact_us());
@@ -437,7 +437,7 @@ ProfileController profileController=Get.put(ProfileController());
                     elevation: 0,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 8.0, right: 8, top: 10, bottom: 10),
+                          left: 8.0, right: 8, top: 15, bottom: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -476,7 +476,7 @@ ProfileController profileController=Get.put(ProfileController());
                     elevation: 0,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 8.0, right: 8, top: 10, bottom: 10),
+                          left: 8.0, right: 8, top: 15, bottom: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

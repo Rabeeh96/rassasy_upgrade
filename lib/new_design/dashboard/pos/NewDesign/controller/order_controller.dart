@@ -192,6 +192,7 @@ class OrderController extends GetxController {
     discount.value = 0.0;
     percentageDiscount = 0.0.obs;
     discountAmount = 0.0.obs;
+
     grossAmount.value = quantity.value * unit.value;
 
     exciseTaxAmount.value = 0.0;
@@ -293,7 +294,8 @@ class OrderController extends GetxController {
       "RateWithTax": "${rateWithTax.value}",
       "CostPerPrice": costPerPrice.value,
       "PriceListID": priceListID.value,
-      "DiscountPerc": discountPer.value,
+
+      "DiscountPerc": "0",
       "DiscountAmount": "${discountAmount.value}",
       "GrossAmount": grossAmountWR.value,
       "VATPerc": "${vatPer.value}",
@@ -311,8 +313,6 @@ class OrderController extends GetxController {
       "flavour": flavourID.value,
       "Flavour_Name": flavourName.value,
       "TaxableAmount": "${taxableAmountPost.value}",
-      "AddlDiscPerc": "0",
-      "AddlDiscAmt": "0",
       "gstPer": "${gstPer.value}",
       "is_inclusive": isInclusive.value,
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
@@ -326,9 +326,23 @@ class OrderController extends GetxController {
       "IsAmountTaxBefore": isAmountTaxBefore.value,
       "IsExciseProduct": isExciseProduct.value,
       "ExciseTaxAfter": exciseTaxAfter.value,
-      "ExciseTax": exciseTaxAmount.value.toString()
+      "ExciseTax": exciseTaxAmount.value.toString(),
+      "unitPriceRounded": roundStringWith(unitPriceAmountWR.value),
+      "quantityRounded": roundStringWith(quantity.value.toString()),
+      "netAmountRounded": roundStringWith(netAmount.value.toString()),
+      "AddlDiscPerc": "0",
+      "AddlDiscAmt": "0",
+      "TAX1Perc": "0",
+      "TAX1Amount": "0",
+      "TAX2Perc": "0",
+      "TAX2Amount": "0",
+      "TAX3Perc": "0",
+      "TAX3Amount": "0",
+      "KFCAmount":"0",
+      "BatchCode": "0",
+      "SerialNos": [],
     };
-    print(" data $data");
+
     orderItemList[index] = data;
     clearDetails();
     totalAmount();
@@ -587,7 +601,16 @@ class OrderController extends GetxController {
       "IsAmountTaxBefore": isAmountTaxBefore.value,
       "IsExciseProduct": isExciseProduct.value,
       "ExciseTaxAfter": exciseTaxAfter.value,
-      "ExciseTax": exciseTaxAmount.value.toString()
+      "ExciseTax": exciseTaxAmount.value.toString(),
+      "TAX1Perc": "0",
+      "TAX1Amount": "0",
+      "TAX2Perc": "0",
+      "TAX2Amount": "0",
+      "TAX3Perc": "0",
+      "TAX3Amount": "0",
+      "KFCAmount":"0",
+      "BatchCode": "0",
+      "SerialNos": [],
     };
 
     orderItemList.insert(0, data);
@@ -620,6 +643,7 @@ class OrderController extends GetxController {
     isInclusive.value = orderItemList[indexChanging]["is_inclusive"];
     actualProductTaxName.value = orderItemList[indexChanging]["ActualProductTaxName"];
     actualProductTaxID.value = orderItemList[indexChanging]["ActualProductTaxID"];
+    priceListID.value = orderItemList[indexChanging]["PriceListID"];
     priceListID.value = orderItemList[indexChanging]["PriceListID"];
 
     RxDouble grossAmount = 0.0.obs;
@@ -664,6 +688,7 @@ class OrderController extends GetxController {
     discount = 0.0;
     percentageDiscount.value = 0.0;
     discountAmount.value = 0.0;
+
 
     exciseTaxAmount.value = 0.0;
     grossAmount.value = quantity.value * unit;
@@ -760,7 +785,7 @@ class OrderController extends GetxController {
       "RateWithTax": "${rateWithTax.value}",
       "CostPerPrice": costPerPrice.value,
       "PriceListID": priceListID.value,
-      "DiscountPerc": discountPer.value,
+      "DiscountPerc": '0',
       "DiscountAmount": "${discountAmount.value}",
       "GrossAmount": "${grossAmount.value}",
       "VATPerc": "${vatPer.value}",
@@ -797,8 +822,20 @@ class OrderController extends GetxController {
       "IsExciseProduct": isExciseProduct.value,
       "ExciseTaxAfter": exciseTaxAfter.value,
       "ExciseTax": exciseTaxAmount.value.toString(),
+      "TAX1Perc": "0",
+      "TAX1Amount": "0",
+      "TAX2Perc": "0",
+      "TAX2Amount": "0",
+      "TAX3Perc": "0",
+      "TAX3Amount": "0",
+      "KFCAmount":"0",
+      "BatchCode": "0",
+      "SerialNos": [],
+
     };
 
+
+    log_data(data);
     orderItemList[indexChanging] = data;
     update();
     totalAmount();
@@ -864,14 +901,25 @@ class OrderController extends GetxController {
   }
 
   deleteOrderItem({required int index}) {
-    var dictionary = {
-      "unq_id": orderItemList[index]["unq_id"],
-    };
-    deletedList.add(dictionary);
-    orderItemList.removeAt(index);
-    print(orderItemList[index]);
-    totalAmount();
-    update();
+    try{
+
+      print(orderItemList);
+      var dictionary = {
+        "unq_id": orderItemList[index]["unq_id"],
+      };
+
+      if(orderItemList[index]["detailID"] ==0){
+        deletedList.add(dictionary);
+      }
+      orderItemList.removeAt(index);
+
+      totalAmount();
+      update();
+    }
+    catch(e){
+      print("---------${e.toString()}");
+    }
+
   }
 
   @override
@@ -983,7 +1031,7 @@ class OrderController extends GetxController {
 
       final String url = '$baseUrl/posholds/pos/product-group/list/';
       print(url);
-      Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID};
+      Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID,"is_used_group":true};
       print(data);
       //encode Map to JSON
       var body = json.encode(data);
@@ -1073,6 +1121,7 @@ class OrderController extends GetxController {
 
         productIsLoading.value = false;
       } else if (status == 6001) {
+        productList.clear();
         // Show error message
         var msg = n["error"] ?? "";
         productIsLoading.value = false;
@@ -1461,18 +1510,19 @@ class OrderController extends GetxController {
           } else {}
         });
 
-        // if(isPayment){
-        //
-        //   Get.to(PaymentPage(uID:n["OrderID"],));
-        //  // Navigator.popUntil(context, (route) => route.isFirst);
-        // }
-        // else{
-        //
-        // }
+
       } else if (status == 6001) {
+        stop();
         var errorMessage = n["message"]??"";
         popAlert(head: "Waring", message: errorMessage, position: SnackPosition.TOP);
-      } else if (status == 6003) {
+      }
+      else if (status == 6002) {
+        stop();
+        var errorMessage = n["error"]??"";
+        popAlert(head: "Waring", message: errorMessage, position: SnackPosition.TOP);
+      }
+
+      else if (status == 6003) {
         stop();
         popAlert(head: "Waring", message: "Change token number and retry please", position: SnackPosition.TOP);
 
@@ -1497,15 +1547,15 @@ class OrderController extends GetxController {
 
   ///deliveryman
   var isCustomerLoading = true.obs;
-
+  var dropdownvalue = 'Name'.obs;
 
   /// search item
-  String dropdownvalue = 'Code';
+
   var items = [
     'Code',
     'Name',
     'Description',
-  ];
+  ].obs;
 
 
   var isLoading = false.obs;

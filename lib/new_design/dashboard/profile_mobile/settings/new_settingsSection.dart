@@ -53,7 +53,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -90,7 +90,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -127,7 +127,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -162,7 +162,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -199,7 +199,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
