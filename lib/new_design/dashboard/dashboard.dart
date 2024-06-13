@@ -404,6 +404,7 @@ class _DashboardNewState extends State<DashboardNew> {
                 //         Icon(
                 //           Icons.settings,
                 //           color: Color(0xff096816),
+                //
                 //         ),
                 //         Text(
                 //           " Set waiter Role",
