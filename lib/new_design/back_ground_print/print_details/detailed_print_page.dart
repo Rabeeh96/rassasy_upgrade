@@ -1434,6 +1434,8 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     int maxRetries = 3;
 
 
+    List codePage =[];
+
     while (retryCount < maxRetries && !isConnected) {
       try {
         var profile = await CapabilityProfile.load(name: capability);
@@ -1448,6 +1450,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
               Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
               printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
 
+              codePage.add(supportedCodePages[ind].name);
             }
 
             printer.cut();

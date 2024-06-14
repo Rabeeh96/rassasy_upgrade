@@ -1,9 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart' hide Image;
+import 'package:flutter/services.dart';
+import 'package:rassasy_new/global/global.dart';
+import 'package:get/get.dart';
+
+
+
 
 class select_code_page extends StatefulWidget {
   @override
-  State<select_code_page> createState() => _select_code_pageState();
+  _select_code_pageState createState() => _select_code_pageState();
 }
 
 class _select_code_pageState extends State<select_code_page> {
@@ -11,99 +17,116 @@ class _select_code_pageState extends State<select_code_page> {
 
 
 
-  TextEditingController searchController = TextEditingController();
+  List<String> codePageModel=[ 'CP1250', 'PC858', 'KU42', 'PC850', 'OME851', 'CP3012', 'OME852', 'CP720', 'RK1048', 'WPC1253', 'CP737', 'ISO_8859-2', 'CP1258', 'CP850', 'CP775', 'ISO_8859-4', 'TCVN-3-1', 'PC2001', 'CP865', 'OME866', 'OME864', 'CP861', 'OME1001', 'CP1001', 'CP857', 'OME1255', 'PC737', 'CP3847', 'WPC1250', 'PC720', 'OME1252', 'ISO_8859-15', 'CP862', 'CP3841', 'CP437', 'OME855', 'ISO8859-7', 'TCVN-3-2', 'CP1257', 'PC3840', 'CP3041', 'CP1256', 'CP3848', 'PC3002', 'PC860', 'ISO_8859-7', 'OEM775', 'CP853', 'CP3002', 'OME772', 'OME774', 'PC3845', 'CP774', 'CP1252', 'CP1255', 'OME858', 'ISO_8859-1', 'PC3844', 'OME850', 'PC437', 'CP856', 'OME874', 'OME865', 'CP3844', 'PC3011', 'CP852', 'OEM720', 'WPC1256', 'CP863', 'CP2001', 'PC3012', 'OME737', 'CP858', 'PC3848', 'CP855', 'CP869', 'ISO_8859-3', 'CP860', 'CP3021', 'OME860', 'PC3841', 'OME869', 'PC863', 'ISO_8859-9', 'CP928', 'OME437', 'ISO_8859-5', 'CP1254', 'CP3846', 'CP1253', 'CP874', 'OME747', 'WPC1258', 'WPC1251', 'OME863', 'CP1098', 'WPC1252', 'PC866', 'PC865', 'CP3001', 'PC3843', 'PC3041', 'PC3846', 'PC1001', 'PC3021', 'CP3840', 'CP864', 'PC864', 'CP866', 'PC857', 'Unknown', 'CP772', 'ISO-8859-6', 'OXHOO-EUROPEAN', 'CP747', 'CP3845', 'PC3847', 'CP3011', 'PC3001', 'OME862', 'OME928', 'CP851', 'OME857', 'ISO_8859-8', 'CP1125', 'CP3843', 'PC852', 'CP1251', 'CP932', 'ISO_8859-6', 'Katakana', 'OME861', 'WPC1254', 'WPC1257'];
 
+
+  late List<String> filteredList;
+  late TextEditingController searchController;
 
   @override
   void initState() {
-
+    super.initState();
+    searchController = TextEditingController();
+    filteredList = codePageModel;
+    searchController.addListener(() {
+      filterList();
+    });
   }
 
-  List<String> printerModels = [
-    "ISO_8859-6",
-    "CP864",
-    "ISO-8859-6",
-    "PC850",
-    "PC860",
-    "PC858",
-    "PC863",
-    "CP1251",
-    "PC863",
-    "",
-
-  ];
-
-
-  customisedStyle(context,Colors,FontWeight,fontSize){
-    return GoogleFonts.poppins(textStyle:TextStyle(fontWeight: FontWeight,color: Colors,fontSize: fontSize));
+  void filterList() {
+    setState(() {
+      filteredList = codePageModel.where((codePage) => codePage.toLowerCase().contains(searchController.text.toLowerCase())).toList();
+    });
   }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor:  Colors.redAccent,
-
-        title:   Text(
-          "Select code page",style: customisedStyle(context, Colors.white, FontWeight.w400, 18.0),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
+        title: Text(
+          'Select Capability',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20.0),
+        ),
+        backgroundColor: Colors.grey[300],
       ),
-      body:Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: Center(
         child: Container(
-          //height: 200,
+          height: MediaQuery.of(context).size.height,
 
-
-          child: ListView.builder(
-              padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 180),
-              shrinkWrap: true,
-              itemCount: printerModels.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.pop(context,printerModels[index]);
-                    },
-
-                    title: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              printerModels[index],
-
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-
-                          ],
-                        ),
-
-                      ],
+          color: Colors.grey[100],
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    labelText: 'Search',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                );
+                ),
+                SizedBox(height: 20,),
+                Expanded(
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0,
+                      childAspectRatio: 3,  // Adjust this value to change the aspect ratio
+                    ),
+                    itemCount: filteredList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        color: Colors.redAccent,
+                        child: ListTile(
+                          title: Center(
+                            child: Text(
+                              filteredList[index],
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14.0),
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context, filteredList[index]);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
 
-              }),
+
+
+
+
+
+              ],
+            ),
+          ),
         ),
       ),
-
-
     );
   }
 
 
 
 
-}
-//not complete
+/// new method
 
+
+}
 
