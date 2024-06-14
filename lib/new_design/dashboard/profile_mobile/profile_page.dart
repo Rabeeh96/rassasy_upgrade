@@ -6,7 +6,7 @@
 // import 'package:rassasy_new/global/global.dart';
 // import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 // import 'package:rassasy_new/new_design/dashboard/dashboard.dart';
-// import 'package:rassasy_new/new_design/dashboard/mobile_section/view/product_list.dart';
+// import 'package:rassasy_new/new_design/dashboard/mobile_section/view/product_list_mobile.dart';
 // import 'package:rassasy_new/new_design/dashboard/profile_mobile/profile_controller.dart';
 // import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
 // import 'package:rassasy_new/new_design/dashboard/tax/test.dart';

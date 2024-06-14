@@ -62,7 +62,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > 800;
+    bool isTablet = screenWidth > 850;
 
     return Scaffold(
       appBar: isTablet
@@ -123,6 +123,9 @@ class _LoginPageNewState extends State<LoginPageNew> {
                     height: 8,
                   ),
                   GestureDetector(
+                    onTap: (){
+                      Get.to(DeleteAccount());
+                    },
                     child: InkWell(
                       child: Text(
                         'dont_have_account'.tr,
@@ -135,6 +138,9 @@ class _LoginPageNewState extends State<LoginPageNew> {
                     height: 5,
                   ),
                   GestureDetector(
+                    onTap: (){
+                      Get.to(DeleteAccount());
+                    },
                     child: InkWell(
                       child: Text(
                         'sign_up'.tr,
@@ -159,7 +165,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > 800;
+    bool isTablet = screenWidth > 850;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -358,7 +364,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > 800;
+    bool isTablet = screenWidth > 850;
     return  Padding(
       padding: const EdgeInsets.only(left: 40.0,right: 40),
       child: Column(
@@ -622,7 +628,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
   Future<Null> loginAccount(BuildContext context) async {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
-    bool isTablet = screenWidth > 800;
+    bool isTablet = screenWidth > 850;
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
