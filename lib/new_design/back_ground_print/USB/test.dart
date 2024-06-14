@@ -3,7 +3,7 @@
 // Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage) async {
 //   List<int> bytes = [];
 //   final generator = Generator(PaperSize.mm80, profile);
-//   List<ProductDetailsModel> tableDataDetailsPrint = [];
+//   List<Prod//uctDetailsModel> tableDataDetailsPrint = [];
 //
 //   var salesDetails = BluetoothPrintThermalDetails.salesDetails;
 //   print(salesDetails);
