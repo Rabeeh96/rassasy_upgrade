@@ -7,9 +7,10 @@
 //
 //   var salesDetails = BluetoothPrintThermalDetails.salesDetails;
 //   print(salesDetails);
+
 //   for (Map user in salesDetails) {
 //     tableDataDetailsPrint.add(ProductDetailsModel.fromJson(user));
-//   }
+//   }//
 //
 //   var logoAvailable = true;
 //   var productDecBool = true;
