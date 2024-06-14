@@ -30,9 +30,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     loadData();
   }
 
-  loadData() {
-
-    print(orderController.orderItemList[widget.index]);
+  loadData() async{
+    orderController.flavourList.clear();
+    await orderController.getAllFlavours();
     orderController.productName.value = orderController.orderItemList[widget.index]["ProductName"];
     orderController.item_status.value = orderController.orderItemList[widget.index]["Status"];
     orderController.unitName.value = orderController.orderItemList[widget.index]["UnitName"];
@@ -191,7 +191,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       padding: const EdgeInsets.only(right: 10.0),
                       child: Text(
                         orderController.currency.value,
-                        style: customisedStyle(context, Color(0xffA5A5A5), FontWeight.w400, 15.0),
+                        style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 15.0),
                       ),
                     ),
                     Container(
@@ -241,7 +241,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       () => Container(
                         height: MediaQuery.of(context).size.height / 19,
                         width: MediaQuery.of(context).size.width / 5,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: Color(0xffE7E7E7))),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xffE7E7E7))),
                         child: Center(
                           child: Text(
                             roundStringWith(orderController.quantityForDetailsSection.value.toString()),
@@ -269,72 +269,71 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ),
 
           /// flavour commented on last
-          // Padding(
-          //   padding: const EdgeInsets.only(
-          //     left: 20.0,
-          //     right:20,
-          //     top: 15,bottom: 10
-          //   ),            child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.start,
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Text("Select a Flavour",style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
-          //     ],
-          //   ),
-          // ),
-          // DividerStyle(),
 
-          // Expanded(child: ListView.builder(
-          //     itemCount: _choices.value.length,
-          //     itemBuilder: (BuildContext context, int index) {
-          //       return GestureDetector(
-          //         onTap: ()async {
-          //           // setState(()  {
-          //           selected = _choices.value[index];
-          //
-          //
-          //         },
-          //         child: Column(
-          //           children: [
-          //             SizedBox(
-          //
-          //               height: MediaQuery.of(context).size.height * .06,
-          //               child: Card(
-          //                 color: Colors.transparent,
-          //                 elevation: 0,
-          //                 child: Padding(
-          //                   padding: const EdgeInsets.only(left: 15.0, right: 15),
-          //                   child: Row(
-          //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //                     children: [
-          //                       Text(
-          //                         _choices.value[index],
-          //                         style: customisedStyle(
-          //                             context,
-          //                              Colors.black,
-          //                             FontWeight.w400,
-          //                             13.0),
-          //                       ),
-          //                       selected == _choices.value[index]
-          //                           ? Icon(Icons.check_circle,color: Color(0xffF25F29),)
-          //                           : Container()
-          //                     ],
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //             DividerStyle()
-          //           ],
-          //         ),
-          //       );
-          //
-          //
-          //
-          //     }))
+          const SizedBox(
+            height: 20,
+          ),
+          Obx(() =>orderController.flavourList.isNotEmpty?Padding(
+            padding: const EdgeInsets.only(
+              left: 20.0,
+              right:20,
+              top: 15,bottom: 10
+            ),            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Select a Flavour",style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),),
+              ],
+            ),
+          ):Container()),
+          Obx(() =>orderController.flavourList.isNotEmpty?DividerStyle():Container()),
+          Obx(() =>orderController.flavourList.isNotEmpty? Expanded(child: ListView.builder(
+              itemCount: orderController.flavourList.length,
+              itemBuilder: (BuildContext context, int index) {
+
+                return GestureDetector(
+                  onTap: ()async {
+                    orderController.flavourName.value=orderController.flavourList[index].flavourName;
+                    orderController.flavourID.value=orderController.flavourList[index].id;
+                    orderController.update();
+                  },
+                  child: SizedBox(
+
+                    height: MediaQuery.of(context).size.height * .06,
+                    child: Card(
+                      color: Colors.transparent,
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0, right: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              orderController.flavourList[index].flavourName,
+                              style: customisedStyle(
+                                  context,
+                                  Colors.black,
+                                  FontWeight.w400,
+                                  13.0),
+                            ),
+                           Obx(() => orderController.flavourID.value == orderController.flavourList[index].id
+                                ? const Icon(Icons.check_circle,color: Color(0xffF25F29),)
+                                : Container()),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+
+
+
+              })):Container() ),
+         // DividerStyle()
         ],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: Color(0xFFE8E8E8))),
         ),
         height: MediaQuery.of(context).size.height / 10,
