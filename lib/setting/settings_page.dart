@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
+import 'package:rassasy_new/new_design/back_ground_print/print_details/select_codepage.dart';
 import 'package:rassasy_new/new_design/waiter_list/waiter_select_from_dash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -1390,7 +1391,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onTap: () async{
                         var result = await Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SelectCodePage()),
+                          MaterialPageRoute(builder: (context) => select_code_page()),
                         );
                         if (result != null) {
                           SharedPreferences prefs = await SharedPreferences.getInstance();
