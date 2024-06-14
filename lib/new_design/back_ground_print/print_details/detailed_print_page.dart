@@ -1400,16 +1400,12 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
               Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
               printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
             }
-
             printer.cut();
             printer.disconnect();
-            print('Receipt printed successfully.');
           }
           else {
             print('Failed to connect: ${res.msg}');
           }
-
-
 
         }
 
@@ -1451,6 +1447,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
               printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
               Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
               printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+
             }
 
             printer.cut();
