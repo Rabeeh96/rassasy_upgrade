@@ -27,6 +27,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'customer/customer_detail_page.dart';
 import 'flavour/view_flavour.dart';
+import 'mobile_section/view/invoice/invocie_list_mobile.dart';
+import 'mobile_section/view/product/product_list_mobile.dart';
+import 'mobile_section/view/product_group/product_group_list.dart';
 import 'pos/new_method/pos_list_section.dart';
 import 'product/create_products.dart';
 import 'profile_mobile/about_us/about_us_page.dart';
@@ -358,7 +361,8 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 600;
+
+    bool isTablet = screenWidth > 850;
     //  bool isTable = false;
 
     return Scaffold(
@@ -950,7 +954,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > 850;
     print(isTablet);
     print(screenWidth);
     print("dash");
@@ -1581,7 +1585,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
     // bool isTablet = true;
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > 850;
     print(isTablet);
     print(screenWidth);
     print("dash");
@@ -2131,9 +2135,40 @@ class _DashboardNewState extends State<DashboardNew> {
                         ),
                       ),
 
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(ProductListMobile());
+                        },
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(
+                                    'Product',
+                                    style: customisedStyle(context,
+                                        Colors.black, FontWeight.w400, 16.0),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 18,
+                                  color: Colors.black,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       // GestureDetector(
                       //   onTap: () {
-                      //     Get.to(ProductListMobile());
+                      //     Get.to(ProductGroupMobile());
                       //   },
                       //   child: Card(
                       //     color: Colors.transparent,
@@ -2147,7 +2182,7 @@ class _DashboardNewState extends State<DashboardNew> {
                       //           Padding(
                       //             padding: const EdgeInsets.only(left: 10.0),
                       //             child: Text(
-                      //               'Product',
+                      //               'ProductGroupMobile',
                       //               style: customisedStyle(context,
                       //                   Colors.black, FontWeight.w400, 16.0),
                       //             ),

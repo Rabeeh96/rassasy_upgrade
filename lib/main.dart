@@ -72,7 +72,7 @@ bool isTabletDevice() {
   print("screenWidth  is tablet device  $screenWidth");
 
   /// You may need to adjust this threshold based on your requirements
-  return screenWidth > 600;
+  return screenWidth > 850;
 }
 
 class MyApp extends StatelessWidget {
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //test
   void navigateUser() async {
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isTablet = screenWidth > 800;
+    bool isTablet = screenWidth > 850;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getBool('isLoggedIn') ?? false;
     print(status);

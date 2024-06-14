@@ -32,7 +32,7 @@ class _ProductDetailsState extends State<SelectBranch> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > 850;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
