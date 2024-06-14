@@ -276,7 +276,7 @@ class _SearchItemsState extends State<SearchItems> {
 
                                   var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
 
-                                  orderController.unitPriceAmountWR.value = orderController.searchProductList[index].defaultSalesPrice;
+                                  orderController.unitPriceAmount.value = orderController.searchProductList[index].defaultSalesPrice;
                                   orderController.inclusiveUnitPriceAmountWR.value = orderController.searchProductList[index].defaultSalesPrice;
                                   orderController.vatPer.value = double.parse(orderController.searchProductList[index].vatsSalesTax);
                                   orderController.gstPer.value = double.parse(orderController.searchProductList[index].gSTSalesTax);

@@ -402,7 +402,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
 
                                                                 var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
 
-                                                                orderController.unitPriceAmountWR.value =
+                                                                orderController.unitPriceAmount.value =
                                                                     orderController.productList[index].defaultSalesPrice;
                                                                 orderController.inclusiveUnitPriceAmountWR.value =
                                                                     orderController.productList[index].defaultSalesPrice;
@@ -521,7 +521,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
 
                                                             var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
 
-                                                            orderController.unitPriceAmountWR.value =
+                                                            orderController.unitPriceAmount.value =
                                                                 orderController.productList[index].defaultSalesPrice;
                                                             orderController.inclusiveUnitPriceAmountWR.value =
                                                                 orderController.productList[index].defaultSalesPrice;
@@ -643,7 +643,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                         ))))
 
 
- 
+
           ],
         ),
       ),
@@ -849,6 +849,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
 
                       if (result != null) {
                         orderController.customerNameController.text = result[0];
+                        orderController.ledgerID.value= result[2];
                         orderController.customerBalance.value = result[1];
                         orderController.update();
                       }

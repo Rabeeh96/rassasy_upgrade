@@ -83,7 +83,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                   ///print("branchDetails  $branchDetails");
 
                                     if(companyController.companyListData[index].branches!.isEmpty){
-                                    await defaultDataInitial(context:context);
+
                                     SharedPreferences prefs = await SharedPreferences.getInstance();
                                     prefs.setString('companyName', companyController.companyListData[index].companyName!);
                                     prefs.setString('companyType', companyController.companyListData[index].companyType!);
@@ -95,7 +95,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                     prefs.setString('companyID', companyController.companyListData[index].id!);
                                     prefs.setBool('companySelected', true);
                                     prefs.setInt('branchID',1);
-
+                                    await defaultDataInitial(context:context);
                                     await Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
@@ -173,7 +173,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                         //     .companyListDAta[index].branches![i].branchName}");
                                         return GestureDetector(
                                             onTap: () async {
-                                              await defaultDataInitial(context:context);
+
                                               SharedPreferences prefs = await SharedPreferences.getInstance();
                                               prefs.setString('companyName', companyController.companyListData[index].companyName!);
                                               prefs.setString('companyType', companyController.companyListData[index].companyType!);
@@ -186,6 +186,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                               prefs.setString('branchName', companyController.companyListData[index].branches![i].branchName!);
                                               prefs.setBool('companySelected', true);
                                               prefs.setInt('branchID',companyController.companyListData[index].branches![i].branchID!);
+                                              await defaultDataInitial(context:context);
                                               await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                             },
                                             child: InkWell(

@@ -4330,13 +4330,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     unit = double.parse(unitPriceAmountWR);
     if (inclusivePer == 0.0) {
       unitPriceAmountWR = (unit).toString();
-
       var taxAmount = (unit * exclusivePer) / 100;
       inclusiveUnitPriceAmountWR = (unit + taxAmount).toString();
       unit = unit;
     } else {
       var taxAmount = (unit * inclusivePer) / (100 + inclusivePer);
-      print(taxAmount);
       unit = unit - taxAmount;
       inclusiveUnitPriceAmountWR = (unit + taxAmount).toString();
       unitPriceAmountWR = (unit).toString();

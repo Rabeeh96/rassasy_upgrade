@@ -47,6 +47,18 @@ popAlert({required String head,required String message,required SnackPosition po
   );
 }
 
+popAlertWithColor({required String head,required String message,required SnackPosition position,required Color backGroundColor,
+  required Color forGroundColor}){
+  Get.snackbar(
+    head,
+    message,
+      backgroundColor: backGroundColor,
+      colorText: forGroundColor,
+    snackPosition: position,
+      animationDuration:const Duration(seconds: 2)
+  );
+}
+
 
 updateAlert(){
   Get.snackbar(

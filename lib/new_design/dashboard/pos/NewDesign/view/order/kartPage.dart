@@ -315,7 +315,7 @@ class _KartPageState extends State<KartPage> {
                                       padding: const EdgeInsets.only(left: 3.0),
                                       child: Text(
                                         roundStringWith(orderController
-                                            .orderItemList[index]["NetAmount"]
+                                            .orderItemList[index]["UnitPrice"]
                                             .toString()),
                                         style: customisedStyle(
                                             context,

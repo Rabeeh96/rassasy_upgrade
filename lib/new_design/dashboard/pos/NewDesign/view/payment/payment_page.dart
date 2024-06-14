@@ -745,7 +745,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                           ),
                                         ),
                                         Container(
-                                          width: MediaQuery.of(context).size.width / 4,
+                                          height: 35,
+                                          width: MediaQuery.of(context).size.width / 5,
                                           child: TextButton(
                                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                                             onPressed: () {
@@ -758,7 +759,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                               padding: const EdgeInsets.only(left: 12.0, right: 12),
                                               child: Text(
                                                 'Full'.tr,
-                                                style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 16.5),
+                                                style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 15.5),
                                               ),
                                             ),
                                           ),
@@ -810,7 +811,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                           ),
                                         ),
                                         Container(
-                                          width: MediaQuery.of(context).size.width / 4,
+                                          height: 35,
+                                          width: MediaQuery.of(context).size.width / 5,
                                           child: TextButton(
                                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                                             onPressed: () {
@@ -868,7 +870,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           padding: const EdgeInsets.only(left: 12.0, right: 12),
                           child: Text(
                             'cancel'.tr,
-                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
+                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 15.5),
                           ),
                         ),
                       ],
@@ -880,8 +882,8 @@ class _PaymentPageState extends State<PaymentPage> {
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                     onPressed: () async {
 
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      var id = prefs.getInt("Cash_Account") ?? 1;
+                      // SharedPreferences prefs = await SharedPreferences.getInstance();
+                      // var id = prefs.getInt("Cash_Account") ?? 1;
 
                       if (paymentController.paymentCustomerSelection.text != "walk in customer") {
                         paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
@@ -901,7 +903,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
                           child: Text(
                             'Save'.tr,
-                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
+                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 15.5),
                           ),
                         )
                       ],

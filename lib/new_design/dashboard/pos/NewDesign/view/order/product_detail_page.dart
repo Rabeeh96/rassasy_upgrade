@@ -45,7 +45,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     orderController.actualProductTaxID.value = orderController.orderItemList[widget.index]["ActualProductTaxID"];
     orderController.branchID.value = orderController.orderItemList[widget.index]["BranchID"];
     orderController.unique_id.value = orderController.orderItemList[widget.index]["unq_id"];
-    orderController.unitPriceAmountWR.value = orderController.orderItemList[widget.index]["UnitPrice"].toString();
+    orderController.unitPriceAmount.value = orderController.orderItemList[widget.index]["UnitPrice"].toString();
     orderController.rateWithTax.value = double.parse(orderController.orderItemList[widget.index]["RateWithTax"].toString());
     orderController.costPerPrice.value = orderController.orderItemList[widget.index]["CostPerPrice"].toString();
     orderController.priceListID.value = orderController.orderItemList[widget.index]["PriceListID"];
@@ -82,7 +82,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     // orderController.isExciseProduct.value = orderController.orderItemList[widget.index]["IsExciseProduct"];
     // orderController.exciseTaxAfter.value = orderController.orderItemList[widget.index]["ExciseTaxAfter"];
     orderController.exciseTaxAmount.value = double.parse(orderController.orderItemList[widget.index]["ExciseTax"].toString());
-    orderController.unitPriceChangingController.text = roundStringWith(orderController.unitPriceAmountWR.value);
+    orderController.unitPriceChangingController.text = roundStringWith(orderController.unitPriceAmount.value);
     orderController.quantityForDetailsSection.value = double.parse(orderController.quantity.value.toString());
 //    orderController.calculationOnEditing(index: widget.index, isQuantityButton: false, value: orderController.unitPriceAmountWR.value.toString());
 

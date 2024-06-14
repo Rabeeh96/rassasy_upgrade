@@ -10,6 +10,7 @@ import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/Print/html_kot.dart';
 import 'package:rassasy_new/Print/qr_generator.dart';
 import 'package:rassasy_new/global/charecter.dart';
+import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/Templates/template1.dart';
 import 'package:rassasy_new/new_design/back_ground_print/Templates/template2.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/new_method/model/model_class.dart';
@@ -22,7 +23,7 @@ import 'package:charset_converter/charset_converter.dart';
 import 'Templates/template3.dart';
 import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
-
+import 'package:get/get.dart';
 class AppBlocs {
   List<ProductDetailsModel> printDalesDetails = [];
 
@@ -192,7 +193,9 @@ class AppBlocs {
         printer.disconnect();
       });
     } else {
-      dialogBox(ctx, "Check your printer connection");
+
+      popAlert(head: "Error", message: "Check your printer connection",position: SnackPosition.TOP);
+
     }
   }
 
@@ -1350,10 +1353,10 @@ class AppBlocs {
         printer.disconnect();
       });
     } else {
-      dialogBox(ctx, "Check your printer connection");
+      popAlert(head: "Error", message: "heck your printer connection",position: SnackPosition.TOP);
+
     }
   }
-
   Future<void> dailyReportEnglish({
     required NetworkPrinter printer,
     required fromTime,

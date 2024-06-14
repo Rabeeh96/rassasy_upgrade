@@ -241,7 +241,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                     print("branchDetails  $branchDetails");
 
                                                     if(branchDetails.isEmpty){
-                                                      await defaultDataInitial(context:context);
+
 
                                                       SharedPreferences prefs = await SharedPreferences.getInstance();
                                                       prefs.setString('companyName', companyController.companyList[index].companyName);
@@ -253,7 +253,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                       prefs.setString('companyID', companyController.companyList[index].id);
                                                       prefs.setBool('companySelected', true);
                                                       prefs.setInt('branchID',1);
-
+                                                      await defaultDataInitial(context:context);
                                                       await Navigator.pushReplacement(
                                                           context,
                                                           MaterialPageRoute(
@@ -264,7 +264,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
 
                                                       var result = await  Navigator.push(context, MaterialPageRoute(builder: (context) => SelectBranch(list: branchDetails)),);
                                                       if(result !=null){
-                                                        await defaultDataInitial(context:context);
+
                                                         SharedPreferences prefs = await SharedPreferences.getInstance();
                                                         prefs.setString('companyName', companyController.companyList[index].companyName);
                                                         prefs.setString('companyType', companyController.companyList[index].companyType);
@@ -274,6 +274,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                         prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
                                                         prefs.setString('companyID', companyController.companyList[index].id);
                                                         prefs.setBool('companySelected', true);
+                                                        await defaultDataInitial(context:context);
                                                         await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                                       }
                                                       else{

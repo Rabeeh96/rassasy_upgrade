@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
+import 'package:rassasy_new/global/customclass.dart';
 
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
@@ -491,7 +492,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
     if (defaultIp == "") {
-      dialogBox(context, "Please select a printer");
+      popAlert(head: "Error", message: "Please select a printer",position: SnackPosition.TOP);
+
     } else {
       if(printType =='Wifi'){
         var ret = await printHelperIP.printDetails();
@@ -504,7 +506,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           }
           printHelperIP.print_receipt(ip, context,false);
         } else {
-          dialogBox(context, 'Please try again later');
+          popAlert(head: "Error", message: "Please try again later",position: SnackPosition.TOP);
+
         }
         //
       }
@@ -520,7 +523,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           }
           printHelperUsb.printReceipt(ip, context);
         } else {
-          dialogBox(context, 'Please try again later');
+          popAlert(head: "Error", message: "Please try again later",position: SnackPosition.TOP);
+
         }
 
         /// commented
