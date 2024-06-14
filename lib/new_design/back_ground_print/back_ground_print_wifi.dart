@@ -2965,22 +2965,15 @@ print(salesOrder);
 
     if (isCancelNote == false) {
       if (printListData.isNotEmpty) {
-        print("-------------------------------10 00000----------- $id -------------------------------");
-
         kitchenName = printListData[id].kitchenName ?? "";
-        print("-------------------------------10 00000------------------------------------------");
         totalQty = printListData[id].totalQty ?? "0";
       }
     }
 
-    var tableName = kotList[0]["TableName"] ?? "";
-    // var tableName = dataPrints[0].tableName;
-    var tokenNumber = kotList[0]["TokenNumber"].toString();
-    // var tokenNumber = dataPrints[0].tokenNumber;
-    var orderType = kotList[0]["OrderType"] ?? "";
-    // var orderType = dataPrints[0].orderTypeI ?? "";
-    // printer.setStyles(const PosStyles.defaults());
-    printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+     var tableName = kotList[0]["TableName"] ?? "";
+     var tokenNumber = kotList[0]["TokenNumber"].toString();
+     var orderType = kotList[0]["OrderType"] ?? "";
+     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
@@ -3096,7 +3089,7 @@ print(salesOrder);
     print("-------------------------------13------------------------------------------");
     for (var i = 0; i < kotList.length; i++) {
       var slNo = i + 1;
-      print("-------------------------------14------------------------------------------");
+
       var productDescription = kotList[i]["ProductDescription"] ?? '';
       Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(kotList[i]["ProductName"]));
 
@@ -3148,19 +3141,46 @@ print(salesOrder);
     bool showUsernameKot = prefs.getBool('show_username_kot') ?? false;
     bool showDateTimeKot = prefs.getBool('show_date_time_kot') ?? false;
     var currentTime = DateTime.now();
-    print("----------------$currentTime");
-    List<ItemsDetails> dataPrint = [];
-    dataPrint.clear();
+    print("------------------------------------------------1");
+    // List<ItemsDetails> dataPrint = [];
+    // dataPrint.clear();
+    //
+    // for (Map user in items) {
+    //   dataPrint.add(ItemsDetails.fromJson(user));
+    // }
 
-    for (Map user in items) {
-      dataPrint.add(ItemsDetails.fromJson(user));
+    List kotList = [];
+
+    //   List<ItemsDetails> dataPrints = [];
+    kotList.clear();
+    kotList = items;
+
+    var kitchenName = "";
+    //  var totalQty = kotList[0]["Qty"].toString()??"0";
+    print("------------------------------------------------1");
+    var totalQty = (kotList[0]["Qty"]?.toString() ?? "0");
+    print("------------------------------------------------1");
+    if (isCancelNote == false) {
+      print("------------------------------------------------2");
+      if (printListData.isNotEmpty) {
+        print("------------------------------------------------2");
+        kitchenName = printListData[id].kitchenName ?? "";
+        print("------------------------------------------------2");
+        totalQty = printListData[id].totalQty ?? "0";
+        print("------------------------------------------------2");
+      }
     }
 
-    var kitchenName = printListData[id].kitchenName;
-    var tableName = dataPrint[0].tableName;
-    var totalQty = printListData[id].totalQty;
-    var tokenNumber = dataPrint[0].tokenNumber;
-    var orderType = dataPrint[0].orderTypeI ?? "";
+
+    var tableName = kotList[0]["TableName"] ?? "";
+    var tokenNumber = kotList[0]["TokenNumber"].toString();
+    var orderType = kotList[0]["OrderType"] ?? "";
+
+    // var kitchenName = printListData[id].kitchenName;
+    // var tableName = dataPrint[0].tableName;
+    // var totalQty = printListData[id].totalQty;
+    // var tokenNumber = dataPrint[0].tokenNumber;
+    // var orderType = dataPrint[0].orderTypeI ?? "";
     // printer.setStyles(const PosStyles.defaults());
     // printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
 
@@ -3259,10 +3279,13 @@ print(salesOrder);
     ]);
     printer.hr();
 
-    for (var i = 0; i < dataPrint.length; i++) {
+    for (var i = 0; i < kotList.length; i++) {
       var slNo = i + 1;
 
-      var productDescription = dataPrint[i].productDescription;
+
+      var productDescription = kotList[i]["ProductDescription"] ?? '';
+
+
 
       printer.row([
         PosColumn(
@@ -3271,8 +3294,8 @@ print(salesOrder);
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(text: dataPrint[i].productName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(text: roundStringWith(dataPrint[i].qty), width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: kotList[i]["ProductName"], width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: roundStringWith(kotList[i]["Qty"].toString()), width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       if (productDescription != "") {
@@ -3287,8 +3310,8 @@ print(salesOrder);
         ]);
       }
 
-      if (dataPrint[i].flavour != "") {
-        printer.text(dataPrint[i].flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+      if (kotList[i]["flavour"] != "") {
+        printer.text(kotList[i]["flavour"], styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
       printer.hr();
     }
