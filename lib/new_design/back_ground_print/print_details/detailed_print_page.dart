@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
-
 // import 'package:intl/intl.dart';
 import 'package:flutter/material.dart' hide Image;
-
 // import 'package:esc_pos_printer/esc_pos_printer.dart';
 // import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
@@ -68,7 +66,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
     }
 
-    printer.cut();
+    //printer.cut();
   }
 
   Future<void> salesInvoicePrintDemo(NetworkPrinter printer) async {
@@ -1307,6 +1305,180 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     }
   }
 
+
+  // Future<void> printReceipt(codePage,capability) async {
+  //   int retryCount = 0;
+  //   bool isConnected = false;
+  //   var printerIp = ipController.text;
+  //   int port = 9100;
+  //   int timeoutDuration = 5;
+  //   int maxRetries = 3;
+  //
+  //
+  //   while (retryCount < maxRetries && !isConnected) {
+  //     try {
+  //       var profile = await CapabilityProfile.load(name: capability);
+  //       final supportedCodePages = profile.codePages;
+  //       log_data(supportedCodePages);
+  //       var result = await CapabilityProfile.getAvailableProfiles();
+  //
+  //       //log_data(result);
+  //
+  //       final printer = NetworkPrinter(PaperSize.mm80, profile);
+  //       final res = await printer.connect(printerIp, port: port, timeout: Duration(seconds: timeoutDuration));
+  //
+  //       if (res == PosPrintResult.success) {
+  //         isConnected = true;
+  //         // Proceed with printing
+  //         for(var i = 0;i<1 ;i++){
+  //           var results = await CapabilityProfile.load(name: result[i]["key"]);
+  //           printer.text(result[i]["key"]+"$i", styles: PosStyles(align: PosAlign.center));
+  //         //  var profile = await CapabilityProfile.load(name: capability);
+  //         final supportedCodePages = results.codePages;
+  //           for(var ind = 0;ind<supportedCodePages.length ;ind++){
+  //             printer.text(supportedCodePages[ind].name, styles: PosStyles(align: PosAlign.center));
+  //             printer.text("Test print code Page  ${supportedCodePages[ind].name} capabilities $capability ",);
+  //             printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
+  //             Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكمً'));
+  //             printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+  //
+  //           }
+  //          }
+  //
+  //         printer.cut();
+  //         printer.disconnect();
+  //         print('Receipt printed successfully.');
+  //       }
+  //       else {
+  //         print('Failed to connect: ${res.msg}');
+  //       }
+  //     } catch (e) {
+  //       print('Error: $e');
+  //     }
+  //
+  //     if (!isConnected) {
+  //       retryCount++;
+  //       print('Retrying connection ($retryCount/$maxRetries)...');
+  //       await Future.delayed(Duration(seconds: 2)); // Wait before retrying
+  //     }
+  //   }
+  //
+  //   if (!isConnected) {
+  //     print('Failed to connect to printer after $maxRetries attempts.');
+  //   }
+  // }
+
+  Future<void> testPrintAll() async {
+    int retryCount = 0;
+    bool isConnected = false;
+    var printerIp = ipController.text;
+    int port = 9100;
+    int timeoutDuration = 5;
+    int maxRetries = 3;
+
+
+    while (retryCount < maxRetries && !isConnected) {
+      try {
+
+
+        var result = await CapabilityProfile.getAvailableProfiles();
+
+        for(var i = 0;i<result.length ;i++){
+
+          var profile = await CapabilityProfile.load(name: result[i]["key"]);
+          final supportedCodePages = profile.codePages;
+
+          final printer = NetworkPrinter(PaperSize.mm80, profile);
+          final res = await printer.connect(printerIp, port: port, timeout: Duration(seconds: timeoutDuration));
+
+          if (res == PosPrintResult.success) {
+            isConnected = true;
+            var capability = result[i]["key"];
+            for(var ind = 0;ind<supportedCodePages.length ;ind++){
+              var testData ="${supportedCodePages[ind].name} السلام $capability ";
+              printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
+              Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+              printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+            }
+
+            printer.cut();
+            printer.disconnect();
+            print('Receipt printed successfully.');
+          }
+          else {
+            print('Failed to connect: ${res.msg}');
+          }
+
+
+
+        }
+
+      } catch (e) {
+        print('Error: $e');
+      }
+
+      if (!isConnected) {
+        retryCount++;
+        print('Retrying connection ($retryCount/$maxRetries)...');
+        await Future.delayed(Duration(seconds: 2)); // Wait before retrying
+      }
+    }
+
+    if (!isConnected) {
+      print('Failed to connect to printer after $maxRetries attempts.');
+    }
+  }
+  Future<void> testPrintOneByOne(capability) async {
+
+    int retryCount = 0;
+    bool isConnected = false;
+    var printerIp = ipController.text;
+    int port = 9100;
+    int timeoutDuration = 5;
+    int maxRetries = 3;
+
+
+    while (retryCount < maxRetries && !isConnected) {
+      try {
+        var profile = await CapabilityProfile.load(name: capability);
+          final supportedCodePages = profile.codePages;
+          final printer = NetworkPrinter(PaperSize.mm80, profile);
+          final res = await printer.connect(printerIp, port: port, timeout: Duration(seconds: timeoutDuration));
+          if (res == PosPrintResult.success) {
+            isConnected = true;
+            for(var ind = 0;ind<supportedCodePages.length ;ind++){
+              var testData ="${supportedCodePages[ind].name} السلام $capability ";
+              printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
+              Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+              printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+            }
+
+            printer.cut();
+            printer.disconnect();
+            print('Receipt printed successfully.');
+          }
+          else {
+            print('Failed to connect: ${res.msg}');
+          }
+
+
+      } catch (e) {
+        print('Error: $e');
+      }
+
+      if (!isConnected) {
+        retryCount++;
+        print('Retrying connection ($retryCount/$maxRetries)...');
+        await Future.delayed(Duration(seconds: 2)); // Wait before retrying
+      }
+    }
+
+    if (!isConnected) {
+      print('Failed to connect to printer after $maxRetries attempts.');
+    }
+  }
+
+
   void testPrint2({required BuildContext ctx, required String codePage, required String capability}) async {
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
@@ -1512,13 +1684,13 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   //  Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
                   const SizedBox(width: 20),
 
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.cyan, // Background color
-                      ),
-                      child: Text(isDiscovering ? 'Discovering...' : 'Discover', style: TextStyle(color: Colors.white)),
-                      onPressed: isDiscovering ? null : () => discover(context)),
-                  //  onPressed: isDiscovering ? null : () => discover(context)),
+                  // ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: Colors.cyan, // Background color
+                  //     ),
+                  //     child: Text(isDiscovering ? 'Discovering...' : 'Discover', style: TextStyle(color: Colors.white)),
+                  //     onPressed: isDiscovering ? null : () => discover(context)),
+                  // //  onPressed: isDiscovering ? null : () => discover(context)),
 
                   SizedBox(width: 15),
                   ElevatedButton(
@@ -1532,6 +1704,15 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         var asd = await connectionTest(ipController.text);
                         stop();
                         dialogBox(context, asd.toString());
+                      }),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent, // Background color
+                      ),
+                      child: Text('Test with all Capabilities', style: TextStyle(color: Colors.white)),
+                      //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
+                      onPressed: () async {
+                        testPrintAll();
                       }),
                 ],
               ),
@@ -1559,13 +1740,15 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                                   onTap: () async {
 
 
-                                    print("--------withCodePage--$withCodePage--");
 
-                                    if (withCodePage) {
-                                      testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
-                                    } else {
-                                      testPrint2(ctx: context, capability: printerModels[index], codePage: '');
-                                    }
+                                    testPrintOneByOne(printerModels[index]);
+
+                                    // if (withCodePage) {
+                                    //
+                                    //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
+                                    // } else {
+                                    //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
+                                    // }
 
                                   },
                                   title: Row(
@@ -2099,3 +2282,4 @@ class ProductDetailsModel {
     );
   }
 }
+

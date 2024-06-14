@@ -4,14 +4,21 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/organization/model/company_model.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:intl/intl.dart';
 import '../model/companyListModel.dart';
 
 class CompanyController extends GetxController {
   var companyList = <Company>[].obs;
-  var companyListDAta = <Data>[].obs;
+  var companyListData = <Data>[].obs;
   var isLoading = true.obs;
-
+  String convertDate(String dateString) {
+    if(dateString ==""){
+      dateString = "2029-03-14";
+    }
+    DateTime parsedDate = DateTime.parse(dateString);
+    String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
+    return formattedDate;
+  }
   Future<void> getCompanyListDetails() async {
     try {
       isLoading(true);
@@ -86,7 +93,7 @@ class CompanyController extends GetxController {
         print("bb");
         List<dynamic> responseData = jsonResponse["data"];
         print("ccc");
-        companyListDAta.assignAll(responseData.map((data) => Data.fromJson(data)));
+        companyListData.assignAll(responseData.map((data) => Data.fromJson(data)));
         print("ddd");
       } else {
         print('Error: ${response.statusCode}');

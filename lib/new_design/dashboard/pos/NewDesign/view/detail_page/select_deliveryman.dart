@@ -56,7 +56,7 @@ class _SelectDeliveryManState extends State<SelectDeliveryMan> {
             child: Obx(() => controller.isCustomerLoading.value
                 ? const Center(child: CircularProgressIndicator())
                 : controller.users.isEmpty
-                    ? const Center(child: Text("Customers not found"))
+                    ? const Center(child: Text("Sales man not found"))
                     : ListView.separated(
                         separatorBuilder: (context, index) => DividerStyle(),
                         itemCount: controller.users.length,

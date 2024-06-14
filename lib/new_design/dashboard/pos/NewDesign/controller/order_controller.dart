@@ -24,7 +24,7 @@ class OrderController extends GetxController {
   ValueNotifier<bool> isOrderCreate = ValueNotifier<bool>(false); // Initialize with initial value
   var groupIsLoading = false.obs;
   var productIsLoading = false.obs;
-
+  final ScrollController scrollController = ScrollController();
 // var isLoading=false.obs;
   TextEditingController customerNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
@@ -46,6 +46,7 @@ class OrderController extends GetxController {
   RxString customerBalance = "0.0".obs;
 
   RxBool isGst = false.obs;
+  RxBool isVat = false.obs;
   RxInt ledgerID = 1.obs;
   RxBool isComplimentary = false.obs;
   RxBool quantityIncrement = false.obs;
@@ -104,7 +105,7 @@ class OrderController extends GetxController {
   RxBool isInclusive = false.obs;
 
   RxString actualProductTaxName = "".obs;
-  RxString unitPriceAmountWR = "0.00".obs;
+  RxString unitPriceAmount = "0.00".obs;
   RxString inclusiveUnitPriceAmountWR = "0.00".obs;
   RxString grossAmountWR = "0.00".obs;
 
@@ -148,7 +149,7 @@ class OrderController extends GetxController {
     var checkGst = prefs.getBool("check_GST") ?? false;
     var priceDecimal = prefs.getString("PriceDecimalPoint") ?? "2";
     var qtyDecimal = prefs.getString("QtyDecimalPoint") ?? "2";
-    print('----1');
+
     if (checkVat == true) {
       taxType.value = "VAT";
       taxID.value = 32;
@@ -176,22 +177,23 @@ class OrderController extends GetxController {
     }
 
     if (inclusivePer.value == 0.0) {
-      unitPriceAmountWR.value = (unit).toString();
+      unitPriceAmount.value = (unit.value).toString();
       var taxAmount = (unit.value * exclusivePer.value) / 100;
-      inclusiveUnitPriceAmountWR.value = (unit + taxAmount).toString();
+      inclusiveUnitPriceAmountWR.value = (unit.value + taxAmount).toString();
       unit.value = unit.value;
     } else {
       var taxAmount = (unit.value * inclusivePer.value) / (100 + inclusivePer.value);
       print(taxAmount);
       unit.value = unit.value - taxAmount;
       inclusiveUnitPriceAmountWR.value = (unit.value + taxAmount).toString();
-      unitPriceAmountWR.value = (unit.value).toString();
-      print(unit);
+      unitPriceAmount.value = (unit.value).toString();
+
     }
 
     discount.value = 0.0;
     percentageDiscount = 0.0.obs;
     discountAmount = 0.0.obs;
+
     grossAmount.value = quantity.value * unit.value;
 
     exciseTaxAmount.value = 0.0;
@@ -289,11 +291,11 @@ class OrderController extends GetxController {
       "SalesDetailsID": 1,
       "unq_id": unique_id.value,
       "FreeQty": "0",
-      "UnitPrice": unitPriceAmountWR.value,
+      "UnitPrice": unitPriceAmount.value,
       "RateWithTax": "${rateWithTax.value}",
       "CostPerPrice": costPerPrice.value,
       "PriceListID": priceListID.value,
-      "DiscountPerc": discountPer.value,
+      "DiscountPerc": "0",
       "DiscountAmount": "${discountAmount.value}",
       "GrossAmount": grossAmountWR.value,
       "VATPerc": "${vatPer.value}",
@@ -311,8 +313,6 @@ class OrderController extends GetxController {
       "flavour": flavourID.value,
       "Flavour_Name": flavourName.value,
       "TaxableAmount": "${taxableAmountPost.value}",
-      "AddlDiscPerc": "0",
-      "AddlDiscAmt": "0",
       "gstPer": "${gstPer.value}",
       "is_inclusive": isInclusive.value,
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
@@ -326,9 +326,23 @@ class OrderController extends GetxController {
       "IsAmountTaxBefore": isAmountTaxBefore.value,
       "IsExciseProduct": isExciseProduct.value,
       "ExciseTaxAfter": exciseTaxAfter.value,
-      "ExciseTax": exciseTaxAmount.value.toString()
+      "ExciseTax": exciseTaxAmount.value.toString(),
+      "unitPriceRounded": roundStringWith(unitPriceAmount.value),
+      "quantityRounded": roundStringWith(quantity.value.toString()),
+      "netAmountRounded": roundStringWith(netAmount.value.toString()),
+      "AddlDiscPerc": "0",
+      "AddlDiscAmt": "0",
+      "TAX1Perc": "0",
+      "TAX1Amount": "0",
+      "TAX2Perc": "0",
+      "TAX2Amount": "0",
+      "TAX3Perc": "0",
+      "TAX3Amount": "0",
+      "KFCAmount":"0",
+      "BatchCode": "0",
+      "SerialNos": [],
     };
-    print(" data $data");
+
     orderItemList[index] = data;
     clearDetails();
     totalAmount();
@@ -379,7 +393,7 @@ class OrderController extends GetxController {
     gstAmount = 0.0.obs;
     isInclusive = false.obs;
     actualProductTaxName = "".obs;
-    unitPriceAmountWR = "0.00".obs;
+    unitPriceAmount = "0.00".obs;
     inclusiveUnitPriceAmountWR = "0.00".obs;
     grossAmountWR = "0.00".obs;
     exciseTaxAmount = 0.0.obs;
@@ -396,6 +410,9 @@ class OrderController extends GetxController {
   }
 
   calculation() async {
+
+    print("-------------------------------- ${unitPriceAmount.value}");
+
     RxDouble grossAmount = 0.0.obs;
     RxDouble unit = 0.0.obs;
     taxType = "None".obs;
@@ -422,39 +439,43 @@ class OrderController extends GetxController {
         exclusivePer.value = exclusivePer.value + vatPer.value;
       }
     }
+
+    print("------${checkVat}------${inclusivePer.value}----------${vatPer.value}--------${exclusivePer}--------------------------------");
     if (checkGst == true) {
       taxType = "GST Intra-state B2C".obs;
       taxID = 22.obs;
-      if (isInclusive == true) {
+      if (isInclusive.value == true) {
         inclusivePer.value = inclusivePer.value + gstPer.value;
       } else {
         exclusivePer.value = exclusivePer.value + gstPer.value;
       }
     }
 
-    unit.value = double.parse(unitPriceAmountWR.value);
-    if (inclusivePer == 0.0) {
-      unitPriceAmountWR.value = (unit).toString();
+    unit.value = double.parse(unitPriceAmount.value);
+    print("inclusivePer.value ${inclusivePer.value}");
+    print("coming value ${unit.value}");
 
+
+
+
+
+    if (inclusivePer.value == 0.0) {
+      unitPriceAmount.value = (unit.value).toString();
       var taxAmount = (unit.value * exclusivePer.value) / 100;
-      inclusiveUnitPriceAmountWR.value = (unit + taxAmount).toString();
-      unit = unit;
+      inclusiveUnitPriceAmountWR.value = (unit.value + taxAmount).toString();
+      unit.value = unit.value;
     } else {
-      var taxAmount = (unit * inclusivePer.value) / (100 + inclusivePer.value);
-      print(taxAmount);
+      var taxAmount = (unit.value * inclusivePer.value) / (100 + inclusivePer.value);
       unit.value = unit.value - taxAmount;
-      inclusiveUnitPriceAmountWR.value = (unit + taxAmount).toString();
-      unitPriceAmountWR.value = (unit).toString();
-      print(unit);
+      inclusiveUnitPriceAmountWR.value = (unit.value + taxAmount).toString();
+      unitPriceAmount.value = (unit.value).toString();
     }
-
     discount.value = 0.0;
     percentageDiscount.value = 0;
     discountAmount.value = 0;
-
-    grossAmount.value = quantity * unit.value;
-
+    grossAmount.value = quantity.value * unit.value;
     exciseTaxAmount = 0.0.obs;
+
     if (isExciseProduct.value) {
       // exciseTaxAmount = calculateExciseTax(
       //   breakEvenValue: double.parse(BPValue),
@@ -468,12 +489,10 @@ class OrderController extends GetxController {
     grossAmountWR.value = "${grossAmount.value}";
     taxableAmountPost.value = grossAmount.value - discount.value;
     vatAmount.value = ((taxableAmountPost.value + exciseTaxAmount.value) * vatPer.value / 100);
-
     gstAmount.value = (taxableAmountPost * gstPer.value / 100);
 
     if (checkVat == false) {
       vatAmount.value = 0.0;
-      print(vatAmount);
     }
     if (checkGst == false) {
       gstAmount.value = 0.0;
@@ -486,45 +505,46 @@ class OrderController extends GetxController {
     iGSTPer.value = gstPer.value;
     sGSTPer.value = gstPer.value / 2;
 
-    if (taxType == "Export") {
+    if (taxType.value == "Export") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       iGSTAmount.value = 0.0;
       vatAmount.value = 0.0;
       totalTax.value = 0.0;
-    } else if (taxType == "Import") {
+    } else if (taxType.value == "Import") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       iGSTAmount.value = 0.0;
       vatAmount.value = 0.0;
       totalTax.value = 0.0;
-      print('import');
-    } else if (taxType == "GST Inter-state B2C") {
+
+    } else if (taxType.value == "GST Inter-state B2C") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       totalTax.value = iGSTAmount.value;
-    } else if (taxType == "GST Inter-state B2B") {
+    } else if (taxType.value == "GST Inter-state B2B") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       totalTax.value = iGSTAmount.value;
-    } else if (taxType == "GST Intra-state B2C") {
+    } else if (taxType.value == "GST Intra-state B2C") {
       iGSTAmount.value = 0.0;
       totalTax.value = cGSTAmount.value + cGSTAmount.value;
-    } else if (taxType == "GST Intra-state B2B") {
+    } else if (taxType.value == "GST Intra-state B2B") {
       iGSTAmount.value = 0.0;
       totalTax.value = cGSTAmount.value + sGSTAmount.value;
-    } else if (taxType == "None") {
+    } else if (taxType.value == "None") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       iGSTAmount.value = 0.0;
       vatAmount.value = 0.0;
       totalTax.value = 0.0;
-      print(totalTax.value);
+
     } else if (taxType.value == "VAT") {
       totalTax.value = vatAmount.value + exciseTaxAmount.value;
     }
 
     netAmount.value = taxableAmountPost.value + totalTax.value;
+
     RxDouble singleTax = 0.0.obs;
     singleTax.value = totalTax.value / quantity.value;
     rateWithTax.value = unit.value + singleTax.value;
@@ -547,7 +567,7 @@ class OrderController extends GetxController {
       "SalesDetailsID": 1,
       "unq_id": unique_id.value,
       "FreeQty": "0",
-      "UnitPrice": unitPriceAmountWR.value,
+      "UnitPrice": unitPriceAmount.value,
       "RateWithTax": "${rateWithTax.value}",
       "CostPerPrice": costPerPrice.value,
       "PriceListID": priceListID.value,
@@ -573,7 +593,7 @@ class OrderController extends GetxController {
       "AddlDiscAmt": "0",
       "gstPer": "${gstPer.value}",
       "is_inclusive": isInclusive.value,
-      "unitPriceRounded": roundStringWith(unitPriceAmountWR.value),
+      "unitPriceRounded": roundStringWith(unitPriceAmount.value),
       "quantityRounded": roundStringWith(quantity.value.toString()),
       "netAmountRounded": roundStringWith(netAmount.value.toString()),
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
@@ -587,9 +607,20 @@ class OrderController extends GetxController {
       "IsAmountTaxBefore": isAmountTaxBefore.value,
       "IsExciseProduct": isExciseProduct.value,
       "ExciseTaxAfter": exciseTaxAfter.value,
-      "ExciseTax": exciseTaxAmount.value.toString()
+      "ExciseTax": exciseTaxAmount.value.toString(),
+      "TAX1Perc": "0",
+      "TAX1Amount": "0",
+      "TAX2Perc": "0",
+      "TAX2Amount": "0",
+      "TAX3Perc": "0",
+      "TAX3Amount": "0",
+      "KFCAmount":"0",
+      "BatchCode": "0",
+      "SerialNos": [],
     };
 
+
+    log_data(" data $data");
     orderItemList.insert(0, data);
     update();
     totalAmount();
@@ -605,7 +636,7 @@ class OrderController extends GetxController {
     }
 
     detailID.value = orderItemList[indexChanging]["detailID"];
-    unitPriceAmountWR.value = orderItemList[indexChanging]["UnitPrice"].toString();
+    unitPriceAmount.value = orderItemList[indexChanging]["UnitPrice"].toString();
     inclusiveUnitPriceAmountWR.value = orderItemList[indexChanging]["InclusivePrice"].toString();
     vatPer.value = double.parse(orderItemList[indexChanging]["VATPerc"].toString());
     gstPer.value = double.parse(orderItemList[indexChanging]["gstPer"].toString());
@@ -620,6 +651,7 @@ class OrderController extends GetxController {
     isInclusive.value = orderItemList[indexChanging]["is_inclusive"];
     actualProductTaxName.value = orderItemList[indexChanging]["ActualProductTaxName"];
     actualProductTaxID.value = orderItemList[indexChanging]["ActualProductTaxID"];
+    priceListID.value = orderItemList[indexChanging]["PriceListID"];
     priceListID.value = orderItemList[indexChanging]["PriceListID"];
 
     RxDouble grossAmount = 0.0.obs;
@@ -642,7 +674,7 @@ class OrderController extends GetxController {
       taxType.value = "VAT";
       taxID.value = 32;
 
-      if (isInclusive == true) {
+      if (isInclusive.value == true) {
         inclusivePer = inclusivePer + vatPer.value;
       } else {
         exclusivePer = exclusivePer + vatPer.value;
@@ -652,18 +684,19 @@ class OrderController extends GetxController {
       taxType.value = "GST Intra-state B2C";
       taxID.value = 22;
 
-      if (isInclusive == true) {
+      if (isInclusive.value == true) {
         inclusivePer = inclusivePer + gstPer.value;
       } else {
         exclusivePer = exclusivePer + gstPer.value;
       }
     }
 
-    unit = double.parse(unitPriceAmountWR.value);
+    unit = double.parse(unitPriceAmount.value);
 
     discount = 0.0;
     percentageDiscount.value = 0.0;
     discountAmount.value = 0.0;
+
 
     exciseTaxAmount.value = 0.0;
     grossAmount.value = quantity.value * unit;
@@ -698,7 +731,7 @@ class OrderController extends GetxController {
     iGSTPer.value = gstPer.value;
     sGSTPer.value = gstPer.value / 2;
 
-    if (taxType == "Export") {
+    if (taxType.value == "Export") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       iGSTAmount.value = 0.0;
@@ -710,21 +743,21 @@ class OrderController extends GetxController {
       iGSTAmount.value = 0.0;
       vatAmount.value = 0.0;
       totalTax.value = 0.0;
-    } else if (taxType == "GST Inter-state B2C") {
+    } else if (taxType.value  == "GST Inter-state B2C") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       totalTax.value = iGSTAmount.value;
-    } else if (taxType == "GST Inter-state B2B") {
+    } else if (taxType.value  == "GST Inter-state B2B") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       totalTax.value = iGSTAmount.value;
-    } else if (taxType == "GST Intra-state B2C") {
+    } else if (taxType.value  == "GST Intra-state B2C") {
       iGSTAmount.value = 0.0;
       totalTax.value = cGSTAmount.value + cGSTAmount.value;
-    } else if (taxType == "GST Intra-state B2B") {
+    } else if (taxType.value  == "GST Intra-state B2B") {
       iGSTAmount.value = 0.0;
       totalTax.value = cGSTAmount.value + sGSTAmount.value;
-    } else if (taxType == "None") {
+    } else if (taxType.value  == "None") {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       iGSTAmount.value = 0.0;
@@ -756,11 +789,11 @@ class OrderController extends GetxController {
       "SalesDetailsID": 1,
       "unq_id": unique_id.value,
       "FreeQty": "0",
-      "UnitPrice": unitPriceAmountWR.value,
+      "UnitPrice": unitPriceAmount.value,
       "RateWithTax": "${rateWithTax.value}",
       "CostPerPrice": costPerPrice.value,
       "PriceListID": priceListID.value,
-      "DiscountPerc": discountPer.value,
+      "DiscountPerc": '0',
       "DiscountAmount": "${discountAmount.value}",
       "GrossAmount": "${grossAmount.value}",
       "VATPerc": "${vatPer.value}",
@@ -782,7 +815,7 @@ class OrderController extends GetxController {
       "AddlDiscAmt": "0",
       "gstPer": "${gstPer.value}",
       "is_inclusive": isInclusive.value,
-      "unitPriceRounded": roundStringWith(unitPriceAmountWR.value),
+      "unitPriceRounded": roundStringWith(unitPriceAmount.value),
       "quantityRounded": roundStringWith(quantity.value.toString()),
       "netAmountRounded": roundStringWith(netAmount.value.toString()),
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
@@ -797,8 +830,20 @@ class OrderController extends GetxController {
       "IsExciseProduct": isExciseProduct.value,
       "ExciseTaxAfter": exciseTaxAfter.value,
       "ExciseTax": exciseTaxAmount.value.toString(),
+      "TAX1Perc": "0",
+      "TAX1Amount": "0",
+      "TAX2Perc": "0",
+      "TAX2Amount": "0",
+      "TAX3Perc": "0",
+      "TAX3Amount": "0",
+      "KFCAmount":"0",
+      "BatchCode": "0",
+      "SerialNos": [],
+
     };
 
+
+    log_data(data);
     orderItemList[indexChanging] = data;
     update();
     totalAmount();
@@ -864,14 +909,22 @@ class OrderController extends GetxController {
   }
 
   deleteOrderItem({required int index}) {
-    var dictionary = {
-      "unq_id": orderItemList[index]["unq_id"],
-    };
-    deletedList.add(dictionary);
-    orderItemList.removeAt(index);
-    print(orderItemList[index]);
-    totalAmount();
-    update();
+    try{
+
+      var dictionary = {
+        "unq_id": orderItemList[index]["unq_id"],
+      };
+      if(orderItemList[index]["detailID"] ==0){
+        deletedList.add(dictionary);
+      }
+      orderItemList.removeAt(index);
+      totalAmount();
+      update();
+    }
+    catch(e){
+      print("---------${e.toString()}");
+    }
+
   }
 
   @override
@@ -883,6 +936,7 @@ class OrderController extends GetxController {
   var flavourList = <FlavourListModelClass>[].obs;
   var groupList = <GroupListModelClass>[].obs;
   var productList = <ProductListModel>[].obs;
+  var searchProductList = <ProductListModel>[].obs;
 
   Future<void> getAllFlavours() async {
     try {
@@ -945,28 +999,20 @@ class OrderController extends GetxController {
     printAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
     currency.value = prefs.getString('CurrencySymbol') ?? "";
     isGst.value = prefs.getBool("check_GST") ?? false;
+    isVat.value = prefs.getBool("checkVat") ?? false;
     ledgerID.value = prefs.getInt("Cash_Account") ?? 1;
     customerNameController.text = "walk in customer";
     phoneNumberController.text = "";
     isComplimentary.value = prefs.getBool("complimentary_bill") ?? false;
     quantityIncrement.value = prefs.getBool("qtyIncrement") ?? false;
 
-    // networkConnection = true;
-    if (sectionType == "Create") {
-      // mainPageIndex = 7;
-    } else if (sectionType == "Edit") {
+    if (sectionType == "Edit") {
       await getOrderDetails(uID: uUID);
-    } else {
-      /// payment section
-      // mainPageIndex = 6;
-      // listItemDetails(widget.UUID);
     }
-    if (sectionType != "Payment") {
-      await getCategoryListDetail();
-    }
+     await getCategoryListDetail(sectionType);
   }
 
-  Future<void> getCategoryListDetail() async {
+  Future<void> getCategoryListDetail(sectionType) async {
     try {
       groupIsLoading.value = true;
       String baseUrl = BaseUrl.baseUrl;
@@ -982,7 +1028,7 @@ class OrderController extends GetxController {
 
       final String url = '$baseUrl/posholds/pos/product-group/list/';
       print(url);
-      Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID};
+      Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID,"is_used_group":true};
       print(data);
       //encode Map to JSON
       var body = json.encode(data);
@@ -1003,10 +1049,14 @@ class OrderController extends GetxController {
         for (Map user in responseJson) {
           groupList.add(GroupListModelClass.fromJson(user));
         }
-        tokenNumber.value = n["TokenNumber"] ?? "";
+
+        if(sectionType != "Edit"){
+          tokenNumber.value = n["TokenNumber"] ?? "";
+        }
+
         groupIsLoading.value = false;
         if (groupList.isNotEmpty) {
-          getProductListDetail(groupList[2].groupID);
+          getProductListDetail(groupList[0].groupID);
         }
       } else if (status == 6001) {
         // Show error message
@@ -1072,6 +1122,7 @@ class OrderController extends GetxController {
 
         productIsLoading.value = false;
       } else if (status == 6001) {
+        productList.clear();
         // Show error message
         var msg = n["error"] ?? "";
         productIsLoading.value = false;
@@ -1362,7 +1413,7 @@ class OrderController extends GetxController {
         url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
       }
 
-      print("--------------------------url   $url");
+      print("--------------------------orderTime    --------------------------orderTime   --------------------------   $orderTime");
       Map data = {
         "Table": tableID,
         "EmployeeID": employeeID,
@@ -1460,18 +1511,19 @@ class OrderController extends GetxController {
           } else {}
         });
 
-        // if(isPayment){
-        //
-        //   Get.to(PaymentPage(uID:n["OrderID"],));
-        //  // Navigator.popUntil(context, (route) => route.isFirst);
-        // }
-        // else{
-        //
-        // }
+
       } else if (status == 6001) {
+        stop();
         var errorMessage = n["message"]??"";
         popAlert(head: "Waring", message: errorMessage, position: SnackPosition.TOP);
-      } else if (status == 6003) {
+      }
+      else if (status == 6002) {
+        stop();
+        var errorMessage = n["error"]??"";
+        popAlert(head: "Waring", message: errorMessage, position: SnackPosition.TOP);
+      }
+
+      else if (status == 6003) {
         stop();
         popAlert(head: "Waring", message: "Change token number and retry please", position: SnackPosition.TOP);
 
@@ -1496,6 +1548,74 @@ class OrderController extends GetxController {
 
   ///deliveryman
   var isCustomerLoading = true.obs;
+  var dropdownvalue = 'Name'.obs;
+
+  /// search item
+
+  var items = [
+    'Code',
+    'Name',
+    'Description',
+  ].obs;
+
+
+  var isLoading = false.obs;
+  void searchItems({required String productName,required bool isCode,required bool isDescription}) async {
+    isLoading.value=true;
+    String baseUrl = BaseUrl.baseUrl;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var companyID = prefs.getString('companyID') ;
+    var userID = prefs.getInt('user_id') ?? 0;
+    var branchID = prefs.getInt('branchID') ?? 1;
+
+    var accessToken = prefs.getString('access') ?? '';
+    var url = '$baseUrl/posholds/products-search-pos/';
+    var payload = {
+      "IsCode": isCode,
+      "IsDescription": isDescription,
+      "BranchID": branchID,
+      "CompanyID":companyID,
+      "CreatedUserID": userID,
+      "PriceRounding": BaseUrl.priceRounding,
+      "product_name": productName,
+      "length":  productName.length,
+      "type": ""
+    };
+
+    try {
+      print("payload   $payload");
+      var response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(payload),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Add token to headers
+        },
+      );
+
+      if (response.statusCode == 200) {
+        isLoading.value=false;
+        print("3d");
+        var data = jsonDecode(response.body);
+        Map n = json.decode(utf8.decode(response.bodyBytes));
+        var responseJson = n["data"];
+        searchProductList.clear();
+        for (Map user in responseJson) {
+          searchProductList.add(ProductListModel.fromJson(user));
+        }
+
+
+      //  productList.assignAll(data['data']);
+        update();
+        print("7");
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    } catch (e) {
+      isLoading.value=false;
+      print('Exception occurred: $e');
+    }
+  }
 
   var users = <DeliveryManModel>[].obs;
 /// list employee
@@ -1620,4 +1740,5 @@ class OrderController extends GetxController {
       throw Exception('Failed to load users');
     }
   }
+
 }

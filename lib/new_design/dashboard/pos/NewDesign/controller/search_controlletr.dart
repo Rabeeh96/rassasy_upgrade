@@ -19,7 +19,7 @@ class SearchOrderController extends GetxController {
 
   var products = [].obs;
   var isLoading = false.obs;
-  void fetchProducts({required String productName,required bool isCode,required bool isDescription}) async {
+  void searchItems({required String productName,required bool isCode,required bool isDescription}) async {
     isLoading.value=true;
     String baseUrl = BaseUrl.baseUrl;
     SharedPreferences prefs = await SharedPreferences.getInstance();

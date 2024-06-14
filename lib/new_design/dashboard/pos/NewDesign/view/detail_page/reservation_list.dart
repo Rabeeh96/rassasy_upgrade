@@ -5,32 +5,528 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/reservation_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+import 'select_table.dart';
 
 class ReservationPage extends StatefulWidget {
+  ReservationPage({super.key});
+
   @override
   State<ReservationPage> createState() => _ReservationPageState();
 }
 
 class _ReservationPageState extends State<ReservationPage> {
-  final List<String> buttonLabels = ['Button 1', 'Button 2', 'Button 3', 'Button 4'];
-  final List<Color> buttonColors = [
-    Colors.blue,
-    Colors.green,
-    Colors.orange,
-    Colors.purple,
-  ];
   final ReservationController reservationController = Get.put(ReservationController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     reservationController.reservations.clear();
     reservationController.update();
-    reservationController.fetchReservations(reservationController.apiDateFormat.format(reservationController.fromDateNotifier.value),
-        reservationController.apiDateFormat.format(reservationController.toDateNotifier.value));
+    reservationController.fetchReservations(reservationController.apiDateFormat.format(reservationController.fromDateNotifier.value), reservationController.apiDateFormat.format(reservationController.toDateNotifier.value));
+    reservationDate = ValueNotifier(DateTime.now());
+    timeNotifierFromTime = ValueNotifier(DateTime.now());
+    timeNotifierToTime = ValueNotifier(DateTime.now());
+
+  }
+  DateTime dateTime = DateTime.now();
+  DateFormat dateFormat = DateFormat("dd/MM/yyy");
+  DateFormat apiDateFormat = DateFormat("y-M-d");
+  DateFormat timeFormat = DateFormat.jm();
+  DateFormat timeFormatApiFormat = DateFormat('HH:mm');
+  late ValueNotifier<DateTime> reservationDate;
+  late ValueNotifier<DateTime> timeNotifierFromTime;
+  late ValueNotifier<DateTime> timeNotifierToTime;
+  TextEditingController tableNameController = TextEditingController();
+  TextEditingController reservationCustomerNameController = TextEditingController();
+
+  var tableID = "";
+  void showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey,
+          title: const Text("Reserve For Later"),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                _buildTextField(
+                  context,
+                  "Select Table",
+                  tableNameController,
+                  readOnly: true,
+                  onTap: () async {
+                    var result = await Get.to(SelectTableReservation());
+                    if (result != null) {
+                      tableID = result[1];
+                      tableNameController.text = result[0];
+
+                    }
+                  },
+                ),
+                const SizedBox(height: 8),
+                _buildTextField(
+                  context,
+                  "Customer name",
+                  reservationCustomerNameController,
+                ),
+                const SizedBox(height: 8),
+                _buildDateSelector(context, reservationDate),
+                const SizedBox(height: 8),
+                _buildTimeSelector(context, "From", timeNotifierFromTime),
+                const SizedBox(height: 8),
+                _buildTimeSelector(context, "To", timeNotifierToTime),
+                const SizedBox(height: 8),
+                _buildButton(
+                  context,
+                  "Reserve",
+                  Colors.white,
+                  Color(0xffF25F29),
+                      () {
+                    if (reservationCustomerNameController.text.isEmpty) {
+                      popAlertWithColor(
+                        head: "Alert",
+                        message: 'Please enter customer name',
+                        position: SnackPosition.TOP,
+                        backGroundColor: Colors.red,
+                        forGroundColor: Colors.white,
+                      );
+                    } else {
+                      reservationController.createReservation(
+                        tableID,
+                        reservationCustomerNameController.text,
+                        apiDateFormat.format(reservationDate.value),
+                        timeFormatApiFormat.format(timeNotifierFromTime.value),
+                        timeFormatApiFormat.format(timeNotifierToTime.value),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: 8),
+                _buildButton(
+                  context,
+                  'Cancel',
+                  Colors.black,
+                  Colors.transparent,
+                      () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ).then((value) {});
   }
 
+  Widget _buildTextField(
+      BuildContext context,
+      String hintText,
+      TextEditingController controller, {
+        bool readOnly = false,
+        VoidCallback? onTap,
+      }) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 20,
+      child: TextField(
+        style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
+        controller: controller,
+        readOnly: readOnly,
+        onTap: onTap,
+        decoration: InputDecoration(
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffC9C9C9)),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffC9C9C9)),
+          ),
+          disabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffC9C9C9)),
+          ),
+          contentPadding: const EdgeInsets.only(
+            left: 20,
+            top: 10,
+            right: 10,
+            bottom: 10,
+          ),
+          filled: true,
+          hintStyle: customisedStyle(
+            context,
+            const Color(0xff858585),
+            FontWeight.w400,
+            14.0,
+          ),
+          hintText: hintText,
+          fillColor: const Color(0xffffffff),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateSelector(
+      BuildContext context, ValueNotifier<DateTime> reservationDate) {
+    return ValueListenableBuilder(
+      valueListenable: reservationDate,
+      builder: (BuildContext ctx, DateTime dateNewValue, _) {
+        return GestureDetector(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            width: MediaQuery.of(context).size.width / 3,
+            height: MediaQuery.of(context).size.height / 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "  Date",
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(
+                    DateFormat.yMd().format(dateNewValue),
+                    style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          onTap: () {
+            showDatePickerFunction(context, reservationDate);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildTimeSelector(
+      BuildContext context, String label, ValueNotifier<DateTime> timeNotifier) {
+    return ValueListenableBuilder(
+      valueListenable: timeNotifier,
+      builder: (BuildContext ctx, DateTime dateNewValue, _) {
+        return GestureDetector(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            width: MediaQuery.of(context).size.width / 3,
+            height: MediaQuery.of(context).size.height / 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "  $label",
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(
+                    DateFormat.jm().format(dateNewValue),
+                    style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          onTap: () async {
+            TimeOfDay? pickedTime = await showTimePicker(
+              initialTime: TimeOfDay.now(),
+              context: context,
+            );
+            if (pickedTime != null) {
+              timeNotifier.value = DateFormat.jm().parse(pickedTime.format(context).toString());
+            } else {
+              print("Time is not selected");
+            }
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildButton(
+      BuildContext context,
+      String text,
+      Color textColor,
+      Color buttonColor,
+      VoidCallback onPressed,
+      ) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 18,
+      decoration: BoxDecoration(
+        color: buttonColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: TextStyle(color: textColor),
+        ),
+      ),
+    );
+  }
+  // showPopup(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //           backgroundColor: Colors.grey,
+  //           title: const Text("Reserve For Later"),
+  //           content: SingleChildScrollView(
+  //             child: ListBody(
+  //               children: [
+  //                 Container(
+  //                 //  width: MediaQuery.of(context).size.width / 4,
+  //                   height: MediaQuery.of(context).size.height / 20,
+  //                   child: TextField(
+  //                     style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
+  //                     controller: tableNameController,
+  //                     //  focusNode: nameFcNode,
+  //                    readOnly: true,
+  //                     onTap: ()async{
+  //                       var result =  await Get.to(SelectTableReservation());
+  //                       if(result!=null){
+  //                         tableID = result[1];
+  //                         tableNameController.text = result[0];
+  //                         showPopup(context);
+  //                       }
+  //                     },
+  //                     decoration: InputDecoration(
+  //                         enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+  //                         focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+  //                         disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+  //                         contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+  //                         filled: true,
+  //                         suffixStyle: const TextStyle(
+  //                           color: Colors.red,
+  //                         ),
+  //                         hintStyle: customisedStyle(context, const Color(0xff858585), FontWeight.w400, 14.0),
+  //                         hintText: "Select Table",
+  //                         fillColor: const Color(0xffffffff)),
+  //                   ),
+  //                 ),
+  //                 const SizedBox(
+  //                   height: 8,
+  //                 ),
+  //
+  //                 Container(
+  //                //   width: MediaQuery.of(context).size.width / 4,
+  //                   height: MediaQuery.of(context).size.height / 20,
+  //                   child: TextField(
+  //                     style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
+  //                     controller: reservationCustomerNameController,
+  //                     //  focusNode: nameFcNode,
+  //                     keyboardType: TextInputType.text,
+  //                     textCapitalization: TextCapitalization.words,
+  //                     decoration: InputDecoration(
+  //                         enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+  //                         focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+  //                         disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffC9C9C9))),
+  //                         contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+  //                         filled: true,
+  //                         suffixStyle: const TextStyle(
+  //                           color: Colors.red,
+  //                         ),
+  //                         hintStyle: customisedStyle(context, const Color(0xff858585), FontWeight.w400, 14.0),
+  //                         hintText: "Customer name",
+  //                         fillColor: const Color(0xffffffff)),
+  //                   ),
+  //                 ),
+  //                 const SizedBox(
+  //                   height: 8,
+  //                 ),
+  //
+  //                 ValueListenableBuilder(
+  //                     valueListenable: reservationDate,
+  //                     builder: (BuildContext ctx, DateTime dateNewValue, _) {
+  //                       return GestureDetector(
+  //                         child: Container(
+  //                           decoration: BoxDecoration(
+  //                             color: Colors.white,
+  //                             border: Border.all(
+  //                               color: Colors.white,
+  //                               width: 2,
+  //                             ),
+  //                           ),
+  //                           width: MediaQuery.of(context).size.width / 3,
+  //                           height: MediaQuery.of(context).size.height / 20,
+  //                           child: Row(
+  //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                             children: [
+  //                               Text(
+  //                                 "  Date",
+  //                                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+  //                               ),
+  //                               Padding(
+  //                                 padding: const EdgeInsets.only(right: 8.0),
+  //                                 child: Text(
+  //                                   dateFormat.format(dateNewValue),
+  //                                   style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
+  //                                 ),
+  //                               )
+  //                             ],
+  //                           ),
+  //                         ),
+  //                         onTap: () {
+  //                           showDatePickerFunction(context, reservationDate);
+  //                         },
+  //                       );
+  //                     }),
+  //                 // timeNotifierFromDate
+  //                 // timeNotifierToDate
+  //                 const SizedBox(
+  //                   height: 8,
+  //                 ),
+  //                 ValueListenableBuilder(
+  //                     valueListenable: timeNotifierFromTime,
+  //                     builder: (BuildContext ctx, DateTime dateNewValue, _) {
+  //                       return GestureDetector(
+  //                         child: Container(
+  //                           decoration: BoxDecoration(
+  //                             color: Colors.white,
+  //                             border: Border.all(
+  //                               color: Colors.white,
+  //                               width: 2,
+  //                             ),
+  //                           ),
+  //                           width: MediaQuery.of(context).size.width / 3,
+  //                           height: MediaQuery.of(context).size.height / 20,
+  //                           child: Row(
+  //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                             children: [
+  //                               Text(
+  //                                 "  From",
+  //                                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+  //                               ),
+  //                               Padding(
+  //                                 padding: const EdgeInsets.only(right: 8.0),
+  //                                 child: Text(
+  //                                   timeFormat.format(dateNewValue),
+  //                                   style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
+  //                                 ),
+  //                               )
+  //                             ],
+  //                           ),
+  //                         ),
+  //                         onTap: () async {
+  //                           TimeOfDay? pickedTime = await showTimePicker(
+  //                             initialTime: TimeOfDay.now(),
+  //                             context: context,
+  //                           );
+  //                           if (pickedTime != null) {
+  //                             timeNotifierFromTime.value = DateFormat.jm().parse(pickedTime.format(context).toString());
+  //                           } else {
+  //                             print("Time is not selected");
+  //                           }
+  //                         },
+  //                       );
+  //                     }),
+  //                 const SizedBox(
+  //                   height: 8,
+  //                 ),
+  //
+  //                 ValueListenableBuilder(
+  //                     valueListenable: timeNotifierToTime,
+  //                     builder: (BuildContext ctx, DateTime dateNewValue, _) {
+  //                       return GestureDetector(
+  //                         child: Container(
+  //                           decoration: BoxDecoration(
+  //                             color: Colors.white,
+  //                             border: Border.all(
+  //                               color: Colors.white,
+  //                               width: 2,
+  //                             ),
+  //                           ),
+  //                           width: MediaQuery.of(context).size.width / 3,
+  //                           height: MediaQuery.of(context).size.height / 20,
+  //                           child: Row(
+  //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                             children: [
+  //                               Text(
+  //                                 "  To",
+  //                                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+  //                               ),
+  //                               Padding(
+  //                                 padding: const EdgeInsets.only(right: 8.0),
+  //                                 child: Text(
+  //                                   timeFormat.format(dateNewValue),
+  //                                   style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
+  //                                 ),
+  //                               )
+  //                             ],
+  //                           ),
+  //                         ),
+  //                         onTap: () async {
+  //                           TimeOfDay? pickedTime = await showTimePicker(
+  //                             initialTime: TimeOfDay.now(),
+  //                             context: context,
+  //                           );
+  //                           if (pickedTime != null) {
+  //                             timeNotifierToTime.value = DateFormat.jm().parse(pickedTime.format(context).toString());
+  //                           } else {
+  //                             print("Time is not selected");
+  //                           }
+  //                         },
+  //                       );
+  //                     }),
+  //
+  //                 const SizedBox(
+  //                   height: 8,
+  //                 ),
+  //                 Container(
+  //                   height: MediaQuery.of(context).size.height / 18,
+  //                   decoration: BoxDecoration(color: const Color(0xffF25F29), borderRadius: BorderRadius.circular(4)),
+  //                   child: TextButton(
+  //                     onPressed: () {
+  //                       if (reservationCustomerNameController.text == "") {
+  //                         popAlertWithColor(head: "Alert", message:  'Please enter customer name',  position: SnackPosition.TOP,backGroundColor: Colors.red,forGroundColor: Colors.white);
+  //
+  //                       } else {
+  //                         reservationController.createReservation(tableID,reservationCustomerNameController.text,apiDateFormat.format(reservationDate.value),
+  //                           timeFormatApiFormat.format(timeNotifierFromTime.value),
+  //                           timeFormatApiFormat.format(timeNotifierToTime.value),
+  //                         );
+  //
+  //                      //   reserveTable(reservationCustomerNameController.text, tableID);
+  //                       }
+  //                     },
+  //                     child: const Text(
+  //                       "Reserve",
+  //                       style: TextStyle(color: Colors.white),
+  //                     ),
+  //                   ),
+  //                 ),
+  //
+  //                 Container(
+  //                   height: MediaQuery.of(context).size.height / 18,
+  //                   decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(4)),
+  //                   child: TextButton(
+  //                     onPressed: () {
+  //                       Navigator.pop(context);
+  //                     },
+  //                     child: Text(
+  //                       'cancel'.tr,
+  //                       style: const TextStyle(color: Colors.black),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 // Other text fields and buttons
+  //               ],
+  //             ),
+  //           ));
+  //     },
+  //   ).then((value) {
+  //
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +551,13 @@ class _ReservationPageState extends State<ReservationPage> {
             ),
           ],
         ),
+        actions: [
+          // ElevatedButton(
+          //     onPressed: () async{
+          //       showPopup(context);
+          //     },
+          //     child: Text("Reservation"))
+        ],
       ),
       body: Column(children: [
         Padding(
@@ -207,6 +710,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                             ],
                                           ),
                                           Column(
+                                            crossAxisAlignment:CrossAxisAlignment.end ,
                                             children: [
                                               Text(
                                                 reservationController.reservations[index].date!,

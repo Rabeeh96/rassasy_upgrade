@@ -7,7 +7,7 @@ import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/add_pri
 
 import 'general_setting/general_setting.dart';
 import 'online_platforms/list_online_platforms.dart';
-import 'printer_setting/printer_setting.dart';
+import 'printer_setting/printer_detailed_setting.dart';
 
 class SettingsMobilePage extends StatefulWidget {
   @override
@@ -53,7 +53,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -90,7 +90,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -127,7 +127,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -162,7 +162,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -199,7 +199,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, right: 8, top: 10, bottom: 10),
+                    left: 8.0, right: 8, top: 15, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

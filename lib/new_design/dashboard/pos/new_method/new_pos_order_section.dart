@@ -4330,13 +4330,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     unit = double.parse(unitPriceAmountWR);
     if (inclusivePer == 0.0) {
       unitPriceAmountWR = (unit).toString();
-
       var taxAmount = (unit * exclusivePer) / 100;
       inclusiveUnitPriceAmountWR = (unit + taxAmount).toString();
       unit = unit;
     } else {
       var taxAmount = (unit * inclusivePer) / (100 + inclusivePer);
-      print(taxAmount);
       unit = unit - taxAmount;
       inclusiveUnitPriceAmountWR = (unit + taxAmount).toString();
       unitPriceAmountWR = (unit).toString();
@@ -5576,7 +5574,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               PrintDataDetails.type = "SO";
               PrintDataDetails.id = id;
               printKOT(id, false, cancelPrint, true);
-            } else {}
+            }
+            else {
+
+            }
           });
         } else if (status == 6001) {
           stop();
@@ -5722,12 +5723,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Container(
-                          //    width: MediaQuery.of(context).size.width / 5,
+                          //  width: MediaQuery.of(context).size.width / 5,
                           height: MediaQuery.of(context).size.height / 18,
                           child: const Text(
                             'Loyalty Customer',
                             style: TextStyle(fontSize: 20),
-                          )),
+                          )
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -5747,7 +5749,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                               onChanged: (text) {
                                 setState(() {
                                   charLength = text.length;
-
                                   _searchLoyaltyCustomer(text);
                                 });
                               },

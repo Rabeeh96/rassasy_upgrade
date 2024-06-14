@@ -8359,11 +8359,14 @@ class _ReportPageState extends State<ReportPageNew> {
         //  var ret = await printHelperIP.printDetails();
         var ret=2;
         if (ret == 2) {
-          printHelperIP.print_report(printerIp: defaultIp,reportType: reportType,ctx: context,details: details,date: heading,
-              totalBank: bankSum,
-              totalCash: cashSum,
-              totalCredit: creditSum,
-              totalGrand: grandTotal
+          printHelperIP.print_report(printerIp: defaultIp,reportTypeR: reportType,ctx: context,detailsR: details,dateR: heading,
+              totalBankR: bankSum,
+              totalCashR: cashSum,
+              totalCreditR: creditSum,
+              totalGrandR: grandTotal,
+                fromTime:[],
+                userName:[],
+                effectiveSale:[],  orderDetails:[],  saleByType:[],  salesOrder:[],  totalRevenue:[],
 
           );
         } else {

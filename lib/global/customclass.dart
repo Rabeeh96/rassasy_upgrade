@@ -47,6 +47,29 @@ popAlert({required String head,required String message,required SnackPosition po
   );
 }
 
+popAlertWithColor({required String head,required String message,required SnackPosition position,required Color backGroundColor,
+  required Color forGroundColor}){
+  Get.snackbar(
+    head,
+    message,
+      backgroundColor: backGroundColor,
+      colorText: forGroundColor,
+    snackPosition: position,
+      animationDuration:const Duration(seconds: 2)
+  );
+}
+
+
+updateAlert(){
+  Get.snackbar(
+      "Alert",
+      "We're thrilled to share a sneak peek into our upcoming update! In the next release, get ready for a game-changing feature",
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+     animationDuration:const Duration(seconds: 2)
+  );
+}
 checkNetwork() async {
   var connectivityResult = await (Connectivity().checkConnectivity());
   if (connectivityResult == ConnectivityResult.none) {

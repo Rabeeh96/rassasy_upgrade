@@ -108,6 +108,7 @@ class TextFieldDecoration {
         fillColor: const Color(0xffffffff));
 
   }
+
   static InputDecoration defaultTextField(
       {String labelTextStr = "", String hintTextStr = ""}) {
     return InputDecoration(
@@ -322,5 +323,44 @@ class TextFieldDecoration {
         hintStyle: const TextStyle(color: Color(0xff000000),fontSize: 14),
         hintText: hintTextStr,
         fillColor: const Color(0xffffffff));
+  }
+
+  static InputDecoration mobileTextfieldMandatory(
+      {String labelTextStr = "", String hintTextStr = ""}) {
+    return InputDecoration(
+
+        enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xffe7e7e7))),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffe7e7e7))),
+        disabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xffe7e7e7))),
+        contentPadding:const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+        filled: true,
+
+
+        hintStyle: const TextStyle(color: Color(0xff878787),fontSize: 14),
+        hintText: hintTextStr,
+        fillColor: const Color(0xffFDFDFD));
+
+  }
+  static InputDecoration mobileTextfieldMandatoryIcon(
+      {String labelTextStr = "", String hintTextStr = ""}) {
+    return InputDecoration(
+suffixIcon: Icon(Icons.keyboard_arrow_down,color: Colors.black,),
+        enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xffe7e7e7))),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffe7e7e7))),
+        disabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xffe7e7e7))),
+        contentPadding:const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+        filled: true,
+
+
+        hintStyle: const TextStyle(color: Color(0xff878787),fontSize: 14),
+        hintText: hintTextStr,
+        fillColor: const Color(0xffFDFDFD));
+
   }
 }

@@ -9,6 +9,7 @@ import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/car_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/payment/payment_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/pos_page.dart';
+import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'global/global.dart';
@@ -71,7 +72,7 @@ bool isTabletDevice() {
   print("screenWidth  is tablet device  $screenWidth");
 
   /// You may need to adjust this threshold based on your requirements
-  return screenWidth > 600;
+  return screenWidth > 850;
 }
 
 class MyApp extends StatelessWidget {
@@ -143,6 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //test
   void navigateUser() async {
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isTablet = screenWidth > 850;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getBool('isLoggedIn') ?? false;
     print(status);
@@ -164,16 +167,22 @@ class _MyHomePageState extends State<MyHomePage> {
           prefs.setBool('companySelected', false);
           await dialogBox(context,
               "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => OrganizationList()));
+
+          if (isTablet) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+          }
+          else {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+          }
+
+
+
+
+
           // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         } else {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => EnterPinNumber()));
+
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
 
           /// pos user commented
 
@@ -192,10 +201,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // }
         }
       } else {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => OrganizationList()));
+
+        if (isTablet) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+        }
+        else {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+        }
+
+
+
+        // Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (BuildContext context) => OrganizationList()));
       }
     } else {
       Navigator.pushReplacement(context,

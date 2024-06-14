@@ -1671,11 +1671,11 @@ class _ProductCreateState extends State<CreateProductNew> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
+
+        String baseUrl = BaseUrl.baseUrl;
         isGst = prefs.getBool("check_GST") ?? false;
         createPermission = prefs.getBool("Productsave") ?? true;
-        String baseUrl = BaseUrl.baseUrl;
-       // EnableExciseTax
-          isExcise = prefs.getBool("EnableExciseTax") ?? false;
+        isExcise = prefs.getBool("EnableExciseTax") ?? false;
 
         final url = '$baseUrl/posholds/pos-product-list-paginated/';
 
@@ -1850,7 +1850,6 @@ class _ProductCreateState extends State<CreateProductNew> {
         var exTax_ID = productExciseTaxID.toString();
 
 
-        print("   tax id  tax id  tax id  tax id  tax id  tax id $tax_ID");
 
         var price = "0.00";
 

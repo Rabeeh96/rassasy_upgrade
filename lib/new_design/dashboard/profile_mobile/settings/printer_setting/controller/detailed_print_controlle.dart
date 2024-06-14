@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -6,16 +7,21 @@ import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PrintSettingController extends GetxController {
+class DetailedPrintSettingController extends GetxController {
   TextEditingController salesInvoiceController = TextEditingController();
   TextEditingController salesOrderController = TextEditingController();
   TextEditingController selectCapabilitiesController = TextEditingController();
   TextEditingController selectCodepageController = TextEditingController();
   TextEditingController termsAndConditionController = TextEditingController();
   var isLoading = false.obs;
-
+  ValueNotifier<bool> isKOTPrint = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isPrintAfterPayment = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isPrintAfterOrder = ValueNotifier<bool>(false);
   List<PrinterListModel> printDetailList = [];
-
+  void switchStatus(key, value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
   Future<Null> listAllPrinter() async {
     try {
       isLoading.value = true;
@@ -120,6 +126,7 @@ class PrintSettingController extends GetxController {
     "",
 
   ];
+  ValueNotifier<bool> isEnableWifiPrinter = ValueNotifier<bool>(false);
   TextEditingController code_page_controller = TextEditingController();
   ValueNotifier<bool> isHighlightedToken = ValueNotifier<bool>(false);
   ValueNotifier<bool> isPaymentDetail = ValueNotifier<bool>(false);
@@ -127,8 +134,12 @@ class PrintSettingController extends GetxController {
   String printType = "Wifi";
   bool  print_type_value = true;
   loadData() async {
+    print("--------------------------------------4");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    print("--------------------------------------4");
+    isKOTPrint.value = prefs.getBool("KOT") ?? false;
+    isPrintAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
+    isPrintAfterOrder.value = prefs.getBool("print_after_order") ?? false;
     isHighlightedToken.value = prefs.getBool("hilightTokenNumber") ?? false;
     isPaymentDetail.value = prefs.getBool("paymentDetailsInPrint") ?? false;
     isCompanyDetail.value = prefs.getBool("headerAlignment") ?? false;
@@ -137,7 +148,25 @@ class PrintSettingController extends GetxController {
     salesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
     selectCapabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
     selectCodepageController.text = prefs.getString('default_code_page') ?? "CP864";
+    var template = prefs.getString("template") ?? "template3";
+    var printType =  prefs.getString('PrintType') ?? "Wifi";
+    print("--------------------------------------4");
+    if(template =="template3"){
+      setTemplate(3);
+    }
+    else{
+      setTemplate(4);
+    }
+    if(printType =="Wifi"){
+      isEnableWifiPrinter.value = true;
+    }
+    else{
+      isEnableWifiPrinter.value = false;
+    }
 
+    print("printType  $printType");
+    print("isEnableWifiPrinter  ${isEnableWifiPrinter.value}");
+    update();
   }
 ///print template
   RxInt selectedIndex = 0.obs;
@@ -151,7 +180,7 @@ class PrintSettingController extends GetxController {
   }
 
   setTemplate(id) async {
-    print("template$id");
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("template", "template$id");
   }
