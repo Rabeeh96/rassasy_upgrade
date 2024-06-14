@@ -168,6 +168,11 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
           ),
           backgroundColor: Colors.grey[300],
           actions: <Widget>[
+
+            ElevatedButton(onPressed: (){
+              testPrintAllCodePage(controllerName.text);
+            }, child: Text("Demo")),
+
             ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -294,14 +299,10 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
                                   onTap: () async {
 
 
-
-
                                     if (withCodePage) {
                                       printReq(controllerName.text,printerModels[index]);
-                                     // testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
                                     } else {
                                       withoutCapabilitiesPrintReq(controllerName.text,printerModels[index]);
-                                     // testPrint2(ctx: context, capability: printerModels[index], codePage: '');
                                     }
 
                                   },
@@ -373,15 +374,73 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
 
     popAlert(head: "Waring", message: msg ?? "", position: SnackPosition.TOP);
   }
+
+
+  testPrintAllCodePage(driverName) async {
+
+    List<int> bytes = [];
+
+
+    var result = await CapabilityProfile.getAvailableProfiles();
+    for(var i = 0;i<3 ;i++){
+
+      var profile = await CapabilityProfile.load(name: result[i]["key"]);
+      final generator = Generator(PaperSize.mm80, profile);
+      final supportedCodePages = profile.codePages;
+
+      var capability = result[i]["key"];
+        for(var ind = 0;ind<supportedCodePages.length ;ind++){
+          bytes += generator.setGlobalCodeTable(supportedCodePages[ind].name);
+          var testData ="${supportedCodePages[ind].name} السلام $capability ";
+          Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+          bytes += generator.textEncoded(salam);
+          final res = await usb_esc_printer_windows.sendPrintRequest(bytes, driverName);
+          String msg = "";
+          if (res == "success") {
+            msg = "Printed Successfully";
+          } else {
+            msg = "Failed to generate a print please make sure to use the correct printer name";
+          }
+        //  popAlert(head: "Waring", message: msg ?? "", position: SnackPosition.TOP);
+
+        }
+
+
+    }
+
+
+    // PaperSize.mm80 or PaperSize.mm58
+    // final generator = Generator(PaperSize.mm80, profile);
+    // bytes += generator.setGlobalCodeTable(code_page_controller.text);
+    //
+    //
+    // Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكم صباح الخير عزيزتي جميعاً'));
+    // bytes += generator.textEncoded(salam);
+    //
+    // bytes += generator.text("Test page data");
+    // bytes += generator.text("Test page data");
+    // bytes += generator.text("with code page ${code_page_controller.text}  capabilities ${capabilities}  ");
+    // bytes += generator.text("Test page data");
+    // bytes += generator.text("Test page data");
+    // bytes += generator.cut();
+    // final res = await usb_esc_printer_windows.sendPrintRequest(bytes, driverName);
+    // String msg = "";
+    // if (res == "success") {
+    //   msg = "Printed Successfully";
+    // } else {
+    //   msg = "Failed to generate a print please make sure to use the correct printer name";
+    // }
+
+  }
+
+
+
   withoutCapabilitiesPrintReq(driverName,capabilities) async {
     List<int> bytes = [];
 
     final profile = await CapabilityProfile.load();
     // PaperSize.mm80 or PaperSize.mm58
     final generator = Generator(PaperSize.mm80, profile);
-    bytes += generator.text("Test page data");
-    bytes += generator.text("Test page data");
-    bytes += generator.text("Test page data");
     bytes += generator.text("Test page data");
     bytes += generator.cut();
     final res = await usb_esc_printer_windows.sendPrintRequest(bytes, driverName);
