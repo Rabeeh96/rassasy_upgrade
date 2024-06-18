@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/organization/controller/company_controller.dart';
 import 'package:get/get.dart';
@@ -23,6 +25,8 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final mHeight = MediaQuery.of(context).size.height;
@@ -37,7 +41,8 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            _asyncConfirmDialog(context);
+          //  Navigator.pop(context);
           },
         ),
         title: Text(
@@ -197,14 +202,15 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                                   title: Padding(
                                                     padding: const EdgeInsets.only(left: 2.0),
                                                     child: Text(
-                                                      companyController.companyListData[index].branches![i].branchName!,
-
+                                                      companyController.companyListData[index].branches![i].nickName?? companyController.companyListData[index].branches![i].branchName!,
                                                       style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                                     ),
                                                   ),
-                                                  // trailing: Text("Branch",
-                                                  //     textAlign: TextAlign.right,
-                                                  //     style: customisedStyle(context, const Color(0xff28AAF4), FontWeight.normal, 12.0)),
+
+
+                                                  trailing: Text(companyController.companyListData[index].branches![i].branchID ==1?"Main Branch":"Branch",
+                                                      textAlign: TextAlign.right,
+                                                      style: customisedStyle(context,companyController.companyListData[index].branches![i].branchID ==1? Color(0xffF25F29): Color(0xff28AAF4), FontWeight.normal, 14.0)),
                                                 ),
                                               ),
                                             ));
@@ -225,3 +231,37 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
   }
 }
 
+enum ConfirmAction { cancel, accept }
+
+Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
+  return showDialog<ConfirmAction>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'msg6'.tr,
+          style: TextStyle(color: Colors.black, fontSize: 13),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool('isLoggedIn', false);
+              prefs.setBool('companySelected', false);
+              prefs.clear();
+              Navigator.of(context).pushAndRemoveUntil(CupertinoPageRoute(builder: (context) => LoginPageNew()), (_) => false,);
+            },
+          ),
+          TextButton(
+            child: Text('No', style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.of(context).pop(ConfirmAction.cancel);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
