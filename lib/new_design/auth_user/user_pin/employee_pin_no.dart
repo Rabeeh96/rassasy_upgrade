@@ -70,7 +70,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
 
    // bool isTablet = true;
-    bool isTablet = screenWidth > 850;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
         // appBar: AppBar(
         //   elevation: 0.0,
@@ -393,7 +393,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 850;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
      // color: Colors.red,
       alignment: Alignment.center,
@@ -463,7 +463,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 850;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
 
       height: isTablet?screenHeight/9:screenHeight/9,
@@ -566,7 +566,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
     //  color: Colors.yellow,
       height: isTablet?screenHeight/9:screenHeight/9,
@@ -670,7 +670,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
     // color: Colors.purple,
       height: isTablet?screenHeight/9:screenHeight/9,
@@ -772,7 +772,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = screenWidth > 600;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
      // color: Colors.amber,
       height: isTablet?screenHeight/9:screenHeight/9,

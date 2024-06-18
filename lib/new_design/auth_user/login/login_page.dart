@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -62,99 +61,99 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > 850;
+    bool isTablet = screenWidth > defaultScreenWidth;
 
     return Scaffold(
       appBar: isTablet
           ? AppBar()
           : AppBar(
-              title: GestureDetector(
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                Locale? currentLocale = Get.locale;
-                if (currentLocale.toString() == "ar") {
-                  prefs.setBool('isArabic', false);
-                  Get.updateLocale(const Locale('en', 'US'));
-                } else {
-                  prefs.setBool('isArabic', true);
-                  Get.updateLocale(const Locale('ar'));
-                }
-              },
-              child: InkWell(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset("assets/svg/language-hiragana.svg"),
-                    Text(
-                      'lang'.tr,
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w400, 14.0),
-                    ),
-                  ],
-                ),
+          title: GestureDetector(
+            onTap: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              Locale? currentLocale = Get.locale;
+              if (currentLocale.toString() == "ar") {
+                prefs.setBool('isArabic', false);
+                Get.updateLocale(const Locale('en', 'US'));
+              } else {
+                prefs.setBool('isArabic', true);
+                Get.updateLocale(const Locale('ar'));
+              }
+            },
+            child: InkWell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset("assets/svg/language-hiragana.svg"),
+                  Text(
+                    'lang'.tr,
+                    style: customisedStyle(
+                        context, Colors.black, FontWeight.w400, 14.0),
+                  ),
+                ],
               ),
-            )),
+            ),
+          )),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
           image: isTablet
               ? const DecorationImage(
-                  image: AssetImage("assets/png/coverpage.png"),
-                  fit: BoxFit.cover)
+              image: AssetImage("assets/png/coverpage.png"),
+              fit: BoxFit.cover)
               : const DecorationImage(
-                  image: AssetImage("assets/png/mobile_back.png"),
-                  fit: BoxFit.cover),
+              image: AssetImage("assets/png/mobile_back.png"),
+              fit: BoxFit.cover),
         ),
         child: isTablet ? tabletScreen() : mobileScreen(),
       ),
       bottomNavigationBar: isTablet
           ? Container(
-              height: .1,
-            )
+        height: .1,
+      )
           : Container(
-              height: MediaQuery.of(context).size.height / 9,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  GestureDetector(
-                    onTap: (){
-                      Get.to(DeleteAccount());
-                    },
-                    child: InkWell(
-                      child: Text(
-                        'dont_have_account'.tr,
-                        style: customisedStyle(
-                            context, Colors.black, FontWeight.w400, 15.0),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  GestureDetector(
-                    onTap: (){
-                      Get.to(DeleteAccount());
-                    },
-                    child: InkWell(
-                      child: Text(
-                        'sign_up'.tr,
-                        style: customisedStyle(context, const Color(0xffF25F29),
-                            FontWeight.w500, 16.0),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 18,
-                  )
-                ],
+        height: MediaQuery.of(context).size.height / 9,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 8,
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(DeleteAccount());
+              },
+              child: InkWell(
+                child: Text(
+                  'dont_have_account'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w400, 15.0),
+                ),
               ),
             ),
+            const SizedBox(
+              height: 5,
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(DeleteAccount());
+              },
+              child: InkWell(
+                child: Text(
+                  'sign_up'.tr,
+                  style: customisedStyle(context, const Color(0xffF25F29),
+                      FontWeight.w500, 16.0),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 18,
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -165,7 +164,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > 850;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -180,8 +179,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
                 children: [
                   Container(
                       child: SvgPicture.asset(
-                    'assets/svg/logoimg.svg',
-                  )),
+                        'assets/svg/logoimg.svg',
+                      )),
                   Padding(
                     padding: const EdgeInsets.only(top: 12, bottom: 8),
                     child: Container(
@@ -207,15 +206,15 @@ class _LoginPageNewState extends State<LoginPageNew> {
                       decoration: InputDecoration(
                           focusedBorder: const OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
+                              BorderRadius.all(Radius.circular(30.0)),
                               borderSide: BorderSide(color: Color(0xffC9C9C9))),
                           enabledBorder: const OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
+                              BorderRadius.all(Radius.circular(30.0)),
                               borderSide: BorderSide(color: Color(0xffC9C9C9))),
                           disabledBorder: const OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
+                              BorderRadius.all(Radius.circular(30.0)),
                               borderSide: BorderSide(color: Color(0xffC9C9C9))),
                           contentPadding: const EdgeInsets.only(
                               left: 20, top: 10, right: 15, bottom: 10),
@@ -364,9 +363,9 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > 850;
-    return  Padding(
-      padding: const EdgeInsets.only(left: 40.0,right: 40),
+    bool isTablet = screenWidth > defaultScreenWidth;
+    return Padding(
+      padding: const EdgeInsets.only(left: 40.0, right: 40),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -398,127 +397,28 @@ class _LoginPageNewState extends State<LoginPageNew> {
               width: screenWidth / 1.7,
               child: Text(
                 'sign_in_vikn_account'.tr,
-                style: customisedStyle(context, const Color(0xff838383),
-                    FontWeight.w400, 15.0),
+                style: customisedStyle(
+                    context, const Color(0xff838383), FontWeight.w400, 15.0),
               ),
             ),
           ),
           const SizedBox(
             height: 12,
           ),
-          Container(
-            height: MediaQuery.of(context).size.height/12,
-            decoration: const BoxDecoration(
-              color: Colors.white,
+          loginSec(),
 
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(11.0),topRight:  Radius.circular(11.0) ,),
-              border: Border(top:BorderSide(color: Color(0xffE6E6E6)),left: BorderSide(color: Color(0xffE6E6E6)),right: BorderSide(color: Color(0xffE6E6E6)),bottom: BorderSide(color: Color(0xffE6E6E6)) ),
-
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(3),
-              child: TextField(
-                textCapitalization: TextCapitalization.words,
-                keyboardType: TextInputType.text,
-                controller: userNameController,
-                focusNode: userNameFcNode,
-                onEditingComplete: () {
-                  FocusScope.of(context).requestFocus(passwordFcNode);
-                },
-                decoration: InputDecoration(
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 12.0,right: 12,bottom: 10,top: 10),
-                      child: SvgPicture.asset(
-                        'assets/svg/user-2.svg',
-
-                      ),
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-
-                    // contentPadding: const EdgeInsets.only(
-                    //     left: 20, top: 10, right: 15, bottom: 10),
-                    filled: true,
-                    hintStyle: const TextStyle(
-                        color: Color(0xff7D7D7D), fontSize: 14),
-                    hintText: 'username'.tr,
-                    labelText:   'username'.tr,
-                    labelStyle: customisedStyle(context, Color(0xff7D7D7D), FontWeight.w400, 14.0),
-                    fillColor: const Color(0xffffffff)),
-              ),
-            ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height/12,
-
-            decoration: BoxDecoration(
-              color: Colors.white,
-
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(11.0),bottomLeft:  Radius.circular(11.0) ,),
-              border: Border(bottom:BorderSide(color: Color(0xffE6E6E6)) ,
-                  right:BorderSide(color: Color(0xffE6E6E6)),
-                  left: BorderSide(color: Color(0xffE6E6E6))),
-
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(3),
-              child: TextField(
-                  controller: passwordController,
-                  focusNode: passwordFcNode,
-                  obscuringCharacter: "*",
-                  onEditingComplete: () {
-                    FocusScope.of(context).requestFocus(saveFCNode);
-                  },
-                  obscureText: showPassword,
-                  decoration: InputDecoration(
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 12.0,right: 12,bottom: 10,top: 10),
-                        child: SvgPicture.asset(
-                          'assets/svg/key-round.svg',
-
-                        ),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          showPassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: const Color(0xffF25F29),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            showPassword = !showPassword;
-                          });
-                        },
-                      ),
-                      border: InputBorder.none,
-
-                      contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-
-                      // contentPadding: const EdgeInsets.only(
-                      //     left: 20, top: 10, right: 10, bottom: 10),
-                      filled: true,
-                      labelStyle: customisedStyle(context, Color(0xff7D7D7D), FontWeight.w400, 14.0),
-                      labelText: 'Password'.tr,
-                      hintStyle: const TextStyle(
-                          color: Color(0xff7D7D7D), fontSize: 14),
-                      hintText: 'Password'.tr,
-                      fillColor: const Color(0xffffffff))),
-            ),
-          ),
           const SizedBox(
             height: 15,
           ),
           TextButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        DeleteAccount()));
+                    builder: (BuildContext context) => DeleteAccount()));
               },
               child: Text(
                 'forgot_account'.tr,
-                style: customisedStyle(context, const Color(0xffF25F29),
-                    FontWeight.w400, 15.0),
+                style: customisedStyle(
+                    context, const Color(0xffF25F29), FontWeight.w400, 15.0),
               )),
           const SizedBox(
             height: 6,
@@ -549,13 +449,13 @@ class _LoginPageNewState extends State<LoginPageNew> {
               }
             },
             child: Container(
-              width: MediaQuery.of(context).size.width / 3,
+              width: MediaQuery.of(context).size.width / 2.5,
               decoration: BoxDecoration(
                   color: const Color(0xffF25F29),
                   borderRadius: BorderRadius.circular(120.0)),
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 10, right: 8, top: 7, bottom: 7),
+                    left: 10, right: 8, top: 8, bottom: 7),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -564,8 +464,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Text(
                         'login'.tr,
-                        style: customisedStyle(context, Colors.white,
-                            FontWeight.w400, 16.0),
+                        style: customisedStyle(
+                            context, Colors.white, FontWeight.w400, 16.0),
                       ),
                     ),
                     const Icon(
@@ -576,6 +476,80 @@ class _LoginPageNewState extends State<LoginPageNew> {
                 ),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget loginSec() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(11.0)),
+        border: Border(
+            top: BorderSide(color: Color(0xffE6E6E6)),
+            left: BorderSide(color: Color(0xffE6E6E6)),
+            right: BorderSide(color: Color(0xffE6E6E6)),
+            bottom: BorderSide(color: Color(0xffE6E6E6))),
+      ),
+      child: Column(
+        children: [
+          customisedTextFormField3(
+            context: context,
+            controller: userNameController,
+            labelText: 'Username'.tr,
+            validator: null,
+            onSubmitted: null,
+            focusnode: userNameFcNode,
+            prefiicon: SvgPicture.asset(
+              'assets/svg/user-2.svg',
+              width: 20,
+              height: 20,
+            ),
+            bottomLeft: Radius.zero,
+            bottomRight: Radius.zero,
+            topLeft: const Radius.circular(10),
+            topRight: const Radius.circular(10),
+            colorofborder: const Color(0xFF1C3347),
+            colorOfInputText: Colors.black,
+            obsecuretext: false,
+            fillcolor: const Color(0xFFffffff),
+          ),
+          Container(
+            height: 1,
+            color: const Color(0xffE6E6E6),
+          ),
+          customisedTextFormField3(
+            context: context,
+            labelText: 'Password'.tr,
+            controller: passwordController,
+            validator: null,
+            onSubmitted: null,
+            focusnode: passwordFcNode,
+            prefiicon: SvgPicture.asset(
+              'assets/svg/key-round.svg',
+              width: 20,
+              height: 20,
+            ),
+            bottomLeft: const Radius.circular(10),
+            bottomRight: const Radius.circular(10),
+            topLeft: Radius.zero,
+            topRight: Radius.zero,
+            suffixIcon: InkWell(
+                onTap: () {
+                  setState(() {
+                    showPassword = !showPassword;
+                  });
+                },
+                child: Icon(
+                  showPassword ? Icons.visibility : Icons.visibility_off,
+                  color: const Color(0xffF25F29),
+                )),
+            colorofborder: const Color(0xFF1C3347),
+            colorOfInputText: Colors.black,
+            obsecuretext: showPassword,
+            fillcolor: const Color(0xFFffffff),
           ),
         ],
       ),
@@ -618,7 +592,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
                   left: 20, top: 10, right: 10, bottom: 10),
               filled: true,
               hintStyle:
-                  const TextStyle(color: Color(0xff000000), fontSize: 14),
+              const TextStyle(color: Color(0xff000000), fontSize: 14),
               hintText: 'Password'.tr,
               fillColor: const Color(0xffffffff))),
     );
@@ -628,7 +602,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
   Future<Null> loginAccount(BuildContext context) async {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
-    bool isTablet = screenWidth > 850;
+    bool isTablet = screenWidth > defaultScreenWidth;
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -719,3 +693,63 @@ class _LoginPageNewState extends State<LoginPageNew> {
     }
   }
 }
+
+Column customisedTextFormField3(
+    {TextEditingController? controller,
+      required String? labelText,
+      required String? Function(String?)? validator,
+      required void Function(String)? onSubmitted,
+      required FocusNode? focusnode,
+      required Radius bottomLeft,
+      required Radius bottomRight,
+      required BuildContext context,
+      required Radius topLeft,
+      required Radius topRight,
+      required bool obsecuretext,
+      Widget? suffixIcon,
+      Widget? prefiicon,
+      Color? colorOfInputText,
+      required Color colorofborder,
+      required Color? fillcolor,
+      TextInputType? keyboardtype}) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      TextFormField(
+          cursorHeight: 18,
+          textAlignVertical: TextAlignVertical.center,
+          obscureText: obsecuretext,
+          obscuringCharacter: "*",
+          style:
+          customisedStyle(context, colorOfInputText, FontWeight.w500, 16.0),
+          keyboardType: keyboardtype,
+          focusNode: focusnode,
+          onFieldSubmitted: onSubmitted,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          controller: controller,
+          textInputAction: TextInputAction.next,
+          validator: validator,
+          decoration: InputDecoration(
+              floatingLabelAlignment: FloatingLabelAlignment.start,
+              focusedBorder: InputBorder.none,
+              filled: false,
+              fillColor: fillcolor,
+              suffixIcon: suffixIcon,
+              suffixIconConstraints:
+              const BoxConstraints(maxWidth: 50, minWidth: 50),
+              labelText: labelText,
+              prefixIcon: prefiicon,
+              prefixIconConstraints: const BoxConstraints(
+                maxWidth: 50,
+                minWidth: 50,
+              ),
+              labelStyle: customisedStyle(
+                  context, const Color(0xff7d7d7d), FontWeight.w400, 16.0),
+              contentPadding: const EdgeInsets.only(top: 10, bottom: 8),
+              enabledBorder: InputBorder.none,
+              floatingLabelBehavior: FloatingLabelBehavior.auto))
+    ],
+  );
+}
+
+
