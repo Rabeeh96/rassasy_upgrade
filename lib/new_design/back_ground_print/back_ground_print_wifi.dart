@@ -3171,10 +3171,12 @@ print(salesOrder);
       }
     }
 
+    print("------------------------------------------------3");
 
     var tableName = kotList[0]["TableName"] ?? "";
     var tokenNumber = kotList[0]["TokenNumber"].toString();
     var orderType = kotList[0]["OrderType"] ?? "";
+    print("------------------------------------------------3");
 
     // var kitchenName = printListData[id].kitchenName;
     // var tableName = dataPrint[0].tableName;
@@ -3183,6 +3185,8 @@ print(salesOrder);
     // var orderType = dataPrint[0].orderTypeI ?? "";
     // printer.setStyles(const PosStyles.defaults());
     // printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+
+    print("------------------------------------------------3");
 
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
     var updateNote = "RUNNING ORDER";
@@ -3203,6 +3207,7 @@ print(salesOrder);
           styles:
               const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
+    print("------------------------------------------------3");
 
     printer.hr();
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
@@ -3258,6 +3263,7 @@ print(salesOrder);
             text: tableName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
+    print("------------------------------------------------4");
 
     // printer.setStyles(const PosStyles.defaults());
     // printer.setStyles(const PosStyles(codeTable: 'CP864'));
@@ -3278,6 +3284,7 @@ print(salesOrder);
       PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     printer.hr();
+    print("------------------------------------------------4");
 
     for (var i = 0; i < kotList.length; i++) {
       var slNo = i + 1;
@@ -3285,6 +3292,7 @@ print(salesOrder);
 
       var productDescription = kotList[i]["ProductDescription"] ?? '';
 
+      print("------------------------------------------------4");
 
 
       printer.row([
@@ -3309,6 +3317,7 @@ print(salesOrder);
           PosColumn(text: productDescription, width: 10, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         ]);
       }
+      print("------------------------------------------------4");
 
       if (kotList[i]["flavour"] != "") {
         printer.text(kotList[i]["flavour"], styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
@@ -3329,7 +3338,7 @@ print(salesOrder);
               (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
-    printer.disconnect();
+ //   printer.disconnect();
   }
 
   /// arabic kot image print method
