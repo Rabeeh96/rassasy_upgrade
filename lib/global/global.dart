@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 // }
 //////
  String appVersion = "1.1.25";
+double defaultScreenWidth=850;
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),
@@ -67,7 +68,6 @@ dialogBox(BuildContext context, msg) async {
           TextButton(
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
-
               textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onPressed: () => Navigator.of(context).pop(true),
