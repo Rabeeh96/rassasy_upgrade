@@ -4,25 +4,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/product_group_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/customer_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 
-import 'add_product_group.dart';
+import 'add_customer.dart';
 
-class ProductGroupMobile extends StatefulWidget {
+class CustomerListMobile extends StatefulWidget {
   @override
-  State<ProductGroupMobile> createState() => _ProductGroupMobileState();
+  State<CustomerListMobile> createState() => _CustomerListMobileState();
 }
 
-class _ProductGroupMobileState extends State<ProductGroupMobile> {
-  ProductGroupController productGroupController =
-      Get.put(ProductGroupController());
+class _CustomerListMobileState extends State<CustomerListMobile> {
+  CustomerController customerController = Get.put(CustomerController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    productGroupController.getProductListDetails();
+    customerController.getCustomerListDetails();
   }
 
   @override
@@ -41,7 +40,7 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
           },
         ),
         title: Text(
-          'product_group'.tr,
+          'Customer',
           style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
         ),
       ),
@@ -54,18 +53,17 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                 right: 10,
               ),
               height: MediaQuery.of(context).size.height * .055,
-
               child: Row(
                 children: <Widget>[
                   Expanded(
                     child: TextField(
                         autofocus: false,
                         textCapitalization: TextCapitalization.words,
-                        controller: productGroupController.searchController,
+                         controller: customerController.searchController,
                         onChanged: (str) {
-                          productGroupController.searchData(str);
-                          productGroupController.productGroupLists.clear();
-                          productGroupController.getProductListDetails();
+                          customerController.searchData(str);
+                          customerController.customerModelClass.clear();
+                          customerController.getCustomerListDetails();
                         },
                         style: customisedStyle(
                             context, Colors.black, FontWeight.normal, 15.0),
@@ -101,18 +99,18 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
             color: Color(0xffF25F29),
             onRefresh: () async {
               // Implement the logic to refresh data here
-               productGroupController.getProductListDetails();
+              ///   productGroupController.getProductListDetails();
               //     .fetchProducts(''); // Assuming you pass the token here
             },
-            child: Obx(() => productGroupController.isLoadGroups.value
+            child: Obx(() => customerController.isLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(
                     color: Color(0xffF25F29),
                   ))
-                : productGroupController.productGroupLists.isEmpty
+                : customerController.customerModelClass.isEmpty
                     ? Center(
                         child: Text(
-                        "No Groups to Show",
+                        "No Customers to Show",
                         style: customisedStyleBold(
                             context, Colors.black, FontWeight.w400, 14.0),
                       ))
@@ -120,12 +118,12 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                         closeWhenOpened: true,
                         child: ListView.separated(
                           itemCount:
-                              productGroupController.productGroupLists.length,
+                              customerController.customerModelClass.length,
                           itemBuilder: (context, index) {
                             ///swipe to delete dismissible
                             return Slidable(
-                                key: ValueKey(productGroupController
-                                    .productGroupLists[index]),
+                                key: ValueKey(customerController
+                                    .customerModelClass[index]),
                                 // The start action pane is the one at the left or the top side.
                                 startActionPane: ActionPane(
                                   // A motion is a widget used to control how the pane animates.
@@ -149,12 +147,12 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                                               },
                                               secondBtnPressed: () async {
                                                 Get.back(); // Close the dialog
-                                                productGroupController
-                                                    .deleteProduct(
-                                                        productGroupController
-                                                            .productGroupLists[
-                                                                index]
-                                                            .uID);
+                                                // productGroupController
+                                                //     .deleteProduct(
+                                                //     productGroupController
+                                                //         .productGroupLists[
+                                                //     index]
+                                                //         .uID);
                                               },
                                               secondBtnText: 'Ok',
                                               context: context);
@@ -180,11 +178,11 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                                     // A LiableAction can have an icon and/or a label.
                                     SlidableAction(
                                       onPressed: (BuildContext context) async {
-                                        Get.to(CreateProductGroup(
-                                          type: "Edit",
-                                          uid: productGroupController
-                                              .productGroupLists[index].uID,
-                                        ));
+                                        // Get.to(CreateProductGroup(
+                                        //   type: "Edit",
+                                        //   uid: productGroupController
+                                        //       .productGroupLists[index].uID,
+                                        // ));
                                       },
                                       // onPressed: doNothing ,
                                       backgroundColor: Colors.blue,
@@ -205,8 +203,9 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                                     ),
                                     child: ListTile(
                                       title: Text(
-                                        productGroupController
-                                            .productGroupLists[index].groupName,
+                                        customerController
+                                            .customerModelClass[index]
+                                            .customerName,
                                         style: customisedStyle(
                                             context,
                                             Colors.black,
@@ -232,7 +231,7 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                     backgroundColor:
                         MaterialStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () {
-                  Get.to(CreateProductGroup());
+                   Get.to(AddCustomerMobile());
                 },
                 child: Row(
                   children: [
@@ -243,7 +242,7 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
-                        'Add Group',
+                        'Add Customer',
                         style: customisedStyle(context, const Color(0xffF25F29),
                             FontWeight.normal, 12.0),
                       ),
