@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 // }
 //////
  String appVersion = "1.1.25";
+double defaultScreenWidth=850;
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),
