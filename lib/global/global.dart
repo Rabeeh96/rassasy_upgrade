@@ -67,7 +67,6 @@ dialogBox(BuildContext context, msg) async {
           TextButton(
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
-
               textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onPressed: () => Navigator.of(context).pop(true),
