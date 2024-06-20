@@ -160,6 +160,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       dining_edit_perm = prefs.getBool('Diningedit') ?? true;
       take_away_edit_perm = prefs.getBool('Take awayedit') ?? true;
       car_edit_perm = prefs.getBool('Caredit') ?? true;
+
       bool kotPrint = prefs.getBool("KOT") ?? false;
 
       dining_delete_perm = prefs.getBool('Diningdelete') ?? true;
@@ -785,18 +786,17 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     }
   }
 
-  redirectToOrder(sectionType)async{
+  redirectToOrder(sectionType) async {
     var result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => POSOrderSection(
-            sectionType: sectionType,
-            orderType: mainPageIndex,
-            tableID: "",
-            UUID: "",
-            tableHead: "Take away",
-          )
-      ),
+                sectionType: sectionType,
+                orderType: mainPageIndex,
+                tableID: "",
+                UUID: "",
+                tableHead: "Take away",
+              )),
     );
     posFunctions(callFunction: true);
   }
@@ -820,10 +820,9 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       });
     }
 
-    if(directOrderOption){
+    if (directOrderOption) {
       redirectToOrder("Create");
-    }
-    else{
+    } else {
       posFunctions(callFunction: true);
     }
   }
@@ -1124,7 +1123,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         } else {
           dialogBox(context, 'Please try again later1');
         }
-      } else {
+      } else if (printType == 'USB') {
         print("usb 1");
         var ret = await printHelperUsb.printDetails();
         if (ret == 2) {
@@ -1138,44 +1137,34 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         } else {
           dialogBox(context, 'Please try again later');
         }
-
-        /// bluetooth option commented
-        // var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
-        // if(loadData){
-        //
-        //   var printStatus =await bluetoothHelper.scan();
-        //
-        //   if(printStatus ==1){
-        //     dialogBox(context,"Check your bluetooth connection");
-        //   }
-        //   else if(printStatus ==2){
-        //     dialogBox(context,"Your default printer configuration problem");
-        //   }
-        //
-        //   else if(printStatus ==3){
-        //
-        //     await bluetoothHelper.scan();
-        //     // alertMessage("Try again");
-        //   }
-        //   else if(printStatus ==4){
-        //     //  alertMessage("Printed successfully");
-        //   }
-        // }
-        // else{
-        //   dialogBox(context,"Try again");
-        // }
+      } else {
+        var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
+        if (loadData) {
+          var printStatus = await bluetoothHelper.scan(isCancelled);
+          if (printStatus == 1) {
+            dialogBox(context, "Check your bluetooth connection");
+          } else if (printStatus == 2) {
+            dialogBox(context, "Your default printer configuration problem");
+          } else if (printStatus == 3) {
+            await bluetoothHelper.scan(isCancelled);
+            // alertMessage("Try again");
+          } else if (printStatus == 4) {
+            //  alertMessage("Printed successfully");
+          }
+        } else {
+          dialogBox(context, "Try again");
+        }
       }
+
+      /// bluetooth option commented
     }
   }
-
-
 
   // ReprintKOT(id) async {
   //   printHelper.printKotPrintRe(id);
   // }
 
   ReprintKOT(orderID, isCancelled) async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     if (printType == 'Wifi') {
@@ -1268,7 +1257,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                                         if (sectionType == 1) {
                                           if (diningOrderList[tableIndex].status == "Ordered") {
-
                                             Navigator.pop(context);
                                             PrintDataDetails.type = "SO";
                                             PrintDataDetails.id = diningOrderList[tableIndex].salesOrderID;
@@ -2601,8 +2589,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
           stop();
           await getTableOrderList();
 
-          if(cancelReasonId!=""){
-            if(printForCancellOrder) {
+          if (cancelReasonId != "") {
+            if (printForCancellOrder) {
               PrintDataDetails.type = "SO";
               PrintDataDetails.id = orderID;
               await printDetail(true);
@@ -2610,7 +2598,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                 await ReprintKOT(orderID, true);
               }
             }
-
           }
         } else if (status == 6001) {
           stop();

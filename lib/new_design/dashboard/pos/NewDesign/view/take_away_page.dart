@@ -71,7 +71,7 @@ class _TakeAwayState extends State<TakeAway> {
         ],
       ),
       body: Column(children: [
-        DividerStyle(),
+        dividerStyleFull(),
         Expanded(
             child: Obx(() => takeAwayController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
@@ -87,11 +87,13 @@ class _TakeAwayState extends State<TakeAway> {
                           },
                           child: ListView.separated(
                             separatorBuilder: (context, index) => DividerStyle(),
-                            itemCount: takeAwayController.takeAwayOrders.length,
+                            itemCount: takeAwayController.takeAwayOrders.length+1,
                             itemBuilder: (context, index) {
+                              if (index == takeAwayController.takeAwayOrders.length) {
+                                return Container();
+                              }
                               return Slidable(
                                 key: ValueKey(takeAwayController.takeAwayOrders[index]),
-
                                 // The start action pane is the one at the left or the top side.
                                 startActionPane: ActionPane(
                                   // A motion is a widget used to control how the pane animates.
@@ -357,7 +359,8 @@ class _TakeAwayState extends State<TakeAway> {
                               );
                             },
                           ),
-                        ))))
+                        )))),
+
       ]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top: 10.0, bottom: 10),

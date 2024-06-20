@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/invoice_controller.dart';
@@ -181,8 +182,8 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                               // A LiableAction can have an icon and/or a label.
                               SlidableAction(
                                 onPressed: (BuildContext context) async {
-
-                              invoiceController.printDetail(type: "SO");
+                                  PrintDataDetails.id = invoiceController.invoiceList[index].salesMasterID;
+                                 invoiceController.printDetail(type: "SI");
                                 },
                                 // onPressed: doNothing ,
                                 backgroundColor: Colors.blueAccent,

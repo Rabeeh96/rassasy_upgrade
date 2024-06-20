@@ -73,7 +73,7 @@ class _TakeAwayState extends State<CarPage> {
       ),
       body: Column(
           children: [
-            DividerStyle(),
+            dividerStyleFull(),
 
         Expanded(
             child: Obx(() => carController.isLoading.value
@@ -90,8 +90,11 @@ class _TakeAwayState extends State<CarPage> {
                   },
                   child: ListView.separated(
                     separatorBuilder: (context, index) => DividerStyle(),
-                    itemCount: carController.carOrders.length,
+                    itemCount: carController.carOrders.length+1,
                     itemBuilder: (context, index) {
+                      if (index == carController.carOrders.length) {
+                        return Container();
+                      }
                       return Slidable(
                         key: ValueKey(carController.carOrders[index]),
 
@@ -340,8 +343,6 @@ class _TakeAwayState extends State<CarPage> {
                     },
                   ),
                 )))),
-        DividerStyle(),
-
 
       ]),
       bottomNavigationBar: Padding(

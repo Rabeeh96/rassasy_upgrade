@@ -208,7 +208,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                                   ),
 
 
-                                                  trailing: Text(companyController.companyListData[index].branches![i].branchID ==1?"Main Branch":"Branch",
+                                                  trailing: Text(companyController.companyListData[index].branches![i].branchID ==1?"Head Office":"Branch",
                                                       textAlign: TextAlign.right,
                                                       style: customisedStyle(context,companyController.companyListData[index].branches![i].branchID ==1? Color(0xffF25F29): Color(0xff28AAF4), FontWeight.normal, 14.0)),
                                                 ),

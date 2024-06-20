@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
+import 'package:rassasy_new/new_design/back_ground_print/print_details/select_codepage.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/printer_setting/select_code_page.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 
@@ -231,7 +232,7 @@ class _PrinterSettingsDetailPageMobileState
                 child: TextField(
                   readOnly: true,
                   onTap: () async {
-                    var result = await Get.to(SelectCodePage());
+                    var result = await Get.to(select_code_page());
 
 
                     if (result != null) {

@@ -75,7 +75,6 @@ class _DashboardNewState extends State<DashboardNew> {
       settingsPermission = prefs.getBool('General Setting') ?? false;
     });
   }
-
   Future<Null> defaultData() async {
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -159,7 +158,6 @@ class _DashboardNewState extends State<DashboardNew> {
       }
     }
   }
-
   returnBool(String data) {
     if (data == "true") {
       return true;
@@ -167,7 +165,6 @@ class _DashboardNewState extends State<DashboardNew> {
       return false;
     }
   }
-
   Future<void> selectedItem(BuildContext context, item) async {
     switch (item) {
       case 0:
@@ -362,8 +359,8 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenHeight = screenSize.height;
 
 
-    bool isTablet = screenWidth >defaultScreenWidth;
-    //  bool isTable = false;
+     bool isTablet = screenWidth >defaultScreenWidth;
+
 
     return Scaffold(
       appBar: isProfileNotifier.value
@@ -2732,7 +2729,14 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    updateAlert();
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ViewInvoice()));
+
+                                   // updateAlert();
                                     // var invoices =
                                     //     await checkingPerm('Invoices'.tr);
                                     //

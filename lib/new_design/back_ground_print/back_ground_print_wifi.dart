@@ -207,6 +207,7 @@ class AppBlocs {
   /// template supported  english and arabic template
   Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,
       timeInPrint, taxDetails, defaultCodePage, isCancelled) async {
+
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -3033,7 +3034,8 @@ print(salesOrder);
     printer.hr();
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
-    printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+    printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size4, width: PosTextSize.size5, bold: false, align: PosAlign.center));
+  //  printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     printer.hr();
@@ -3206,9 +3208,11 @@ print(salesOrder);
 
     printer.hr();
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
-    printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
+   // printer.text('', styles: const PosStyles(align: PosAlign.left));
+
+    printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size4, width: PosTextSize.size5, bold: false, align: PosAlign.center));
+
+   // printer.text('', styles: const PosStyles(align: PosAlign.left,fontType: PosFontType.fontB,));
     printer.hr();
 
     if (showUsernameKot) {
@@ -3449,7 +3453,6 @@ print(salesOrder);
 
     return both;
   }
-
   setString(String tex) {
     if (tex == "") {}
     String value = "";
@@ -3488,7 +3491,6 @@ print(salesOrder);
     }
     return value;
   }
-
   returnBlankSpace(length) {
     List<String> list = [];
     for (int i = 0; i < length; i++) {
@@ -3496,7 +3498,6 @@ print(salesOrder);
     }
     return list;
   }
-
   set(String str) {
     try {
       if (str == "") {}
@@ -3559,7 +3560,6 @@ print(salesOrder);
       return listData;
     } catch (e) {}
   }
-
   bool isArabic(String text) {
     if (text == "") {}
     String arabicText = text.trim().replaceAll(" ", "");
@@ -3574,7 +3574,6 @@ print(salesOrder);
     }
     return true;
   }
-
   bool isEnglish(String text) {
     if (text == "") {}
     bool onlyEnglish = false;
@@ -3587,14 +3586,12 @@ print(salesOrder);
     }
     return onlyEnglish;
   }
-
   bool isN(String value) {
     if (value == "") {}
     var val = false;
     val = double.tryParse(value) != null;
     return val;
   }
-
   Future<void> printArabic(NetworkPrinter printer) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
