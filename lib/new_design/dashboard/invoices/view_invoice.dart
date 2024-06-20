@@ -11,6 +11,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
+import 'package:rassasy_new/new_design/back_ground_print/bluetooth/new.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -341,11 +342,28 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                 width: 1, color: Color(0xffDFDFDF))),
                         color: Color(0xffffffff),
                         child: Container(
-
                           width: MediaQuery.of(context).size.width / 1.1,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 15.0,left: 15.0),
+                                child: Container(
+                                  width: 100,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                                    onPressed: () {
+                                      PrintDataDetails.type = "SI";
+                                      PrintDataDetails.id = invoiceList[index].salesMasterID;
+                                      printDetail();
+                                    },
+                                    child: Text(
+                                      'print'.tr,
+                                      style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Container(
 
 
@@ -444,24 +462,24 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                   //           ))),
 
 
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 15.0,left: 15.0),
-                                      child: Container(
-                                         width: 100,
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
-                                          onPressed: () {
-                                            PrintDataDetails.type = "SI";
-                                            PrintDataDetails.id = invoiceList[index].salesMasterID;
-                                            printDetail();
-                                          },
-                                          child: Text(
-                                            'print'.tr,
-                                            style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(right: 15.0,left: 15.0),
+                                    //   child: Container(
+                                    //     width: 100,
+                                    //     child: ElevatedButton(
+                                    //       style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                                    //       onPressed: () {
+                                    //         PrintDataDetails.type = "SI";
+                                    //         PrintDataDetails.id = invoiceList[index].salesMasterID;
+                                    //         printDetail();
+                                    //       },
+                                    //       child: Text(
+                                    //         'print'.tr,
+                                    //         style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
 
 
                                   ],
@@ -482,13 +500,15 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       ),
     );
   }
-//
+
   var printHelperUsb =   USBPrintClass();
   var printHelperIP =   AppBlocs();
   var bluetoothHelper =   AppBlocsBT();
   printDetail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
+    prefs.setString('PrintType',"BT") ?? 'Wifi';
+
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
     if (defaultIp == "") {
@@ -511,7 +531,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         }
         //
       }
-      else{
+      else if (printType =='USB'){
         var ret = await printHelperUsb.printDetails();
         if (ret == 2) {
           var ip = "";
@@ -528,28 +548,34 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         }
 
         /// commented
-        // var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
-        // if(loadData){
-        //   var printStatus =await bluetoothHelper.scan();
-        //   if(printStatus ==1){
-        //     dialogBox(context,"Check your bluetooth connection");
-        //   }
-        //   else if(printStatus ==2){
-        //     dialogBox(context,"Your default printer configuration problem");
-        //   }
-        //   else if(printStatus ==3){
-        //
-        //     await bluetoothHelper.scan();
-        //     // alertMessage("Try again");
-        //   }
-        //   else if(printStatus ==4){
-        //     //  alertMessage("Printed successfully");
-        //   }
-        // }
-        // else{
-        //   dialogBox(context,"Try again");
-        // }
-        //
+
+      }
+      else{
+          var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
+        // handlePrint(context);
+
+
+        if(loadData){
+          var printStatus =await bluetoothHelper.scan(false);
+
+          if(printStatus ==1){
+            dialogBox(context,"Check your bluetooth connection");
+          }
+          else if(printStatus ==2){
+            dialogBox(context,"Your default printer configuration problem");
+          }
+          else if(printStatus ==3){
+            await bluetoothHelper.scan(false);
+            // alertMessage("Try again");
+          }
+          else if(printStatus ==4){
+            //  alertMessage("Printed successfully");
+          }
+        }
+        else{
+          dialogBox(context,"Try again");
+        }
+
       }
 
     }
@@ -558,6 +584,29 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
 
   }
+
+
+  Future<void> handlePrint(BuildContext context) async {
+    var bluetoothHelper = BluetoothHelperNew();
+    var printStatus = await bluetoothHelper.scan();
+
+    switch (printStatus) {
+      case 1:
+        dialogBox(context, "Check your bluetooth connection");
+        break;
+      case 2:
+        dialogBox(context, "Your default printer configuration problem");
+        break;
+      case 3:
+        await bluetoothHelper.scan();
+        // alertMessage("Try again");
+        break;
+      case 4:
+      // alertMessage("Printed successfully");
+        break;
+    }
+  }
+
 
   Widget noNetworkConnectionPage() {
     return Center(

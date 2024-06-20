@@ -96,6 +96,7 @@ dev_dependencies:
   arabic_font: ^0.0.9
   webview_universal: ^0.0.5
   flutter_slidable: ^3.1.0
+  blue_thermal_printer: ^1.2.3
 
 
 

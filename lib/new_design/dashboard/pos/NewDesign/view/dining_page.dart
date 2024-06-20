@@ -173,7 +173,8 @@ class _DiningPageState extends State<DiningPage> {
         //     color: const Color(0xffE9E9E9),
         //   ),
         // ),
-        DividerStyle(),
+        dividerStyleFull(),
+       // DividerStyle(),
         Expanded(
             child: Obx(() => diningController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
@@ -190,8 +191,11 @@ class _DiningPageState extends State<DiningPage> {
                           },
                           child: ListView.separated(
                             separatorBuilder: (context, index) => DividerStyle(),
-                            itemCount: diningController.tableData.length,
+                            itemCount: diningController.tableData.length+1,
                             itemBuilder: (context, index) {
+                              if (index == diningController.tableData.length) {
+                                return Container();
+                              }
                               return Slidable(
                                 enabled: diningController.tableData[index].status != 'Vacant' ? true : false,
                                 key: ValueKey(diningController.tableData[index]),
@@ -227,6 +231,8 @@ class _DiningPageState extends State<DiningPage> {
                                     CustomSlidableAction(
                                       flex: 1,
                                       onPressed: (BuildContext context) async {
+
+
                                         diningController.printSection(
                                             context: context,
                                             id: diningController.tableData[index].status == 'Ordered'

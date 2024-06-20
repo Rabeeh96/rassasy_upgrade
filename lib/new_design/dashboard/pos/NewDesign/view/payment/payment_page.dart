@@ -484,14 +484,13 @@ class _PaymentPageState extends State<PaymentPage> {
                                             onChanged: (value){
                                               if (value.isEmpty) {
                                                 paymentController.discountCalc(2, "0");
-                                            //    paymentController.discountCalc(2, "0.0");
-                                              } else {
+                                              }
+                                              else {
                                                 paymentController.discountCalc(2, value);
                                               }
                                             },
                                             onTap: () => paymentController.discountAmountController.selection = TextSelection(
                                                 baseOffset: 0, extentOffset: paymentController.discountAmountController.value.text.length),
-
                                             style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                                             // focusNode: diningController.customerNode,
 

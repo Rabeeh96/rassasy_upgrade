@@ -642,8 +642,6 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                           },
                         ))))
 
-
-
           ],
         ),
       ),
@@ -796,6 +794,8 @@ class _OrderCreateViewState extends State<OrderCreateView> {
           )),
     );
   }
+
+
 
   void addDetails() {
     Get.bottomSheet(
