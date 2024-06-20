@@ -300,7 +300,7 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
 
 
                                     if (withCodePage) {
-                                      printReq(controllerName.text,printerModels[index]);
+                                      testPrintOneByONe(controllerName.text,printerModels[index]);
                                     } else {
                                       withoutCapabilitiesPrintReq(controllerName.text,printerModels[index]);
                                     }
@@ -382,8 +382,7 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
 
 
     var result = await CapabilityProfile.getAvailableProfiles();
-    for(var i = 0;i<3 ;i++){
-
+    for(var i = 0;i<result.length ;i++){
       var profile = await CapabilityProfile.load(name: result[i]["key"]);
       final generator = Generator(PaperSize.mm80, profile);
       final supportedCodePages = profile.codePages;
@@ -394,18 +393,16 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
           var testData ="${supportedCodePages[ind].name} السلام $capability ";
           Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
           bytes += generator.textEncoded(salam);
-          final res = await usb_esc_printer_windows.sendPrintRequest(bytes, driverName);
-          String msg = "";
-          if (res == "success") {
-            msg = "Printed Successfully";
-          } else {
-            msg = "Failed to generate a print please make sure to use the correct printer name";
-          }
         //  popAlert(head: "Waring", message: msg ?? "", position: SnackPosition.TOP);
-
         }
+    }
 
-
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, driverName,);
+    String msg = "";
+    if (res == "success") {
+      msg = "Printed Successfully";
+    } else {
+      msg = "Failed to generate a print please make sure to use the correct printer name";
     }
 
 
@@ -432,7 +429,37 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
     // }
 
   }
+  testPrintOneByONe(driverName,capability) async {
 
+    List<int> bytes = [];
+    print("driverName  $driverName capability  $capability");
+      var profile = await CapabilityProfile.load(name:capability);
+
+      final supportedCodePages = profile.codePages;
+     final generator = Generator(PaperSize.mm80, profile);
+
+      print(supportedCodePages.length);
+
+      for(var ind = 0;ind<supportedCodePages.length ;ind++){
+        print("$ind");
+        bytes += generator.setGlobalCodeTable(supportedCodePages[ind].name);
+        var testData ="${supportedCodePages[ind].name} السلام $capability ";
+        Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+        bytes += generator.textEncoded(salam);
+
+      }
+
+
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, driverName,);
+
+    String msg = "";
+    if (res == "success") {
+      msg = "Printed Successfully";
+    } else {
+      msg = "Failed to generate a print please make sure to use the correct printer name";
+    }
+
+  }
 
 
   withoutCapabilitiesPrintReq(driverName,capabilities) async {

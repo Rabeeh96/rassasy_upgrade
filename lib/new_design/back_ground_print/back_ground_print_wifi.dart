@@ -306,7 +306,11 @@ class AppBlocs {
     Uint8List salesManDetailsEnc = await CharsetConverter.encode("ISO-8859-6", setString('رجل المبيعات ' + salesMan));
 
     if (headerAlignment) {
-      companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
+
+      if(companyPhone!=""){
+        companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
+      }
+
     }
 
     Uint8List invoiceTypeEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));

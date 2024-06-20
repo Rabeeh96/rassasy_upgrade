@@ -35,6 +35,7 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
           icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
+
           ),
           onPressed: () {
             Navigator.pop(context);
