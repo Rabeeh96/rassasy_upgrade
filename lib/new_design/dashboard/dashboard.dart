@@ -2700,16 +2700,9 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(builder: (context) => SettingsPageDemo()),
-                                    // );
-                                    updateAlert();
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //       builder: (context) => AddTax()),
-                                    // );
+                                    Get.to(TaxListMobile());
+                                  ///  updateAlert();
+
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(
