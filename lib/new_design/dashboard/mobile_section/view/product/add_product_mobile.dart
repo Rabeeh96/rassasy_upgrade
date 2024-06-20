@@ -8,13 +8,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
-import 'package:rassasy_new/new_design/dashboard/product/detail/selectTax.dart';
 
 import '../../controller/product_controller.dart';
 import 'detail_page/select_group.dart';
 import 'detail_page/select_tax_mobile.dart';
 
+import 'package:flutter_svg/svg.dart';
+
 class CreateProductMobile extends StatefulWidget {
+  String? uid;
+  String? type;
+  CreateProductMobile({this.uid,this.type});
   @override
   State<CreateProductMobile> createState() => _CreateProductMobileState();
 }
@@ -23,8 +27,20 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
 
   ProductController productController = Get.put(ProductController());
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
 
+ loadData(){
+  if(widget.type=="Edit"){
+    productController.getProductSingleView(widget.uid!);
+  }else{
 
+  }
+ }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +73,19 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
 
 
                 }else{
-                  productController.createProduct();
+                  if(widget.type=="Edit"){
+                    print("ghdfdhfhghf");
+                    productController.editProduct(widget.uid!);
+                  }
+                  else{
+                    if(productController.createPermission){
+                      productController.createProduct();
+                    }else{
+                      Get.snackbar('Error', "Permission Denied");
+                    }
+                  }
+
+
                 }
                 },
                 icon: Text(
@@ -225,10 +253,10 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
                 FocusScope.of(context).requestFocus(productController.descriptionFcNode);
               },
               keyboardType: TextInputType.text,
-              decoration: TextFieldDecoration.mobileTextfieldMandatory(
+              decoration: TextFieldDecoration.mobileTextfieldMandatoryIc(
                   hintTextStr: 'Name'),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextField(
@@ -245,7 +273,7 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               decoration: TextFieldDecoration.mobileTextfieldMandatory(
                   hintTextStr: 'Description'),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextField(

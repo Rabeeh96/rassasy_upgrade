@@ -9,7 +9,7 @@ import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/produ
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 
 import 'add_product_mobile.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
 class ProductListMobile extends StatefulWidget {
   @override
   State<ProductListMobile> createState() => _ProductListMobileState();
@@ -48,6 +48,52 @@ class _ProductListMobileState extends State<ProductListMobile> {
       body: Column(
         children: [
           DividerStyle(),
+          Container(
+              margin: const EdgeInsets.only(
+                left: 15,
+                right: 10,
+              ),
+              height: MediaQuery.of(context).size.height * .055,
+
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                        autofocus: false,
+                        textCapitalization: TextCapitalization.words,
+                        controller: productController.searchController,
+                        onChanged: (str) {
+                          productController.fetchProducts(str);
+                        },
+                        style: customisedStyle(
+                            context, Colors.black, FontWeight.normal, 15.0),
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xffFBFBFB),
+                            hintText: "Search",
+                            hintStyle: customisedStyle(
+                                context,
+                                const Color(0xff929292),
+                                FontWeight.normal,
+                                15.0),
+                            contentPadding: const EdgeInsets.only(
+                                left: 10.0, bottom: 10, top: 8),
+                            border: InputBorder.none)),
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset(
+                      'assets/svg/search-normal.svg',
+                      color: Color(0xffB4B4B4),
+                      width: MediaQuery.of(context).size.width * .02,
+                      height: MediaQuery.of(context).size.height * .02,
+                    ),
+                    onPressed: () {
+                      //Get.to(SearchItems());
+                    },
+                  ),
+                ],
+              )),
+          DividerStyle(),
           //
           Expanded(
               child: RefreshIndicator(
@@ -69,163 +115,183 @@ class _ProductListMobileState extends State<ProductListMobile> {
                         style: customisedStyleBold(
                             context, Colors.black, FontWeight.w400, 14.0),
                       ))
-                    : ListView.separated(
-                        itemCount: productController.products.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Dismissible(
-                              key: Key('${productController.products[index]}'),
-                              background: Container(
-                                color: Colors.red,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const <Widget>[
-                                      Icon(Icons.delete, color: Colors.white),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              secondaryBackground: Container(),
-                              confirmDismiss:
-                                  (DismissDirection direction) async {
-                                bool hasPermission =
-                                    await checkingPerm("Productdelete");
+                    :
+
+
+            SlidableAutoCloseBehavior(
+                closeWhenOpened: true,
+                child: ListView.separated(
+                  itemCount:  productController.products.length,
+                  itemBuilder: (context, index) {
+                    ///swipe to delete dismissible
+                    return Slidable(
+                        key: ValueKey( productController.products[index]),
+                        // The start action pane is the one at the left or the top side.
+                        startActionPane: ActionPane(
+                          // A motion is a widget used to control how the pane animates.
+                          motion: const ScrollMotion(),
+                          // A pane can dismiss the Slidable.
+                          // All actions are defined in the children parameter.
+                          children: [
+                            // A LiableAction can have an icon and/or a label.
+                            SlidableAction(
+                              onPressed: (BuildContext context) async {
+                                print("eerte");
+                                bool hasPermission = await checkingPerm("Productdelete");
 
                                 if (hasPermission) {
-                                  return await   bottomDialogueFunction(
-                                  isDismissible: true,
-                                  context: context,
-                                    textMsg: "Sure want to delete",
-                                    fistBtnOnPressed: () {
-                                    Navigator.of(context)
-                                        .pop(true);
-                                    },
-                                    secondBtnPressed: () async {
-                                    Navigator.of(context)
-                                        .pop(true);
-
-                                      productController.deleteProduct(productController.products[index].id);
-                                    },
-                                    secondBtnText: 'Ok');
+                                  bottomDialogueFunction(
+                                      isDismissible: true,
+                                      textMsg: "Sure want to delete",
+                                      fistBtnOnPressed: () {
+                                        Get.back(); // Close the dialog
+                                      },
+                                      secondBtnPressed: () async {
+                                        Get.back(); // Close the dialog
+                                        productController.deleteProduct(productController.products[index].id);
+                                      },
+                                      secondBtnText: 'Ok', context: context
+                                  );
                                 } else {
-                                  dialogBoxPermissionDenied(context);
-                                  return false; // Pe
+                                  dialogBoxPermissionDenied(context); // Assuming this function also uses Get.dialog
                                 }
                               },
-                              direction: productController.products.length > 1
-                                  ? DismissDirection.startToEnd
-                                  : DismissDirection.none,
-                              onDismissed: (DismissDirection direction) {
-                                if (direction == DismissDirection.startToEnd) {
-                                  print('Remove item');
-                                } else {
-                                  print("");
-                                }
-
-                                setState(() {
-                                  productController.products.removeAt(index);
-                                });
+                              // onPressed: doNothing ,
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                            ),
+                          ],
+                        ),
+                        endActionPane: ActionPane(
+                          // A motion is a widget used to control how the pane animates.
+                          motion: const ScrollMotion(),
+                          // A pane can dismiss the Slidable.
+                          // All actions are defined in the children parameter.
+                          children: [
+                            // A LiableAction can have an icon and/or a label.
+                            SlidableAction(
+                              onPressed: (BuildContext context) async {
+                                Get.to(CreateProductMobile(type: "Edit",uid:productController.products[index].id ,));
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 20.0, right: 20, top: 10, bottom: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              14,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              7,
-                                          child: ClipRRect(
-                                            child: productController
-                                                    .products[index]
-                                                    .productImage
-                                                    .isEmpty
-                                                ? SvgPicture.asset(
-                                                    "assets/svg/no_image.svg")
-                                                : Image.network(
-                                                    productController
-                                                        .products[index]
-                                                        .productImage),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                productController
-                                                    .products[index]
-                                                    .productName,
-                                                style: customisedStyle(
-                                                    context,
-                                                    Colors.black,
-                                                    FontWeight.w400,
-                                                    14.0),
-                                              ),
-                                              Text(
-                                                productController
-                                                    .products[index]
-                                                    .defaultUnitName,
-                                                style: customisedStyle(
-                                                    context,
-                                                    Color(0xffA5A5A5),
-                                                    FontWeight.w400,
-                                                    14.0),
-                                              ),
-                                            ]),
-                                      ],
+                              // onPressed: doNothing ,
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                              icon: Icons.edit,
+                              label: 'Edit',
+                            ),
+                          ],
+                        ),
+                        // The end action pane is the one at the right or the bottom side.
+
+
+                        // The child of the Slidable is what the user sees when the
+                        // component is not dragged.
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20.0, right: 20, top: 10, bottom: 10),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height /
+                                        14,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width /
+                                        7,
+                                    child: ClipRRect(
+                                      child: productController
+                                          .products[index]
+                                          .productImage
+                                          .isEmpty
+                                          ? SvgPicture.asset(
+                                          "assets/svg/no_image.svg")
+                                          : Image.network(
+                                          productController
+                                              .products[index]
+                                              .productImage),
                                     ),
-                                    Row(
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      CrossAxisAlignment.start,
                                       children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 5.0),
-                                          child: Text(
-                                            "SR",
-                                            style: customisedStyle(
-                                                context,
-                                                Color(0xffA5A5A5),
-                                                FontWeight.w400,
-                                                15.0),
-                                          ),
-                                        ),
                                         Text(
-                                          roundStringWith(productController.products[index]
-                                              .defaultSalesPrice),
+                                          productController
+                                              .products[index]
+                                              .productName,
                                           style: customisedStyle(
                                               context,
-                                              Color(0xff000000),
-                                              FontWeight.w500,
-                                              15.0),
+                                              Colors.black,
+                                              FontWeight.w400,
+                                              14.0),
                                         ),
-                                      ],
+                                        Text(
+                                          productController
+                                              .products[index]
+                                              .defaultUnitName,
+                                          style: customisedStyle(
+                                              context,
+                                              Color(0xffA5A5A5),
+                                              FontWeight.w400,
+                                              14.0),
+                                        ),
+                                      ]),
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.only(right: 5.0),
+                                    child: Text(
+                                      "SR",
+                                      style: customisedStyle(
+                                          context,
+                                          Color(0xffA5A5A5),
+                                          FontWeight.w400,
+                                          15.0),
                                     ),
-                                  ],
-                                ),
-                              ));
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            DividerStyle(),
-                      )),
+                                  ),
+                                  Text(
+                                    roundStringWith(productController.products[index]
+                                        .defaultSalesPrice),
+                                    style: customisedStyle(
+                                        context,
+                                        Color(0xff000000),
+                                        FontWeight.w500,
+                                        15.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                    );
+                  }, separatorBuilder: (BuildContext context, int index) =>
+                    DividerStyle(),
+                ))
+
+
+
+            ),
           )),
+
         ],
       ),
       bottomNavigationBar: Padding(

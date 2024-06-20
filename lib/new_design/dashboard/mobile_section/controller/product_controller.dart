@@ -11,8 +11,26 @@ import 'package:http/http.dart' as http;
 import 'package:file/file.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:path/path.dart' as p;
 import '../model/group_model_class.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:file/file.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:rassasy_new/new_design/dashboard/product/detail/select_category_new.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:rassasy_new/global/global.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+import 'package:get/get.dart';
 
 
 class ProductController extends GetxController {
@@ -28,6 +46,7 @@ class ProductController extends GetxController {
   TextEditingController salesPriceController = TextEditingController();
   TextEditingController taxPriceController = TextEditingController();
   TextEditingController execiveTaxPriceController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   TextEditingController purchasePriceController = TextEditingController();
   FocusNode nameFCNode = FocusNode();
   FocusNode descriptionFcNode = FocusNode();
@@ -39,6 +58,8 @@ class ProductController extends GetxController {
   int taxID=0;
   int execiveID=0;
   int groupID=0;
+  var defaultTaxId = 1;
+  var defaultTaxName = "None";
 @override
   void onInit() {
     // TODO: implement onInit
@@ -156,7 +177,8 @@ var isGroupLoading=false.obs;
 var isGst=false;
 var createPermission=false;
 var isExcise=false;
-var isSingleLoading=false;
+var isSingleLoading=false.obs;
+var isEditLoading=false.obs;
 
 ///list products
   void fetchProducts(String search) async {
@@ -247,6 +269,9 @@ var isSingleLoading=false;
         Get.snackbar('Success', 'Product deleted successfully');
       } else if (status == 6001) {
         var message = jsonResponse["message"] ?? "An error occurred";
+        Get.snackbar('Error', message);
+      }else if (status == 6002) {
+        var message = jsonResponse["error"]??jsonResponse["message"] ;
         Get.snackbar('Error', message);
       }
     } catch (e) {
@@ -458,6 +483,7 @@ var isSingleLoading=false;
         isProductLoading.value=false;
      clearData();
        /// defaultValue();
+         Get.back();
         fetchProducts('');
       } else if (status == 6001) {
         final msg = n["message"] ?? "";
@@ -534,137 +560,231 @@ var isSingleLoading=false;
 
 
   ///singleview for edit products
-  // Future<Null> getProductSingleView(String id) async {
+  Future<void> getProductSingleView(String id) async {
+    try {
+      isSingleLoading.value=true;
+
+      print("2");
+      final prefs = await SharedPreferences.getInstance();
+      final userID = prefs.getInt('user_id') ?? 0;
+      final accessToken = prefs.getString('access') ?? '';
+      final companyID = prefs.getString('companyID') ?? '0';
+      final branchID = prefs.getInt('branchID') ?? 1;
+
+
+      print("3");
+      final baseUrl = BaseUrl.baseUrl;
+      final url = '$baseUrl/posholds/single/product/$id/';
+      print(url);
+      final data = {
+        "CompanyID": companyID,
+      };
+      print("4");
+      print(data);
+      //encode Map to JSON
+      final body = json.encode(data);
+      final response = await http.post(Uri.parse(url),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $accessToken',
+          },
+          body: body);
+      print("5   $accessToken");
+      print(response.statusCode);
+
+      final n = json.decode(utf8.decode(response.bodyBytes));
+      final status = n["StatusCode"];
+      final responseJson = n["data"];
+      print(responseJson);
+
+      print("6");
+      print(responseJson);
+      if (status == 6000) {
+        isSingleLoading.value=false;
+        imageSelect2 = false;
+        imageSelect = false;
+        imageSelect3 = false;
+
+        final checkVat = prefs.getBool("checkVat") ?? false;
+        final checkGst = prefs.getBool("check_GST") ?? false;
+
+        if (checkVat == true) {
+          taxID = responseJson['VatID'];
+          taxPriceController.text = responseJson['VAT_TaxName'];
+          execiveTaxPriceController.text = responseJson['VAT_TaxName'];
+          execiveID = responseJson['VatID'];
+
+          final exciseData = responseJson["ExciseTaxData"] ?? '';
+          print("------------------------asd");
+          if (exciseData != '') {
+            print("------------------------dsa");
+            execiveTaxPriceController.text = exciseData["TaxName"] ?? '';
+            productExciseTaxID = exciseData["TaxID"] ?? 6;
+          } else {
+            productExciseTaxID = taxID;
+            execiveTaxPriceController.text = defaultTaxName;
+          }
+        }
+
+        if (checkGst == true) {
+          productTaxID = responseJson['GST_ID'];
+          taxPriceController.text = responseJson['GST_TaxName'];
+        }
+
+
+        categoryID = responseJson['ProductGroupID'];
+
+        isInclusiveNotifier.value = responseJson['is_inclusive'];
+        productNameController.text = responseJson['ProductName'];
+        salesPriceController.text = responseJson['DefaultSalesPrice'].toString();
+        purchasePriceController.text =        responseJson['DefaultPurchasePrice'].toString();
+        descriptionController.text = responseJson['Description'];
+        groupController.text = responseJson['GroupName'];
+
+        final imgData = responseJson["ProductImage"] ?? '';
+        final imgData2 = responseJson["ProductImage2"] ?? '';
+        final imgData3 = responseJson["ProductImage3"] ?? '';
+
+        // if (imgData != '') {
+        //   loadImage(imgData, 1);
+        // }
+        // if (imgData2 != '') {
+        //   loadImage(imgData2, 2);
+        // }
+        // if (imgData3 != '') {
+        //   loadImage(imgData3, 3);
+        // }
+
+
+      } else if (status == 6001) {
+        isSingleLoading.value=false;
+        final msg = n["error"] ?? '';
+        Get.snackbar('Error', msg);
+
+      } else {
+        isSingleLoading.value=false;
+        // DB Error
+      }
+    } catch (e) {
+      isSingleLoading.value=false;
+      print('Error In Loading: $e');
+      Get.snackbar('Error', e.toString());
+    }
+  }
+  // Future<File> getFileFromNetworkImage(String imageUrl) async {
+  //   var response = await http.get(Uri.parse(imageUrl));
+  //   final documentDirectory = await getApplicationDocumentsDirectory();
+  //   String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+  //   File file = File(p.join(documentDirectory.path, '$fileName.png'));
+  //   file.writeAsBytes(response.bodyBytes);
+  //   return file;
+  // }
+  // loadImage(image, type) async {
   //   try {
-  //     print("1");
-  //
-  //     print("2");
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     var userID = prefs.getInt('user_id') ?? 0;
-  //     var accessToken = prefs.getString('access') ?? '';
-  //     var companyID = prefs.getString('companyID') ?? 0;
-  //     var branchID = prefs.getInt('branchID') ?? 1;
-  //
-  //
-  //
-  //
-  //
-  //     print("3");
-  //     String baseUrl = BaseUrl.baseUrl;
-  //     final url = '$baseUrl/posholds/single/product/$productUID/';
-  //     print(url);
-  //     Map data = {
-  //       "CompanyID": companyID,
-  //     };
-  //     print("4");
-  //     print(data);
-  //     //encode Map to JSON
-  //     var body = json.encode(data);
-  //     var response = await http.post(Uri.parse(url),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           'Authorization': 'Bearer $accessToken',
-  //         },
-  //         body: body);
-  //     print("5   $accessToken");
-  //     print(response.statusCode);
-  //
-  //     Map n = json.decode(utf8.decode(response.bodyBytes));
-  //     var status = n["StatusCode"];
-  //     var responseJson = n["data"];
-  //     print(responseJson);
-  //
-  //     print("6");
-  //     print(responseJson);
-  //     if (status == 6000) {
-  //
-  //
-  //
-  //
-  //         imageSelect2 = false;
-  //         imageSelect = false;
-  //         imageSelect3 = false;
-  //
-  //         var checkVat = prefs.getBool("checkVat") ?? false;
-  //         var checkGst = prefs.getBool("check_GST") ?? false;
-  //
-  //         if (checkVat == true) {
-  //           productTaxID = responseJson['VatID'];
-  //           taxController.text = responseJson['VAT_TaxName'];
-  //           exciseTaxController.text = responseJson['VAT_TaxName'];
-  //           productExciseTaxID = responseJson['VatID'];
-  //
-  //           var exciseData = responseJson["ExciseTaxData"]??"";
-  //           print("------------------------asd");
-  //           if(exciseData !=""){
-  //             print("------------------------dsa");
-  //             exciseTaxController.text = exciseData["TaxName"]??"";
-  //             productExciseTaxID = exciseData["TaxID"]??6;
-  //           }
-  //           else{
-  //             productExciseTaxID = defaultTaxId;
-  //             exciseTaxController.text = defaultTaxName;
-  //
-  //           }
-  //         }
-  //
-  //         if (checkGst == true) {
-  //
-  //           productTaxID = responseJson['GST_ID'];
-  //           taxController.text = responseJson['GST_TaxName'];
-  //
-  //         }
-  //
-  //         stop();
-  //         categoryID = responseJson['ProductGroupID'];
-  //
-  //
-  //         isInclusiveNotifier.value = responseJson['is_inclusive'];
-  //         nameController.text = responseJson['ProductName'];
-  //         salesPriceController.text = responseJson['DefaultSalesPrice'].toString();
-  //         purchasePriceController.text = responseJson['DefaultPurchasePrice'].toString();
-  //         descriptionController.text = responseJson['Description'];
-  //         categoryController.text = responseJson['GroupName'];
-  //
-  //
-  //         var imgData = responseJson["ProductImage"] ?? '';
-  //         var imgData2 = responseJson["ProductImage2"] ?? '';
-  //         var imgData3 = responseJson["ProductImage3"] ?? '';
-  //
-  //         if (imgData == '') {
-  //         } else {
-  //           loadImage(imgData, 1);
-  //         }
-  //         if (imgData2 == '') {
-  //         } else {
-  //           loadImage(imgData2, 2);
-  //         }
-  //
-  //         if (imgData3 == '') {
-  //         } else {
-  //           loadImage(imgData3, 3);
-  //         }
-  //
-  //
-  //
-  //         stop();
-  //
-  //     } else if (status == 6001) {
-  //       stop();
-  //       var msg = n["error"]??"";
-  //       dialogBox(context, msg.toString());
+  //     final file = await getFileFromNetworkImage(image);
+  //     if (type == 1) {
+  //       imageSelect = true;
+  //       imgFile = file;
+  //     } else if (type == 2) {
+  //       imageSelect2 = true;
+  //       imgFile2 = file;
+  //     } else {
+  //       imageSelect3 = true;
+  //       imgFile3 = file;
   //     }
-  //     //DB Error
-  //     else {
-  //       stop();
-  //     }
-  //   }
-  //     catch (e) {
-  //       setState(() {
-  //         stop();
-  //       });
-  //
-  //   }
+  //   } catch (e) {}
   // }
 
+  Future<void> editProduct(String id) async {
+    try {
+      isEditLoading.value=true;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var userID = prefs.getInt('user_id') ?? 0;
+      var accessToken = prefs.getString('access') ?? '';
+      var companyID = prefs.getString('companyID') ?? '0';
+      var branchID = prefs.getInt('branchID') ?? 1;
+
+      var type = veg == true ? "veg" : "Non-veg";
+
+      var val = isInclusiveNotifier.value == true ? 'True' : 'False';
+      var price = "0.00";
+
+      if (salesPriceController.text.isNotEmpty) {
+        price = salesPriceController.text;
+      }
+      var purchasePrice = "0.00";
+
+      if (purchasePriceController.text.isNotEmpty) {
+        purchasePrice = purchasePriceController.text;
+      }
+
+      String baseUrl = BaseUrl.baseUrl;
+      final url = '$baseUrl/posholds/edit/product/$id/';
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.fields.addAll({
+        "SalesPrice": price,
+        "PurchasePrice": purchasePriceController.text,
+        "BranchID": branchID.toString(),
+        "CreatedUserID": userID.toString(),
+        "CompanyID": companyID,
+        "VegOrNonVeg": type,
+        "ProductName": productNameController.text,
+        "ProductGroupID": groupID.toString(),
+        "Description": descriptionController.text,
+        "Price": purchasePrice,
+        "TaxID": taxID.toString(),
+        "is_inclusive": val,
+        "ExciseTaxID": execiveID.toString(),
+      });
+
+      if (imageSelect) {
+        request.files.add(await http.MultipartFile.fromPath('productImage1', imgFile!.path));
+      }
+      if (imageSelect2) {
+        request.files.add(await http.MultipartFile.fromPath('productImage2', imgFile2!.path));
+      }
+      if (imageSelect3) {
+        request.files.add(await http.MultipartFile.fromPath('productImage3', imgFile3!.path));
+      }
+
+      request.headers.addAll(headers);
+      final streamResponse = await request.send();
+      final response = await http.Response.fromStream(streamResponse);
+      Map n = json.decode(utf8.decode(response.bodyBytes));
+
+      var status = n["StatusCode"];
+      if (status == 6000) {
+
+        isEditLoading.value=false;
+        isInclusiveNotifier.value = false;
+
+        veg = false;
+        imageSelect = false;
+        imageSelect2 = false;
+        imageSelect3 = false;
+        var msg = n["message"] ?? '';
+        Get.dialog(msg);
+       /// addNewProduct = false;
+        Get.back();
+        clearData();
+        print("ghdfdfgdfgdffffffffffffdhfhghf");
+      //  edit = false;
+      //  defaultValue();
+        fetchProducts('');
+      } else if (status == 6001) {
+        var msg = n["message"] ?? '';
+        Get.dialog(msg);
+        isEditLoading.value=false;
+      }
+    } catch (e) {
+
+      isEditLoading.value=false;
+    }
+  }
 }
