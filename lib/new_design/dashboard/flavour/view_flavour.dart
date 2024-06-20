@@ -30,7 +30,7 @@ class _ViewFlavourState extends State<ViewFlavour> {
   var networkConnection = true;
   TextEditingController searchController = TextEditingController();
   TextEditingController flavourNameController = TextEditingController();
-  createFlavourApi(type,id) async {
+  createFlavourApi(type,id) async  {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       stop();
@@ -227,7 +227,8 @@ class _ViewFlavourState extends State<ViewFlavour> {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
         stop();
-    } else {
+    }
+    else {
       try {
         start(context);
         HttpOverrides.global = MyHttpOverrides();

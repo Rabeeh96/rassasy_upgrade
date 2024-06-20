@@ -16,6 +16,8 @@ import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/usb_test_page.dart';
 import 'package:rassasy_new/new_design/back_ground_print/print_details/detailed_print_page.dart';
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
+import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
+import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/pos_page.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
@@ -2216,6 +2218,68 @@ class _DashboardNewState extends State<DashboardNew> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
                                     'Customer List',
+                                    style: customisedStyle(context,
+                                        Colors.black, FontWeight.w400, 16.0),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 18,
+                                  color: Colors.black,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(FlavourListMobile());
+                        },
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(
+                                    'FlavourListMobile',
+                                    style: customisedStyle(context,
+                                        Colors.black, FontWeight.w400, 16.0),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 18,
+                                  color: Colors.black,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(TaxListMobile());
+                        },
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(
+                                    'TaxListMobile',
                                     style: customisedStyle(context,
                                         Colors.black, FontWeight.w400, 16.0),
                                   ),

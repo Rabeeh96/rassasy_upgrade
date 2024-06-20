@@ -270,6 +270,9 @@ var isEditLoading=false.obs;
       } else if (status == 6001) {
         var message = jsonResponse["message"] ?? "An error occurred";
         Get.snackbar('Error', message);
+      }else if (status == 6002) {
+        var message = jsonResponse["error"]??jsonResponse["message"] ;
+        Get.snackbar('Error', message);
       }
     } catch (e) {
       Get.snackbar('Error', 'An error occurred');

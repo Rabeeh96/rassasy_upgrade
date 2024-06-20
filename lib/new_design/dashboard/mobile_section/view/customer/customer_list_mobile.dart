@@ -62,7 +62,7 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                          controller: customerController.searchController,
                         onChanged: (str) {
                           customerController.searchData(str);
-                          customerController.customerModelClass.clear();
+
                           customerController.getCustomerListDetails();
                         },
                         style: customisedStyle(
@@ -98,9 +98,7 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
               child: RefreshIndicator(
             color: Color(0xffF25F29),
             onRefresh: () async {
-              // Implement the logic to refresh data here
-              ///   productGroupController.getProductListDetails();
-              //     .fetchProducts(''); // Assuming you pass the token here
+              customerController.getCustomerListDetails();
             },
             child: Obx(() => customerController.isLoading.value
                 ? const Center(
@@ -202,6 +200,19 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                                       right: 10,
                                     ),
                                     child: ListTile(
+                                      leading: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Colors.grey[300],
+                                        backgroundImage: customerController
+                                            .customerModelClass[index]
+                                            .partyImage ==
+                                            ''
+                                            ? NetworkImage(
+                                            'https://www.gravatar.com/avatar/$index?s=46&d=identicon&r=PG&f=1')
+                                            : NetworkImage(BaseUrl.imageURL +
+                                            customerController
+                                                .customerModelClass[index].partyImage),
+                                      ),
                                       title: Text(
                                         customerController
                                             .customerModelClass[index]
