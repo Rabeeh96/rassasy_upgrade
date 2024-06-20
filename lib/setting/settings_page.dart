@@ -317,7 +317,7 @@ class _SettingsPageState extends State<SettingsPage> {
       time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
       printForCancellOrder = prefs.getBool('print_for_cancel_order') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
-
+      _selectedOption= prefs.getString('PrintType') ?? "Wifi";
 
 
 
@@ -329,11 +329,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
       if(printType =="Wifi"){
         print_type_value = true;
+
+
       }
       else{
         print_type_value = false;
       }
-      capabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
+      capabilitiesController.text = prefs.getString('default_capabilities') ?? "XP-N160I";
       codePageController.text = prefs.getString('default_code_page') ?? "CP864";
       defaultSalesInvoiceController.text = prefs.getString('defaultIP') ?? "";
       defaultSalesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
@@ -348,9 +350,6 @@ class _SettingsPageState extends State<SettingsPage> {
       show_username_kot = prefs.getBool("show_username_kot")??false;
       hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
       extraDetailsInKOT = prefs.getBool("extraDetailsInKOT")??false;
-
-
-
 
     });
   }
@@ -1071,14 +1070,100 @@ class _SettingsPageState extends State<SettingsPage> {
         )
     );
   }
+  String _selectedOption = "Wifi";
+
+  Widget dropDown() {
+    return Container(
+      // height: MediaQuery.of(context).size.height / 12,
+        width: MediaQuery.of(context).size.width / 1.1,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color:Colors.transparent),
+        ),
+        child: Padding(
+          padding:
+          const EdgeInsets.only(left: 13, bottom: 0, top: 0, right: 13),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+
+            children: [
+              const SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("select_printer_type".tr,style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
+                  DropdownButton<String>(
+                    hint: const Text('Select an option'),
+                    value: _selectedOption,
+                    onChanged: (String? newValue) async{
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      setState(() {
+                        _selectedOption = newValue!;
+                        defaultSalesInvoiceController.clear();
+                        defaultSalesOrderController.clear();
+                        prefs.setString("PrintType", newValue);
+
+                      //   if (newValue == "Wifi") {
+                      //     defaultSalesInvoiceController.clear();
+                      //     defaultSalesOrderController.clear();
+                      //     prefs.setString("PrintType", "Wifi");
+                      //   }
+                      //
+                      //  else if (newValue == "USB") {
+                      //     defaultSalesInvoiceController.clear();
+                      //     defaultSalesOrderController.clear();
+                      //     prefs.setString("PrintType", "USB");
+                      //   }
+                      //
+                      //   else {
+                      //     defaultSalesInvoiceController.clear();
+                      //     defaultSalesOrderController.clear();
+                      //     prefs.setString("PrintType", "BT");
+                      //     /// bluetooth commented
+                      //     // prefs.setString("PrintType", "BT");
+                      //
+                      // }
+                      //
+                      });
+                    },
+                    items: <String>['Wifi','USB','BT']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(value,style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0)),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+
+            ],
+          ),
+        )
+    );
+  }
+
+
+
   Widget printerScreen() {
     return Container(
       child: Column(
         children: [
 
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 10.0,bottom: 15),
+          //   child: defaultPrinterNew(),
+          // ),
+
           Padding(
             padding: const EdgeInsets.only(top: 10.0,bottom: 15),
-            child: defaultPrinterNew(),
+            child: dropDown(),
           ),
 
           /// commented template selection
@@ -1162,6 +1247,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       // const SizedBox(
                       //   width: 20,
                       // ),
+
+                      _selectedOption !='BT'?
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -1184,7 +1271,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             style: customisedStyle(context, template3Text, FontWeight.w700, 22.0),
                           ),
                         ),
-                      ),
+                      ):Container(),
                       const SizedBox(
                         width: 20,
                       ),
@@ -6334,7 +6421,7 @@ class _SettingsPageState extends State<SettingsPage> {
             child: ListView(children: <Widget>[
               SelectableText(
                 """The privacy policy will help you understand how we uses and protects the data you provide to us when you visit and use (“Application “,”service”).\n\nWe reserve the right to change this policy at any given time, of which you will be promptly updated. If you want to make sure that you are up to date with the latest changes, we advise you to frequently visit this page
-           
+
 """,
                 textAlign: TextAlign.justify,
                 style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
@@ -6356,7 +6443,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
               SelectableText(
                 """When you visit the Application, you may collect the following data  \n \u2022 Your IP addresses \n \u2022 Your contact information and email address \n \u2022 Other information such as interests and preference \n \u2022 Data profile_mobile regarding your online behavior on our Application.
-   
+
 """,
                 textAlign: TextAlign.justify,
                   style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
@@ -6377,7 +6464,7 @@ class _SettingsPageState extends State<SettingsPage> {
               SelectableText(
                 """
 We are collecting your data for several reasons\n \u2022 To better understand your needs \n \u2022 To improve our services and products.\n \u2022 To send your promotional emails containing the information we think you will find interesting\n \u2022 To contact you to fulfill out surveys and participate in other types of market research.\n \u2022 To customize our application according to your online behavior and personal performance.
-   
+
 """,
                 textAlign: TextAlign.justify,
                 style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
@@ -6399,7 +6486,7 @@ We are collecting your data for several reasons\n \u2022 To better understand yo
               SelectableText(
                 """
 Our application is committed to securing your data and keeping it confidential The application has done all in its power to prevent data theft,unauthorized access and disclosure by implementing the latest technologies and software, which help us safeguard all the information we collect online.
-   
+
 """,
                 textAlign: TextAlign.justify,
                 style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),

@@ -134,6 +134,14 @@ showDatePickerFunction(context,ValueNotifier dateNotifier) {
     ),
   );
 }
+dividerStyleFull(){
+  return Container(
+    height: 1,
+    width: double.infinity,
+    decoration: const BoxDecoration(
+      color: Color(0xffE9E9E9))
+  );
+}
 
  DividerStyle(){
   // Color(0xffE8E8E8): Color(0xff1C3347)

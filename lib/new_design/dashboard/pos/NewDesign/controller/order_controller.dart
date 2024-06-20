@@ -862,17 +862,30 @@ class OrderController extends GetxController {
 
   checking(int proID) {
     for (var i = 0; i < orderItemList.length; i++) {
-      if (orderItemList[i]["PriceListID"] == proID) {
+      if (orderItemList[i]["ProductID"] == proID) {
         return [true, i];
       }
     }
     return [false, 0];
   }
 
+
   returnQuantity(int index) {
     var qty = orderItemList[index]["Qty"];
     return qty;
   }
+
+  checkAndReturnQty(int proID) {
+    for (var i = 0; i < orderItemList.length; i++) {
+      if (orderItemList[i]["ProductID"] == proID) {
+
+        return orderItemList[i]["Qty"];
+      }
+    }
+    return "Add";
+  }
+
+
 
   totalAmount() {
     double totalNet = 0;
@@ -1413,7 +1426,8 @@ class OrderController extends GetxController {
         url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
       }
 
-      print("--------------------------orderTime    --------------------------orderTime   --------------------------   $orderTime");
+      print("--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $printAfterOrder");
+
       Map data = {
         "Table": tableID,
         "EmployeeID": employeeID,
@@ -1489,6 +1503,7 @@ class OrderController extends GetxController {
         var id = n["OrderID"];
 
         Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
+
         if (printAfterOrder) {
           /// printing section
           posController.printSection(

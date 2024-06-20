@@ -207,7 +207,12 @@ class POSPaymentController extends GetxController {
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$selectedDateAndTime";
         dateOnly.value = convertedDate.substring(0, 10);
-        print("cash account after date");
+        print("printSave   before $printSave");
+        if(printSave ==false){
+          printSave = prefs.getBool("printAfterPayment") ?? false;
+        }
+
+        print("printSave   after $printSave");
         // var loyalty;
         // if (loyaltyCustomerID == 0) {
         //   loyalty = null;

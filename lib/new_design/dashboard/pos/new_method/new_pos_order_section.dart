@@ -703,7 +703,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var ret = await printHelper.printDetails();
         if (ret == 2) {
           var ip = "";
-          if (PrintDataDetails.type == "SO") {
+          if (PrintDataDetails.type =="SO") {
             ip = defaultOrderIP;
           }
           else {
@@ -713,9 +713,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         } else {
           dialogBox(context, 'Please try again later');
         }
-      } else {
+      }
 
-        print("usb 1");
+      else if(printType == 'USB') {
         var ret = await printHelperUsb.printDetails();
         if (ret == 2) {
           var ip = "";
@@ -729,23 +729,26 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           dialogBox(context, 'Please try again later');
         }
         /// commented bluetooth print option
-        // var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
-        // if (loadData) {
-        //   var printStatus = await bluetoothHelper.scan();
-        //
-        //   if (printStatus == 1) {
-        //     dialogBox(context, "Check your bluetooth connection");
-        //   } else if (printStatus == 2) {
-        //     dialogBox(context, "Your default printer configuration problem");
-        //   } else if (printStatus == 3) {
-        //     await bluetoothHelper.scan();
-        //     // alertMessage("Try again");
-        //   } else if (printStatus == 4) {
-        //     //  alertMessage("Printed successfully");
-        //   }
-        // } else {
-        //   dialogBox(context, "Try again");
-        // }
+
+      }
+      else{
+        var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
+        if (loadData) {
+          var printStatus = await bluetoothHelper.scan(false);
+
+          if (printStatus == 1) {
+            dialogBox(context, "Check your bluetooth connection");
+          } else if (printStatus == 2) {
+            dialogBox(context, "Your default printer configuration problem");
+          } else if (printStatus == 3) {
+            await bluetoothHelper.scan(false);
+            // alertMessage("Try again");
+          } else if (printStatus == 4) {
+            //  alertMessage("Printed successfully");
+          }
+        } else {
+          dialogBox(context, "Try again");
+        }
       }
     }
   }
@@ -757,11 +760,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       var printType = prefs.getString('PrintType') ?? 'Wifi';
       if (printType == 'Wifi') {
         printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
-      } else {
-        printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
-        /// commented bluetooth
-        // print("_____________________123123123123");
-        // bluetoothHelper.bluetoothPrintKOT(context, false, orderID);
+      }
+      else if (printType == 'USB') {
+        printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
+      }
+      else {
+        /// kot is not fully completed
+      ///  bluetoothHelper.bluetoothPrintKOT(orderID, rePrint, cancelList, isUpdate, false);
       }
     } catch (e) {
       print(e.toString());
@@ -5273,7 +5278,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         if (status == 6000) {
           stop();
           var id = n["OrderID"];
-
 
 
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);

@@ -213,8 +213,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         var userRollData = n["data"] ?? [];
         if (status == 6000) {
           for (var i = 0; i < userRollData.length; i++) {
-            if (userRollData[i]["Key"] == "other" ||
-                userRollData[i]["Key"] == "report") {
+            if (userRollData[i]["Key"] == "other"|| userRollData[i]["Key"] == "report") {
               prefs.setBool(userRollData[i]["Name"], userRollData[i]["Value"]);
             } else {
               prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"],

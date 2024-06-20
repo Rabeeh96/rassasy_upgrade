@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
+import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
+import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/pos_list_model.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/service/pos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -277,23 +279,31 @@ final isLoadTable=false.obs;
         fetchAllData();
 
         /// print section commented
-        if (printForCancelOrder) {
 
-         printSection(
-              context: context,
-              id: orderID,
-              isCancelled: false,
-              voucherType: "SO");
 
-         // await printDetail(true);
+        print("cancelReasonId  cancelReasonId cancelReasonId  $cancelReasonId");
+
+        if(cancelReasonId !=""){
+          if (printForCancelOrder){
+            printSection(
+                context: context,
+                id: orderID,
+                isCancelled: false,
+                voucherType: "SO"
+            );
+            // await printDetail(true);
+          }
         }
+
         // if (orderID != "") {
         //   await ReprintKOT(orderID, true);
         // }
-      } else if (status == 6001) {
+      }
+      else if (status == 6001) {
         var msg = responseData["message"];
         Get.snackbar('Error', msg); // Show error message
-      } else {
+      }
+      else {
         // Handle other cases
       }
     } catch (e) {
@@ -305,6 +315,7 @@ final isLoadTable=false.obs;
 
   var printHelperUsb = USBPrintClass();
   var printHelperIP = AppBlocs();
+  var bluetoothHelper =   AppBlocsBT();
 
 
 
@@ -314,7 +325,8 @@ final isLoadTable=false.obs;
       var printType = prefs.getString('PrintType') ?? 'Wifi';
       if (printType == 'Wifi') {
         printHelperIP.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
-      } else {
+      }
+      else {
         printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
       }
     } catch (e) {
@@ -326,10 +338,13 @@ final isLoadTable=false.obs;
   printSection({required BuildContext context,required String voucherType,required String id,required bool isCancelled})async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
       var defaultIp = prefs.getString('defaultIP') ?? '';
-      var printType = prefs.getString('PrintType') ?? 'Wifi';
+
+       var printType = prefs.getString('PrintType') ?? 'Wifi';
+
       var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
       if (defaultIp == "") {
-        dialogBox(context,"Please select a default printer");
+        popAlert(head: "Warning", message: "Please select a default printer", position: SnackPosition.TOP);
+
       } else {
         if (printType == 'Wifi') {
           PrintDataDetails.type = voucherType;
@@ -343,12 +358,16 @@ final isLoadTable=false.obs;
             } else {
               ip = defaultIp;
             }
-
             printHelperIP.print_receipt(ip, context, isCancelled);
           } else {
-            dialogBox(context, 'Please try again later1');
+            popAlert(head: "Error", message: "Error on loading Data ! Please try again later", position: SnackPosition.TOP);
+
+
           }
-        } else {
+        }
+        else  if (printType == 'USB'){
+          PrintDataDetails.type = voucherType;
+          PrintDataDetails.id = id;
           print("usb 1");
           var ret = await printHelperUsb.printDetails();
           if (ret == 2) {
@@ -360,10 +379,43 @@ final isLoadTable=false.obs;
             }
             printHelperUsb.printReceipt(ip, context);
           } else {
-            dialogBox(context, 'Please try again later');
+            popAlert(head: "Error", message: "Error on loading Data ! Please try again later", position: SnackPosition.TOP);
+
+
           }
 
         }
+        else{
+          PrintDataDetails.type = voucherType;
+          PrintDataDetails.id = id;
+          var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
+          if(loadData){
+            var printStatus =await bluetoothHelper.scan(isCancelled);
+
+            if(printStatus ==1){
+              popAlert(head: "Alert", message: "Check your bluetooth connection", position: SnackPosition.TOP);
+            }
+            else if(printStatus ==2){
+              popAlert(head: "Alert", message: "Your default printer configuration problem", position: SnackPosition.TOP);
+
+            }
+            else if(printStatus ==3){
+              await bluetoothHelper.scan(isCancelled);
+              // alertMessage("Try again");
+            }
+            else if(printStatus ==4){
+              //  alertMessage("Printed successfully");
+            }
+          }
+          else{
+            popAlert(head: "Error", message: "Error on loading Data ! Please try again later", position: SnackPosition.TOP);
+
+          }
+
+        }
+
+
+
       }
 
   }
