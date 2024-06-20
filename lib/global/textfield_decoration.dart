@@ -363,4 +363,25 @@ suffixIcon: Icon(Icons.keyboard_arrow_down,color: Colors.black,),
         fillColor: const Color(0xffFDFDFD));
 
   }
+
+  static InputDecoration mobileTextfieldMandatoryIc(
+      {String labelTextStr = "", String hintTextStr = ""}) {
+    return InputDecoration(
+
+        enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xffe7e7e7))),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffe7e7e7))),
+        disabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xffe7e7e7))),
+        contentPadding:const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+        filled: true,
+
+        suffixIcon: IconButton(icon: SvgPicture.asset('assets/svg/asterisk.svg'),onPressed: (){},),
+        hintStyle: const TextStyle(color: Color(0xff878787),fontSize: 14),
+        hintText: hintTextStr,
+        fillColor: const Color(0xffFDFDFD));
+
+  }
+
 }

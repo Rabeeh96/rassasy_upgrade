@@ -515,6 +515,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                       style: customisedStyle(
                           context, Colors.black, FontWeight.w500, 14.0)),
 
+
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: MediaQuery.of(context).size.height / 17,
@@ -545,7 +546,6 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                               );
                             }).toList(),
                             onChanged: (newValue) {
-                              print("newggggggggggggg :$newValue");
                               generalController.compensationHour = newValue!;
                               generalController.updateList(
                                 apiKeyValue: 'CompensationHour',
@@ -561,8 +561,64 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ],
               ),
             ),
+            SizedBox(height: 8,),
+      // Container(
+      //   width: MediaQuery.of(context).size.width / 1.2,
+      //   height: MediaQuery.of(context).size.height / 17,
+      //   decoration: BoxDecoration(
+      //     border: Border.all(color: Color(0xffe9e9e9)),
+      //   ),
+      //   child: Padding(
+      //     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      //     child: Row(
+      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //       children: [
+      //         Expanded(
+      //           child: ValueListenableBuilder<String>(
+      //             valueListenable: generalController.compensationHourNotifier,
+      //             builder: (context, value, child) {
+      //               return DropdownButton<String>(
+      //                 value: value,
+      //                 underline: Container(),
+      //                 icon: SizedBox.shrink(),
+      //                 items: generalController.dropdownValues.map((String value) {
+      //                   return DropdownMenuItem<String>(
+      //                     value: value,
+      //                     child: Text(
+      //                       "$value Hour",
+      //                       style: customisedStyle(
+      //                         context,
+      //                         const Color(0xffF25F29),
+      //                         FontWeight.normal,
+      //                         15.0,
+      //                       ),
+      //                     ),
+      //                   );
+      //                 }).toList(),
+      //                 onChanged: (newValue) {
+      //                   generalController.compensationHour = newValue!;
+      //                   generalController.compensationHourNotifier.value = newValue; // Update the ValueNotifier
+      //                   generalController.updateList(
+      //                     apiKeyValue: 'CompensationHour',
+      //                     apiData: newValue,
+      //                     sharedPreferenceKey: 'CompensationHour',
+      //                   );
+      //                 },
+      //               );
+      //             },
+      //           ),
+      //         ),
+      //         Icon(
+      //           Icons.arrow_drop_down,
+      //           color: const Color(0xff000000),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // )
 
-          ],
+
+      ],
         ),
       ),
     );
