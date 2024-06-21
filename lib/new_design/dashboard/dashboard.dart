@@ -69,6 +69,7 @@ class _DashboardNewState extends State<DashboardNew> {
       } else {
         Get.updateLocale(const Locale('en', 'US'));
       }
+      baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
 
       userName = prefs.getString('user_name') ?? '';
       companyName = prefs.getString('companyName') ?? '';
