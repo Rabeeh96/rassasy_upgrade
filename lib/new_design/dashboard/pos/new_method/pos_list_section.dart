@@ -2700,6 +2700,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         print(url);
         Map data = {"CompanyID": companyID, "BranchID": branchID, "type": "user", "paid": showInvoice};
         print(data);
+        print(accessToken);
         //encode Map to JSON
         var body = json.encode(data);
 
@@ -2760,7 +2761,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             onlineOrderLists.clear();
             cancelReportList.clear();
             print("w");
-
             currency = prefs.getString('CurrencySymbol') ?? "";
             stop();
             if (statusTable == 6000) {

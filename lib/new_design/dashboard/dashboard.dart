@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,11 +74,11 @@ class _DashboardNewState extends State<DashboardNew> {
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
       expireDate = prefs.getString('expiryDate') ?? '';
-      organisationLogo = prefs.getString('companyLogo') ??
-          'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
+      organisationLogo = prefs.getString('companyLogo') ?? 'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
       settingsPermission = prefs.getBool('General Setting') ?? false;
     });
   }
+
   Future<Null> defaultData() async {
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -101,11 +101,7 @@ class _DashboardNewState extends State<DashboardNew> {
 
         final String url = '$baseUrl/users/get-default-values/';
         print(url);
-        Map data = {
-          "CompanyID": companyID,
-          "userId": userID,
-          "BranchID": branchID
-        };
+        Map data = {"CompanyID": companyID, "userId": userID, "BranchID": branchID};
         print(data);
         print(accessToken);
         //encode Map to JSON
@@ -141,11 +137,9 @@ class _DashboardNewState extends State<DashboardNew> {
             prefs.setBool("check_GST", settingsData["GST"]);
             prefs.setInt("Cash_Account", n["Cash_Account"] ?? 1);
             prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
-            prefs.setString(
-                "PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
+            prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
             prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
-            prefs.setBool(
-                "EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
+            prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
             prefs.setInt("user_type", n["user_type"]);
           });
           stop();
@@ -162,6 +156,7 @@ class _DashboardNewState extends State<DashboardNew> {
       }
     }
   }
+
   returnBool(String data) {
     if (data == "true") {
       return true;
@@ -169,6 +164,7 @@ class _DashboardNewState extends State<DashboardNew> {
       return false;
     }
   }
+
   Future<void> selectedItem(BuildContext context, item) async {
     switch (item) {
       case 0:
@@ -177,8 +173,7 @@ class _DashboardNewState extends State<DashboardNew> {
         break;
       case 1:
         if (settingsPermission) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const SettingsPage()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsPage()));
         } else {
           dialogBoxPermissionDenied(context);
         }
@@ -188,8 +183,7 @@ class _DashboardNewState extends State<DashboardNew> {
         company_info(context);
         break;
       case 3:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfilePage()));
 
         break;
 
@@ -264,10 +258,7 @@ class _DashboardNewState extends State<DashboardNew> {
               ),
               Text(
                 companyName,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold),
+                style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
@@ -287,8 +278,7 @@ class _DashboardNewState extends State<DashboardNew> {
               ),
               Text(
                 'call_us'.tr,
-                style: const TextStyle(
-                    color: Colors.blueAccent, fontWeight: FontWeight.w700),
+                style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w700),
               ),
               const SizedBox(
                 height: 4,
@@ -362,9 +352,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-
-     bool isTablet = screenWidth >defaultScreenWidth;
-
+    bool isTablet = screenWidth > defaultScreenWidth;
 
     return Scaffold(
       appBar: isProfileNotifier.value
@@ -374,8 +362,7 @@ class _DashboardNewState extends State<DashboardNew> {
           : AppBar(
               elevation: 0.0,
               automaticallyImplyLeading: false,
-              backgroundColor:
-                  isTablet == true ? Color(0xffF3F3F3) : Colors.white,
+              backgroundColor: isTablet == true ? Color(0xffF3F3F3) : Colors.white,
               titleSpacing: 25,
               title: isTablet == true
                   ? Row(
@@ -383,16 +370,14 @@ class _DashboardNewState extends State<DashboardNew> {
                       children: [
                         Text(
                           'Dashboard'.tr,
-                          style: customisedStyle(
-                              context, Colors.black, FontWeight.normal, 24.0),
+                          style: customisedStyle(context, Colors.black, FontWeight.normal, 24.0),
                           //  style: TextStyle(color: Colors.black, fontSize: 24),
                         ),
                       ],
                     )
                   : Text(
                       'Home',
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w500, 20.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
                       //  style: TextStyle(color: Colors.black, fontSize: 24),
                     ),
               actions: [
@@ -662,11 +647,9 @@ class _DashboardNewState extends State<DashboardNew> {
                 isTablet == true
                     ? Theme(
                         data: Theme.of(context).copyWith(
-                            textTheme: const TextTheme()
-                                .apply(bodyColor: Colors.black),
+                            textTheme: const TextTheme().apply(bodyColor: Colors.black),
                             dividerColor: Colors.white,
-                            iconTheme:
-                                const IconThemeData(color: Colors.black)),
+                            iconTheme: const IconThemeData(color: Colors.black)),
                         child: PopupMenuButton<int>(
                           color: Colors.white,
                           itemBuilder: (context) => [
@@ -683,11 +666,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     ),
                                     Text(
                                       'Refresh'.tr,
-                                      style: customisedStyle(
-                                          context,
-                                          Colors.black,
-                                          FontWeight.normal,
-                                          14.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
                                 )),
@@ -708,11 +687,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     ),
                                     Text(
                                       'Settings'.tr,
-                                      style: customisedStyle(
-                                          context,
-                                          Colors.black,
-                                          FontWeight.normal,
-                                          14.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
                                 )),
@@ -730,11 +705,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     ),
                                     Text(
                                       'com_info'.tr,
-                                      style: customisedStyle(
-                                          context,
-                                          Colors.black,
-                                          FontWeight.normal,
-                                          14.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
                                 )),
@@ -752,11 +723,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     ),
                                     Text(
                                       'Profile'.tr,
-                                      style: customisedStyle(
-                                          context,
-                                          Colors.black,
-                                          FontWeight.normal,
-                                          14.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
                                 )),
@@ -774,11 +741,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     ),
                                     Text(
                                       "Print test page".tr,
-                                      style: customisedStyle(
-                                          context,
-                                          Colors.black,
-                                          FontWeight.normal,
-                                          14.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
                                 )),
@@ -796,11 +759,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                     ),
                                     Text(
                                       'user_log_out'.tr,
-                                      style: customisedStyle(
-                                          context,
-                                          Colors.black,
-                                          FontWeight.normal,
-                                          14.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
                                 )),
@@ -818,20 +777,26 @@ class _DashboardNewState extends State<DashboardNew> {
                       ),
               ],
             ),
-      body: networkConnection == true
-          ? isTablet == true
-              ? dashboardPage()
-              : dashboardPageMobile()
-          : noNetworkConnectionPage(),
+      //  body: networkConnection == true ? isTablet == true ? dashboardPage() : dashboardPageMobile() : noNetworkConnectionPage(),
+
+      body: DoubleBackToCloseApp(
+        snackBar: SnackBar(
+          backgroundColor: Colors.black,
+          content: Text('Tap back again to leave', style: customisedStyle(context, Colors.white, FontWeight.w400, 15.0)),
+        ),
+        child: networkConnection == true
+            ? isTablet == true
+                ? dashboardPage()
+                : dashboardPageMobile()
+            : noNetworkConnectionPage(),
+      ),
+
       bottomNavigationBar: isTablet == true
           ? Container(
               height: 1,
             )
           : Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                      top: BorderSide(color: Color(0xffE9E9E9), width: 1))),
+              decoration: const BoxDecoration(color: Colors.white, border: Border(top: BorderSide(color: Color(0xffE9E9E9), width: 1))),
               height: MediaQuery.of(context).size.height / 10,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -848,19 +813,12 @@ class _DashboardNewState extends State<DashboardNew> {
                       children: [
                         SvgPicture.asset(
                           "assets/svg/_mobhome.svg",
-                          color: isProfileNotifier.value
-                              ? Color(0xff9E9E9E)
-                              : Color(0xffF25F29),
+                          color: isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29),
                         ),
                         Text(
                           "Home",
-                          style: customisedStyleBold(
-                              context,
-                              isProfileNotifier.value
-                                  ? Color(0xff9E9E9E)
-                                  : Color(0xffF25F29),
-                              FontWeight.normal,
-                              12.0),
+                          style:
+                              customisedStyleBold(context, isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29), FontWeight.normal, 12.0),
                         )
                       ],
                     ),
@@ -879,21 +837,14 @@ class _DashboardNewState extends State<DashboardNew> {
                       children: [
                         SvgPicture.asset(
                           "assets/svg/profile_mob.svg",
-                          color: isProfileNotifier.value
-                              ? Color(0xffF25F29)
-                              : Color(0xff9E9E9E),
+                          color: isProfileNotifier.value ? Color(0xffF25F29) : Color(0xff9E9E9E),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 2.0),
                           child: Text(
                             'Profile'.tr,
                             style: customisedStyleBold(
-                                context,
-                                isProfileNotifier.value
-                                    ? Color(0xffF25F29)
-                                    : Color(0xff9E9E9E),
-                                FontWeight.normal,
-                                12.0),
+                                context, isProfileNotifier.value ? Color(0xffF25F29) : Color(0xff9E9E9E), FontWeight.normal, 12.0),
                           ),
                         )
                       ],
@@ -924,8 +875,7 @@ class _DashboardNewState extends State<DashboardNew> {
           ),
           Text(
             'no_network'.tr,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
           const SizedBox(
             height: 10,
@@ -941,9 +891,7 @@ class _DashboardNewState extends State<DashboardNew> {
                 style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(const Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEE830C))),
           ),
         ],
       ),
@@ -986,11 +934,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 print(perm);
                                 if (perm) {
                                   // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>  RMS()));
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              const AddProductGroup()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddProductGroup()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1003,10 +947,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 //            testing()));
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 height: MediaQuery.of(context).size.height / 12,
                                 width: MediaQuery.of(context).size.width / 17,
                                 child: Row(
@@ -1014,13 +955,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/product_group.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/product_group.svg'),
                                     ),
                                   ],
                                 ),
@@ -1044,20 +981,13 @@ class _DashboardNewState extends State<DashboardNew> {
                                 var perm = await checkingPerm("Productview");
                                 print(perm);
                                 if (perm) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              CreateProductNew()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CreateProductNew()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 height: MediaQuery.of(context).size.height / 12,
                                 width: MediaQuery.of(context).size.width / 17,
                                 child: Row(
@@ -1065,13 +995,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/product.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/product.svg'),
                                     ),
                                   ],
                                 ),
@@ -1095,20 +1021,13 @@ class _DashboardNewState extends State<DashboardNew> {
                                 var perm = await checkingPerm("Customerview");
                                 print(perm);
                                 if (perm) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              AddCustomerNew()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCustomerNew()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 height: MediaQuery.of(context).size.height / 12,
                                 width: MediaQuery.of(context).size.width / 17,
                                 child: Row(
@@ -1116,13 +1035,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/customer.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/customer.svg'),
                                     ),
                                   ],
                                 ),
@@ -1151,10 +1066,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 height: MediaQuery.of(context).size.height / 12,
                                 width: MediaQuery.of(context).size.width / 17,
                                 child: Row(
@@ -1162,37 +1074,22 @@ class _DashboardNewState extends State<DashboardNew> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/POS.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/POS.svg'),
                                     ),
                                   ],
                                 ),
                               ),
                               onTap: () async {
                                 var dinePerm = await checkingPerm("Diningview");
-                                var takeAwayPerm =
-                                    await checkingPerm("Take awayview");
+                                var takeAwayPerm = await checkingPerm("Take awayview");
                                 var carPerm = await checkingPerm("Carview");
 
-                                if (dinePerm == true ||
-                                    takeAwayPerm == true ||
-                                    carPerm == true) {
+                                if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
                                   isTablet
-                                      ? Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  const POSListItemsSection()))
-                                      : Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  const POSListItemsSection()));
+                                      ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()))
+                                      : Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1223,24 +1120,17 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var salesReport =
-                                    await checkingPerm("Sale Report");
-                                var tableWiseReport =
-                                    await checkingPerm("Table Wise Report");
-                                var productReport =
-                                    await checkingPerm("Product Report");
+                                var salesReport = await checkingPerm("Sale Report");
+                                var tableWiseReport = await checkingPerm("Table Wise Report");
+                                var productReport = await checkingPerm("Product Report");
 
-                                var rmsReport =
-                                    await checkingPerm("RMS Report");
+                                var rmsReport = await checkingPerm("RMS Report");
 
-                                var diningReport =
-                                    await checkingPerm("Dining Report");
+                                var diningReport = await checkingPerm("Dining Report");
 
-                                var takeAwayReport =
-                                    await checkingPerm("Take Away Report");
+                                var takeAwayReport = await checkingPerm("Take Away Report");
 
-                                var carReport =
-                                    await checkingPerm("Car Report");
+                                var carReport = await checkingPerm("Car Report");
 
                                 ///     var salesReport = await checkingPerm("Online Report");
 
@@ -1251,20 +1141,13 @@ class _DashboardNewState extends State<DashboardNew> {
                                     diningReport == true ||
                                     takeAwayReport == true ||
                                     carReport == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              const ReportPageNew()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ReportPageNew()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 height: MediaQuery.of(context).size.height / 12,
                                 width: MediaQuery.of(context).size.width / 17,
                                 child: Row(
@@ -1272,13 +1155,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/report.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/report.svg'),
                                     ),
                                   ],
                                 ),
@@ -1306,15 +1185,11 @@ class _DashboardNewState extends State<DashboardNew> {
 
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddTax()),
+                                  MaterialPageRoute(builder: (context) => AddTax()),
                                 );
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 height: MediaQuery.of(context).size.height / 12,
                                 width: MediaQuery.of(context).size.width / 17,
                                 child: Row(
@@ -1322,13 +1197,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/tax.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/tax.svg'),
                                     ),
                                   ],
                                 ),
@@ -1360,11 +1231,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 var flavour = await checkingPerm("Flavourview");
 
                                 if (flavour == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ViewFlavour()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewFlavour()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1376,10 +1243,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 //
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 height: MediaQuery.of(context).size.height / 12,
                                 width: MediaQuery.of(context).size.width / 17,
                                 child: Row(
@@ -1387,13 +1251,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/flavour.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/flavour.svg'),
                                     ),
                                   ],
                                 ),
@@ -1414,15 +1274,10 @@ class _DashboardNewState extends State<DashboardNew> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var invoices =
-                                    await checkingPerm('Invoices'.tr);
+                                var invoices = await checkingPerm('Invoices'.tr);
 
                                 if (invoices == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ViewInvoice()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }
@@ -1433,10 +1288,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 // );
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 height: MediaQuery.of(context).size.height / 12,
                                 width: MediaQuery.of(context).size.width / 17,
                                 child: Row(
@@ -1444,13 +1296,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/invoice.svg'),
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      child: SvgPicture.asset('assets/svg/invoice.svg'),
                                     ),
                                   ],
                                 ),
@@ -1617,8 +1465,7 @@ class _DashboardNewState extends State<DashboardNew> {
                               child: Obx(() => Column(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 16.0, left: 0, right: 6),
+                                        padding: const EdgeInsets.only(top: 16.0, left: 0, right: 6),
                                         child: Container(
                                           height: mHeight * .090,
                                           width: mWidth * .846,
@@ -1626,58 +1473,33 @@ class _DashboardNewState extends State<DashboardNew> {
                                               // border: Border.all(color: Colors.black,width: 1),
                                               ),
                                           child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, right: 4),
+                                            padding: const EdgeInsets.only(left: 8.0, right: 4),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Container(
                                                   height: mHeight * .080,
                                                   width: mWidth * .180,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white38,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              22)),
+                                                  decoration: BoxDecoration(color: Colors.white38, borderRadius: BorderRadius.circular(22)),
                                                   child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                      child: Image.network(
-                                                          "https://www.gravatar.com/avatar/1?s=46&d=identicon&r=PG&f=1")),
+                                                      borderRadius: BorderRadius.circular(20),
+                                                      child: Image.network("https://www.gravatar.com/avatar/1?s=46&d=identicon&r=PG&f=1")),
                                                   // child: Image.network(photo)),
                                                 ),
                                                 Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      profileController
-                                                          .userName.value,
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w500,
-                                                          15.5),
+                                                      profileController.userName.value,
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.5),
                                                       textAlign: TextAlign.left,
                                                     ),
                                                     Text(
-                                                      profileController
-                                                          .mail.value,
-                                                      style: customisedStyle(
-                                                          context,
-                                                          const Color(
-                                                              0xff7D7D7D),
-                                                          FontWeight.w400,
-                                                          13.5),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      profileController.mail.value,
+                                                      style: customisedStyle(context, const Color(0xff7D7D7D), FontWeight.w400, 13.5),
+                                                      textAlign: TextAlign.center,
                                                     )
                                                   ],
                                                 ),
@@ -1696,51 +1518,32 @@ class _DashboardNewState extends State<DashboardNew> {
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 11.0),
+                                        padding: const EdgeInsets.only(top: 11.0),
                                         child: Container(
                                           // height: mqh * .085,
                                           width: mWidth * .845,
                                           decoration: BoxDecoration(
                                               color: const Color(0xffffffff),
-                                              border: Border.all(
-                                                  width: 1.5,
-                                                  color: Colors.grey
-                                                      .withOpacity(.05)),
-                                              borderRadius:
-                                                  BorderRadius.circular(11)),
+                                              border: Border.all(width: 1.5, color: Colors.grey.withOpacity(.05)),
+                                              borderRadius: BorderRadius.circular(11)),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Expanded(
                                                   child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 16.0),
+                                                padding: const EdgeInsets.only(left: 16.0),
                                                 child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
                                                       'Organization',
-                                                      style: customisedStyle(
-                                                          context,
-                                                          const Color(
-                                                              0xff7D7D7D),
-                                                          FontWeight.w400,
-                                                          14.0),
+                                                      style: customisedStyle(context, const Color(0xff7D7D7D), FontWeight.w400, 14.0),
                                                       textAlign: TextAlign.left,
                                                     ),
                                                     Text(
-                                                      profileController
-                                                          .companyName.value,
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w500,
-                                                          15.0),
+                                                      profileController.companyName.value,
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                                       textAlign: TextAlign.left,
                                                     )
                                                   ],
@@ -1752,47 +1555,28 @@ class _DashboardNewState extends State<DashboardNew> {
                                                   Container(
                                                     height: mHeight * .05,
                                                     width: mWidth * .3,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                            color: Color(
-                                                                0xffFFFFFF)),
+                                                    decoration: const BoxDecoration(color: Color(0xffFFFFFF)),
                                                     child: TextButton(
                                                       onPressed: () async {
                                                         bottomDialogueFunction(
                                                             isDismissible: true,
                                                             context: context,
-                                                            textMsg:
-                                                                ' Change organisation ?',
-                                                            fistBtnOnPressed:
-                                                                () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(true);
+                                                            textMsg: ' Change organisation ?',
+                                                            fistBtnOnPressed: () {
+                                                              Navigator.of(context).pop(true);
                                                             },
-                                                            secondBtnPressed:
-                                                                () async {
-                                                              Navigator
-                                                                  .pushReplacement(
+                                                            secondBtnPressed: () async {
+                                                              Navigator.pushReplacement(
                                                                 context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            MobOrganizationList()),
+                                                                MaterialPageRoute(builder: (context) => MobOrganizationList()),
                                                               );
                                                             },
-                                                            secondBtnText:
-                                                                'Yes');
+                                                            secondBtnText: 'Yes');
                                                       },
                                                       child: Text(
                                                         'change'.tr,
-                                                        style: customisedStyle(
-                                                            context,
-                                                            const Color(
-                                                                0xffF25F29),
-                                                            FontWeight.w400,
-                                                            15.0),
-                                                        textAlign:
-                                                            TextAlign.left,
+                                                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
+                                                        textAlign: TextAlign.left,
                                                       ),
                                                     ),
                                                   ),
@@ -1803,50 +1587,35 @@ class _DashboardNewState extends State<DashboardNew> {
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 15.0),
+                                        padding: const EdgeInsets.only(top: 15.0),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: [
                                             GestureDetector(
                                               onTap: () {
                                                 bottomDialogueFunction(
                                                     isDismissible: true,
                                                     context: context,
-                                                    textMsg:
-                                                        "Sure want to delete",
+                                                    textMsg: "Sure want to delete",
                                                     fistBtnOnPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(true);
+                                                      Navigator.of(context).pop(true);
                                                     },
                                                     secondBtnPressed: () async {
+                                                      Navigator.of(context).pop(true);
                                                       Navigator.of(context)
-                                                          .pop(true);
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute(
-                                                              builder: (BuildContext
-                                                                      context) =>
-                                                                  DeleteAccount()));
+                                                          .push(MaterialPageRoute(builder: (BuildContext context) => DeleteAccount()));
                                                     },
                                                     secondBtnText: 'Ok');
                                               },
                                               child: Container(
                                                 height: mHeight * .06,
                                                 width: mWidth * .43,
-                                                decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xffFfffff),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            25)),
+                                                decoration: BoxDecoration(color: const Color(0xffFfffff), borderRadius: BorderRadius.circular(25)),
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
+                                                      padding: const EdgeInsets.only(
                                                         left: 6.0,
                                                       ),
                                                       child: SvgPicture.asset(
@@ -1854,18 +1623,10 @@ class _DashboardNewState extends State<DashboardNew> {
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 5.0,
-                                                              right: 6),
+                                                      padding: const EdgeInsets.only(left: 5.0, right: 6),
                                                       child: Text(
                                                         'dlt_acnt'.tr,
-                                                        style: customisedStyle(
-                                                            context,
-                                                            const Color(
-                                                                0xffC80000),
-                                                            FontWeight.w400,
-                                                            15.0),
+                                                        style: customisedStyle(context, const Color(0xffC80000), FontWeight.w400, 15.0),
                                                       ),
                                                     ),
                                                   ],
@@ -1877,56 +1638,34 @@ class _DashboardNewState extends State<DashboardNew> {
                                                 bottomDialogueFunction(
                                                     isDismissible: true,
                                                     context: context,
-                                                    textMsg:
-                                                        'Are you sure Logout ?',
+                                                    textMsg: 'Are you sure Logout ?',
                                                     fistBtnOnPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(true);
+                                                      Navigator.of(context).pop(true);
                                                     },
                                                     secondBtnPressed: () async {
-                                                      SharedPreferences
-                                                          preference =
-                                                          await SharedPreferences
-                                                              .getInstance();
+                                                      SharedPreferences preference = await SharedPreferences.getInstance();
                                                       preference.clear();
-                                                      Navigator.of(context)
-                                                          .pushAndRemoveUntil(
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        LoginPageNew(),
-                                                              ),
-                                                              (route) => false);
+                                                      Navigator.of(context).pushAndRemoveUntil(
+                                                          MaterialPageRoute(
+                                                            builder: (context) => LoginPageNew(),
+                                                          ),
+                                                          (route) => false);
                                                     },
                                                     secondBtnText: 'Yes');
                                               },
                                               child: Container(
                                                 width: mWidth * .34,
                                                 height: mHeight * .06,
-                                                decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xffFFCFCF),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            25)),
+                                                decoration: BoxDecoration(color: const Color(0xffFFCFCF), borderRadius: BorderRadius.circular(25)),
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    SvgPicture.asset(
-                                                        "assets/svg/logout_mobile.svg"),
+                                                    SvgPicture.asset("assets/svg/logout_mobile.svg"),
                                                     Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 8.0),
+                                                      padding: const EdgeInsets.only(left: 8.0),
                                                       child: Text(
                                                         'logout'.tr,
-                                                        style: customisedStyle(
-                                                            context,
-                                                            const Color(
-                                                                0xffEA6262),
-                                                            FontWeight.w400,
-                                                            15.0),
+                                                        style: customisedStyle(context, const Color(0xffEA6262), FontWeight.w400, 15.0),
                                                       ),
                                                     ),
                                                   ],
@@ -1955,25 +1694,18 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 10.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(
-                                        "assets/svg/settings_mobile.svg"),
+                                    SvgPicture.asset("assets/svg/settings_mobile.svg"),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         'Settings'.tr,
-                                        style: customisedStyle(
-                                            context,
-                                            Colors.black,
-                                            FontWeight.w400,
-                                            16.0),
+                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                       ),
                                     )
                                   ],
@@ -1995,16 +1727,14 @@ class _DashboardNewState extends State<DashboardNew> {
                         color: Colors.transparent,
                         elevation: 0,
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8, top: 15, bottom: 15),
+                          padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                           child: GestureDetector(
                             onTap: () {
                               Get.to(Contact_us());
                             },
                             child: InkWell(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -2012,15 +1742,10 @@ class _DashboardNewState extends State<DashboardNew> {
                                         "assets/svg/brand-hipchat.svg",
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10.0),
+                                        padding: const EdgeInsets.only(left: 10.0),
                                         child: Text(
                                           'contact_us'.tr,
-                                          style: customisedStyle(
-                                              context,
-                                              Colors.black,
-                                              FontWeight.w400,
-                                              16.0),
+                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                         ),
                                       )
                                     ],
@@ -2046,8 +1771,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -2057,15 +1781,10 @@ class _DashboardNewState extends State<DashboardNew> {
                                       "assets/svg/about_us_mob.svg",
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         'about_us'.tr,
-                                        style: customisedStyle(
-                                            context,
-                                            Colors.black,
-                                            FontWeight.w400,
-                                            16.0),
+                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                       ),
                                     ),
                                   ],
@@ -2083,8 +1802,7 @@ class _DashboardNewState extends State<DashboardNew> {
                       DividerStyle(),
                       GestureDetector(
                         onTap: () async {
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
                           Locale? currentLocale = Get.locale;
                           if (currentLocale.toString() == "ar") {
                             prefs.setBool('isArabic', false);
@@ -2098,8 +1816,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -2109,26 +1826,17 @@ class _DashboardNewState extends State<DashboardNew> {
                                       "assets/svg/language-hiragana.svg",
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         'lang'.tr,
-                                        style: customisedStyle(
-                                            context,
-                                            Colors.black,
-                                            FontWeight.w400,
-                                            16.0),
+                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Text(
                                   'lang'.tr,
-                                  style: customisedStyle(
-                                      context,
-                                      Color(0xff7D7D7D),
-                                      FontWeight.normal,
-                                      14.0),
+                                  style: customisedStyle(context, Color(0xff7D7D7D), FontWeight.normal, 14.0),
                                 )
                               ],
                             ),
@@ -2144,8 +1852,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -2153,8 +1860,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
                                     'Product',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                   ),
                                 ),
                                 const Icon(
@@ -2175,8 +1881,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -2184,8 +1889,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
                                     'ProductGroupMobile',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                   ),
                                 ),
                                 const Icon(
@@ -2207,8 +1911,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -2216,8 +1919,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
                                     'Customer List',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                   ),
                                 ),
                                 const Icon(
@@ -2238,8 +1940,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -2247,8 +1948,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
                                     'FlavourListMobile',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                   ),
                                 ),
                                 const Icon(
@@ -2269,8 +1969,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -2278,8 +1977,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
                                     'TaxListMobile',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                   ),
                                 ),
                                 const Icon(
@@ -2300,8 +1998,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -2309,8 +2006,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
                                     'BT Test',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                   ),
                                 ),
                                 const Icon(
@@ -2337,9 +2033,7 @@ class _DashboardNewState extends State<DashboardNew> {
                 Container(
                   height: screenHeight / 12,
                   width: MediaQuery.of(context).size.width / 1,
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(width: .1, color: Colors.grey))),
+                  decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: .1, color: Colors.grey))),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
@@ -2356,16 +2050,12 @@ class _DashboardNewState extends State<DashboardNew> {
                                   color: const Color(0xffF4F4F4),
                                   size: 30,
                                 )
-                              : CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(organisationLogo),
-                                  maxRadius: 13),
+                              : CircleAvatar(backgroundImage: NetworkImage(organisationLogo), maxRadius: 13),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
                               companyName,
-                              style: customisedStyle(
-                                  context, Colors.black, FontWeight.w500, 17.0),
+                              style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
                             ),
                           ),
                         ],
@@ -2409,7 +2099,7 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                 //   updateAlert();
+                                    //   updateAlert();
                                     var perm = await checkingPerm("Groupview");
                                     print(perm);
                                     if (perm) {
@@ -2419,29 +2109,17 @@ class _DashboardNewState extends State<DashboardNew> {
                                     }
                                   },
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEEEEEE),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                     height: screenHeight / 12,
                                     width: screenWidth / 5.5,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              11,
-                                          child: SvgPicture.asset(
-                                              'assets/svg/product_group.svg'),
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 11,
+                                          child: SvgPicture.asset('assets/svg/product_group.svg'),
                                         ),
                                       ],
                                     ),
@@ -2463,43 +2141,27 @@ class _DashboardNewState extends State<DashboardNew> {
                                 GestureDetector(
                                   onTap: () async {
                                     ///updateAlert();
-                                  //  Get.to(PrintSettingsDetailed());
+                                    //  Get.to(PrintSettingsDetailed());
                                     var perm = await checkingPerm("Productview");
                                     print(perm);
                                     if (perm) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  ProductListMobile()));
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
                                     } else {
                                       dialogBoxPermissionDenied(context);
                                     }
                                   },
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEEEEEE),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                     height: screenHeight / 12,
                                     width: screenWidth / 5.5,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              10,
-                                          child: SvgPicture.asset(
-                                              'assets/svg/product.svg'),
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 10,
+                                          child: SvgPicture.asset('assets/svg/product.svg'),
                                         ),
                                       ],
                                     ),
@@ -2520,40 +2182,28 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                  ///  updateAlert();
-                                 // Get.to(TestPrintUSB());
+                                    ///  updateAlert();
+                                    // Get.to(TestPrintUSB());
                                     var perm = await checkingPerm("Customerview");
                                     print(perm);
                                     if (perm) {
-                                     Get.to(CustomerListMobile());
+                                      Get.to(CustomerListMobile());
                                     } else {
                                       dialogBoxPermissionDenied(context);
                                     }
                                   },
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEEEEEE),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                     height: screenHeight / 12,
                                     width: screenWidth / 5.5,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              12,
-                                          child: SvgPicture.asset(
-                                              'assets/svg/customer.svg'),
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 12,
+                                          child: SvgPicture.asset('assets/svg/customer.svg'),
                                         ),
                                       ],
                                     ),
@@ -2582,43 +2232,27 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEEEEEE),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                     height: screenHeight / 12,
                                     width: screenWidth / 5.5,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              12,
-                                          child: SvgPicture.asset(
-                                              'assets/svg/POS.svg'),
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 12,
+                                          child: SvgPicture.asset('assets/svg/POS.svg'),
                                         ),
                                       ],
                                     ),
                                   ),
                                   onTap: () async {
-                                    var dinePerm =
-                                        await checkingPerm("Diningview");
-                                    var takeAwayPerm =
-                                        await checkingPerm("Take awayview");
+                                    var dinePerm = await checkingPerm("Diningview");
+                                    var takeAwayPerm = await checkingPerm("Take awayview");
                                     var carPerm = await checkingPerm("Carview");
 
-                                    if (dinePerm == true ||
-                                        takeAwayPerm == true ||
-                                        carPerm == true) {
+                                    if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
                                       Get.to(POSMobilePage());
                                     } else {
                                       dialogBoxPermissionDenied(context);
@@ -2679,29 +2313,17 @@ class _DashboardNewState extends State<DashboardNew> {
                                     // }
                                   },
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEEEEEE),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                     height: screenHeight / 12,
                                     width: screenWidth / 5.5,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              13,
-                                          child: SvgPicture.asset(
-                                              'assets/svg/report.svg'),
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 13,
+                                          child: SvgPicture.asset('assets/svg/report.svg'),
                                         ),
                                       ],
                                     ),
@@ -2723,33 +2345,20 @@ class _DashboardNewState extends State<DashboardNew> {
                                 GestureDetector(
                                   onTap: () {
                                     Get.to(TaxListMobile());
-                                  ///  updateAlert();
-
+                                    ///  updateAlert();
                                   },
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEEEEEE),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                     height: screenHeight / 12,
                                     width: screenWidth / 5.5,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              12,
-                                          child: SvgPicture.asset(
-                                              'assets/svg/tax.svg'),
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 12,
+                                          child: SvgPicture.asset('assets/svg/tax.svg'),
                                         ),
                                       ],
                                     ),
@@ -2778,45 +2387,26 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    //updateAlert();
-                                    var flavour = await checkingPerm("Flavourview");
 
+                                    var flavour = await checkingPerm("Flavourview");
                                     if (flavour == true) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  FlavourListMobile()));
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => FlavourListMobile()));
                                     } else {
                                       dialogBoxPermissionDenied(context);
                                     }
-
-
                                   },
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEEEEEE),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                     height: screenHeight / 12,
                                     width: screenWidth / 5.5,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              10,
-                                          child: SvgPicture.asset(
-                                              'assets/svg/flavour.svg'),
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 10,
+                                          child: SvgPicture.asset('assets/svg/flavour.svg'),
                                         ),
                                       ],
                                     ),
@@ -2841,55 +2431,25 @@ class _DashboardNewState extends State<DashboardNew> {
                                 GestureDetector(
                                   onTap: () async {
 
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                ViewInvoice()));
-
-                                   // updateAlert();
-                                    // var invoices =
-                                    //     await checkingPerm('Invoices'.tr);
-                                    //
-                                    // if (invoices == true) {
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (BuildContext context) =>
-                                    //               ViewInvoice()));
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
-
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(builder: (context) => AddInvoice()),
-                                    // );
+                                    var invoices = await checkingPerm('Invoices'.tr);
+                                    if (invoices == true) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => InvoiceListMobile()));
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
                                   },
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEEEEEE),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
                                     height: screenHeight / 12,
                                     width: screenWidth / 5.5,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              14,
-                                          child: SvgPicture.asset(
-                                              'assets/svg/invoice.svg'),
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 14,
+                                          child: SvgPicture.asset('assets/svg/invoice.svg'),
                                         ),
                                       ],
                                     ),
@@ -3039,11 +2599,7 @@ class _DashboardNewState extends State<DashboardNew> {
         var roleID = prefs.getString('role') ?? '';
         final String url = '$baseUrl/posholds/list-detail/pos-role/';
         print(url);
-        Map data = {
-          "CompanyID": companyID,
-          "Role_id": roleID,
-          "BranchID": branchID
-        };
+        Map data = {"CompanyID": companyID, "Role_id": roleID, "BranchID": branchID};
         print(data);
         var body = json.encode(data);
         var response = await http.post(Uri.parse(url),
@@ -3060,12 +2616,10 @@ class _DashboardNewState extends State<DashboardNew> {
         var userRollData = n["data"] ?? [];
         if (status == 6000) {
           for (var i = 0; i < userRollData.length; i++) {
-            if (userRollData[i]["Key"] == "other" ||
-                userRollData[i]["Key"] == "report") {
+            if (userRollData[i]["Key"] == "other" || userRollData[i]["Key"] == "report") {
               prefs.setBool(userRollData[i]["Name"], userRollData[i]["Value"]);
             } else {
-              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"],
-                  userRollData[i]["Value"]);
+              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"], userRollData[i]["Value"]);
             }
           }
           dataForStaff();
