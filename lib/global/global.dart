@@ -375,6 +375,7 @@ class BaseUrl{
   // static String imageURL = 'https://www.api.viknbooks.in';
   // static String baseUrlV11 = "https://www.api.viknbooks.in/api/v11";
 
+
  // local
  // http://192.168.1.52:8002/
  //  static String baseUrlAuth = 'http://192.168.1.81:8000/api/v1';
