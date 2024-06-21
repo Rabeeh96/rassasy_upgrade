@@ -2813,7 +2813,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                ViewInvoice()));
+                                                InvoiceListMobile()));
 
                                    // updateAlert();
                                     // var invoices =
