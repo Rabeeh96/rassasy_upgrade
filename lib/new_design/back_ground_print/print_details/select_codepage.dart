@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flutter/services.dart';
+import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
@@ -170,7 +171,7 @@ class _select_code_pageState extends State<select_code_page> {
     double screenWidth = screenSize.width;
     bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
-      appBar: AppBar(
+      appBar: isTablet?AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -183,25 +184,42 @@ class _select_code_pageState extends State<select_code_page> {
           //style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 22.0),
         ),
         backgroundColor: Colors.grey[300],
+      ):AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        titleSpacing: 0,
+        surfaceTintColor: Colors.transparent,
+        title:   Text(
+          'Select Code Page',
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
+          //style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 22.0),
+        ),
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height,
 
-          color: Colors.grey[100],
+          color:isTablet? Colors.grey[100]:Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: isTablet? EdgeInsets.all(20.0):EdgeInsets.only(left: 20.0,right: 20),
             child: Column(
               children: [
 
-
-                TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    labelText: 'Search',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                Container(
+                  height: MediaQuery.of(context).size.height/16,
+                  child: TextField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      labelText: 'Search',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
                   ),
                 ),

@@ -18,7 +18,7 @@ import 'package:rassasy_new/new_design/back_ground_print/print_details/detailed_
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/pos_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
@@ -2377,19 +2377,14 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    updateAlert();
-                                    // var perm = await checkingPerm("Groupview");
-                                    // print(perm);
-                                    // if (perm) {
-                                    //   // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>  RMS()));
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (BuildContext context) =>
-                                    //               const AddProductGroup()));
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
+                                 //   updateAlert();
+                                    var perm = await checkingPerm("Groupview");
+                                    print(perm);
+                                    if (perm) {
+                                      Get.to(ProductGroupMobile());
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(
@@ -2435,18 +2430,19 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    updateAlert();
-                                    // var perm = await checkingPerm("Productview");
-                                    // print(perm);
-                                    // if (perm) {
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (BuildContext context) =>
-                                    //               CreateProductNew()));
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
+                                    ///updateAlert();
+                                  //  Get.to(PrintSettingsDetailed());
+                                    var perm = await checkingPerm("Productview");
+                                    print(perm);
+                                    if (perm) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  ProductListMobile()));
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(
@@ -2492,18 +2488,15 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    updateAlert();
-                                    // var perm = await checkingPerm("Customerview");
-                                    // print(perm);
-                                    // if (perm) {
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (BuildContext context) =>
-                                    //               AddCustomerNew()));
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
+                                  ///  updateAlert();
+                                 // Get.to(TestPrintUSB());
+                                    var perm = await checkingPerm("Customerview");
+                                    print(perm);
+                                    if (perm) {
+                                     Get.to(CustomerListMobile());
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(
@@ -2753,24 +2746,20 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    updateAlert();
-                                    // var flavour = await checkingPerm("Flavourview");
-                                    //
-                                    // if (flavour == true) {
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (BuildContext context) =>
-                                    //               ViewFlavour()));
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
+                                    //updateAlert();
+                                    var flavour = await checkingPerm("Flavourview");
 
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(builder: (context) => MyListView()),
-                                    // );
-                                    //
+                                    if (flavour == true) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  FlavourListMobile()));
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
+
+
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(

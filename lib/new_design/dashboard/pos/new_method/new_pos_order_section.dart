@@ -485,9 +485,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         if (status == 6000) {
           setState(() {
             print("_________________________________________________________________1");
-            // "LedgerID": 1,
-            // "LedgerName": "walk in customer",
-            //
+
 
             ledgerID = responseJson["LedgerID"];
             totalNetP = convertStringToDouble(responseJson["NetTotal"]);

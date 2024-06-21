@@ -5,10 +5,10 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/cancel_reason_list.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/cancel_reason_list.dart';
 import 'order/add_order_page.dart';
 import 'payment/payment_page.dart';
 

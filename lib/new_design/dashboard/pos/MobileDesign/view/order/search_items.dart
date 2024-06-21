@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/search_controlletr.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/order_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/search_controlletr.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class SearchItems extends StatefulWidget {
   @override

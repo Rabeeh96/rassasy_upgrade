@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/reservation_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/reservation_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'select_table.dart';

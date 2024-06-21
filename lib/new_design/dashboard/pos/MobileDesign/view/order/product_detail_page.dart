@@ -8,7 +8,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 
 import 'package:get/get.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/order_controller.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final int index;

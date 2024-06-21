@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/service/pos_service.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/service/pos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/reservation_model_class.dart';
 
