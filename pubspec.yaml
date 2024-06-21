@@ -97,8 +97,7 @@ dev_dependencies:
   webview_universal: ^0.0.5
   flutter_slidable: ^3.1.0
   blue_thermal_printer: ^1.2.3
-  loading_btn: ^1.0.3
-
+  double_back_to_close_app: ^2.1.0
 
 
 

@@ -1150,17 +1150,13 @@ class ESCBTTEST {
 
     List<int> printer = [];
     _profile = profile;
-
     final supportedCodePages = profile.codePages;
     Generator generator = Generator(PaperSize.mm80, _profile!);
     for(var ind = 0;ind<supportedCodePages.length ;ind++){
-      print("$ind");
-
       printer += generator.setGlobalCodeTable(supportedCodePages[ind].name);
       var testData ="${supportedCodePages[ind].name} السلام ${profile.name} ";
       Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
       printer += generator.textEncoded(salam);
-
     }
 
     // printer += generator.text("Test Data",);

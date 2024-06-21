@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:charset_converter/charset_converter.dart';
+
 // import 'package:esc_pos_printer/esc_pos_printer.dart';
 // import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
+
 // import 'package:intl/intl.dart';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flutter/services.dart';
@@ -26,8 +28,7 @@ class PrintSettingsDetailed extends StatefulWidget {
 }
 
 class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
-  TextEditingController code_page_controller = TextEditingController()
-    ..text = "CP864";
+  TextEditingController code_page_controller = TextEditingController()..text = "CP864";
 
   @override
   void initState() {
@@ -65,13 +66,8 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
         "Test print code Page  $codepage capabilities $capabilities ",
       );
       printer.setStyles(PosStyles(codeTable: codepage, align: PosAlign.center));
-      Uint8List salam = await CharsetConverter.encode(
-          "ISO-8859-6", setString('السلام عليكمً'));
-      printer.textEncoded(salam,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.center));
+      Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكمً'));
+      printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       printer.emptyLines(1);
     }
 
@@ -138,194 +134,72 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     //
 
     printer.setStyles(PosStyles(codeTable: 'CP864', align: PosAlign.center));
-    Uint8List companyNameEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString(companyName));
-    Uint8List cityEncode =
-        await CharsetConverter.encode("ISO-8859-6", setString(city));
-    Uint8List descriptionC =
-        await CharsetConverter.encode("ISO-8859-6", setString(description));
-    Uint8List h3E = await CharsetConverter.encode(
-        "ISO-8859-6", setString('ضريبه  ' + companyTax));
-    Uint8List h4E = await CharsetConverter.encode(
-        "ISO-8859-6", setString('س. ت  ' + companyCrNumber));
-    Uint8List h5E = await CharsetConverter.encode(
-        "ISO-8859-6", setString('جوال ' + companyPhone));
-    Uint8List h6E =
-        await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
-    Uint8List sH = await CharsetConverter.encode(
-        "ISO-8859-6", setString(invoiceTypeArabic));
+    Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
+    Uint8List cityEncode = await CharsetConverter.encode("ISO-8859-6", setString(city));
+    Uint8List descriptionC = await CharsetConverter.encode("ISO-8859-6", setString(description));
+    Uint8List h3E = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
+    Uint8List h4E = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
+    Uint8List h5E = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
+    Uint8List h6E = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    Uint8List sH = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
 
-    Uint8List ga = await CharsetConverter.encode(
-        "ISO-8859-6", setString('المبلغ الإجمالي'));
-    Uint8List tt =
-        await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
-    Uint8List dis =
-        await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
-    Uint8List gt = await CharsetConverter.encode(
-        "ISO-8859-6", setString('المبلغ الإجمالي'));
+    Uint8List ga = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
+    Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
+    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
+    Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
 
-    Uint8List bl =
-        await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
-    Uint8List cr = await CharsetConverter.encode(
-        "ISO-8859-6", setString('المبلغ المستلم'));
-    Uint8List br =
-        await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
+    Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
+    Uint8List cr = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ المستلم'));
+    Uint8List br = await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
 
     printer.textEncoded(companyNameEnc,
-        styles: PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center,
-            fontType: PosFontType.fontA,
-            bold: true));
-    printer.textEncoded(descriptionC,
-        styles: PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
-    printer.textEncoded(cityEncode,
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+        styles: PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+    printer.textEncoded(descriptionC, styles: PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+    printer.textEncoded(cityEncode, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
 
-    printer.textEncoded(h3E,
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
-    printer.textEncoded(h4E,
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
-    printer.textEncoded(h5E,
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
-    printer.textEncoded(h6E,
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
-    printer.textEncoded(sH,
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    printer.textEncoded(h3E, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+    printer.textEncoded(h4E, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+    printer.textEncoded(h5E, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+    printer.textEncoded(h6E, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+    printer.textEncoded(sH, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
 
     printer.emptyLines(1);
 
     var isoDate = DateTime.parse("2023-02-23").toIso8601String();
     printer.setStyles(PosStyles(align: PosAlign.left));
     printer.row([
-      PosColumn(
-          text: 'Token No ',
-          width: 3,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: ':',
-          width: 1,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: token,
-          width: 8,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Token No ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: token, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     printer.row([
-      PosColumn(
-          text: 'Voucher No :',
-          width: 3,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: ':',
-          width: 1,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: voucherNumber,
-          width: 8,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Voucher No :', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: voucherNumber, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
     printer.row([
-      PosColumn(
-          text: 'Date      ',
-          width: 3,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: ':',
-          width: 1,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: date,
-          width: 8,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Date      ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: date, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
-    Uint8List customerName =
-        await CharsetConverter.encode("ISO-8859-6", setString(name));
-    Uint8List phoneNoEncoded =
-        await CharsetConverter.encode("ISO-8859-6", setString(phone));
+    Uint8List customerName = await CharsetConverter.encode("ISO-8859-6", setString(name));
+    Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(phone));
     printer.row([
-      PosColumn(
-          text: 'Name    ',
-          width: 3,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: ':',
-          width: 1,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          textEncoded: customerName,
-          width: 8,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Name    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(textEncoded: customerName, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
     printer.row([
-      PosColumn(
-          text: 'Phone    ',
-          width: 3,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: ':',
-          width: 1,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          textEncoded: phoneNoEncoded,
-          width: 8,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Phone    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(textEncoded: phoneNoEncoded, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     printer.row([
-      PosColumn(
-          text: 'Order type    ',
-          width: 3,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: ':',
-          width: 1,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: orderType,
-          width: 8,
-          styles:
-              PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Order type    ', width: 3, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: ':', width: 1, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: orderType, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     printer.hr();
@@ -342,28 +216,17 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
           styles: PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: 'Qty',
-          width: 1,
-          styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(
-          text: 'Rate',
-          width: 2,
-          styles: PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(
-          text: 'Net',
-          width: 2,
-          styles: PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Qty', width: 1, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(text: 'Rate', width: 2, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Net', width: 2, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     printer.hr();
 
     for (var i = 0; i < 3; i++) {
       var slNo = i + 1;
 
-      Uint8List description =
-          await CharsetConverter.encode("ISO-8859-6", setString("وصف المنتج"));
-      Uint8List productName = await CharsetConverter.encode(
-          "ISO-8859-6", setString("product name"));
+      Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString("وصف المنتج"));
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString("product name"));
       printer.row([
         PosColumn(
             text: "$slNo",
@@ -371,36 +234,14 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             styles: PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            textEncoded: productName,
-            width: 6,
-            styles:
-                PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            text: "20",
-            width: 1,
-            styles:
-                PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-        PosColumn(
-            text: "50",
-            width: 2,
-            styles:
-                PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(
-            text: "120",
-            width: 2,
-            styles:
-                PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(textEncoded: productName, width: 6, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: "20", width: 1, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: "50", width: 2, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: "120", width: 2, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       printer.row([
-        PosColumn(
-            textEncoded: description,
-            width: 8,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+        PosColumn(textEncoded: description, width: 8, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: '',
             width: 4,
@@ -414,78 +255,31 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     printer.feed(0);
 
     printer.row([
-      PosColumn(
-          text: 'Gross Amount',
-          width: 4,
-          styles: PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(
-          textEncoded: ga,
-          width: 5,
-          styles: PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.left)),
+      PosColumn(text: 'Gross Amount', width: 4, styles: PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(textEncoded: ga, width: 5, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
       // printer.textEncoded(ga, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left));
-      PosColumn(
-          text: roundStringWith(grossAmount),
-          width: 3,
-          styles: PosStyles(align: PosAlign.right)),
+      PosColumn(text: roundStringWith(grossAmount), width: 3, styles: PosStyles(align: PosAlign.right)),
     ]);
 
     printer.row([
-      PosColumn(
-          text: 'Total Tax',
-          width: 4,
-          styles: PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(
-          textEncoded: tt,
-          width: 5,
-          styles: PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.left)),
-      PosColumn(
-          text: roundStringWith(totalTax),
-          width: 3,
-          styles: PosStyles(align: PosAlign.right)),
+      PosColumn(text: 'Total Tax', width: 4, styles: PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(textEncoded: tt, width: 5, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+      PosColumn(text: roundStringWith(totalTax), width: 3, styles: PosStyles(align: PosAlign.right)),
     ]);
     printer.row([
-      PosColumn(
-          text: 'Discount',
-          width: 4,
-          styles: PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(
-          textEncoded: dis,
-          width: 5,
-          styles: PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.left)),
-      PosColumn(
-          text: roundStringWith(discount),
-          width: 3,
-          styles: PosStyles(align: PosAlign.right)),
+      PosColumn(text: 'Discount', width: 4, styles: PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(textEncoded: dis, width: 5, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+      PosColumn(text: roundStringWith(discount), width: 3, styles: PosStyles(align: PosAlign.right)),
     ]);
 
     printer.emptyLines(1);
     printer.row([
-      PosColumn(
-          text: 'Grand Total',
-          width: 4,
-          styles: PosStyles(bold: true, fontType: PosFontType.fontB)),
-      PosColumn(
-          textEncoded: gt,
-          width: 5,
-          styles: PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.left,
-              bold: true)),
+      PosColumn(text: 'Grand Total', width: 4, styles: PosStyles(bold: true, fontType: PosFontType.fontB)),
+      PosColumn(textEncoded: gt, width: 5, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left, bold: true)),
       PosColumn(
           text: countyCodeCompany + " " + roundStringWith(grandTotal),
           width: 3,
-          styles: PosStyles(
-              fontType: PosFontType.fontA, bold: true, align: PosAlign.right)),
+          styles: PosStyles(fontType: PosFontType.fontA, bold: true, align: PosAlign.right)),
     ]);
 
     if (qrCodeAvailable == true) {
@@ -509,46 +303,26 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
       //   PosColumn(text: roundStringWith(balance), width: 3,styles: PosStyles(align: PosAlign.right)),
       // ]);
       printer.feed(1);
-      var qrCode = await b64Qrcode(
-          BluetoothPrintThermalDetails.companyName,
-          BluetoothPrintThermalDetails.vatNumberCompany,
-          isoDate,
-          BluetoothPrintThermalDetails.grandTotal,
-          BluetoothPrintThermalDetails.totalTax);
+      var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
+          BluetoothPrintThermalDetails.grandTotal, BluetoothPrintThermalDetails.totalTax);
       printer.qrcode(qrCode, size: QRSize.Size5);
     }
 
     printer.emptyLines(1);
-    printer.text('Powered By Vikn Codes',
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            bold: true,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    printer.text('Powered By Vikn Codes', styles: PosStyles(height: PosTextSize.size1, bold: true, width: PosTextSize.size1, align: PosAlign.center));
     printer.cut();
   }
 
   Future<void> demoPrint(NetworkPrinter printer) async {
     var dataa = printArabicText();
 
-    Uint8List h5E =
-        await CharsetConverter.encode("ISO-8859-6", setString("Rabeeh"));
-    printer.textEncoded(dataa,
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    Uint8List h5E = await CharsetConverter.encode("ISO-8859-6", setString("Rabeeh"));
+    printer.textEncoded(dataa, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     printer.emptyLines(1);
-    final arabicText =
-        "\u0627\u0644\u0633\u0644\u0627\u0645 \u0639\u0644\u064a\u0643\u0645"; // Arabic text encoded with Unicode
+    final arabicText = "\u0627\u0644\u0633\u0644\u0627\u0645 \u0639\u0644\u064a\u0643\u0645"; // Arabic text encoded with Unicode
     printer.text(arabicText);
 
-    printer.text('Powered By ViknCodes',
-        styles: PosStyles(
-            height: PosTextSize.size1,
-            bold: true,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    printer.text('Powered By ViknCodes', styles: PosStyles(height: PosTextSize.size1, bold: true, width: PosTextSize.size1, align: PosAlign.center));
 
     printer.cut();
   }
@@ -608,8 +382,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                 companyDescription != ""
                     ? Text(
                         companyDescription,
-                        style: TextStyle(
-                            fontSize: 21, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
                       )
                     : Container(),
                 Text(
@@ -637,13 +410,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     children: [
                       Text(
                         companyCrNumber + " :",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         "س. ت",
-                        style: TextStyle(
-                            fontSize: 19, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                       ),
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -673,8 +444,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             ),
             SizedBox(
               height: 10,
-              child: Text(
-                  "--------------------------------------------------------------------------------------------------------"),
+              child: Text("--------------------------------------------------------------------------------------------------------"),
             ),
             Container(
               child: Row(
@@ -684,8 +454,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     child: Center(
                       child: Text(
                         "Voucher No",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w700),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                       ),
                     ),
                     flex: 1,
@@ -694,8 +463,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     child: Center(
                       child: Text(
                         voucherNumber,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w700),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                       ),
                     ),
                     flex: 1,
@@ -704,8 +472,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     child: Center(
                       child: Text(
                         "رقم الفاتورة",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ),
                     flex: 1,
@@ -720,8 +487,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   child: Center(
                     child: Text(
                       "Date",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                     ),
                   ),
                   flex: 1,
@@ -730,8 +496,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   child: Center(
                     child: Text(
                       date,
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                     ),
                   ),
                   flex: 1,
@@ -740,8 +505,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   child: Center(
                     child: Text(
                       "تاريخ",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   flex: 1,
@@ -756,8 +520,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     child: Center(
                       child: Text(
                         'name'.tr,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w700),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                       ),
                     ),
                     flex: 1,
@@ -766,8 +529,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     child: Center(
                       child: Text(
                         customerName,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w700),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                       ),
                     ),
                     flex: 1,
@@ -776,8 +538,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     child: Center(
                       child: Text(
                         "اسم",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ),
                     flex: 1,
@@ -793,8 +554,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             "CR Number",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                           ),
                         ),
                         flex: 1,
@@ -803,8 +563,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             customerCrNumber,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                           ),
                         ),
                         flex: 1,
@@ -813,8 +572,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             "س. ت",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ),
                         flex: 1,
@@ -830,8 +588,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             "VAT No",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                           ),
                         ),
                         flex: 1,
@@ -840,8 +597,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             customerVatNumber,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                           ),
                         ),
                         flex: 1,
@@ -850,8 +606,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             "الرقم الضريبي",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ),
                         flex: 1,
@@ -867,8 +622,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             "Phone",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                           ),
                         ),
                         flex: 1,
@@ -877,8 +631,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             phone,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                           ),
                         ),
                         flex: 1,
@@ -887,8 +640,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         child: Center(
                           child: Text(
                             "هاتف",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ),
                         flex: 1,
@@ -898,8 +650,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                 : Container(),
             SizedBox(
               height: 20,
-              child: Text(
-                  "--------------------------------------------------------------------------------------------------------"),
+              child: Text("--------------------------------------------------------------------------------------------------------"),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 2.0, right: 2.00),
@@ -915,13 +666,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                       children: [
                         Text(
                           "SL",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "رقم",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -935,13 +684,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                       children: [
                         Text(
                           "Product name",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "اسم المنتج",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -957,13 +704,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         children: [
                           Text(
                             "Qty",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             "كمية",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -980,13 +725,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         children: [
                           Text(
                             "Rate",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             "معدل",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -1003,13 +746,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         children: [
                           Text(
                             "Net",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             "مجموع",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -1020,8 +761,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             ),
             SizedBox(
               height: 10,
-              child: Text(
-                  "--------------------------------------------------------------------------------------------------------"),
+              child: Text("--------------------------------------------------------------------------------------------------------"),
             ),
             // Padding(
             //   padding:
@@ -1148,8 +888,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
             SizedBox(
               height: 10,
-              child: Text(
-                  "--------------------------------------------------------------------------------------------------------"),
+              child: Text("--------------------------------------------------------------------------------------------------------"),
             ),
 
             Padding(
@@ -1166,20 +905,17 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                           children: [
                             Text(
                               "Total Quantity",
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w600),
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                             ),
                             Text(
                               "(الكمية الإجمالية)",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                         Text(
                           roundStringWith(totalQty),
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1194,13 +930,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                           children: [
                             Text(
                               "Gross Amount",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w600),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                             ),
                             Text(
                               "(المبلغ الإجمالي)",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -1214,8 +948,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         // ),
                         Text(
                           roundStringWith(grossAmount),
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1230,20 +963,17 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                           children: [
                             Text(
                               'disc'.tr,
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w600),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                             ),
                             Text(
                               "(خصم)",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                         Text(
                           roundStringWith(discount),
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1258,20 +988,17 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                           children: [
                             Text(
                               'total_tax'.tr,
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w600),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                             ),
                             Text(
                               "(مجموع الضريبة)",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                         Text(
                           roundStringWith(totalTax),
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1286,14 +1013,12 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                       children: [
                         Text(
                           "Grand Total (المبلغ الإجمالي)",
-                          style: TextStyle(
-                              fontSize: 19, fontWeight: FontWeight.w700),
+                          style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
                         ),
                         Container(
                           child: Text(
                             currencyCode + ' ' + roundStringWith(grandTotal),
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w700),
+                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                           ),
                         ),
                       ],
@@ -1563,10 +1288,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     }
   }
 
-  void testPrint(
-      {required BuildContext ctx,
-      required String codePage,
-      required String capability}) async {
+  void testPrint({required BuildContext ctx, required String codePage, required String capability}) async {
     //  choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
     print("codePage $codePage");
@@ -1667,25 +1389,16 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
           final supportedCodePages = profile.codePages;
 
           final printer = NetworkPrinter(PaperSize.mm80, profile);
-          final res = await printer.connect(printerIp,
-              port: port, timeout: Duration(seconds: timeoutDuration));
+          final res = await printer.connect(printerIp, port: port, timeout: Duration(seconds: timeoutDuration));
 
           if (res == PosPrintResult.success) {
             isConnected = true;
             var capability = result[i]["key"];
             for (var ind = 0; ind < supportedCodePages.length; ind++) {
-              var testData =
-                  "${supportedCodePages[ind].name} السلام $capability ";
-              printer.setStyles(PosStyles(
-                  codeTable: supportedCodePages[ind].name,
-                  align: PosAlign.center));
-              Uint8List salam = await CharsetConverter.encode(
-                  "ISO-8859-6", setString(testData));
-              printer.textEncoded(salam,
-                  styles: const PosStyles(
-                      height: PosTextSize.size1,
-                      width: PosTextSize.size1,
-                      align: PosAlign.center));
+              var testData = "${supportedCodePages[ind].name} السلام $capability ";
+              printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
+              Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+              printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
             }
             printer.cut();
             printer.disconnect();
@@ -1724,23 +1437,14 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
         var profile = await CapabilityProfile.load(name: capability);
         final supportedCodePages = profile.codePages;
         final printer = NetworkPrinter(PaperSize.mm80, profile);
-        final res = await printer.connect(printerIp,
-            port: port, timeout: Duration(seconds: timeoutDuration));
+        final res = await printer.connect(printerIp, port: port, timeout: Duration(seconds: timeoutDuration));
         if (res == PosPrintResult.success) {
           isConnected = true;
           for (var ind = 0; ind < supportedCodePages.length; ind++) {
-            var testData =
-                "${supportedCodePages[ind].name} السلام $capability ";
-            printer.setStyles(PosStyles(
-                codeTable: supportedCodePages[ind].name,
-                align: PosAlign.center));
-            Uint8List salam = await CharsetConverter.encode(
-                "ISO-8859-6", setString(testData));
-            printer.textEncoded(salam,
-                styles: const PosStyles(
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.center));
+            var testData = "${supportedCodePages[ind].name} السلام $capability ";
+            printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
+            Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+            printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
 
             codePage.add(supportedCodePages[ind].name);
           }
@@ -1767,10 +1471,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     }
   }
 
-  void testPrint2(
-      {required BuildContext ctx,
-      required String codePage,
-      required String capability}) async {
+  void testPrint2({required BuildContext ctx, required String codePage, required String capability}) async {
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
     final profile = await CapabilityProfile.load();
@@ -1823,8 +1524,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
   Future<String> getDirectoryPath() async {
     Directory appDocDirectory = await getApplicationDocumentsDirectory();
-    Directory directory = await Directory(appDocDirectory.path + '/' + 'dir')
-        .create(recursive: true);
+    Directory directory = await Directory(appDocDirectory.path + '/' + 'dir').create(recursive: true);
     return directory.path;
   }
 
@@ -1902,8 +1602,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                         },
                         child: Text(
                           withCodePage ? "With Codepage" : "Without code page",
-                          style: TextStyle(
-                              color: withCodePage ? Colors.red : Colors.black),
+                          style: TextStyle(color: withCodePage ? Colors.red : Colors.black),
                         )),
                   ])
             : AppBar(
@@ -1934,11 +1633,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                       },
                       icon: Text(
                         withCodePage ? "With Codepage" : "Without code page",
-                        style: customisedStyle(
-                            context,
-                            withCodePage ? Colors.red : Colors.black,
-                            FontWeight.normal,
-                            14.0),
+                        style: customisedStyle(context, withCodePage ? Colors.red : Colors.black, FontWeight.normal, 14.0),
                       ),
                     )
                   ]),
@@ -1985,13 +1680,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   height: 50,
                   color: Colors.white24,
                   child: TextField(
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w400, 15.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                       onTap: () async {
                         final result = await Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => select_code_page()),
+                          MaterialPageRoute(builder: (context) => select_code_page()),
                         );
 
                         if (result != null) {
@@ -2017,8 +1710,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                           color: Colors.grey,
                         ),
                         labelText: "Select code page",
-                        labelStyle: customisedStyle(
-                            context, Colors.black, FontWeight.normal, 14.0),
+                        labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                         border: InputBorder.none,
                       )),
                 ),
@@ -2038,8 +1730,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.cyan, // Background color
                     ),
-                    child: Text('Check availability',
-                        style: TextStyle(color: Colors.white)),
+                    child: Text('Check availability', style: TextStyle(color: Colors.white)),
                     //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
                     onPressed: () async {
                       start(context);
@@ -2051,8 +1742,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.redAccent, // Background color
                     ),
-                    child: Text('Test with all Capabilities',
-                        style: TextStyle(color: Colors.white)),
+                    child: Text('Test with all Capabilities', style: TextStyle(color: Colors.white)),
                     //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
                     onPressed: () async {
                       testPrintAll();
@@ -2061,25 +1751,20 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             ),
 
             const SizedBox(height: 25),
-            found >= 0
-                ? Text('Found: $found device(s)',
-                    style: TextStyle(fontSize: 16))
-                : Container(),
+            found >= 0 ? Text('Found: $found device(s)', style: TextStyle(fontSize: 16)) : Container(),
 
             Padding(
               padding: const EdgeInsets.all(0.0),
               child: Container(
                 height: MediaQuery.of(context).size.height / 1.5,
                 child: ConstrainedBox(
-                  constraints:
-                      const BoxConstraints(maxHeight: 6000, minHeight: 10),
+                  constraints: const BoxConstraints(maxHeight: 6000, minHeight: 10),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12, right: 12),
                     child: Container(
                       //  color: Colors.redAccent,
                       child: ListView.builder(
-                          padding: const EdgeInsets.only(
-                              bottom: kFloatingActionButtonMargin + 20),
+                          padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 20),
                           shrinkWrap: true,
                           itemCount: printerModels.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -2096,20 +1781,14 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                                   // }
                                 },
                                 title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           printerModels[index],
-                                          style: customisedStyle(
-                                              context,
-                                              Colors.black,
-                                              FontWeight.w400,
-                                              15.0),
+                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                                         ),
                                         const SizedBox(
                                           height: 5,
@@ -2315,13 +1994,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   height: screenHeight / 14,
                   color: Colors.white24,
                   child: TextField(
-                      style: customisedStyle(
-                          context, Colors.black, FontWeight.w400, 15.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                       onTap: () async {
                         final result = await Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => select_code_page()),
+                          MaterialPageRoute(builder: (context) => select_code_page()),
                         );
 
                         if (result != null) {
@@ -2347,13 +2024,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                           color: Colors.grey,
                         ),
                         labelText: "Select code page",
-                        labelStyle: customisedStyle(
-                            context, Colors.black, FontWeight.normal, 14.0),
+                        labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                         border: InputBorder.none,
                       )),
                 ),
                 //  Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
-
 
                 // ElevatedButton(
                 //     style: ElevatedButton.styleFrom(
@@ -2368,8 +2043,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.cyan, // Background color
                     ),
-                    child: Text('Check availability',
-                        style: TextStyle(color: Colors.white)),
+                    child: Text('Check availability', style: TextStyle(color: Colors.white)),
                     //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
                     onPressed: () async {
                       start(context);
@@ -2382,8 +2056,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.redAccent, // Background color
                     ),
-                    child: Text('Test with all Capabilities',
-                        style: TextStyle(color: Colors.white)),
+                    child: Text('Test with all Capabilities', style: TextStyle(color: Colors.white)),
                     //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
                     onPressed: () async {
                       testPrintAll();
@@ -2392,63 +2065,51 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             ),
 
             const SizedBox(height: 10),
-            found >= 0
-                ? Text('Found: $found device(s)',
-                    style: TextStyle(fontSize: 16))
-                : Container(),
+            found >= 0 ? Text('Found: $found device(s)', style: TextStyle(fontSize: 16)) : Container(),
 
             Container(
               height: MediaQuery.of(context).size.height / 1.8,
               child: ConstrainedBox(
-                constraints:
-                const BoxConstraints(maxHeight: 6000, minHeight: 10),
+                constraints: const BoxConstraints(maxHeight: 6000, minHeight: 10),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 12, right: 12),
-                  child: ListView.builder(
-                      padding: const EdgeInsets.only(
-                          bottom: kFloatingActionButtonMargin + 20),
-                      shrinkWrap: true,
-                      itemCount: printerModels.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          child: ListTile(
-                            onTap: () async {
-                              testPrintOneByOne(printerModels[index]);
+                    padding: const EdgeInsets.only(left: 12, right: 12),
+                    child: ListView.builder(
+                        padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 20),
+                        shrinkWrap: true,
+                        itemCount: printerModels.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            child: ListTile(
+                              onTap: () async {
+                                testPrintOneByOne(printerModels[index]);
 
-                              // if (withCodePage) {
-                              //
-                              //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
-                              // } else {
-                              //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
-                              // }
-                            },
-                            title: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      printerModels[index],
-                                      style: customisedStyle(
-                                          context,
-                                          Colors.black,
-                                          FontWeight.w400,
-                                          15.0),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                // if (withCodePage) {
+                                //
+                                //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
+                                // } else {
+                                //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
+                                // }
+                              },
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        printerModels[index],
+                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      })
-                ),
+                          );
+                        })),
               ),
             ),
 
@@ -2920,13 +2581,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
   b64Qrcode(customer, vatNumber, dateTime, invoiceTotal, vatTotal) {
     List<int> newList1 = [];
-    var data = [
-      utf8.encode(customer),
-      utf8.encode(vatNumber),
-      utf8.encode(dateTime),
-      utf8.encode(invoiceTotal),
-      utf8.encode(vatTotal)
-    ];
+    var data = [utf8.encode(customer), utf8.encode(vatNumber), utf8.encode(dateTime), utf8.encode(invoiceTotal), utf8.encode(vatTotal)];
     print(data.runtimeType);
     for (var i = 0; i < data.length; i++) {
       List<int> dat = List.from(getBytes(i + 1, data[i]));
@@ -2944,12 +2599,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 List<ProductDetailsModel> printDalesDetails = [];
 
 class ProductDetailsModel {
-  final String unitName,
-      qty,
-      netAmount,
-      productName,
-      unitPrice,
-      productDescription;
+  final String unitName, qty, netAmount, productName, unitPrice, productDescription;
 
   ProductDetailsModel({
     required this.unitName,

@@ -507,7 +507,6 @@ class _ViewInvoiceState extends State<ViewInvoice> {
   printDetail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
-    prefs.setString('PrintType',"BT") ?? 'Wifi';
 
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
@@ -579,9 +578,6 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       }
 
     }
-
-
-
 
   }
 
