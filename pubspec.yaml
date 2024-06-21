@@ -98,6 +98,7 @@ dev_dependencies:
   flutter_slidable: ^3.1.0
   blue_thermal_printer: ^1.2.3
   double_back_to_close_app: ^2.1.0
+  loading_btn: ^1.0.3
 
 
 
