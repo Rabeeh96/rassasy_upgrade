@@ -97,7 +97,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                     prefs.setString('companyLogo', companyController.companyListData[index].companyLogo!);
                                   //  prefs.setString('permission', companyController.companyListData[index].);
                                     prefs.setString('edition', companyController.companyListData[index].edition!);
-                                    //prefs.setBool('isPosUser', companyController.companyListData[index].isPosUser!);
+                                    prefs.setBool('isPosUser', false);
                                     prefs.setString('companyID', companyController.companyListData[index].id!);
                                    /// prefs.setString('BaseURL', companyController.companyListData[index].BaseURL!);
                                     prefs.setBool('companySelected', true);
@@ -188,8 +188,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                               prefs.setString('BaseURL', companyController.companyListData[index].BaseURL!);
                                            //   prefs.setString('permission', companyController.companyListData[index].permission!);
                                               prefs.setString('edition', companyController.companyListData[index].edition!);
-                                          ///    prefs.setBool('isPosUser', companyController.companyListData[index].isPosUser!);
-                                              prefs.setString('companyID', companyController.companyListData[index].id!);
+                                              prefs.setBool('isPosUser', false);                                              prefs.setString('companyID', companyController.companyListData[index].id!);
                                               prefs.setString('companyLogo', companyController.companyListData[index].companyLogo??"");
                                               prefs.setString('branchName', companyController.companyListData[index].branches![i].branchName!);
                                               prefs.setBool('companySelected', true);

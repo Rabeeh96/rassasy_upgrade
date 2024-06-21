@@ -98,8 +98,7 @@ class _DashboardNewState extends State<DashboardNew> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
-        baseURlApi =
-            prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+        baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
         String baseUrl = BaseUrl.baseUrl;
 
         final String url = '$baseUrl/users/get-default-values/';

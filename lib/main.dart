@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //test
   void navigateUser() async {
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isTablet = screenWidth > 850;
+    bool isTablet = screenWidth >defaultScreenWidth;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getBool('isLoggedIn') ?? false;
     print(status);
