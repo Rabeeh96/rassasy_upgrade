@@ -359,13 +359,14 @@ dialogBoxPermissionDenied(BuildContext context) async {
 myLog(msg){
   log("___________________${msg.toString()}");
 }
+String baseURlApi='';
 class BaseUrl{
 /// server details
 
   static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
-  static String baseUrl = "https://www.api.viknbooks.com/api/v10";
-  static String baseUrlV11 = "https://www.api.viknbooks.com/api/v11";
-  static String imageURL = 'https://www.api.viknbooks.com';
+  static String baseUrl = "$baseURlApi/api/v10";
+  static String baseUrlV11 = "$baseURlApi/api/v11";
+  static String imageURL = '$baseURlApi';
 ///
  // // api.accounts.vikncodes.in
 
@@ -373,6 +374,7 @@ class BaseUrl{
   // static String baseUrl = "https://www.api.viknbooks.in/api/v10";
   // static String imageURL = 'https://www.api.viknbooks.in';
   // static String baseUrlV11 = "https://www.api.viknbooks.in/api/v11";
+
 
  // local
  // http://192.168.1.52:8002/

@@ -26,8 +26,8 @@ class CompanyController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userID = prefs.getInt('user_id') ?? 0;
       var accessToken = prefs.getString('access') ?? '';
-      final String baseUrl = BaseUrl.baseUrlV11;
-      final String url = '$baseUrl/users/companies/';
+      final String baseUrl = BaseUrl.baseUrlAuth;
+      final String url = '$baseUrl/company/companies/';
       print('url $url');
       Map<String, dynamic> data = {"userId": userID, "is_rassasy": true};
       var body = json.encode(data);
@@ -69,8 +69,8 @@ class CompanyController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userID = prefs.getInt('user_id') ?? 0;
       var accessToken = prefs.getString('access') ?? '';
-      final String baseUrl = BaseUrl.baseUrlV11;
-      final String url = '$baseUrl/users/companies/';
+      final String baseUrl = BaseUrl.baseUrlAuth;
+      final String url = '$baseUrl/company/companies/';
       print('url $url');
       Map<String, dynamic> data = {"userId": userID, "is_rassasy": true};
       var body = json.encode(data);

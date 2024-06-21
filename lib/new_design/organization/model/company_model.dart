@@ -1,9 +1,9 @@
 
 class Company {
-  final bool isPosUser;
+ /// final bool isPosUser;
   final String id,
       companyName,
-      companyType,
+      baseurl,
       expiryDate,
       permission,
       edition,
@@ -13,9 +13,9 @@ class Company {
   Company(
       {required this.id,
         required this.image,
-        required this.companyType,
+        required this.baseurl,
         required this.companyName,
-        required this.isPosUser,
+      ///  required this.isPosUser,
         required this.edition,
         required this.branchList,
         required this.expiryDate,
@@ -25,11 +25,11 @@ class Company {
     return Company(
       id: json['id'],
       permission: json['Permission']??"",
-      companyType: json['company_type'],
+      baseurl: json['BaseURL'],
       edition: json['Edition'],
       expiryDate: json['ExpiryDate'],
       companyName: json['CompanyName'],
-      isPosUser: json['IsPosUser'],
+    ///  isPosUser: json['IsPosUser'],
       branchList: json['Branches']??[],
       image: json['CompanyLogo']??"",
     );

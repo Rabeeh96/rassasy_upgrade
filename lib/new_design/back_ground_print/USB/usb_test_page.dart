@@ -226,6 +226,7 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
       builder: (BuildContext context) {
         return ListView(
           children: <Widget>[
+            dividerStyleFull(),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

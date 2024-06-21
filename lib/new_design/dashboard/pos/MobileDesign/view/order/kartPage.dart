@@ -6,6 +6,7 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/order_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/customer_detail.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/select_deliveryman.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/payment_page.dart';
@@ -34,7 +35,7 @@ class KartPage extends StatefulWidget {
 class _KartPageState extends State<KartPage> {
   OrderController orderController = Get.put(OrderController());
   var selectedItem = '';
-
+POSController posController =Get.put(POSController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -536,12 +537,38 @@ class _KartPageState extends State<KartPage> {
                           backgroundColor:
                               MaterialStateProperty.all(const Color(0xff10C103))),
                       onPressed: () async {
+                        if(widget.orderType==1){
+                          if(posController.dining_create_perm.value){
+                            orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                                orderType: widget.orderType,context: context,
+                                orderID: widget.uID,
+                                isPayment: false,sectionType: widget.sectionType);
+                          }else{
+                            dialogBoxPermissionDenied(context);
+                          }
+                        }else  if(widget.orderType==2){
+                          if(posController.take_away_create_perm.value){
+                            orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                                orderType: widget.orderType,context: context,
+                                orderID: widget.uID,
+                                isPayment: false,sectionType: widget.sectionType);
+                          }else{
+                            dialogBoxPermissionDenied(context);
+                          }
+                        }else  if(widget.orderType==4){
+                          if(posController.car_create_perm.value){
+                            orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                                orderType: widget.orderType,context: context,
+                                orderID: widget.uID,
+                                isPayment: false,sectionType: widget.sectionType);
+                          }else{
+                            dialogBoxPermissionDenied(context);
+                          }
+                        }else{
+
+                        }
 
 
-                        orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
-                            orderType: widget.orderType,context: context,
-                            orderID: widget.uID,
-                            isPayment: false,sectionType: widget.sectionType);
 
                       },
 
@@ -564,14 +591,31 @@ class _KartPageState extends State<KartPage> {
                   const SizedBox(
                     width: 7,
                   ),
+
+
                   TextButton(
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(const Color(0xff00775E))),
                       onPressed: () {
-                        orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
-                           orderID: widget.uID,
-                            orderType: widget.orderType,context: context,isPayment: true,sectionType: widget.sectionType);
+
+                        if(widget.orderType==1||widget.orderType==4||widget.orderType==2){
+
+
+
+                          if(posController.pay_perm.value){
+                            orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                                orderID: widget.uID,
+                                orderType: widget.orderType,context: context,isPayment: true,sectionType: widget.sectionType);
+
+                          }else{
+                            dialogBoxPermissionDenied(context);
+                          }
+                        }else{
+
+                        }
+
+
                       },
                       child: Row(
                         children: [
