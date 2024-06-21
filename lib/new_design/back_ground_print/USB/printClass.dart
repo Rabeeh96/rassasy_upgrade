@@ -1429,7 +1429,6 @@ class USBPrintClass {
 
           for (var i = 0; i < printListData.length; i++) {
             try {
-              print('------------------ index $i');
               dataPrint.clear();
               await kotPrintConnect(printListData[i].ip, i, printListData[i].items, false, isUpdate);
               await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
@@ -1441,7 +1440,6 @@ class USBPrintClass {
           /// cancel order print
           for (var i = 0; i < cancelOrder.length; i++) {
             try {
-              print('------------------ index $i');
               dataPrint.clear();
               await kotPrintConnect(printListDataCancel[i].ip, i, printListDataCancel[i].items, true, false);
               await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
