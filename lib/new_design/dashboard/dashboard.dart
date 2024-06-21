@@ -69,7 +69,8 @@ class _DashboardNewState extends State<DashboardNew> {
       } else {
         Get.updateLocale(const Locale('en', 'US'));
       }
-
+      baseURlApi =
+          prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
       userName = prefs.getString('user_name') ?? '';
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
@@ -79,6 +80,7 @@ class _DashboardNewState extends State<DashboardNew> {
       settingsPermission = prefs.getBool('General Setting') ?? false;
     });
   }
+
   Future<Null> defaultData() async {
     start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -96,7 +98,8 @@ class _DashboardNewState extends State<DashboardNew> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
-
+        baseURlApi =
+            prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
         String baseUrl = BaseUrl.baseUrl;
 
         final String url = '$baseUrl/users/get-default-values/';
@@ -162,6 +165,7 @@ class _DashboardNewState extends State<DashboardNew> {
       }
     }
   }
+
   returnBool(String data) {
     if (data == "true") {
       return true;
@@ -169,6 +173,7 @@ class _DashboardNewState extends State<DashboardNew> {
       return false;
     }
   }
+
   Future<void> selectedItem(BuildContext context, item) async {
     switch (item) {
       case 0:
@@ -362,9 +367,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-
-     bool isTablet = screenWidth >defaultScreenWidth;
-
+    bool isTablet = screenWidth > defaultScreenWidth;
 
     return Scaffold(
       appBar: isProfileNotifier.value
@@ -1602,7 +1605,6 @@ class _DashboardNewState extends State<DashboardNew> {
                       SizedBox(
                         height: mHeight * .03,
                       ),
-
                       Center(
                         child: Column(
                           children: [
@@ -1943,39 +1945,101 @@ class _DashboardNewState extends State<DashboardNew> {
                           ],
                         ),
                       ),
-
                       SizedBox(
                         height: mHeight * .01,
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Get.to(SettingsMobilePage());
+                          onTap: () {
+                            Get.to(SettingsMobilePage());
+                          },
+                          child: InkWell(
+                            child: Card(
+                              color: Colors.transparent,
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 8, top: 15, bottom: 15),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            "assets/svg/settings_mobile.svg"),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            'Settings'.tr,
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w400,
+                                                16.0),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 18,
+                                      color: Colors.black,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )),
+                      DividerStyle(),
+                      GestureDetector(
+                        onTap: () async {
+                          ///
+                          ///
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+
+                          var printType =
+                              prefs.getString('PrintType') ?? 'Wifi';
+                          if (printType == 'Wifi') {
+                            Get.to(PrintSettingsDetailed());
+                          } else if (printType == 'USB') {
+                            Get.to(TestPrintUSB());
+                          } else {
+                            Get.to(TestPrintBT());
+                          }
                         },
-                        child: Card(
+                        child: InkWell(
+                            child: Card(
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 10.0, right: 8, top: 15, bottom: 15),
+                                left: 8.0, right: 8, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SvgPicture.asset(
-                                        "assets/svg/settings_mobile.svg"),
+                                    const Icon(
+                                      Icons.print_outlined,
+                                      size: 25,
+                                      color: Color(0xffF25F29),
+                                    ),
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(left: 10.0),
                                       child: Text(
-                                        'Settings'.tr,
+                                        'Test Print',
                                         style: customisedStyle(
                                             context,
                                             Colors.black,
                                             FontWeight.w400,
                                             16.0),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                                 const Icon(
@@ -1986,10 +2050,8 @@ class _DashboardNewState extends State<DashboardNew> {
                               ],
                             ),
                           ),
-                        ),
+                        )),
                       ),
-
-                      /// print settings commented
                       DividerStyle(),
                       Card(
                         color: Colors.transparent,
@@ -2036,293 +2098,108 @@ class _DashboardNewState extends State<DashboardNew> {
                           ),
                         ),
                       ),
-
                       DividerStyle(),
                       GestureDetector(
-                        onTap: () {
-                          Get.to(AboutUs());
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
+                          onTap: () {
+                            Get.to(AboutUs());
+                          },
+                          child: InkWell(
+                            child: Card(
+                              color: Colors.transparent,
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8, top: 15, bottom: 15),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SvgPicture.asset(
-                                      "assets/svg/about_us_mob.svg",
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/svg/about_us_mob.svg",
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            'about_us'.tr,
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w400,
+                                                16.0),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
-                                      child: Text(
-                                        'about_us'.tr,
-                                        style: customisedStyle(
-                                            context,
-                                            Colors.black,
-                                            FontWeight.w400,
-                                            16.0),
-                                      ),
-                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 18,
+                                      color: Colors.black,
+                                    )
                                   ],
                                 ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
+                          )),
                       DividerStyle(),
                       GestureDetector(
-                        onTap: () async {
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          Locale? currentLocale = Get.locale;
-                          if (currentLocale.toString() == "ar") {
-                            prefs.setBool('isArabic', false);
-                            Get.updateLocale(const Locale('en', 'US'));
-                          } else {
-                            prefs.setBool('isArabic', true);
-                            Get.updateLocale(const Locale('ar'));
-                          }
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
+                          onTap: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            Locale? currentLocale = Get.locale;
+                            if (currentLocale.toString() == "ar") {
+                              prefs.setBool('isArabic', false);
+                              Get.updateLocale(const Locale('en', 'US'));
+                            } else {
+                              prefs.setBool('isArabic', true);
+                              Get.updateLocale(const Locale('ar'));
+                            }
+                          },
+                          child: InkWell(
+                            child: Card(
+                              color: Colors.transparent,
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8, top: 15, bottom: 15),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SvgPicture.asset(
-                                      "assets/svg/language-hiragana.svg",
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/svg/language-hiragana.svg",
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            'lang'.tr,
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w400,
+                                                16.0),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
-                                      child: Text(
-                                        'lang'.tr,
-                                        style: customisedStyle(
-                                            context,
-                                            Colors.black,
-                                            FontWeight.w400,
-                                            16.0),
-                                      ),
-                                    ),
+                                    Text(
+                                      'lang'.tr,
+                                      style: customisedStyle(
+                                          context,
+                                          Color(0xff7D7D7D),
+                                          FontWeight.normal,
+                                          14.0),
+                                    )
                                   ],
                                 ),
-                                Text(
-                                  'lang'.tr,
-                                  style: customisedStyle(
-                                      context,
-                                      Color(0xff7D7D7D),
-                                      FontWeight.normal,
-                                      14.0),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(ProductListMobile());
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    'Product',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(ProductGroupMobile());
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    'ProductGroupMobile',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(CustomerListMobile());
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    'Customer List',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(FlavourListMobile());
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    'FlavourListMobile',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(TaxListMobile());
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    'TaxListMobile',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(TestPrintBT());
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    'BT Test',
-                                    style: customisedStyle(context,
-                                        Colors.black, FontWeight.w400, 16.0),
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                          )),
                     ],
                   ),
                 )),
@@ -2409,7 +2286,7 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                 //   updateAlert();
+                                    //   updateAlert();
                                     var perm = await checkingPerm("Groupview");
                                     print(perm);
                                     if (perm) {
@@ -2463,8 +2340,9 @@ class _DashboardNewState extends State<DashboardNew> {
                                 GestureDetector(
                                   onTap: () async {
                                     ///updateAlert();
-                                  //  Get.to(PrintSettingsDetailed());
-                                    var perm = await checkingPerm("Productview");
+                                    //  Get.to(PrintSettingsDetailed());
+                                    var perm =
+                                        await checkingPerm("Productview");
                                     print(perm);
                                     if (perm) {
                                       Navigator.push(
@@ -2520,12 +2398,12 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                  ///  updateAlert();
-                                 // Get.to(TestPrintUSB());
-                                    var perm = await checkingPerm("Customerview");
+                                    ///  updateAlert();
+                                    var perm =
+                                        await checkingPerm("Customerview");
                                     print(perm);
                                     if (perm) {
-                                     Get.to(CustomerListMobile());
+                                      Get.to(CustomerListMobile());
                                     } else {
                                       dialogBoxPermissionDenied(context);
                                     }
@@ -2723,8 +2601,8 @@ class _DashboardNewState extends State<DashboardNew> {
                                 GestureDetector(
                                   onTap: () {
                                     Get.to(TaxListMobile());
-                                  ///  updateAlert();
 
+                                    ///  updateAlert();
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(
@@ -2779,7 +2657,8 @@ class _DashboardNewState extends State<DashboardNew> {
                                 GestureDetector(
                                   onTap: () async {
                                     //updateAlert();
-                                    var flavour = await checkingPerm("Flavourview");
+                                    var flavour =
+                                        await checkingPerm("Flavourview");
 
                                     if (flavour == true) {
                                       Navigator.push(
@@ -2790,8 +2669,6 @@ class _DashboardNewState extends State<DashboardNew> {
                                     } else {
                                       dialogBoxPermissionDenied(context);
                                     }
-
-
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(
@@ -2840,14 +2717,13 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 InvoiceListMobile()));
 
-                                   // updateAlert();
+                                    // updateAlert();
                                     // var invoices =
                                     //     await checkingPerm('Invoices'.tr);
                                     //

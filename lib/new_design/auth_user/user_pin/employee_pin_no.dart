@@ -188,6 +188,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         var branchID = prefs.getInt('branchID') ?? 1;
         var companyID = prefs.getString('companyID') ?? '';
 
+        baseURlApi=prefs.getString('BaseURL') ?? '';
         String baseUrl = BaseUrl.baseUrlV11;
         var token = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/list-detail/pos-role/';

@@ -245,14 +245,15 @@ class _OrganizationDetailState extends State<OrganizationList> {
 
                                                       SharedPreferences prefs = await SharedPreferences.getInstance();
                                                       prefs.setString('companyName', companyController.companyList[index].companyName);
-                                                      prefs.setString('companyType', companyController.companyList[index].companyType);
                                                       prefs.setString('expiryDate', companyController.companyList[index].expiryDate);
                                                       prefs.setString('permission', companyController.companyList[index].permission);
                                                       prefs.setString('edition', companyController.companyList[index].edition);
-                                                      prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
+                                                     // prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
                                                       prefs.setString('companyID', companyController.companyList[index].id);
+                                                      prefs.setString('BaseURL', companyController.companyList[index].baseurl);
                                                       prefs.setBool('companySelected', true);
                                                       prefs.setInt('branchID',1);
+                                                      baseURlApi=companyController.companyList[index].baseurl;
                                                       await defaultDataInitial(context:context);
                                                       await Navigator.pushReplacement(
                                                           context,
@@ -267,13 +268,15 @@ class _OrganizationDetailState extends State<OrganizationList> {
 
                                                         SharedPreferences prefs = await SharedPreferences.getInstance();
                                                         prefs.setString('companyName', companyController.companyList[index].companyName);
-                                                        prefs.setString('companyType', companyController.companyList[index].companyType);
                                                         prefs.setString('expiryDate', companyController.companyList[index].expiryDate);
                                                         prefs.setString('permission', companyController.companyList[index].permission);
                                                         prefs.setString('edition', companyController.companyList[index].permission);
-                                                        prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
+                                                     //   prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
                                                         prefs.setString('companyID', companyController.companyList[index].id);
+                                                        prefs.setString('BaseURL', companyController.companyList[index].baseurl);
+
                                                         prefs.setBool('companySelected', true);
+                                                        baseURlApi=companyController.companyList[index].baseurl;
                                                         await defaultDataInitial(context:context);
                                                         await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                                       }

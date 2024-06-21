@@ -33,6 +33,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.white,
         titleSpacing: 0,
         leading: IconButton(
@@ -63,7 +64,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                 if (companyController.isLoading.value) {
                   return const Center(
                     child: CircularProgressIndicator(
-                      color: Colors.black,
+                      color: Color(0xffF25F29),
                     ),
                   );
                 } else {
@@ -91,15 +92,17 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
 
                                     SharedPreferences prefs = await SharedPreferences.getInstance();
                                     prefs.setString('companyName', companyController.companyListData[index].companyName!);
-                                    prefs.setString('companyType', companyController.companyListData[index].companyType!);
+                                    prefs.setString('BaseURL', companyController.companyListData[index].BaseURL!);
                                     prefs.setString('expiryDate', companyController.companyListData[index].expiryDate!);
                                     prefs.setString('companyLogo', companyController.companyListData[index].companyLogo!);
                                   //  prefs.setString('permission', companyController.companyListData[index].);
                                     prefs.setString('edition', companyController.companyListData[index].edition!);
-                                    prefs.setBool('isPosUser', companyController.companyListData[index].isPosUser!);
+                                    //prefs.setBool('isPosUser', companyController.companyListData[index].isPosUser!);
                                     prefs.setString('companyID', companyController.companyListData[index].id!);
+                                   /// prefs.setString('BaseURL', companyController.companyListData[index].BaseURL!);
                                     prefs.setBool('companySelected', true);
                                     prefs.setInt('branchID',1);
+                                    baseURlApi=companyController.companyListData[index].BaseURL!;
                                     await defaultDataInitial(context:context);
                                     await Navigator.pushReplacement(
                                     context,
@@ -181,16 +184,17 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
 
                                               SharedPreferences prefs = await SharedPreferences.getInstance();
                                               prefs.setString('companyName', companyController.companyListData[index].companyName!);
-                                              prefs.setString('companyType', companyController.companyListData[index].companyType!);
                                               prefs.setString('expiryDate', companyController.companyListData[index].expiryDate!);
+                                              prefs.setString('BaseURL', companyController.companyListData[index].BaseURL!);
                                            //   prefs.setString('permission', companyController.companyListData[index].permission!);
                                               prefs.setString('edition', companyController.companyListData[index].edition!);
-                                              prefs.setBool('isPosUser', companyController.companyListData[index].isPosUser!);
+                                          ///    prefs.setBool('isPosUser', companyController.companyListData[index].isPosUser!);
                                               prefs.setString('companyID', companyController.companyListData[index].id!);
                                               prefs.setString('companyLogo', companyController.companyListData[index].companyLogo??"");
                                               prefs.setString('branchName', companyController.companyListData[index].branches![i].branchName!);
                                               prefs.setBool('companySelected', true);
                                               prefs.setInt('branchID',companyController.companyListData[index].branches![i].branchID!);
+                                              baseURlApi=companyController.companyListData[index].BaseURL!;
                                               await defaultDataInitial(context:context);
                                               await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                             },
