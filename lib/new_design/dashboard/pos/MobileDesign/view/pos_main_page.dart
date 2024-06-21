@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/car_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/dining_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/online.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/take_away_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/car_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/dining_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/online.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/take_away_page.dart';
 
 class POSMobilePage extends StatelessWidget {
   final POSController landingPageController;

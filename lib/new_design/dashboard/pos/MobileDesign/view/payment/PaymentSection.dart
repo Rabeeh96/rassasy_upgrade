@@ -4,10 +4,10 @@
 // import 'package:rassasy_new/global/customclass.dart';
 // import 'package:rassasy_new/global/global.dart';
 // import 'package:rassasy_new/global/textfield_decoration.dart';
-// import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
-// import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/payment_controller.dart';
-// import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
-// import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/order/product_detail_page.dart';
+// import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/order_controller.dart';
+// import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/payment_controller.dart';
+// import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
+// import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/order/product_detail_page.dart';
 //
 // class PaymentSection extends StatefulWidget {
 //

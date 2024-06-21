@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/reservation_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/order_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/reservation_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../profile_mobile/settings/online_platforms/model/online_platfom_list_model.dart';
 
