@@ -69,8 +69,7 @@ class _DashboardNewState extends State<DashboardNew> {
       } else {
         Get.updateLocale(const Locale('en', 'US'));
       }
-      baseURlApi =
-          prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+      baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
       userName = prefs.getString('user_name') ?? '';
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
@@ -1579,6 +1578,7 @@ class _DashboardNewState extends State<DashboardNew> {
           ],
         ));
   }
+
 
   Widget dashboardPageMobile() {
     final mHeight = MediaQuery.of(context).size.height;
