@@ -91,7 +91,7 @@ SoftwareVersion copyWith({  String? currentVersion,
 
 /// id : "dd9335e4-b225-4871-b86f-ffb4aa9e6a0b"
 /// CompanyName : "abcd company(GST)"
-/// company_type : "Personal"
+/// company_type : "Personal"d
 /// ExpiryDate : "2025-01-30"
 /// CompanyLogo : "https://www.api.viknbooks.com/media/company-logo/download_6_Bgs6Cj3_Miwh3AE.jfif"
 /// Edition : "Professional"
@@ -103,22 +103,25 @@ Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
 class Data {
   Data({
+
       String? id, 
       String? companyName, 
-      String? companyType, 
+
       String? expiryDate, 
       String? companyLogo, 
       String? edition, 
-      bool? isPosUser, 
+      String? BaseURL,
+   ///   bool? isPosUser,
       bool? isBranch, 
       List<Branches>? branches,}){
     _id = id;
     _companyName = companyName;
-    _companyType = companyType;
+
+    _BaseURL = BaseURL;
     _expiryDate = expiryDate;
     _companyLogo = companyLogo;
     _edition = edition;
-    _isPosUser = isPosUser;
+  ///  _isPosUser = isPosUser;
     _isBranch = isBranch;
     _branches = branches;
 }
@@ -126,11 +129,12 @@ class Data {
   Data.fromJson(dynamic json) {
     _id = json['id'];
     _companyName = json['CompanyName'];
-    _companyType = json['company_type'];
+
+    _BaseURL = json['BaseURL'];
     _expiryDate = json['ExpiryDate'];
     _companyLogo = json['CompanyLogo'];
     _edition = json['Edition'];
-    _isPosUser = json['IsPosUser'];
+  ///  _isPosUser = json['IsPosUser'];
     _isBranch = json['IsBranch'];
     if (json['Branches'] != null) {
       _branches = [];
@@ -141,39 +145,43 @@ class Data {
   }
   String? _id;
   String? _companyName;
-  String? _companyType;
+
   String? _expiryDate;
   String? _companyLogo;
   String? _edition;
-  bool? _isPosUser;
+  String? _BaseURL;
+  ///bool? _isPosUser;
   bool? _isBranch;
   List<Branches>? _branches;
 Data copyWith({  String? id,
   String? companyName,
-  String? companyType,
+
+  String? BaseURL,
   String? expiryDate,
   String? companyLogo,
   String? edition,
-  bool? isPosUser,
+ /// bool? isPosUser,
   bool? isBranch,
   List<Branches>? branches,
 }) => Data(  id: id ?? _id,
   companyName: companyName ?? _companyName,
-  companyType: companyType ?? _companyType,
+
   expiryDate: expiryDate ?? _expiryDate,
   companyLogo: companyLogo ?? _companyLogo,
+  BaseURL: BaseURL ?? _BaseURL,
   edition: edition ?? _edition,
-  isPosUser: isPosUser ?? _isPosUser,
+ /// isPosUser: isPosUser ?? _isPosUser,
   isBranch: isBranch ?? _isBranch,
   branches: branches ?? _branches,
 );
   String? get id => _id;
   String? get companyName => _companyName;
-  String? get companyType => _companyType;
+
   String? get expiryDate => _expiryDate;
   String? get companyLogo => _companyLogo;
+  String? get BaseURL => _BaseURL;
   String? get edition => _edition;
-  bool? get isPosUser => _isPosUser;
+ /// bool? get isPosUser => _isPosUser;
   bool? get isBranch => _isBranch;
   List<Branches>? get branches => _branches;
 
@@ -181,11 +189,12 @@ Data copyWith({  String? id,
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['CompanyName'] = _companyName;
-    map['company_type'] = _companyType;
+
+    map['BaseURL'] = _BaseURL;
     map['ExpiryDate'] = _expiryDate;
     map['CompanyLogo'] = _companyLogo;
     map['Edition'] = _edition;
-    map['IsPosUser'] = _isPosUser;
+ ///   map['IsPosUser'] = _isPosUser;
     map['IsBranch'] = _isBranch;
     if (_branches != null) {
       map['Branches'] = _branches?.map((v) => v.toJson()).toList();

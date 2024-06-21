@@ -1,21 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/services.dart';
-// import 'package:intl/intl.dart';
-import 'package:flutter/material.dart' hide Image;
+
+import 'package:charset_converter/charset_converter.dart';
+
 // import 'package:esc_pos_printer/esc_pos_printer.dart';
 // import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
+
+// import 'package:intl/intl.dart';
+import 'package:flutter/material.dart' hide Image;
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ping_discover_network_forked/ping_discover_network_forked.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
-import 'package:rassasy_new/global/charecter.dart';
+import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:get/get.dart';
-import 'package:charset_converter/charset_converter.dart';
+
 import 'select_codepage.dart';
 
 class PrintSettingsDetailed extends StatefulWidget {
@@ -54,16 +58,17 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
   bool connectionTesting = false;
 
   /// demo print
-  Future<void> DemoPrint(NetworkPrinter printer, codepage,capabilities) async {
+  Future<void> DemoPrint(NetworkPrinter printer, codepage, capabilities) async {
     print(codepage);
     if (codepage != "") {
       printer.emptyLines(2);
-      printer.text("Test print code Page  $codepage capabilities $capabilities ",);
+      printer.text(
+        "Test print code Page  $codepage capabilities $capabilities ",
+      );
       printer.setStyles(PosStyles(codeTable: codepage, align: PosAlign.center));
       Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString('السلام عليكمً'));
       printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       printer.emptyLines(1);
-
     }
 
     //printer.cut();
@@ -376,9 +381,9 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                 ),
                 companyDescription != ""
                     ? Text(
-                  companyDescription,
-                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
-                )
+                        companyDescription,
+                        style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                      )
                     : Container(),
                 Text(
                   companyAddress1 + companyAddress2,
@@ -402,18 +407,18 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             ),
             companyCrNumber != ""
                 ? Row(
-              children: [
-                Text(
-                  companyCrNumber + " :",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "س. ت",
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                ),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            )
+                    children: [
+                      Text(
+                        companyCrNumber + " :",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "س. ت",
+                        style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  )
                 : Container(),
             Row(
               children: [
@@ -543,105 +548,105 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             ),
             customerCrNumber != ""
                 ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      "CR Number",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      customerCrNumber,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      "س. ت",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-              ],
-            )
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "CR Number",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            customerCrNumber,
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "س. ت",
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  )
                 : Container(),
             customerVatNumber != ""
                 ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      "VAT No",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      customerVatNumber,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      "الرقم الضريبي",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-              ],
-            )
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Expanded(
+                        child: Center(
+                          child: Text(
+                            "VAT No",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            customerVatNumber,
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "الرقم الضريبي",
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  )
                 : Container(),
             phone != ""
                 ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      "Phone",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      phone,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      "هاتف",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  flex: 1,
-                ),
-              ],
-            )
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "Phone",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            phone,
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "هاتف",
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  )
                 : Container(),
             SizedBox(
               height: 20,
@@ -1300,11 +1305,10 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     print(res.msg);
     if (res == PosPrintResult.success) {
       //  function for printing purpose
-      await DemoPrint(printer, codePage,capability);
+      await DemoPrint(printer, codePage, capability);
       printer.disconnect();
     }
   }
-
 
   // Future<void> printReceipt(codePage,capability) async {
   //   int retryCount = 0;
@@ -1376,15 +1380,11 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     int timeoutDuration = 5;
     int maxRetries = 3;
 
-
     while (retryCount < maxRetries && !isConnected) {
       try {
-
-
         var result = await CapabilityProfile.getAvailableProfiles();
 
-        for(var i = 0;i<result.length ;i++){
-
+        for (var i = 0; i < result.length; i++) {
           var profile = await CapabilityProfile.load(name: result[i]["key"]);
           final supportedCodePages = profile.codePages;
 
@@ -1394,21 +1394,18 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
           if (res == PosPrintResult.success) {
             isConnected = true;
             var capability = result[i]["key"];
-            for(var ind = 0;ind<supportedCodePages.length ;ind++){
-              var testData ="${supportedCodePages[ind].name} السلام $capability ";
+            for (var ind = 0; ind < supportedCodePages.length; ind++) {
+              var testData = "${supportedCodePages[ind].name} السلام $capability ";
               printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
               Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
               printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
             }
             printer.cut();
             printer.disconnect();
-          }
-          else {
+          } else {
             print('Failed to connect: ${res.msg}');
           }
-
         }
-
       } catch (e) {
         print('Error: $e');
       }
@@ -1424,8 +1421,8 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
       print('Failed to connect to printer after $maxRetries attempts.');
     }
   }
-  Future<void> testPrintOneByOne(capability) async {
 
+  Future<void> testPrintOneByOne(capability) async {
     int retryCount = 0;
     bool isConnected = false;
     var printerIp = ipController.text;
@@ -1433,35 +1430,31 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     int timeoutDuration = 5;
     int maxRetries = 3;
 
-
-    List codePage =[];
+    List codePage = [];
 
     while (retryCount < maxRetries && !isConnected) {
       try {
         var profile = await CapabilityProfile.load(name: capability);
-          final supportedCodePages = profile.codePages;
-          final printer = NetworkPrinter(PaperSize.mm80, profile);
-          final res = await printer.connect(printerIp, port: port, timeout: Duration(seconds: timeoutDuration));
-          if (res == PosPrintResult.success) {
-            isConnected = true;
-            for(var ind = 0;ind<supportedCodePages.length ;ind++){
-              var testData ="${supportedCodePages[ind].name} السلام $capability ";
-              printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
-              Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
-              printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        final supportedCodePages = profile.codePages;
+        final printer = NetworkPrinter(PaperSize.mm80, profile);
+        final res = await printer.connect(printerIp, port: port, timeout: Duration(seconds: timeoutDuration));
+        if (res == PosPrintResult.success) {
+          isConnected = true;
+          for (var ind = 0; ind < supportedCodePages.length; ind++) {
+            var testData = "${supportedCodePages[ind].name} السلام $capability ";
+            printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
+            Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+            printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
 
-              codePage.add(supportedCodePages[ind].name);
-            }
-
-            printer.cut();
-            printer.disconnect();
-            print('Receipt printed successfully.');
-          }
-          else {
-            print('Failed to connect: ${res.msg}');
+            codePage.add(supportedCodePages[ind].name);
           }
 
-
+          printer.cut();
+          printer.disconnect();
+          print('Receipt printed successfully.');
+        } else {
+          print('Failed to connect: ${res.msg}');
+        }
       } catch (e) {
         print('Error: $e');
       }
@@ -1477,7 +1470,6 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
       print('Failed to connect to printer after $maxRetries attempts.');
     }
   }
-
 
   void testPrint2({required BuildContext ctx, required String codePage, required String capability}) async {
     // TODO Don't forget to choose printer's paper size
@@ -1490,7 +1482,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     final PosPrintResult res = await printer.connect(printerIp, port: port);
 
     if (res == PosPrintResult.success) {
-      await DemoPrint(printer, "",capability);
+      await DemoPrint(printer, "", capability);
       printer.disconnect();
     }
   }
@@ -1576,341 +1568,684 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ), //
-          title: const Text(
-            'Detailed settings',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 23,
-            ),
-          ),
-          backgroundColor: Colors.grey[300],
-          actions: <Widget>[
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    withCodePage = !withCodePage;
-                  });
-                },
-                child: Text(
-                  withCodePage?"With Codepage":"Without code page",
-                  style: TextStyle(color: withCodePage ? Colors.red : Colors.black),
-                )),
-          ]),
-      body: Builder(
-        builder: (BuildContext context) {
-          return ListView(
-            children: <Widget>[
-              const SizedBox(height: 50),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 7,
-                    child: TextField(
-                      controller: portController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Port',
-                        hintText: 'Port',
-                      ),
-                    ),
+        appBar: isTablet
+            ? AppBar(
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
                   ),
-                  const SizedBox(width: 40),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 7,
-                    child: TextField(
-                      controller: ipController,
-                      decoration: const InputDecoration(
-                        labelText: 'Ip',
-                        hintText: 'Ip',
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ), //
+                title: const Text(
+                  'Detailed settings',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 23,
                   ),
-                  const SizedBox(width: 20),
-
-                  Container(
-                    width: 300,
-                    height: 50,
-                    color: Colors.white24,
-                    child: TextField(
-                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                        onTap: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => select_code_page()),
-                          );
-
-                          if (result != null) {
-                            code_page_controller.text = result;
-                          }
+                ),
+                backgroundColor: Colors.grey[300],
+                actions: <Widget>[
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            withCodePage = !withCodePage;
+                          });
                         },
-                        readOnly: true,
-                        textCapitalization: TextCapitalization.words,
-                        keyboardType: TextInputType.text,
-                        controller: code_page_controller,
-                        decoration: InputDecoration(
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1, color: Colors.grey),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1, color: Colors.grey),
-                          ),
-                          contentPadding: const EdgeInsets.all(7),
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.grey,
-                          ),
-                          labelText: "Select code page",
-                          labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
-                          border: InputBorder.none,
+                        child: Text(
+                          withCodePage ? "With Codepage" : "Without code page",
+                          style: TextStyle(color: withCodePage ? Colors.red : Colors.black),
                         )),
+                  ])
+            : AppBar(
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
                   ),
-                  //  Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
-                  const SizedBox(width: 20),
-
-                  // ElevatedButton(
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor: Colors.cyan, // Background color
-                  //     ),
-                  //     child: Text(isDiscovering ? 'Discovering...' : 'Discover', style: TextStyle(color: Colors.white)),
-                  //     onPressed: isDiscovering ? null : () => discover(context)),
-                  // //  onPressed: isDiscovering ? null : () => discover(context)),
-
-                  SizedBox(width: 15),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.cyan, // Background color
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ), //
+                titleSpacing: 0,
+                title: const Text(
+                  'Detailed settings',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+                actions: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          withCodePage = !withCodePage;
+                        });
+                      },
+                      icon: Text(
+                        withCodePage ? "With Codepage" : "Without code page",
+                        style: customisedStyle(context, withCodePage ? Colors.red : Colors.black, FontWeight.normal, 14.0),
                       ),
-                      child: Text('Check availability', style: TextStyle(color: Colors.white)),
-                      //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
-                      onPressed: () async {
-                        start(context);
-                        var asd = await connectionTest(ipController.text);
-                        stop();
-                        dialogBox(context, asd.toString());
-                      }),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent, // Background color
-                      ),
-                      child: Text('Test with all Capabilities', style: TextStyle(color: Colors.white)),
-                      //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
-                      onPressed: () async {
-                        testPrintAll();
-                      }),
-                ],
-              ),
+                    )
+                  ]),
+        body: isTablet ? tabPrintPage() : mobilePrintPage());
+  }
 
-              const SizedBox(height: 25),
-              found >= 0 ? Text('Found: $found device(s)', style: TextStyle(fontSize: 16)) : Container(),
+  Widget tabPrintPage() {
+    return Builder(
+      builder: (BuildContext context) {
+        return ListView(
+          children: <Widget>[
+            const SizedBox(height: 50),
 
-              Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Container(
-                  height: MediaQuery.of(context).size.height / 1.5,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 6000, minHeight: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12, right: 12),
-                      child: Container(
-                        //  color: Colors.redAccent,
-                        child: ListView.builder(
-                            padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 20),
-                            shrinkWrap: true,
-                            itemCount: printerModels.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                child: ListTile(
-                                  onTap: () async {
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 7,
+                  child: TextField(
+                    controller: portController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Port',
+                      hintText: 'Port',
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 40),
+                Container(
+                  width: MediaQuery.of(context).size.width / 7,
+                  child: TextField(
+                    controller: ipController,
+                    decoration: const InputDecoration(
+                      labelText: 'Ip',
+                      hintText: 'Ip',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                const SizedBox(width: 20),
 
+                Container(
+                  width: 300,
+                  height: 50,
+                  color: Colors.white24,
+                  child: TextField(
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                      onTap: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => select_code_page()),
+                        );
 
+                        if (result != null) {
+                          code_page_controller.text = result;
+                        }
+                      },
+                      readOnly: true,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                      controller: code_page_controller,
+                      decoration: InputDecoration(
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        contentPadding: const EdgeInsets.all(7),
+                        suffixIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Select code page",
+                        labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                        border: InputBorder.none,
+                      )),
+                ),
+                //  Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
+                const SizedBox(width: 20),
 
-                                    testPrintOneByOne(printerModels[index]);
+                // ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor: Colors.cyan, // Background color
+                //     ),
+                //     child: Text(isDiscovering ? 'Discovering...' : 'Discover', style: TextStyle(color: Colors.white)),
+                //     onPressed: isDiscovering ? null : () => discover(context)),
+                // //  onPressed: isDiscovering ? null : () => discover(context)),
 
-                                    // if (withCodePage) {
-                                    //
-                                    //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
-                                    // } else {
-                                    //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
-                                    // }
+                SizedBox(width: 15),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.cyan, // Background color
+                    ),
+                    child: Text('Check availability', style: TextStyle(color: Colors.white)),
+                    //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
+                    onPressed: () async {
+                      start(context);
+                      var asd = await connectionTest(ipController.text);
+                      stop();
+                      dialogBox(context, asd.toString());
+                    }),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent, // Background color
+                    ),
+                    child: Text('Test with all Capabilities', style: TextStyle(color: Colors.white)),
+                    //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
+                    onPressed: () async {
+                      testPrintAll();
+                    }),
+              ],
+            ),
 
-                                  },
-                                  title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            printerModels[index],
-                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+            const SizedBox(height: 25),
+            found >= 0 ? Text('Found: $found device(s)', style: TextStyle(fontSize: 16)) : Container(),
+
+            Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Container(
+                height: MediaQuery.of(context).size.height / 1.5,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 6000, minHeight: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12, right: 12),
+                    child: Container(
+                      //  color: Colors.redAccent,
+                      child: ListView.builder(
+                          padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 20),
+                          shrinkWrap: true,
+                          itemCount: printerModels.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              child: ListTile(
+                                onTap: () async {
+                                  testPrintOneByOne(printerModels[index]);
+
+                                  // if (withCodePage) {
+                                  //
+                                  //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
+                                  // } else {
+                                  //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
+                                  // }
+                                },
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          printerModels[index],
+                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              );
-                            }),
-                      ),
+                              ),
+                            );
+                          }),
                     ),
                   ),
                 ),
               ),
+            ),
 
-              // Container(
-              //   height: 250,
-              //
-              //   child:  ListView.builder(
-              //     itemCount: devices.length,
-              //     itemBuilder: (BuildContext context, int index) {
-              //       return InkWell(
-              //         onTap: () => testPrint(devices[index], context),
-              //         child: Column(
-              //           children: <Widget>[
-              //             Container(
-              //               height: 60,
-              //               padding: EdgeInsets.only(left: 10),
-              //               alignment: Alignment.centerLeft,
-              //               child: Row(
-              //                 children: <Widget>[
-              //                   Icon(Icons.print),
-              //                   SizedBox(width: 10),
-              //                   Expanded(
-              //                     child: Column(
-              //                       crossAxisAlignment:
-              //                       CrossAxisAlignment.start,
-              //                       mainAxisAlignment:
-              //                       MainAxisAlignment.center,
-              //                       children: <Widget>[
-              //                         Text(
-              //                           '${devices[index]}:${portController.text}',
-              //                           style: TextStyle(fontSize: 16),
-              //                         ),
-              //                         Text(
-              //                           'Click to print a test receipt',
-              //                           style: TextStyle(
-              //                               color: Colors.grey[700]),
-              //                         ),
-              //                       ],
-              //                     ),
-              //                   ),
-              //                   Icon(Icons.chevron_right),
-              //                 ],
-              //               ),
-              //             ),
-              //             Divider(),
-              //           ],
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
+            // Container(
+            //   height: 250,
+            //
+            //   child:  ListView.builder(
+            //     itemCount: devices.length,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       return InkWell(
+            //         onTap: () => testPrint(devices[index], context),
+            //         child: Column(
+            //           children: <Widget>[
+            //             Container(
+            //               height: 60,
+            //               padding: EdgeInsets.only(left: 10),
+            //               alignment: Alignment.centerLeft,
+            //               child: Row(
+            //                 children: <Widget>[
+            //                   Icon(Icons.print),
+            //                   SizedBox(width: 10),
+            //                   Expanded(
+            //                     child: Column(
+            //                       crossAxisAlignment:
+            //                       CrossAxisAlignment.start,
+            //                       mainAxisAlignment:
+            //                       MainAxisAlignment.center,
+            //                       children: <Widget>[
+            //                         Text(
+            //                           '${devices[index]}:${portController.text}',
+            //                           style: TextStyle(fontSize: 16),
+            //                         ),
+            //                         Text(
+            //                           'Click to print a test receipt',
+            //                           style: TextStyle(
+            //                               color: Colors.grey[700]),
+            //                         ),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                   Icon(Icons.chevron_right),
+            //                 ],
+            //               ),
+            //             ),
+            //             Divider(),
+            //           ],
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
 
-              /// commented
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 50.0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       Row(
-              //         mainAxisAlignment: MainAxisAlignment.start,
-              //         children: [
-              //           Container(
-              //             width: MediaQuery.of(context).size.width/6,
-              //             child:TextField(
-              //               controller: widthController,
-              //
-              //               decoration: const InputDecoration(
-              //                 labelText: 'Width',
-              //                 hintText: 'width',
-              //               ),
-              //               keyboardType: TextInputType.number,
-              //             ),
-              //           ),
-              //           const SizedBox(width: 40),
-              //
-              //
-              //           Container(
-              //             width: MediaQuery.of(context).size.width/5,
-              //
-              //             child:  ElevatedButton(
-              //                 style: ElevatedButton.styleFrom(
-              //                   backgroundColor: Colors.redAccent, // Background color
-              //                 ),
-              //                 onPressed: () async {
-              //
-              //                   SharedPreferences prefs = await SharedPreferences.getInstance();
-              //                   if(widthController.text ==""){
-              //
-              //                   }
-              //                   else{
-              //
-              //                     var width = widthController.text;
-              //                     prefs.setString('width',width);
-              //
-              //                   }
-              //
-              //                 }, child: Text('Save width')),
-              //           ),
-              //         ],
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.only(right: 18.0),
-              //         child: Container(
-              //           width: MediaQuery.of(context).size.width/5,
-              //
-              //           child:  ElevatedButton(
-              //               style: ElevatedButton.styleFrom(
-              //                 backgroundColor: Colors.black, // Background color
-              //               ),
-              //               onPressed: () async{
-              //                 directPrint(context);
-              //               },
-              //               child: const Text('Test print')),
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.only(right: 18.0),
-              //         child: Container(
-              //           width: MediaQuery.of(context).size.width/5,
-              //
-              //           child:  ElevatedButton(
-              //               style: ElevatedButton.styleFrom(
-              //                 backgroundColor: Colors.black, // Background color
-              //               ),
-              //               onPressed: () async{
-              //                 directPrint(context);
-              //               },
-              //               child: const Text('Demo')),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-            ],
-          );
-        },
-      ),
+            /// commented
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 50.0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: [
+            //           Container(
+            //             width: MediaQuery.of(context).size.width/6,
+            //             child:TextField(
+            //               controller: widthController,
+            //
+            //               decoration: const InputDecoration(
+            //                 labelText: 'Width',
+            //                 hintText: 'width',
+            //               ),
+            //               keyboardType: TextInputType.number,
+            //             ),
+            //           ),
+            //           const SizedBox(width: 40),
+            //
+            //
+            //           Container(
+            //             width: MediaQuery.of(context).size.width/5,
+            //
+            //             child:  ElevatedButton(
+            //                 style: ElevatedButton.styleFrom(
+            //                   backgroundColor: Colors.redAccent, // Background color
+            //                 ),
+            //                 onPressed: () async {
+            //
+            //                   SharedPreferences prefs = await SharedPreferences.getInstance();
+            //                   if(widthController.text ==""){
+            //
+            //                   }
+            //                   else{
+            //
+            //                     var width = widthController.text;
+            //                     prefs.setString('width',width);
+            //
+            //                   }
+            //
+            //                 }, child: Text('Save width')),
+            //           ),
+            //         ],
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(right: 18.0),
+            //         child: Container(
+            //           width: MediaQuery.of(context).size.width/5,
+            //
+            //           child:  ElevatedButton(
+            //               style: ElevatedButton.styleFrom(
+            //                 backgroundColor: Colors.black, // Background color
+            //               ),
+            //               onPressed: () async{
+            //                 directPrint(context);
+            //               },
+            //               child: const Text('Test print')),
+            //         ),
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(right: 18.0),
+            //         child: Container(
+            //           width: MediaQuery.of(context).size.width/5,
+            //
+            //           child:  ElevatedButton(
+            //               style: ElevatedButton.styleFrom(
+            //                 backgroundColor: Colors.black, // Background color
+            //               ),
+            //               onPressed: () async{
+            //                 directPrint(context);
+            //               },
+            //               child: const Text('Demo')),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget mobilePrintPage() {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+    bool isTablet = screenWidth > defaultScreenWidth;
+    return Builder(
+      builder: (BuildContext context) {
+        return ListView(
+          children: <Widget>[
+            dividerStyleFull(),
+
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: screenWidth / 2.5,
+                      child: TextField(
+                        controller: portController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'Port',
+                          hintText: 'Port',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Container(
+                      width: screenWidth / 2.5,
+                      child: TextField(
+                        controller: ipController,
+                        decoration: const InputDecoration(
+                          labelText: 'Ip',
+                          hintText: 'Ip',
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                Container(
+                  width: screenWidth / 1.16,
+                  height: screenHeight / 14,
+                  color: Colors.white24,
+                  child: TextField(
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                      onTap: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => select_code_page()),
+                        );
+
+                        if (result != null) {
+                          code_page_controller.text = result;
+                        }
+                      },
+                      readOnly: true,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                      controller: code_page_controller,
+                      decoration: InputDecoration(
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        contentPadding: const EdgeInsets.all(7),
+                        suffixIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Select code page",
+                        labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                        border: InputBorder.none,
+                      )),
+                ),
+                //  Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
+
+                // ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor: Colors.cyan, // Background color
+                //     ),
+                //     child: Text(isDiscovering ? 'Discovering...' : 'Discover', style: TextStyle(color: Colors.white)),
+                //     onPressed: isDiscovering ? null : () => discover(context)),
+                // //  onPressed: isDiscovering ? null : () => discover(context)),
+
+                SizedBox(height: 8),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.cyan, // Background color
+                    ),
+                    child: Text('Check availability', style: TextStyle(color: Colors.white)),
+                    //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
+                    onPressed: () async {
+                      start(context);
+                      var asd = await connectionTest(ipController.text);
+                      stop();
+                      dialogBox(context, asd.toString());
+                    }),
+                SizedBox(height: 8),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent, // Background color
+                    ),
+                    child: Text('Test with all Capabilities', style: TextStyle(color: Colors.white)),
+                    //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
+                    onPressed: () async {
+                      testPrintAll();
+                    }),
+              ],
+            ),
+
+            const SizedBox(height: 10),
+            found >= 0 ? Text('Found: $found device(s)', style: TextStyle(fontSize: 16)) : Container(),
+
+            Container(
+              height: MediaQuery.of(context).size.height / 1.8,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 6000, minHeight: 10),
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 12, right: 12),
+                    child: ListView.builder(
+                        padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 20),
+                        shrinkWrap: true,
+                        itemCount: printerModels.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            child: ListTile(
+                              onTap: () async {
+                                testPrintOneByOne(printerModels[index]);
+
+                                // if (withCodePage) {
+                                //
+                                //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
+                                // } else {
+                                //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
+                                // }
+                              },
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        printerModels[index],
+                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        })),
+              ),
+            ),
+
+            // Container(
+            //   height: 250,
+            //
+            //   child:  ListView.builder(
+            //     itemCount: devices.length,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       return InkWell(
+            //         onTap: () => testPrint(devices[index], context),
+            //         child: Column(
+            //           children: <Widget>[
+            //             Container(
+            //               height: 60,
+            //               padding: EdgeInsets.only(left: 10),
+            //               alignment: Alignment.centerLeft,
+            //               child: Row(
+            //                 children: <Widget>[
+            //                   Icon(Icons.print),
+            //                   SizedBox(width: 10),
+            //                   Expanded(
+            //                     child: Column(
+            //                       crossAxisAlignment:
+            //                       CrossAxisAlignment.start,
+            //                       mainAxisAlignment:
+            //                       MainAxisAlignment.center,
+            //                       children: <Widget>[
+            //                         Text(
+            //                           '${devices[index]}:${portController.text}',
+            //                           style: TextStyle(fontSize: 16),
+            //                         ),
+            //                         Text(
+            //                           'Click to print a test receipt',
+            //                           style: TextStyle(
+            //                               color: Colors.grey[700]),
+            //                         ),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                   Icon(Icons.chevron_right),
+            //                 ],
+            //               ),
+            //             ),
+            //             Divider(),
+            //           ],
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+
+            /// commented
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 50.0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: [
+            //           Container(
+            //             width: MediaQuery.of(context).size.width/6,
+            //             child:TextField(
+            //               controller: widthController,
+            //
+            //               decoration: const InputDecoration(
+            //                 labelText: 'Width',
+            //                 hintText: 'width',
+            //               ),
+            //               keyboardType: TextInputType.number,
+            //             ),
+            //           ),
+            //           const SizedBox(width: 40),
+            //
+            //
+            //           Container(
+            //             width: MediaQuery.of(context).size.width/5,
+            //
+            //             child:  ElevatedButton(
+            //                 style: ElevatedButton.styleFrom(
+            //                   backgroundColor: Colors.redAccent, // Background color
+            //                 ),
+            //                 onPressed: () async {
+            //
+            //                   SharedPreferences prefs = await SharedPreferences.getInstance();
+            //                   if(widthController.text ==""){
+            //
+            //                   }
+            //                   else{
+            //
+            //                     var width = widthController.text;
+            //                     prefs.setString('width',width);
+            //
+            //                   }
+            //
+            //                 }, child: Text('Save width')),
+            //           ),
+            //         ],
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(right: 18.0),
+            //         child: Container(
+            //           width: MediaQuery.of(context).size.width/5,
+            //
+            //           child:  ElevatedButton(
+            //               style: ElevatedButton.styleFrom(
+            //                 backgroundColor: Colors.black, // Background color
+            //               ),
+            //               onPressed: () async{
+            //                 directPrint(context);
+            //               },
+            //               child: const Text('Test print')),
+            //         ),
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(right: 18.0),
+            //         child: Container(
+            //           width: MediaQuery.of(context).size.width/5,
+            //
+            //           child:  ElevatedButton(
+            //               style: ElevatedButton.styleFrom(
+            //                 backgroundColor: Colors.black, // Background color
+            //               ),
+            //               onPressed: () async{
+            //                 directPrint(context);
+            //               },
+            //               child: const Text('Demo')),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+          ],
+        );
+      },
     );
   }
 
@@ -2189,6 +2524,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
       print("set function error ${e.toString()}");
     }
   }
+
   bool isArabic(String text) {
     if (text == "") {}
 
@@ -2204,6 +2540,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     }
     return true;
   }
+
   bool isEnglish(String text) {
     if (text == "") {}
 
@@ -2219,6 +2556,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     }
     return onlyEnglish;
   }
+
   bool isN(String value) {
     if (value == "") {
       print("str is nll");
@@ -2227,6 +2565,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     val = double.tryParse(value) != null;
     return val;
   }
+
   getBytes(int id, value) {
     if (value == "") {}
     int datas = value.length;
@@ -2254,7 +2593,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     return res;
   }
 
-/// new method
+  /// new method
 }
 
 List<ProductDetailsModel> printDalesDetails = [];
@@ -2282,4 +2621,3 @@ class ProductDetailsModel {
     );
   }
 }
-

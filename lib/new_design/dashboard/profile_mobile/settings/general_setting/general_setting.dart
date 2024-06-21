@@ -506,7 +506,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
             DividerStyle(),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 0.0, right: 20, top: 15, bottom: 15),
+                  left: 20.0, right: 20, top: 15, bottom: 15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,108 +514,71 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                   Text('com_hr'.tr,
                       style: customisedStyle(
                           context, Colors.black, FontWeight.w500, 14.0)),
-
-
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: MediaQuery.of(context).size.height / 17,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xffe9e9e9)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: ValueListenableBuilder<String>(
-                        valueListenable:
-                        generalController.compensationHourNotifier,
-                        builder: (context, value, child) {
-                          return DropdownButton<String>(
-                            value: value,
-                            underline: Container(),
-                            items: generalController.dropdownValues
-                                .map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  "$value Hour ",
-                                  style: customisedStyle(
-                                      context,
-                                      const Color(0xffF25F29),
-                                      FontWeight.normal,
-                                      15.0),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              generalController.compensationHour = newValue!;
-                              generalController.updateList(
-                                apiKeyValue: 'CompensationHour',
-                                apiData: newValue,
-                                sharedPreferenceKey: 'CompensationHour',
-                              );
-                            },
-                          );
-                        },
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      height: MediaQuery.of(context).size.height / 17,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Color(0xffe9e9e9)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: ValueListenableBuilder<String>(
+                                valueListenable: generalController.compensationHourNotifier,
+                                builder: (context, value, child) {
+                                  return DropdownButton<String>(
+                                    value: value,
+                                    underline: Container(),
+                                    icon: SizedBox.shrink(),
+                                    items: generalController.dropdownValues.map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          "$value Hour",
+                                          style: customisedStyle(
+                                            context,
+                                            const Color(0xff000000),
+                                            FontWeight.normal,
+                                            15.0,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (newValue) {
+                                      generalController.compensationHour = newValue!;
+                                      generalController.compensationHourNotifier.value = newValue; // Update the ValueNotifier
+                                      generalController.updateList(
+                                        apiKeyValue: 'CompensationHour',
+                                        apiData: newValue,
+                                        sharedPreferenceKey: 'CompensationHour',
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: const Color(0xff000000),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                  )
+
+
                 ],
               ),
             ),
             SizedBox(height: 8,),
-      // Container(
-      //   width: MediaQuery.of(context).size.width / 1.2,
-      //   height: MediaQuery.of(context).size.height / 17,
-      //   decoration: BoxDecoration(
-      //     border: Border.all(color: Color(0xffe9e9e9)),
-      //   ),
-      //   child: Padding(
-      //     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-      //     child: Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         Expanded(
-      //           child: ValueListenableBuilder<String>(
-      //             valueListenable: generalController.compensationHourNotifier,
-      //             builder: (context, value, child) {
-      //               return DropdownButton<String>(
-      //                 value: value,
-      //                 underline: Container(),
-      //                 icon: SizedBox.shrink(),
-      //                 items: generalController.dropdownValues.map((String value) {
-      //                   return DropdownMenuItem<String>(
-      //                     value: value,
-      //                     child: Text(
-      //                       "$value Hour",
-      //                       style: customisedStyle(
-      //                         context,
-      //                         const Color(0xffF25F29),
-      //                         FontWeight.normal,
-      //                         15.0,
-      //                       ),
-      //                     ),
-      //                   );
-      //                 }).toList(),
-      //                 onChanged: (newValue) {
-      //                   generalController.compensationHour = newValue!;
-      //                   generalController.compensationHourNotifier.value = newValue; // Update the ValueNotifier
-      //                   generalController.updateList(
-      //                     apiKeyValue: 'CompensationHour',
-      //                     apiData: newValue,
-      //                     sharedPreferenceKey: 'CompensationHour',
-      //                   );
-      //                 },
-      //               );
-      //             },
-      //           ),
-      //         ),
-      //         Icon(
-      //           Icons.arrow_drop_down,
-      //           color: const Color(0xff000000),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // )
+
 
 
       ],

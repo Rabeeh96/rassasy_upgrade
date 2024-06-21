@@ -13,9 +13,9 @@ import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/cancel_reason_list.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/reservation_list.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/cancel_reason_list.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/reservation_list.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'order/add_order_page.dart';
 import 'payment/payment_page.dart';
@@ -206,11 +206,13 @@ class _DiningPageState extends State<DiningPage> {
                                   motion: const ScrollMotion(),
 
                                   children: [
-                                    diningController.tableData[index].status == 'Ordered'?  CustomSlidableAction(
+                                    diningController.tableData[index].status == 'Ordered'&& posController.kitchen_print_perm.value?  CustomSlidableAction(
                                       flex: 1,
                                       onPressed: (BuildContext context) async {
 
-                                        posController.printKOT(cancelList: [],isUpdate:false,orderID:diningController.tableData[index].salesOrderID!,rePrint:true);
+
+                                          posController.printKOT(cancelList: [],isUpdate:false,orderID:diningController.tableData[index].salesOrderID!,rePrint:true);
+
                                       },
                                       backgroundColor: const Color(0xFF00775E),
                                       foregroundColor: Colors.green,
@@ -228,19 +230,20 @@ class _DiningPageState extends State<DiningPage> {
                                         ],
                                       ),
                                     ):Container(),
-                                    CustomSlidableAction(
+                                    posController.print_perm.value?  CustomSlidableAction(
                                       flex: 1,
                                       onPressed: (BuildContext context) async {
 
+                                          diningController.printSection(
+                                              context: context,
+                                              id: diningController.tableData[index].status == 'Ordered'
+                                                  ? diningController.tableData[index].salesOrderID!
+                                                  : diningController.tableData[index].salesMasterID!,
+                                              isCancelled: false,
+                                              voucherType: diningController.tableData[index].status == 'Ordered'?"SO":"SI");
 
-                                        diningController.printSection(
-                                            context: context,
-                                            id: diningController.tableData[index].status == 'Ordered'
-                                                ? diningController.tableData[index].salesOrderID!
-                                                : diningController.tableData[index].salesMasterID!,
-                                            isCancelled: false,
-                                            voucherType: diningController.tableData[index].status == 'Ordered'?"SO":"SI");
-                                      },
+
+                                                },
                                       backgroundColor: const Color(0xFF034FC1),
                                       foregroundColor: Colors.green,
                                       child: Column(
@@ -259,7 +262,7 @@ class _DiningPageState extends State<DiningPage> {
                                           )
                                         ],
                                       ),
-                                    ),
+                                    ):Container(),
                                   ],
                                 ),
 
@@ -389,6 +392,7 @@ class _DiningPageState extends State<DiningPage> {
                                       }
                                     }
                                     else if (diningController.tableData[index].status == 'Ordered') {
+                                      if(posController.dining_edit_perm.value){
                                       var result = await Get.to(OrderCreateView(
                                         orderType: 1,
                                         sectionType: "Edit",
@@ -415,6 +419,9 @@ class _DiningPageState extends State<DiningPage> {
                                           diningController.fetchAllData();
                                           diningController.update();
                                         }
+                                      }}
+                                      else{
+                                        dialogBoxPermissionDenied(context);
                                       }
                                     } else {}
                                   },
@@ -470,7 +477,6 @@ class _DiningPageState extends State<DiningPage> {
                                                                 diningController.tableData[index].status!),
                                                             style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 13.0),
                                                           ),
-                                                          //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
                                                         ],
                                                       )
                                                     : Container(),
@@ -521,7 +527,13 @@ class _DiningPageState extends State<DiningPage> {
             TextButton(
                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEFF6F5))),
                 onPressed: () {
-                  Get.to(ReservationPage());
+                  if(posController.reservation_perm.value){
+                    Get.to(ReservationPage());
+                  }else{
+                    dialogBoxPermissionDenied(context);
+
+                  }
+
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12),
@@ -628,423 +640,7 @@ class _DiningPageState extends State<DiningPage> {
     );
   }
 
-  ///add reservation bottom sheet currently not using here
-  void addReservationTable() {
-    Get.bottomSheet(
-      isDismissible: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10.0),
-          // Set border radius to the top left corner
-          topRight: Radius.circular(10.0), // Set border radius to the top right corner
-        ),
-      ),
-      backgroundColor: Colors.white,
-      Container(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'reserve_a_table'.tr,
-                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.clear,
-                          color: Colors.black,
-                        ))
-                  ],
-                ),
-              ),
-              Container(
-                height: 1,
-                color: const Color(0xffE9E9E9),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 4,
-                  child: TextField(
-                    textCapitalization: TextCapitalization.words,
-                    controller: diningController.customerNameController,
-                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    focusNode: diningController.customerNode,
-                    onEditingComplete: () {
-                      FocusScope.of(context).requestFocus(diningController.saveFocusNode);
-                    },
-                    keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'customer'.tr),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16),
-                child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xffE6E6E6))),
-                  height: MediaQuery.of(context).size.height / 4.5,
-                  child: Column(
-                    children: [
-                      ValueListenableBuilder(
-                          valueListenable: diningController.reservationDate,
-                          builder: (BuildContext ctx, DateTime dateNewValue, _) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: const EdgeInsets.all(
-                                  8.0,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.transparent,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  //  width: MediaQuery.of(context).size.width / 3,
-                                  height: MediaQuery.of(context).size.height / 20,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 5.0, right: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Date'.tr,
-                                          style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 8.0),
-                                          child: Text(
-                                            diningController.dateFormat.format(dateNewValue),
-                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                                          ),
-                                        ),
-                                        SvgPicture.asset("assets/svg/Icon.svg")
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onTap: () {
-                                showDatePickerFunction(context, diningController.reservationDate);
-                              },
-                            );
-                          }),
-                      DividerStyle(),
-                      ValueListenableBuilder(
-                          valueListenable: diningController.fromTimeNotifier,
-                          builder: (BuildContext ctx, timeNewValue, _) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: const EdgeInsets.all(
-                                  8.0,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.transparent,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  //  width: MediaQuery.of(context).size.width / 3,
-                                  height: MediaQuery.of(context).size.height / 20,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 5.0, right: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'from'.tr,
-                                          style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 20.0),
-                                          child: Text(
-                                            diningController.timeFormat.format(diningController.fromTimeNotifier.value),
-                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                                          ),
-                                        ),
-                                        SvgPicture.asset("assets/svg/Icon.svg")
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onTap: () async {
-                                TimeOfDay? pickedTime = await showTimePicker(
-                                  initialTime: TimeOfDay.fromDateTime(diningController.fromTimeNotifier.value),
-                                  context: context,
-                                );
-                                if (pickedTime != null) {
-                                  final time = TimeOfDay(hour: pickedTime.hour, minute: pickedTime.minute);
-                                  final currentDateTime = diningController.fromTimeNotifier.value;
-                                  final dateTime = DateTime(currentDateTime.year, currentDateTime.month, currentDateTime.day, time.hour, time.minute);
-                                  diningController.fromTimeNotifier.value = dateTime;
-                                  // viewList();
-                                } else {
-                                  print("Time is not selected");
-                                }
-                              },
-                            );
-                          }),
-                      DividerStyle(),
-                      ValueListenableBuilder(
-                          valueListenable: diningController.toTimeNotifier,
-                          builder: (BuildContext ctx, timeNewValue, _) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: const EdgeInsets.all(
-                                  8.0,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.transparent,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  height: MediaQuery.of(context).size.height / 20,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 5.0, right: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'to'.tr,
-                                          style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
-                                        ),
-                                        Text(
-                                          diningController.timeFormat.format(diningController.toTimeNotifier.value),
-                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                                        ),
-                                        SvgPicture.asset("assets/svg/Icon.svg")
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onTap: () async {
-                                TimeOfDay? pickedTime = await showTimePicker(
-                                  initialTime: TimeOfDay.fromDateTime(diningController.toTimeNotifier.value),
-                                  context: context,
-                                );
-                                if (pickedTime != null) {
-                                  final time = TimeOfDay(hour: pickedTime.hour, minute: pickedTime.minute);
-                                  final currentDateTime = diningController.toTimeNotifier.value;
-                                  final dateTime = DateTime(currentDateTime.year, currentDateTime.month, currentDateTime.day, time.hour, time.minute);
-                                  diningController.toTimeNotifier.value = dateTime;
-                                  // viewList();
-                                } else {
-                                  print("Time is not selected");
-                                }
-                              },
-                            );
-                          }),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 16),
-                child: Container(
-                  height: MediaQuery.of(context).size.height / 17,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
-                    ),
-                    onPressed: () {
-                      // Do something with the text
 
-                      Get.back(); // Close the bottom sheet
-                    },
-                    child: Text(
-                      'save'.tr,
-                      style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  ///here is the options to edit ,print,pay options bottomsheet
-  void optionsPage() {
-    Get.bottomSheet(
-      isDismissible: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10.0),
-          // Set border radius to the top left corner
-          topRight: Radius.circular(10.0), // Set border radius to the top right corner
-        ),
-      ),
-      backgroundColor: Colors.white,
-      Container(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Options'.tr,
-                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.clear,
-                          color: Colors.black,
-                        ))
-                  ],
-                ),
-              ),
-              Container(
-                height: 1,
-                color: const Color(0xffE9E9E9),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset("assets/svg/edit_mob.svg"),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Text(
-                            'Edit',
-                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SvgPicture.asset("assets/svg/Icon.svg")
-                  ],
-                ),
-              ),
-              DividerStyle(),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset("assets/svg/print_mob.svg"),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Text(
-                            'Print',
-                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SvgPicture.asset("assets/svg/Icon.svg")
-                  ],
-                ),
-              ),
-              DividerStyle(),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset("assets/svg/cancel_order_mob.svg"),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Text(
-                            'Cancel Order',
-                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SvgPicture.asset("assets/svg/Icon.svg")
-                  ],
-                ),
-              ),
-              DividerStyle(),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset("assets/svg/pay_mob.svg"),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Text(
-                            'Pay',
-                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SvgPicture.asset("assets/svg/Icon.svg")
-                  ],
-                ),
-              ),
-              DividerStyle(),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8, right: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset("assets/svg/reserve_mob.svg"),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Text(
-                            'Reserve',
-                            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SvgPicture.asset("assets/svg/Icon.svg")
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 enum ConfirmAction { cancel, accept }

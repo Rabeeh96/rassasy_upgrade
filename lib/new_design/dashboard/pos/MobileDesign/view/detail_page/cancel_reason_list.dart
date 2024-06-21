@@ -2,20 +2,21 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/order_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
 
-class SelectProductGroup extends StatefulWidget {
+class CancelOrderList extends StatefulWidget {
   @override
-  State<SelectProductGroup> createState() => _SelectProductGroupState();
+  State<CancelOrderList> createState() => _CancelOrderListState();
 }
 
-class _SelectProductGroupState extends State<SelectProductGroup> {
-  OrderController posController = Get.put(OrderController());
+class _CancelOrderListState extends State<CancelOrderList> {
+  POSController posController = Get.put(POSController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(posController.cancelOrder);
   }
 
   @override
@@ -37,7 +38,7 @@ class _SelectProductGroupState extends State<SelectProductGroup> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'product_group'.tr,
+              'Cancel_order'.tr,
               style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],
@@ -47,15 +48,15 @@ class _SelectProductGroupState extends State<SelectProductGroup> {
         DividerStyle(),
         Expanded(
             child: Obx(() =>
-            posController.groupList.isEmpty
-                ? const Center(child: Text("Group not found"))
+            posController.cancelOrder.isEmpty
+                ? const Center(child: Text("Cancel Reasons not found"))
                 : ListView.separated(
               separatorBuilder: (context, index) => DividerStyle(),
-              itemCount: posController.groupList.length,
+              itemCount: posController.cancelOrder.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.pop(context, [posController.groupList[index].groupName,posController.groupList[index].groupID,index]);
+                    Navigator.pop(context, [posController.cancelOrder[index]["Reason"],posController.cancelOrder[index]["id"]]);
                   },
                   child: InkWell(
                     child: Padding(
@@ -63,7 +64,7 @@ class _SelectProductGroupState extends State<SelectProductGroup> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          posController.groupList[index].groupName,
+                          posController.cancelOrder[index]["Reason"],
                           style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                         ),
                       ),

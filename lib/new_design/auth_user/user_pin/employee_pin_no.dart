@@ -38,6 +38,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     super.initState();
     // Request focus when the widget is first initialized
     _focusNode.requestFocus();
+    defaultAPi();
   }
 
   @override
@@ -46,7 +47,12 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     _enteredNumbersNotifier.dispose();
     super.dispose();
   }
+defaultAPi() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+
+}
 
   KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
     // Check if the event is a RawKeyDownEvent
@@ -188,6 +194,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         var branchID = prefs.getInt('branchID') ?? 1;
         var companyID = prefs.getString('companyID') ?? '';
 
+        baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
         String baseUrl = BaseUrl.baseUrlV11;
         var token = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/list-detail/pos-role/';
@@ -855,7 +862,10 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         print('1');
         String baseUrl = BaseUrl.baseUrlV11;
         SharedPreferences prefs = await SharedPreferences.getInstance();
-
+        print('464.....................');
+        print(baseURlApi);
+        print(prefs.getString('BaseURL'));
+        baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
         var companyID = prefs.getString('companyID') ?? '';
 
         var branchID = prefs.getInt('branchID') ?? 1;

@@ -485,9 +485,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         if (status == 6000) {
           setState(() {
             print("_________________________________________________________________1");
-            // "LedgerID": 1,
-            // "LedgerName": "walk in customer",
-            //
+
 
             ledgerID = responseJson["LedgerID"];
             totalNetP = convertStringToDouble(responseJson["NetTotal"]);
@@ -762,7 +760,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
       }
       else if (printType == 'USB') {
-        printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
+        printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
       }
       else {
         /// kot is not fully completed

@@ -1,6 +1,7 @@
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
@@ -147,8 +148,12 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
   bool withCodePage = true;
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+    bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
-      appBar: AppBar(
+      appBar:isTablet? AppBar(
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back,
@@ -184,163 +189,368 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
                   withCodePage?"With Codepage":"Without code page",
                   style: TextStyle(color: withCodePage ? Colors.red : Colors.black),
                 )),
+          ]):
+      AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ), //
+          titleSpacing: 0,
+          title: const Text(
+            'Detailed settings',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+              fontSize: 17,
+            ),
+          ),
+          actions: <Widget>[
+
+
           ]),
-      body: Builder(
-        builder: (BuildContext context) {
-          return ListView(
-            children: <Widget>[
-              const SizedBox(height: 50),
+      body:isTablet?tabUsbPage():mobileUsbPage()
+    );
+  }
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+  Widget mobileUsbPage(){
+    Size screenSize = MediaQuery.of(context).size;
+    double screenWidth = screenSize.width;
+    double screenHeight = screenSize.height;
+    bool isTablet = screenWidth > defaultScreenWidth;
+    return Builder(
+      builder: (BuildContext context) {
+        return ListView(
+          children: <Widget>[
+            dividerStyleFull(),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(onPressed: (){
+                  testPrintAllCodePage(controllerName.text);
+                }, child: Text("Demo")),
+ SizedBox(width: 20,),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        withCodePage = !withCodePage;
+                        print(withCodePage);
+                      });
+                    },
+                    child: Text(
+                      withCodePage?"With Codepage":"Without code page",
+                      // style: TextStyle(color: withCodePage ? Colors.red : Colors.black,fontSize: 14),
+                      style: customisedStyle(context, withCodePage ? Colors.red : Colors.black, FontWeight.normal, 14.0),
+                    )),
+              ],
+            ),
+            const SizedBox(height: 10),
 
-                  const SizedBox(width: 40),
-
-                  Container(
-                    width: 300,
-                    height: 50,
-                    color: Colors.white24,
-                    child: TextField(
-                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-
-                        readOnly: true,
-                        textCapitalization: TextCapitalization.words,
-                        keyboardType: TextInputType.text,
-                        controller: controllerName,
-                        decoration: InputDecoration(
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1, color: Colors.grey),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1, color: Colors.grey),
-                          ),
-                          contentPadding: const EdgeInsets.all(7),
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.grey,
-                          ),
-                          labelText: "Default printer",
-                          labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
-                          border: InputBorder.none,
-                        )),
-                  ),
-                  const SizedBox(width: 20),
-
-                  Container(
-                    width: 300,
-                    height: 50,
-                    color: Colors.white24,
-                    child: TextField(
-                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                        onTap: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => select_code_page()),
-                          );
-
-                          if (result != null) {
-                            code_page_controller.text = result;
-                          }
-                        },
-                        readOnly: true,
-                        textCapitalization: TextCapitalization.words,
-                        keyboardType: TextInputType.text,
-                        controller: code_page_controller,
-                        decoration: InputDecoration(
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1, color: Colors.grey),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1, color: Colors.grey),
-                          ),
-                          contentPadding: const EdgeInsets.all(7),
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.grey,
-                          ),
-                          labelText: "Select code page",
-                          labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
-                          border: InputBorder.none,
-                        )),
-                  ),
-                  //  Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
-                  const SizedBox(width: 20),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
 
 
 
-                ],
-              ),
+                Container(
+                  width:screenWidth /  1.1,
+                  height:screenHeight / 14,
+                  color: Colors.white24,
+                  child: TextField(
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
 
-              const SizedBox(height: 25),
+                      readOnly: true,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                      controller: controllerName,
+                      decoration: InputDecoration(
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        contentPadding: const EdgeInsets.all(7),
+                        suffixIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Default printer",
+                        labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                        border: InputBorder.none,
+                      )),
+                ),
+                const SizedBox(height: 10),
+
+                Container(
+                  width:screenWidth /  1.1,
+                  height:screenHeight / 14,
+                  color: Colors.white24,
+                  child: TextField(
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                      onTap: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => select_code_page()),
+                        );
+
+                        if (result != null) {
+                          code_page_controller.text = result;
+                        }
+                      },
+                      readOnly: true,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                      controller: code_page_controller,
+                      decoration: InputDecoration(
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        contentPadding: const EdgeInsets.all(7),
+                        suffixIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Select code page",
+                        labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                        border: InputBorder.none,
+                      )),
+                ),
+                //  Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
 
 
-              Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Container(
-                  height: MediaQuery.of(context).size.height / 1.5,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 6000, minHeight: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12, right: 12),
-                      child: Container(
-                        //  color: Colors.redAccent,
-                        child: ListView.builder(
-                            padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 20),
-                            shrinkWrap: true,
-                            itemCount: printerModels.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                child: ListTile(
-                                  onTap: () async {
 
 
-                                    if (withCodePage) {
-                                      testPrintOneByONe(controllerName.text,printerModels[index]);
-                                    } else {
-                                      withoutCapabilitiesPrintReq(controllerName.text,printerModels[index]);
-                                    }
+              ],
+            ),
 
-                                  },
-                                  title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            printerModels[index],
-                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+            const SizedBox(height: 20),
+
+
+            Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Container(
+                height: MediaQuery.of(context).size.height / 1.7,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 6000, minHeight: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12, right: 12),
+                    child: Container(
+                      //  color: Colors.redAccent,
+                      child: ListView.builder(
+                          padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 20),
+                          shrinkWrap: true,
+                          itemCount: printerModels.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              child: ListTile(
+                                onTap: () async {
+
+
+                                  if (withCodePage) {
+                                    testPrintOneByONe(controllerName.text,printerModels[index]);
+                                  } else {
+                                    withoutCapabilitiesPrintReq(controllerName.text,printerModels[index]);
+                                  }
+
+                                },
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          printerModels[index],
+                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              );
-                            }),
-                      ),
+                              ),
+                            );
+                          }),
                     ),
                   ),
                 ),
               ),
+            ),
 
-            ],
-          );
-        },
-      ),
+          ],
+        );
+      },
     );
   }
+Widget tabUsbPage(){
+    return Builder(
+      builder: (BuildContext context) {
+        return ListView(
+          children: <Widget>[
+            const SizedBox(height: 50),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                const SizedBox(width: 40),
+
+                Container(
+                  width: 300,
+                  height:50,
+                  color: Colors.white24,
+                  child: TextField(
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+
+                      readOnly: true,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                      controller: controllerName,
+                      decoration: InputDecoration(
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        contentPadding: const EdgeInsets.all(7),
+                        suffixIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Default printer",
+                        labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                        border: InputBorder.none,
+                      )),
+                ),
+                const SizedBox(width: 20),
+
+                Container(
+                  width: 300 ,
+                  height: 50,
+                  color: Colors.white24,
+                  child: TextField(
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                      onTap: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => select_code_page()),
+                        );
+
+                        if (result != null) {
+                          code_page_controller.text = result;
+                        }
+                      },
+                      readOnly: true,
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                      controller: code_page_controller,
+                      decoration: InputDecoration(
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        contentPadding: const EdgeInsets.all(7),
+                        suffixIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                        labelText: "Select code page",
+                        labelStyle: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                        border: InputBorder.none,
+                      )),
+                ),
+                //  Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
+                const SizedBox(width: 20),
 
 
 
+              ],
+            ),
+
+            const SizedBox(height: 25),
+
+
+            Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Container(
+                height: MediaQuery.of(context).size.height / 1.5,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 6000, minHeight: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12, right: 12),
+                    child: Container(
+                      //  color: Colors.redAccent,
+                      child: ListView.builder(
+                          padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 20),
+                          shrinkWrap: true,
+                          itemCount: printerModels.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              child: ListTile(
+                                onTap: () async {
+
+
+                                  if (withCodePage) {
+                                    testPrintOneByONe(controllerName.text,printerModels[index]);
+                                  } else {
+                                    withoutCapabilitiesPrintReq(controllerName.text,printerModels[index]);
+                                  }
+
+                                },
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          printerModels[index],
+                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+          ],
+        );
+      },
+    );
+}
   Future<Uint8List> loadImageFromAssets(String path) async {
     final ByteData data = await rootBundle.load(path);
     return data.buffer.asUint8List();

@@ -13,6 +13,7 @@ import 'package:rassasy_new/main.dart';
 import 'package:rassasy_new/new_design/organization/list_organization.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:loading_btn/loading_btn.dart';
 
 import '../../dashboard/profile_mobile/web.dart';
 import '../create_account/create_new_account.dart';
@@ -226,37 +227,57 @@ class _LoginPageNewState extends State<LoginPageNew> {
                     ),
                   ),
                   passwordField(),
-                  MaterialButton(
-                    shape: const CircleBorder(),
-                    onPressed: () async {
-                      if (userNameController.text == '' ||
-                          passwordController.text == '') {
-                        popAlert(
-                            head: "Alert",
-                            message: 'please_enter_details'.tr,
-                            position: SnackPosition.TOP);
-                      } else {
-                        loginAccount(context);
+                  LoadingBtn(
+                    height: 50,
+                    borderRadius: 30,
+                    animate: true,
+                    color: const Color(0xffF25F29),
+                    width: MediaQuery.of(context).size.width * 0.40,
+                    loader: Container(
+                      //    padding: const EdgeInsets.all(10),
+                      width: 40,
+                      height: 40,
+                      child: const CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            'login'.tr,
+                            style: customisedStyle(
+                                context, Colors.white, FontWeight.w500, 18.0),
+                          ),
+                        ),
+                        Icon(Icons.arrow_forward,color: Colors.white,)
+                      ],
+                    ),
+                    onTap: (startLoading, stopLoading, btnState) async {
+                      if (btnState == ButtonState.idle) {
+                        userNameFcNode.unfocus();
+                        passwordFcNode.unfocus();
 
-                        // SharedPreferences prefs = await SharedPreferences.getInstance();
-                        // prefs.setBool('isLoggedIn', true);
-                        // prefs.setString('access', "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzA4MTcxLCJpYXQiOjE2ODk3NzIxNzEsImp0aSI6ImQwMzBhOWI1MWYxNDRjODJiMzlkNDhjM2UzZjU1YzU0IiwidXNlcl9pZCI6NjJ9.sngN1G8smd0QwaTStCHxYLozgQWCe6MGfhWONjrPyAplOSOQeDfFqi93hyWsAwSGDo6NEhSQC3yB8PjXDJ8q_Tg_OhU5NJ3vJEZZJ1gEdXo7gZwR_Q7usKaKpIRrI6O6zTYefIi2yHBDz4IsJIVOmq-qTH93NTRWhG0umEHMtVH_pdZUcuC3-QxTRUIdIIJG5-g5u3T2n-fTln8LghxBNOMrzxb_XPSUuwS6Af50kDMdqnJo-tTpGtbZrr1POX7KCT6hSsJvYfc0A3_elWHT4TqLXBc7BFWcSuRqIZDJOSSQmcqk6JM92skCcOPmUiJonWlFVilKKuj6PZNOggsC6362GPwc-stpiVWtlfStEN1c2-o1hJ_kExywmG01GytOUB-qVuyAR8z4xMSsZmP5m3nf3whP7hCB2xVvj6Zp_6avRIYncinuu309o6jRGrEWxpIbYQCcBsK6MCoKuqypR5wvFVqeFR9EytBlL8b9ThfHJrgpVMwdpHT0mB-Uw8vSt4Ey-xlppLKKpc7YXfeT61o6PRL3zqIoO5zyYS6D_NLZqlaPaCb_pywFH0FYlroiNopPEqwwtu1Hn4aYqq865_jA4D0RcxJxoAmIpuXf4D9PSTHhV5ehSpaQu_1LgEvYB14iq6YDoN-Yx4BSx4HaxnesKyQlgm5X9Koa_x5h7Ck");
-                        // prefs.setInt('user_id', 62);
-                        // prefs.setString('user_name', userNameController.text);
-                        //
-                        //
-                        //
-                        // Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (BuildContext context) => OrganizationList()));
+                        if (userNameController.text == "" ||
+                            passwordController.text ==
+                                "") {
+                          popAlert(
+                              head: "Warning",
+                              message: 'please_enter_details'.tr,
+                              position: SnackPosition.TOP);
+                        } else {
+                          startLoading();
+
+                          loginAccount(context);
+                        }
+
                       }
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: SvgPicture.asset('assets/svg/roundarrow.svg'),
-                    ),
-                  )
+                  ),
 
                   /// commented
                   // TextButton(
@@ -423,60 +444,111 @@ class _LoginPageNewState extends State<LoginPageNew> {
           const SizedBox(
             height: 6,
           ),
-          MaterialButton(
-            onPressed: () async {
-              if (userNameController.text == '' ||
-                  passwordController.text == '') {
-                popAlert(
-                    head: "Warning",
-                    message: 'please_enter_details'.tr,
-                    position: SnackPosition.TOP);
-              } else {
-                loginAccount(context);
-
-                // SharedPreferences prefs = await SharedPreferences.getInstance();
-                // prefs.setBool('isLoggedIn', true);
-                // prefs.setString('access', "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzA4MTcxLCJpYXQiOjE2ODk3NzIxNzEsImp0aSI6ImQwMzBhOWI1MWYxNDRjODJiMzlkNDhjM2UzZjU1YzU0IiwidXNlcl9pZCI6NjJ9.sngN1G8smd0QwaTStCHxYLozgQWCe6MGfhWONjrPyAplOSOQeDfFqi93hyWsAwSGDo6NEhSQC3yB8PjXDJ8q_Tg_OhU5NJ3vJEZZJ1gEdXo7gZwR_Q7usKaKpIRrI6O6zTYefIi2yHBDz4IsJIVOmq-qTH93NTRWhG0umEHMtVH_pdZUcuC3-QxTRUIdIIJG5-g5u3T2n-fTln8LghxBNOMrzxb_XPSUuwS6Af50kDMdqnJo-tTpGtbZrr1POX7KCT6hSsJvYfc0A3_elWHT4TqLXBc7BFWcSuRqIZDJOSSQmcqk6JM92skCcOPmUiJonWlFVilKKuj6PZNOggsC6362GPwc-stpiVWtlfStEN1c2-o1hJ_kExywmG01GytOUB-qVuyAR8z4xMSsZmP5m3nf3whP7hCB2xVvj6Zp_6avRIYncinuu309o6jRGrEWxpIbYQCcBsK6MCoKuqypR5wvFVqeFR9EytBlL8b9ThfHJrgpVMwdpHT0mB-Uw8vSt4Ey-xlppLKKpc7YXfeT61o6PRL3zqIoO5zyYS6D_NLZqlaPaCb_pywFH0FYlroiNopPEqwwtu1Hn4aYqq865_jA4D0RcxJxoAmIpuXf4D9PSTHhV5ehSpaQu_1LgEvYB14iq6YDoN-Yx4BSx4HaxnesKyQlgm5X9Koa_x5h7Ck");
-                // prefs.setInt('user_id', 62);
-                // prefs.setString('user_name', userNameController.text);
-                //
-                //
-                //
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (BuildContext context) => OrganizationList()));
-              }
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width / 2.5,
-              decoration: BoxDecoration(
-                  color: const Color(0xffF25F29),
-                  borderRadius: BorderRadius.circular(120.0)),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 10, right: 8, top: 8, bottom: 7),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Text(
-                        'login'.tr,
-                        style: customisedStyle(
-                            context, Colors.white, FontWeight.w400, 16.0),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
+          LoadingBtn(
+            height: 50,
+            borderRadius: 30,
+            animate: true,
+            color: const Color(0xffF25F29),
+            width: MediaQuery.of(context).size.width * 0.40,
+            loader: Container(
+              //    padding: const EdgeInsets.all(10),
+              width: 40,
+              height: 40,
+              child: const CircularProgressIndicator(
+                valueColor:
+                AlwaysStoppedAnimation<Color>(Colors.white),
               ),
             ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(
+                    'login'.tr,
+                    style: customisedStyle(
+                        context, Colors.white, FontWeight.w500, 18.0),
+                  ),
+                ),
+                Icon(Icons.arrow_forward,color: Colors.white,)
+              ],
+            ),
+            onTap: (startLoading, stopLoading, btnState) async {
+              if (btnState == ButtonState.idle) {
+                userNameFcNode.unfocus();
+                passwordFcNode.unfocus();
+
+                if (userNameController.text == "" ||
+                    passwordController.text ==
+                        "") {
+                  popAlert(
+                      head: "Warning",
+                      message: 'please_enter_details'.tr,
+                      position: SnackPosition.TOP);
+                } else {
+                  startLoading();
+
+                  loginAccount(context);
+                }
+
+              }
+            },
           ),
+          // MaterialButton(
+          //   onPressed: () async {
+          //     if (userNameController.text == '' ||
+          //         passwordController.text == '') {
+          //       popAlert(
+          //           head: "Warning",
+          //           message: 'please_enter_details'.tr,
+          //           position: SnackPosition.TOP);
+          //     } else {
+          //       loginAccount(context);
+          //
+          //       // SharedPreferences prefs = await SharedPreferences.getInstance();
+          //       // prefs.setBool('isLoggedIn', true);
+          //       // prefs.setString('access', "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzA4MTcxLCJpYXQiOjE2ODk3NzIxNzEsImp0aSI6ImQwMzBhOWI1MWYxNDRjODJiMzlkNDhjM2UzZjU1YzU0IiwidXNlcl9pZCI6NjJ9.sngN1G8smd0QwaTStCHxYLozgQWCe6MGfhWONjrPyAplOSOQeDfFqi93hyWsAwSGDo6NEhSQC3yB8PjXDJ8q_Tg_OhU5NJ3vJEZZJ1gEdXo7gZwR_Q7usKaKpIRrI6O6zTYefIi2yHBDz4IsJIVOmq-qTH93NTRWhG0umEHMtVH_pdZUcuC3-QxTRUIdIIJG5-g5u3T2n-fTln8LghxBNOMrzxb_XPSUuwS6Af50kDMdqnJo-tTpGtbZrr1POX7KCT6hSsJvYfc0A3_elWHT4TqLXBc7BFWcSuRqIZDJOSSQmcqk6JM92skCcOPmUiJonWlFVilKKuj6PZNOggsC6362GPwc-stpiVWtlfStEN1c2-o1hJ_kExywmG01GytOUB-qVuyAR8z4xMSsZmP5m3nf3whP7hCB2xVvj6Zp_6avRIYncinuu309o6jRGrEWxpIbYQCcBsK6MCoKuqypR5wvFVqeFR9EytBlL8b9ThfHJrgpVMwdpHT0mB-Uw8vSt4Ey-xlppLKKpc7YXfeT61o6PRL3zqIoO5zyYS6D_NLZqlaPaCb_pywFH0FYlroiNopPEqwwtu1Hn4aYqq865_jA4D0RcxJxoAmIpuXf4D9PSTHhV5ehSpaQu_1LgEvYB14iq6YDoN-Yx4BSx4HaxnesKyQlgm5X9Koa_x5h7Ck");
+          //       // prefs.setInt('user_id', 62);
+          //       // prefs.setString('user_name', userNameController.text);
+          //       //
+          //       //
+          //       //
+          //       // Navigator.pushReplacement(
+          //       //     context,
+          //       //     MaterialPageRoute(
+          //       //         builder: (BuildContext context) => OrganizationList()));
+          //     }
+          //   },
+          //   child: Container(
+          //     width: MediaQuery.of(context).size.width / 2.5,
+          //     decoration: BoxDecoration(
+          //         color: const Color(0xffF25F29),
+          //         borderRadius: BorderRadius.circular(120.0)),
+          //     child: Padding(
+          //       padding: const EdgeInsets.only(
+          //           left: 10, right: 8, top: 8, bottom: 7),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: [
+          //           Padding(
+          //             padding: const EdgeInsets.only(right: 8.0),
+          //             child: Text(
+          //               'login'.tr,
+          //               style: customisedStyle(
+          //                   context, Colors.white, FontWeight.w400, 16.0),
+          //             ),
+          //           ),
+          //           const Icon(
+          //             Icons.arrow_forward,
+          //             color: Colors.white,
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -603,14 +675,14 @@ class _LoginPageNewState extends State<LoginPageNew> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     bool isTablet = screenWidth > defaultScreenWidth;
-    start(context);
+   // start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       popAlert(
           head: "Alert",
           message: "Connect to internet",
           position: SnackPosition.TOP);
-      stop();
+      //stop();
     } else {
       try {
         HttpOverrides.global = MyHttpOverrides();
@@ -634,15 +706,13 @@ class _LoginPageNewState extends State<LoginPageNew> {
             body: bdy);
 
         Map n = json.decode(utf8.decode(response.bodyBytes));
-        print("${response.statusCode}");
-        print("${response.body}");
-        //     var status = n["success"];
+
         var status = n["success"];
 
         if (status == 6000) {
           var datas = n["data"];
           print(datas);
-          stop();
+     //     stop();
           prefs.setBool('isLoggedIn', true);
           prefs.setString('access', datas["access"]);
           prefs.setInt('user_id', datas["user_id"]);
@@ -674,16 +744,16 @@ class _LoginPageNewState extends State<LoginPageNew> {
                     builder: (BuildContext context) => CreateNewAccount()));
           }
 
-          stop();
+         // stop();
         } else {
-          stop();
+        //  stop();
           popAlert(
               head: "Alert",
               message: "Some thing went wrong",
               position: SnackPosition.TOP);
         }
       } catch (e) {
-        stop();
+       // stop();
 
         popAlert(
             head: "Alert",

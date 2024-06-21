@@ -1130,6 +1130,43 @@ bool isCancelled;
     return printer;
   }
 }
+
+class ESCBTTEST {
+
+
+
+  List<int>? _bytes;
+
+  List<int>? get bytes => _bytes;
+
+  CapabilityProfile? _profile;
+
+  ESCBTTEST();
+//
+  Future<List<int>> getBytes({
+    PaperSize paperSize = PaperSize.mm80,
+    required CapabilityProfile profile, String name = "default",
+  }) async {
+
+    List<int> printer = [];
+    _profile = profile;
+    final supportedCodePages = profile.codePages;
+    Generator generator = Generator(PaperSize.mm80, _profile!);
+    for(var ind = 0;ind<supportedCodePages.length ;ind++){
+      printer += generator.setGlobalCodeTable(supportedCodePages[ind].name);
+      var testData ="${supportedCodePages[ind].name} السلام ${profile.name} ";
+      Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+      printer += generator.textEncoded(salam);
+    }
+
+    // printer += generator.text("Test Data",);
+    // printer += generator.emptyLines(3);
+
+
+    return printer;
+  }
+}
+
 bool Check(String text) {
   var val = false;
   bool both = true;

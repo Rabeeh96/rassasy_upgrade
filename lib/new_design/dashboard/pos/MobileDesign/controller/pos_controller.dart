@@ -10,8 +10,8 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/model/pos_list_model.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/service/pos_service.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/pos_list_model.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/service/pos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../global/global.dart';
@@ -33,6 +33,7 @@ final isLoadTable=false.obs;
 
     tabIndex.value = 0;
     fetchAllData();
+    ReloadAllData();
     update();
     super.onInit();
   }
@@ -420,6 +421,75 @@ final isLoadTable=false.obs;
 
   }
 
+  var dining_view_perm = false.obs;
+  var reservation_view_perm = false.obs;
+  var directOrderOption = false.obs;
+  var take_away_view_perm = false.obs;
+  var car_view_perm = false.obs;
+
+  var dining_create_perm = false.obs;
+  var take_away_create_perm = false.obs;
+  var car_create_perm = false.obs;
+
+  var dining_edit_perm =false.obs;
+  var take_away_edit_perm = false.obs;
+  var car_edit_perm = false.obs;
+
+  var dining_delete_perm =false.obs;
+  var take_away_delete_perm =false.obs;
+  var car_delete_perm = false.obs;
+
+  var print_perm = false.obs;
+  var cancel_order_perm = false.obs;
+  var pay_perm = false.obs;
+  var reservation_perm = false.obs;
+  var kitchen_print_perm = false.obs;
+  var remove_table_perm = false.obs;
+  var convert_type_perm = false.obs;
+  ReloadAllData() async {
+    print("----------------------------------------------------------------1");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+
+      dining_view_perm.value = prefs.getBool('Diningview') ?? true;
+      reservation_view_perm.value = prefs.getBool('View Reservation') ?? true;
+      directOrderOption.value = prefs.getBool('directOrderOption') ?? false;
+      take_away_view_perm.value = prefs.getBool('Take awayview') ?? true;
+      car_view_perm.value = prefs.getBool('Carview') ?? true;
+
+      dining_create_perm.value = prefs.getBool('Diningsave') ?? true;
+      take_away_create_perm.value = prefs.getBool('Take awaysave') ?? true;
+      car_create_perm.value = prefs.getBool('Carsave') ?? true;
+
+      dining_edit_perm.value = prefs.getBool('Diningedit') ?? true;
+      take_away_edit_perm.value = prefs.getBool('Take awayedit') ?? true;
+      car_edit_perm.value = prefs.getBool('Caredit') ?? true;
+
+      bool kotPrint = prefs.getBool("KOT") ?? false;
+
+      dining_delete_perm.value = prefs.getBool('Diningdelete') ?? true;
+      take_away_delete_perm.value = prefs.getBool('Take awaydelete') ?? true;
+      car_delete_perm.value = prefs.getBool('Cardelete') ?? true;
+
+      print("----------------------------------------------------------------2");
+      cancel_order_perm.value = prefs.getBool('Cancel Order') ?? true;
+      pay_perm.value = prefs.getBool('Payment') ?? true;
+
+      kitchen_print_perm.value = prefs.getBool('KOT Print') ?? true;
+
+      if (kotPrint == false) {
+        kitchen_print_perm.value = false;
+      }
+
+      print_perm.value = prefs.getBool('Re-Print') ?? true;
+      reservation_perm.value = prefs.getBool('Reserve Table') ?? true;
+      remove_table_perm.value = false;
+      convert_type_perm.value = false;
+
+
+
+  }
 
 
 }

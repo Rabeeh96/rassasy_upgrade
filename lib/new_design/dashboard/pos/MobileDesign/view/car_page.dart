@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
@@ -5,10 +7,10 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/controller/pos_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/NewDesign/view/detail_page/cancel_reason_list.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/cancel_reason_list.dart';
 import 'order/add_order_page.dart';
 import 'payment/payment_page.dart';
 
@@ -104,7 +106,7 @@ class _TakeAwayState extends State<CarPage> {
                           motion: const ScrollMotion(),
 
                           children: [
-                            carController.carOrders[index].status == 'Ordered'?  CustomSlidableAction(
+                            carController.carOrders[index].status == 'Ordered' && posController.kitchen_print_perm.value?  CustomSlidableAction(
                               flex: 1,
                               onPressed: (BuildContext context) async {
                                 posController.printKOT(cancelList: [],isUpdate:false,orderID:carController.carOrders[index].salesOrderID!,rePrint:true);
@@ -125,7 +127,7 @@ class _TakeAwayState extends State<CarPage> {
                                 ],
                               ),
                             ):Container(),
-                            CustomSlidableAction(
+                            posController.print_perm.value? CustomSlidableAction(
                               flex: 1,
                               onPressed: (BuildContext context) async {
 
@@ -154,7 +156,7 @@ class _TakeAwayState extends State<CarPage> {
                                   )
                                 ],
                               ),
-                            ),
+                            ):Container(),
                           ],
                         ),
 
@@ -228,32 +230,37 @@ class _TakeAwayState extends State<CarPage> {
 
                         child: GestureDetector(
                           onTap: () async {
-                            if (carController.carOrders[index].status == 'Ordered') {
-                              var result = await Get.to(OrderCreateView(
-                                orderType: 4,
-                                sectionType: "Edit",
-                                uID: carController.carOrders[index].salesOrderID!,
-                                tableHead: "Parcel",
-                                tableID: "", cancelOrder: carController.cancelOrder,
-                              ));
+                            if(posController.car_edit_perm.value){
+                              if (carController.carOrders[index].status == 'Ordered') {
+                                var result = await Get.to(OrderCreateView(
+                                  orderType: 4,
+                                  sectionType: "Edit",
+                                  uID: carController.carOrders[index].salesOrderID!,
+                                  tableHead: "Parcel",
+                                  tableID: "", cancelOrder: carController.cancelOrder,
+                                ));
 
-                              if (result != null) {
-                                if (result[1]) {
-                                  Get.to(PaymentPage(
-                                    uID: result[2],
-                                    tableID: carController.carOrders[index].salesOrderID!,
-                                    orderType: 4,
-                                  ));
-                                }
-                                else{
+                                if (result != null) {
+                                  if (result[1]) {
+                                    Get.to(PaymentPage(
+                                      uID: result[2],
+                                      tableID: carController.carOrders[index].salesOrderID!,
+                                      orderType: 4,
+                                    ));
+                                  }
+                                  else{
 
-                                carController.takeAwayOrders.clear();
-                                carController.fetchAllData();
-                                carController.update();
+                                    carController.takeAwayOrders.clear();
+                                    carController.fetchAllData();
+                                    carController.update();
 
+                                  }
                                 }
                               }
+                            }else{
+                              dialogBoxPermissionDenied(context);
                             }
+
                           },
                           child: InkWell(
                             child: Padding(
@@ -391,7 +398,7 @@ class _TakeAwayState extends State<CarPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
-                        'Add_Takeaway'.tr,
+                        'Add Car',
                         style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w500, 14.0),
                       ),
                     )
