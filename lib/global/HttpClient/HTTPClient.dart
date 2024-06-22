@@ -102,6 +102,7 @@ Future defaultDataInitial({context}) async {
     var companyID = prefs.getString('companyID') ?? 0;
     var branchID = prefs.getInt('branchID') ?? 1;
     var accessToken = prefs.getString('access') ?? '';
+    baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
 
     String baseUrl = BaseUrl.baseUrl;
 
