@@ -1021,8 +1021,11 @@ class _ProductCreateState extends State<CreateProductNew> {
             style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
             focusNode: nameFCNode,
             onEditingComplete: () {
+
+              print("---isVat----isVat-----isVat---des  $isVat");
+
               if(nameController.text !=""){
-                if(isGst ==false){
+                if(isVat){
                   convertToArabic(nameController.text);
                 }
                 else{
@@ -1565,92 +1568,93 @@ class _ProductCreateState extends State<CreateProductNew> {
     }
   }
 
-  Future _searchDatai(String searchVal) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    var companyID = prefs.getString('companyID') ?? '';
-    var userID = prefs.getInt('user_id') ?? 0;
-    var branchID = prefs.getInt('branchID') ?? 1;
-    if (searchVal == '') {
-      pageNumber = 1;
-      productLists.clear();
-      firstTime = 1;
-      getProductList();
-    } else if (searchVal.length > 2) {
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.none) {
-        dialogBox(context, "Unable to connect. Please Check Internet Connection");
-      } else {
-        try {
-          Map data = {
-            "BranchID": branchID,
-            "CompanyID": companyID,
-            "CreatedUserID": userID,
-            "PriceRounding": BaseUrl.priceRounding,
-            "product_name": searchVal,
-            "length": searchVal.length,
-            "type": ""
-          };
-          String baseUrl = BaseUrl.baseUrl;
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          var token = prefs.getString('access') ?? '';
-          final String url = "$baseUrl/products/search-product-list/";
-          print(data);
-          var body = json.encode(data);
-          var response = await http.post(Uri.parse(url),
-              headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Bearer $token',
-              },
-              body: body);
-          print("${response.statusCode}");
-          print("${response.body}");
-          Map n = json.decode(utf8.decode(response.bodyBytes));
-          var status = n["StatusCode"];
-          var responseJson = n["data"];
-          var message = n["message"];
-          print(responseJson);
-          if (status == 6000) {
-            productLists.clear();
-
-            setState(() {
-              netWorkProblem = true;
-              productLists.clear();
-              isLoading = false;
-            });
-
-            setState(() {
-              for (Map user in responseJson) {
-                productLists.add(ProductListModel.fromJson(user));
-              }
-            });
-          } else if (status == 6001) {
-            setState(() {
-              netWorkProblem = true;
-              isLoading = false;
-            });
-
-            dialogBox(context, "Some Network Error please try again Later");
-          } else {
-            dialogBox(context, "Some Network Error please try again Later");
-          }
-        } catch (e) {
-          setState(() {
-            netWorkProblem = false;
-            isLoading = false;
-          });
-
-          print(e);
-        }
-      }
-
-      /// call function
-      return;
-    } else {}
-  }
+  // Future _searchDatai(String searchVal) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //
+  //   var companyID = prefs.getString('companyID') ?? '';
+  //   var userID = prefs.getInt('user_id') ?? 0;
+  //   var branchID = prefs.getInt('branchID') ?? 1;
+  //   if (searchVal == '') {
+  //     pageNumber = 1;
+  //     productLists.clear();
+  //     firstTime = 1;
+  //     getProductList();
+  //   } else if (searchVal.length > 2) {
+  //     var connectivityResult = await (Connectivity().checkConnectivity());
+  //     if (connectivityResult == ConnectivityResult.none) {
+  //       dialogBox(context, "Unable to connect. Please Check Internet Connection");
+  //     } else {
+  //       try {
+  //         Map data = {
+  //           "BranchID": branchID,
+  //           "CompanyID": companyID,
+  //           "CreatedUserID": userID,
+  //           "PriceRounding": BaseUrl.priceRounding,
+  //           "product_name": searchVal,
+  //           "length": searchVal.length,
+  //           "type": ""
+  //         };
+  //         String baseUrl = BaseUrl.baseUrl;
+  //         SharedPreferences prefs = await SharedPreferences.getInstance();
+  //         var token = prefs.getString('access') ?? '';
+  //         final String url = "$baseUrl/products/search-product-list/";
+  //         print(data);
+  //         var body = json.encode(data);
+  //         var response = await http.post(Uri.parse(url),
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //               'Authorization': 'Bearer $token',
+  //             },
+  //             body: body);
+  //         print("${response.statusCode}");
+  //         print("${response.body}");
+  //         Map n = json.decode(utf8.decode(response.bodyBytes));
+  //         var status = n["StatusCode"];
+  //         var responseJson = n["data"];
+  //         var message = n["message"];
+  //         print(responseJson);
+  //         if (status == 6000) {
+  //           productLists.clear();
+  //
+  //           setState(() {
+  //             netWorkProblem = true;
+  //             productLists.clear();
+  //             isLoading = false;
+  //           });
+  //
+  //           setState(() {
+  //             for (Map user in responseJson) {
+  //               productLists.add(ProductListModel.fromJson(user));
+  //             }
+  //           });
+  //         } else if (status == 6001) {
+  //           setState(() {
+  //             netWorkProblem = true;
+  //             isLoading = false;
+  //           });
+  //
+  //           dialogBox(context, "Some Network Error please try again Later");
+  //         } else {
+  //           dialogBox(context, "Some Network Error please try again Later");
+  //         }
+  //       } catch (e) {
+  //         setState(() {
+  //           netWorkProblem = false;
+  //           isLoading = false;
+  //         });
+  //
+  //         print(e);
+  //       }
+  //     }
+  //
+  //     /// call function
+  //     return;
+  //   } else {}
+  // }
 
   bool createPermission = true;
   bool isGst = true;
+  bool isVat = false;
   bool isExcise = false;
 
   ///list products
@@ -1674,13 +1678,11 @@ class _ProductCreateState extends State<CreateProductNew> {
 
         String baseUrl = BaseUrl.baseUrl;
         isGst = prefs.getBool("check_GST") ?? false;
+        isVat = prefs.getBool("checkVat") ?? false;
         createPermission = prefs.getBool("Productsave") ?? true;
         isExcise = prefs.getBool("EnableExciseTax") ?? false;
 
         final url = '$baseUrl/posholds/pos-product-list-paginated/';
-
-        print(url);
-        print(accessToken);
 
         Map data = {
           "CompanyID": companyID,

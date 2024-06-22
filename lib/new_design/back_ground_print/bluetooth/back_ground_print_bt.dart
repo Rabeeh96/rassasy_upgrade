@@ -1162,7 +1162,6 @@ class ESCBTTEST {
     // printer += generator.text("Test Data",);
     // printer += generator.emptyLines(3);
 
-
     return printer;
   }
 }

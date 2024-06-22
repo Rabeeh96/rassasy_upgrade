@@ -244,7 +244,7 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               onEditingComplete: () {
                 if(productController.productNameController.text !=""){
                   if(productController.isGst ==false){
-                    productController.convertToArabic( name: productController.productNameController.text,);
+                    productController.convertToArabic(name: productController.productNameController.text,);
                   }
                   else{
                     productController.descriptionController.text = productController.productNameController.text;

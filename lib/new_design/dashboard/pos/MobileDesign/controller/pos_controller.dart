@@ -452,7 +452,7 @@ final isLoadTable=false.obs;
 
 
 
-      dining_view_perm.value = prefs.getBool('Diningview') ?? true;
+    dining_view_perm.value = prefs.getBool('Diningview') ?? true;
       reservation_view_perm.value = prefs.getBool('View Reservation') ?? true;
       directOrderOption.value = prefs.getBool('directOrderOption') ?? false;
       take_away_view_perm.value = prefs.getBool('Take awayview') ?? true;

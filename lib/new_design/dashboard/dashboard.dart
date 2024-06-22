@@ -76,6 +76,7 @@ class _DashboardNewState extends State<DashboardNew> {
       companyType = prefs.getString('companyType') ?? '';
       expireDate = prefs.getString('expiryDate') ?? '';
       organisationLogo = prefs.getString('companyLogo') ?? 'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
+      print("-------organisationLogoorganisationLogoorganisationLogoorganisationLogoorganisationLogoorganisationLogo--------$organisationLogo");
       settingsPermission = prefs.getBool('General Setting') ?? false;
     });
   }
@@ -193,38 +194,54 @@ class _DashboardNewState extends State<DashboardNew> {
 
         var printType = prefs.getString('PrintType') ?? "Wifi";
 
-        if (printType == "Wifi") {
-          /// re paced with detailed settings
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(builder: (context) => PrintSettings()),
-          // );
 
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => PrintSettingsDetailed()),
-          );
+        if (printType == 'Wifi') {
+          Get.to(PrintSettingsDetailed());
+        } else if (printType == 'USB') {
+          Get.to(const TestPrintUSB());
         } else {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => TestPrintUSB()),
-          );
+          Get.to(const TestPrintBT());
         }
+
+
+
+        // if (printType == "Wifi") {
+        //   /// re paced with detailed settings
+        //   // Navigator.of(context).push(
+        //   //   MaterialPageRoute(builder: (context) => PrintSettings()),
+        //   // );
+        //
+        //   Navigator.of(context).push(
+        //     MaterialPageRoute(builder: (context) => PrintSettingsDetailed()),
+        //   );
+        // }
+        //
+        //
+        // else {
+        //   Navigator.of(context).push(
+        //     MaterialPageRoute(builder: (context) => TestPrintUSB()),
+        //   );
+        // }
 
         break;
       case 5:
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        var posUser = prefs.getBool('isPosUser');
-
+        var posUser = prefs.getBool('isPosUser')??false;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+        );
         print(posUser);
-        if (posUser == true) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const EnterPinNumber()),
-          );
-        } else if (posUser == false) {
-          prefs.setBool('isLoggedIn', false);
-          prefs.setBool('companySelected', false);
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginPageNew()),
-          );
-        }
+        // if (posUser == true) {
+        //   Navigator.of(context).pushReplacement(
+        //     MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+        //   );
+        // } else if (posUser == false) {
+        //   prefs.setBool('isLoggedIn', false);
+        //   prefs.setBool('companySelected', false);
+        //   Navigator.of(context).pushReplacement(
+        //     MaterialPageRoute(builder: (context) => LoginPageNew()),
+        //   );
+        // }
 
         break;
     }
@@ -2030,15 +2047,14 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                   updateAlert();
-                                    //  Get.to(PrintSettingsDetailed());
-                                    // var perm = await checkingPerm("Productview");
-                                    // print(perm);
-                                    // if (perm) {
-                                    //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
+                                    var perm = await checkingPerm("Productview");
+
+                                    if (perm) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
+                                    }
+                                    else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -2072,15 +2088,15 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    updateAlert();
+                                    // updateAlert();
                                     // Get.to(TestPrintUSB());
-                                    // var perm = await checkingPerm("Customerview");
-                                    // print(perm);
-                                    // if (perm) {
-                                    //   Get.to(CustomerListMobile());
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
+                                    var perm = await checkingPerm("Customerview");
+                                    print(perm);
+                                    if (perm) {
+                                      Get.to(CustomerListMobile());
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),

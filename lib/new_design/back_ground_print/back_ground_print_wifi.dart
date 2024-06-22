@@ -1053,7 +1053,7 @@ class AppBlocs {
       ]);
     }
 
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
+
     printer.row([
       PosColumn(
           text: 'Order type  ',
@@ -1072,7 +1072,6 @@ class AppBlocs {
           )),
     ]);
 
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
 
     if (tableName != "") {
       printer.row([
