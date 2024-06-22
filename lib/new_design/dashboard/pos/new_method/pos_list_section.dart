@@ -2713,7 +2713,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
         Map n = json.decode(utf8.decode(response.bodyBytes));
 
-        print(response.body);
+        log_data(response.body);
         print("a");
         var status = n["StatusCode"];
         var statusTable = n["DiningStatusCode"];
