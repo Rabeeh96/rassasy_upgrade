@@ -226,11 +226,11 @@ class _DashboardNewState extends State<DashboardNew> {
         break;
       case 5:
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        var posUser = prefs.getBool('isPosUser')??false;
+      //  var posUser = prefs.getBool('isPosUser')??false;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const EnterPinNumber()),
         );
-        print(posUser);
+
         // if (posUser == true) {
         //   Navigator.of(context).pushReplacement(
         //     MaterialPageRoute(builder: (context) => const EnterPinNumber()),
