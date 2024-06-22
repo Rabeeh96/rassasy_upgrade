@@ -49,9 +49,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
   }
 defaultAPi() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
   baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
-
 }
 
   KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {

@@ -424,7 +424,7 @@ var taxID="1";
     { "value": "5", "name": "Special Economic Zone"},
     { "value": "6", "name": "Deemed Export"},
   ];
-
+///tax list
   checkTaxType() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? gstType = prefs.getBool("check_GST");
@@ -451,6 +451,137 @@ var taxID="1";
       dialogBox(Get.context!, "No Treatment");
     }
   }
+  RxBool isCreatingCustomer = false.obs;
+
+  Future<void> createCustomer({
+    required String email,
+    required String address,
+    required String customerName,
+    required String displayName,
+    required String creditLimitText,
+    required String balanceText,
+    required String dropdownvalue,
+    required String as_on_date_api,
+    required String workPhone,
+    required String webUrl,
+    required String creditPeriod,
+    required int priceCategoryId,
+    required String panNo,
+    required String routeId,
+    required String crNo,
+    required String bankName,
+    required String accName,
+    required String accNo,
+    required String ibanIfsc,
+    required String vatNumber,
+    required String treatmentID,
+    bool imageSelect = false,
+    String? imgFilePath,
+  }) async {
+    try {
+      isCreatingCustomer.value = true;
 
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var userID = prefs.getInt('user_id') ?? 0;
+      var accessToken = prefs.getString('access') ?? '';
+      var companyID = prefs.getString('companyID') ?? '0';
+      var branchID = prefs.getInt('branchID') ?? 1;
+
+      double creditLimit = double.tryParse(creditLimitText) ?? 1;
+      double openingBalance = double.tryParse(balanceText) ?? 0;
+
+      String baseUrl = BaseUrl.baseUrl;
+      final url = '$baseUrl/posholds/customer-create/';
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.headers.addAll(headers);
+
+      request.fields.addAll({
+        "BranchID": branchID.toString(),
+        "CreatedUserID": userID.toString(),
+        "CompanyID": companyID.toString(),
+        "Email": email,
+        "Address": address,
+        "CustomerName": customerName,
+        "DisplayName": displayName,
+        "OpeningBalance": openingBalance.toString(),
+        "CrOrDr": dropdownvalue,
+        "as_on_date": as_on_date_api,
+        "WorkPhone": workPhone,
+        "WebURL": webUrl,
+        "CreditPeriod": creditPeriod,
+        "PriceCategoryID": priceCategoryId.toString(),
+        "PanNumber": panNo,
+        "CreditLimit": creditLimit.toString(),
+        "RouteID": routeId,
+        "CRNo": crNo,
+        "BankName": bankName,
+        "AccountName": accName,
+        "AccountNo": accNo,
+        "IBANOrIFSCCode1": ibanIfsc,
+        "VATNumber": vatNumber,
+        "VAT_Treatment": treatmentID,
+      });
+
+      if (imageSelect && imgFilePath != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('PartyImage', imgFilePath),
+        );
+      }
+
+      final streamResponse = await request.send();
+      final response = await http.Response.fromStream(streamResponse);
+
+      print(response.headers);
+      print(response.body);
+      print(response.statusCode);
+
+      Map<String, dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+      var status = data["StatusCode"];
+
+      if (status == 6000) {
+       // clearData();
+        imageSelect = false;
+        // You can use Get.find<YourController>() to get other controllers and update state
+        // Example: Get.find<YourOtherController>().updateSomething();
+        // Here, update your state if needed using other GetX controllers
+        // And return something.
+      } else if (status == 6001) {
+        var msg = data["message"];
+        Get.dialog(
+          AlertDialog(
+            title: Text("Error"),
+            content: Text(msg),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      Get.dialog(
+        AlertDialog(
+          title: Text("Error"),
+          content: Text(e.toString()),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      isCreatingCustomer.value = false;
+    }
+  }
 }
