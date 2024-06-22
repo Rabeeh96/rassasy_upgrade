@@ -751,7 +751,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     }
   }
 
-
+//
   printKOT(orderID, rePrint, cancelList, bool isUpdate) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
