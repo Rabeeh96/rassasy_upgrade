@@ -7,13 +7,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:loading_btn/loading_btn.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/main.dart';
 import 'package:rassasy_new/new_design/organization/list_organization.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:loading_btn/loading_btn.dart';
 
 import '../../dashboard/profile_mobile/web.dart';
 import '../create_account/create_new_account.dart';
@@ -68,93 +68,93 @@ class _LoginPageNewState extends State<LoginPageNew> {
       appBar: isTablet
           ? AppBar()
           : AppBar(
-          title: GestureDetector(
-            onTap: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              Locale? currentLocale = Get.locale;
-              if (currentLocale.toString() == "ar") {
-                prefs.setBool('isArabic', false);
-                Get.updateLocale(const Locale('en', 'US'));
-              } else {
-                prefs.setBool('isArabic', true);
-                Get.updateLocale(const Locale('ar'));
-              }
-            },
-            child: InkWell(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SvgPicture.asset("assets/svg/language-hiragana.svg"),
-                  Text(
-                    'lang'.tr,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w400, 14.0),
-                  ),
-                ],
+              title: GestureDetector(
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                Locale? currentLocale = Get.locale;
+                if (currentLocale.toString() == "ar") {
+                  prefs.setBool('isArabic', false);
+                  Get.updateLocale(const Locale('en', 'US'));
+                } else {
+                  prefs.setBool('isArabic', true);
+                  Get.updateLocale(const Locale('ar'));
+                }
+              },
+              child: InkWell(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset("assets/svg/language-hiragana.svg"),
+                    Text(
+                      'lang'.tr,
+                      style: customisedStyle(
+                          context, Colors.black, FontWeight.w400, 14.0),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )),
+            )),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
           image: isTablet
               ? const DecorationImage(
-              image: AssetImage("assets/png/coverpage.png"),
-              fit: BoxFit.cover)
+                  image: AssetImage("assets/png/coverpage.png"),
+                  fit: BoxFit.cover)
               : const DecorationImage(
-              image: AssetImage("assets/png/mobile_back.png"),
-              fit: BoxFit.cover),
+                  image: AssetImage("assets/png/mobile_back.png"),
+                  fit: BoxFit.cover),
         ),
         child: isTablet ? tabletScreen() : mobileScreen(),
       ),
       bottomNavigationBar: isTablet
           ? Container(
-        height: .1,
-      )
-          : Container(
-        height: MediaQuery.of(context).size.height / 9,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 8,
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.to(DeleteAccount());
-              },
-              child: InkWell(
-                child: Text(
-                  'dont_have_account'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w400, 15.0),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.to(DeleteAccount());
-              },
-              child: InkWell(
-                child: Text(
-                  'sign_up'.tr,
-                  style: customisedStyle(context, const Color(0xffF25F29),
-                      FontWeight.w500, 16.0),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 18,
+              height: .1,
             )
-          ],
-        ),
-      ),
+          : Container(
+              height: MediaQuery.of(context).size.height / 9,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(DeleteAccount());
+                    },
+                    child: InkWell(
+                      child: Text(
+                        'dont_have_account'.tr,
+                        style: customisedStyle(
+                            context, Colors.black, FontWeight.w400, 15.0),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(DeleteAccount());
+                    },
+                    child: InkWell(
+                      child: Text(
+                        'sign_up'.tr,
+                        style: customisedStyle(context, const Color(0xffF25F29),
+                            FontWeight.w500, 16.0),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 18,
+                  )
+                ],
+              ),
+            ),
     );
   }
 
@@ -180,8 +180,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
                 children: [
                   Container(
                       child: SvgPicture.asset(
-                        'assets/svg/logoimg.svg',
-                      )),
+                    'assets/svg/logoimg.svg',
+                  )),
                   Padding(
                     padding: const EdgeInsets.only(top: 12, bottom: 8),
                     child: Container(
@@ -207,15 +207,15 @@ class _LoginPageNewState extends State<LoginPageNew> {
                       decoration: InputDecoration(
                           focusedBorder: const OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(30.0)),
+                                  BorderRadius.all(Radius.circular(30.0)),
                               borderSide: BorderSide(color: Color(0xffC9C9C9))),
                           enabledBorder: const OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(30.0)),
+                                  BorderRadius.all(Radius.circular(30.0)),
                               borderSide: BorderSide(color: Color(0xffC9C9C9))),
                           disabledBorder: const OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(30.0)),
+                                  BorderRadius.all(Radius.circular(30.0)),
                               borderSide: BorderSide(color: Color(0xffC9C9C9))),
                           contentPadding: const EdgeInsets.only(
                               left: 20, top: 10, right: 15, bottom: 10),
@@ -238,8 +238,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
                       width: 40,
                       height: 40,
                       child: const CircularProgressIndicator(
-                        valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     ),
                     child: Row(
@@ -254,7 +253,10 @@ class _LoginPageNewState extends State<LoginPageNew> {
                                 context, Colors.white, FontWeight.w500, 18.0),
                           ),
                         ),
-                        Icon(Icons.arrow_forward,color: Colors.white,)
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                        )
                       ],
                     ),
                     onTap: (startLoading, stopLoading, btnState) async {
@@ -263,8 +265,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
                         passwordFcNode.unfocus();
 
                         if (userNameController.text == "" ||
-                            passwordController.text ==
-                                "") {
+                            passwordController.text == "") {
                           popAlert(
                               head: "Warning",
                               message: 'please_enter_details'.tr,
@@ -272,9 +273,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
                         } else {
                           startLoading();
 
-                          loginAccount(context);
+                          loginAccount(context, stopLoading);
                         }
-
                       }
                     },
                   ),
@@ -455,8 +455,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
               width: 40,
               height: 40,
               child: const CircularProgressIndicator(
-                valueColor:
-                AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
               ),
             ),
             child: Row(
@@ -471,7 +470,10 @@ class _LoginPageNewState extends State<LoginPageNew> {
                         context, Colors.white, FontWeight.w500, 18.0),
                   ),
                 ),
-                Icon(Icons.arrow_forward,color: Colors.white,)
+                Icon(
+                  Icons.arrow_forward,
+                  color: Colors.white,
+                )
               ],
             ),
             onTap: (startLoading, stopLoading, btnState) async {
@@ -480,8 +482,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
                 passwordFcNode.unfocus();
 
                 if (userNameController.text == "" ||
-                    passwordController.text ==
-                        "") {
+                    passwordController.text == "") {
                   popAlert(
                       head: "Warning",
                       message: 'please_enter_details'.tr,
@@ -489,9 +490,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
                 } else {
                   startLoading();
 
-                  loginAccount(context);
+                  loginAccount(context, stopLoading);
                 }
-
               }
             },
           ),
@@ -664,18 +664,18 @@ class _LoginPageNewState extends State<LoginPageNew> {
                   left: 20, top: 10, right: 10, bottom: 10),
               filled: true,
               hintStyle:
-              const TextStyle(color: Color(0xff000000), fontSize: 14),
+                  const TextStyle(color: Color(0xff000000), fontSize: 14),
               hintText: 'Password'.tr,
               fillColor: const Color(0xffffffff))),
     );
   }
 
   /// working
-  Future<Null> loginAccount(BuildContext context) async {
+
+  Future<Null> loginAccount(BuildContext context, stopLoading) async {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     bool isTablet = screenWidth > defaultScreenWidth;
-   // start(context);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       popAlert(
@@ -710,30 +710,39 @@ class _LoginPageNewState extends State<LoginPageNew> {
         var status = n["success"];
 
         if (status == 6000) {
+          print("......................................");
+          stopLoading();
+          print("stopp loadd");
           var datas = n["data"];
-          print(datas);
-     //     stop();
-          prefs.setBool('isLoggedIn', true);
-          prefs.setString('access', datas["access"]);
-          prefs.setInt('user_id', datas["user_id"]);
-          prefs.setString('user_name', userNameController.text);
+          print("data   $datas");
+
+          prefs.setBool('isLoggedIn', true);print("1");
+          prefs.setString('access', datas["access"]);print("2");
+          prefs.setInt('user_id', datas["user_id"]);print("3");
+          prefs.setString('user_name', userNameController.text);print("4");
 
           ///here checking tab or mobile
           if (isTablet) {
+            print("55");
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => OrganizationList()));
           } else {
+            print("66");
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => MobOrganizationList()));
           }
         } else if (status == 6001) {
-          var msg = n["error"] ?? "";
-          popAlert(head: "Alert", message: msg, position: SnackPosition.TOP);
 
+          stopLoading();
+          var msg = n["error"] ?? "";
+         // popAlert(head: "Alert", message: msg, position: SnackPosition.TOP);
+          popAlertWithColor(head: "Alert", message: msg, position: SnackPosition.BOTTOM,
+              backGroundColor: Colors.red, forGroundColor: Colors.white);
+          print("88");
           if (msg == "Please Verify Your Email to Login") {
             UserCreation.verifyMail = true;
             prefs.setString('email', n['user_email']);
@@ -743,22 +752,20 @@ class _LoginPageNewState extends State<LoginPageNew> {
                 MaterialPageRoute(
                     builder: (BuildContext context) => CreateNewAccount()));
           }
-
-         // stop();
+          print("999");
+          // stop();
         } else {
-        //  stop();
-          popAlert(
-              head: "Alert",
-              message: "Some thing went wrong",
-              position: SnackPosition.TOP);
+          print("10000");
+          stopLoading();
+          var msg = n["error"] ?? "Something went wrong";
+          popAlertWithColor(head: "Alert", message: msg, position: SnackPosition.BOTTOM,
+              backGroundColor: Colors.red, forGroundColor: Colors.white);
         }
       } catch (e) {
-       // stop();
-
-        popAlert(
-            head: "Alert",
-            message: "Some thing went wrong ${e.toString()}",
-            position: SnackPosition.TOP);
+        print("10000");
+        stopLoading();
+        popAlertWithColor(head: "Alert", message: e.toString(), position: SnackPosition.BOTTOM,
+            backGroundColor: Colors.red, forGroundColor: Colors.white);
       }
     }
   }
@@ -766,22 +773,22 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
 Column customisedTextFormField3(
     {TextEditingController? controller,
-      required String? labelText,
-      required String? Function(String?)? validator,
-      required void Function(String)? onSubmitted,
-      required FocusNode? focusnode,
-      required Radius bottomLeft,
-      required Radius bottomRight,
-      required BuildContext context,
-      required Radius topLeft,
-      required Radius topRight,
-      required bool obsecuretext,
-      Widget? suffixIcon,
-      Widget? prefiicon,
-      Color? colorOfInputText,
-      required Color colorofborder,
-      required Color? fillcolor,
-      TextInputType? keyboardtype}) {
+    required String? labelText,
+    required String? Function(String?)? validator,
+    required void Function(String)? onSubmitted,
+    required FocusNode? focusnode,
+    required Radius bottomLeft,
+    required Radius bottomRight,
+    required BuildContext context,
+    required Radius topLeft,
+    required Radius topRight,
+    required bool obsecuretext,
+    Widget? suffixIcon,
+    Widget? prefiicon,
+    Color? colorOfInputText,
+    required Color colorofborder,
+    required Color? fillcolor,
+    TextInputType? keyboardtype}) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -791,7 +798,7 @@ Column customisedTextFormField3(
           obscureText: obsecuretext,
           obscuringCharacter: "*",
           style:
-          customisedStyle(context, colorOfInputText, FontWeight.w500, 16.0),
+              customisedStyle(context, colorOfInputText, FontWeight.w500, 16.0),
           keyboardType: keyboardtype,
           focusNode: focusnode,
           onFieldSubmitted: onSubmitted,
@@ -806,7 +813,7 @@ Column customisedTextFormField3(
               fillColor: fillcolor,
               suffixIcon: suffixIcon,
               suffixIconConstraints:
-              const BoxConstraints(maxWidth: 50, minWidth: 50),
+                  const BoxConstraints(maxWidth: 50, minWidth: 50),
               labelText: labelText,
               prefixIcon: prefiicon,
               prefixIconConstraints: const BoxConstraints(
@@ -821,5 +828,3 @@ Column customisedTextFormField3(
     ],
   );
 }
-
-
