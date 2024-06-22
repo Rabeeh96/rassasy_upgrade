@@ -22,6 +22,7 @@ class _AddCustomerMobileState extends State<AddCustomerMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(
@@ -41,28 +42,51 @@ class _AddCustomerMobileState extends State<AddCustomerMobile> {
             padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(
                 onPressed: () {
-                  // if (productController.productNameController.text.isEmpty ||
-                  //     productController.salesPriceController.text.isEmpty ||
-                  //     productController.purchasePriceController.text.isEmpty ||
-                  //     productController.groupController.text.isEmpty) {
-                  //   Get.snackbar('Error', "Please fill in all required fields");
-                  //
-                  //
-                  // }else{
-                  //   if(widget.type=="Edit"){
-                  //     print("ghdfdhfhghf");
-                  //     productController.editProduct(widget.uid!);
-                  //   }
-                  //   else{
-                  //     if(productController.createPermission){
-                  //       productController.createProduct();
-                  //     }else{
-                  //       Get.snackbar('Error', "Permission Denied");
-                  //     }
-                  //   }
-                  //
-                  //
-                  // }
+                  if (customerController.customerNameController.text.isEmpty ||
+                      customerController.balanceController.text.isEmpty ||
+                      customerController.creditLimitController.text.isEmpty ||
+                      customerController.creditPeriodController.text.isEmpty) {
+                    Get.snackbar('Error', "Please fill in all required fields");
+
+
+                  }else{
+                    // customerController.createCustomer(
+                    //     email: customerController.emailController.text,
+                    //     address:customerController.addressController.text,
+                    //     customerName: customerController.customerNameController.text,
+                    //     displayName: customerController.displayNameController.text,
+                    //     creditLimitText: customerController.creditLimitController.text,
+                    //
+                    //     balanceText: customerController.balanceController.text,
+                    //     dropdownvalue: dropdownvalue,
+                    //     as_on_date_api: as_on_date_api,
+                    //     workPhone: customerController.workPhoneController.text,
+                    //     webUrl: customerController.webUrlController.text,
+                    //     creditPeriod: customerController.creditPeriodController.text,
+                    //     priceCategoryId: priceCategoryId,
+                    //     panNo: customerController.panNoController.text,
+                    //     routeId: routeId,
+                    //     crNo: customerController.crNoController.text,
+                    //     bankName: customerController.bankNameController.text,
+                    //     accName: customerController.accNameController.text,
+                    //     accNo: customerController.accNoController.text,
+                    //     ibanIfsc:  customerController.ibanIfscController.text,
+                    //     vatNumber: customerController.vatNumberController.text,
+                    //     treatmentID: treatmentID);
+                    // if(widget.type=="Edit"){
+                    //   print("ghdfdhfhghf");
+                    //   productController.editProduct(widget.uid!);
+                    // }
+                    // else{
+                    //   if(productController.createPermission){
+                    //     productController.createProduct();
+                    //   }else{
+                    //     Get.snackbar('Error', "Permission Denied");
+                    //   }
+                    // }
+
+
+                  }
                 },
                 icon: Text(
                   'Save'.tr,
