@@ -6611,7 +6611,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$selectedDateAndTime";
         var dateOnly = convertedDate.substring(0, 10);
-        Map data = {"CompanyID": companyID, "BranchID": branchID, "Date": dateOnly};
+        Map data = {"CompanyID": companyID, "BranchID": branchID, "Date": dateOnly,
+          "is_used_group":true
+        };
         print(data);
         //encode Map to JSON
         var body = json.encode(data);
