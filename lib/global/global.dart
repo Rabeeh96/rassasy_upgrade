@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
 //////
- String appVersion = "1.1.29";
+ String appVersion = "1.1.30";
 double defaultScreenWidth=850;
 start(context) {
   Loader.show(context,
