@@ -271,7 +271,6 @@ class _LoginPageNewState extends State<LoginPageNew> {
                               position: SnackPosition.TOP);
                         } else {
                           startLoading();
-
                           loginAccount(context);
                         }
 
