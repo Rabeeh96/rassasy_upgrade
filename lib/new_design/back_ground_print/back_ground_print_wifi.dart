@@ -853,7 +853,7 @@ class AppBlocs {
     //
     /// image print commented
 
-    printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+
     if (PrintDataDetails.type == "SI") {
       if (companyLogo != "") {
         final Uint8List imageData = await _fetchImageData(companyLogo);
@@ -1053,7 +1053,7 @@ class AppBlocs {
       ]);
     }
 
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
+
     printer.row([
       PosColumn(
           text: 'Order type  ',
@@ -1072,7 +1072,6 @@ class AppBlocs {
           )),
     ]);
 
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
 
     if (tableName != "") {
       printer.row([

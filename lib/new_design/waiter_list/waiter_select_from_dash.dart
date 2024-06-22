@@ -36,16 +36,15 @@ class _ProductDetailsState extends State<SelectWaiter> {
               Navigator.pop(context);
             },
           ), //
-          title:   Text(
+          title:Text(
            'Waiter'.tr,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,
               fontSize: 20,
             ),
           ),
-          backgroundColor: Colors.grey[300],
-
+          backgroundColor: Colors.grey[300]
       ),
       body: Center(
         child: Container(
