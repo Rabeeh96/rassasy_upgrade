@@ -92,7 +92,7 @@ class _DashboardNewState extends State<DashboardNew> {
       try {
         //  HttpOverrides.global = MyHttpOverrides();
         SharedPreferences prefs = await SharedPreferences.getInstance();
-
+        baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
         var userID = prefs.getInt('user_id') ?? 0;
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
@@ -2030,15 +2030,15 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    ///updateAlert();
+                                   updateAlert();
                                     //  Get.to(PrintSettingsDetailed());
-                                    var perm = await checkingPerm("Productview");
-                                    print(perm);
-                                    if (perm) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
-                                    } else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
+                                    // var perm = await checkingPerm("Productview");
+                                    // print(perm);
+                                    // if (perm) {
+                                    //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(context);
+                                    // }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -2072,15 +2072,15 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    ///  updateAlert();
+                                    updateAlert();
                                     // Get.to(TestPrintUSB());
-                                    var perm = await checkingPerm("Customerview");
-                                    print(perm);
-                                    if (perm) {
-                                      Get.to(CustomerListMobile());
-                                    } else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
+                                    // var perm = await checkingPerm("Customerview");
+                                    // print(perm);
+                                    // if (perm) {
+                                    //   Get.to(CustomerListMobile());
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(context);
+                                    // }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -2484,6 +2484,7 @@ class _DashboardNewState extends State<DashboardNew> {
         companyName = prefs.getString('companyName') ?? '';
         companyType = prefs.getString('companyType') ?? '';
         expireDate = prefs.getString('expiryDate') ?? '';
+        baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
         String baseUrl = BaseUrl.baseUrlV11;
         var token = prefs.getString('access') ?? '';
         var roleID = prefs.getString('role') ?? '';

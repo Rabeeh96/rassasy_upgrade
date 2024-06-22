@@ -58,21 +58,22 @@ class _AddCustomerMobileState extends State<AddCustomerMobile> {
                     //     creditLimitText: customerController.creditLimitController.text,
                     //
                     //     balanceText: customerController.balanceController.text,
-                    //     dropdownvalue: dropdownvalue,
-                    //     as_on_date_api: as_on_date_api,
+                    //     dropdownvalue: customerController.dropdownvalue,
+                    //     as_on_date_api: DateFormat('yyyy-MM-dd').format(statementController.endDate.value)customerController.dateFormat(customerController.purchaseDateValue),
+                    //    // as_on_date_api: customerController.apiDateFormat(customerController.purchaseDateValue.value),
                     //     workPhone: customerController.workPhoneController.text,
                     //     webUrl: customerController.webUrlController.text,
                     //     creditPeriod: customerController.creditPeriodController.text,
-                    //     priceCategoryId: priceCategoryId,
+                    //     priceCategoryId: customerController.priceCategoryID,
                     //     panNo: customerController.panNoController.text,
-                    //     routeId: routeId,
+                    //     routeId: customerController.routeID.toString(),
                     //     crNo: customerController.crNoController.text,
                     //     bankName: customerController.bankNameController.text,
                     //     accName: customerController.accNameController.text,
                     //     accNo: customerController.accNoController.text,
                     //     ibanIfsc:  customerController.ibanIfscController.text,
                     //     vatNumber: customerController.vatNumberController.text,
-                    //     treatmentID: treatmentID);
+                    //     treatmentID: customerController.taxID);
                     // if(widget.type=="Edit"){
                     //   print("ghdfdhfhghf");
                     //   productController.editProduct(widget.uid!);
@@ -244,7 +245,7 @@ class _AddCustomerMobileState extends State<AddCustomerMobile> {
                                   "As on. ",
                                   style: customisedStyle(context, const Color(0xff5B5B5B), FontWeight.w400, 15.0),
                                 ),
-                              Icon(Icons.calendar_today,color: Colors.black,),
+                               Icon(Icons.calendar_today,color: Colors.black,),
                                 SizedBox(width:10),
                                 Text(
                                   customerController.dateFormat.format(purchaseDateValuee),
