@@ -243,8 +243,8 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               focusNode: productController.nameFCNode,
               onEditingComplete: () {
                 if(productController.productNameController.text !=""){
-                  if(productController.isGst ==false){
-                    productController.convertToArabic( name: productController.productNameController.text,);
+                  if(productController.isVat){
+                    productController.convertToArabic(name: productController.productNameController.text,);
                   }
                   else{
                     productController.descriptionController.text = productController.productNameController.text;

@@ -155,7 +155,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                                 ),
                                                 Text(companyController.convertDate(companyController.companyListData[index].expiryDate!),
                                                 //    style: const TextStyle(color: Color(0xffF25F29), fontWeight: FontWeight.w500, fontSize: 14)
-                                                    style:   customisedStyle(context, Color(0xffF25F29), FontWeight.w500, 14.0)
+                                                    style:customisedStyle(context, Color(0xffF25F29), FontWeight.w500, 14.0)
                                                 ),
                                               ],
                                             ),
