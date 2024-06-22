@@ -474,7 +474,7 @@ var taxID="1";
     required String accNo,
     required String ibanIfsc,
     required String vatNumber,
-    required int treatmentID,
+    required String treatmentID,
     bool imageSelect = false,
     String? imgFilePath,
   }) async {
@@ -526,7 +526,7 @@ var taxID="1";
         "AccountNo": accNo,
         "IBANOrIFSCCode1": ibanIfsc,
         "VATNumber": vatNumber,
-        "VAT_Treatment": treatmentID.toString(),
+        "VAT_Treatment": treatmentID,
       });
 
       if (imageSelect && imgFilePath != null) {

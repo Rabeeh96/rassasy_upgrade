@@ -151,7 +151,7 @@ class AppBlocs {
     }
   }
 
-  /// print order and invoice //
+  /// print order and invoice ////
   void print_receipt(String printerIp, BuildContext ctx, isCancelled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var temp = prefs.getString("template") ?? "template4";
