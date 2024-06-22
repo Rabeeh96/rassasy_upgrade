@@ -751,7 +751,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     }
   }
 
-
+//
   printKOT(orderID, rePrint, cancelList, bool isUpdate) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -760,7 +760,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
       }
       else if (printType == 'USB') {
-        printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
+        printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
       }
       else {
         /// kot is not fully completed
