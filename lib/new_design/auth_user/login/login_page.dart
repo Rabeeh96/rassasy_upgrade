@@ -64,6 +64,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
     //bool isTablet = true;
     bool isTablet = screenWidth > defaultScreenWidth;
 
+
+    
     return Scaffold(
       appBar: isTablet
           ? AppBar()

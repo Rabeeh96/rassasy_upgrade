@@ -52,7 +52,7 @@ class _ProductDetailsState extends State<ChangeTable> {
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: displayProductDetails(),
-        ):Center(child: Text('.....',style: customisedStyle(context, Colors.black, FontWeight.w700, 14.0),)),
+        ):Center(child: Text('',style: customisedStyle(context, Colors.black, FontWeight.w700, 14.0),)),
       ),
     );
   }

@@ -58,8 +58,8 @@ void main() {
     print("main isTablet: $isTablet");
 
     SystemChrome.setPreferredOrientations([
-      isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
-      isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
+      // isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
+      // isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
     ]).then((_) {
       runApp(MyApp(isTablet: isTablet));
     });
@@ -69,10 +69,23 @@ void main() {
 bool isTabletDevice() {
   /// Determine if the device is a tablet based on the screen width
   double screenWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
-  print("screenWidth  is tablet device  $screenWidth");
+
+  print("--screenWidth  $screenWidth   ---------  defaultScreenWidth   $defaultScreenWidth");
+
 
   /// You may need to adjust this threshold based on your requirements
   return screenWidth > defaultScreenWidth;
+}
+
+bool isTabletDevice2(BuildContext context) {
+  /// Determine if the device is a tablet based on the screen width
+  double screenWidth = MediaQuery.of(context).size.width;
+  print("screenWidth is tablet device: $screenWidth");
+
+  /// You may need to adjust this threshold based on your requirements
+  double tabletThreshold = 600.0; // Example threshold, adjust as needed
+
+  return screenWidth > tabletThreshold;
 }
 
 class MyApp extends StatelessWidget {
@@ -134,8 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () {
-      //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => IpTest()));
-      navigateUser();
+     //  navigateUser();
     });
   }
 
