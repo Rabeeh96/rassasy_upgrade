@@ -61,6 +61,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
+
         final String url = '$baseUrl/posholds/list-pos-hold-invoices/';
 
         Map data = {
@@ -68,7 +69,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           "CreatedUserID": userID,
           "BranchID": branchID,
           "page_number": 1,
-          "page_size": 40,
+          "page_size": 25,
           "from_date": apiDateFormat.format(fromDateNotifier.value),
           "to_date": apiDateFormat.format(toDateNotifier.value),
         };
