@@ -181,6 +181,7 @@ class USBPrintClass {
     var OpenDrawer = prefs.getBool("OpenDrawer") ?? false;
     var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
     var hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;
+    var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
     print("---------------------------------OpenDrawer-------------------------------$printerIp--------------$OpenDrawer");
 
     // TODO Don't forget to choose printer's paper size
@@ -194,9 +195,9 @@ class USBPrintClass {
     }
 
       if (temp == 'template4') {
-        await invoicePrintTemplate4(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage);
+        await invoicePrintTemplate4(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage,flavourInOrderPrint);
       } else if (temp == 'template3') {
-        await invoicePrintTemplate3(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails);
+        await invoicePrintTemplate3(printerIp,profile,hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,flavourInOrderPrint);
       } else {
 
       }
@@ -246,7 +247,7 @@ class USBPrintClass {
 
 
 
-  Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage) async {
+  Future<void> invoicePrintTemplate4(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,defaultCodePage,flavourInOrderPrint) async {
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, profile);
     List<ProductDetailsModel> tableDataDetailsPrint = [];
@@ -670,6 +671,30 @@ class USBPrintClass {
         ]);
       }
 
+      var flavour = tableDataDetailsPrint[i].flavourName ?? '';
+
+      if (PrintDataDetails.type == "SO") {
+        if(flavourInOrderPrint){
+          if(flavour!=""){
+            Uint8List flavourNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].flavourName));
+            bytes +=generator.row([
+              PosColumn(
+                  textEncoded: flavourNameEnc,
+                  width: 7,
+                  styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+              PosColumn(
+                  text: '',
+                  width: 5,
+                  styles: const PosStyles(
+                    height: PosTextSize.size1,
+                  ))
+            ]);
+          }
+
+
+        }
+      }
+
 
 
       bytes +=generator.hr();
@@ -815,7 +840,7 @@ class USBPrintClass {
 
   }
 
-  Future<void> invoicePrintTemplate3(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails) async {
+  Future<void> invoicePrintTemplate3(defaultIP,profile,tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,timeInPrint,hideTaxDetails,flavourInOrderPrint) async {
 
     try{
       List<int> bytes = [];
@@ -1227,6 +1252,27 @@ class USBPrintClass {
                 styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
 
           ]);
+        }
+
+        var flavour = tableDataDetailsPrint[i].flavourName ?? '';
+
+        if (PrintDataDetails.type == "SO") {
+          if(flavourInOrderPrint){
+            if(flavour!=""){
+              bytes +=generator.row([
+                PosColumn(
+                    text: flavour,
+                    width: 7,
+                    styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+                PosColumn(
+                    text: '',
+                    width: 5,
+                    styles: const PosStyles(
+                      height: PosTextSize.size1,
+                    ))
+              ]);
+            }
+          }
         }
 
         bytes +=generator.hr();
@@ -2843,7 +2889,7 @@ class USBPrintClass {
 }
 
 class ProductDetailsModel {
-  final String unitName, qty, netAmount, productName, unitPrice, productDescription;
+  final String unitName, qty, netAmount,flavourName, productName, unitPrice, productDescription;
 
   ProductDetailsModel({
     required this.unitName,
@@ -2852,6 +2898,7 @@ class ProductDetailsModel {
     required this.productName,
     required this.unitPrice,
     required this.productDescription,
+    required this.flavourName,
   });
 
   factory ProductDetailsModel.fromJson(Map<dynamic, dynamic> json) {
@@ -2862,6 +2909,7 @@ class ProductDetailsModel {
       productName: json['ProductName'],
       unitPrice: json['unitPriceRounded'].toString(),
       productDescription: json['ProductDescription'],
+      flavourName: json['flavour_name']??"",
     );
   }
 }

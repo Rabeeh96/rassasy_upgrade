@@ -18,6 +18,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/back_ground_print/print_details/select_codepage.dart';
 import 'package:rassasy_new/new_design/waiter_list/waiter_select_from_dash.dart';
+import 'package:rassasy_new/test/dragable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
@@ -109,6 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   bool time_in_invoice = false;
   bool printForCancellOrder = false;
+  bool flavourInOrderPrint = false;
 
   bool printAfterOrder = false;
   bool directOrderOption = false;
@@ -316,8 +318,10 @@ class _SettingsPageState extends State<SettingsPage> {
       // payment_method = prefs.getBool('payment_method') ?? false;
       time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
       printForCancellOrder = prefs.getBool('print_for_cancel_order') ?? false;
+      flavourInOrderPrint = prefs.getBool('flavour_in_order_print') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
       _selectedOption= prefs.getString('PrintType') ?? "Wifi";
+
 
 
 
@@ -1984,6 +1988,49 @@ class _SettingsPageState extends State<SettingsPage> {
               borderRadius: BorderRadius.circular(2),
             ),
 
+            child: ListTile(
+              title: Text(
+                'flavour_in_order_print'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: flavourInOrderPrint,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        flavourInOrderPrint = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('flavour_in_order_print', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
             child: SizedBox(
               //    width: MediaQuery.of(context).size.width / 5,
               child: TextField(
@@ -2010,7 +2057,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
+
           const SizedBox(height: 50,)
+
         ],
       ),
     );
@@ -2158,6 +2207,27 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
       ),
+
+
+      /// table list option
+      // Card(
+      //   color: setting3,
+      //   shape: RoundedRectangleBorder(
+      //     side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+      //     borderRadius: BorderRadius.circular(2),
+      //   ),
+      //   child: ListTile(
+      //     onTap: () {
+      //      Get.to(TableSettings());
+      //     },
+      //     leading: IconButton(onPressed: () {}, icon: SvgPicture.asset('assets/svg/kitchenseting.svg')),
+      //     title: Text(
+      //       'table_order_settings'.tr,
+      //       style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
+      //     ),
+      //   ),
+      // ),
+
 
       ///commented organisation
       // Card(

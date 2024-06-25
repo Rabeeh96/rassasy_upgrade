@@ -535,7 +535,7 @@ bool isCancelled;
     String defaultCodePage = prefs.getString("defaultCodePage") ?? "CP864";
     var highlightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
     var hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;
-
+    var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
     List<int> printer = [];
     _profile = profile;
 
@@ -999,6 +999,30 @@ bool isCancelled;
               ))
         ]);
       }
+      var flavour = tableDataDetailsPrint[i].flavourName ?? '';
+
+      if (PrintDataDetails.type == "SO") {
+        if(flavourInOrderPrint){
+          if(flavour!=""){
+            Uint8List flavourNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].flavourName));
+            printer += generator.row([
+              PosColumn(
+                  textEncoded: flavourNameEnc,
+                  width: 7,
+                  styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+              PosColumn(
+                  text: '',
+                  width: 5,
+                  styles: const PosStyles(
+                    height: PosTextSize.size1,
+                  ))
+            ]);
+          }
+
+        }
+      }
+
+
 
       printer += generator.hr();
     }
@@ -1339,7 +1363,7 @@ bool isN(String value) {
   return val;
 }
 class ProductDetailsModel {
-  final String unitName, qty, netAmount, productName, unitPrice, productDescription;
+  final String unitName, qty, netAmount,flavourName, productName, unitPrice, productDescription;
 
   ProductDetailsModel({
     required this.unitName,
@@ -1348,6 +1372,7 @@ class ProductDetailsModel {
     required this.productName,
     required this.unitPrice,
     required this.productDescription,
+    required this.flavourName,
   });
 
   factory ProductDetailsModel.fromJson(Map<dynamic, dynamic> json) {
@@ -1358,6 +1383,7 @@ class ProductDetailsModel {
       productName: json['ProductName'],
       unitPrice: json['unitPriceRounded'].toString(),
       productDescription: json['ProductDescription'],
+      flavourName: json['flavour_name']??"",
     );
   }
 }

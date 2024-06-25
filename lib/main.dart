@@ -52,7 +52,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
-  //  bool isTablet = true;
+    //  bool isTablet = true;
     bool isTablet = isTabletDevice();
     prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
     print("main isTablet: $isTablet");
@@ -89,10 +89,7 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           //  return MaterialApp(home: TestDemoPrintingOption());
           return GetMaterialApp(
-              translations: LocaleChange(),
-              locale: const Locale('en', 'US'),
-              fallbackLocale: const Locale('en', 'US'),
-              home: Splash());
+              translations: LocaleChange(), locale: const Locale('en', 'US'), fallbackLocale: const Locale('en', 'US'), home: Splash());
         } else {
           // Loading is done, return the app:
           return GetMaterialApp(
@@ -145,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //test
   void navigateUser() async {
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isTablet = screenWidth >defaultScreenWidth;
+    bool isTablet = screenWidth > defaultScreenWidth;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getBool('isLoggedIn') ?? false;
     print(status);
@@ -165,23 +162,16 @@ class _MyHomePageState extends State<MyHomePage> {
         var expire = checkExpire(expireDate);
         if (expire == true) {
           prefs.setBool('companySelected', false);
-          await dialogBox(context,
-              "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
+          await dialogBox(context, "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
 
           if (isTablet) {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
-          }
-          else {
+          } else {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
           }
 
-
-
-
-
           // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         } else {
-
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
 
           /// pos user commented
@@ -201,15 +191,11 @@ class _MyHomePageState extends State<MyHomePage> {
           // }
         }
       } else {
-
         if (isTablet) {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
-        }
-        else {
+        } else {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
         }
-
-
 
         // Navigator.pushReplacement(
         //     context,
@@ -217,8 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //         builder: (BuildContext context) => OrganizationList()));
       }
     } else {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext context) => LoginPageNew()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPageNew()));
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
     }
   }
@@ -265,8 +250,6 @@ class Init {
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }

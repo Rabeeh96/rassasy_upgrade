@@ -27,7 +27,6 @@ import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:rassasy_new/new_design/report/new_report_page.dart';
 import 'package:rassasy_new/setting/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'customer/customer_detail_page.dart';
 import 'flavour/view_flavour.dart';
 import 'mobile_section/view/customer/customer_list_mobile.dart';
@@ -76,7 +75,7 @@ class _DashboardNewState extends State<DashboardNew> {
       companyType = prefs.getString('companyType') ?? '';
       expireDate = prefs.getString('expiryDate') ?? '';
       organisationLogo = prefs.getString('companyLogo') ?? 'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
-      print("-------organisationLogoorganisationLogoorganisationLogoorganisationLogoorganisationLogoorganisationLogo--------$organisationLogo");
+
       settingsPermission = prefs.getBool('General Setting') ?? false;
     });
   }
@@ -371,7 +370,6 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenHeight = screenSize.height;
 
     bool isTablet = screenWidth > defaultScreenWidth;
-
     return Scaffold(
       appBar: isProfileNotifier.value
           ? AppBar(
