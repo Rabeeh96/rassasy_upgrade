@@ -248,40 +248,7 @@ defaultAPi() async {
             print("result__________________________$result");
           });
 
-          // await Future.delayed(Duration(seconds: 1), () {
-          //    stop();
-          //    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardNew()),);
-          //  });
 
-          print("__________________________________");
-
-          // setState(() {
-          //   for (Map user in userRollData) {
-          //     userTypeList.add(UserTypeModel.fromJson(user));
-          //   }
-          // });
-          // Future.delayed(Duration(seconds: 0), () {
-          //   for (var i = 0; i < userTypeList.length; i++) {
-          //
-          //     if (userTypeList[i].name == "Sales Invoice" ||
-          //         userTypeList[i].name == "Sales Return" ||
-          //         userTypeList[i].name == "Sales Order" ||
-          //         userTypeList[i].name == "Stock Transfer" ||
-          //         userTypeList[i].name == "Receipt Voucher" ||
-          //         userTypeList[i].name == "Expense" ||
-          //         userTypeList[i].name == "Payment Voucher") {
-          //       prefs.setBool(userTypeList[i].name + "view", userTypeList[i].viewPermission);
-          //       prefs.setBool(userTypeList[i].name + "save",
-          //           userTypeList[i].savePermission);
-          //       prefs.setBool(userTypeList[i].name + "edit",
-          //           userTypeList[i].editPermission);
-          //       prefs.setBool(userTypeList[i].name + "delete",
-          //           userTypeList[i].deletePermission);
-          //       prefs.setBool(userTypeList[i].name + "print",
-          //           userTypeList[i].printPermission);
-          //     }
-          //   }
-          // });
         } else if (status == 6001) {
           stop();
         } else {}

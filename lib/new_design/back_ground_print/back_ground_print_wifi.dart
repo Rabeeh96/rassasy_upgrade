@@ -41,7 +41,6 @@ class AppBlocs {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
         var currency = prefs.getString('CurrencySymbol') ?? "";
-
         var pk = PrintDataDetails.id;
         final String url = '$baseUrl/posholds/view/pos-sale/invoice/$pk/';
         print(url);
@@ -164,6 +163,8 @@ class AppBlocs {
     var OpenDrawer = prefs.getBool("OpenDrawer") ?? false;
     var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
     var hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;
+    var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
+    print("------flavourInOrderPrint---------------flavourInOrderPrint-------------------------$flavourInOrderPrint");
 
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
@@ -181,10 +182,10 @@ class AppBlocs {
     if (res == PosPrintResult.success) {
       if (temp == 'template4') {
         await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint,
-            hideTaxDetails, defaultCodePage, isCancelled);
+            hideTaxDetails, defaultCodePage, isCancelled,flavourInOrderPrint);
       } else if (temp == 'template3') {
         await englishInvoicePrint(
-            printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails);
+            printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails,flavourInOrderPrint);
       } else {
         await printArabic(printer);
       }
@@ -206,7 +207,7 @@ class AppBlocs {
 
   /// template supported  english and arabic template
   Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,
-      timeInPrint, taxDetails, defaultCodePage, isCancelled) async {
+      timeInPrint, taxDetails, defaultCodePage, isCancelled,flavourInOrderPrint) async {
 
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
@@ -617,9 +618,7 @@ class AppBlocs {
 
     for (var i = 0; i < tableDataDetailsPrint.length; i++) {
       var slNo = i + 1;
-
       Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
-
       printer.row([
         PosColumn(
             text: "$slNo",
@@ -654,6 +653,30 @@ class AppBlocs {
                 height: PosTextSize.size1,
               ))
         ]);
+      }
+
+      var flavour = tableDataDetailsPrint[i].flavourName ?? '';
+
+      if (PrintDataDetails.type == "SO") {
+        if(flavourInOrderPrint){
+          if(flavour!=""){
+            Uint8List flavourNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].flavourName));
+            printer.row([
+              PosColumn(
+                  textEncoded: flavourNameEnc,
+                  width: 7,
+                  styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+              PosColumn(
+                  text: '',
+                  width: 5,
+                  styles: const PosStyles(
+                    height: PosTextSize.size1,
+                  ))
+            ]);
+          }
+
+
+        }
       }
 
       printer.hr();
@@ -786,7 +809,7 @@ class AppBlocs {
 
   /// template supported only english
   Future<void> englishInvoicePrint(
-      NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, taxDetails) async {
+      NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, taxDetails,flavourInOrderPrint) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -1177,6 +1200,26 @@ class AppBlocs {
               width: 11,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
         ]);
+      }
+      var flavour = tableDataDetailsPrint[i].flavourName ?? '';
+
+      if (PrintDataDetails.type == "SO") {
+        if(flavourInOrderPrint){
+          if(flavour!=""){
+            printer.row([
+              PosColumn(
+                  text: flavour,
+                  width: 7,
+                  styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+              PosColumn(
+                  text: '',
+                  width: 5,
+                  styles: const PosStyles(
+                    height: PosTextSize.size1,
+                  ))
+            ]);
+          }
+        }
       }
 
       printer.hr();
@@ -3628,7 +3671,7 @@ print(salesOrder);
 }
 
 class ProductDetailsModel {
-  final String unitName, qty, netAmount, productName, unitPrice, productDescription;
+  final String unitName, qty, netAmount, productName, flavourName, unitPrice, productDescription;
 
   ProductDetailsModel({
     required this.unitName,
@@ -3637,6 +3680,7 @@ class ProductDetailsModel {
     required this.productName,
     required this.unitPrice,
     required this.productDescription,
+    required this.flavourName,
   });
 
   factory ProductDetailsModel.fromJson(Map<dynamic, dynamic> json) {
@@ -3647,6 +3691,7 @@ class ProductDetailsModel {
       productName: json['ProductName'],
       unitPrice: json['unitPriceRounded'].toString(),
       productDescription: json['ProductDescription'],
+      flavourName: json['flavour_name']??"",
     );
   }
 }

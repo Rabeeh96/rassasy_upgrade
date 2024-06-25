@@ -8,14 +8,14 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DragableList extends StatefulWidget {
-  const DragableList({Key? key}) : super(key: key);
+class TableSettings extends StatefulWidget {
+  const TableSettings({Key? key}) : super(key: key);
 
   @override
-  _DragableListState createState() => _DragableListState();
+  _TableSettingsState createState() => _TableSettingsState();
 }
 
-class _DragableListState extends State<DragableList> {
+class _TableSettingsState extends State<TableSettings> {
   final _scrollController = ScrollController();
   final _gridViewKey = GlobalKey();
 
@@ -35,17 +35,7 @@ class _DragableListState extends State<DragableList> {
 
   @override
   Widget build(BuildContext context) {
-    // final generatedChildren1 = List.generate(
-    //   _fruits.length, (index) => Container(
-    //     key: Key(_fruits[index]['id'].toString()),
-    //     color: Colors.lightBlue,
-    //     child: Center(
-    //       child: Text(
-    //         _fruits[index]['name'].toString(),
-    //       ),
-    //     ),
-    //   ),
-    // );
+
     final generatedChildren = List.generate(
         tablesLists.length,
         (index) => Container(

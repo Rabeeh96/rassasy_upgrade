@@ -366,7 +366,9 @@ class LocaleChange extends Translations {
           'sign_up': 'Sign up now!',
           'lang': 'English',
           'login': 'Login',
-          'Add_Product': "Add Product"
+          'flavour_in_order_print': 'Flavour in order print',
+          'Add_Product': "Add Product",
+          'table_order_settings': "Table order settings"
         },
 
         ///
@@ -374,6 +376,8 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'flavour_in_order_print': 'نكهة من أجل الطباعة',
+           'table_order_settings': "إعدادات ترتيب الجدول",
           'Add_Product': "أضف منتج",
           'bluetoothPrinter': 'طابعة بلوتوث',
           'select_printer_type': 'حدد نوع الطابعة',
