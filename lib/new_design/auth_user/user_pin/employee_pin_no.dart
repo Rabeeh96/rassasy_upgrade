@@ -1,8 +1,10 @@
 import 'dart:convert';
-
+import 'dart:html';
+import 'dart:io' show Platform;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -31,41 +33,67 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
   List<int> num = [];
   final FocusNode _focusNode = FocusNode();
-  final ValueNotifier<String> _enteredNumbersNotifier = ValueNotifier<String>('');
 
+  @override
+  void dispose() {
+    // Dispose the focus node when the widget is disposed
+    _focusNode.dispose();
+    super.dispose();
+  }
+  void _handleKey(RawKeyEvent event) {
+
+    if (event is RawKeyDownEvent) {
+      String keyLabel = event.data.logicalKey.keyLabel;
+
+      if (keyLabel.isEmpty) return;
+
+      // Handle numeric keys (0-9)
+      if (keyLabel.length == 1 && keyLabel.contains(RegExp(r'[0-9]'))) {
+        setState(() {
+          num.add(int.parse(keyLabel.toString()));
+          changeColor();
+        });
+      }
+
+      // Handle backspace key
+      if (event.logicalKey == LogicalKeyboardKey.backspace && num.isNotEmpty) {
+        setState(() {
+          num.removeLast();
+          changeColor();
+        });
+      }
+    }
+  }
   @override
   void initState() {
     super.initState();
     // Request focus when the widget is first initialized
-    _focusNode.requestFocus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus();
+    });
     defaultAPi();
   }
 
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    _enteredNumbersNotifier.dispose();
-    super.dispose();
-  }
+
 defaultAPi() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
 }
 
-  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
-    // Check if the event is a RawKeyDownEvent
-    final logicalKey = event.logicalKey;
-    // Check if the key is a numeric key and the entered numbers length is less than 6
-    if (RegExp('[0-9]').hasMatch(logicalKey.keyLabel!) &&
-        _enteredNumbersNotifier.value.length < 6) {
-      // Append numeric keys to the entered numbers
-      _enteredNumbersNotifier.value += logicalKey.keyLabel!;
-    }
-    return KeyEventResult.handled;
-  }
-  void _clearEnteredNumbers() {
-    _enteredNumbersNotifier.value = '';
-  }
+  // KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+  //   // Check if the event is a RawKeyDownEvent
+  //   final logicalKey = event.logicalKey;
+  //   // Check if the key is a numeric key and the entered numbers length is less than 6
+  //   if (RegExp('[0-9]').hasMatch(logicalKey.keyLabel!) &&
+  //       _enteredNumbersNotifier.value.length < 6) {
+  //     // Append numeric keys to the entered numbers
+  //     _enteredNumbersNotifier.value += logicalKey.keyLabel!;
+  //   }
+  //   return KeyEventResult.handled;
+  // }
+  // void _clearEnteredNumbers() {
+  //   _enteredNumbersNotifier.value = '';
+  // }
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -99,13 +127,18 @@ defaultAPi() async {
             image: AssetImage("assets/png/coverpage.png"), fit: BoxFit.cover),
       ),
       child: Center(
-          child: SizedBox(
+          child: RawKeyboardListener(
+          focusNode: _focusNode,
+          onKey: _handleKey,
+          child:SizedBox(
               height: isTablet?screenHeight/ 1:screenHeight/1, //height of button
               width: isTablet?screenWidth / 1.1:screenWidth/1,
               child: Column(
                 //  crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
@@ -115,42 +148,7 @@ defaultAPi() async {
                         icon: SvgPicture.asset(
                             'assets/svg/logout_from_pinNo.svg')),
                   ),
-                  // DefaultTextStyle(
-                  //
-                  //   style:const TextStyle(fontSize: 16,color: Colors.red),
-                  //   child: Focus(
-                  //     focusNode: _focusNode,
-                  //     onKeyEvent: (node, event) => _handleKeyEvent(node, event),
-                  //
-                  //     // onKey: _handleKeyEvent,
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: [
-                  //         ListenableBuilder(
-                  //           listenable: _enteredNumbersNotifier,
-                  //           builder: (context, enteredNumbers) {
-                  //             return Text(
-                  //               'Entered Numbers: ${_enteredNumbersNotifier.value.padRight(6, ' ')}',
-                  //               textAlign: TextAlign.center,
-                  //             );
-                  //           },
-                  //         ),
-                  //         SizedBox(height: 50),
-                  //         ElevatedButton(
-                  //           onPressed: _clearEnteredNumbers,
-                  //           child: Text('Clear'),
-                  //         ),
-                  //         ElevatedButton(
-                  //           onPressed: () {
-                  //             print(_enteredNumbersNotifier.value.padRight(6, ' '));
-                  //             //2233 print(Platform.isWindows);
-                  //           },
-                  //           child: Text('Print'),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
+
                   Container(
 
                     // height: MediaQuery.of(context).size.height / 1.3, //height of button
@@ -178,7 +176,9 @@ defaultAPi() async {
                         ]),
                   ),
                 ],
-              ))),
+              ))
+      ),
+      ),
     ));
   }
 
