@@ -997,7 +997,7 @@ class _ProductCreateState extends State<CreateProductNew> {
       ),
     );
   }
-
+//
   Widget nameField() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
