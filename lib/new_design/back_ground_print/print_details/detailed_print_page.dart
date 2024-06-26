@@ -1445,10 +1445,16 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
             Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
             printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-
             codePage.add(supportedCodePages[ind].name);
           }
 
+
+          /// cpmmented upi
+
+          // var upiID = "8714152075@ybl";
+          // var name = "Rabeeh";
+          // var amount = "1";
+          // printer.qrcode("upi://pay?pa=$upiID&pn=$name&am=$amount&cu=INR",size:QRSize.Size8);
           printer.cut();
           printer.disconnect();
           print('Receipt printed successfully.');
@@ -1771,13 +1777,13 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                             return Card(
                               child: ListTile(
                                 onTap: () async {
+
                                   testPrintOneByOne(printerModels[index]);
 
                                   // if (withCodePage) {
-                                  //
-                                  //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
+                                  // testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
                                   // } else {
-                                  //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
+                                  //  testPrint2(ctx: context, capability: printerModels[index], codePage: '');
                                   // }
                                 },
                                 title: Row(

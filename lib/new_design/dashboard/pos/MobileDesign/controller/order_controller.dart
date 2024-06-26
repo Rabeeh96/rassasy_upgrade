@@ -1427,7 +1427,7 @@ class OrderController extends GetxController {
 
       if (sectionType == "Edit") {
         url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
-      }
+       }
       log_data("--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $orderItemList");
 
       Map data = {

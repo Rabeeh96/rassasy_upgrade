@@ -39,13 +39,11 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     _focusNode.dispose();
     super.dispose();
   }
-  void _handleKey(RawKeyEvent event) {
 
+  void _handleKey(RawKeyEvent event) {
     if (event is RawKeyDownEvent) {
       String keyLabel = event.data.logicalKey.keyLabel;
-
       if (keyLabel.isEmpty) return;
-
       // Handle numeric keys (0-9)
       if (keyLabel.length == 1 && keyLabel.contains(RegExp(r'[0-9]'))) {
         setState(() {
@@ -53,7 +51,6 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
           changeColor();
         });
       }
-
       // Handle backspace key
       if (event.logicalKey == LogicalKeyboardKey.backspace && num.isNotEmpty) {
         setState(() {
@@ -63,6 +60,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
       }
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -73,11 +71,10 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     defaultAPi();
   }
 
-
-defaultAPi() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
-}
+  defaultAPi() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+  }
 
   // KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
   //   // Check if the event is a RawKeyDownEvent
@@ -98,9 +95,7 @@ defaultAPi() async {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-
-
-   // bool isTablet = true;
+    // bool isTablet = true;
     bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
         // appBar: AppBar(
@@ -122,61 +117,49 @@ defaultAPi() async {
       width: double.infinity,
       height: double.infinity,
       decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("assets/png/coverpage.png"), fit: BoxFit.cover),
+        image: DecorationImage(image: AssetImage("assets/png/coverpage.png"), fit: BoxFit.cover),
       ),
       child: Center(
-          child: RawKeyboardListener(
-          focusNode: _focusNode,
-          onKey: _handleKey,
-          child:SizedBox(
-              height: isTablet?screenHeight/ 1:screenHeight/1, //height of button
-              width: isTablet?screenWidth / 1.1:screenWidth/1,
-              child: Column(
-                //  crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+        child: RawKeyboardListener(
+            focusNode: _focusNode,
+            onKey: _handleKey,
+            child: SizedBox(
+                height: isTablet ? screenHeight / 1 : screenHeight / 1, //height of button
+                width: isTablet ? screenWidth / 1.1 : screenWidth / 1,
+                child: Column(
+                  //  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                          onPressed: () {
+                            _asyncConfirmDialog(context);
+                          },
+                          icon: SvgPicture.asset('assets/svg/logout_from_pinNo.svg')),
+                    ),
+                    Container(
+                      // height: MediaQuery.of(context).size.height / 1.3, //height of button
+                      width: isTablet ? screenWidth / 3 : screenWidth / 1,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Container(
+                            alignment: Alignment.center,
+                            height: MediaQuery.of(context).size.height / 16, //height of button
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: Text(
+                              'enter_pin'.tr,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            )),
+                        passwordEnteringField(),
 
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                        onPressed: () {
-                          _asyncConfirmDialog(context);
-                        },
-                        icon: SvgPicture.asset(
-                            'assets/svg/logout_from_pinNo.svg')),
-                  ),
-
-                  Container(
-
-                    // height: MediaQuery.of(context).size.height / 1.3, //height of button
-                    width:  isTablet?screenWidth/ 3:screenWidth/1,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height /
-                                  16, //height of button
-                              width: MediaQuery.of(context).size.width / 3,
-                              child: Text(
-                                'enter_pin'.tr,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14),
-                              )),
-                          passwordEnteringField(),
-
-                          oneToThreeNumbers(),
-                          fourToSixNumber(),
-                          sevenToNineNumber(), //
-                          zeroNumberAndClearButton(),
-                        ]),
-                  ),
-                ],
-              ))
-      ),
+                        oneToThreeNumbers(),
+                        fourToSixNumber(),
+                        sevenToNineNumber(), //
+                        zeroNumberAndClearButton(),
+                      ]),
+                    ),
+                  ],
+                ))),
       ),
     ));
   }
@@ -196,11 +179,7 @@ defaultAPi() async {
         var token = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/list-detail/pos-role/';
         print(url);
-        Map data = {
-          "CompanyID": companyID,
-          "Role_id": roleID,
-          "BranchID": branchID
-        };
+        Map data = {"CompanyID": companyID, "Role_id": roleID, "BranchID": branchID};
         print(data);
         var body = json.encode(data);
         var response = await http.post(Uri.parse(url),
@@ -217,11 +196,10 @@ defaultAPi() async {
         var userRollData = n["data"] ?? [];
         if (status == 6000) {
           for (var i = 0; i < userRollData.length; i++) {
-            if (userRollData[i]["Key"] == "other"|| userRollData[i]["Key"] == "report") {
+            if (userRollData[i]["Key"] == "other" || userRollData[i]["Key"] == "report") {
               prefs.setBool(userRollData[i]["Name"], userRollData[i]["Value"]);
             } else {
-              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"],
-                  userRollData[i]["Value"]);
+              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"], userRollData[i]["Value"]);
             }
           }
 
@@ -246,8 +224,6 @@ defaultAPi() async {
             }
             print("result__________________________$result");
           });
-
-
         } else if (status == 6001) {
           stop();
         } else {}
@@ -277,9 +253,7 @@ defaultAPi() async {
     if (diningView || takeAwayView || carView) {
       // Check if any one true exists in the remaining items
       for (var item in data) {
-        if (item["Name"] != "Dining" &&
-            item["Name"] != "Take away" &&
-            item["Name"] != "Car") {
+        if (item["Name"] != "Dining" && item["Name"] != "Take away" && item["Name"] != "Car") {
           if (item["Value"] == true) {
             print(item["Name"]);
             return true;
@@ -365,62 +339,47 @@ defaultAPi() async {
 
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-     // color: Colors.red,
+      // color: Colors.red,
       alignment: Alignment.center,
-      height: isTablet?screenHeight/16:screenHeight/16,
-      width: isTablet?screenWidth/ 6:screenWidth/2,
+      height: isTablet ? screenHeight / 16 : screenHeight / 16,
+      width: isTablet ? screenWidth / 6 : screenWidth / 2,
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c1,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17, //height of button
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c1, border: Border.all(color: const Color(0xff707070))),
             child: const Text(''),
           ),
           Container(
-            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
-            width:   isTablet?screenWidth / 38:screenWidth/17,            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c2,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17, //height of button
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c2, border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c3,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17, //height of button
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c3, border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-              height: isTablet?screenHeight / 38:screenHeight/17,
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c4,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17,
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c4, border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-              height: isTablet?screenHeight / 38:screenHeight/17,
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c5,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17,
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c5, border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-            height: isTablet?screenHeight / 38:screenHeight/17, ///height of button
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c6,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17,
+
+            ///height of button
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c6, border: Border.all(color: const Color(0xff707070))),
           ),
         ],
       ),
@@ -435,20 +394,16 @@ defaultAPi() async {
 
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-
-      height: isTablet?screenHeight/9:screenHeight/9,
-      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
-
+      height: isTablet ? screenHeight / 9 : screenHeight / 9,
+      width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
-
-
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: const Color(0xffFFFFFF),
@@ -456,7 +411,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -466,15 +420,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '1',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -482,7 +433,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -492,15 +442,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '2',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -508,7 +455,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -519,10 +465,7 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '3',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
         ],
@@ -538,17 +481,17 @@ defaultAPi() async {
 
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-    //  color: Colors.yellow,
-      height: isTablet?screenHeight/9:screenHeight/9,
-      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
+      //  color: Colors.yellow,
+      height: isTablet ? screenHeight / 9 : screenHeight / 9,
+      width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -556,7 +499,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   setState(() {
                     if (num.length >= 6) {
@@ -569,15 +511,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '4',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -585,7 +524,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -596,15 +534,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '5',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -612,7 +547,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -623,10 +557,7 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '6',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
         ],
@@ -642,17 +573,17 @@ defaultAPi() async {
 
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-    // color: Colors.purple,
-      height: isTablet?screenHeight/9:screenHeight/9,
-      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
+      // color: Colors.purple,
+      height: isTablet ? screenHeight / 9 : screenHeight / 9,
+      width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -660,7 +591,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   //  passList.add(7);
                   if (num.length >= 6) {
@@ -672,15 +602,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '7',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -688,7 +615,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -699,15 +625,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '8',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -715,7 +638,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -726,10 +648,7 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '9',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
         ],
@@ -744,28 +663,28 @@ defaultAPi() async {
     double screenHeight = screenSize.height;
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-     // color: Colors.amber,
-      height: isTablet?screenHeight/9:screenHeight/9,
-      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
+      // color: Colors.amber,
+      height: isTablet ? screenHeight / 9 : screenHeight / 9,
+      width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
-              highlightColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -776,18 +695,13 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '0',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           SizedBox(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
-
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             child: IconButton(
-
               tooltip: 'clear fields',
               onPressed: () {
                 setState(() {
@@ -922,13 +836,11 @@ defaultAPi() async {
       case 0:
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('companySelected', false);
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => OrganizationList()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => OrganizationList()));
         break;
 
       case 1:
-        final Future<ConfirmAction?> action =
-            await _asyncConfirmDialog(context);
+        final Future<ConfirmAction?> action = await _asyncConfirmDialog(context);
         print("Confirm Action $action");
 
         // Navigator.of(context).pushReplacement(
