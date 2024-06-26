@@ -29,9 +29,7 @@ class DetailedPrintSettingController extends GetxController {
       var companyID = prefs.getString('companyID') ?? '';
       var userID = prefs.getInt("user_id");
       var branchID = prefs.getInt('branchID') ?? 1;
-
       var accessToken = prefs.getString('access') ?? '';
-
       String baseUrl = BaseUrl.baseUrl;
       final String url = '$baseUrl/posholds/printer-list/';
 
@@ -43,8 +41,6 @@ class DetailedPrintSettingController extends GetxController {
         "CompanyID": companyID,
         "Type": "WF"
       };
-      print(data);
-      print(accessToken);
 
       // Encode Map to JSON
       var body = json.encode(data);
@@ -121,9 +117,13 @@ class DetailedPrintSettingController extends GetxController {
   ValueNotifier<bool> isHighlightedToken = ValueNotifier<bool>(false);
   ValueNotifier<bool> isPaymentDetail = ValueNotifier<bool>(false);
   ValueNotifier<bool> isCompanyDetail = ValueNotifier<bool>(false);
+  ValueNotifier<bool> timeInInvoice = ValueNotifier<bool>(false);
+  ValueNotifier<bool> dateTimeInKOT = ValueNotifier<bool>(false);
+  ValueNotifier<bool> userNameInKOT = ValueNotifier<bool>(false);
+  ValueNotifier<bool> printForCancelledOrders = ValueNotifier<bool>(false);
+  ValueNotifier<bool> extraDetailsInKOT = ValueNotifier<bool>(false);
+  ValueNotifier<bool> flavourDetailsInOrderPrint = ValueNotifier<bool>(false);
 
-  String printType = "Wifi";
-  bool  print_type_value = true;
   loadData() async {
     print("--------------------------------------4");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -139,24 +139,19 @@ class DetailedPrintSettingController extends GetxController {
     salesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
     selectCapabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
     selectCodepageController.text = prefs.getString('default_code_page') ?? "CP864";
-    var template = prefs.getString("template") ?? "template3";
-    var printType =  prefs.getString('PrintType') ?? "Wifi";
-    print("--------------------------------------4");
-    if(template =="template3"){
-      setTemplate(3);
-    }
-    else{
-      setTemplate(4);
-    }
-    if(printType =="Wifi"){
-      isEnableWifiPrinter.value = true;
-    }
-    else{
-      isEnableWifiPrinter.value = false;
-    }
 
-    print("printType  $printType");
-    print("isEnableWifiPrinter  ${isEnableWifiPrinter.value}");
+    print("--------------------------------------4");
+
+
+
+    timeInInvoice.value = prefs.getBool("time_in_invoice") ?? false;
+    dateTimeInKOT.value = prefs.getBool("show_date_time_kot") ?? false;
+    userNameInKOT.value = prefs.getBool("show_username_kot") ?? false;
+    printForCancelledOrders.value = prefs.getBool("print_for_cancel_order") ?? false;
+    extraDetailsInKOT.value = prefs.getBool("extraDetailsInKOT") ?? false;
+
+    flavourDetailsInOrderPrint.value = prefs.getBool("flavour_in_order_print") ?? false;
+
     update();
   }
 ///print template

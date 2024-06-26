@@ -343,6 +343,8 @@ class OrderController extends GetxController {
       "SerialNos": [],
     };
 
+    print("--------------------data $data");
+
     orderItemList[index] = data;
     clearDetails();
     totalAmount();
@@ -1418,15 +1420,15 @@ class OrderController extends GetxController {
         customerName = customerNameController.text;
         phoneNumber = phoneNumberController.text;
         time = "";
-      } else {}
+      }
+      else {}
 
       String url = '$baseUrl/posholds/create-pos/salesOrder/';
 
       if (sectionType == "Edit") {
         url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
       }
-
-      print("--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $printAfterOrder");
+      log_data("--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $orderItemList");
 
       Map data = {
         "Table": tableID,

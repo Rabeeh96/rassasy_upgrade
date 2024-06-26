@@ -11,11 +11,11 @@ class GeneralController extends GetxController{
   ValueNotifier<bool> isDrawerOpenNotifier = ValueNotifier<bool>(false);
   ValueNotifier<bool> isAutoFocus = ValueNotifier<bool>(false);
   ValueNotifier<bool> isArabic = ValueNotifier<bool>(false);
-
-   ValueNotifier<bool> isPrintAfterPayment = ValueNotifier<bool>(false);
+  ValueNotifier<bool> directOrderOption = ValueNotifier<bool>(false);
   ValueNotifier<bool> isQuantityIncrement = ValueNotifier<bool>(false);
   ValueNotifier<bool> isShowInvoice = ValueNotifier<bool>(false);
-  ValueNotifier<bool> isClear = ValueNotifier<bool>(false);
+  ValueNotifier<bool> tableClearAfterPayment = ValueNotifier<bool>(false);
+
 
   TextEditingController tokenController = TextEditingController();
   TextEditingController compensationController = TextEditingController();
@@ -27,58 +27,19 @@ class GeneralController extends GetxController{
 
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-
-
-      ///
-
-      // defaultIp = prefs.getString('defaultIP') ?? '';
-  ///  isKOTPrint.value = prefs.getBool("KOT") ?? false;
-       isArabic.value = prefs.getBool("isArabic") ?? false;
+    isArabic.value = prefs.getBool("isArabic") ?? false;
     isAutoFocus.value = prefs.getBool("autoFocusField") ?? false;
     isDrawerOpenNotifier.value = prefs.getBool("OpenDrawer") ?? false;
-      compensationHour = prefs.getString('CompensationHour') ?? "1";
+    compensationHour = prefs.getString('CompensationHour') ?? "1";
     isQuantityIncrement.value = prefs.getBool("qtyIncrement") ?? true;
-      // userType = prefs.getInt("user_type") ?? 1;
     isShowInvoice.value = prefs.getBool("AutoClear") ?? false;
-    isClear.value = prefs.getBool("tableClearAfterPayment") ?? false;
-  ///  isPrintAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
-
-  ///  isPrintAfterOrder.value = prefs.getBool("print_after_order") ?? false;
-      // printPreview = prefs.getBool('print_preview') ?? false;
-      // // payment_method = prefs.getBool('payment_method') ?? false;
-      // time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
-      // printType = prefs.getString('PrintType') ?? "Wifi";
-      //
+    tableClearAfterPayment.value = prefs.getBool("tableClearAfterPayment") ?? false;
+    directOrderOption.value =prefs.getBool("directOrderOption") ?? false;
 
 
-      // hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
-      // paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
-      // headerAlignment = prefs.getBool("headerAlignment") ?? false;
-      // termsAndConditionController.text =prefs.getString('printTermsAndCondition') ?? "";
 
-      // if(printType =="Wifi"){
-      //   print_type_value = true;
-      // }
-      // else{
-      //   print_type_value = false;
-      // }
-      // capabilitiesController.text = prefs.getString('default_capabilities') ?? "default";
-      // defaultSalesInvoiceController.text = prefs.getString('defaultIP') ?? "";
-      // defaultSalesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
-      //
-      // ///newly added values here
-      // kotDetail = prefs.getString("item_section_KOT") ?? "Product Name";
-      // saleDetail = prefs.getString("item_section_sale_order") ?? "Product Name";
-      // saleInvoiceDetail = prefs.getString("item_section_sale_invoice") ?? "Product Name";
-      // isComplimentaryBill = prefs.getBool("complimentary_bill") ?? false;
-      //
-      // show_date_time_kot = prefs.getBool("show_date_time_kot")??false;
-      // show_username_kot = prefs.getBool("show_username_kot")??false;
-      // hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
-      //
-      //
-      // print("------show_date_time_kot---$show_date_time_kot--------show_username_kot-$show_username_kot-------------------------");
+
+
 
 
   }
@@ -168,11 +129,11 @@ class GeneralController extends GetxController{
         isShowInvoice.value = responseJson["IsShowInvoice"];
         prefs.setBool("AutoClear", isShowInvoice.value);
 
-        isClear.value = responseJson["IsClearTableAfterPayment"];
-        prefs.setBool("tableClearAfterPayment", isClear.value);
+        tableClearAfterPayment.value = responseJson["IsClearTableAfterPayment"];
+        prefs.setBool("tableClearAfterPayment", tableClearAfterPayment.value);
 
-        isPrintAfterPayment.value = responseJson["IsPrintAfterPayment"];
-        prefs.setBool("printAfterPayment", isPrintAfterPayment.value);
+
+
 
 
 

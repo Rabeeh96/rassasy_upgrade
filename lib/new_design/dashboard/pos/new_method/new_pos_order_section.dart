@@ -7154,7 +7154,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           dialogBoxHide(context, "Sales created successfully!!!");
 
-          print("--0-----${widget.orderType}----");
+
           Navigator.pop(context, [widget.orderType, false]);
           Future.delayed(const Duration(milliseconds: 500), () {
             if (print_save == true) {
@@ -7163,7 +7163,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               printDetail(context);
             }
           });
-        } else if (status == 6001) {
+        }
+        else if (status == 6001) {
           stop();
           var errorMessage = n["message"]??"";
           dialogBox(context, errorMessage);
