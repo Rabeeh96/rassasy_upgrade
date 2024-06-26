@@ -315,7 +315,7 @@ class _SettingsPageState extends State<SettingsPage> {
       directOrderOption = prefs.getBool("directOrderOption") ?? false;
       printAfterOrder = prefs.getBool("print_after_order") ?? false;
       printPreview = prefs.getBool('print_preview') ?? false;
-      // payment_method = prefs.getBool('payment_method') ?? false;
+
       time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
       printForCancellOrder = prefs.getBool('print_for_cancel_order') ?? false;
       flavourInOrderPrint = prefs.getBool('flavour_in_order_print') ?? false;

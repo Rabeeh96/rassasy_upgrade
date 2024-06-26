@@ -58,8 +58,8 @@ void main() {
     print("main isTablet: $isTablet");
 
     SystemChrome.setPreferredOrientations([
-      // isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
-      // isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
+       isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
+       isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
     ]).then((_) {
       runApp(MyApp(isTablet: isTablet));
     });

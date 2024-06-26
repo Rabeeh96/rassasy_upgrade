@@ -184,7 +184,8 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                               SlidableAction(
                                 onPressed: (BuildContext context) async {
                                   PrintDataDetails.id = invoiceController.invoiceList[index].salesMasterID;
-                                 invoiceController.printDetail(type: "SI");
+                                  PrintDataDetails.type = "SI";
+                                  invoiceController.printDetail(type: "SI");
                                 },
                                 // onPressed: doNothing ,
                                 backgroundColor: Colors.blueAccent,
