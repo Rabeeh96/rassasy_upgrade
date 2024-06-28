@@ -97,7 +97,7 @@ class _OnlinePlatformState extends State<OnlinePlatform> {
                                     icon: Icon(Icons.navigate_next))
                               ],
                             ),
-                            DividerStyle()
+                            dividerStyle()
                           ],
                         ),
                       );

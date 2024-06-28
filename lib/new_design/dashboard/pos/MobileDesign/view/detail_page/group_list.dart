@@ -44,13 +44,13 @@ class _SelectProductGroupState extends State<SelectProductGroup> {
         ),
       ),
       body: Column(children: [
-        DividerStyle(),
+        dividerStyle(),
         Expanded(
             child: Obx(() =>
             posController.groupList.isEmpty
                 ? const Center(child: Text("Group not found"))
                 : ListView.separated(
-              separatorBuilder: (context, index) => DividerStyle(),
+              separatorBuilder: (context, index) => dividerStyle(),
               itemCount: posController.groupList.length,
               itemBuilder: (context, index) {
                 return GestureDetector(

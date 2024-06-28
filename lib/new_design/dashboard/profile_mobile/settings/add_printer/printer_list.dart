@@ -117,7 +117,7 @@ class _PrinterListState extends State<PrinterList> {
                                 ),
 
                               ),
-                              DividerStyle()
+                              dividerStyle()
                             ],
                           ),
                         );

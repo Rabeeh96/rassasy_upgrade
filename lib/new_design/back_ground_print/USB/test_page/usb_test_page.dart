@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
-import 'package:rassasy_new/new_design/back_ground_print/print_details/select_codepage.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
 import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart' as usb_esc_printer_windows;
 import 'package:charset_converter/charset_converter.dart';
 import 'package:shared_preferences/shared_preferences.dart';

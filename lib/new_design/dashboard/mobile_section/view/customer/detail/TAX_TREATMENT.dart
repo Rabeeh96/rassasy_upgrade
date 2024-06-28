@@ -52,7 +52,7 @@ class _TaxTreatmentState extends State<TaxTreatment> {
               },
             )
          ;
-        }, separatorBuilder: (BuildContext context, int index) =>DividerStyle(),
+        }, separatorBuilder: (BuildContext context, int index) =>dividerStyle(),
       ))
     );
   }

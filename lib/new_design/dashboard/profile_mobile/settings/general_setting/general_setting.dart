@@ -119,7 +119,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Container(
@@ -181,7 +181,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Container(
@@ -236,7 +236,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Container(
@@ -293,7 +293,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Container(
@@ -348,7 +348,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Container(
@@ -404,7 +404,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
 
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -463,7 +463,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(
                   left: 20.0, right: 20, top: 15, bottom: 15),
@@ -507,7 +507,7 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
                 ],
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(
                   left: 20.0, right: 20, top: 15, bottom: 15),

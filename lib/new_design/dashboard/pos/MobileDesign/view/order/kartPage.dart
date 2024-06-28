@@ -18,7 +18,6 @@ class KartPage extends StatefulWidget {
   final String uID, tableID, sectionType, tableHead;
   final int orderType;
 
-
   const KartPage({
     super.key,
     required this.tableID,
@@ -35,7 +34,8 @@ class KartPage extends StatefulWidget {
 class _KartPageState extends State<KartPage> {
   OrderController orderController = Get.put(OrderController());
   var selectedItem = '';
-POSController posController =Get.put(POSController());
+  POSController posController = Get.put(POSController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,31 +55,23 @@ POSController posController =Get.put(POSController());
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-             Text(
+            Text(
               'Table_Order'.tr,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500),
+              style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                 Text(
+                Text(
                   'Table_Order'.tr,
-                  style: TextStyle(
-                      color: Color(0xff585858),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
+                  style: const TextStyle(color: Color(0xff585858), fontSize: 14, fontWeight: FontWeight.w400),
                 ),
                 Obx(() => Text(
                       orderController.tokenNumber.value,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                    )),
+                      style: const TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
+                    )
+                ),
               ],
             ),
           ],
@@ -89,8 +81,7 @@ POSController posController =Get.put(POSController());
             padding: const EdgeInsets.only(right: 6.0),
             child: IconButton(
                 onPressed: () {
-                  // orderController.deliveryManController.clear();
-                  // orderController.customerNameController.clear();
+
                   addDetails();
                 },
                 icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
@@ -104,54 +95,48 @@ POSController posController =Get.put(POSController());
             color: const Color(0xffE9E9E9),
           ),
           Container(
-
-              margin: const EdgeInsets.only(left: 15, right: 10,
+              margin: const EdgeInsets.only(
+                left: 15,
+                right: 10,
               ),
               height: MediaQuery.of(context).size.height * .055,
-              // decoration: BoxDecoration(
-              //
-              //   border: Border.all(width: .1, color: const Color(0xffE8E8E8)),
-              // ),
               child: Row(
                 children: <Widget>[
                   Expanded(
                     child: TextField(
                         autofocus: false,
                         textCapitalization: TextCapitalization.words,
-
-                        onTap: (){
+                        onTap: () {
                           Get.to(SearchItems());
                         },
                         readOnly: true,
                         style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
                         decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color(0xffFBFBFB),
+                            fillColor: const Color(0xffFBFBFB),
                             hintText: "Search",
                             hintStyle: customisedStyle(context, const Color(0xff929292), FontWeight.normal, 15.0),
-                            contentPadding:
-                            const EdgeInsets.only(left: 10.0, bottom: 10, top: 8),
-                            border: InputBorder.none)
-                    ),
+                            contentPadding: const EdgeInsets.only(left: 10.0, bottom: 10, top: 8),
+                            border: InputBorder.none)),
                   ),
                   IconButton(
                     icon: SvgPicture.asset(
-                      'assets/svg/search-normal.svg',color: Color(0xffB4B4B4),
-                      width: MediaQuery.of(context).size.width  * .02,
-                      height: MediaQuery.of(context).size.height  * .02,
-
+                      'assets/svg/search-normal.svg',
+                      color: const Color(0xffB4B4B4),
+                      width: MediaQuery.of(context).size.width * .02,
+                      height: MediaQuery.of(context).size.height * .02,
                     ),
-                    onPressed: (){
+                    onPressed: () {
                       Get.to(SearchItems());
                     },
                   ),
                 ],
               )),
-          DividerStyle(),
+          dividerStyle(),
           Obx(
             () => Expanded(
                 child: ListView.separated(
-              separatorBuilder: (context, index) => DividerStyle(),
+              separatorBuilder: (context, index) => dividerStyle(),
               itemCount: orderController.orderItemList.length,
               itemBuilder: (context, index) {
                 return Dismissible(
@@ -160,7 +145,6 @@ POSController posController =Get.put(POSController());
                   onDismissed: (direction) {
                     // Remove the item from your data source.
                     orderController.deleteOrderItem(index: index);
-
                   },
                   background: Container(
                     color: Colors.red,
@@ -180,183 +164,164 @@ POSController posController =Get.put(POSController());
                     },
                     child: InkWell(
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 5, top: 10, bottom: 10),
+                        padding: const EdgeInsets.only(left: 0.0, right: 2, top: 10, bottom: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Icon(Icons.check_circle,
-                                color: Color(0xffF25F29)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset("assets/svg/veg_mob.svg"),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 10.0, top: 0, left: 10),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.35,
-                                        child: Text(
-                                          orderController.orderItemList[index]
-                                                  ["ProductName"] ??
-                                              '',
-                                          style: customisedStyle(
-                                              context,
-                                              Colors.black,
-                                              FontWeight.w400,
-                                              15.0),
-                                          maxLines: 3,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                orderController.orderItemList[index]
-                                            ["Description"] !=
-                                        ""
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 20.0, right: 5),
-                                        child: Text(
-                                          orderController.orderItemList[index]
-                                              ["Description"],
-                                          style: customisedStyle(
-                                              context,
-                                              const Color(0xffF25F29),
-                                              FontWeight.w400,
-                                              13.0),
-                                        ),
-                                      )
-                                    : Container(),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                            Obx(
+                              () => IconButton(
+                                icon: Icon(Icons.check_circle,size: 25,
+                                    color: orderController.checkValueInList(index) == true ? const Color(0xffF25F29) :  const Color(0xffFDDDDDD)),
+                                onPressed: () {
+                                  var result = orderController.checkValueInList(index);
+                                  if (result) {
+                                    orderController.kartChange.remove(index);
+                                    orderController.update();
+                                  }
+                                  else {
+                                    orderController.kartChange.add(index);
+                                  }
+                                },
+                              ),
+                            ),
+
+                            // const Icon(Icons.check_circle, color: Color(0xffF25F29)),
+
+                            Obx(
+                              () => Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      orderController.orderItemList[index]
-                                                  ["Flavour_Name"] !=
-                                              ""
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20.0, right: 5),
-                                              child: Text(
-                                                orderController.orderItemList[
-                                                            index]
-                                                        ["Flavour_Name"] ??
-                                                    "",
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xffF25F29),
-                                                    FontWeight.w400,
-                                                    13.0),
-                                              ),
-                                            )
-                                          : Container(),
-                                      GestureDetector(
-                                        onTap: () {},
+                                      SvgPicture.asset("assets/svg/veg_mob.svg"),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 10.0, top: 0, left: 10),
                                         child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              32,
-                                          decoration: BoxDecoration(
-                                            color: orderController
-                                                .returnIconStatus(
-                                                    orderController
-                                                            .orderItemList[
-                                                        index]["Status"]),
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                          ),
-                                          child: Center(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10.0, right: 10),
-                                              child: Text(
-                                                orderController
-                                                        .orderItemList[index]
-                                                    ["Status"],
-                                                style: const TextStyle(
-                                                    fontSize: 11,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
+                                          width: MediaQuery.of(context).size.width * 0.35,
+                                          child: Text(
+                                            orderController.orderItemList[index]["ProductName"] ?? '',
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  orderController.orderItemList[index]["Description"] != ""
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(left: 20.0, right: 5),
+                                          child: Text(
+                                            orderController.orderItemList[index]["Description"],
+                                            style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                          ),
+                                        )
+                                      : Container(),
+                                  Obx(
+                                    () => Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          orderController.orderItemList[index]["Flavour_Name"] != ""
+                                              ? Padding(
+                                                padding: const EdgeInsets.only(left: 5.0),
+                                                child: Container(
+                                                                                            width:MediaQuery.of(context).size.width/4.5,
+                                                  child: Padding(
+                                                      padding: const EdgeInsets.only(right: 5),
+                                                      child: Text(
+                                                        orderController.orderItemList[index]["Flavour_Name"] ?? "",
+                                                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                                      ),
+                                                    ),
+                                                ),
+                                              )
+                                              :   Container(
+                                            height: MediaQuery.of(context).size.height / 30,
+                                            width:MediaQuery.of(context).size.width/4.5,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xffFFF6F2),
+                                              borderRadius: BorderRadius.circular(30),
+                                            ),
+                                            child: const Center(
+                                              child: Padding(
+                                                padding: EdgeInsets.only( right: 10),
+                                                child: Text(
+                                                  "  + Flavour",
+                                                  style: TextStyle(fontSize: 11, color: Colors.redAccent),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          Obx(() => Container(
+                                                height: MediaQuery.of(context).size.height / 33,
+                                                decoration: BoxDecoration(
+                                                  color: orderController.returnIconStatus(orderController.orderItemList[index]["Status"]),
+                                                  borderRadius: BorderRadius.circular(30),
+                                                ),
+                                                child: Center(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(left: 10.0, right: 10),
+                                                    child: Text(
+                                                      orderController.returnStatus(orderController.orderItemList[index]["Status"]),
+                                                      style: const TextStyle(fontSize: 11, color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
+
                             Column(
                               children: [
                                 Row(
                                   children: [
                                     Text(
                                       orderController.currency.value,
-                                      style: customisedStyle(
-                                          context,
-                                          const Color(0xffA5A5A5),
-                                          FontWeight.w400,
-                                          14.0),
+                                      style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 14.0),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 3.0),
                                       child: Text(
-                                        roundStringWith(orderController
-                                            .orderItemList[index]["UnitPrice"]
-                                            .toString()),
-                                        style: customisedStyle(
-                                            context,
-                                            const Color(0xff000000),
-                                            FontWeight.w500,
-                                            16.0),
+                                        roundStringWith(orderController.orderItemList[index]["UnitPrice"].toString()),
+                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     IconButton(
-                                      icon: SvgPicture.asset(
-                                          "assets/svg/minus_mob.svg"),
+                                      icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
                                       onPressed: () {
-                                        if(double.parse(orderController.orderItemList[index]["Qty"].toString()) >=2.0){
+                                        if (double.parse(orderController.orderItemList[index]["Qty"].toString()) >= 2.0) {
                                           orderController.updateQty(index: index, type: 0);
                                         }
                                       },
                                     ),
                                     Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              21,
-                                      width:
-                                          MediaQuery.of(context).size.width / 7,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          border: Border.all(
-                                              color: const Color(0xffE7E7E7))),
+                                      height: MediaQuery.of(context).size.height / 21,
+                                      width: MediaQuery.of(context).size.width / 7,
+                                      decoration:
+                                          BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xffE7E7E7))),
                                       child: Center(
                                         child: Text(
-                                          roundStringWith(orderController
-                                              .orderItemList[index]["Qty"]
-                                              .toString()),
+                                          roundStringWith(orderController.orderItemList[index]["Qty"].toString()),
                                           style: const TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -365,8 +330,7 @@ POSController posController =Get.put(POSController());
                                       ),
                                     ),
                                     IconButton(
-                                      icon: SvgPicture.asset(
-                                          "assets/svg/plus_mob.svg"),
+                                      icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
                                       onPressed: () {
                                         orderController.updateQty(index: index, type: 1);
                                       },
@@ -383,93 +347,86 @@ POSController posController =Get.put(POSController());
                 );
               },
             )),
-          )
+          ),
         ],
       ),
       bottomNavigationBar: Container(
-        height: MediaQuery.of(context).size.height / 6,
+        height: MediaQuery.of(context).size.height / 4.5,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             /// status chnageing commented
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   children: [
-            //     TextButton(
-            //         style: ButtonStyle(
-            //             backgroundColor:
-            //             MaterialStateProperty.all(const Color(0xffEEF5FF))),
-            //         onPressed: () {},
-            //         child: Padding(
-            //           padding: const EdgeInsets.only(left: 5.0, right: 5),
-            //           child: Text(
-            //             "TakeAway",
-            //             style: customisedStyle(
-            //                 context,
-            //                 const Color(0xff034FC1),
-            //                 FontWeight.normal,
-            //                 12.0),
-            //           ),
-            //         ),),
-            //     const SizedBox(
-            //       width: 7,
-            //     ),
-            //     TextButton(
-            //         style: ButtonStyle(
-            //             backgroundColor:
-            //             MaterialStateProperty.all(const Color(0xffF0F0F0))),
-            //         onPressed: () {},
-            //         child:  Padding(
-            //           padding: const EdgeInsets.only(left: 5.0, right: 5),
-            //           child: Text(
-            //             'Delivered',
-            //             style: customisedStyle(
-            //                 context,
-            //                 const Color(0xff000000),
-            //                 FontWeight.normal,
-            //                 12.0),
-            //           ),
-            //         )),
-            //     const SizedBox(
-            //       width: 7,
-            //     ),
-            //     TextButton(
-            //         style: ButtonStyle(
-            //             backgroundColor:
-            //             MaterialStateProperty.all(const Color(0xffFFF6F2))),
-            //         onPressed: () {
-            //           Get.back();
-            //         },
-            //         child: Row(
-            //           children: [
-            //             const Icon(Icons.add,color: Color(0xffF25F29),),
-            //             Padding(
-            //               padding: const EdgeInsets.only(left: 5.0, right: 5),
-            //               child: Text(
-            //                 'Items',
-            //                 style: customisedStyle(
-            //                     context,
-            //                     const Color(0xffF25F29),
-            //                     FontWeight.normal,
-            //                     12.0),
-            //               ),
-            //             )
-            //           ],
-            //         )),
-            //   ],
-            // ),
-            // const SizedBox(
-            //   height: 9,
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEEF5FF))),
+                  onPressed: () {
+                    orderController.changeStatus("take_away");
+                    orderController.update();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5.0, right: 5),
+                    child: Text(
+                      "TakeAway",
+                      style: customisedStyle(context, const Color(0xff034FC1), FontWeight.normal, 12.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 7,
+                ),
+                TextButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffF0F0F0))),
+                    onPressed: () {
+                      orderController.changeStatus("delivered");
+                      orderController.update();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5.0, right: 5),
+                      child: Text(
+                        'Delivered',
+                        style: customisedStyle(context, const Color(0xff000000), FontWeight.normal, 12.0),
+                      ),
+                    )),
+                const SizedBox(
+                  width: 7,
+                ),
+                TextButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffFFF6F2))),
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.add,
+                          color: Color(0xffF25F29),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5.0, right: 5),
+                          child: Text(
+                            'Items',
+                            style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 12.0),
+                          ),
+                        )
+                      ],
+                    )),
+              ],
+            ),
+            const SizedBox(
+              height: 9,
+            ),
+
             Container(
               height: 1,
               color: const Color(0xffE9E9E9),
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 10.0,bottom: 10.0),
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
               child: Obx(
                 () => Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -479,21 +436,18 @@ POSController posController =Get.put(POSController());
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Text(
                         'to_be_paid'.tr,
-                        style: customisedStyle(context, const Color(0xff9E9E9E),
-                            FontWeight.w400, 17.0),
+                        style: customisedStyle(context, const Color(0xff9E9E9E), FontWeight.w400, 17.0),
                       ),
                     ),
                     Text(
                       orderController.currency.value,
-                      style: customisedStyle(context, const Color(0xff000000),
-                          FontWeight.w400, 16.0),
+                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w400, 16.0),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 3.0),
                       child: Text(
                         roundStringWith(orderController.totalNetP.toString()),
-                        style: customisedStyle(context, const Color(0xff000000),
-                            FontWeight.w500, 18.0),
+                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
                       ),
                     ),
                   ],
@@ -507,9 +461,7 @@ POSController posController =Get.put(POSController());
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(const Color(0xffDF1515))),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
                       onPressed: () {
                         Get.back();
                       },
@@ -520,11 +472,7 @@ POSController posController =Get.put(POSController());
                             padding: const EdgeInsets.only(left: 5.0, right: 5),
                             child: Text(
                               'cancel'.tr,
-                              style: customisedStyle(
-                                  context,
-                                  const Color(0xffffffff),
-                                  FontWeight.normal,
-                                  12.0),
+                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
                             ),
                           ),
                         ],
@@ -533,45 +481,49 @@ POSController posController =Get.put(POSController());
                     width: 7,
                   ),
                   TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(const Color(0xff10C103))),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                       onPressed: () async {
-                        if(widget.orderType==1){
-                          if(posController.dining_create_perm.value){
-                            orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
-                                orderType: widget.orderType,context: context,
+                        if (widget.orderType == 1) {
+                          if (posController.dining_create_perm.value) {
+                            orderController.createMethod(
+                                tableID: widget.tableID,
+                                tableHead: widget.tableHead,
+                                orderType: widget.orderType,
+                                context: context,
                                 orderID: widget.uID,
-                                isPayment: false,sectionType: widget.sectionType);
-                          }else{
+                                isPayment: false,
+                                sectionType: widget.sectionType);
+                          } else {
                             dialogBoxPermissionDenied(context);
                           }
-                        }else  if(widget.orderType==2){
-                          if(posController.take_away_create_perm.value){
-                            orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
-                                orderType: widget.orderType,context: context,
+                        } else if (widget.orderType == 2) {
+                          if (posController.take_away_create_perm.value) {
+                            orderController.createMethod(
+                                tableID: widget.tableID,
+                                tableHead: widget.tableHead,
+                                orderType: widget.orderType,
+                                context: context,
                                 orderID: widget.uID,
-                                isPayment: false,sectionType: widget.sectionType);
-                          }else{
+                                isPayment: false,
+                                sectionType: widget.sectionType);
+                          } else {
                             dialogBoxPermissionDenied(context);
                           }
-                        }else  if(widget.orderType==4){
-                          if(posController.car_create_perm.value){
-                            orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
-                                orderType: widget.orderType,context: context,
+                        } else if (widget.orderType == 4) {
+                          if (posController.car_create_perm.value) {
+                            orderController.createMethod(
+                                tableID: widget.tableID,
+                                tableHead: widget.tableHead,
+                                orderType: widget.orderType,
+                                context: context,
                                 orderID: widget.uID,
-                                isPayment: false,sectionType: widget.sectionType);
-                          }else{
+                                isPayment: false,
+                                sectionType: widget.sectionType);
+                          } else {
                             dialogBoxPermissionDenied(context);
                           }
-                        }else{
-
-                        }
-
-
-
+                        } else {}
                       },
-
                       child: Row(
                         children: [
                           SvgPicture.asset('assets/svg/save_mob.svg'),
@@ -579,11 +531,7 @@ POSController posController =Get.put(POSController());
                             padding: const EdgeInsets.only(left: 5.0, right: 5),
                             child: Text(
                               'Save'.tr,
-                              style: customisedStyle(
-                                  context,
-                                  const Color(0xffffffff),
-                                  FontWeight.normal,
-                                  12.0),
+                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
                             ),
                           )
                         ],
@@ -591,31 +539,23 @@ POSController posController =Get.put(POSController());
                   const SizedBox(
                     width: 7,
                   ),
-
-
                   TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(const Color(0xff00775E))),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff00775E))),
                       onPressed: () {
-
-                        if(widget.orderType==1||widget.orderType==4||widget.orderType==2){
-
-
-
-                          if(posController.pay_perm.value){
-                            orderController.createMethod(tableID: widget.tableID,tableHead: widget.tableHead,
+                        if (widget.orderType == 1 || widget.orderType == 4 || widget.orderType == 2) {
+                          if (posController.pay_perm.value) {
+                            orderController.createMethod(
+                                tableID: widget.tableID,
+                                tableHead: widget.tableHead,
                                 orderID: widget.uID,
-                                orderType: widget.orderType,context: context,isPayment: true,sectionType: widget.sectionType);
-
-                          }else{
+                                orderType: widget.orderType,
+                                context: context,
+                                isPayment: true,
+                                sectionType: widget.sectionType);
+                          } else {
                             dialogBoxPermissionDenied(context);
                           }
-                        }else{
-
-                        }
-
-
+                        } else {}
                       },
                       child: Row(
                         children: [
@@ -624,11 +564,7 @@ POSController posController =Get.put(POSController());
                             padding: const EdgeInsets.only(left: 5.0, right: 5),
                             child: Text(
                               'payment'.tr,
-                              style: customisedStyle(
-                                  context,
-                                  const Color(0xffffffff),
-                                  FontWeight.normal,
-                                  12.0),
+                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
                             ),
                           )
                         ],
@@ -641,7 +577,6 @@ POSController posController =Get.put(POSController());
       ),
     );
   }
-
 
   void addDetails() {
     Get.bottomSheet(
@@ -680,7 +615,7 @@ POSController posController =Get.put(POSController());
                   ],
                 ),
               ),
-              DividerStyle(),
+              dividerStyle(),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
@@ -713,20 +648,20 @@ POSController posController =Get.put(POSController());
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                       'balance'.tr,
-                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
+                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 14.0),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                       orderController.currency.value,
-                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 15.0),
+                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 15.0),
                     ),
                   ),
                   Obx(
-                        () => Padding(
+                    () => Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Text(orderController.customerBalance.value, style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
+                      child: Text(orderController.customerBalance.value, style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0)),
                     ),
                   )
                 ],
@@ -817,199 +752,199 @@ POSController posController =Get.put(POSController());
   }
 
   /// details section commented
-  // void addDetails() {
-  //   Get.bottomSheet(
-  //     isDismissible: true,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.only(
-  //         topLeft: Radius.circular(10.0),
-  //         // Set border radius to the top left corner
-  //         topRight: Radius.circular(
-  //             10.0), // Set border radius to the top right corner
-  //       ),
-  //     ),
-  //     backgroundColor: Colors.white,
-  //     Container(
-  //       child: SingleChildScrollView(
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.stretch,
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             Padding(
-  //               padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 14),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Text(
-  //                     'Details'.tr,
-  //                     style: customisedStyle(
-  //                         context, Colors.black, FontWeight.w500, 14.0),
-  //                   ),
-  //                   IconButton(
-  //                       onPressed: () {
-  //                         Get.back();
-  //                       },
-  //                       icon: const Icon(
-  //                         Icons.clear,
-  //                         color: Colors.black,
-  //                       ))
-  //                 ],
-  //               ),
-  //             ),
-  //             Container(
-  //               height: 1,
-  //               color: const Color(0xffE9E9E9),
-  //             ),
-  //             Padding(
-  //               padding: const EdgeInsets.only(
-  //                   left: 16, right: 16, top: 12, bottom: 12),
-  //               child: Container(
-  //                 width: MediaQuery.of(context).size.width / 4,
-  //                 child: TextField(
-  //                   readOnly: true,
-  //                   onTap: () async {
-  //                     final result = await Get.to(CustomerDetailPage());
-  //
-  //                     if (result != null) {
-  //                       orderController.customerNameController.text = result[0];
-  //                     }
-  //
-  //                   },
-  //                   textCapitalization: TextCapitalization.words,
-  //                   controller: orderController.customerNameController,
-  //                   style: customisedStyle(
-  //                       context, Colors.black, FontWeight.w500, 14.0),
-  //
-  //                   keyboardType: TextInputType.text,
-  //                   decoration: TextFieldDecoration.defaultTextFieldIcon(
-  //                       hintTextStr: 'customer'.tr),
-  //                 ),
-  //               ),
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               children: [
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(right: 8.0),
-  //                   child: Text(
-  //                     'balance1'.tr,
-  //                     style: customisedStyle(context, const Color(0xff8C8C8C),
-  //                         FontWeight.w400, 14.0),
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(right: 8.0),
-  //                   child: Text(
-  //                     orderController.currency.value,
-  //                     style: customisedStyle(context, const Color(0xff8C8C8C),
-  //                         FontWeight.w400, 15.0),
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(right: 8.0),
-  //                   child: Text("00.0",
-  //                       style: customisedStyle(context, const Color(0xff000000),
-  //                           FontWeight.w500, 15.0)),
-  //                 ),
-  //               ],
-  //             ),
-  //             //
-  //             Padding(
-  //               padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
-  //               child: Container(
-  //                 width: MediaQuery.of(context).size.width / 4,
-  //                 child: TextField(
-  //                   inputFormatters: [
-  //                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-  //                   ], keyboardType: TextInputType.number,
-  //                   controller: orderController.phoneNumberController,
-  //                   style: customisedStyle(
-  //                       context, Colors.black, FontWeight.w500, 14.0),
-  //
-  //                   decoration: TextFieldDecoration.defaultTextField(
-  //                       hintTextStr: 'ph_no'.tr),
-  //                 ),
-  //               ),
-  //             ),
-  //
-  //             /// commented
-  //             // Padding(
-  //             //   padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
-  //             //   child: Container(
-  //             //     width: MediaQuery.of(context).size.width / 4,
-  //             //     child: TextField(
-  //             //       readOnly: true,
-  //             //       onTap: () async {
-  //             //         final result = await Get.to(SelectDeliveryMan());
-  //             //
-  //             //         if (result != null) {
-  //             //           orderController.deliveryManController.text = result[0];
-  //             //
-  //             //
-  //             //
-  //             //         }
-  //             //       }
-  //             //       ,
-  //             //       textCapitalization: TextCapitalization.words,
-  //             //       controller: orderController.deliveryManController,
-  //             //       style: customisedStyle(
-  //             //           context, Colors.black, FontWeight.w500, 14.0),
-  //             //
-  //             //       keyboardType: TextInputType.text,
-  //             //       decoration: TextFieldDecoration.defaultTextFieldIcon(
-  //             //           hintTextStr: 'delivery_man'.tr),
-  //             //     ),
-  //             //   ),
-  //             // ),
-  //             // Padding(
-  //             //   padding: const EdgeInsets.only(
-  //             //       left: 16, right: 16, top: 12, bottom: 12),
-  //             //   child: Container(
-  //             //     width: MediaQuery.of(context).size.width / 4,
-  //             //     child: TextField(
-  //             //       textCapitalization: TextCapitalization.words,
-  //             //       controller: orderController.platformKartController,
-  //             //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-  //             //       keyboardType: TextInputType.text,
-  //             //       decoration: TextFieldDecoration.defaultTextFieldIcon(
-  //             //           hintTextStr: 'Platform(Online Only)'.tr),
-  //             //     ),
-  //             //   ),
-  //             // ),
-  //             Padding(
-  //               padding: const EdgeInsets.only(
-  //                   left: 16.0, right: 16, bottom: 16, top: 5),
-  //               child: Container(
-  //                 height: MediaQuery.of(context).size.height / 17,
-  //                 child: ElevatedButton(
-  //                   style: ButtonStyle(
-  //                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-  //                       RoundedRectangleBorder(
-  //                         borderRadius: BorderRadius.circular(
-  //                             8.0), // Adjust the radius as needed
-  //                       ),
-  //                     ),
-  //                     backgroundColor:
-  //                         MaterialStateProperty.all(const Color(0xffF25F29)),
-  //                   ),
-  //                   onPressed: () {
-  //                     // Do something with the text
-  //
-  //                     Get.back(); // Close the bottom sheet
-  //                   },
-  //                   child: Text(
-  //                     'save'.tr,
-  //                     style: customisedStyle(
-  //                         context, Colors.white, FontWeight.normal, 12.0),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+// void addDetails() {
+//   Get.bottomSheet(
+//     isDismissible: true,
+//     shape: const RoundedRectangleBorder(
+//       borderRadius: BorderRadius.only(
+//         topLeft: Radius.circular(10.0),
+//         // Set border radius to the top left corner
+//         topRight: Radius.circular(
+//             10.0), // Set border radius to the top right corner
+//       ),
+//     ),
+//     backgroundColor: Colors.white,
+//     Container(
+//       child: SingleChildScrollView(
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.stretch,
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             Padding(
+//               padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 14),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(
+//                     'Details'.tr,
+//                     style: customisedStyle(
+//                         context, Colors.black, FontWeight.w500, 14.0),
+//                   ),
+//                   IconButton(
+//                       onPressed: () {
+//                         Get.back();
+//                       },
+//                       icon: const Icon(
+//                         Icons.clear,
+//                         color: Colors.black,
+//                       ))
+//                 ],
+//               ),
+//             ),
+//             Container(
+//               height: 1,
+//               color: const Color(0xffE9E9E9),
+//             ),
+//             Padding(
+//               padding: const EdgeInsets.only(
+//                   left: 16, right: 16, top: 12, bottom: 12),
+//               child: Container(
+//                 width: MediaQuery.of(context).size.width / 4,
+//                 child: TextField(
+//                   readOnly: true,
+//                   onTap: () async {
+//                     final result = await Get.to(CustomerDetailPage());
+//
+//                     if (result != null) {
+//                       orderController.customerNameController.text = result[0];
+//                     }
+//
+//                   },
+//                   textCapitalization: TextCapitalization.words,
+//                   controller: orderController.customerNameController,
+//                   style: customisedStyle(
+//                       context, Colors.black, FontWeight.w500, 14.0),
+//
+//                   keyboardType: TextInputType.text,
+//                   decoration: TextFieldDecoration.defaultTextFieldIcon(
+//                       hintTextStr: 'customer'.tr),
+//                 ),
+//               ),
+//             ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               children: [
+//                 Padding(
+//                   padding: const EdgeInsets.only(right: 8.0),
+//                   child: Text(
+//                     'balance1'.tr,
+//                     style: customisedStyle(context, const Color(0xff8C8C8C),
+//                         FontWeight.w400, 14.0),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.only(right: 8.0),
+//                   child: Text(
+//                     orderController.currency.value,
+//                     style: customisedStyle(context, const Color(0xff8C8C8C),
+//                         FontWeight.w400, 15.0),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.only(right: 8.0),
+//                   child: Text("00.0",
+//                       style: customisedStyle(context, const Color(0xff000000),
+//                           FontWeight.w500, 15.0)),
+//                 ),
+//               ],
+//             ),
+//             //
+//             Padding(
+//               padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+//               child: Container(
+//                 width: MediaQuery.of(context).size.width / 4,
+//                 child: TextField(
+//                   inputFormatters: [
+//                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+//                   ], keyboardType: TextInputType.number,
+//                   controller: orderController.phoneNumberController,
+//                   style: customisedStyle(
+//                       context, Colors.black, FontWeight.w500, 14.0),
+//
+//                   decoration: TextFieldDecoration.defaultTextField(
+//                       hintTextStr: 'ph_no'.tr),
+//                 ),
+//               ),
+//             ),
+//
+//             /// commented
+//             // Padding(
+//             //   padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+//             //   child: Container(
+//             //     width: MediaQuery.of(context).size.width / 4,
+//             //     child: TextField(
+//             //       readOnly: true,
+//             //       onTap: () async {
+//             //         final result = await Get.to(SelectDeliveryMan());
+//             //
+//             //         if (result != null) {
+//             //           orderController.deliveryManController.text = result[0];
+//             //
+//             //
+//             //
+//             //         }
+//             //       }
+//             //       ,
+//             //       textCapitalization: TextCapitalization.words,
+//             //       controller: orderController.deliveryManController,
+//             //       style: customisedStyle(
+//             //           context, Colors.black, FontWeight.w500, 14.0),
+//             //
+//             //       keyboardType: TextInputType.text,
+//             //       decoration: TextFieldDecoration.defaultTextFieldIcon(
+//             //           hintTextStr: 'delivery_man'.tr),
+//             //     ),
+//             //   ),
+//             // ),
+//             // Padding(
+//             //   padding: const EdgeInsets.only(
+//             //       left: 16, right: 16, top: 12, bottom: 12),
+//             //   child: Container(
+//             //     width: MediaQuery.of(context).size.width / 4,
+//             //     child: TextField(
+//             //       textCapitalization: TextCapitalization.words,
+//             //       controller: orderController.platformKartController,
+//             //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+//             //       keyboardType: TextInputType.text,
+//             //       decoration: TextFieldDecoration.defaultTextFieldIcon(
+//             //           hintTextStr: 'Platform(Online Only)'.tr),
+//             //     ),
+//             //   ),
+//             // ),
+//             Padding(
+//               padding: const EdgeInsets.only(
+//                   left: 16.0, right: 16, bottom: 16, top: 5),
+//               child: Container(
+//                 height: MediaQuery.of(context).size.height / 17,
+//                 child: ElevatedButton(
+//                   style: ButtonStyle(
+//                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+//                       RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.circular(
+//                             8.0), // Adjust the radius as needed
+//                       ),
+//                     ),
+//                     backgroundColor:
+//                         MaterialStateProperty.all(const Color(0xffF25F29)),
+//                   ),
+//                   onPressed: () {
+//                     // Do something with the text
+//
+//                     Get.back(); // Close the bottom sheet
+//                   },
+//                   child: Text(
+//                     'save'.tr,
+//                     style: customisedStyle(
+//                         context, Colors.white, FontWeight.normal, 12.0),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }
 }

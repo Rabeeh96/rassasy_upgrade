@@ -14,7 +14,7 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
-import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/dashboard/Reservation/reservation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';

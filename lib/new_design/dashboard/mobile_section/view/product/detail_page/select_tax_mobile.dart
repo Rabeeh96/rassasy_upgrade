@@ -31,6 +31,7 @@ class _SelectTaxState extends State<SelectTaxMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
@@ -44,13 +45,14 @@ class _SelectTaxState extends State<SelectTaxMobile> {
         ),
         title: Text(
           'Select Tax',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
       ),
       body: Column(
         children: [
-          DividerStyle(),
-          //
+          SizedBox(height: 10,),
+          dividerStyleFull(),
+
           Expanded(
               child: Obx(() => productController.isLoadingTax.value
                   ? const Center(
@@ -75,10 +77,10 @@ class _SelectTaxState extends State<SelectTaxMobile> {
                     child: InkWell(
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 20.0, right: 20, top: 10, bottom: 10),
-                        child: Column(
+                            left: 20.0, right: 20, top: 15, bottom: 15),
+                        child: Row(
                             mainAxisAlignment:
-                            MainAxisAlignment.center,
+                            MainAxisAlignment.spaceBetween,
                             crossAxisAlignment:
                             CrossAxisAlignment.start,
                             children: [
@@ -92,9 +94,9 @@ class _SelectTaxState extends State<SelectTaxMobile> {
                                     14.0),
                               ),
                               Text(
-                                productController
+                               roundStringWith(productController
                                     .taxLists[index]
-                                    .type,
+                                    .purchasePrice.toString()),
                                 style: customisedStyle(
                                     context,
                                     Color(0xffA5A5A5),
@@ -107,7 +109,7 @@ class _SelectTaxState extends State<SelectTaxMobile> {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>
-                    DividerStyle(),
+                    dividerStyle(),
               ))),
         ],
       ),

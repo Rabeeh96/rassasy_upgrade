@@ -319,7 +319,7 @@ class _OnlinePageState extends State<OnlinePage> {
                                         ],
                                       ),
                                     ),
-                                    DividerStyle()
+                                    dividerStyle()
                                   ],
                                 ),
                               ),

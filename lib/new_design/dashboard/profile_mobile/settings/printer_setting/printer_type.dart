@@ -168,7 +168,7 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
                   ),
                 ),
               )),
-          DividerStyle(),
+          dividerStyle(),
           const SizedBox(
             height: 20,
           ),
@@ -230,7 +230,7 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
         height: MediaQuery.of(context).size.height / 12,
         child: Column(
           children: [
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15),
               child: Container(

@@ -11,7 +11,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
-import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/cancel_reason_list.dart';
@@ -177,12 +177,13 @@ class _DiningPageState extends State<DiningPage> {
        // DividerStyle(),
         Expanded(
             child: Obx(() => diningController.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
+                ?   const Center(child: CircularProgressIndicator(color: Color(0xffffab00),))
                 : diningController.tableData.isEmpty
                     ? const Center(child: Text("No recent orders"))
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: RefreshIndicator(
+                          color:  Color(0xffffab00),
                           onRefresh: ()async{
                             diningController.selectedIndexNotifier.value = 0;
                             diningController.tableData.clear();
@@ -190,7 +191,7 @@ class _DiningPageState extends State<DiningPage> {
                             diningController.update();
                           },
                           child: ListView.separated(
-                            separatorBuilder: (context, index) => DividerStyle(),
+                            separatorBuilder: (context, index) => dividerStyle(),
                             itemCount: diningController.tableData.length+1,
                             itemBuilder: (context, index) {
                               if (index == diningController.tableData.length) {
