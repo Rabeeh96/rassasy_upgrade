@@ -13,9 +13,9 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/auth_user/profie/profile.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
-import 'package:rassasy_new/new_design/back_ground_print/USB/usb_test_page.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/test_page/usb_test_page.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/test_page/test_page_bluetooth.dart';
-import 'package:rassasy_new/new_design/back_ground_print/print_details/detailed_print_page.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/test_page/print_settings.dart';
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
@@ -195,7 +195,7 @@ class _DashboardNewState extends State<DashboardNew> {
 
 
         if (printType == 'Wifi') {
-          Get.to(PrintSettingsDetailed());
+          Get.to(PrintSettingsPage());
         } else if (printType == 'USB') {
           Get.to(const TestPrintUSB());
         } else {
@@ -397,268 +397,7 @@ class _DashboardNewState extends State<DashboardNew> {
                       //  style: TextStyle(color: Colors.black, fontSize: 24),
                     ),
               actions: [
-                /// select waiter role is commented
-                // Theme(
-                //   data: Theme.of(context).copyWith(
-                //       textTheme: const TextTheme().apply(bodyColor: Colors.black),
-                //       dividerColor: Colors.white,
-                //       iconTheme: const IconThemeData(color: Colors.black)),
-                //   child: PopupMenuButton<int>(
-                //     color: Colors.white,
-                //     child: Row(
-                //       children: [
-                //         Icon(
-                //           Icons.settings,
-                //           color: Color(0xff096816),
-                //
-                //         ),
-                //         Text(
-                //           " Set waiter Role",
-                //           style:customisedStyle(context,Color(0xff096816),FontWeight.normal,13.0),
-                //
-                //         ),
-                //       ],
-                //     ),
-                //     itemBuilder: (context,) =>
-                //
-                //     [
-                //       PopupMenuItem(
-                //         child: StatefulBuilder(
-                //           builder: (context, setState) {
-                //             return Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Text(
-                //                   "Dining",
-                //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
-                //                 ),
-                //                 SizedBox(
-                //                   width: 7,
-                //                 ),
-                //                 SizedBox(
-                //                   width: 100,
-                //                   child: Center(
-                //                     child: FlutterSwitch(
-                //                       width: 40.0,
-                //                       height: 20.0,
-                //                       valueFontSize: 30.0,
-                //                       toggleSize: 15.0,
-                //                       value: diningStatus,
-                //                       borderRadius: 20.0,
-                //                       padding: 1.0,
-                //                       activeColor: Colors.green,
-                //                       activeTextColor: Colors.green,
-                //                       inactiveTextColor: Colors.white,
-                //                       inactiveColor: Colors.grey,
-                //                       onToggle: (val) {
-                //                         setState(() {
-                //                           diningStatus = val;
-                //                         });
-                //                       },
-                //                     ),
-                //                   ),
-                //                 )
-                //
-                //               ],
-                //             );
-                //           },
-                //         ),
-                //       ),
-                //       PopupMenuItem<int>(
-                //         value: 0,
-                //         child: StatefulBuilder(
-                //           builder: (context, setState) {
-                //             return Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Text(
-                //                   "Take Away",
-                //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
-                //                 ),
-                //                 SizedBox(
-                //                   width: 7,
-                //                 ),
-                //                 SizedBox(
-                //                   width: 100,
-                //                   child: Center(
-                //                     child: FlutterSwitch(
-                //                       width: 40.0,
-                //                       height: 20.0,
-                //                       valueFontSize: 30.0,
-                //                       toggleSize: 15.0,
-                //                       value: takeawayStatus,
-                //                       borderRadius: 20.0,
-                //                       padding: 1.0,
-                //                       activeColor: Colors.green,
-                //                       activeTextColor: Colors.green,
-                //                       inactiveTextColor: Colors.white,
-                //                       inactiveColor: Colors.grey,
-                //
-                //                       // showOnOff: true,
-                //                       onToggle: (val) {
-                //                         setState(() {
-                //                           takeawayStatus = val;
-                //                         });
-                //                       },
-                //                     ),
-                //                   ),
-                //                 )
-                //               ],
-                //             );
-                //           },
-                //         ),
-                //       ),
-                //       PopupMenuItem<int>(
-                //           value: 0,
-                //           child: StatefulBuilder(builder: (context, setState) {
-                //             return Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Text(
-                //                   "Online",
-                //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
-                //                 ),
-                //                 SizedBox(
-                //                   width: 7,
-                //                 ),
-                //                 SizedBox(
-                //                   width: 100,
-                //                   child: Center(
-                //                     child: FlutterSwitch(
-                //                       width: 40.0,
-                //                       height: 20.0,
-                //                       valueFontSize: 30.0,
-                //                       toggleSize: 15.0,
-                //                       value: onlineStatus,
-                //                       borderRadius: 20.0,
-                //                       padding: 1.0,
-                //                       activeColor: Colors.green,
-                //                       activeTextColor: Colors.green,
-                //                       inactiveTextColor: Colors.white,
-                //                       inactiveColor: Colors.grey,
-                //
-                //                       // showOnOff: true,
-                //                       onToggle: (val) {
-                //                         setState(() {
-                //                           onlineStatus = val;
-                //                         });
-                //                       },
-                //                     ),
-                //                   ),
-                //                 )
-                //               ],
-                //             );
-                //           })),
-                //       PopupMenuItem<int>(
-                //           value: 0,
-                //           child: StatefulBuilder(builder: (context, setState) {
-                //             return Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Text(
-                //                   "Car",
-                //                   style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0),
-                //                 ),
-                //                 SizedBox(
-                //                   width: 7,
-                //                 ),
-                //                 SizedBox(
-                //                   width: 100,
-                //                   child: Center(
-                //                     child: FlutterSwitch(
-                //                       width: 40.0,
-                //                       height: 20.0,
-                //                       valueFontSize: 30.0,
-                //                       toggleSize: 15.0,
-                //                       value: carStatus,
-                //                       borderRadius: 20.0,
-                //                       padding: 1.0,
-                //                       activeColor: Colors.green,
-                //                       activeTextColor: Colors.green,
-                //                       inactiveTextColor: Colors.white,
-                //                       inactiveColor: Colors.grey,
-                //
-                //                       // showOnOff: true,
-                //                       onToggle: (val) {
-                //                         setState(() {
-                //                           carStatus = val;
-                //                         });
-                //                       },
-                //                     ),
-                //                   ),
-                //                 )
-                //               ],
-                //             );
-                //           })),
-                //       const PopupMenuDivider(),
-                //     ],
-                //    // onSelected: (item) => selectedItem(context, item),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Container(
-                //     width: MediaQuery.of(context).size.width / 4,
-                //     height: MediaQuery.of(context).size.height / 20,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         Container(
-                //           width: MediaQuery.of(context).size.width / 5,
-                //           child: TextField(
-                //             readOnly: true,
-                //             controller: waiterController,
-                //
-                //             onTap: () async {
-                //
-                //               var result = await Navigator.push(
-                //                 context,
-                //                 MaterialPageRoute(builder: (context) => SelectWaiter()),
-                //               );
-                //
-                //               if (result != null) {
-                //                 waiterController.text = result;
-                //                 setUserRole(3, true);
-                //               } else {
-                //
-                //               }
-                //             },
-                //             style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
-                //             keyboardType: TextInputType.text,
-                //             textCapitalization: TextCapitalization.words,
-                //             decoration: InputDecoration(
-                //                 enabledBorder: OutlineInputBorder(
-                //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                //                 focusedBorder: OutlineInputBorder(
-                //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                //                 disabledBorder: OutlineInputBorder(
-                //                     borderRadius: BorderRadius.all(Radius.circular(4.0)), borderSide: BorderSide(color: Color(0xffC9C9C9))),
-                //                 contentPadding: EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
-                //                 prefixIcon: Icon(
-                //                   Icons.person,
-                //                   color: Color(0xffF25F29),
-                //                 ),
-                //                 filled: true,
-                //                 hintStyle: customisedStyle(context,Colors.grey,FontWeight.normal,12.0),
-                //                 hintText: "Select waiter",
-                //                 fillColor: Color(0xffE6E6E6)),
-                //           ),
-                //         ),
-                //         IconButton(
-                //             onPressed: () {
-                //               popupAlert("Do you really want to remove it",2);
-                //
-                //             },
-                //             icon: Icon(
-                //               Icons.cancel,
-                //               color: Colors.red,
-                //               size: 30,
-                //             ))
-                //       ],
-                //     ),
-                //   ),
-                // ),
+
 
                 isTablet == true
                     ? Theme(
@@ -818,52 +557,64 @@ class _DashboardNewState extends State<DashboardNew> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      isProfileNotifier.value = false;
-                      setState(() {});
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/svg/_mobhome.svg",
-                          color: isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29),
+                  Container(
+
+                    width: 100,
+                    child: GestureDetector(
+                      onTap: () {
+                        isProfileNotifier.value = false;
+                        setState(() {});
+                      },
+                      child: InkWell(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/svg/_mobhome.svg",
+                              color: isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29),
+                            ),
+                            Text(
+                              "Home",
+                              style:
+                                  customisedStyleBold(context, isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29), FontWeight.normal, 12.0),
+                            )
+                          ],
                         ),
-                        Text(
-                          "Home",
-                          style:
-                              customisedStyleBold(context, isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29), FontWeight.normal, 12.0),
-                        )
-                      ],
+                      ),
                     ),
                   ),
                   const SizedBox(
-                    width: 50,
+                    width: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      isProfileNotifier.value = true;
+                  Container(
+
+                    width: 100,
+                    child: GestureDetector(
+                      onTap: () {
+                        isProfileNotifier.value = true;
                       setState(() {});
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/svg/profile_mob.svg",
-                          color: isProfileNotifier.value ? Color(0xffF25F29) : Color(0xff9E9E9E),
+                      },
+                      child: InkWell(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/svg/profile_mob.svg",
+                              color: isProfileNotifier.value ? Color(0xffF25F29) : Color(0xff9E9E9E),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 2.0),
+                              child: Text(
+                                'Profile'.tr,
+                                style: customisedStyleBold(
+                                    context, isProfileNotifier.value ? Color(0xffF25F29) : Color(0xff9E9E9E), FontWeight.normal, 12.0),
+                              ),
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 2.0),
-                          child: Text(
-                            'Profile'.tr,
-                            style: customisedStyleBold(
-                                context, isProfileNotifier.value ? Color(0xffF25F29) : Color(0xff9E9E9E), FontWeight.normal, 12.0),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
                   ),
                 ],
@@ -1451,378 +1202,276 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenHeight = screenSize.height;
     // bool isTablet = true;
     bool isTablet = screenWidth > defaultScreenWidth;
-    print(isTablet);
-    print(screenWidth);
-    print("dash");
+
     return isProfileNotifier.value
         ? SafeArea(
-            child: Container(
-                margin: const EdgeInsets.all(20),
-                height: mHeight,
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: mHeight * .03,
-                      ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20.0,right: 20),
+              child: Container(
 
-                      Center(
-                        child: Column(
-                          children: [
-                            Container(
-                              //  height: mqh * .30,
-                              width: mHeight * .92,
-                              decoration: BoxDecoration(
-                                  color: const Color(0xffFFF6F2),
+                  height: mHeight,
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: mHeight * .03,
+                        ),
 
-                                  // const Color(0xffE6E6E6)
-                                  borderRadius: BorderRadius.circular(25)),
-                              child: Obx(() => Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 16.0, left: 0, right: 6),
-                                        child: Container(
-                                          height: mHeight * .090,
-                                          width: mWidth * .846,
-                                          decoration: const BoxDecoration(
-                                              // border: Border.all(color: Colors.black,width: 1),
+                        Center(
+                          child: Column(
+                            children: [
+                              Container(
+                                //  height: mqh * .30,
+                                width: mHeight * .92,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffFFF6F2),
+
+                                    // const Color(0xffE6E6E6)
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: Obx(() => Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 16.0, left: 0, right: 6),
+                                          child: Container(
+                                            height: mHeight * .090,
+                                            width: mWidth * .846,
+                                            decoration: const BoxDecoration(
+                                                // border: Border.all(color: Colors.black,width: 1),
+                                                ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 8.0, right: 4),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    height: mHeight * .080,
+                                                    width: mWidth * .180,
+                                                    decoration: BoxDecoration(color: Colors.white38, borderRadius: BorderRadius.circular(22)),
+                                                    child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                        child: Image.network("https://www.gravatar.com/avatar/1?s=46&d=identicon&r=PG&f=1")),
+                                                    // child: Image.network(photo)),
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        profileController.userName.value,
+                                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.5),
+                                                        textAlign: TextAlign.left,
+                                                      ),
+                                                      Text(
+                                                        profileController.mail.value,
+                                                        style: customisedStyle(context, const Color(0xff7D7D7D), FontWeight.w400, 13.5),
+                                                        textAlign: TextAlign.center,
+                                                      )
+                                                    ],
+                                                  ),
+                                                  // const SizedBox(
+                                                  //   height: 20,
+                                                  //   width: 15,
+                                                  // ),
+                                                  IconButton(
+                                                      onPressed: () {},
+                                                      icon: SvgPicture.asset(
+                                                        'assets/svg/edit_mobile.svg',
+                                                      ))
+                                                ],
                                               ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(left: 8.0, right: 4),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 11.0),
+                                          child: Container(
+                                            // height: mqh * .085,
+                                            width: mWidth * .845,
+                                            decoration: BoxDecoration(
+                                                color: const Color(0xffffffff),
+                                                border: Border.all(width: 1.5, color: Colors.grey.withOpacity(.05)),
+                                                borderRadius: BorderRadius.circular(11)),
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                  height: mHeight * .080,
-                                                  width: mWidth * .180,
-                                                  decoration: BoxDecoration(color: Colors.white38, borderRadius: BorderRadius.circular(22)),
-                                                  child: ClipRRect(
-                                                      borderRadius: BorderRadius.circular(20),
-                                                      child: Image.network("https://www.gravatar.com/avatar/1?s=46&d=identicon&r=PG&f=1")),
-                                                  // child: Image.network(photo)),
-                                                ),
+                                                Expanded(
+                                                    child: Padding(
+                                                  padding: const EdgeInsets.only(left: 16.0),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        'Organization',
+                                                        style: customisedStyle(context, const Color(0xff7D7D7D), FontWeight.w400, 14.0),
+                                                        textAlign: TextAlign.left,
+                                                      ),
+                                                      Text(
+                                                        profileController.companyName.value,
+                                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                        textAlign: TextAlign.left,
+                                                      )
+                                                    ],
+                                                  ),
+                                                )),
                                                 Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Text(
-                                                      profileController.userName.value,
-                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.5),
-                                                      textAlign: TextAlign.left,
+                                                    const Text(""),
+                                                    Container(
+                                                      height: mHeight * .05,
+                                                      width: mWidth * .3,
+                                                      decoration: const BoxDecoration(color: Color(0xffFFFFFF)),
+                                                      child: TextButton(
+                                                        onPressed: () async {
+                                                          bottomDialogueFunction(
+                                                              isDismissible: true,
+                                                              context: context,
+                                                              textMsg: ' Change organisation ?',
+                                                              fistBtnOnPressed: () {
+                                                                Navigator.of(context).pop(true);
+                                                              },
+                                                              secondBtnPressed: () async {
+                                                                Navigator.pushReplacement(
+                                                                  context,
+                                                                  MaterialPageRoute(builder: (context) => MobOrganizationList()),
+                                                                );
+                                                              },
+                                                              secondBtnText: 'Yes');
+                                                        },
+                                                        child: Text(
+                                                          'change'.tr,
+                                                          style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
+                                                          textAlign: TextAlign.left,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    Text(
-                                                      profileController.mail.value,
-                                                      style: customisedStyle(context, const Color(0xff7D7D7D), FontWeight.w400, 13.5),
-                                                      textAlign: TextAlign.center,
-                                                    )
                                                   ],
-                                                ),
-                                                // const SizedBox(
-                                                //   height: 20,
-                                                //   width: 15,
-                                                // ),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: SvgPicture.asset(
-                                                      'assets/svg/edit_mobile.svg',
-                                                    ))
+                                                )
                                               ],
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 11.0),
-                                        child: Container(
-                                          // height: mqh * .085,
-                                          width: mWidth * .845,
-                                          decoration: BoxDecoration(
-                                              color: const Color(0xffffffff),
-                                              border: Border.all(width: 1.5, color: Colors.grey.withOpacity(.05)),
-                                              borderRadius: BorderRadius.circular(11)),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 15.0),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
-                                              Expanded(
-                                                  child: Padding(
-                                                padding: const EdgeInsets.only(left: 16.0),
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      'Organization',
-                                                      style: customisedStyle(context, const Color(0xff7D7D7D), FontWeight.w400, 14.0),
-                                                      textAlign: TextAlign.left,
-                                                    ),
-                                                    Text(
-                                                      profileController.companyName.value,
-                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                      textAlign: TextAlign.left,
-                                                    )
-                                                  ],
-                                                ),
-                                              )),
-                                              Column(
-                                                children: [
-                                                  const Text(""),
-                                                  Container(
-                                                    height: mHeight * .05,
-                                                    width: mWidth * .3,
-                                                    decoration: const BoxDecoration(color: Color(0xffFFFFFF)),
-                                                    child: TextButton(
-                                                      onPressed: () async {
-                                                        bottomDialogueFunction(
-                                                            isDismissible: true,
-                                                            context: context,
-                                                            textMsg: ' Change organisation ?',
-                                                            fistBtnOnPressed: () {
-                                                              Navigator.of(context).pop(true);
-                                                            },
-                                                            secondBtnPressed: () async {
-                                                              Navigator.pushReplacement(
-                                                                context,
-                                                                MaterialPageRoute(builder: (context) => MobOrganizationList()),
-                                                              );
-                                                            },
-                                                            secondBtnText: 'Yes');
+                                              GestureDetector(
+                                                onTap: () {
+                                                  bottomDialogueFunction(
+                                                      isDismissible: true,
+                                                      context: context,
+                                                      textMsg: "Sure want to delete",
+                                                      fistBtnOnPressed: () {
+                                                        Navigator.of(context).pop(true);
                                                       },
-                                                      child: Text(
-                                                        'change'.tr,
-                                                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
-                                                        textAlign: TextAlign.left,
+                                                      secondBtnPressed: () async {
+                                                        Navigator.of(context).pop(true);
+                                                        Navigator.of(context)
+                                                            .push(MaterialPageRoute(builder: (BuildContext context) => DeleteAccount()));
+                                                      },
+                                                      secondBtnText: 'Ok');
+                                                },
+                                                child: Container(
+                                                  height: mHeight * .06,
+                                                  width: mWidth * .43,
+                                                  decoration: BoxDecoration(color: const Color(0xffFfffff), borderRadius: BorderRadius.circular(25)),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(
+                                                          left: 6.0,
+                                                        ),
+                                                        child: SvgPicture.asset(
+                                                          "assets/svg/delete_mobile.svg",
+                                                        ),
                                                       ),
-                                                    ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left: 5.0, right: 6),
+                                                        child: Text(
+                                                          'dlt_acnt'.tr,
+                                                          style: customisedStyle(context, const Color(0xffC80000), FontWeight.w400, 15.0),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              )
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  bottomDialogueFunction(
+                                                      isDismissible: true,
+                                                      context: context,
+                                                      textMsg: 'Are you sure Logout ?',
+                                                      fistBtnOnPressed: () {
+                                                        Navigator.of(context).pop(true);
+                                                      },
+                                                      secondBtnPressed: () async {
+                                                        SharedPreferences preference = await SharedPreferences.getInstance();
+                                                        preference.clear();
+                                                        Navigator.of(context).pushAndRemoveUntil(
+                                                            MaterialPageRoute(
+                                                              builder: (context) => LoginPageNew(),
+                                                            ),
+                                                            (route) => false);
+                                                      },
+                                                      secondBtnText: 'Yes');
+                                                },
+                                                child: Container(
+                                                  width: mWidth * .34,
+                                                  height: mHeight * .06,
+                                                  decoration: BoxDecoration(color: const Color(0xffFFCFCF), borderRadius: BorderRadius.circular(25)),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      SvgPicture.asset("assets/svg/logout_mobile.svg"),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left: 8.0),
+                                                        child: Text(
+                                                          'logout'.tr,
+                                                          style: customisedStyle(context, const Color(0xffEA6262), FontWeight.w400, 15.0),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 15.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                bottomDialogueFunction(
-                                                    isDismissible: true,
-                                                    context: context,
-                                                    textMsg: "Sure want to delete",
-                                                    fistBtnOnPressed: () {
-                                                      Navigator.of(context).pop(true);
-                                                    },
-                                                    secondBtnPressed: () async {
-                                                      Navigator.of(context).pop(true);
-                                                      Navigator.of(context)
-                                                          .push(MaterialPageRoute(builder: (BuildContext context) => DeleteAccount()));
-                                                    },
-                                                    secondBtnText: 'Ok');
-                                              },
-                                              child: Container(
-                                                height: mHeight * .06,
-                                                width: mWidth * .43,
-                                                decoration: BoxDecoration(color: const Color(0xffFfffff), borderRadius: BorderRadius.circular(25)),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(
-                                                        left: 6.0,
-                                                      ),
-                                                      child: SvgPicture.asset(
-                                                        "assets/svg/delete_mobile.svg",
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 5.0, right: 6),
-                                                      child: Text(
-                                                        'dlt_acnt'.tr,
-                                                        style: customisedStyle(context, const Color(0xffC80000), FontWeight.w400, 15.0),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                bottomDialogueFunction(
-                                                    isDismissible: true,
-                                                    context: context,
-                                                    textMsg: 'Are you sure Logout ?',
-                                                    fistBtnOnPressed: () {
-                                                      Navigator.of(context).pop(true);
-                                                    },
-                                                    secondBtnPressed: () async {
-                                                      SharedPreferences preference = await SharedPreferences.getInstance();
-                                                      preference.clear();
-                                                      Navigator.of(context).pushAndRemoveUntil(
-                                                          MaterialPageRoute(
-                                                            builder: (context) => LoginPageNew(),
-                                                          ),
-                                                          (route) => false);
-                                                    },
-                                                    secondBtnText: 'Yes');
-                                              },
-                                              child: Container(
-                                                width: mWidth * .34,
-                                                height: mHeight * .06,
-                                                decoration: BoxDecoration(color: const Color(0xffFFCFCF), borderRadius: BorderRadius.circular(25)),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    SvgPicture.asset("assets/svg/logout_mobile.svg"),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 8.0),
-                                                      child: Text(
-                                                        'logout'.tr,
-                                                        style: customisedStyle(context, const Color(0xffEA6262), FontWeight.w400, 15.0),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20)
-                                    ],
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: mHeight * .01,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(SettingsMobilePage());
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    SvgPicture.asset("assets/svg/settings_mobile.svg"),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
-                                      child: Text(
-                                        'Settings'.tr,
-                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
-                            ),
+                                        const SizedBox(height: 20)
+                                      ],
+                                    )),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
 
-                      /// print settings commented
-                      DividerStyle(),
-                      GestureDetector(
-                        onTap: () async {
-                          ///
-                          ///
-                          SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-
-                          var printType =
-                              prefs.getString('PrintType') ?? 'Wifi';
-                          if (printType == 'Wifi') {
-                            Get.to(PrintSettingsDetailed());
-                          } else if (printType == 'USB') {
-                            Get.to(TestPrintUSB());
-                          } else {
-                            Get.to(TestPrintBT());
-                          }
-                        },
-                        child: InkWell(
-                            child: Card(
-                              color: Colors.transparent,
-                              elevation: 0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8, top: 15, bottom: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Icon(
-                                          Icons.print_outlined,
-                                          size: 25,
-                                          color: Color(0xffF25F29),
-                                        ),
-                                        Padding(
-                                          padding:
-                                          const EdgeInsets.only(left: 10.0),
-                                          child: Text(
-                                            'Test Print',
-                                            style: customisedStyle(
-                                                context,
-                                                Colors.black,
-                                                FontWeight.w400,
-                                                16.0),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_forward_ios_outlined,
-                                      size: 18,
-                                      color: Colors.black,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ),
-
-                      DividerStyle(),
-                      Card(
-                        color: Colors.transparent,
-                        elevation: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.to(Contact_us());
-                            },
-                            child: InkWell(
+                        SizedBox(
+                          height: mHeight * .01,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(SettingsMobilePage());
+                          },
+                          child: Card(
+                            color: Colors.transparent,
+                            elevation: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0, right: 8, top: 15, bottom: 15),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
-                                      SvgPicture.asset(
-                                        "assets/svg/brand-hipchat.svg",
-                                      ),
+                                      SvgPicture.asset("assets/svg/settings_mobile.svg"),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 10.0),
                                         child: Text(
-                                          'contact_us'.tr,
+                                          'Settings'.tr,
                                           style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
                                         ),
                                       )
@@ -1838,95 +1487,198 @@ class _DashboardNewState extends State<DashboardNew> {
                             ),
                           ),
                         ),
-                      ),
 
-                      DividerStyle(),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(AboutUs());
-                        },
-                        child: Card(
+                        /// print settings commented
+                        dividerStyle(),
+                        GestureDetector(
+                          onTap: () async {
+                            ///
+                            ///
+                            SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+
+                            var printType =
+                                prefs.getString('PrintType') ?? 'Wifi';
+                            if (printType == 'Wifi') {
+                              Get.to(PrintSettingsPage());
+                            } else if (printType == 'USB') {
+                              Get.to(TestPrintUSB());
+                            } else {
+                              Get.to(TestPrintBT());
+                            }
+                          },
+                          child: InkWell(
+                              child: Card(
+                                color: Colors.transparent,
+                                elevation: 0,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, right: 8, top: 15, bottom: 15),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Icon(
+                                            Icons.print_outlined,
+                                            size: 25,
+                                            color: Color(0xffF25F29),
+                                          ),
+                                          Padding(
+                                            padding:
+                                            const EdgeInsets.only(left: 10.0),
+                                            child: Text(
+                                              'Test Print',
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.black,
+                                                  FontWeight.w400,
+                                                  16.0),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_forward_ios_outlined,
+                                        size: 18,
+                                        color: Colors.black,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )),
+                        ),
+
+                        dividerStyle(),
+                        Card(
                           color: Colors.transparent,
                           elevation: 0,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.to(Contact_us());
+                              },
+                              child: InkWell(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SvgPicture.asset(
-                                      "assets/svg/about_us_mob.svg",
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/svg/brand-hipchat.svg",
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            'contact_us'.tr,
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
-                                      child: Text(
-                                        'about_us'.tr,
-                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
-                                      ),
-                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 18,
+                                      color: Colors.black,
+                                    )
                                   ],
                                 ),
-                                const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 18,
-                                  color: Colors.black,
-                                )
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      DividerStyle(),
-                      GestureDetector(
-                        onTap: () async {
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          Locale? currentLocale = Get.locale;
-                          if (currentLocale.toString() == "ar") {
-                            prefs.setBool('isArabic', false);
-                            Get.updateLocale(const Locale('en', 'US'));
-                          } else {
-                            prefs.setBool('isArabic', true);
-                            Get.updateLocale(const Locale('ar'));
-                          }
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/svg/language-hiragana.svg",
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
-                                      child: Text(
-                                        'lang'.tr,
-                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
+
+                        dividerStyle(),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(AboutUs());
+                          },
+                          child: Card(
+                            color: Colors.transparent,
+                            elevation: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/svg/about_us_mob.svg",
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  'lang'.tr,
-                                  style: customisedStyle(context, Color(0xff7D7D7D), FontWeight.normal, 14.0),
-                                )
-                              ],
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10.0),
+                                        child: Text(
+                                          'about_us'.tr,
+                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    size: 18,
+                                    color: Colors.black,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        dividerStyle(),
+                        GestureDetector(
+                          onTap: () async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            Locale? currentLocale = Get.locale;
+                            if (currentLocale.toString() == "ar") {
+                              prefs.setBool('isArabic', false);
+                              Get.updateLocale(const Locale('en', 'US'));
+                            } else {
+                              prefs.setBool('isArabic', true);
+                              Get.updateLocale(const Locale('ar'));
+                            }
+                          },
+                          child: Card(
+                            color: Colors.transparent,
+                            elevation: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/svg/language-hiragana.svg",
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10.0),
+                                        child: Text(
+                                          'lang'.tr,
+                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    'lang'.tr,
+                                    style: customisedStyle(context, Color(0xff7D7D7D), FontWeight.normal, 14.0),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
 
 
 
-                    ],
-                  ),
-                )),
+                      ],
+                    ),
+                  )),
+            ),
           )
         : Container(
             width: double.infinity,
@@ -1934,7 +1686,7 @@ class _DashboardNewState extends State<DashboardNew> {
             decoration: BoxDecoration(color: Colors.white),
             child: Column(
               children: [
-                DividerStyle(),
+                dividerStyle(),
                 Container(
                   height: screenHeight / 12,
                   width: MediaQuery.of(context).size.width / 1,
@@ -2135,48 +1887,6 @@ class _DashboardNewState extends State<DashboardNew> {
                             Column(
                               children: [
                                 GestureDetector(
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 12,
-                                          child: SvgPicture.asset('assets/svg/POS.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    var dinePerm = await checkingPerm("Diningview");
-                                    var takeAwayPerm = await checkingPerm("Take awayview");
-                                    var carPerm = await checkingPerm("Carview");
-
-                                    if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
-                                      Get.to(POSMobilePage());
-                                    } else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
-                                  },
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    "POS".tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                GestureDetector(
                                   onTap: () async {
                                     updateAlert();
                                     // var salesReport =
@@ -2244,6 +1954,49 @@ class _DashboardNewState extends State<DashboardNew> {
                                 )
                               ],
                             ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  child: Container(
+                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                    height: screenHeight / 12,
+                                    width: screenWidth / 5.5,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context).size.height / 20,
+                                          width: MediaQuery.of(context).size.width / 12,
+                                          child: SvgPicture.asset('assets/svg/POS.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    var dinePerm = await checkingPerm("Diningview");
+                                    var takeAwayPerm = await checkingPerm("Take awayview");
+                                    var carPerm = await checkingPerm("Carview");
+
+                                    if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
+                                      Get.to(POSMobilePage());
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
+                                  },
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    "POS".tr,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+
                             Column(
                               children: [
                                 GestureDetector(

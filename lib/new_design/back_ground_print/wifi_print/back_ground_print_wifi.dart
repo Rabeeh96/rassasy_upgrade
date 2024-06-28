@@ -20,7 +20,7 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:charset_converter/charset_converter.dart';
-import 'Templates/template3.dart';
+import '../Templates/template3.dart';
 import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
 import 'package:get/get.dart';

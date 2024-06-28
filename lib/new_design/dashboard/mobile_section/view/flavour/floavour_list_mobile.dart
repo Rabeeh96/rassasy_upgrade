@@ -7,7 +7,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/flavour_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
-
+import 'dart:io' show Platform;
 class FlavourListMobile extends StatefulWidget {
   @override
   State<FlavourListMobile> createState() => _FlavourListMobileState();
@@ -27,6 +27,7 @@ class _FlavourListMobileState extends State<FlavourListMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
@@ -39,13 +40,14 @@ class _FlavourListMobileState extends State<FlavourListMobile> {
           },
         ),
         title: Text(
-          'Flavour',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          'Flavour'.tr,
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyleFull(),
+          SizedBox(height: 20,),
           // Container(
           //     margin: const EdgeInsets.only(
           //       left: 15,
@@ -226,13 +228,13 @@ class _FlavourListMobileState extends State<FlavourListMobile> {
                                     )));
                           },
                           separatorBuilder: (BuildContext context, int index) =>
-                              DividerStyle(),
+                              dividerStyle(),
                         ))),
           )),
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+        padding:  EdgeInsets.only(top: 10.0, bottom:Platform.isIOS ? 25:10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -304,19 +306,16 @@ class _FlavourListMobileState extends State<FlavourListMobile> {
                 ],
               ),
             ),
-            Container(
-              height: 1,
-              color: const Color(0xffE9E9E9),
-            ),
+            dividerStyleFull(),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(20),
               child: Container(
                 width: MediaQuery.of(context).size.width / 4,
                 child: TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: flavourController.flavourName,
                   style: customisedStyle(
-                      context, Colors.black, FontWeight.w500, 14.0),
+                      context, Colors.black, FontWeight.w400, 14.0),
                   // focusNode: diningController.customerNode,
                   onEditingComplete: () {
                     FocusScope.of(context).nextFocus();
@@ -328,8 +327,8 @@ class _FlavourListMobileState extends State<FlavourListMobile> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0, right: 16, bottom: 16, top: 5),
+              padding:   EdgeInsets.only(
+                  left: 20.0, right: 20, bottom:Platform.isIOS ? 25:16, top: 5),
               child: Container(
                 height: MediaQuery.of(context).size.height / 17,
                 child: ElevatedButton(
@@ -358,7 +357,7 @@ class _FlavourListMobileState extends State<FlavourListMobile> {
                   child: Text(
                     'save'.tr,
                     style: customisedStyle(
-                        context, Colors.white, FontWeight.normal, 12.0),
+                        context, Colors.white, FontWeight.w400, 15.0),
                   ),
                 ),
               ),

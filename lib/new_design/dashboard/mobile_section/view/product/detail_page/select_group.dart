@@ -29,6 +29,7 @@ class _SelectTaxState extends State<SelectGroupMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
@@ -42,12 +43,12 @@ class _SelectTaxState extends State<SelectGroupMobile> {
         ),
         title: Text(
           'Select Group',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyleFull(),
           //
           Expanded(
               child: Obx(() => productController.isGroupLoading.value
@@ -74,7 +75,7 @@ class _SelectTaxState extends State<SelectGroupMobile> {
 
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 20.0, right: 20, top: 10, bottom: 10),
+                            left: 20.0, right: 20, top: 15, bottom: 15),
                         child:    Text(
                           productController
                               .categoryLists[index].groupName
@@ -90,7 +91,7 @@ class _SelectTaxState extends State<SelectGroupMobile> {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>
-                    DividerStyle(),
+                    dividerStyle(),
               ))),
         ],
       ),

@@ -16,7 +16,14 @@ import 'global/global.dart';
 import 'localisation/localisation.dart';
 import 'new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'new_design/organization/list_organization.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
+import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 ///code commented here
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -166,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(companySelected);
     if (status) {
       if (companySelected) {
-        await defaultDataInitial(context: context);
+        await defaultData(context: context,);
         var expireDate = prefs.getString('expiryDate') ?? '';
         var companyName = prefs.getString('companyName') ?? '';
         var selectPos = prefs.getBool('IsSelectPos') ?? false;
@@ -220,10 +227,91 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future defaultData({context}) async {
+
+    final response;
+    try {
+
+      HttpOverrides.global = MyHttpOverrides();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      var userID = prefs.getInt('user_id') ?? 0;
+      var companyID = prefs.getString('companyID') ?? 0;
+      var branchID = prefs.getInt('branchID') ?? 1;
+      var accessToken = prefs.getString('access') ?? '';
+      baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+
+      String baseUrl = BaseUrl.baseUrl;
+
+      final String url = '$baseUrl/users/get-default-values/';
+      print(url);
+      Map data = {"CompanyID": companyID, "userId": userID, "BranchID": branchID};
+      print(data);
+      print(accessToken);
+      //encode Map to JSON
+      var body = json.encode(data);
+      var response = await http.post(Uri.parse(url),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $accessToken',
+          },
+          body: body);
+      Map n = json.decode(response.body);
+      log("res ${response.body}");
+
+
+      var status = n["StatusCode"];
+      var msg = n["message"];
+      if(status ==6000){
+
+        var frmDate = n["financial_FromDate"].substring(0, 10);
+        var toDate = n["financial_ToDate"].substring(0, 10);
+        prefs.setString("financial_FromDate", frmDate);
+        prefs.setString("financial_ToDate", toDate);
+        prefs.setString("Country", n["Country"]);
+        prefs.setString("CountryName", n["CountryName"]);
+        prefs.setString("State", n["State"]);
+        prefs.setString("CurrencySymbol", n["CurrencySymbol"]);
+        prefs.setInt("Cash_Account", n["Cash_Account"]??1);
+        var settingsData = n['settingsData'];
+        prefs.setBool("checkVat", settingsData["VAT"]);
+        prefs.setBool("check_GST", settingsData["GST"]);
+        prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
+
+        prefs.setString("expiryDate", settingsData["ExpiryDate"]);
+        prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
+        prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
+        prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"]??false);
+        prefs.setInt("user_type", n["user_type"]);
+      }
+      else{
+        var errorMessage = n["error"]??n["error"]??"";
+        dialogBox(context, errorMessage.toString());
+      }
+
+    } catch (e) {
+
+      print(e.toString());
+
+
+      dialogBox(context, e.toString());
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: SvgPicture.asset('assets/svg/Logo.svg')),
+      body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset('assets/svg/Logo.svg'),
+              Text(
+                appVersion,
+                style: customisedStyle(context, Colors.grey, FontWeight.w500, 19.0),
+              ),
+            ],
+          )),
     );
   }
 }

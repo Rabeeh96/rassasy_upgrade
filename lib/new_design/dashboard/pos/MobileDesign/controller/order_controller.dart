@@ -104,6 +104,34 @@ class OrderController extends GetxController {
   RxDouble gstAmount = 0.0.obs;
   RxBool isInclusive = false.obs;
 
+  RxList kartChange = [].obs;
+  bool checkValueInList(value) {
+    return kartChange.contains(value);
+  }
+
+
+  changeStatus(status){
+    for(var i = 0;i<kartChange.length ;i++){
+      orderItemList[i]["Status"] = status;
+    }
+    kartChange.clear();
+    orderItemList.refresh();
+    update();
+    totalAmount();
+  }
+
+
+  returnStatus(status){
+    if (status == "pending") {
+      return "Pending";
+    } else if (status == "delivered") {
+      return "Delivered";
+    } else {
+      return "Take away";
+    }
+  }
+
+
   RxString actualProductTaxName = "".obs;
   RxString unitPriceAmount = "0.00".obs;
   RxString inclusiveUnitPriceAmountWR = "0.00".obs;
@@ -127,9 +155,10 @@ class OrderController extends GetxController {
     if (status == "pending") {
       return const Color(0xffECAC08);
     } else if (status == "delivered") {
-      return const Color(0xff034FC1);
-    } else {
       return const Color(0xff000000);
+    } else {
+      return const Color(0xff034FC1);
+
     }
   }
 

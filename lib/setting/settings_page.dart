@@ -16,7 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
-import 'package:rassasy_new/new_design/back_ground_print/print_details/select_codepage.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
 import 'package:rassasy_new/new_design/waiter_list/waiter_select_from_dash.dart';
 import 'package:rassasy_new/test/dragable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -339,8 +339,8 @@ class _SettingsPageState extends State<SettingsPage> {
       else{
         print_type_value = false;
       }
-      capabilitiesController.text = prefs.getString('default_capabilities') ?? "XP-N160I";
-      codePageController.text = prefs.getString('default_code_page') ?? "CP864";
+      capabilitiesController.text = prefs.getString('default_capabilities') ?? "";
+      codePageController.text = prefs.getString('default_code_page') ?? "";
       defaultSalesInvoiceController.text = prefs.getString('defaultIP') ?? "";
       defaultSalesOrderController.text = prefs.getString('defaultOrderIP') ?? "";
 

@@ -58,7 +58,7 @@ class _SelectDeliveryManState extends State<SelectDeliveryMan> {
                 : controller.users.isEmpty
                     ? const Center(child: Text("Sales man not found"))
                     : ListView.separated(
-                        separatorBuilder: (context, index) => DividerStyle(),
+                        separatorBuilder: (context, index) => dividerStyle(),
                         itemCount: controller.users.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(

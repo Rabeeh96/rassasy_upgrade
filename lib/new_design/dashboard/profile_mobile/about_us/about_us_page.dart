@@ -92,7 +92,7 @@ class _AboutUsState extends State<AboutUs> {
                       ),
                     ),
                   ),
-                  DividerStyle(),
+                  dividerStyle(),
                   GestureDetector(
                     onTap: (){
                       //Get.to(TermsAndCondition());
@@ -122,7 +122,7 @@ class _AboutUsState extends State<AboutUs> {
                     ),
                   ),
 
-                  DividerStyle(),
+                  dividerStyle(),
                   GestureDetector(
                     onTap: (){
 

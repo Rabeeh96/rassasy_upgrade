@@ -51,7 +51,7 @@ class _SelectTaxState extends State<SelectRouteMobile> {
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyle(),
 
           Expanded(
               child: Obx(() => customerController.isRouteLoad.value
@@ -94,7 +94,7 @@ class _SelectTaxState extends State<SelectRouteMobile> {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>
-                    DividerStyle(),
+                    dividerStyle(),
               ))),
         ],
       ),

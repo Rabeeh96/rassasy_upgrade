@@ -84,7 +84,7 @@ class _TakeAwayState extends State<TakeAway> {
         dividerStyleFull(),
         Expanded(
             child: Obx(() => takeAwayController.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator(color: Color(0xffffab00),))
                 : takeAwayController.takeAwayOrders.isEmpty
                     ? Center(
                         child: Text(
@@ -95,6 +95,7 @@ class _TakeAwayState extends State<TakeAway> {
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: RefreshIndicator(
+                          color: Color(0xffffab00),
                           onRefresh: () async {
                             takeAwayController.tableData.clear();
                             takeAwayController.fetchAllData();
@@ -102,7 +103,7 @@ class _TakeAwayState extends State<TakeAway> {
                           },
                           child: ListView.separated(
                             separatorBuilder: (context, index) =>
-                                DividerStyle(),
+                                dividerStyle(),
                             itemCount:
                                 takeAwayController.takeAwayOrders.length + 1,
                             itemBuilder: (context, index) {
@@ -595,7 +596,7 @@ class _TakeAwayState extends State<TakeAway> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
-                        'Add_Takeaway'.tr,
+                        'Add_Order'.tr,
                         style: customisedStyle(context, const Color(0xffF25F29),
                             FontWeight.w500, 14.0),
                       ),

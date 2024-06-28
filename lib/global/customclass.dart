@@ -143,7 +143,7 @@ dividerStyleFull(){
   );
 }
 
- DividerStyle(){
+ dividerStyle(){
   // Color(0xffE8E8E8): Color(0xff1C3347)
   Color lightgrey = const Color(0xFFE8E8E8);
   Color grey= const Color(0xFFE8E8E8).withOpacity(.3);

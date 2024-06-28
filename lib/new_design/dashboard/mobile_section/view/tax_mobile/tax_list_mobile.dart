@@ -8,7 +8,7 @@ import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/flavour_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/tax_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
-
+import 'dart:io' show Platform;
 import 'add_tax_mobile.dart';
 
 class TaxListMobile extends StatefulWidget {
@@ -30,6 +30,7 @@ class _TaxListMobileState extends State<TaxListMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
@@ -43,12 +44,12 @@ class _TaxListMobileState extends State<TaxListMobile> {
         ),
         title: Text(
           'Tax',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyleFull(),
           Container(
               margin: const EdgeInsets.only(
                 left: 15,
@@ -105,7 +106,7 @@ class _TaxListMobileState extends State<TaxListMobile> {
                   ),
                 ],
               )),
-          DividerStyle(),
+          dividerStyleFull(),
           Expanded(
               child: RefreshIndicator(
                 color: Color(0xffF25F29),
@@ -144,7 +145,7 @@ class _TaxListMobileState extends State<TaxListMobile> {
                                 // A LiableAction can have an icon and/or a label.
                                 SlidableAction(
                                   onPressed: (BuildContext context) async {
-                                    print("eerte");
+
                                     // bool hasPermission =
                                     // await checkingPerm("Flavourdelete");
                                     //
@@ -243,13 +244,13 @@ print("1");
                                 )));
                       },
                       separatorBuilder: (BuildContext context, int index) =>
-                          DividerStyle(),
+                          dividerStyle(),
                     ))),
               )),
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+        padding:  EdgeInsets.only(top: 10.0, bottom:Platform.isIOS ? 25:10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

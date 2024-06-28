@@ -58,7 +58,7 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
                 : controller.customerList.isEmpty
                 ? const Center(child: Text("Customers not found"))
                 : ListView.separated(
-              separatorBuilder: (context, index) => DividerStyle(),
+              separatorBuilder: (context, index) => dividerStyle(),
               itemCount: controller.customerList.length,
               itemBuilder: (context, index) {
                 return GestureDetector(

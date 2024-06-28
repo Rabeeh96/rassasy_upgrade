@@ -50,6 +50,7 @@ class _CreateProductMobileState extends State<CreateProductGroup> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
+        centerTitle: false,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -61,7 +62,7 @@ class _CreateProductMobileState extends State<CreateProductGroup> {
         ),
         title: Text(
             'product_group'.tr,
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
         actions: [
           Padding(
@@ -95,50 +96,45 @@ class _CreateProductMobileState extends State<CreateProductGroup> {
                 icon: Text(
                   'save'.tr,
                   style: customisedStyle(
-                      context, Color(0xffF25F29), FontWeight.w400, 14.0),
+                      context, Color(0xffF25F29), FontWeight.w500, 16.0),
                 )),
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20),
-        child: ListView(
-          children: [
-            DividerStyle(),
-            SizedBox(
-              height: 15,
-            ),
+      body: ListView(
+        children: [
+          dividerStyleFull(),
+          SizedBox(
+            height: 20,
+          ),
 
 
-            TextField(
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productGroupController.groupNameController,
               style:
-              customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               focusNode: productGroupController.productNameFocusNode,
               onEditingComplete: () {
-                // if(productController.productNameController.text !=""){
-                //   if(productController.isGst ==false){
-                //     productController.convertToArabic( name: productController.productNameController.text,);
-                //   }
-                //   else{
-                //     productController.descriptionController.text = productController.productNameController.text;
-                //   }
-                // }
                 FocusScope.of(context).requestFocus(productGroupController.kitchenFocusNode);
               },
               keyboardType: TextInputType.text,
               decoration: TextFieldDecoration.mobileTextfieldMandatoryIc(
                   hintTextStr: 'grp_name'.tr),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productGroupController.kitchenController,
               style:
-              customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               // /focusNode: nameFCNode,
               readOnly: true,
               onTap: () async {
@@ -157,17 +153,19 @@ class _CreateProductMobileState extends State<CreateProductGroup> {
                 FocusScope.of(context).requestFocus(productGroupController.descriptionFocusNode);
               },
               keyboardType: TextInputType.text,
-              decoration: TextFieldDecoration.mobileTextfieldMandatoryIcon(
-                  hintTextStr: 'select_kitchens'.tr),
+              decoration: TextFieldDecoration.mobileTextfieldMandatoryIcon(hintTextStr: 'select_kitchen'.tr),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productGroupController.productCategoryController,
               style:
-              customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               // /focusNode: nameFCNode,
               readOnly: true,
               onTap: () async {
@@ -187,16 +185,19 @@ class _CreateProductMobileState extends State<CreateProductGroup> {
               },
               keyboardType: TextInputType.text,
               decoration: TextFieldDecoration.mobileTextfieldMandatoryIcon(
-                  hintTextStr: 'select_cat'.tr),
+                  hintTextStr: 'Category'.tr),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productGroupController.descriptionController,
               style:
-              customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
 
               focusNode: productGroupController.descriptionFocusNode,
               onEditingComplete: () {
@@ -206,12 +207,12 @@ class _CreateProductMobileState extends State<CreateProductGroup> {
               decoration: TextFieldDecoration.mobileTextfieldMandatory(
                   hintTextStr: 'description'.tr),
             ),
+          ),
 
 
 
 
-          ],
-        ),
+        ],
       ),
     );
   }

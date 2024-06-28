@@ -6,7 +6,8 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/product_group_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
-
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 import 'add_product_group.dart';
 
 class ProductGroupMobile extends StatefulWidget {
@@ -15,8 +16,7 @@ class ProductGroupMobile extends StatefulWidget {
 }
 
 class _ProductGroupMobileState extends State<ProductGroupMobile> {
-  ProductGroupController productGroupController =
-      Get.put(ProductGroupController());
+  ProductGroupController productGroupController = Get.put(ProductGroupController());
 
   @override
   void initState() {
@@ -30,6 +30,7 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
+        centerTitle: false,
         titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(
@@ -42,19 +43,18 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
         ),
         title: Text(
           'product_group'.tr,
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyleFull(),
           Container(
               margin: const EdgeInsets.only(
                 left: 15,
                 right: 10,
               ),
               height: MediaQuery.of(context).size.height * .055,
-
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -67,19 +67,13 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                           productGroupController.productGroupLists.clear();
                           productGroupController.getProductListDetails();
                         },
-                        style: customisedStyle(
-                            context, Colors.black, FontWeight.normal, 15.0),
+                        style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Color(0xffFBFBFB),
                             hintText: "Search",
-                            hintStyle: customisedStyle(
-                                context,
-                                const Color(0xff929292),
-                                FontWeight.normal,
-                                15.0),
-                            contentPadding: const EdgeInsets.only(
-                                left: 10.0, bottom: 10, top: 8),
+                            hintStyle: customisedStyle(context, const Color(0xff929292), FontWeight.normal, 15.0),
+                            contentPadding: const EdgeInsets.only(left: 10.0, bottom: 10, top: 8),
                             border: InputBorder.none)),
                   ),
                   IconButton(
@@ -95,14 +89,12 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                   ),
                 ],
               )),
-          DividerStyle(),
+          dividerStyleFull(),
           Expanded(
               child: RefreshIndicator(
             color: Color(0xffF25F29),
             onRefresh: () async {
-              // Implement the logic to refresh data here
-               productGroupController.getProductListDetails();
-              //     .fetchProducts(''); // Assuming you pass the token here
+              productGroupController.getProductListDetails();
             },
             child: Obx(() => productGroupController.isLoadGroups.value
                 ? const Center(
@@ -113,19 +105,16 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                     ? Center(
                         child: Text(
                         "No Groups to Show",
-                        style: customisedStyleBold(
-                            context, Colors.black, FontWeight.w400, 14.0),
+                        style: customisedStyleBold(context, Colors.black, FontWeight.w400, 14.0),
                       ))
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: ListView.separated(
-                          itemCount:
-                              productGroupController.productGroupLists.length,
+                          itemCount: productGroupController.productGroupLists.length,
                           itemBuilder: (context, index) {
                             ///swipe to delete dismissible
                             return Slidable(
-                                key: ValueKey(productGroupController
-                                    .productGroupLists[index]),
+                                key: ValueKey(productGroupController.productGroupLists[index]),
                                 // The start action pane is the one at the left or the top side.
                                 startActionPane: ActionPane(
                                   // A motion is a widget used to control how the pane animates.
@@ -136,9 +125,7 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                                     // A LiableAction can have an icon and/or a label.
                                     SlidableAction(
                                       onPressed: (BuildContext context) async {
-                                        print("eerte");
-                                        bool hasPermission =
-                                            await checkingPerm("Groupdelete");
+                                        bool hasPermission = await checkingPerm("Groupdelete");
 
                                         if (hasPermission) {
                                           bottomDialogueFunction(
@@ -149,18 +136,12 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                                               },
                                               secondBtnPressed: () async {
                                                 Get.back(); // Close the dialog
-                                                productGroupController
-                                                    .deleteProduct(
-                                                        productGroupController
-                                                            .productGroupLists[
-                                                                index]
-                                                            .uID);
+                                                productGroupController.deleteProduct(productGroupController.productGroupLists[index].uID);
                                               },
                                               secondBtnText: 'Ok',
                                               context: context);
                                         } else {
-                                          dialogBoxPermissionDenied(
-                                              context); // Assuming this function also uses Get.dialog
+                                          dialogBoxPermissionDenied(context); // Assuming this function also uses Get.dialog
                                         }
                                       },
                                       // onPressed: doNothing ,
@@ -182,8 +163,7 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                                       onPressed: (BuildContext context) async {
                                         Get.to(CreateProductGroup(
                                           type: "Edit",
-                                          uid: productGroupController
-                                              .productGroupLists[index].uID,
+                                          uid: productGroupController.productGroupLists[index].uID,
                                         ));
                                       },
                                       // onPressed: doNothing ,
@@ -199,38 +179,27 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                                 // The child of the Slidable is what the user sees when the
                                 // component is not dragged.
                                 child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 10.0,
-                                      right: 10,
-                                    ),
+                                    padding: const EdgeInsets.only(left: 20.0, right: 20, top: 5, bottom: 5),
                                     child: ListTile(
                                       title: Text(
-                                        productGroupController
-                                            .productGroupLists[index].groupName,
-                                        style: customisedStyle(
-                                            context,
-                                            Colors.black,
-                                            FontWeight.w400,
-                                            14.0),
+                                        productGroupController.productGroupLists[index].groupName,
+                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                       ),
                                     )));
                           },
-                          separatorBuilder: (BuildContext context, int index) =>
-                              DividerStyle(),
+                          separatorBuilder: (BuildContext context, int index) => dividerStyle(),
                         ))),
           )),
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+        padding:  EdgeInsets.only(top: 10.0, bottom:Platform.isIOS ? 25:10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffFFF6F2))),
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () {
                   Get.to(CreateProductGroup());
                 },
@@ -244,8 +213,7 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
                         'Add Group',
-                        style: customisedStyle(context, const Color(0xffF25F29),
-                            FontWeight.normal, 12.0),
+                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 12.0),
                       ),
                     )
                   ],

@@ -101,7 +101,7 @@ class _AddCustomerMobileState extends State<AddCustomerMobile> {
         padding: const EdgeInsets.only(left: 15.0, right: 15),
         child: ListView(
           children: [
-            DividerStyle(),
+            dividerStyle(),
             const SizedBox(
               height: 15,
             ),

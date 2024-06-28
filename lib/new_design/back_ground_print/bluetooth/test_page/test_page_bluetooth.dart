@@ -6,7 +6,7 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/pos/models/bluetooth_printer.dart';
-import 'package:rassasy_new/new_design/back_ground_print/print_details/select_codepage.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
 
 import 'package:charset_converter/charset_converter.dart';
 import 'package:shared_preferences/shared_preferences.dart';

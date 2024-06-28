@@ -52,7 +52,7 @@ class _SelectTableReservationState extends State<SelectTableReservation> {
       ),
       body: Column(children: [
 
-        DividerStyle(),
+        dividerStyle(),
         SizedBox(height: 20,),
         // Expanded(
         //     child: Obx(() =>

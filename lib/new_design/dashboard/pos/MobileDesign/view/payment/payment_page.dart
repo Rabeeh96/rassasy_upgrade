@@ -69,7 +69,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ],
                 ),
               ),
-              DividerStyle(),
+              dividerStyle(),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
@@ -219,6 +219,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
@@ -233,7 +234,7 @@ class _PaymentPageState extends State<PaymentPage> {
         elevation: 0,
         title: Text(
           'payment'.tr,
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
         actions: [
           // ElevatedButton(
@@ -288,7 +289,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                       ),
                                       Text(
                                         paymentController.paymentCustomerSelection.text,
-                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
                                       ),
                                       const Icon(
                                         Icons.arrow_forward_ios,
@@ -299,7 +300,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                   ),
                                 )
                               ),
-                              DividerStyle(),
+                              dividerStyle(),
 
                               GestureDetector(
                                   onTap: ()async{
@@ -325,12 +326,12 @@ class _PaymentPageState extends State<PaymentPage> {
                                         ),
                                         Text(
                                           paymentController.customerPhoneSelection.text ?? "",
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                         ),
 
                                         Text(
                                           "",
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                         ),
                                         // const Icon(
                                         //   Icons.arrow_forward_ios,
@@ -345,7 +346,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                   )
                               ),
 
-                              DividerStyle(),
+                              dividerStyle(),
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -359,12 +360,12 @@ class _PaymentPageState extends State<PaymentPage> {
                                         padding: const EdgeInsets.only(right: 8.0),
                                         child: Text(
                                           paymentController.currency.value,
-                                          style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                          style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                         ),
                                       ),
                                       Text(
                                         roundStringWith(paymentController.balance.toString()),
-                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                       ),
                                     ],
                                   ),
@@ -409,7 +410,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     ),
                                     Text(
                                       paymentController.deliveryManName.value,
-                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                     ),
                                     const Icon(
                                       Icons.arrow_forward_ios,
@@ -560,12 +561,12 @@ class _PaymentPageState extends State<PaymentPage> {
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
                                     paymentController.currency.value,
-                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                   ),
                                 ),
                                 Text(
                                   roundStringWith(paymentController.totalGrossP.value.toString()),
-                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                 ),
                               ],
                             ),
@@ -623,18 +624,18 @@ class _PaymentPageState extends State<PaymentPage> {
                                       padding: const EdgeInsets.only(right: 8.0),
                                       child: Text(
                                         paymentController.currency.value,
-                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                       ),
                                     ),
                                     Text(
                                       roundStringWith(paymentController.totalTaxMP.value),
-                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                     ),
                                   ],
                                 ),
                               ]),
                             ),
-                            DividerStyle(),
+                            dividerStyle(),
                             Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -648,18 +649,18 @@ class _PaymentPageState extends State<PaymentPage> {
                                       padding: const EdgeInsets.only(right: 8.0),
                                       child: Text(
                                         paymentController.currency.value,
-                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                       ),
                                     ),
                                     Text(
                                       roundStringWith(paymentController.totalNetP.value),
-                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                     ),
                                   ],
                                 ),
                               ]),
                             ),
-                            DividerStyle(),
+                            dividerStyle(),
                             Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -673,12 +674,12 @@ class _PaymentPageState extends State<PaymentPage> {
                                       padding: const EdgeInsets.only(right: 8.0),
                                       child: Text(
                                         paymentController.currency.value,
-                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.5),
                                       ),
                                     ),
                                     Text(
                                       roundStringWith(paymentController.grandTotalAmount.value),
-                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 18.0),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 17.0),
                                     ),
                                   ],
                                 ),
@@ -769,7 +770,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                   SizedBox(
                                     height: 8,
                                   ),
-                                  DividerStyle(),
+                                  dividerStyle(),
                                   SizedBox(
                                     height: 8,
                                   ),

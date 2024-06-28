@@ -52,7 +52,7 @@ class _SelectCapabilitiesMobState extends State<SelectCapabilitiesMob> {
                           Navigator.pop(context, capabilitiesController.printerModels[index]);
                         },
                       ),
-                      DividerStyle()
+                      dividerStyle()
                     ],
                   );
                 }),
