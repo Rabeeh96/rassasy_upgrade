@@ -17,10 +17,10 @@ import 'package:ping_discover_network_forked/ping_discover_network_forked.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'select_codepage.dart';
+import '../select_codepage.dart';
 
 class PrintSettingsDetailed extends StatefulWidget {
   @override
@@ -1384,7 +1384,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
       try {
         var result = await CapabilityProfile.getAvailableProfiles();
 
-        for (var i = 0; i < result.length; i++) {
+        for (var i = 0; i < 1; i++) {
           var profile = await CapabilityProfile.load(name: result[i]["key"]);
           final supportedCodePages = profile.codePages;
 
@@ -1445,10 +1445,16 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
             Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
             printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
-
             codePage.add(supportedCodePages[ind].name);
           }
 
+
+          /// cpmmented upi
+
+          // var upiID = "8714152075@ybl";
+          // var name = "Rabeeh";
+          // var amount = "1";
+          // printer.qrcode("upi://pay?pa=$upiID&pn=$name&am=$amount&cu=INR",size:QRSize.Size8);
           printer.cut();
           printer.disconnect();
           print('Receipt printed successfully.');
@@ -1564,7 +1570,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     "default",
     "simple",
   ];
-  bool withCodePage = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -1594,16 +1600,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                 ),
                 backgroundColor: Colors.grey[300],
                 actions: <Widget>[
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            withCodePage = !withCodePage;
-                          });
-                        },
-                        child: Text(
-                          withCodePage ? "With Codepage" : "Without code page",
-                          style: TextStyle(color: withCodePage ? Colors.red : Colors.black),
-                        )),
+
                   ])
             : AppBar(
                 leading: IconButton(
@@ -1625,17 +1622,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                   ),
                 ),
                 actions: <Widget>[
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          withCodePage = !withCodePage;
-                        });
-                      },
-                      icon: Text(
-                        withCodePage ? "With Codepage" : "Without code page",
-                        style: customisedStyle(context, withCodePage ? Colors.red : Colors.black, FontWeight.normal, 14.0),
-                      ),
-                    )
+
                   ]),
         body: isTablet ? tabPrintPage() : mobilePrintPage());
   }
@@ -1745,7 +1732,42 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                     child: Text('Test with all Capabilities', style: TextStyle(color: Colors.white)),
                     //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
                     onPressed: () async {
-                      testPrintAll();
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Confirmation'),
+                            content: Text('This print may generate a lot of test cases,\n and it would  require more paper to execute.\n Are you sure you want to keep going?'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(false); // Return false when cancelled
+                                },
+                              ),
+                              TextButton(
+                                child: Text('OK'),
+                                onPressed: () {
+
+                                  testPrintAll();
+                                  Navigator.of(context).pop(true); // Return true when confirmed
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ).then((confirmed) {
+                        if (confirmed != null && confirmed) {
+                          // User confirmed, perform your action here
+                          print('User confirmed');
+                        } else {
+                          // User cancelled, perform your action here or do nothing
+                          print('User cancelled');
+                        }
+                      });
+
+
                     }),
               ],
             ),
@@ -1771,14 +1793,15 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
                             return Card(
                               child: ListTile(
                                 onTap: () async {
+
                                   testPrintOneByOne(printerModels[index]);
 
                                   // if (withCodePage) {
-                                  //
-                                  //   testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
+                                  // testPrint(ctx: context, capability: printerModels[index], codePage: code_page_controller.text);
                                   // } else {
-                                  //   testPrint2(ctx: context, capability: printerModels[index], codePage: '');
+                                  //  testPrint2(ctx: context, capability: printerModels[index], codePage: '');
                                   // }
+
                                 },
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -20,10 +20,15 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:charset_converter/charset_converter.dart';
-import 'Templates/template3.dart';
+import '../Templates/template3.dart';
 import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
 import 'package:get/get.dart';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
+
+
 class AppBlocs {
   List<ProductDetailsModel> printDalesDetails = [];
 
@@ -41,7 +46,6 @@ class AppBlocs {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
         var currency = prefs.getString('CurrencySymbol') ?? "";
-
         var pk = PrintDataDetails.id;
         final String url = '$baseUrl/posholds/view/pos-sale/invoice/$pk/';
         print(url);
@@ -151,7 +155,7 @@ class AppBlocs {
     }
   }
 
-  /// print order and invoice //
+  /// print order and invoice ////
   void print_receipt(String printerIp, BuildContext ctx, isCancelled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var temp = prefs.getString("template") ?? "template4";
@@ -164,6 +168,8 @@ class AppBlocs {
     var OpenDrawer = prefs.getBool("OpenDrawer") ?? false;
     var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
     var hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;
+    var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
+    print("------flavourInOrderPrint---------------flavourInOrderPrint-------------------------$flavourInOrderPrint");
 
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
@@ -181,10 +187,10 @@ class AppBlocs {
     if (res == PosPrintResult.success) {
       if (temp == 'template4') {
         await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint,
-            hideTaxDetails, defaultCodePage, isCancelled);
+            hideTaxDetails, defaultCodePage, isCancelled,flavourInOrderPrint);
       } else if (temp == 'template3') {
         await englishInvoicePrint(
-            printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails);
+            printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails,flavourInOrderPrint);
       } else {
         await printArabic(printer);
       }
@@ -206,7 +212,7 @@ class AppBlocs {
 
   /// template supported  english and arabic template
   Future<void> arabicTemplateForInvoiceAndOrder(NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer,
-      timeInPrint, taxDetails, defaultCodePage, isCancelled) async {
+      timeInPrint, taxDetails, defaultCodePage, isCancelled,flavourInOrderPrint) async {
 
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
@@ -617,9 +623,7 @@ class AppBlocs {
 
     for (var i = 0; i < tableDataDetailsPrint.length; i++) {
       var slNo = i + 1;
-
       Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
-
       printer.row([
         PosColumn(
             text: "$slNo",
@@ -654,6 +658,30 @@ class AppBlocs {
                 height: PosTextSize.size1,
               ))
         ]);
+      }
+
+      var flavour = tableDataDetailsPrint[i].flavourName ?? '';
+
+      if (PrintDataDetails.type == "SO") {
+        if(flavourInOrderPrint){
+          if(flavour!=""){
+            Uint8List flavourNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].flavourName));
+            printer.row([
+              PosColumn(
+                  textEncoded: flavourNameEnc,
+                  width: 7,
+                  styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+              PosColumn(
+                  text: '',
+                  width: 5,
+                  styles: const PosStyles(
+                    height: PosTextSize.size1,
+                  ))
+            ]);
+          }
+
+
+        }
       }
 
       printer.hr();
@@ -786,7 +814,7 @@ class AppBlocs {
 
   /// template supported only english
   Future<void> englishInvoicePrint(
-      NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, taxDetails) async {
+      NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, taxDetails,flavourInOrderPrint) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -853,7 +881,7 @@ class AppBlocs {
     //
     /// image print commented
 
-    printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+
     if (PrintDataDetails.type == "SI") {
       if (companyLogo != "") {
         final Uint8List imageData = await _fetchImageData(companyLogo);
@@ -1053,7 +1081,7 @@ class AppBlocs {
       ]);
     }
 
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
+
     printer.row([
       PosColumn(
           text: 'Order type  ',
@@ -1072,7 +1100,6 @@ class AppBlocs {
           )),
     ]);
 
-    printer.setStyles(const PosStyles(codeTable: 'CP864'));
 
     if (tableName != "") {
       printer.row([
@@ -1178,6 +1205,26 @@ class AppBlocs {
               width: 11,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
         ]);
+      }
+      var flavour = tableDataDetailsPrint[i].flavourName ?? '';
+
+      if (PrintDataDetails.type == "SO") {
+        if(flavourInOrderPrint){
+          if(flavour!=""){
+            printer.row([
+              PosColumn(
+                  text: flavour,
+                  width: 7,
+                  styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+              PosColumn(
+                  text: '',
+                  width: 5,
+                  styles: const PosStyles(
+                    height: PosTextSize.size1,
+                  ))
+            ]);
+          }
+        }
       }
 
       printer.hr();
@@ -3396,6 +3443,54 @@ print(salesOrder);
     }
   }
 
+
+  Future<void> printDemoPage(NetworkPrinter printer,imageData) async {
+
+    print("------112");
+
+
+    // final Image? image = decodeImage(imageData);
+    // printer.imageRaster(image!);
+    // printer.cut();
+
+    final Img.Image? image = Img.decodeImage(imageData);
+    print("------113");
+    final Img.Image resizedImage = Img.copyResize(image!,width: 550);
+    print("------114");
+    printer.imageRaster(resizedImage);
+    print("------115");
+    printer.cut();
+  }
+
+
+  void print_demo(String printerIp,BuildContext ctx,byte) async {
+    print("1");
+    const PaperSize paper = PaperSize.mm80;
+    var profile = await CapabilityProfile.load();
+    print("2");
+    final printer = NetworkPrinter(paper, profile);
+    print("3");
+    var port = int.parse("9100");
+    print("4");
+    final PosPrintResult res = await printer.connect(printerIp, port: port);
+    print("5");
+    if (res == PosPrintResult.success) {
+      print("6");
+      await printDemoPage(printer,byte);
+      print("7");
+      Future.delayed(const Duration(seconds: 2), () async {
+        print("8");
+        print("------after delay----------------------------strt printing");
+        printer.disconnect();
+      });
+    } else {
+
+      popAlert(head: "Error", message: "Check your printer connection",position: SnackPosition.TOP);
+
+    }
+  }
+
+
   Future<void> testPrint(NetworkPrinter printer) async {
     // final ByteData data = await rootBundle.load('assets/fonts/CustomArabicFont.ttf');
     // final Uint8List fontData = data.buffer.asUint8List();
@@ -3629,7 +3724,7 @@ print(salesOrder);
 }
 
 class ProductDetailsModel {
-  final String unitName, qty, netAmount, productName, unitPrice, productDescription;
+  final String unitName, qty, netAmount, productName, flavourName, unitPrice, productDescription;
 
   ProductDetailsModel({
     required this.unitName,
@@ -3638,6 +3733,7 @@ class ProductDetailsModel {
     required this.productName,
     required this.unitPrice,
     required this.productDescription,
+    required this.flavourName,
   });
 
   factory ProductDetailsModel.fromJson(Map<dynamic, dynamic> json) {
@@ -3648,6 +3744,7 @@ class ProductDetailsModel {
       productName: json['ProductName'],
       unitPrice: json['unitPriceRounded'].toString(),
       productDescription: json['ProductDescription'],
+      flavourName: json['flavour_name']??"",
     );
   }
 }

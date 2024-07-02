@@ -29,6 +29,7 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
@@ -43,14 +44,14 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
         ),
         title: Text(
           'Invoice',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
 
 
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyle(),
           SizedBox(height:15,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -145,7 +146,7 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
             ],
           ),
           SizedBox(height: 15,),
-          DividerStyle(),
+          dividerStyle(),
           Expanded(
               child: RefreshIndicator(
                 color: Color(0xffF25F29),
@@ -184,7 +185,8 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                               SlidableAction(
                                 onPressed: (BuildContext context) async {
                                   PrintDataDetails.id = invoiceController.invoiceList[index].salesMasterID;
-                                 invoiceController.printDetail(type: "SI");
+                                  PrintDataDetails.type = "SI";
+                                  invoiceController.printDetail(type: "SI");
                                 },
                                 // onPressed: doNothing ,
                                 backgroundColor: Colors.blueAccent,
@@ -275,7 +277,7 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                           )
                         );
                       }, separatorBuilder: (BuildContext context, int index) =>
-                        DividerStyle(),
+                        dividerStyle(),
                     ))
 
 

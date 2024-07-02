@@ -6,7 +6,7 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/customer_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
-
+import 'dart:io' show Platform;
 import 'add_customer.dart';
 
 class CustomerListMobile extends StatefulWidget {
@@ -29,6 +29,7 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
+        centerTitle: false,
         titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(
@@ -41,12 +42,12 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
         ),
         title: Text(
           'Customer',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyleFull(),
           Container(
               margin: const EdgeInsets.only(
                 left: 15,
@@ -93,7 +94,7 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                   ),
                 ],
               )),
-          DividerStyle(),
+          dividerStyleFull(),
           Expanded(
               child: RefreshIndicator(
             color: Color(0xffF25F29),
@@ -132,7 +133,7 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                                     // A LiableAction can have an icon and/or a label.
                                     SlidableAction(
                                       onPressed: (BuildContext context) async {
-                                        print("eerte");
+
                                         bool hasPermission =
                                             await checkingPerm("Groupdelete");
 
@@ -176,17 +177,15 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                                     // A LiableAction can have an icon and/or a label.
                                     SlidableAction(
                                       onPressed: (BuildContext context) async {
-                                        customerController.getSingleView(customerController
-                                            .customerModelClass[index].id);
-                                        Get.to(AddCustomerMobile(
-                                          type: "Edit",
-                                          uid: customerController
-                                              .customerModelClass[index].id,
-                                        ));
+                                        // Get.to(CreateProductGroup(
+                                        //   type: "Edit",
+                                        //   uid: productGroupController
+                                        //       .productGroupLists[index].uID,
+                                        // ));
                                       },
                                       // onPressed: doNothing ,
                                       backgroundColor: Colors.blue,
-                                        foregroundColor: Colors.white,
+                                      foregroundColor: Colors.white,
                                       icon: Icons.edit,
                                       label: 'Edit',
                                     ),
@@ -228,44 +227,44 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                                     )));
                           },
                           separatorBuilder: (BuildContext context, int index) =>
-                              DividerStyle(),
+                              dividerStyle(),
                         ))),
           )),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffFFF6F2))),
-                onPressed: () {
-                  customerController.clearData();
-                   Get.to(AddCustomerMobile());
-                },
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.add,
-                      color: Color(0xffF25F29),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Text(
-                        'Add Customer',
-                        style: customisedStyle(context, const Color(0xffF25F29),
-                            FontWeight.normal, 12.0),
-                      ),
-                    )
-                  ],
-                )),
-          ],
-        ),
-      ),
+      /// commented
+      // bottomNavigationBar: Padding(
+      //   padding:  EdgeInsets.only(top: 10.0, bottom:Platform.isIOS ? 25:10),
+      //   child: Row(
+      //     crossAxisAlignment: CrossAxisAlignment.center,
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       TextButton(
+      //           style: ButtonStyle(
+      //               backgroundColor:
+      //                   MaterialStateProperty.all(const Color(0xffFFF6F2))),
+      //           onPressed: () {
+      //              Get.to(AddCustomerMobile());
+      //           },
+      //           child: Row(
+      //             children: [
+      //               const Icon(
+      //                 Icons.add,
+      //                 color: Color(0xffF25F29),
+      //               ),
+      //               Padding(
+      //                 padding: const EdgeInsets.only(left: 8.0, right: 8),
+      //                 child: Text(
+      //                   'Add Customer',
+      //                   style: customisedStyle(context, const Color(0xffF25F29),
+      //                       FontWeight.normal, 12.0),
+      //                 ),
+      //               )
+      //             ],
+      //           )),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

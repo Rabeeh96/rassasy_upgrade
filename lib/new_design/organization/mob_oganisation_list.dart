@@ -58,7 +58,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
         // padding:  EdgeInsets.only(left: mWidth*.04, right: mWidth*.04),
         child: Column(
           children: [
-            DividerStyle(),
+            dividerStyle(),
             Expanded(
               child: Obx(() {
                 if (companyController.isLoading.value) {
@@ -71,7 +71,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                   return companyController.companyListData.isEmpty
                       ? const Center(child: Text("No Companies Found"))
                       : ListView.separated(
-                          separatorBuilder: (context, index) => DividerStyle(),
+                          separatorBuilder: (context, index) => dividerStyle(),
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemCount: companyController.companyListData.length,
@@ -155,7 +155,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                                 ),
                                                 Text(companyController.convertDate(companyController.companyListData[index].expiryDate!),
                                                 //    style: const TextStyle(color: Color(0xffF25F29), fontWeight: FontWeight.w500, fontSize: 14)
-                                                    style:   customisedStyle(context, Color(0xffF25F29), FontWeight.w500, 14.0)
+                                                    style:customisedStyle(context, Color(0xffF25F29), FontWeight.w500, 14.0)
                                                 ),
                                               ],
                                             ),
@@ -173,7 +173,7 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 8.0, right: 0),
                                     child: ListView.separated(
-                                      separatorBuilder: (context, index) => DividerStyle(),
+                                      separatorBuilder: (context, index) => dividerStyle(),
                                       shrinkWrap: true,
                                       itemCount: companyController.companyListData[index].branches!.length,
                                       itemBuilder: (context, i) {

@@ -13,10 +13,12 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
-import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/barcode/barcode.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/detail/selectDeliveryMan.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/new_method/change_table.dart';
+import 'package:rassasy_new/new_design/report/selectDetails/select_table.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../../main.dart';
@@ -5300,8 +5302,17 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
         } else if (status == 6001) {
           stop();
-          var errorMessage = n["message"];
-          dialogBox(context, errorMessage);
+          var errorMessage = n["message"]??"";
+
+          if(errorMessage =="Table not vacant!"){
+            print("-*-*/-/*-/--/-*/-*/-*//-*/-*/-*/-*$errorMessage");
+            changeTableAlertWithMessage(context, errorMessage,isPayment);
+
+          }
+          else{
+            dialogBox(context, errorMessage);
+          }
+
         } else if (status == 6003) {
           stop();
           dialogBox(context, "Change token number and retry please");
@@ -5320,6 +5331,42 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         dialogBox(context, e.toString());
       }
     }
+  }
+
+  changeTableAlertWithMessage(BuildContext context, msg,isPayment) async {
+    await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xff415369),
+          title:  Text("Table not vacant . Please select another table for continue !", style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              onPressed: ()async{
+                var result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChangeTable()),
+                );
+                if(result !=null){
+                  widget.tableID = result[1];
+                  Navigator.pop(context);
+                  postingData(isPayment);
+                }else{
+                  Navigator.pop(context);
+                }
+
+
+              },
+              child: Text("Change table", style: customisedStyle(context, Colors.red, FontWeight.w600, 14.0)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   DateTime getDateWithHourCondition(DateTime date, int hour) {
@@ -6611,7 +6658,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$selectedDateAndTime";
         var dateOnly = convertedDate.substring(0, 10);
-        Map data = {"CompanyID": companyID, "BranchID": branchID, "Date": dateOnly};
+        Map data = {"CompanyID": companyID, "BranchID": branchID, "Date": dateOnly,
+          "is_used_group":true
+        };
         print(data);
         //encode Map to JSON
         var body = json.encode(data);
@@ -7105,7 +7154,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           dialogBoxHide(context, "Sales created successfully!!!");
 
-          print("--0-----${widget.orderType}----");
+
           Navigator.pop(context, [widget.orderType, false]);
           Future.delayed(const Duration(milliseconds: 500), () {
             if (print_save == true) {
@@ -7114,7 +7163,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               printDetail(context);
             }
           });
-        } else if (status == 6001) {
+        }
+        else if (status == 6001) {
           stop();
           var errorMessage = n["message"]??"";
           dialogBox(context, errorMessage);

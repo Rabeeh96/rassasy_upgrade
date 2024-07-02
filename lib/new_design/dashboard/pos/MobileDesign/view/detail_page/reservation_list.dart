@@ -725,7 +725,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                         ],
                                       ),
                                     ),
-                                    DividerStyle()
+                                    dividerStyle()
                                   ],
                                 ),
                               ),

@@ -29,6 +29,7 @@ class _SearchItemsState extends State<SearchItems> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        centerTitle: false,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -39,11 +40,11 @@ class _SearchItemsState extends State<SearchItems> {
           },
         ),
         titleSpacing: 0,
-        elevation: 0,
+
         title:  Text(
           'search'.tr,
           style: const TextStyle(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+              color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500),
         ),
         actions: [
           Padding(
@@ -77,7 +78,7 @@ class _SearchItemsState extends State<SearchItems> {
               orderController.searchItems(productName: quary, isCode: orderController.dropdownvalue.value=="Code"?true:false, isDescription:orderController.dropdownvalue.value=="Description"?true:false);
             },
           ),
-          DividerStyle(),
+          dividerStyle(),
           const SizedBox(
             height: 10,
           ),
@@ -121,7 +122,7 @@ class _SearchItemsState extends State<SearchItems> {
           const SizedBox(
             height: 10,
           ),
-          DividerStyle(),
+          dividerStyle(),
           Expanded(child: Obx(() {
 
             if (orderController.isLoading.value) {
@@ -130,7 +131,7 @@ class _SearchItemsState extends State<SearchItems> {
               return orderController.searchProductList.isEmpty?const Center(child: Text("No results found")):
 
                 ListView.separated(
-                separatorBuilder: (context, index) => DividerStyle(),
+                separatorBuilder: (context, index) => dividerStyle(),
                 itemCount: orderController.searchProductList.length,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -237,10 +238,21 @@ class _SearchItemsState extends State<SearchItems> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
 
+
+                                    // Container(
+                                    //   color:Colors.red,
+                                    //   height: MediaQuery.of(context).size.height / 11,
+                                    //   width: MediaQuery.of(context).size.width / 5,
+                                    //   child: ClipRRect(
+                                    //       child: SvgPicture.asset("assets/svg/no_image.svg")
+                                    //   ),
+                                    // ),
+
+
                                     Image.network(
                                       orderController.searchProductList[index].productImage != ""
                                           ? orderController.searchProductList[index].productImage
-                                          : 'https://www.api.viknbooks.com/media/uploads/Rassasy.png',
+                                          : 'https://www.api.viknbooks.com/media/uploads/Group_5140.png',
                                       fit: BoxFit.cover,
                                     ),
 

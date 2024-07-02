@@ -9,7 +9,7 @@ import 'package:rassasy_new/global/customclass.dart';
 
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
-import 'package:rassasy_new/new_design/back_ground_print/back_ground_print_wifi.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/new.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +61,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
+
         final String url = '$baseUrl/posholds/list-pos-hold-invoices/';
 
         Map data = {
@@ -68,7 +69,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           "CreatedUserID": userID,
           "BranchID": branchID,
           "page_number": 1,
-          "page_size": 40,
+          "page_size": 25,
           "from_date": apiDateFormat.format(fromDateNotifier.value),
           "to_date": apiDateFormat.format(toDateNotifier.value),
         };

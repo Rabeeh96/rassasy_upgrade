@@ -98,25 +98,14 @@ class _DetailPageState extends State<DetailPage> {
                                             .iPAddress) ??
                                     '';
                               } else {
-                                prefs.setString(
-                                        'defaultOrderIP',
-                                        printController.printDetailList[index]
-                                            .iPAddress) ??
-                                    '';
-                                prefs.setString(
-                                        'defaultIP',
-                                        printController.printDetailList[index]
-                                            .iPAddress) ??
-                                    '';
+                                prefs.setString('defaultOrderIP', printController.printDetailList[index].iPAddress) ?? '';
+                                prefs.setString('defaultIP', printController.printDetailList[index].iPAddress) ?? '';
                               }
 
-                              Navigator.pop(
-                                  context,
-                                  printController
-                                      .printDetailList[index].printerName);
+                              Navigator.pop(context, printController.printDetailList[index].iPAddress);
                             },
                           ),
-                          DividerStyle()
+                          dividerStyle()
                         ],
                       );
                     })),

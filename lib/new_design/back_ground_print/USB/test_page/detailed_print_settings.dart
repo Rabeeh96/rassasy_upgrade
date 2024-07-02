@@ -5,20 +5,20 @@ import 'package:flutter/widgets.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
-import 'package:rassasy_new/new_design/back_ground_print/print_details/select_codepage.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
 import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart' as usb_esc_printer_windows;
 import 'package:charset_converter/charset_converter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-class TestPrintUSB extends StatefulWidget {
-  const TestPrintUSB({super.key});
+class TestPrintUSBDetailed extends StatefulWidget {
+  const TestPrintUSBDetailed({super.key});
 
   @override
-  State<TestPrintUSB> createState() => _TestPrintUSBState();
+  State<TestPrintUSBDetailed> createState() => _TestPrintUSBState();
 }
 ////
-class _TestPrintUSBState extends State<TestPrintUSB> {
+class _TestPrintUSBState extends State<TestPrintUSBDetailed> {
   TextEditingController controllerName = TextEditingController();
   final String _printerName = "EPSON";
   late Future<CapabilityProfile> _profile;
@@ -68,84 +68,9 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
     "default",
     "simple",
   ];
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar:  AppBar(
-  //         leading: IconButton(
-  //           icon: const Icon(Icons.arrow_back,color: Colors.black,),
-  //           onPressed: () {
-  //             Navigator.pop(context);
-  //           },
-  //         ), //
-  //         title: const Text(
-  //           'Print settings',
-  //           style: TextStyle(
-  //             fontWeight: FontWeight.bold,
-  //             color: Colors.black,
-  //             fontSize: 23,
-  //           ),
-  //         ),
-  //         backgroundColor: Colors.grey[300],
-  //     ),
-  //     body: Center(
-  //       child: Container(
-  //         color: Colors.white,
-  //         height: 250,
-  // //        width: 300,
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Container(
-  //               width: MediaQuery.of(context).size.width/5,
-  //               child: TextField(
-  //                 textCapitalization: TextCapitalization.words,
-  //                 controller: controllerName,
-  //                 style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-  //                 keyboardType: TextInputType.text,
-  //                 decoration: TextFieldDecoration.rectangleTextField(hintTextStr: 'Enter Driver Address'),
-  //               ),
-  //             ),const SizedBox(
-  //               width: 20,
-  //             ),
-  //
-  //             Container(
-  //
-  //               child: ElevatedButton(
-  //                   style: ElevatedButton.styleFrom(
-  //                     backgroundColor: Colors.cyan, // Background color
-  //                   ),
-  //                   child: Text(
-  //                       'Check Test page',style: customisedStyle(context, Colors.white, FontWeight.w400, 15.0)),
-  //                   //  onPressed: connectionTesting ? null : () => connectionTest(ipController.text)
-  //                   onPressed:()async{
-  //
-  //                     var dat = "";
-  //                     if(controllerName.text !=""){
-  //                       dat=controllerName.text;
-  //                       print("ajshkagdkagdkdgka   $dat");
-  //                       printReq(dat);
-  //                     }
-  //                     else{
-  //                       dialogBox(context, "Please enter driver details");
-  //                     }
-  //
-  //
-  //                   }
-  //               ),
-  //             ),
-  //
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //
-  //
-  //
-  //   );
-  // }
 
-  bool withCodePage = true;
+
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -153,67 +78,93 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
     double screenHeight = screenSize.height;
     bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
-      appBar:isTablet? AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
+        appBar:isTablet? AppBar(
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ), //
+            title: const Text(
+              'Detailed settings',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 23,
+              ),
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ), //
-          title: const Text(
-            'Detailed settings',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 23,
-            ),
-          ),
-          backgroundColor: Colors.grey[300],
-          actions: <Widget>[
+            backgroundColor: Colors.grey[300],
+            actions: <Widget>[
 
-            ElevatedButton(onPressed: (){
-              testPrintAllCodePage(controllerName.text);
-            }, child: Text("Demo")),
-
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    withCodePage = !withCodePage;
-                    print(withCodePage);
-                  });
-                },
-                child: Text(
-                  withCodePage?"With Codepage":"Without code page",
-                  style: TextStyle(color: withCodePage ? Colors.red : Colors.black),
-                )),
-          ]):
-      AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ), //
-          titleSpacing: 0,
-          title: const Text(
-            'Detailed settings',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-              fontSize: 17,
-            ),
-          ),
-          actions: <Widget>[
+              ElevatedButton(onPressed: (){
 
 
-          ]),
-      body:isTablet?tabUsbPage():mobileUsbPage()
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Confirmation'),
+                      content: Text('This print may generate a lot of test cases,\n and it would  require more paper to execute.\n Are you sure you want to keep going?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop(false); // Return false when cancelled
+                          },
+                        ),
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () {
+
+                            testPrintAllCodePage(controllerName.text);
+                            Navigator.of(context).pop(true); // Return true when confirmed
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ).then((confirmed) {
+                  if (confirmed != null && confirmed) {
+                    // User confirmed, perform your action here
+                    print('User confirmed');
+                  } else {
+                    // User cancelled, perform your action here or do nothing
+                    print('User cancelled');
+                  }
+                });
+
+
+              }, child: Text("All Capabilities")),
+
+
+            ]):
+        AppBar(
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ), //
+            titleSpacing: 0,
+            title: const Text(
+              'Detailed settings',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+                fontSize: 17,
+              ),
+            ),
+            actions: <Widget>[
+
+
+            ]),
+        body:isTablet?tabUsbPage():mobileUsbPage()
     );
   }
 
@@ -235,19 +186,8 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
                 ElevatedButton(onPressed: (){
                   testPrintAllCodePage(controllerName.text);
                 }, child: Text("Demo")),
- SizedBox(width: 20,),
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        withCodePage = !withCodePage;
-                        print(withCodePage);
-                      });
-                    },
-                    child: Text(
-                      withCodePage?"With Codepage":"Without code page",
-                      // style: TextStyle(color: withCodePage ? Colors.red : Colors.black,fontSize: 14),
-                      style: customisedStyle(context, withCodePage ? Colors.red : Colors.black, FontWeight.normal, 14.0),
-                    )),
+                SizedBox(width: 20,),
+
               ],
             ),
             const SizedBox(height: 10),
@@ -360,11 +300,9 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
                                 onTap: () async {
 
 
-                                  if (withCodePage) {
+
                                     testPrintOneByONe(controllerName.text,printerModels[index]);
-                                  } else {
-                                    withoutCapabilitiesPrintReq(controllerName.text,printerModels[index]);
-                                  }
+
 
                                 },
                                 title: Row(
@@ -398,7 +336,7 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
       },
     );
   }
-Widget tabUsbPage(){
+  Widget tabUsbPage(){
     return Builder(
       builder: (BuildContext context) {
         return ListView(
@@ -511,13 +449,7 @@ Widget tabUsbPage(){
                             return Card(
                               child: ListTile(
                                 onTap: () async {
-
-
-                                  if (withCodePage) {
-                                    testPrintOneByONe(controllerName.text,printerModels[index]);
-                                  } else {
-                                    withoutCapabilitiesPrintReq(controllerName.text,printerModels[index]);
-                                  }
+                                  testPrintOneByONe(controllerName.text,printerModels[index]);
 
                                 },
                                 title: Row(
@@ -550,7 +482,7 @@ Widget tabUsbPage(){
         );
       },
     );
-}
+  }
   Future<Uint8List> loadImageFromAssets(String path) async {
     final ByteData data = await rootBundle.load(path);
     return data.buffer.asUint8List();
@@ -598,13 +530,13 @@ Widget tabUsbPage(){
       final supportedCodePages = profile.codePages;
 
       var capability = result[i]["key"];
-        for(var ind = 0;ind<supportedCodePages.length ;ind++){
-          bytes += generator.setGlobalCodeTable(supportedCodePages[ind].name);
-          var testData ="${supportedCodePages[ind].name} السلام $capability ";
-          Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
-          bytes += generator.textEncoded(salam);
+      for(var ind = 0;ind<supportedCodePages.length ;ind++){
+        bytes += generator.setGlobalCodeTable(supportedCodePages[ind].name);
+        var testData ="${supportedCodePages[ind].name} السلام $capability ";
+        Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+        bytes += generator.textEncoded(salam);
         //  popAlert(head: "Waring", message: msg ?? "", position: SnackPosition.TOP);
-        }
+      }
     }
 
     final res = await usb_esc_printer_windows.sendPrintRequest(bytes, driverName,);
@@ -643,21 +575,21 @@ Widget tabUsbPage(){
 
     List<int> bytes = [];
     print("driverName  $driverName capability  $capability");
-      var profile = await CapabilityProfile.load(name:capability);
+    var profile = await CapabilityProfile.load(name:capability);
 
-      final supportedCodePages = profile.codePages;
-     final generator = Generator(PaperSize.mm80, profile);
+    final supportedCodePages = profile.codePages;
+    final generator = Generator(PaperSize.mm80, profile);
 
-      print(supportedCodePages.length);
+    print(supportedCodePages.length);
 
-      for(var ind = 0;ind<supportedCodePages.length ;ind++){
-        print("$ind");
-        bytes += generator.setGlobalCodeTable(supportedCodePages[ind].name);
-        var testData ="${supportedCodePages[ind].name} السلام $capability ";
-        Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
-        bytes += generator.textEncoded(salam);
+    for(var ind = 0;ind<supportedCodePages.length ;ind++){
+      print("$ind");
+      bytes += generator.setGlobalCodeTable(supportedCodePages[ind].name);
+      var testData ="${supportedCodePages[ind].name} السلام عليكم $capability ";
+      Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
+      bytes += generator.textEncoded(salam);
 
-      }
+    }
 
 
     final res = await usb_esc_printer_windows.sendPrintRequest(bytes, driverName,);

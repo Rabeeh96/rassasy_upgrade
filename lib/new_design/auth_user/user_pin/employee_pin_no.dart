@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -31,54 +32,71 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
   List<int> num = [];
   final FocusNode _focusNode = FocusNode();
-  final ValueNotifier<String> _enteredNumbersNotifier = ValueNotifier<String>('');
+
+  @override
+  void dispose() {
+    // Dispose the focus node when the widget is disposed
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _handleKey(RawKeyEvent event) {
+    if (event is RawKeyDownEvent) {
+      String keyLabel = event.data.logicalKey.keyLabel;
+      if (keyLabel.isEmpty) return;
+      // Handle numeric keys (0-9)
+      if (keyLabel.length == 1 && keyLabel.contains(RegExp(r'[0-9]'))) {
+        setState(() {
+          num.add(int.parse(keyLabel.toString()));
+          changeColor();
+        });
+      }
+      // Handle backspace key
+      if (event.logicalKey == LogicalKeyboardKey.backspace && num.isNotEmpty) {
+        setState(() {
+          num.removeLast();
+          changeColor();
+        });
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     // Request focus when the widget is first initialized
-    _focusNode.requestFocus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus();
+    });
     defaultAPi();
   }
 
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    _enteredNumbersNotifier.dispose();
-    super.dispose();
+  defaultAPi() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
   }
-defaultAPi() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
-}
 
-  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
-    // Check if the event is a RawKeyDownEvent
-    final logicalKey = event.logicalKey;
-    // Check if the key is a numeric key and the entered numbers length is less than 6
-    if (RegExp('[0-9]').hasMatch(logicalKey.keyLabel!) &&
-        _enteredNumbersNotifier.value.length < 6) {
-      // Append numeric keys to the entered numbers
-      _enteredNumbersNotifier.value += logicalKey.keyLabel!;
-    }
-    return KeyEventResult.handled;
-  }
-  void _clearEnteredNumbers() {
-    _enteredNumbersNotifier.value = '';
-  }
+  // KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+  //   // Check if the event is a RawKeyDownEvent
+  //   final logicalKey = event.logicalKey;
+  //   // Check if the key is a numeric key and the entered numbers length is less than 6
+  //   if (RegExp('[0-9]').hasMatch(logicalKey.keyLabel!) &&
+  //       _enteredNumbersNotifier.value.length < 6) {
+  //     // Append numeric keys to the entered numbers
+  //     _enteredNumbersNotifier.value += logicalKey.keyLabel!;
+  //   }
+  //   return KeyEventResult.handled;
+  // }
+  // void _clearEnteredNumbers() {
+  //   _enteredNumbersNotifier.value = '';
+  // }
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-
-
+    // bool isTablet = true;
     bool isTablet = screenWidth > defaultScreenWidth;
-    print("isTablet");
-    print(isTablet);
-    print("screenWidth  $screenWidth");
-    print("med  ${MediaQuery.of(context).size.width}");
-    print("defaultScreenWidth  $defaultScreenWidth");
     return Scaffold(
         // appBar: AppBar(
         //   elevation: 0.0,
@@ -99,93 +117,51 @@ defaultAPi() async {
       width: double.infinity,
       height: double.infinity,
       decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("assets/png/coverpage.png"), fit: BoxFit.cover),
+        image: DecorationImage(image: AssetImage("assets/png/coverpage.png"), fit: BoxFit.cover),
       ),
       child: Center(
-          child: SizedBox(
-              height: isTablet?screenHeight/ 1:screenHeight/1, //height of button
-              width: isTablet?screenWidth / 1.1:screenWidth/1,
-              child: Column(
-                //  crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                        onPressed: () {
-                          _asyncConfirmDialog(context);
-                        },
-                        icon: SvgPicture.asset(
-                            'assets/svg/logout_from_pinNo.svg')),
-                  ),
-                  // DefaultTextStyle(
-                  //
-                  //   style:const TextStyle(fontSize: 16,color: Colors.red),
-                  //   child: Focus(
-                  //     focusNode: _focusNode,
-                  //     onKeyEvent: (node, event) => _handleKeyEvent(node, event),
-                  //
-                  //     // onKey: _handleKeyEvent,
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: [
-                  //         ListenableBuilder(
-                  //           listenable: _enteredNumbersNotifier,
-                  //           builder: (context, enteredNumbers) {
-                  //             return Text(
-                  //               'Entered Numbers: ${_enteredNumbersNotifier.value.padRight(6, ' ')}',
-                  //               textAlign: TextAlign.center,
-                  //             );
-                  //           },
-                  //         ),
-                  //         SizedBox(height: 50),
-                  //         ElevatedButton(
-                  //           onPressed: _clearEnteredNumbers,
-                  //           child: Text('Clear'),
-                  //         ),
-                  //         ElevatedButton(
-                  //           onPressed: () {
-                  //             print(_enteredNumbersNotifier.value.padRight(6, ' '));
-                  //             //2233 print(Platform.isWindows);
-                  //           },
-                  //           child: Text('Print'),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  Container(
+        child: RawKeyboardListener(
+            focusNode: _focusNode,
+            onKey: _handleKey,
+            child: SizedBox(
+                height: isTablet ? screenHeight / 1 : screenHeight / 1, //height of button
+                width: isTablet ? screenWidth / 1.1 : screenWidth / 1,
+                child: Column(
+                  //  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                          onPressed: () {
+                            _asyncConfirmDialog(context);
+                          },
+                          icon: SvgPicture.asset('assets/svg/logout_from_pinNo.svg')),
+                    ),
+                    Container(
+                      // height: MediaQuery.of(context).size.height / 1.3, //height of button
+                      width: isTablet ? screenWidth / 3 : screenWidth / 1,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Container(
+                            alignment: Alignment.center,
+                            height: MediaQuery.of(context).size.height / 16, //height of button
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: Text(
+                              'enter_pin'.tr,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            )),
+                        passwordEnteringField(),
 
-                    // height: MediaQuery.of(context).size.height / 1.3, //height of button
-                    width:  isTablet?screenWidth/ 3:screenWidth/1,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height /
-                                  16, //height of button
-                              width: MediaQuery.of(context).size.width / 3,
-                              child: Text(
-                                'enter_pin'.tr,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14),
-                              )),
-                          passwordEnteringField(),
-
-                          oneToThreeNumbers(),
-                          fourToSixNumber(),
-                          sevenToNineNumber(), //
-                          zeroNumberAndClearButton(),
-                        ]),
-                  ),
-                ],
-              ))),
-    )
-
-    );
+                        oneToThreeNumbers(),
+                        fourToSixNumber(),
+                        sevenToNineNumber(), //
+                        zeroNumberAndClearButton(),
+                      ]),
+                    ),
+                  ],
+                ))),
+      ),
+    ));
   }
 
   Future<Null> userTypeData(roleID) async {
@@ -203,11 +179,7 @@ defaultAPi() async {
         var token = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/list-detail/pos-role/';
         print(url);
-        Map data = {
-          "CompanyID": companyID,
-          "Role_id": roleID,
-          "BranchID": branchID
-        };
+        Map data = {"CompanyID": companyID, "Role_id": roleID, "BranchID": branchID};
         print(data);
         var body = json.encode(data);
         var response = await http.post(Uri.parse(url),
@@ -224,11 +196,10 @@ defaultAPi() async {
         var userRollData = n["data"] ?? [];
         if (status == 6000) {
           for (var i = 0; i < userRollData.length; i++) {
-            if (userRollData[i]["Key"] == "other"|| userRollData[i]["Key"] == "report") {
+            if (userRollData[i]["Key"] == "other" || userRollData[i]["Key"] == "report") {
               prefs.setBool(userRollData[i]["Name"], userRollData[i]["Value"]);
             } else {
-              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"],
-                  userRollData[i]["Value"]);
+              prefs.setBool(userRollData[i]["Name"] + userRollData[i]["Key"], userRollData[i]["Value"]);
             }
           }
 
@@ -253,41 +224,6 @@ defaultAPi() async {
             }
             print("result__________________________$result");
           });
-
-          // await Future.delayed(Duration(seconds: 1), () {
-          //    stop();
-          //    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardNew()),);
-          //  });
-
-          print("__________________________________");
-
-          // setState(() {
-          //   for (Map user in userRollData) {
-          //     userTypeList.add(UserTypeModel.fromJson(user));
-          //   }
-          // });
-          // Future.delayed(Duration(seconds: 0), () {
-          //   for (var i = 0; i < userTypeList.length; i++) {
-          //
-          //     if (userTypeList[i].name == "Sales Invoice" ||
-          //         userTypeList[i].name == "Sales Return" ||
-          //         userTypeList[i].name == "Sales Order" ||
-          //         userTypeList[i].name == "Stock Transfer" ||
-          //         userTypeList[i].name == "Receipt Voucher" ||
-          //         userTypeList[i].name == "Expense" ||
-          //         userTypeList[i].name == "Payment Voucher") {
-          //       prefs.setBool(userTypeList[i].name + "view", userTypeList[i].viewPermission);
-          //       prefs.setBool(userTypeList[i].name + "save",
-          //           userTypeList[i].savePermission);
-          //       prefs.setBool(userTypeList[i].name + "edit",
-          //           userTypeList[i].editPermission);
-          //       prefs.setBool(userTypeList[i].name + "delete",
-          //           userTypeList[i].deletePermission);
-          //       prefs.setBool(userTypeList[i].name + "print",
-          //           userTypeList[i].printPermission);
-          //     }
-          //   }
-          // });
         } else if (status == 6001) {
           stop();
         } else {}
@@ -317,9 +253,7 @@ defaultAPi() async {
     if (diningView || takeAwayView || carView) {
       // Check if any one true exists in the remaining items
       for (var item in data) {
-        if (item["Name"] != "Dining" &&
-            item["Name"] != "Take away" &&
-            item["Name"] != "Car") {
+        if (item["Name"] != "Dining" && item["Name"] != "Take away" && item["Name"] != "Car") {
           if (item["Value"] == true) {
             print(item["Name"]);
             return true;
@@ -405,62 +339,47 @@ defaultAPi() async {
 
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-     // color: Colors.red,
+      // color: Colors.red,
       alignment: Alignment.center,
-      height: isTablet?screenHeight/16:screenHeight/16,
-      width: isTablet?screenWidth/ 6:screenWidth/2,
+      height: isTablet ? screenHeight / 16 : screenHeight / 16,
+      width: isTablet ? screenWidth / 6 : screenWidth / 2,
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c1,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17, //height of button
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c1, border: Border.all(color: const Color(0xff707070))),
             child: const Text(''),
           ),
           Container(
-            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
-            width:   isTablet?screenWidth / 38:screenWidth/17,            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c2,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17, //height of button
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c2, border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-            height: isTablet?screenHeight / 38:screenHeight/17, //height of button
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c3,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17, //height of button
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c3, border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-              height: isTablet?screenHeight / 38:screenHeight/17,
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c4,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17,
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c4, border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-              height: isTablet?screenHeight / 38:screenHeight/17,
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c5,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17,
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c5, border: Border.all(color: const Color(0xff707070))),
           ),
           Container(
-            height: isTablet?screenHeight / 38:screenHeight/17, ///height of button
-            width:   isTablet?screenWidth / 38:screenWidth/17,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c6,
-                border: Border.all(color: const Color(0xff707070))),
+            height: isTablet ? screenHeight / 38 : screenHeight / 17,
+
+            ///height of button
+            width: isTablet ? screenWidth / 38 : screenWidth / 17,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c6, border: Border.all(color: const Color(0xff707070))),
           ),
         ],
       ),
@@ -475,20 +394,16 @@ defaultAPi() async {
 
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-
-      height: isTablet?screenHeight/9:screenHeight/9,
-      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
-
+      height: isTablet ? screenHeight / 9 : screenHeight / 9,
+      width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
-
-
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: const Color(0xffFFFFFF),
@@ -496,7 +411,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -506,15 +420,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '1',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -522,7 +433,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -532,15 +442,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '2',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -548,7 +455,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -559,10 +465,7 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '3',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
         ],
@@ -578,17 +481,17 @@ defaultAPi() async {
 
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-    //  color: Colors.yellow,
-      height: isTablet?screenHeight/9:screenHeight/9,
-      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
+      //  color: Colors.yellow,
+      height: isTablet ? screenHeight / 9 : screenHeight / 9,
+      width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -596,7 +499,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   setState(() {
                     if (num.length >= 6) {
@@ -609,15 +511,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '4',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -625,7 +524,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -636,15 +534,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '5',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -652,7 +547,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -663,10 +557,7 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '6',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
         ],
@@ -682,17 +573,17 @@ defaultAPi() async {
 
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-    // color: Colors.purple,
-      height: isTablet?screenHeight/9:screenHeight/9,
-      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
+      // color: Colors.purple,
+      height: isTablet ? screenHeight / 9 : screenHeight / 9,
+      width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -700,7 +591,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   //  passList.add(7);
                   if (num.length >= 6) {
@@ -712,15 +602,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '7',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -728,7 +615,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -739,15 +625,12 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '8',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
@@ -755,7 +638,6 @@ defaultAPi() async {
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
                 highlightColor: Colors.transparent,
-
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -766,10 +648,7 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '9',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
         ],
@@ -784,28 +663,28 @@ defaultAPi() async {
     double screenHeight = screenSize.height;
     bool isTablet = screenWidth > defaultScreenWidth;
     return Container(
-     // color: Colors.amber,
-      height: isTablet?screenHeight/9:screenHeight/9,
-      width: isTablet?screenWidth/ 3.5:screenWidth/1.2,
+      // color: Colors.amber,
+      height: isTablet ? screenHeight / 9 : screenHeight / 9,
+      width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
       padding: const EdgeInsets.all(11),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
           ),
           Container(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
                 border: Border.all(color: Color(0xffD9D9D9)),
                 borderRadius: const BorderRadius.all(Radius.circular(22))),
             child: IconButton(
-              highlightColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 onPressed: () {
                   if (num.length >= 6) {
                   } else {
@@ -816,18 +695,13 @@ defaultAPi() async {
                 },
                 icon: const Text(
                   '0',
-                  style: TextStyle(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.w600),
                 )),
           ),
           SizedBox(
-            height: isTablet?screenHeight/12:screenHeight/ 13,
-            width: isTablet?screenWidth/ 17:screenWidth/5,
-
+            height: isTablet ? screenHeight / 12 : screenHeight / 13,
+            width: isTablet ? screenWidth / 17 : screenWidth / 5,
             child: IconButton(
-
               tooltip: 'clear fields',
               onPressed: () {
                 setState(() {
@@ -962,13 +836,11 @@ defaultAPi() async {
       case 0:
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('companySelected', false);
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => OrganizationList()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => OrganizationList()));
         break;
 
       case 1:
-        final Future<ConfirmAction?> action =
-            await _asyncConfirmDialog(context);
+        final Future<ConfirmAction?> action = await _asyncConfirmDialog(context);
         print("Confirm Action $action");
 
         // Navigator.of(context).pushReplacement(

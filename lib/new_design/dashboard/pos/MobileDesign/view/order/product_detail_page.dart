@@ -30,7 +30,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     loadData();
   }
 
-  loadData() async{
+  loadData() async {
+
+
+
+    log_data(orderController.orderItemList[widget.index]);
+
     orderController.flavourList.clear();
     await orderController.getAllFlavours();
     orderController.productName.value = orderController.orderItemList[widget.index]["ProductName"];
@@ -63,15 +68,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     orderController.iGSTPer.value = double.parse(orderController.orderItemList[widget.index]["IGSTPerc"].toString());
     orderController.iGSTAmount.value = double.parse(orderController.orderItemList[widget.index]["IGSTAmount"].toString());
     orderController.createdUserID.value = orderController.orderItemList[widget.index]["CreatedUserID"];
-    orderController.dataBase.value = orderController.orderItemList[widget.index]["DataBase"]??"";
-    orderController.flavourID.value = orderController.orderItemList[widget.index]["flavour"]??"";
-    orderController.flavourName.value = orderController.orderItemList[widget.index]["Flavour_Name"]??"";
+    orderController.dataBase.value = orderController.orderItemList[widget.index]["DataBase"] ?? "";
+
+    orderController.flavourID.value = orderController.orderItemList[widget.index]["Flavour"] ?? "";
+    if(orderController.flavourID.value==""){
+      orderController.flavourID.value = orderController.orderItemList[widget.index]["flavour"] ?? "";
+    }
+    orderController.flavourName.value = orderController.orderItemList[widget.index]["Flavour_Name"] ?? "";
     orderController.taxableAmountPost.value = double.parse(orderController.orderItemList[widget.index]["TaxableAmount"].toString());
-    var gst = orderController.orderItemList[widget.index]["gstPer"]??'0';
+    var gst = orderController.orderItemList[widget.index]["gstPer"] ?? '0';
     orderController.gstPer.value = double.parse(gst.toString());
     orderController.isInclusive.value = orderController.orderItemList[widget.index]["is_inclusive"];
     orderController.inclusiveUnitPriceAmountWR.value = orderController.orderItemList[widget.index]["InclusivePrice"].toString();
     orderController.totalTax.value = double.parse(orderController.orderItemList[widget.index]["TotalTaxRounded"].toString());
+
+
+    print("orderController.flavourID.value ${orderController.flavourID.value} ");
+    print("    orderController.flavourName.value ${    orderController.flavourName.value} ");
+
     /// excise tax not working
     // orderController.exciseTaxID.value = orderController.orderItemList[widget.index]["ExciseTaxID"];
     // orderController.exciseTaxName.value = orderController.orderItemList[widget.index]["ExciseTaxName"];
@@ -85,8 +99,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     orderController.unitPriceChangingController.text = roundStringWith(orderController.unitPriceAmount.value);
     orderController.quantityForDetailsSection.value = double.parse(orderController.quantity.value.toString());
 //    orderController.calculationOnEditing(index: widget.index, isQuantityButton: false, value: orderController.unitPriceAmountWR.value.toString());
-
-
   }
 
 //listview working
@@ -94,6 +106,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
@@ -108,7 +121,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         elevation: 0,
         title: Text(
           'Product_Details'.tr,
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
       ),
       body: Column(
@@ -134,23 +147,42 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    /// image commented
+                    /// image commented network
+
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height / 11,
+                    //   width: MediaQuery.of(context).size.width / 5,
+                    //   child: ClipRRect(
+                    //     child: productController.products[index].productImage.isEmpty
+                    //         ? SvgPicture.asset("assets/svg/no_image.svg")
+                    //         : Image.network(productController.products[index].productImage),
+                    //   ),
+                    // ),
+
                     Container(
                       height: MediaQuery.of(context).size.height / 11,
                       width: MediaQuery.of(context).size.width / 5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        // Set border radius to make the Container round
-                      ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        // Clip image to match the rounded corners of the Container
-                        child: Image.network(
-                          "https://www.api.viknbooks.com/media/uploads/Rassasy.png",
-                          fit: BoxFit.cover,
-                        ),
+                        child: SvgPicture.asset("assets/svg/no_image.svg")
                       ),
                     ),
+
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height / 11,
+                    //   width: MediaQuery.of(context).size.width / 5,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(10),
+                    //     // Set border radius to make the Container round
+                    //   ),
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(10),
+                    //     // Clip image to match the rounded corners of the Container
+                    //     child: Image.network(
+                    //       "https://www.api.viknbooks.com/media/uploads/Rassasy.png",
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    // ),
 
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0, top: 8),
@@ -158,7 +190,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(
                           orderController.orderItemList[widget.index]["ProductName"],
-                          style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
+                          style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -206,7 +238,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                         ],
-                      //  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                        //  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                         onTap: () => orderController.unitPriceChangingController.selection =
                             TextSelection(baseOffset: 0, extentOffset: orderController.unitPriceChangingController.value.text.length),
                         onChanged: (value) {
@@ -216,7 +248,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           }
                         },
                         controller: orderController.unitPriceChangingController,
-                        style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                         decoration: TextFieldDecoration.defaultTextField(hintTextStr: ""),
                       ),
                     )
@@ -233,7 +265,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       onPressed: () {
                         if (orderController.quantityForDetailsSection.value != 1.0) {
                           orderController.quantityForDetailsSection.value = orderController.quantityForDetailsSection.value - 1;
-                          orderController.calculationOnEditing(index: widget.index, isQuantityButton: true, value: orderController.quantityForDetailsSection.value.toString());
+                          orderController.calculationOnEditing(
+                              index: widget.index, isQuantityButton: true, value: orderController.quantityForDetailsSection.value.toString());
                         }
                       },
                     ),
@@ -245,7 +278,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: Center(
                           child: Text(
                             roundStringWith(orderController.quantityForDetailsSection.value.toString()),
-                            style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                             // style: TextStyle(
                             //   fontSize: 18,
                             //   color: Colors.black,
@@ -273,63 +306,64 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           const SizedBox(
             height: 20,
           ),
-          Obx(() =>orderController.flavourList.isNotEmpty?Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              right:20,
-              top: 15,bottom: 10
-            ),            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Select a Flavour",style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),),
-              ],
-            ),
-          ):Container()),
-          Obx(() =>orderController.flavourList.isNotEmpty?DividerStyle():Container()),
-          Obx(() =>orderController.flavourList.isNotEmpty? Expanded(child: ListView.builder(
-              itemCount: orderController.flavourList.length,
-              itemBuilder: (BuildContext context, int index) {
-
-                return GestureDetector(
-                  onTap: ()async {
-                    orderController.flavourName.value=orderController.flavourList[index].flavourName;
-                    orderController.flavourID.value=orderController.flavourList[index].id;
-                    orderController.update();
-                  },
-                  child: SizedBox(
-
-                    height: MediaQuery.of(context).size.height * .06,
-                    child: Card(
-                      color: Colors.transparent,
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15.0, right: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              orderController.flavourList[index].flavourName,
-                              style: customisedStyle(
-                                  context,
-                                  Colors.black,
-                                  FontWeight.w400,
-                                  13.0),
-                            ),
-                           Obx(() => orderController.flavourID.value == orderController.flavourList[index].id
-                                ? const Icon(Icons.check_circle,color: Color(0xffF25F29),)
-                                : Container()),
-                          ],
-                        ),
+          Obx(() => orderController.flavourList.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Select a Flavour",
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                       ),
-                    ),
+                    ],
                   ),
-                );
+                )
+              : Container()),
+          Obx(() => orderController.flavourList.isNotEmpty ? dividerStyle() : Container()),
+          Obx(() => orderController.flavourList.isNotEmpty
+              ? Expanded(
+                  child: ListView.separated(
+                      separatorBuilder: (context, index) => dividerStyle(),
+                      itemCount: orderController.flavourList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () async {
 
-
-
-              })):Container() ),
-         // DividerStyle()
+                            orderController.flavourName.value = orderController.flavourList[index].flavourName;
+                            orderController.flavourID.value = orderController.flavourList[index].id;
+                            orderController.update();
+                          },
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * .06,
+                            child: Card(
+                              color: Colors.transparent,
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15.0, right: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      orderController.flavourList[index].flavourName,
+                                      style: customisedStyle(context, Colors.black, FontWeight.w400, 13.0),
+                                    ),
+                                    Obx(() => orderController.flavourID.value == orderController.flavourList[index].id
+                                        ? const Icon(
+                                            Icons.check_circle,
+                                            color: Color(0xffF25F29),
+                                          )
+                                        : Container()),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }))
+              : Container()),
+          // DividerStyle()
         ],
       ),
       bottomNavigationBar: Container(
@@ -356,7 +390,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 12.0, right: 12),
                           child: Text(
-                           'cancel'.tr,
+                            'cancel'.tr,
                             style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 13.0),
                           ),
                         ),

@@ -7,7 +7,8 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/product_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
-
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 import 'add_product_mobile.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 class ProductListMobile extends StatefulWidget {
@@ -29,6 +30,7 @@ class _ProductListMobileState extends State<ProductListMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
@@ -42,12 +44,12 @@ class _ProductListMobileState extends State<ProductListMobile> {
         ),
         title: Text(
           'Products'.tr,
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyle(),
           Container(
               margin: const EdgeInsets.only(
                 left: 15,
@@ -93,7 +95,7 @@ class _ProductListMobileState extends State<ProductListMobile> {
                   ),
                 ],
               )),
-          DividerStyle(),
+          dividerStyle(),
           //
           Expanded(
               child: RefreshIndicator(
@@ -284,7 +286,7 @@ class _ProductListMobileState extends State<ProductListMobile> {
                         )
                     );
                   }, separatorBuilder: (BuildContext context, int index) =>
-                    DividerStyle(),
+                    dividerStyle(),
                 ))
 
 
@@ -297,7 +299,7 @@ class _ProductListMobileState extends State<ProductListMobile> {
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+        padding:  EdgeInsets.only(top: 10.0, bottom:Platform.isIOS ? 25:10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

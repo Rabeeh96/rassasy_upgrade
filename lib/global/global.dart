@@ -10,8 +10,8 @@ import 'package:intl/intl.dart';
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
 //////
- String appVersion = "1.1.29";
-double defaultScreenWidth=850;
+ String appVersion = "1.1.30";
+double defaultScreenWidth=550;
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),
@@ -366,9 +366,11 @@ class BaseUrl{
   static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
   static String baseUrl = "$baseURlApi/api/v10";
   static String baseUrlV11 = "$baseURlApi/api/v11";
-  static String imageURL = '$baseURlApi';
+  static String imageURL = '$baseURlApi/media/';
+
 ///
- // // api.accounts.vikncodes.in
+   //
+   // api.accounts.vikncodes.in
 
   // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
   // static String baseUrl = "https://www.api.viknbooks.in/api/v10";
@@ -382,7 +384,6 @@ class BaseUrl{
  //  static String baseUrl = "http://192.168.1.81:8002/api/v10";
  //  static String baseUrlV11 = "http://192.168.1.81:8002/api/v11";
  //  static String imageURL = 'http://192.168.1.81:8002';
-
 
 
   static int priceRounding=2;

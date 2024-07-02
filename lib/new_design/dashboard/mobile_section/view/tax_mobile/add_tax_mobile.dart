@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
@@ -17,6 +18,7 @@ class _AddTaxMobileState extends State<AddTaxMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
@@ -30,7 +32,7 @@ class _AddTaxMobileState extends State<AddTaxMobile> {
         ),
         title: Text(
           'Tax',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
         actions: [
           Padding(
@@ -63,26 +65,26 @@ class _AddTaxMobileState extends State<AddTaxMobile> {
                 icon: Text(
                   'Save'.tr,
                   style: customisedStyle(
-                      context, const Color(0xffF25F29), FontWeight.w400, 14.0),
+                      context, Color(0xffF25F29), FontWeight.w500, 16.0),
                 )),
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 15.0, right: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            DividerStyle(),
-            const SizedBox(
-              height: 15,
-            ),
-            TextField(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          dividerStyleFull(),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: taxController.taxNameController,
               style:
-                  customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               // focusNode: diningController.customerNode,
               onEditingComplete: () {
                 FocusScope.of(context).nextFocus();
@@ -91,40 +93,53 @@ class _AddTaxMobileState extends State<AddTaxMobile> {
               decoration:
                   TextFieldDecoration.defaultTextField(hintTextStr: 'Tax Name'),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              textCapitalization: TextCapitalization.words,
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
+
               controller: taxController.salesPercentageController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
+              ],
               style:
-                  customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               // focusNode: diningController.customerNode,
               onEditingComplete: () {
                 FocusScope.of(context).nextFocus();
               },
-              keyboardType: TextInputType.text,
+
               decoration: TextFieldDecoration.defaultTextField(
                   hintTextStr: 'Sales Percentage'),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              textCapitalization: TextCapitalization.words,
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
+              ],
               controller: taxController.purchasePercentageController,
               style:
-                  customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               // focusNode: diningController.customerNode,
               onEditingComplete: () {
                 FocusScope.of(context).nextFocus();
               },
-              keyboardType: TextInputType.text,
+
               decoration: TextFieldDecoration.defaultTextField(
                   hintTextStr: 'Purchase Percentage'),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

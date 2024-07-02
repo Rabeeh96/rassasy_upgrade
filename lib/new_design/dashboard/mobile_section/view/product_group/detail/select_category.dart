@@ -48,7 +48,7 @@ class _SelectTaxState extends State<SelectCategoryMobile> {
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyle(),
           //
           Expanded(
               child: Obx(() => productGroupController.isCategoryLoad.value
@@ -91,7 +91,7 @@ class _SelectTaxState extends State<SelectCategoryMobile> {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>
-                    DividerStyle(),
+                    dividerStyle(),
               ))),
         ],
       ),

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
-import 'package:rassasy_new/new_design/back_ground_print/print_details/select_codepage.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/settings/printer_setting/select_code_page.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 
@@ -143,7 +143,10 @@ class _PrinterSettingsDetailPageMobileState
                       if (result != null) {
                         printController.salesInvoiceController.text = result;
                         printController.salesOrderController.text = result;
-                      } else {}
+                      }
+                      else {
+
+                      }
                     },
                     style: ButtonStyle(
                         backgroundColor:
@@ -156,7 +159,7 @@ class _PrinterSettingsDetailPageMobileState
                       child: Text(
                         'set_def'.tr,
                         style: customisedStyleBold(
-                            context, Color(0xffF25F29), FontWeight.w500, 14.0),
+                            context, const Color(0xffF25F29), FontWeight.w500, 14.0),
                       ),
                     ),
                   ),
@@ -210,7 +213,7 @@ class _PrinterSettingsDetailPageMobileState
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,7 +261,7 @@ class _PrinterSettingsDetailPageMobileState
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
 
             Padding(
               padding: const EdgeInsets.only(
@@ -314,7 +317,7 @@ class _PrinterSettingsDetailPageMobileState
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(
                   left: 20.0, right: 20, top: 5, bottom: 5),
@@ -368,7 +371,7 @@ class _PrinterSettingsDetailPageMobileState
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(
                   left: 20.0, right: 20, top: 5, bottom: 5),
@@ -425,7 +428,7 @@ class _PrinterSettingsDetailPageMobileState
                 ),
               ),
             ),
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Container(
@@ -480,7 +483,7 @@ class _PrinterSettingsDetailPageMobileState
               ),
             ),
 
-            DividerStyle(),
+            dividerStyle(),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Container(
@@ -533,7 +536,338 @@ class _PrinterSettingsDetailPageMobileState
                 ),
               ),
             ),
-            DividerStyle(),
+
+
+            dividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('time_in_invoice'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.timeInInvoice,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.timeInInvoice.value = val;
+
+                              printController.switchStatus("time_in_invoice", printController.timeInInvoice.value);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+
+            dividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('show_date_kot'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.dateTimeInKOT,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.dateTimeInKOT.value = val;
+
+                              printController.switchStatus("show_date_time_kot", printController.dateTimeInKOT.value);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+
+            dividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('show_user_kot'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.userNameInKOT,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.userNameInKOT.value = val;
+
+                              printController.switchStatus("show_username_kot", printController.userNameInKOT.value);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+
+            dividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('Print For Cancelled Order'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.printForCancelledOrders,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.printForCancelledOrders.value = val;
+
+                              printController.switchStatus("print_for_cancel_order", printController.printForCancelledOrders.value);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            dividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('extraDetailsInKOT'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.extraDetailsInKOT,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.extraDetailsInKOT.value = val;
+
+                              printController.switchStatus("extraDetailsInKOT", printController.extraDetailsInKOT.value);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+
+            dividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('flavour_in_order_print'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.flavourDetailsInOrderPrint,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.flavourDetailsInOrderPrint.value = val;
+
+                              printController.switchStatus("flavour_in_order_print", printController.flavourDetailsInOrderPrint.value);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+
+            dividerStyle(),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

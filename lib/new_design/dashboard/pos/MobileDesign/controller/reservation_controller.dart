@@ -87,9 +87,9 @@ class ReservationController extends GetxController {
         "BranchID":branchID,
         "paid": "true",
       };
-
+      String baseUrl = BaseUrl.baseUrlV11;
       final response = await http.post(
-        Uri.parse('https://www.api.viknbooks.com/api/v11/posholds/pos-table-list/'),
+        Uri.parse('$baseUrl/posholds/pos-table-list/'),
         body: jsonEncode(payload),
         headers: {'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',

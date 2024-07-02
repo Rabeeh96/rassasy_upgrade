@@ -46,6 +46,7 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
+        centerTitle: false,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -57,7 +58,7 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
         ),
         title: Text(
           'Add a Product',
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
         actions: [
           Padding(
@@ -74,7 +75,7 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
 
                 }else{
                   if(widget.type=="Edit"){
-                    print("ghdfdhfhghf");
+
                     productController.editProduct(widget.uid!);
                   }
                   else{
@@ -91,160 +92,167 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
                 icon: Text(
                   "Save",
                   style: customisedStyle(
-                      context, Color(0xffF25F29), FontWeight.w400, 14.0),
+                      context, Color(0xffF25F29), FontWeight.w500, 16.0),
                 )),
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20),
-        child: ListView(
-          children: [
-            DividerStyle(),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
+      body: ListView(
+        children: <Widget>[
+          dividerStyleFull(),
+
+
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xffFFF6F2)),
+                    color: Color(0xffFFF6F2),
+                    borderRadius: BorderRadius.all(Radius.circular(2))),
+                height: MediaQuery.of(context).size.height / 7,
+                width: MediaQuery.of(context).size.width / 3,
+                child: productController.imageSelect == true
+                    ? productController.displayImage()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                productController.type = 1;
+                                productController.showOptionsDialog(context);
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.add,
+                              color: Color(0xffF25F29),
+                            ),
+                          ),
+                        ],
+                      ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xffFFF6F2)),
-                      color: Color(0xffFFF6F2),
-                      borderRadius: BorderRadius.all(Radius.circular(2))),
-                  height: MediaQuery.of(context).size.height / 7,
-                  width: MediaQuery.of(context).size.width / 4,
-                  child: productController.imageSelect == true
-                      ? productController.displayImage()
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  productController.type = 1;
-                                  productController.showOptionsDialog(context);
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.add,
-                                color: Color(0xffF25F29),
-                              ),
-                            ),
-                          ],
+                ValueListenableBuilder<bool>(
+                  valueListenable: productController.isVegNotifier,
+                  builder: (context, isVegValue, child) {
+                    return GestureDetector(
+                      onTap: () {
+                        productController.isVegNotifier.value =
+                            !isVegValue; // Toggle the value
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xffDBDBDB)),
+                          borderRadius: BorderRadius.circular(8),
                         ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, top: 6, bottom: 6),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/svg/veg_mob.svg",
+                                color: isVegValue
+                                    ? const Color(0xff00775E)
+                                    : const Color(0xffDF1515),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  'veg_only'.tr,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xff585858),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                ValueListenableBuilder<bool>(
+                  valueListenable: productController.isNonVegNotifier,
+                  builder: (context, isNonVeg, child) {
+                    return GestureDetector(
+                      onTap: () {
+                        productController.isNonVegNotifier.value =
+                            !isNonVeg; // Toggle the value
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xffDBDBDB)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, top: 6, bottom: 6),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/svg/veg_mob.svg",
+                                color: isNonVeg
+                                    ? Color(0xff00775E)
+                                    : const Color(0xffDF1515),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  'Non Veg',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xff585858),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ValueListenableBuilder<bool>(
-                    valueListenable: productController.isVegNotifier,
-                    builder: (context, isVegValue, child) {
-                      return GestureDetector(
-                        onTap: () {
-                          productController.isVegNotifier.value =
-                              !isVegValue; // Toggle the value
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffDBDBDB)),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 4, bottom: 4),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/svg/veg_mob.svg",
-                                  color: isVegValue
-                                      ? const Color(0xff00775E)
-                                      : const Color(0xffDF1515),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'veg_only'.tr,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xff585858),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  ValueListenableBuilder<bool>(
-                    valueListenable: productController.isNonVegNotifier,
-                    builder: (context, isNonVeg, child) {
-                      return GestureDetector(
-                        onTap: () {
-                          productController.isNonVegNotifier.value =
-                              !isNonVeg; // Toggle the value
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffDBDBDB)),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 4, bottom: 4),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/svg/veg_mob.svg",
-                                  color: isNonVeg
-                                      ? Color(0xff00775E)
-                                      : const Color(0xffDF1515),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'Non Veg',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xff585858),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            TextField(
+          ),
+
+          SizedBox(
+            height: 15,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productController.productNameController,
               style:
-                  customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               focusNode: productController.nameFCNode,
               onEditingComplete: () {
                 if(productController.productNameController.text !=""){
-                  if(productController.isGst ==false){
-                    productController.convertToArabic( name: productController.productNameController.text,);
+                  if(productController.isVat){
+                    productController.convertToArabic(name: productController.productNameController.text,);
                   }
                   else{
                     productController.descriptionController.text = productController.productNameController.text;
@@ -256,14 +264,17 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               decoration: TextFieldDecoration.mobileTextfieldMandatoryIc(
                   hintTextStr: 'Name'),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productController.descriptionController,
               style:
-              customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
 
               focusNode: productController.descriptionFcNode,
               onEditingComplete: () {
@@ -273,14 +284,17 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               decoration: TextFieldDecoration.mobileTextfieldMandatory(
                   hintTextStr: 'Description'),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productController.groupController,
               style:
-                  customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               // /focusNode: nameFCNode,
               readOnly: true,
               onTap: () async {
@@ -302,15 +316,18 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               decoration: TextFieldDecoration.mobileTextfieldMandatoryIcon(
                   hintTextStr: 'Group'),
             ),
+          ),
 
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productController.salesPriceController,
               style:
-                  customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
@@ -323,15 +340,19 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               decoration: TextFieldDecoration.mobileTextfieldMandatory(
                   hintTextStr: 'Sales Price'),
             ),
-            SizedBox(
-              height: 10,
-            ),  TextField(
-              textCapitalization: TextCapitalization.words,
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
+
               controller: productController.purchasePriceController,
               style:
-              customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
-              // keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
               ],
@@ -344,14 +365,18 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               },
               decoration: TextFieldDecoration.mobileTextfieldMandatory(
                   hintTextStr: 'Purchase Price'),
-            ),    SizedBox(
-              height: 10,
             ),
-            TextField(
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: TextField(
               textCapitalization: TextCapitalization.words,
               controller: productController.taxPriceController,
               style:
-                  customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               // /focusNode: nameFCNode,
               readOnly: true,
               onTap: () async {
@@ -373,10 +398,13 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               decoration: TextFieldDecoration.mobileTextfieldMandatoryIcon(
                   hintTextStr: 'Tax'),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: Container(
               height:
                   MediaQuery.of(context).size.height / 17, //height of button
               // child: paidList(),
@@ -390,7 +418,7 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
                     width: MediaQuery.of(context).size.width / 1.5,
                     child: Text('Inclusive Tax',
                         style: customisedStyle(
-                            context, Colors.black, FontWeight.w500, 14.0)),
+                            context, Colors.black, FontWeight.w400, 14.0)),
                   ),
                   Container(
                     alignment: Alignment.centerRight,
@@ -423,14 +451,18 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            productController.isExcise?  const SizedBox():TextField(
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0,right: 25.0),
+            child: productController.isExcise?  const SizedBox():TextField(
               textCapitalization: TextCapitalization.words,
+              readOnly: true,
               controller: productController.execiveTaxPriceController,
               style:
-              customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+              customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               // /focusNode: nameFCNode,
               onTap: () async {
                 var result = await Navigator.push(
@@ -451,8 +483,8 @@ class _CreateProductMobileState extends State<CreateProductMobile> {
               decoration: TextFieldDecoration.mobileTextfieldMandatoryIcon(
                   hintTextStr: 'Execive Tax'),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

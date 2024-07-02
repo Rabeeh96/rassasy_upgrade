@@ -104,6 +104,34 @@ class OrderController extends GetxController {
   RxDouble gstAmount = 0.0.obs;
   RxBool isInclusive = false.obs;
 
+  RxList kartChange = [].obs;
+  bool checkValueInList(value) {
+    return kartChange.contains(value);
+  }
+
+
+  changeStatus(status){
+    for(var i = 0;i<kartChange.length ;i++){
+      orderItemList[i]["Status"] = status;
+    }
+    kartChange.clear();
+    orderItemList.refresh();
+    update();
+    totalAmount();
+  }
+
+
+  returnStatus(status){
+    if (status == "pending") {
+      return "Pending";
+    } else if (status == "delivered") {
+      return "Delivered";
+    } else {
+      return "Take away";
+    }
+  }
+
+
   RxString actualProductTaxName = "".obs;
   RxString unitPriceAmount = "0.00".obs;
   RxString inclusiveUnitPriceAmountWR = "0.00".obs;
@@ -127,9 +155,10 @@ class OrderController extends GetxController {
     if (status == "pending") {
       return const Color(0xffECAC08);
     } else if (status == "delivered") {
-      return const Color(0xff034FC1);
-    } else {
       return const Color(0xff000000);
+    } else {
+      return const Color(0xff034FC1);
+
     }
   }
 
@@ -310,7 +339,7 @@ class OrderController extends GetxController {
       "IGSTAmount": "${iGSTAmount.value}",
       "CreatedUserID": createdUserID.value,
       "DataBase": dataBase.value,
-      "flavour": flavourID.value,
+      "Flavour": flavourID.value,
       "Flavour_Name": flavourName.value,
       "TaxableAmount": "${taxableAmountPost.value}",
       "gstPer": "${gstPer.value}",
@@ -342,6 +371,8 @@ class OrderController extends GetxController {
       "BatchCode": "0",
       "SerialNos": [],
     };
+
+    print("--------------------data $data");
 
     orderItemList[index] = data;
     clearDetails();
@@ -586,7 +617,7 @@ class OrderController extends GetxController {
       "IGSTAmount": "${iGSTAmount.value}",
       "CreatedUserID": createdUserID.value,
       "DataBase": dataBase.value,
-      "flavour": flavourID.value,
+      "Flavour": flavourID.value,
       "Flavour_Name": flavourName.value,
       "TaxableAmount": "${taxableAmountPost.value}",
       "AddlDiscPerc": "0",
@@ -808,7 +839,7 @@ class OrderController extends GetxController {
       "IGSTAmount": "${iGSTAmount.value}",
       "CreatedUserID": createdUserID.value,
       "DataBase": dataBase.value,
-      "flavour": flavourID.value,
+      "Flavour": flavourID.value,
       "Flavour_Name": flavourName.value,
       "TaxableAmount": "${taxableAmountPost.value}",
       "AddlDiscPerc": "0",
@@ -1418,15 +1449,15 @@ class OrderController extends GetxController {
         customerName = customerNameController.text;
         phoneNumber = phoneNumberController.text;
         time = "";
-      } else {}
+      }
+      else {}
 
       String url = '$baseUrl/posholds/create-pos/salesOrder/';
 
       if (sectionType == "Edit") {
         url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
-      }
-
-      print("--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $printAfterOrder");
+       }
+      log_data("--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $orderItemList");
 
       Map data = {
         "Table": tableID,

@@ -45,13 +45,13 @@ class _CancelOrderListState extends State<CancelOrderList> {
         ),
       ),
       body: Column(children: [
-        DividerStyle(),
+        dividerStyle(),
         Expanded(
             child: Obx(() =>
             posController.cancelOrder.isEmpty
                 ? const Center(child: Text("Cancel Reasons not found"))
                 : ListView.separated(
-              separatorBuilder: (context, index) => DividerStyle(),
+              separatorBuilder: (context, index) => dividerStyle(),
               itemCount: posController.cancelOrder.length,
               itemBuilder: (context, index) {
                 return GestureDetector(

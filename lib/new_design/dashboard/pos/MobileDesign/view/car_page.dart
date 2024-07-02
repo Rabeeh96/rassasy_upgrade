@@ -79,19 +79,20 @@ class _TakeAwayState extends State<CarPage> {
 
         Expanded(
             child: Obx(() => carController.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator(color: Color(0xffffab00),))
                 : carController.carOrders.isEmpty
                 ?   Center(child: Text("No recent orders",style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),))
                 : SlidableAutoCloseBehavior(
                 closeWhenOpened: true,
                 child: RefreshIndicator(
+                  color: Color(0xffffab00),
                   onRefresh: () async {
                     carController.tableData.clear();
                     carController.fetchAllData();
                     carController.update();
                   },
                   child: ListView.separated(
-                    separatorBuilder: (context, index) => DividerStyle(),
+                    separatorBuilder: (context, index) => dividerStyle(),
                     itemCount: carController.carOrders.length+1,
                     itemBuilder: (context, index) {
                       if (index == carController.carOrders.length) {
@@ -398,7 +399,7 @@ class _TakeAwayState extends State<CarPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Text(
-                        'Add Car',
+                        'Add_Order'.tr,
                         style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w500, 14.0),
                       ),
                     )

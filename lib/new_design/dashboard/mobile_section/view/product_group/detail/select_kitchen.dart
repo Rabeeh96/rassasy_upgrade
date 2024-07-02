@@ -48,7 +48,7 @@ class _SelectTaxState extends State<SelectKitchenMobile> {
       ),
       body: Column(
         children: [
-          DividerStyle(),
+          dividerStyle(),
           //
           Expanded(
               child: Obx(() => productGroupController.isKitchenLoad.value
@@ -91,7 +91,7 @@ class _SelectTaxState extends State<SelectKitchenMobile> {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>
-                    DividerStyle(),
+                    dividerStyle(),
               ))),
         ],
       ),
