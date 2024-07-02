@@ -27,6 +27,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'new_method.dart';
+
 class PrintSettingsPage extends StatefulWidget {
   @override
   _PrintSettingsPageState createState() => _PrintSettingsPageState();
@@ -46,7 +48,19 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     String defaultIp = prefs.getString('defaultIP') ?? '';
     temp = prefs.getString("template") ?? "template4";
     ipController.text = defaultIp;
+    executeAfterDelay();
     discover(context);
+  }
+  void executeAfterDelay() {
+    Future.delayed(Duration(seconds: 3), () async{
+      print("1");
+      var data = await createInvoice();
+      print("2");
+
+      printHelperIP.print_demo(ipController.text, context,data);
+      // Code to be executed after 3 seconds
+      print("This code runs after a 3-second delay.");
+    });
   }
 
   String localIp = '';
@@ -266,13 +280,24 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () async {
+
+          // InvoiceDesignWidget invoiceWidget = InvoiceDesignWidget();
+          // await invoiceWidget.createInvoice();
+          //
+          //
+          // if (invoiceWidget.pngBytes != null) {
+          //   // Handle _pngBytes, such as saving to a file or sending over a network
+          //   print('Generated invoice image size: ${invoiceWidget.pngBytes!.lengthInBytes} bytes');
+          // } else {
+          //   print('Failed to generate invoice image.');
+          // }
+
           print("1");
           var data = await createInvoice();
           print("2");
-          printHelperIP.print_demo(ipController.text, context,data);
 
-           // await bluetoothHelper.testingScan(data, "SI", qrCode, qrVisible);
-          // Re-enable the button after 3 seconds
+          printHelperIP.print_demo(ipController.text, context,data);
+          //
         }, // If button is disabled, onPressed is null
         child: const Icon(
           Icons.print,
@@ -281,12 +306,17 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       ),
     );
   }
-  var printHelperIP =   AppBlocs();
+
+  var printHelperIP = NewMethod();
   Widget tabPrintPage() {
     return Builder(
       builder: (BuildContext context) {
         return ListView(
           children: <Widget>[
+            Container(
+                height: 10,
+                child: invoiceDesign()),
+
             const SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -444,6 +474,8 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       print(e.toString());
     }
   }
+
+
 
   String date = "2024-07-02";
   var invoiceType = "Retail Invoice";
@@ -1246,7 +1278,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
             Container(
                 height: 10,
                 child: invoiceDesign()),
-            ElevatedButton(onPressed: () {}, child: Text("Demo Print")),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1621,23 +1652,9 @@ Widget DividerStyle() {
 }
 
 Widget DividerStyleNew() {
-  // Color(0xffE8E8E8): Color(0xff1C3347)
-  Color lightgrey = const Color(0xFFE8E8E8);
-  Color grey = const Color(0xFFE8E8E8).withOpacity(.3);
-//  themeChangeController.isDarkMode.value ? Color(0xffE8E8E8): Color(0xff1C3347)
   return Container(
     height: 1,
     width: double.infinity,
-    decoration: BoxDecoration(
-        gradient: LinearGradient(
-      colors: [
-        grey, // Transparent color
-        lightgrey, // Middle color
-        grey, // Transparent color
-      ],
-      stops: [0.1, 0.4, 1.0],
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-    )),
+    color: Colors.black,
   );
 }

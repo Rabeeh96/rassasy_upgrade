@@ -287,7 +287,7 @@ class AppBlocs {
       var cancelNoteData = "THIS ORDER WAS CANCELLED BY THE CUSTOMER.";
       printer.text(cancelNoteData,
           styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
     //
     /// image print commented
@@ -750,7 +750,7 @@ class AppBlocs {
           textEncoded: gt,
           width: 3,
           styles:
-              const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
+          const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
       PosColumn(
           text: countyCodeCompany + " " + roundStringWith(grandTotal),
           width: 6,
@@ -1441,7 +1441,7 @@ class AppBlocs {
     // var totalCashAmount = "12540";
     // var totalBankAmount = "3500";
     // var totalBankCredit = "500";
-///
+    ///
     printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
 
     printer.text("DAILY REPORT", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
@@ -1481,8 +1481,8 @@ class AppBlocs {
 
     printer.hr();
     printer.emptyLines(2);
-print("salesOrder -----------------");
-print(salesOrder);
+    print("salesOrder -----------------");
+    print(salesOrder);
     printer.text("Sales Order", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
     printer.emptyLines(1);
     printer.row([
@@ -3022,10 +3022,10 @@ print(salesOrder);
       }
     }
 
-     var tableName = kotList[0]["TableName"] ?? "";
-     var tokenNumber = kotList[0]["TokenNumber"].toString();
-     var orderType = kotList[0]["OrderType"] ?? "";
-     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+    var tableName = kotList[0]["TableName"] ?? "";
+    var tokenNumber = kotList[0]["TokenNumber"].toString();
+    var orderType = kotList[0]["OrderType"] ?? "";
+    printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
@@ -3045,19 +3045,19 @@ print(salesOrder);
 
     printer.textEncoded(typeEng,
         styles:
-            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     // printer.text('', styles: PosStyles(align: PosAlign.left));
 
     if (isCancelled) {
       printer.text("ORDER CANCELLED",
           styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size3, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size3, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
 
     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     printer.textEncoded(typeArabic,
         styles:
-            const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+        const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     if (extraDetailsInKOT) {
       if (isCancelNote) {
@@ -3086,7 +3086,7 @@ print(salesOrder);
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size4, width: PosTextSize.size5, bold: false, align: PosAlign.center));
-  //  printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+    //  printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     printer.hr();
@@ -3180,7 +3180,7 @@ print(salesOrder);
           text: roundStringWith(totalQty),
           width: 2,
           styles:
-              (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
+          (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
 
     printer.cut();
@@ -3246,29 +3246,29 @@ print(salesOrder);
     var invoiceType = "KOT";
     printer.text(invoiceType,
         styles:
-            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (isCancelNote) {
       printer.text(cancelNoteData,
           styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
 
     if (isUpdate) {
       printer.text(updateNote,
           styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
     print("------------------------------------------------3");
 
     printer.hr();
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-   // printer.text('', styles: const PosStyles(align: PosAlign.left));
+    // printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size4, width: PosTextSize.size5, bold: false, align: PosAlign.center));
 
-   // printer.text('', styles: const PosStyles(align: PosAlign.left,fontType: PosFontType.fontB,));
+    // printer.text('', styles: const PosStyles(align: PosAlign.left,fontType: PosFontType.fontB,));
     printer.hr();
 
     if (showUsernameKot) {
@@ -3390,10 +3390,10 @@ print(salesOrder);
           text: roundStringWith(totalQty),
           width: 2,
           styles:
-              (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
+          (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
- //   printer.disconnect();
+    //   printer.disconnect();
   }
 
   /// arabic kot image print method
@@ -3440,53 +3440,6 @@ print(salesOrder);
       }
     } catch (e) {
       print('------------------------------${e.toString()}');
-    }
-  }
-
-
-  Future<void> printDemoPage(NetworkPrinter printer,imageData) async {
-
-    print("------112");
-
-
-    // final Image? image = decodeImage(imageData);
-    // printer.imageRaster(image!);
-    // printer.cut();
-
-    final Img.Image? image = Img.decodeImage(imageData);
-    print("------113");
-    final Img.Image resizedImage = Img.copyResize(image!,width: 550);
-    print("------114");
-    printer.imageRaster(resizedImage);
-    print("------115");
-    printer.cut();
-  }
-
-
-  void print_demo(String printerIp,BuildContext ctx,byte) async {
-    print("1");
-    const PaperSize paper = PaperSize.mm80;
-    var profile = await CapabilityProfile.load();
-    print("2");
-    final printer = NetworkPrinter(paper, profile);
-    print("3");
-    var port = int.parse("9100");
-    print("4");
-    final PosPrintResult res = await printer.connect(printerIp, port: port);
-    print("5");
-    if (res == PosPrintResult.success) {
-      print("6");
-      await printDemoPage(printer,byte);
-      print("7");
-      Future.delayed(const Duration(seconds: 2), () async {
-        print("8");
-        print("------after delay----------------------------strt printing");
-        printer.disconnect();
-      });
-    } else {
-
-      popAlert(head: "Error", message: "Check your printer connection",position: SnackPosition.TOP);
-
     }
   }
 
