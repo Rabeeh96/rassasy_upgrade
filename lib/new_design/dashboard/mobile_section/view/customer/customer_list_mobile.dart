@@ -176,15 +176,17 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                                     // A LiableAction can have an icon and/or a label.
                                     SlidableAction(
                                       onPressed: (BuildContext context) async {
-                                        // Get.to(CreateProductGroup(
-                                        //   type: "Edit",
-                                        //   uid: productGroupController
-                                        //       .productGroupLists[index].uID,
-                                        // ));
+                                        customerController.getSingleView(customerController
+                                            .customerModelClass[index].id);
+                                        Get.to(AddCustomerMobile(
+                                          type: "Edit",
+                                          uid: customerController
+                                              .customerModelClass[index].id,
+                                        ));
                                       },
                                       // onPressed: doNothing ,
                                       backgroundColor: Colors.blue,
-                                      foregroundColor: Colors.white,
+                                        foregroundColor: Colors.white,
                                       icon: Icons.edit,
                                       label: 'Edit',
                                     ),
@@ -242,6 +244,7 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                     backgroundColor:
                         MaterialStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () {
+                  customerController.clearData();
                    Get.to(AddCustomerMobile());
                 },
                 child: Row(

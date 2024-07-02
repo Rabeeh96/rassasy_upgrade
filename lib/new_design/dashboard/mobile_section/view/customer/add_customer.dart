@@ -9,14 +9,24 @@ import 'package:rassasy_new/new_design/dashboard/mobile_section/controller/custo
 import 'detail/TAX_TREATMENT.dart';
 import 'detail/price_category.dart';
 import 'detail/routes.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 class AddCustomerMobile extends StatefulWidget {
+  String?  type;
+  String?  uid;
+  AddCustomerMobile({this.uid,this.type});
   @override
   State<AddCustomerMobile> createState() => _AddCustomerMobileState();
 }
 
 class _AddCustomerMobileState extends State<AddCustomerMobile> {
   CustomerController customerController = Get.put(CustomerController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,30 +60,31 @@ class _AddCustomerMobileState extends State<AddCustomerMobile> {
 
 
                   }else{
-                    // customerController.createCustomer(
-                    //     email: customerController.emailController.text,
-                    //     address:customerController.addressController.text,
-                    //     customerName: customerController.customerNameController.text,
-                    //     displayName: customerController.displayNameController.text,
-                    //     creditLimitText: customerController.creditLimitController.text,
-                    //
-                    //     balanceText: customerController.balanceController.text,
-                    //     dropdownvalue: customerController.dropdownvalue,
-                    //     as_on_date_api: DateFormat('yyyy-MM-dd').format(statementController.endDate.value)customerController.dateFormat(customerController.purchaseDateValue),
-                    //    // as_on_date_api: customerController.apiDateFormat(customerController.purchaseDateValue.value),
-                    //     workPhone: customerController.workPhoneController.text,
-                    //     webUrl: customerController.webUrlController.text,
-                    //     creditPeriod: customerController.creditPeriodController.text,
-                    //     priceCategoryId: customerController.priceCategoryID,
-                    //     panNo: customerController.panNoController.text,
-                    //     routeId: customerController.routeID.toString(),
-                    //     crNo: customerController.crNoController.text,
-                    //     bankName: customerController.bankNameController.text,
-                    //     accName: customerController.accNameController.text,
-                    //     accNo: customerController.accNoController.text,
-                    //     ibanIfsc:  customerController.ibanIfscController.text,
-                    //     vatNumber: customerController.vatNumberController.text,
-                    //     treatmentID: customerController.taxID);
+                    customerController.createCustomer(
+                        email: customerController.emailController.text,
+                        address:customerController.addressController.text,
+                        customerName: customerController.customerNameController.text,
+                        displayName: customerController.displayNameController.text,
+                        creditLimitText: customerController.creditLimitController.text,
+
+                        balanceText: customerController.balanceController.text,
+                        dropdownvalue: customerController.dropdownvalue,
+                        as_on_date_api: DateFormat('yyyy-MM-dd').format(customerController.purchaseDateValue.value),
+                       // as_on_date_api: customerController.apiDateFormat(customerController.purchaseDateValue.value),
+                        workPhone: customerController.workPhoneController.text,
+                        webUrl: customerController.webUrlController.text,
+                        creditPeriod: customerController.creditPeriodController.text,
+                        priceCategoryId: customerController.priceCategoryID,
+                        panNo: customerController.panNoController.text,
+                        routeId: customerController.routeID.toString(),
+                        crNo: customerController.crNoController.text,
+                        bankName: customerController.bankNameController.text,
+                        accName: customerController.accNameController.text,
+                        accNo: customerController.accNoController.text,
+                        ibanIfsc:  customerController.ibanIfscController.text,
+                        vatNumber: customerController.taxNoController.text,
+                        imageSelect: true,
+                        treatmentID: customerController.taxID);
                     // if(widget.type=="Edit"){
                     //   print("ghdfdhfhghf");
                     //   productController.editProduct(widget.uid!);
@@ -140,6 +151,9 @@ class _AddCustomerMobileState extends State<AddCustomerMobile> {
             TextField(
               textCapitalization: TextCapitalization.words,
               controller: customerController.customerNameController,
+              onChanged: (content) {
+                customerController.displayNameController.text = customerController.customerNameController.text;
+              },
               style:
                   customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
               focusNode: customerController.customerNameFcNode,
@@ -483,6 +497,7 @@ class _AddCustomerMobileState extends State<AddCustomerMobile> {
               },
               textCapitalization: TextCapitalization.words,
               controller: customerController.treatmentController,
+              readOnly: true,
               style:
                   customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
               focusNode: customerController.treatmentNode,

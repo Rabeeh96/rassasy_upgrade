@@ -808,20 +808,22 @@ class _DashboardNewState extends State<DashboardNew> {
                       isProfileNotifier.value = false;
                       setState(() {});
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/svg/_mobhome.svg",
-                          color: isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29),
-                        ),
-                        Text(
-                          "Home",
-                          style:
-                              customisedStyleBold(context, isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29), FontWeight.normal, 12.0),
-                        )
-                      ],
+                    child:InkWell(
+                      child:  Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/svg/_mobhome.svg",
+                            color: isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29),
+                          ),
+                          Text(
+                            "Home",
+                            style:
+                            customisedStyleBold(context, isProfileNotifier.value ? Color(0xff9E9E9E) : Color(0xffF25F29), FontWeight.normal, 12.0),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -832,7 +834,7 @@ class _DashboardNewState extends State<DashboardNew> {
                       isProfileNotifier.value = true;
                       setState(() {});
                     },
-                    child: Column(
+                    child: InkWell(child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -849,7 +851,7 @@ class _DashboardNewState extends State<DashboardNew> {
                           ),
                         )
                       ],
-                    ),
+                    ),),
                   ),
                 ],
               ),
@@ -2030,15 +2032,15 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                   updateAlert();
+                                    ///updateAlert();
                                     //  Get.to(PrintSettingsDetailed());
-                                    // var perm = await checkingPerm("Productview");
-                                    // print(perm);
-                                    // if (perm) {
-                                    //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
+                                    var perm = await checkingPerm("Productview");
+                                    print(perm);
+                                    if (perm) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -2072,15 +2074,15 @@ class _DashboardNewState extends State<DashboardNew> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    updateAlert();
+                                   /// updateAlert();
                                     // Get.to(TestPrintUSB());
-                                    // var perm = await checkingPerm("Customerview");
-                                    // print(perm);
-                                    // if (perm) {
-                                    //   Get.to(CustomerListMobile());
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
+                                    var perm = await checkingPerm("Customerview");
+                                    print(perm);
+                                    if (perm) {
+                                      Get.to(CustomerListMobile());
+                                    } else {
+                                      dialogBoxPermissionDenied(context);
+                                    }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),

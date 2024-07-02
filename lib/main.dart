@@ -52,7 +52,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
-  //  bool isTablet = true;
+
     bool isTablet = isTabletDevice();
     prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
     print("main isTablet: $isTablet");
@@ -174,9 +174,6 @@ class _MyHomePageState extends State<MyHomePage> {
           else {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
           }
-
-
-
 
 
           // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));

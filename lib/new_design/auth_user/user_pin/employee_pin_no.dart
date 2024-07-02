@@ -73,8 +73,12 @@ defaultAPi() async {
     double screenHeight = screenSize.height;
 
 
-   // bool isTablet = true;
     bool isTablet = screenWidth > defaultScreenWidth;
+    print("isTablet");
+    print(isTablet);
+    print("screenWidth  $screenWidth");
+    print("med  ${MediaQuery.of(context).size.width}");
+    print("defaultScreenWidth  $defaultScreenWidth");
     return Scaffold(
         // appBar: AppBar(
         //   elevation: 0.0,
@@ -179,7 +183,9 @@ defaultAPi() async {
                   ),
                 ],
               ))),
-    ));
+    )
+
+    );
   }
 
   Future<Null> userTypeData(roleID) async {
