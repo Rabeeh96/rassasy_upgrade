@@ -6640,7 +6640,7 @@ class _ReportPageState extends State<ReportPageNew> {
         final url = '$baseUrl/posholds/daily-summary/';
         Map data = {
           "CompanyID": companyID,
-          "BranchID": 1,
+          "BranchID": branchID,
           "Date": apiDateFormat.format(fromDateNotifier.value),
           "FromDate": apiDateFormat.format(fromDateNotifier.value),
           "ToDate": apiDateFormat.format(toDateNotifier.value),

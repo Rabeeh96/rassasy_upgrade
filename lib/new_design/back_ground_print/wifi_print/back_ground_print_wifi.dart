@@ -24,6 +24,11 @@ import '../Templates/template3.dart';
 import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
 import 'package:get/get.dart';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
+
+
 class AppBlocs {
   List<ProductDetailsModel> printDalesDetails = [];
 
@@ -3437,6 +3442,54 @@ print(salesOrder);
       print('------------------------------${e.toString()}');
     }
   }
+
+
+  Future<void> printDemoPage(NetworkPrinter printer,imageData) async {
+
+    print("------112");
+
+
+    // final Image? image = decodeImage(imageData);
+    // printer.imageRaster(image!);
+    // printer.cut();
+
+    final Img.Image? image = Img.decodeImage(imageData);
+    print("------113");
+    final Img.Image resizedImage = Img.copyResize(image!,width: 550);
+    print("------114");
+    printer.imageRaster(resizedImage);
+    print("------115");
+    printer.cut();
+  }
+
+
+  void print_demo(String printerIp,BuildContext ctx,byte) async {
+    print("1");
+    const PaperSize paper = PaperSize.mm80;
+    var profile = await CapabilityProfile.load();
+    print("2");
+    final printer = NetworkPrinter(paper, profile);
+    print("3");
+    var port = int.parse("9100");
+    print("4");
+    final PosPrintResult res = await printer.connect(printerIp, port: port);
+    print("5");
+    if (res == PosPrintResult.success) {
+      print("6");
+      await printDemoPage(printer,byte);
+      print("7");
+      Future.delayed(const Duration(seconds: 2), () async {
+        print("8");
+        print("------after delay----------------------------strt printing");
+        printer.disconnect();
+      });
+    } else {
+
+      popAlert(head: "Error", message: "Check your printer connection",position: SnackPosition.TOP);
+
+    }
+  }
+
 
   Future<void> testPrint(NetworkPrinter printer) async {
     // final ByteData data = await rootBundle.load('assets/fonts/CustomArabicFont.ttf');
