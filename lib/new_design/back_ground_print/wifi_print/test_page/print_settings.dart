@@ -27,6 +27,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'new_method.dart';
+
 class PrintSettingsPage extends StatefulWidget {
   @override
   _PrintSettingsPageState createState() => _PrintSettingsPageState();
@@ -47,6 +49,17 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     temp = prefs.getString("template") ?? "template4";
     ipController.text = defaultIp;
     discover(context);
+  }
+  void executeAfterDelay() {
+    Future.delayed(Duration(seconds: 3), () async{
+      print("1");
+      var data = await createInvoice();
+      print("2");
+
+      printHelperIP.print_demo(ipController.text, context,data);
+      // Code to be executed after 3 seconds
+      print("This code runs after a 3-second delay.");
+    });
   }
 
   String localIp = '';
@@ -110,12 +123,11 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
     while (retryCount < maxRetries && !isConnected) {
       try {
-        print("capability $capability");
+
         if (isArabic == false) {
           capability = "default";
         }
 
-        print("capability $capability");
         var profile = await CapabilityProfile.load(name: capability);
         final supportedCodePages = profile.codePages;
         final printer = NetworkPrinter(PaperSize.mm80, profile);
@@ -124,7 +136,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
           isConnected = true;
 
           if (isArabic) {
-            for (var ind = 0; ind < supportedCodePages.length; ind++) {
+            for(var ind = 0; ind < supportedCodePages.length; ind++) {
               var testData = "${supportedCodePages[ind].name} السلام عليكم $capability ";
               printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
               Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
@@ -266,13 +278,24 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () async {
+
+          // InvoiceDesignWidget invoiceWidget = InvoiceDesignWidget();
+          // await invoiceWidget.createInvoice();
+          //
+          //
+          // if (invoiceWidget.pngBytes != null) {
+          //   // Handle _pngBytes, such as saving to a file or sending over a network
+          //   print('Generated invoice image size: ${invoiceWidget.pngBytes!.lengthInBytes} bytes');
+          // } else {
+          //   print('Failed to generate invoice image.');
+          // }
+
           print("1");
           var data = await createInvoice();
           print("2");
-          printHelperIP.print_demo(ipController.text, context,data);
 
-           // await bluetoothHelper.testingScan(data, "SI", qrCode, qrVisible);
-          // Re-enable the button after 3 seconds
+          printHelperIP.print_demo(ipController.text, context,data);
+          //
         }, // If button is disabled, onPressed is null
         child: const Icon(
           Icons.print,
@@ -281,12 +304,17 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       ),
     );
   }
-  var printHelperIP =   AppBlocs();
+
+  var printHelperIP = NewMethod();
   Widget tabPrintPage() {
     return Builder(
       builder: (BuildContext context) {
         return ListView(
           children: <Widget>[
+            Container(
+                height: 10,
+                child: invoiceDesign()),
+
             const SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -444,6 +472,8 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       print(e.toString());
     }
   }
+
+
 
   String date = "2024-07-02";
   var invoiceType = "Retail Invoice";
@@ -1246,7 +1276,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
             Container(
                 height: 10,
                 child: invoiceDesign()),
-            ElevatedButton(onPressed: () {}, child: Text("Demo Print")),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1621,23 +1650,9 @@ Widget DividerStyle() {
 }
 
 Widget DividerStyleNew() {
-  // Color(0xffE8E8E8): Color(0xff1C3347)
-  Color lightgrey = const Color(0xFFE8E8E8);
-  Color grey = const Color(0xFFE8E8E8).withOpacity(.3);
-//  themeChangeController.isDarkMode.value ? Color(0xffE8E8E8): Color(0xff1C3347)
   return Container(
     height: 1,
     width: double.infinity,
-    decoration: BoxDecoration(
-        gradient: LinearGradient(
-      colors: [
-        grey, // Transparent color
-        lightgrey, // Middle color
-        grey, // Transparent color
-      ],
-      stops: [0.1, 0.4, 1.0],
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-    )),
+    color: Colors.black,
   );
 }
