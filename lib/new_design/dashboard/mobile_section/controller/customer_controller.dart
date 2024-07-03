@@ -664,7 +664,7 @@ var taxID="1";
         "VAT_Treatment": treatmentID,
       });
 
-      // Add image file if imageSelect is true and imgFilePath is provided
+      // Add image file if imageSelect is true and imgFilePath is provided//
       if (imageSelect && imgFilePath != null) {
         // Ensure imgFilePath is a valid path to the image file
         request.files.add(
