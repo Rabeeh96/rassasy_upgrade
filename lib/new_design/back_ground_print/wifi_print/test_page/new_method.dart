@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:image/image.dart' as Img;
 import 'dart:typed_data';
 import 'package:flutter/material.dart' hide Image;
@@ -11,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 
 class NewMethod {
   GlobalKey globalKey = GlobalKey();
@@ -34,7 +35,6 @@ class NewMethod {
     );
   }
 
-
   createInvoice() async {
     try {
       RenderRepaintBoundary boundary = globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
@@ -46,17 +46,35 @@ class NewMethod {
       print(e.toString());
     }
   }
+  List<int> _encode(String text) {
+    return utf8.encode(text);
+  }
 
+  List<int> text(String text) {
+    return _encode(text);
+  }
+
+  // Example method to demonstrate usage
+   printText(String textd) {
+    List<int> encodedText = text(textd);
+    return encodedText;
+    // Print or process encodedText
+    print(encodedText); // Just for demonstration
+  }
   Future<void> printDemoPage(NetworkPrinter printer,imageData) async {
     final Img.Image? image = Img.decodeImage(imageData);
     print("------113");
     final Img.Image resizedImage = Img.copyResize(image!,width: 550);
     print("------114");
     printer.imageRaster(resizedImage,);
+
+
+
+// Using `GS ( L`
+
     print("------115");
     printer.cut();
   }
-
 
   void print_demo(String printerIp,BuildContext ctx,byte) async {
     print("1");
@@ -74,25 +92,13 @@ class NewMethod {
       await printDemoPage(printer,byte);
       print("7");
       Future.delayed(const Duration(seconds: 2), () async {
-        print("8");
-        print("------after delay----------------------------strt printing");
         printer.disconnect();
       });
     } else {
-
       popAlert(head: "Error", message: "Check your printer connection",position: SnackPosition.TOP);
-
     }
   }
-
 }
-
-
-
-
-
-
-
 class InvoiceDesignWidget extends StatelessWidget {
   final GlobalKey _globalKey = GlobalKey();
   Uint8List? pngBytes;

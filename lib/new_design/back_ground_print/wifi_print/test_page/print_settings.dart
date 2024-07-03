@@ -48,7 +48,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     String defaultIp = prefs.getString('defaultIP') ?? '';
     temp = prefs.getString("template") ?? "template4";
     ipController.text = defaultIp;
-    executeAfterDelay();
     discover(context);
   }
   void executeAfterDelay() {
@@ -124,12 +123,11 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
     while (retryCount < maxRetries && !isConnected) {
       try {
-        print("capability $capability");
+
         if (isArabic == false) {
           capability = "default";
         }
 
-        print("capability $capability");
         var profile = await CapabilityProfile.load(name: capability);
         final supportedCodePages = profile.codePages;
         final printer = NetworkPrinter(PaperSize.mm80, profile);
@@ -138,7 +136,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
           isConnected = true;
 
           if (isArabic) {
-            for (var ind = 0; ind < supportedCodePages.length; ind++) {
+            for(var ind = 0; ind < supportedCodePages.length; ind++) {
               var testData = "${supportedCodePages[ind].name} السلام عليكم $capability ";
               printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
               Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
