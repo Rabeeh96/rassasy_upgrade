@@ -292,7 +292,9 @@ class _ProductListMobileState extends State<ProductListMobile> {
 
 
             ),
-          )),
+          )
+
+          ),
 
         ],
       ),
