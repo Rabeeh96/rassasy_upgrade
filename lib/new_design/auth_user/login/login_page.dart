@@ -61,11 +61,9 @@ class _LoginPageNewState extends State<LoginPageNew> {
     double screenHeight = screenSize.height;
 
     /// chaged
-    //bool isTablet = true;
-    bool isTablet = screenWidth > defaultScreenWidth;
+   bool isTablet = true;
+   // bool isTablet = screenWidth > defaultScreenWidth;
 
-
-    
     return Scaffold(
       appBar: isTablet
           ? AppBar()

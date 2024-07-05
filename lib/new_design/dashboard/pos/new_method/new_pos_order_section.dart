@@ -765,8 +765,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
       }
       else {
-        /// kot is not fully completed
-      ///  bluetoothHelper.bluetoothPrintKOT(orderID, rePrint, cancelList, isUpdate, false);
+
+        bluetoothHelper.bluetoothPrintKOT(orderID, rePrint, cancelList, isUpdate, isUpdate);
       }
     } catch (e) {
       print(e.toString());

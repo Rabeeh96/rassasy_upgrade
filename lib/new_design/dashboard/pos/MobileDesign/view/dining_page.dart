@@ -210,10 +210,7 @@ class _DiningPageState extends State<DiningPage> {
                                     diningController.tableData[index].status == 'Ordered'&& posController.kitchen_print_perm.value?  CustomSlidableAction(
                                       flex: 1,
                                       onPressed: (BuildContext context) async {
-
-
-                                          posController.printKOT(cancelList: [],isUpdate:false,orderID:diningController.tableData[index].salesOrderID!,rePrint:true);
-
+                                        posController.printKOT(cancelList: [],isUpdate:false,orderID:diningController.tableData[index].salesOrderID!,rePrint:true);
                                       },
                                       backgroundColor: const Color(0xFF00775E),
                                       foregroundColor: Colors.green,

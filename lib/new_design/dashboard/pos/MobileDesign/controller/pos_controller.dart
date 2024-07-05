@@ -327,9 +327,13 @@ final isLoadTable=false.obs;
       if (printType == 'Wifi') {
         printHelperIP.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
       }
+      else if(printType == 'BT'){
+        bluetoothHelper.bluetoothPrintKOT(orderID, rePrint, cancelList, isUpdate, isUpdate);
+      }
       else {
         printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
       }
+
     } catch (e) {
       print(e.toString());
     }

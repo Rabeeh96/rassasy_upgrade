@@ -59,8 +59,8 @@ class _OrganizationDetailState extends State<OrganizationList> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-  //  bool isTablet = true;
-   bool isTablet = screenWidth > 850;
+   bool isTablet = true;
+//   bool isTablet = screenWidth > 850;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -184,8 +184,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                           child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-
-                              color: isTablet?Color(0xffF6F6F6):Colors.transparent,
+                                color: isTablet?Color(0xffF6F6F6):Colors.transparent,
                               ),
                               //  color: Colors.red,
 
@@ -195,7 +194,8 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else {
+                                }
+                                else {
                                   return companyController.companyList.isEmpty?Image.asset('assets/png/EmptyCompany.png'): ListView.builder(
                                     itemCount: companyController.companyList.length,
                                     itemBuilder: (context, index) {
@@ -319,10 +319,6 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                 }
                               }),
                           ),
-
-
-
-
 
                   )
 
