@@ -321,7 +321,7 @@ class AppBlocs {
     Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
     Uint8List exciseTax = await CharsetConverter.encode("ISO-8859-6", setString('مبلغ الضريبة الانتقائية'));
     Uint8List vatTax = await CharsetConverter.encode("ISO-8859-6", setString('ضريبة القيمة المضافة'));
-    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
+    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('تخفيض'));
     Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
 
     Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
