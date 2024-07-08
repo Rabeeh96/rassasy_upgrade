@@ -35,63 +35,12 @@ class AppBlocsBT {
   List<BluetoothPrinter> _printers = [];
   late BluetoothPrinterManager _manager;
 
-/// new connection
-  // Future<void> connectToBTPrinter({
-  //   required bool isCancelled,
-  //
-  // }) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   _printers = [];
-  //   _printers = await BluetoothPrinterManager.discover();
-  //   var paperSize = PaperSize.mm80;
-  //
-  //   print("--------11111");
-  //   var defaultIp = prefs.getString('defaultIP') ?? '';
-  //   var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
-  //   var capabilities = prefs.getString("default_capabilities") ?? "default";
-  //
-  //
-  //   var printerAddress = "";
-  //   if (PrintDataDetails.type == "SO") {
-  //     printerAddress = defaultOrderIP;
-  //   } else {
-  //     printerAddress = defaultIp;
-  //   }
-  //
-  //   var profile = (capabilities == "default")
-  //       ? await CapabilityProfile.load()
-  //       : await CapabilityProfile.load(name: capabilities);
-  //   print("--------2");
-  //   if (_printers.isEmpty) {
-  //     return; // Exit when no printer is connected
-  //   }
-  //
-  //   for (var printer in _printers) {
-  //     if (printer.address == printerAddress) {
-  //       if (!printer.connected) {
-  //         var manager = BluetoothPrinterManager(printer, paperSize, profile);
-  //         await manager.connect();
-  //         printer.connected = true;
-  //         _manager = manager;
-  //       }
-  //
-  //       if (_manager.isConnected ?? false) {
-  //         var isoDate = DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
-  //         var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
-  //             BluetoothPrintThermalDetails.grandTotal, BluetoothPrintThermalDetails.totalTax);
-  //
-  //         var service = ESCPrinterServicesArabic(qrCode, prefs, PaperSize.mm80,isCancelled);
-  //         var data = await service.getBytes(paperSize: paperSize, profile: profile);
-  //
-  //         _manager.writeBytes(data, isDisconnect: true);
-  //       } else {
-  //         await _manager.disconnect();
-  //       }
-  //       break;
-  //     }
-  //   }
-  // }
+
+
+
+///old
   scan(isCancelled) async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _printers = [];
     _printers = await BluetoothPrinterManager.discover();
@@ -113,12 +62,11 @@ class AppBlocsBT {
       ip = defaultIp;
     }
 
-    if (_printers.length == 0) {
-
+    if (_printers.isEmpty) {
       return 1;
-
       /// exit when no item connected
-    } else {
+    }
+    else {
       bool connected = false;
       int index = 0;
 
@@ -129,6 +77,7 @@ class AppBlocsBT {
           break;
         }
       }
+
       if (connected == true) {
         if (_printers[index].connected == true) {
         } else {
@@ -138,6 +87,7 @@ class AppBlocsBT {
           var manager = BluetoothPrinterManager(_printers[index], paperSize, profile_mobile);
           await manager.connect();
           _printers[index].connected = true;
+          _manager.isConnected = true;
           _manager = manager;
         }
 
@@ -159,7 +109,7 @@ class AppBlocsBT {
             var data = await service.getBytes(paperSize: paperSize, profile: profile);
             if (_manager != null) {
               print("isConnected ${_manager.isConnected}");
-              _manager.writeBytes(data, isDisconnect: true);
+              _manager.writeBytes(data, isDisconnect: false);
               return 4;
             }
           }
@@ -335,6 +285,7 @@ class AppBlocsBT {
               isUpdate: isUpdate,
               isCancel: isCancelled,
             );
+
             printSuccess = true;
           } catch (e) {
             print('Error printing: ${e.toString()}');
@@ -429,6 +380,67 @@ class AppBlocsBT {
 
   }
 
+  // Future<void> connectToPrinter({
+  //   required String printerAddress,
+  //   required int dataIndex,
+  //   required List items,
+  //   required List cancelNote,
+  //   required bool isUpdate,
+  //   required bool isCancel,
+  // }) async {
+  //
+  //   try{
+  //
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     _printers = [];
+  //     _printers = await BluetoothPrinterManager.discover();
+  //     var paperSize = PaperSize.mm80;
+  //
+  //
+  //     var capabilities = prefs.getString("default_capabilities") ?? "default";
+  //     var profile = (capabilities == "default")
+  //         ? await CapabilityProfile.load()
+  //         : await CapabilityProfile.load(name: capabilities);
+  //     print("--------12");
+  //     if (_printers.isEmpty) {
+  //       return; // Exit when no printer is connected
+  //     }
+  //     print("--------2");
+  //     for (var printer in _printers) {
+  //       print("--------1");
+  //       if (printer.address == printerAddress) {
+  //         print("--------2");
+  //         if (!printer.connected) {
+  //           print("--------3");
+  //           var manager = BluetoothPrinterManager(printer, paperSize, profile);
+  //           await manager.connect();
+  //           printer.connected = true;
+  //           _manager = manager;
+  //         }
+  //         print("--------4");
+  //         if (_manager.isConnected) {
+  //           print("--------5");
+  //           var service = ESCPrinterServicesArabicKOT(
+  //               prefs, printerAddress, dataIndex, items, cancelNote, isUpdate, isCancel
+  //           );
+  //           var data = await service.getBytes(paperSize: paperSize, profile: profile);
+  //             _manager.writeBytes(data, isDisconnect: true);
+  //         } else {
+  //           print("--------6");
+  //           await _manager.disconnect();
+  //         }
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   catch(e){
+  //     print(e.toString());
+  //   }
+  //
+  //
+  // }
+  //
+
   Future<void> connectToPrinter({
     required String printerAddress,
     required int dataIndex,
@@ -437,59 +449,75 @@ class AppBlocsBT {
     required bool isUpdate,
     required bool isCancel,
   }) async {
-
-    try{
-
+    try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       _printers = [];
       _printers = await BluetoothPrinterManager.discover();
       var paperSize = PaperSize.mm80;
 
-      print("--------11111");
-
       var capabilities = prefs.getString("default_capabilities") ?? "default";
       var profile = (capabilities == "default")
           ? await CapabilityProfile.load()
           : await CapabilityProfile.load(name: capabilities);
-      print("--------12");
+
       if (_printers.isEmpty) {
+        print("No printers found");
         return; // Exit when no printer is connected
       }
-      print("--------2");
+
+      print("--------rab------------1");
       for (var printer in _printers) {
-        print("--------1");
+        print("---------rab-----------2");
         if (printer.address == printerAddress) {
-          print("--------2");
+          print("--------rab------------3");
           if (!printer.connected) {
-            print("--------3");
+            print("--------rab------------4");
             var manager = BluetoothPrinterManager(printer, paperSize, profile);
             await manager.connect();
             printer.connected = true;
-            _manager = manager;
-          }
-          print("--------4");
-          if (_manager.isConnected ?? false) {
 
+            _manager = manager;
+            print("-_manager.isConnected--${_manager.isConnected}-------");
+            _manager.isConnected = true;
+            print("-_manager.isConnected--${_manager.isConnected}-------");
+          }
+
+          print("--------rab------------5");
+          if (_manager.isConnected) {
+            print("--------rab------------6");
             var service = ESCPrinterServicesArabicKOT(
-                prefs, printerAddress, dataIndex, items, cancelNote, isUpdate, isCancel
-            );
+                prefs, printerAddress, dataIndex, items, cancelNote, isUpdate, isCancel);
             var data = await service.getBytes(paperSize: paperSize, profile: profile);
-            _manager.writeBytes(data, isDisconnect: true);
-          } else {
-            print("--------6");
+            _manager.writeBytes(data, isDisconnect: false);
+
+            // await disconnectPrinter();
+
+          }
+          else {
+            print("--------rab------------7");
             await _manager.disconnect();
           }
           break;
         }
       }
+    } catch (e) {
+      print("Error: ${e.toString()}");
+      await _manager.disconnect(); // Ensure disconnection on error
     }
-    catch(e){
-      print(e.toString());
-    }
-
-
   }
 
+  Future<void> disconnectPrinter() async {
+    try {
+      if (_manager != null && _manager.isConnected) {
+        await _manager.disconnect();
+        print("Printer disconnected successfully.");
+      } else {
+        print("Printer is not connected.");
+      }
+    } catch (e) {
+      print("Error during disconnecting: ${e.toString()}");
+    }
+  }
 
 /// print old
 //   bluetoothPrintKOT(var id, rePrint, cancelOrder, isUpdate, isCancelled) async {
@@ -966,18 +994,24 @@ bool isCancelled;
     var companyCountry = BluetoothPrintThermalDetails.countryNameCompany;
     var companyPhone = BluetoothPrintThermalDetails.phoneCompany;
     var companyTax = BluetoothPrintThermalDetails.vatNumberCompany;
-    var companyCrNumber = BluetoothPrintThermalDetails.cRNumberCompany;
+
+
+
+     var companyCrNumber = BluetoothPrintThermalDetails.cRNumberCompany;
+
+
+    print("companyCrNumber   $companyCrNumber companyTax  $companyTax ");
+
+
     var countyCodeCompany = BluetoothPrintThermalDetails.countyCodeCompany;
     var qrCodeData = BluetoothPrintThermalDetails.qrCodeImage;
 
     var voucherNumber = BluetoothPrintThermalDetails.voucherNumber;
     var customerName = BluetoothPrintThermalDetails.ledgerName;
 
-
     if (BluetoothPrintThermalDetails.ledgerName == "Cash In Hand") {
       customerName = BluetoothPrintThermalDetails.customerName;
     }
-
     var date = BluetoothPrintThermalDetails.date;
     var customerPhone = BluetoothPrintThermalDetails.customerPhone;
     var grossAmount = roundStringWith(BluetoothPrintThermalDetails.grossAmount);
@@ -1017,31 +1051,34 @@ bool isCancelled;
       }
     }
 
+    print("------------------------*1");
+
+    print("-----------------------------------------------------------------------------*-*-*-*-*${setString('ضريبه  ' + companyTax)}");
 
     Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
     Uint8List companyTaxEnc = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
     Uint8List companyCREnc = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
     Uint8List companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
     Uint8List salesManDetailsEnc = await CharsetConverter.encode("ISO-8859-6", setString('رجل المبيعات ' + salesMan));
-
+    print("------------------------*1");
     if (headerAlignment) {
       companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
     }
 
     Uint8List invoiceTypeEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
     Uint8List invoiceTypeArabicEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
-
+    print("------------------------*1");
     Uint8List ga = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
     Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
     Uint8List exciseTax = await CharsetConverter.encode("ISO-8859-6", setString('مبلغ الضريبة الانتقائية'));
     Uint8List vatTax = await CharsetConverter.encode("ISO-8859-6", setString('ضريبة القيمة المضافة'));
-    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
+    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('تخفيض'));
     Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
-
+    print("------------------------*1111111");
     Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
     Uint8List cr = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ المستلم'));
     Uint8List br = await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
-
+    print("------------------------*1111111");
     if (headerAlignment) {
 
       if (companyName != "") {
@@ -1073,7 +1110,7 @@ bool isCancelled;
 
         // printer += generator.textEncoded(cityEncode, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
-
+      print("------------------------*595959595");
       if (streetName != "") {
         Uint8List streetNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
@@ -1088,7 +1125,7 @@ bool isCancelled;
 
         // printer += generator.textEncoded(cityEncode, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
-
+      print("------------------------*4444444");
       if (companyTax != "") {
         printer += generator.row([
           PosColumn(text: 'Vat Number', width: 2, styles: const PosStyles(align: PosAlign.left)),
@@ -1108,6 +1145,7 @@ bool isCancelled;
       //   ]);
       //   //  printer += generator.textEncoded(companyCREnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       // }
+
       if (companyPhone != "") {
         printer += generator.row([
           PosColumn(text: 'Phone', width: 2, styles: const PosStyles(align: PosAlign.left)),
@@ -1118,6 +1156,7 @@ bool isCancelled;
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
        }
+      print("------------------------*4444444");
 
       // if (salesMan != "") {
       //   printer += generator.row([
@@ -1138,12 +1177,14 @@ bool isCancelled;
                 height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
 
+      print("------------------------*1");
       if (companySecondName != "") {
         Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
 
         printer += generator.textEncoded(companySecondNameEncode,
             styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
+      print("------------------------*1");
 
       if (buildingDetails != "") {
         Uint8List buildingDetailsEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
@@ -1152,6 +1193,7 @@ bool isCancelled;
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
+      print("------------------------*1");
       if (streetName != "") {
         Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
@@ -1175,7 +1217,7 @@ bool isCancelled;
       //   printer += generator.textEncoded(salesManDetailsEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       // }
     }
-
+    print("------------------------*41212121212");
     printer += generator.emptyLines(1);
     printer += generator.textEncoded(invoiceTypeEnc, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, align: PosAlign.center));
     printer += generator.textEncoded(invoiceTypeArabicEnc, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
@@ -1295,7 +1337,7 @@ bool isCancelled;
     Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
     Uint8List netEnc = await CharsetConverter.encode("ISO-8859-6", setString("المجموع"));
 
-
+    print("------------------------*1111111111111111111111");
 
     printer += generator.row([
       PosColumn(
@@ -1500,7 +1542,7 @@ bool isCancelled;
         ]);
       }
     }
-
+    print("------------------------*1111111111111111111111ok");
     ///
     if (qrCodeAvailable) {
       printer += generator.feed(1);
@@ -2314,38 +2356,13 @@ Future<Uint8List> generateInvoice() async {
 }
 
 
-bool Check(String text) {
-  var val = false;
-  bool both = true;
-  if (text.contains(RegExp(r'[A-Z,a-z]'))) {
-    for (int i = 0; i < text.length;) {
-      int c = text.codeUnitAt(i);
-      if (c >= 0x0600 && c <= 0x06FF || (c >= 0xFE70 && c <= 0xFEFF)) {
-        both = false;
-        return both;
-      } else {
-        both = true;
-        return both;
-      }
-    }
-  } else {
-    val = false;
-    for (int i = 0; i < text.length; i++) {
-      if (val = double.tryParse(text[i]) != null) {
-        if (val == true) {
-          both = false;
-        } else {
-          both = true;
-        }
-        return both;
-      }
-    }
 
-    // both = true;
+returnBlankSpace(length) {
+  List<String> list = [];
+  for (int i = 0; i < length; i++) {
+    list.add('');
   }
-  print('result of check $both');
-
-  return both;
+  return list;
 }
 setString(String tex) {
   if (tex == "") {}
@@ -2385,12 +2402,38 @@ setString(String tex) {
   }
   return value;
 }
-returnBlankSpace(length) {
-  List<String> list = [];
-  for (int i = 0; i < length; i++) {
-    list.add('');
+bool Check(String text) {
+  var val = false;
+  bool both = true;
+  if (text.contains(RegExp(r'[A-Z,a-z]'))) {
+    for (int i = 0; i < text.length;) {
+      int c = text.codeUnitAt(i);
+      if (c >= 0x0600 && c <= 0x06FF || (c >= 0xFE70 && c <= 0xFEFF)) {
+        both = false;
+        return both;
+      } else {
+        both = true;
+        return both;
+      }
+    }
+  } else {
+    val = false;
+    for (int i = 0; i < text.length; i++) {
+      if (val = double.tryParse(text[i]) != null) {
+        if (val == true) {
+          both = false;
+        } else {
+          both = true;
+        }
+        return both;
+      }
+    }
+
+    // both = true;
   }
-  return list;
+  print('result of check $both');
+
+  return both;
 }
 set(String str) {
   try {
@@ -2398,18 +2441,24 @@ set(String str) {
 
     var listData = [];
     List<String> test = [];
+
     List<String> splitA = str.split('');
     test = returnBlankSpace(splitA.length);
+
+    // test.length = splitA.length;
 
     if (str.contains('')) {
       for (int i = 0; i < splitA.length; i++) {
         test[i] = splitA[splitA.length - 1 - i];
+        print(splitA);
       }
       splitA = test;
     }
+
     listData.length = splitA.length;
     bool ar = false;
     int index = 0;
+
     for (int i = 0; i < splitA.length; i++) {
       if (isArabic(splitA[i])) {
         if (ar) {
@@ -2452,10 +2501,13 @@ set(String str) {
     }
 
     return listData;
-  } catch (e) {}
+  } catch (e) {
+    print("set function error ${e.toString()}");
+  }
 }
 bool isArabic(String text) {
   if (text == "") {}
+
   String arabicText = text.trim().replaceAll(" ", "");
   for (int i = 0; i < arabicText.length;) {
     int c = arabicText.codeUnitAt(i);
@@ -2470,22 +2522,43 @@ bool isArabic(String text) {
 }
 bool isEnglish(String text) {
   if (text == "") {}
+
   bool onlyEnglish = false;
 
   String englishText = text.trim().replaceAll(" ", "");
   if (englishText.contains(RegExp(r'[A-Z,a-z]'))) {
     onlyEnglish = true;
+    print(onlyEnglish);
   } else {
     onlyEnglish = false;
+    print(onlyEnglish);
   }
   return onlyEnglish;
 }
 bool isN(String value) {
-  if (value == "") {}
+  if (value == "") {
+    print("str is nll");
+  }
   var val = false;
   val = double.tryParse(value) != null;
   return val;
 }
+getBytes(int id, value) {
+  if (value == "") {}
+  int datas = value.length;
+  Uint8List va = Uint8List(2 + datas);
+  va[0] = id;
+  va[1] = value.length;
+
+  for (var i = 0; i < value.length; i++) {
+    va[2 + i] = value[i];
+  }
+  return va;
+}
+
+
+
+
 class ProductDetailsModel {
   final String unitName, qty, netAmount,flavourName, productName, unitPrice, productDescription;
 
