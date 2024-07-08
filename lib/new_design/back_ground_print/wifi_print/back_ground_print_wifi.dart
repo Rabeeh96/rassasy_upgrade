@@ -188,20 +188,17 @@ class AppBlocs {
       if (temp == 'template4') {
         await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint,
             hideTaxDetails, defaultCodePage, isCancelled,flavourInOrderPrint);
-      } else if (temp == 'template3') {
-        await englishInvoicePrint(
-            printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails,flavourInOrderPrint);
+      }
+      else if (temp == 'template3') {
+        await englishInvoicePrint(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails,flavourInOrderPrint);
       } else {
         await printArabic(printer);
       }
       Future.delayed(const Duration(seconds: 2), () async {
-        print("------after delay----------------------------strt printing");
         printer.disconnect();
       });
     } else {
-
       popAlert(head: "Error", message: "Check your printer connection",position: SnackPosition.TOP);
-
     }
   }
 
@@ -257,8 +254,6 @@ class AppBlocs {
 
     var voucherNumber = BluetoothPrintThermalDetails.voucherNumber;
     var customerName = BluetoothPrintThermalDetails.ledgerName;
-    print("________________LedgerName   ${BluetoothPrintThermalDetails.ledgerName}");
-    print("________________customerName     ${BluetoothPrintThermalDetails.customerName}");
 
     if (BluetoothPrintThermalDetails.ledgerName == "Cash In Hand") {
       customerName = BluetoothPrintThermalDetails.customerName;
@@ -423,7 +418,8 @@ class AppBlocs {
         ]);
         //  printer.textEncoded(companyPhoneEnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
-    } else {
+    }
+    else {
       if (companyName != "") {
         printer.textEncoded(companyNameEnc,
             styles: const PosStyles(

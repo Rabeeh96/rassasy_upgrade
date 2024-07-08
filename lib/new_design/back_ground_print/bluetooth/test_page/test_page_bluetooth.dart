@@ -100,6 +100,7 @@ class _TestPrintBTState extends State<TestPrintBT> {
           actions: <Widget>[
 
             ElevatedButton(onPressed: (){
+
              // testPrintAllCodePage(controllerName.text);
             }, child: Text("Demo")),
 

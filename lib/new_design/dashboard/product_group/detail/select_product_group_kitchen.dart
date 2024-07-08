@@ -41,7 +41,7 @@ class _ProductDetailsState extends State<SelectKitchen> {
           },
         ), //
         title:   Text(
-          'Kitchen'.tr,
+           'Kitchen'.tr,
           style: customisedStyle(context, Colors.black, FontWeight.w600, 20.0),
         ),
         backgroundColor: Colors.grey[300],

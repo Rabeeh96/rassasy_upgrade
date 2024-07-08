@@ -8,7 +8,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrintSettingController extends GetxController {
-  ValueNotifier<bool> isEnableWifiPrinter = ValueNotifier<bool>(false);
+
 
   ///print template
 
@@ -17,7 +17,7 @@ class PrintSettingController extends GetxController {
     super.onInit();
     loadData();
   }
-
+  RxString selectedOption="Wifi".obs;
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var template = prefs.getString("template") ?? "template3";
@@ -30,10 +30,19 @@ class PrintSettingController extends GetxController {
       setTemplate(4);
       setSelectedIndex(1);
     }
+
+
+
     if (printType == "Wifi") {
-      isEnableWifiPrinter.value = true;
-    } else {
-      isEnableWifiPrinter.value = false;
+      selectedOption.value ="Wifi";
+    }
+
+    else if (printType == "BT"){
+      selectedOption.value ="BT";
+
+    }
+    else {
+      selectedOption.value ="USB";
     }
 
     update();
@@ -47,7 +56,6 @@ class PrintSettingController extends GetxController {
 
   void setSelectedIndex(int index) {
     selectedIndex.value = index;
-
     update();
   }
 

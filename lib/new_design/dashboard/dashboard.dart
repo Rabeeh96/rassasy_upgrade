@@ -369,7 +369,8 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = true;
+    /// bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
       appBar: isProfileNotifier.value
           ? AppBar(
@@ -669,8 +670,8 @@ class _DashboardNewState extends State<DashboardNew> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = false;
+  //  bool isTablet = screenWidth > defaultScreenWidth;
     print(isTablet);
     print(screenWidth);
     print("dash");

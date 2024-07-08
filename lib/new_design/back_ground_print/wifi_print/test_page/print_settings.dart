@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:charset_converter/charset_converter.dart';
 
@@ -50,13 +51,14 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     ipController.text = defaultIp;
     discover(context);
   }
+
   void executeAfterDelay() {
-    Future.delayed(Duration(seconds: 3), () async{
+    Future.delayed(Duration(seconds: 3), () async {
       print("1");
       var data = await createInvoice();
       print("2");
 
-      printHelperIP.print_demo(ipController.text, context,data);
+      //    printHelperIP.print_demo(ipController.text, context, data);
       // Code to be executed after 3 seconds
       print("This code runs after a 3-second delay.");
     });
@@ -123,7 +125,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
     while (retryCount < maxRetries && !isConnected) {
       try {
-
         if (isArabic == false) {
           capability = "default";
         }
@@ -136,9 +137,11 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
           isConnected = true;
 
           if (isArabic) {
-            for(var ind = 0; ind < supportedCodePages.length; ind++) {
+            for (var ind = 0; ind < supportedCodePages.length; ind++) {
               var testData = "${supportedCodePages[ind].name} السلام عليكم $capability ";
-              printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.center));
+              printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.right));
+              printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.left));
+              printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.left));
               Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
               printer.textEncoded(salam, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
             }
@@ -275,47 +278,191 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
               ),
             ),
       body: isTablet ? tabPrintPage() : mobilePrintPage(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        onPressed: () async {
-
-          // InvoiceDesignWidget invoiceWidget = InvoiceDesignWidget();
-          // await invoiceWidget.createInvoice();
-          //
-          //
-          // if (invoiceWidget.pngBytes != null) {
-          //   // Handle _pngBytes, such as saving to a file or sending over a network
-          //   print('Generated invoice image size: ${invoiceWidget.pngBytes!.lengthInBytes} bytes');
-          // } else {
-          //   print('Failed to generate invoice image.');
-          // }
-
-          print("1");
-          var data = await createInvoice();
-          print("2");
-
-          printHelperIP.print_demo(ipController.text, context,data);
-          //
-        }, // If button is disabled, onPressed is null
-        child: const Icon(
-          Icons.print,
-          color: Colors.white,
-        ),
-      ),
+      /// commented
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.green,
+      //   onPressed: () async {
+      //
+      //
+      //     // InvoiceDesignWidget invoiceWidget = InvoiceDesignWidget();
+      //     // await invoiceWidget.createInvoice();
+      //     //
+      //     //
+      //     // if (invoiceWidget.pngBytes != null) {
+      //     //   // Handle _pngBytes, such as saving to a file or sending over a network
+      //     //   print('Generated invoice image size: ${invoiceWidget.pngBytes!.lengthInBytes} bytes');
+      //     // } else {
+      //     //   print('Failed to generate invoice image.');
+      //     // }
+      //
+      //     // print("1");
+      //     // var data = await createInvoice();
+      //     //  print("2  data $data");
+      //     // final imageBytes = await _generateImageFromString(
+      //     //   "textToPrint",
+      //     //   TextAlign.center,
+      //     // );
+      //     //
+      //     // print(imageBytes);
+      //     //
+      //     // Future.delayed(Duration(seconds: 2), () async {
+      //     //   print("1");
+      //     //   var data = await createInvoice();
+      //     //   print("2");
+      //     //
+      //     printHelperIP.print_demo(ipController.text, context);
+      //     //  // Code to be executed after 3 seconds
+      //     //   print("This code runs after a 3-second delay.");
+      //     // });
+      //
+      //     // printHelperIP.print_demo(ipController.text, context,data);
+      //     //
+      //   }, // If button is disabled, onPressed is null
+      //   child: const Icon(
+      //     Icons.print,
+      //     color: Colors.white,
+      //   ),
+      // ),
     );
   }
 
+
+  Future<Uint8List> bitmapToBytes(ui.Image bitmap, bool gradient) async {
+    bool isSizeEdit = false;
+    int bitmapWidth = bitmap.width,
+        bitmapHeight = bitmap.height,
+        maxWidth = bitmapWidth,  // Increase the maximum width if necessary
+        maxHeight = bitmapHeight; // Increase the maximum height if necessary
+
+    if (bitmapWidth > maxWidth) {
+      bitmapHeight = ((bitmapHeight * maxWidth) / bitmapWidth).round();
+      bitmapWidth = maxWidth;
+      isSizeEdit = true;
+    }
+    if (bitmapHeight > maxHeight) {
+      bitmapWidth = ((bitmapWidth * maxHeight) / bitmapHeight).round();
+      bitmapHeight = maxHeight;
+      isSizeEdit = true;
+    }
+
+    if (isSizeEdit) {
+      bitmap = await resizeBitmap(bitmap, bitmapWidth, bitmapHeight);
+    }
+
+    return bitmapToBytesEscPos(bitmap, gradient);
+  }
+  Future<ui.Image> resizeBitmap(ui.Image bitmap, int targetWidth, int targetHeight) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+
+    final paint = Paint();
+    final src = Rect.fromLTWH(0, 0, bitmap.width.toDouble(), bitmap.height.toDouble());
+    final dst = Rect.fromLTWH(0, 0, targetWidth.toDouble(), targetHeight.toDouble());
+
+    canvas.drawImageRect(bitmap, src, dst, paint);
+
+    final picture = recorder.endRecording();
+    final img = await picture.toImage(targetWidth, targetHeight);
+    return img;
+  }
+
+  Future<Uint8List> bitmapToBytesEscPos(ui.Image bitmap, bool gradient) async {
+    // Assuming you have a method in EscPosPrinterCommands to handle the conversion.
+    // Replace this with actual implementation.
+    // For example:
+    // return EscPosPrinterCommands.bitmapToBytes(bitmap, gradient);
+
+    // Placeholder implementation for illustration
+    final byteData = await bitmap.toByteData(format: ui.ImageByteFormat.rawRgba);
+    return byteData!.buffer.asUint8List();
+  }
+
+    getCanvasImage(String str) async {
+    var builder = ParagraphBuilder(ParagraphStyle(fontStyle: FontStyle.normal));
+    builder.addText(str);
+    Paragraph paragraph = builder.build();
+    paragraph.layout(const ParagraphConstraints(width: 100));
+
+    final recorder = PictureRecorder();
+    var newCanvas = Canvas(recorder);
+
+    newCanvas.drawParagraph(paragraph, Offset.zero);
+
+    final picture = recorder.endRecording();
+    var res = await picture.toImage(100, 100);
+    ByteData? data = await res.toByteData(format: ImageByteFormat.png);
+    Uint8List uint8list = data!.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+
+    print(data.runtimeType);
+    print(uint8list);
+    return uint8list;
+  }
+
+
+  bool isArabics(String text) {
+    if (text.isEmpty) return false;
+
+    String arabicText = text.trim().replaceAll(" ", "");
+    for (int i = 0; i < arabicText.length; i++) {
+      int c = arabicText.codeUnitAt(i);
+      if (!(c >= 0x0600 && c <= 0x06FF) && !(c >= 0xFE70 && c <= 0xFEFF)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  String reverseArabics(String input) {
+    String reversedArabic = '';
+    for (int i = 0; i < input.length; i++) {
+      String char = input[i];
+      if (isArabic(char)) {
+        reversedArabic = char + reversedArabic; // Append character in reverse order
+      }
+    }
+    return reversedArabic;
+  }
+
+  Future<Uint8List> _generateImageFromString(
+    String text,
+    ui.TextAlign align,
+  ) async {
+    ui.PictureRecorder recorder = ui.PictureRecorder();
+    Canvas canvas = Canvas(
+        recorder,
+        Rect.fromCenter(
+          center: Offset(0, 0),
+          width: 550,
+          height: 400, // cheated value, will will clip it later...
+        ));
+    TextSpan span = TextSpan(
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: ui.FontWeight.bold,
+      ),
+      text: text,
+    );
+    TextPainter tp = TextPainter(text: span, maxLines: 3, textAlign: align, textDirection: TextDirection.ltr);
+    tp.layout(minWidth: 550, maxWidth: 550);
+    tp.paint(canvas, const Offset(0.0, 0.0));
+    var picture = recorder.endRecording();
+    final pngBytes = await picture.toImage(
+      tp.size.width.toInt(),
+      tp.size.height.toInt() - 2, // decrease padding
+    );
+    final byteData = await pngBytes.toByteData(format: ui.ImageByteFormat.png);
+    return byteData!.buffer.asUint8List();
+  }
+
   var printHelperIP = NewMethod();
+
   Widget tabPrintPage() {
     return Builder(
       builder: (BuildContext context) {
         return ListView(
           children: <Widget>[
-            Container(
-                height: 500,
-                width: 250,
-                child: invoiceDesign()),
-
+            Container(height: 10, child: invoiceDesign()),
             const SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -462,9 +609,50 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
   /// new method
   GlobalKey _globalKey = GlobalKey();
 
+  Future<Uint8List?> createInvoices() async {
+    try {
+      // Ensure the widget is built before accessing its context
+      Completer<Uint8List?> completer = Completer();
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+        try {
+          RenderRepaintBoundary? boundary = _globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+          if (boundary != null) {
+            ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+            ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+            Uint8List pngBytes = byteData!.buffer.asUint8List();
+            completer.complete(pngBytes);
+          } else {
+            completer.completeError('Render boundary is null');
+          }
+        } catch (e) {
+          completer.completeError(e);
+        }
+      });
+
+      return completer.future;
+    } catch (e) {
+      print(e.toString());
+      throw e; // Handle or rethrow the error as needed
+    }
+  }
+
   createInvoice() async {
     try {
-      RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      GlobalKey _globalKeys = GlobalKey();
+
+      RepaintBoundary(
+        key: _globalKeys,
+        child: Container(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green, // Background color
+              ),
+              child: Text(' Test Print ', style: TextStyle(color: Colors.white)),
+              onPressed: () async {}),
+        ),
+      );
+
+      RenderRepaintBoundary boundary = _globalKeys.currentContext!.findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       Uint8List pngBytes = byteData!.buffer.asUint8List();
@@ -473,8 +661,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       print(e.toString());
     }
   }
-
-
 
   String date = "2024-07-02";
   var invoiceType = "Retail Invoice";
@@ -1253,7 +1439,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
                         )
                       : Container(),
 
-
                   DividerStyleNew()
                 ],
               ),
@@ -1261,6 +1446,31 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> _showAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Dismiss dialog on outside tap
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Alert'),
+          content: Container(
+            height: double.infinity,
+            width: double.infinity,
+            child: invoiceDesign(),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Printing on background'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -1274,9 +1484,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
         return ListView(
           children: <Widget>[
             dividerStyleFull(),
-            Container(
-                height: 10,
-                child: invoiceDesign()),
+            // Container(height: 10, child: invoiceDesign()),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1413,6 +1621,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
     return both;
   }
+
   setString(String tex) {
     if (tex == "") {}
 
@@ -1453,6 +1662,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     }
     return value;
   }
+
   returnBlankSpace(length) {
     List<String> list = [];
     for (int i = 0; i < length; i++) {
@@ -1460,6 +1670,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     }
     return list;
   }
+
   set(String str) {
     try {
       if (str == "") {}
@@ -1539,6 +1750,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       int c = arabicText.codeUnitAt(i);
       //range of arabic chars/symbols is from 0x0600 to 0x06ff
       //the arabic letter 'لا' is special case having the range from 0xFE70 to 0xFEFF
+
       if (c >= 0x0600 && c <= 0x06FF || (c >= 0xFE70 && c <= 0xFEFF))
         i++;
       else
@@ -1549,9 +1761,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
   bool isEnglish(String text) {
     if (text == "") {}
-
     bool onlyEnglish = false;
-
     String englishText = text.trim().replaceAll(" ", "");
     if (englishText.contains(RegExp(r'[A-Z,a-z]'))) {
       onlyEnglish = true;
