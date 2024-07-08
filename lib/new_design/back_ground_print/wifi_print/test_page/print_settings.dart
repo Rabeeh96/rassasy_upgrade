@@ -312,7 +312,8 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
         return ListView(
           children: <Widget>[
             Container(
-                height: 10,
+                height: 500,
+                width: 250,
                 child: invoiceDesign()),
 
             const SizedBox(height: 50),

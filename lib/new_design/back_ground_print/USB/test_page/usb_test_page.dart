@@ -4,8 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/global/textfield_decoration.dart';
-import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
+
 import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart'
     as usb_esc_printer_windows;
 import 'package:charset_converter/charset_converter.dart';
@@ -14,6 +13,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import 'detailed_print_settings.dart';
+import 'package:flutter/material.dart' hide Image;
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+import 'test_file.dart';
+
 
 class TestPrintUSB extends StatefulWidget {
   const TestPrintUSB({super.key});
@@ -39,8 +47,18 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
     String defaultIp = prefs.getString('defaultIP') ?? '';
     temp = prefs.getString("template") ?? "template4";
     controllerName.text = defaultIp;
-  }
+    print("1");
 
+
+    Future.delayed(Duration(seconds: 1), () async{
+     imageData = await createInvoice();
+    });
+
+    print("2");
+
+
+  }
+var imageData;
   List<String> printerModels = [
     "XP-N160I",
     "RP80USE",
@@ -105,9 +123,40 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
                   ),
                 ),
                 actions: <Widget>[]),
-        body: isTablet ? tabUsbPage() : mobileUsbPage());
-  }
+        body: isTablet ? tabUsbPage() : mobileUsbPage(),
+        floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        onPressed: () async {
 
+          // InvoiceDesignWidget invoiceWidget = InvoiceDesignWidget();
+          // await invoiceWidget.createInvoice();
+          //
+          //
+          // if (invoiceWidget.pngBytes != null) {
+          //   // Handle _pngBytes, such as saving to a file or sending over a network
+          //   print('Generated invoice image size: ${invoiceWidget.pngBytes!.lengthInBytes} bytes');
+          // } else {
+          //   print('Failed to generate invoice image.');
+          // }
+
+          print("1");
+         // var data = await createInvoice();
+          print("2");
+
+          printHelperIP.printReq();
+          //
+        }, // If button is disabled, onPressed is null
+        child: const Icon(
+          Icons.print,
+          color: Colors.white,
+        ),
+      ),
+
+
+
+    );
+  }
+  var printHelperIP = USBPrintClassTest();
   Widget mobileUsbPage() {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
@@ -332,12 +381,819 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
                     ),
                   )
                 : Container(),
+
+
+            Container(
+                height: 500,
+                width: 250,
+                child: invoiceDesign()),
           ],
         );
       },
     );
   }
 
+  GlobalKey _globalKey = GlobalKey();
+
+  createInvoice() async {
+    try {
+      RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+      return pngBytes;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  String date = "2024-07-02";
+  var invoiceType = "Retail Invoice";
+  var invoiceTypeArabic = "فاتورة بيع بالتجزئة";
+
+  bool companyNameSwitch = true;
+  bool imageQr = true;
+  bool grossAmountSwitch = true;
+  bool arabicText = true;
+  bool companyDescriptionSwitch = true;
+  bool companyLogoSwitch = true;
+  bool companyVatNumberSwitch = true;
+  bool companyCRNumberSwitch = true;
+  bool companyAddressSwitch = true;
+  bool companyPhoneSwitch = true;
+  bool qrCodeSwitch = true;
+  bool amountInWordsSwitch = true;
+  bool discountSwitch = true;
+  bool taxDetailsSwitch = true;
+  bool customerVatSwitch = true;
+  bool customerCRSwitch = true;
+  bool customerPhoneNumberSwitch = true;
+  bool printDetailHeadInArabic = true;
+  bool invoiceTypeSwitch = true;
+  bool productDescriptionSwitch = true;
+  bool productUnitNameSwitch = true;
+  bool textStyleSwitch = true;
+  bool paper = true;
+  bool cashBalanceSwitch = true;
+  bool bankBalanceSwitch = true;
+  String currencyShort = "SAR";
+  String voucherNumber = "INV123456";
+  String salesManName = "John Doe";
+  String customerName = "Jane Smith";
+  String customerVatNumber = "VAT123456789";
+  String customerPhoneNumber = "+1234567890";
+  String netTotal = "100.00";
+  String grossAmount = "120.00";
+  String discountAmount = "20.00";
+  String totalQty = "10";
+  String currencyCode = "USD";
+  String totalVAT = "15.00";
+  String grandTotal = "115.00";
+
+  String bankAmount = "50.00";
+  String cashAmount = "65.00";
+  String currentBalance = "1000.00";
+  String companyName = "ABC Corp.";
+  String companyAddress1 = "123 Main Street";
+  String companyAddress2 = "Suite 456";
+  String companyCountry = "USA";
+  String companyPhone = "+1987654321";
+  String countyCodeCompany = "001";
+
+  String buildingDetails = "Building 1";
+  String streetName = "Elm Street";
+  String companyDescription = "Leading provider of retail solutions.";
+  String cityCompany = "Metropolis";
+  String postalCodeCompany = "12345";
+
+  String mobileCompany = "+1234567890";
+  String vatNumberCompany = "COMPANYVAT123";
+  String companyGstNumber = "GST123456";
+  String cRNumberCompany = "CR123456";
+  String descriptionCompany = "Company description goes here.";
+  String countryNameCompany = "United States";
+  String stateNameCompany = "California";
+  String companyLogoCompany = "logo.png";
+  String qrCode = "QRCode.png";
+  bool isB2b = true;
+
+  Widget invoiceDesign() {
+    return ListView(
+      children: <Widget>[
+        RepaintBoundary(
+          key: _globalKey,
+          child: SingleChildScrollView(
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // companyLogoSwitch
+                  //     ? companyLogoCompany != ""
+                  //         ? Padding(
+                  //             padding: const EdgeInsets.only(bottom: 8.0),
+                  //             child: Container(
+                  //               height: MediaQuery.of(context).size.height * .10,
+                  //               // decoration: BoxDecoration(
+                  //               //   border: Border.all(color: Colors.black),
+                  //               //   shape: BoxShape.circle,
+                  //               // ),
+                  //               child: Center(child: CircleAvatar(backgroundColor: Colors.blue, backgroundImage: NetworkImage(companyLogoCompany))),
+                  //             ),
+                  //           )
+                  //         : Container()
+                  //     : Container(),
+
+                  companyNameSwitch
+                      ? Text(
+                    companyName,
+                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w700 : FontWeight.w500, 25.0),
+                    textAlign: TextAlign.left,
+                  )
+                      : Container(),
+                  companyDescriptionSwitch
+                      ? companyDescription != ''
+                      ? Text(
+                    companyDescription,
+                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 22.0),
+                    textAlign: TextAlign.left,
+                  )
+                      : Container()
+                      : Container(),
+
+                  buildingDetails != ''
+                      ? Text(
+                    buildingDetails,
+                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 20.0),
+                    textAlign: TextAlign.left,
+                  )
+                      : Container(),
+                  companyPhoneSwitch
+                      ? companyPhone != ''
+                      ? Text(
+                    companyPhone,
+                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 20.0),
+                    textAlign: TextAlign.left,
+                  )
+                      : Container()
+                      : Container(),
+
+                  streetName != ''
+                      ? Text(
+                    streetName,
+                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 18.0),
+                    textAlign: TextAlign.left,
+                  )
+                      : Container(),
+
+                  companyVatNumberSwitch
+                      ? vatNumberCompany != ""
+                      ? Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                "Tax No:",
+                                style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.normal, 14.0),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                vatNumberCompany,
+                                style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.normal, 14.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          " : لا تفرض ضرائب",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 14.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  )
+                      : Container()
+                      : Container(),
+
+                  companyCRNumberSwitch
+                      ? cRNumberCompany != ""
+                      ? Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                "CR No:",
+                                style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.normal, 14.0),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                cRNumberCompany,
+                                style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.normal, 14.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          " :س. ت",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 14.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  )
+                      : Container()
+                      : Container(),
+                  invoiceTypeSwitch
+                      ? Text(
+                    invoiceType,
+                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 22.0),
+                    textAlign: TextAlign.left,
+                  )
+                      : Container(),
+
+                  Text(
+                    invoiceTypeArabic,
+                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 22.0),
+                    textAlign: TextAlign.left,
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Date :",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 15.0),
+                          textAlign: TextAlign.left,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            date,
+                            style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.normal, 15.0),
+                          ),
+                        ),
+                        Text(
+                          ": تاريخ ",
+
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Invoice No :",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 15.0),
+                          textAlign: TextAlign.left,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            voucherNumber,
+                            style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.normal, 15.0),
+                          ),
+                        ),
+                        Text(
+                          ": رقم الفاتورة",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  dividerStyle(),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 10,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Text(
+                                "Customer Name :",
+                                // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 15.5),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            Text(
+                              customerName,
+                              style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 15.5),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          ": اسم الزبون",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+                  customerVatSwitch
+                      ? customerVatNumber != ""
+                      ? Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "VAT  No ",
+                                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                    style: customisedStyle(
+                                        context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w700 : FontWeight.w500, 15.0),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 56.0),
+                                    child: Text(
+                                      ":",
+                                      // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                      style: customisedStyle(
+                                          context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 15.0),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              customerVatNumber,
+                              style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.normal, 15.0),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          ":ظريبه الشراءا ",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  )
+                      : Container()
+                      : Container(),
+
+                  customerPhoneNumberSwitch
+                      ? customerPhoneNumber != ""
+                      ? Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Phone  No ",
+                                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                    style: customisedStyle(
+                                        context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w700 : FontWeight.w500, 15.0),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 40.0),
+                                    child: Text(
+                                      ":",
+                                      // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                      style: customisedStyle(
+                                          context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 15.0),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              customerPhoneNumber,
+                              style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.normal, 15.0),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          ": رقم الهاتف",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  )
+                      : Container()
+                      : Container(),
+                  DividerStyleNew(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Product Details",
+                              // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                              style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                              textAlign: TextAlign.left,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * .45,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Qty",
+                                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Text(
+                                    "Rate",
+                                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Text(
+                                    "Total",
+                                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "تفاصيل المنتج",
+                              // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                              style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w800, 16.5),
+                              textAlign: TextAlign.left,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * .45,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "الكمية",
+                                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w800, 16.5),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Text(
+                                    "معدل",
+                                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w800, 16.5),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Text(
+                                    "المجموع",
+                                    // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                    style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w800, 16.5),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  DividerStyleNew(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 10),
+                    child: Container(
+                      child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxHeight: 30000, minHeight: 10.0),
+                          child: Container(
+                            decoration: const BoxDecoration(),
+                            child: ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: 4,
+                              // itemCount: billWiseData.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 3.0, bottom: 3),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Demo Product",
+                                            // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                            style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 15.0),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context).size.width * .45,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  roundStringWith("12"),
+                                                  // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                                  style: customisedStyle(
+                                                      context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w700 : FontWeight.w500, 16.0),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                                Text(
+                                                  roundStringWith("250"),
+                                                  // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                                  style: customisedStyle(
+                                                      context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w700 : FontWeight.w500, 15.0),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                                Text(
+                                                  roundStringWith("695"),
+                                                  // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                                  style: customisedStyle(
+                                                      context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w700 : FontWeight.w500, 15.0),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Description",
+                                            // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                                            style: customisedStyle(context, Colors.black, textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (BuildContext context, int index) => DividerStyleNew(),
+                            ),
+                          )),
+                    ),
+                  ),
+                  DividerStyleNew(),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Net Total - صافي المجموع :",
+                              // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                              style: customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "${roundStringWith(netTotal)} $currencyShort",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Discount Amt - مبلغ الخصم :",
+                              // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                              style: customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "${roundStringWith(discountAmount)} $currencyShort",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w800 : FontWeight.w600, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Total VAT - إجمالي ضريبة :",
+                              // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                              style: customisedStyle(context, const Color(0xff5A5A5A), FontWeight.w700, 16.0),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "${roundStringWith(totalVAT)} $currencyShort",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+                  DividerStyleNew(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Grand Total - المجموع الإجمالي :",
+                              // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                              style: customisedStyle(context, const Color(0xff000000), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 18.0),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "${roundStringWith(grandTotal)} $currencyShort",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, const Color(0xff000000), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 18.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+                  DividerStyleNew(),
+                  bankBalanceSwitch
+                      ? Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Bank Amount - مبلغ البنك :",
+                              // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                              style:
+                              customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "${roundStringWith(bankAmount)} $currencyShort",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  )
+                      : Container(),
+                  cashBalanceSwitch
+                      ? Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Cash Amount - مبلغ نقدي :",
+                              // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                              style:
+                              customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "${roundStringWith(cashAmount)} $currencyShort",
+                          // style: customisedTextStyle(clr: Color(0xff000000), fontWeight: FontWeight.w400, fontsize: 19,),
+                          style: customisedStyle(context, const Color(0xff5A5A5A), textStyleSwitch ? FontWeight.w900 : FontWeight.w700, 16.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  )
+                      : Container(),
+
+
+                  DividerStyleNew()
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
   Future<Uint8List> loadImageFromAssets(String path) async {
     final ByteData data = await rootBundle.load(path);
     return data.buffer.asUint8List();
@@ -603,4 +1459,12 @@ class _TestPrintUSBState extends State<TestPrintUSB> {
     }
     return va;
   }
+}
+
+Widget DividerStyleNew() {
+  return Container(
+    height: 1,
+    width: double.infinity,
+    color: Colors.black,
+  );
 }

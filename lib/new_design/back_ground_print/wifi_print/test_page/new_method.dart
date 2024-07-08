@@ -62,6 +62,13 @@ class NewMethod {
     print(encodedText); // Just for demonstration
   }
   Future<void> printDemoPage(NetworkPrinter printer,imageData) async {
+
+
+
+
+
+
+
     final Img.Image? image = Img.decodeImage(imageData);
     print("------113");
     final Img.Image resizedImage = Img.copyResize(image!,width: 550);
