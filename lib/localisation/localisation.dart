@@ -6,6 +6,7 @@ class LocaleChange extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en_US': {
           'unit_title': 'Unit',
+          'reverseArabicOption': 'Reverse Arabic Option',
           'usbPrinter': 'USB Printer',
           'bluetoothPrinter': 'Bluetooth Printer',
           'select_printer_type': 'Select Printer Type',
@@ -378,6 +379,7 @@ class LocaleChange extends Translations {
         'ar': {
           'flavour_in_order_print': 'نكهة من أجل الطباعة',
            'table_order_settings': "إعدادات ترتيب الجدول",
+          'reverseArabicOption': 'عكس الخيار العربي',
           'Add_Product': "أضف منتج",
           'bluetoothPrinter': 'طابعة بلوتوث',
           'select_printer_type': 'حدد نوع الطابعة',

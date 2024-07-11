@@ -88,7 +88,9 @@ class _MobOrganizationListState extends State<MobOrganizationList> {
 
                                   ///print("branchDetails  $branchDetails");
 
-                                    if(companyController.companyListData[index].branches!.isEmpty){
+
+                                  var branches =companyController.companyListData[index].branches ??[];
+                                    if(branches.isEmpty){
 
                                     SharedPreferences prefs = await SharedPreferences.getInstance();
                                     prefs.setString('companyName', companyController.companyListData[index].companyName!);

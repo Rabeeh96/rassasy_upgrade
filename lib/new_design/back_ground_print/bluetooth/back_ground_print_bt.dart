@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
@@ -11,7 +13,7 @@ import 'package:rassasy_new/new_design/back_ground_print/bluetooth/pos/pos_print
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/pos/services/bluetooth_printer_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image/image.dart' as Img;
-
+import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart' hide Image;
 import 'dart:convert';
@@ -40,6 +42,7 @@ class AppBlocsBT {
 
 ///old
   scan(isCancelled) async {
+    print("-------scan----------scan------------------------scan---------------------${DateTime.now().second}--");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _printers = [];
@@ -49,10 +52,13 @@ class AppBlocsBT {
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
     var capabilities = prefs.getString("default_capabilities") ?? "default";
 
+    print("asd-------- 1");
     var profile;
     if (capabilities == "default") {
+      print("asd-------- 1");
       profile = await CapabilityProfile.load();
     } else {
+      print("asd-------- 1");
       profile = await CapabilityProfile.load(name: capabilities);
     }
     var ip = "";
@@ -61,51 +67,63 @@ class AppBlocsBT {
     } else {
       ip = defaultIp;
     }
-
+    print("asd-------- 11");
     if (_printers.isEmpty) {
       return 1;
       /// exit when no item connected
     }
     else {
+      print("asd-------- 111");
       bool connected = false;
       int index = 0;
 
       for (var i = 0; i < _printers.length; i++) {
+        print("asd-------- 1111");
         if (_printers[i].address == ip) {
           index = i;
           connected = true;
           break;
         }
       }
-
+      print("asd-------- 11111");
       if (connected == true) {
         if (_printers[index].connected == true) {
-        } else {
-          var paperSize = PaperSize.mm80;
-          var profile_mobile = await CapabilityProfile.load();
 
-          var manager = BluetoothPrinterManager(_printers[index], paperSize, profile_mobile);
-          await manager.connect();
-          _printers[index].connected = true;
-          _manager.isConnected = true;
-          _manager = manager;
         }
+        else {
+          print("asd-------- 111112");
+          var paperSize = PaperSize.mm80;
+          print("-------- 1---------------");
+          var profile_mobile = await CapabilityProfile.load();
+          print("asd-------- 120---------------");
+          var manager = BluetoothPrinterManager(_printers[index], paperSize, profile_mobile);
+          print("asd-------- 1236---------------");
+          await manager.connect();
+          print("asd-------- 12367---------------");
+          _printers[index].connected = true;
+          print("asd-------- 123678---------------");
 
+          print("asd-------- 1236789---------------");
+          _manager = manager;
+          _manager.isConnected = true;
+          print("asd-------- 12367899---------------");
+        }
+        print("asd-------- 1111122");
         if (_manager != null) {
+          print("asd-------- 111112223");
           print("isConnected ${_manager.isConnected}");
           if (_manager.isConnected == false) {
             var manager = BluetoothPrinterManager(_printers[index], paperSize, profile);
             await manager.disconnect();
             return 3;
-          } else {
+          }
+          else {
+            print("asd-------- 1111123");
             var paperSize = PaperSize.mm80;
-
             var isoDate = DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
             var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
                 BluetoothPrintThermalDetails.grandTotal, BluetoothPrintThermalDetails.totalTax);
-
             var service = ESCPrinterServicesArabic(qrCode, prefs, PaperSize.mm80,isCancelled);
-
             var data = await service.getBytes(paperSize: paperSize, profile: profile);
             if (_manager != null) {
               print("isConnected ${_manager.isConnected}");
@@ -123,6 +141,7 @@ class AppBlocsBT {
   }
 
   bluetoothPrintOrderAndInvoice(BuildContext context) async {
+    print("-------bluetoothPrintOrderAndInvoice----------bluetoothPrintOrderAndInvoice------------------------bluetoothPrintOrderAndInvoice---------------------${DateTime.now().second}--");
     List<ProductDetailsModelOld> printDalesDetails = [];
     String baseUrl = BaseUrl.baseUrl;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -292,7 +311,7 @@ class AppBlocsBT {
             retryCount++;
             if (retryCount < maxRetries) {
               print('Retrying... ($retryCount/$maxRetries)');
-              await Future.delayed(Duration(seconds: 2)); // Wait before retrying
+              await Future.delayed(Duration(seconds: 1)); // Wait before retrying
             } else {
               print('Max retries reached. Skipping this print job.');
             }
@@ -490,7 +509,7 @@ class AppBlocsBT {
             var data = await service.getBytes(paperSize: paperSize, profile: profile);
             _manager.writeBytes(data, isDisconnect: false);
 
-            // await disconnectPrinter();
+
 
           }
           else {
@@ -931,11 +950,11 @@ bool isCancelled;
     var highlightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
     var hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;
     var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
+  //  var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
     List<int> printer = [];
     _profile = profile;
 
     var paper = prefs.get("PrintPaperSizeCustomized") ?? "80mm";
-
     if (paper == "80mm") {
       paperSize = PaperSize.mm80;
     } else if (paper == "58mm") {
@@ -955,6 +974,7 @@ bool isCancelled;
     var salesMan = prefs.getString("user_name") ?? '';
     var openDrawer = prefs.getBool("OpenDrawer") ?? false;
     var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
+    var reverseArabicOption = prefs.getBool("reverseArabicOption") ?? false;
 
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
@@ -1041,53 +1061,116 @@ bool isCancelled;
 
     printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 /// logo commented
+
+
+
     if (PrintDataDetails.type == "SI") {
       if (companyLogo != "") {
         final Uint8List imageData = await _fetchImageData(companyLogo);
         final Img.Image? image = Img.decodeImage(imageData);
         final Img.Image resizedImage = Img.copyResize(image!, width: 200);
-        printer += generator.imageRaster(resizedImage);
+        printer += generator.imageRaster(resizedImage,imageFn:PosImageFn.bitImageRaster,highDensityVertical: true,highDensityHorizontal: true);
+
+
+
+     //    final Img.Image? image = Img.decodeImage(imageData);
+     //    final Img.Image resizedImage = Img.copyResize(image!, width: 200);
+     // //   printer += generator.imageRaster(resizedImage);
+     //
+     //    printer += generator.imageRaster(resizedImage,imageFn:PosImageFn.bitImageRaster,highDensityVertical: true,highDensityHorizontal: true);
+
+
         //   printer.image(resizedImage);
       }
     }
 
     print("------------------------*1");
 
-    print("-----------------------------------------------------------------------------*-*-*-*-*${setString('ضريبه  ' + companyTax)}");
+    print("-----------------------------------------------------------------------------*-*-*-*-*${setString('ضريبه  ' + companyTax,reverseArabicOption)}");
 
-    Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
-    Uint8List companyTaxEnc = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
-    Uint8List companyCREnc = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
-    Uint8List companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
-    Uint8List salesManDetailsEnc = await CharsetConverter.encode("ISO-8859-6", setString('رجل المبيعات ' + salesMan));
+    Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName,reverseArabicOption));
+    Uint8List companyTaxEnc = await CharsetConverter.encode("ISO-8859-6", setString(' الرقم الضريبي: ' + companyTax,reverseArabicOption));
+    Uint8List companyCREnc = await CharsetConverter.encode("ISO-8859-6", setString('س.ت: ' + companyCrNumber,reverseArabicOption));
+    Uint8List companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone,reverseArabicOption));
+    Uint8List salesManDetailsEnc = await CharsetConverter.encode("ISO-8859-6", setString('رجل المبيعات ' + salesMan,reverseArabicOption));
     print("------------------------*1");
-    if (headerAlignment) {
-      companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
-    }
+    // if (headerAlignment) {
+    //   companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyPhone,reverseArabicOption));
+    // }
 
-    Uint8List invoiceTypeEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
-    Uint8List invoiceTypeArabicEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
-    print("------------------------*1");
-    Uint8List ga = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
-    Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
-    Uint8List exciseTax = await CharsetConverter.encode("ISO-8859-6", setString('مبلغ الضريبة الانتقائية'));
-    Uint8List vatTax = await CharsetConverter.encode("ISO-8859-6", setString('ضريبة القيمة المضافة'));
-    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('تخفيض'));
-    Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
+    Uint8List invoiceTypeEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType,reverseArabicOption));
+    Uint8List invoiceTypeArabicEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic,reverseArabicOption));
+
+    Uint8List ga = await CharsetConverter.encode("ISO-8859-6", setString('    الإجمالي قبل الضريبة',reverseArabicOption));
+    Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة',reverseArabicOption));
+    Uint8List exciseTax = await CharsetConverter.encode("ISO-8859-6", setString('مبلغ الضريبة الانتقائية',reverseArabicOption));
+    Uint8List vatTax = await CharsetConverter.encode("ISO-8859-6", setString('ضريبة القيمة المضافة',reverseArabicOption));
+    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('الخصم',reverseArabicOption));
+    Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('Total صافي الفاتورة بعد الضريبة ',reverseArabicOption));
     print("------------------------*1111111");
-    Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
-    Uint8List cr = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ المستلم'));
-    Uint8List br = await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
+    Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد',reverseArabicOption));
+    Uint8List cr = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ المستلم',reverseArabicOption));
+    Uint8List br = await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك',reverseArabicOption));
     print("------------------------*1111111");
     if (headerAlignment) {
-
+      printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       if (companyName != "") {
         printer += generator.textEncoded(companyNameEnc,
             styles: const PosStyles(
                 height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
+
+      print("------------------------*1");
       if (companySecondName != "") {
-        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
+        printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName,reverseArabicOption));
+        printer += generator.textEncoded(companySecondNameEncode,
+            styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
+      }
+      print("------------------------*1");
+
+      if (buildingDetails != "") {
+        printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        Uint8List buildingDetailsEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails,reverseArabicOption));
+
+        printer += generator.textEncoded(buildingDetailsEncode,
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+      }
+
+      print("------------------------*1");
+      if (streetName != "") {
+        printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName,reverseArabicOption));
+
+        printer += generator.textEncoded(secondAddressEncode,
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+      }
+
+      if (companyTax != "") {
+        printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        printer += generator.textEncoded(companyTaxEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.center));
+      }
+
+      if (companyCrNumber != "") {
+        printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        printer += generator.textEncoded(companyCREnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.center));
+      }
+
+      if (companyPhone != "") {
+        printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        printer += generator.textEncoded(companyPhoneEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+      }
+
+
+
+
+/*      if (companyName != "") {
+        printer += generator.textEncoded(companyNameEnc,
+            styles: const PosStyles(
+                height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
+      }
+      if (companySecondName != "") {
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName,reverseArabicOption));
 
         printer += generator.textEncoded(companySecondNameEncode,
             styles: const PosStyles(
@@ -1097,7 +1180,7 @@ bool isCancelled;
       }
 
       if (buildingDetails != "") {
-        Uint8List buildingAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
+        Uint8List buildingAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails,reverseArabicOption));
 
         printer += generator.row([
           PosColumn(text: 'Building', width: 2, styles: const PosStyles(align: PosAlign.left)),
@@ -1112,7 +1195,7 @@ bool isCancelled;
       }
       print("------------------------*595959595");
       if (streetName != "") {
-        Uint8List streetNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
+        Uint8List streetNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName,reverseArabicOption));
 
         printer += generator.row([
           PosColumn(text: 'Building ', width: 2, styles: const PosStyles(align: PosAlign.left)),
@@ -1156,21 +1239,13 @@ bool isCancelled;
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
        }
-      print("------------------------*4444444");
+    */
 
-      // if (salesMan != "") {
-      //   printer += generator.row([
-      //     PosColumn(text: 'Sales man', width: 2, styles: const PosStyles(align: PosAlign.left)),
-      //     PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
-      //     PosColumn(
-      //         textEncoded: salesManDetailsEnc,
-      //         width: 9,
-      //         styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      //   ]);
-      //   //  printer += generator.textEncoded(companyPhoneEnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
-      // }
+
     }
     else {
+
+
       if (companyName != "") {
         printer += generator.textEncoded(companyNameEnc,
             styles: const PosStyles(
@@ -1179,23 +1254,21 @@ bool isCancelled;
 
       print("------------------------*1");
       if (companySecondName != "") {
-        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
-
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName,reverseArabicOption));
         printer += generator.textEncoded(companySecondNameEncode,
             styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
       }
       print("------------------------*1");
 
       if (buildingDetails != "") {
-        Uint8List buildingDetailsEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
-
+        Uint8List buildingDetailsEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails,reverseArabicOption));
         printer += generator.textEncoded(buildingDetailsEncode,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       print("------------------------*1");
       if (streetName != "") {
-        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
+        Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName,reverseArabicOption));
 
         printer += generator.textEncoded(secondAddressEncode,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
@@ -1218,24 +1291,26 @@ bool isCancelled;
       // }
     }
     print("------------------------*41212121212");
-    printer += generator.emptyLines(1);
+    printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     printer += generator.textEncoded(invoiceTypeEnc, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, align: PosAlign.center));
+    printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     printer += generator.textEncoded(invoiceTypeArabicEnc, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
-    printer += generator.emptyLines(1);
+    printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     var isoDate = DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
-    Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
-    Uint8List voucherNoEnc = await CharsetConverter.encode("ISO-8859-6", setString('رقم الفاتورة'));
-    Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString('تاريخ'));
-    Uint8List customerEnc = await CharsetConverter.encode("ISO-8859-6", setString('اسم'));
-    Uint8List typeEnc = await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
+    Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز ',reverseArabicOption));
+    Uint8List voucherNoEnc = await CharsetConverter.encode("ISO-8859-6", setString('رقم الفاتورة',reverseArabicOption));
+    Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString('تاريخ ',reverseArabicOption));
+    Uint8List customerEnc = await CharsetConverter.encode("ISO-8859-6", setString(' اسم ',reverseArabicOption));
+    Uint8List typeEnc = await CharsetConverter.encode("ISO-8859-6", setString('يكتب ',reverseArabicOption));
     // printer += generator.setStyles(PosStyles.defaults());
 
 
     if (highlightTokenNumber) {
       printer += generator.hr();
       printer += generator.text('Token No ', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-
+      printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       printer += generator.text(token, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+      printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       printer += generator.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       printer += generator.hr();
     } else {
@@ -1248,12 +1323,12 @@ bool isCancelled;
     }
 
     printer += generator.row([
-      PosColumn(text: 'Voucher No  ', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(text: 'Voucher No', width: 4, styles: const PosStyles(fontType: PosFontType.fontB,align: PosAlign.left)),
       PosColumn(
           textEncoded: voucherNoEnc,
-          width: 3,
+          width: 4,
           styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: voucherNumber, width: 6, styles: const PosStyles(align: PosAlign.right)),
+      PosColumn(text: voucherNumber, width: 4, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
     printer += generator.row([
@@ -1266,7 +1341,7 @@ bool isCancelled;
     ]);
 
     if (customerName != "") {
-      Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName));
+      Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName,reverseArabicOption));
 
       printer += generator.row([
         PosColumn(text: 'Name    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
@@ -1279,9 +1354,9 @@ bool isCancelled;
       ]);
     }
     if (customerPhone != "") {
-      Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
+      Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(customerPhone,reverseArabicOption));
 
-      Uint8List phoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
+      Uint8List phoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('هاتف',reverseArabicOption));
 
       printer += generator.row([
         PosColumn(text: 'Phone    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
@@ -1304,7 +1379,7 @@ bool isCancelled;
     printer += generator.setStyles(PosStyles(codeTable: defaultCodePage));
 
     if (tableName != "") {
-      Uint8List tableEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+      Uint8List tableEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة',reverseArabicOption));
 
       printer += generator.row([
         PosColumn(text: 'Table Name   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
@@ -1317,7 +1392,7 @@ bool isCancelled;
       var time = BluetoothPrintThermalDetails.time;
 
       String timeInvoice = await convertToSaudiArabiaTime(time, countyCodeCompany);
-      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة',reverseArabicOption));
 
       printer += generator.row([
         PosColumn(text: 'Time   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
@@ -1331,11 +1406,11 @@ bool isCancelled;
 
     ///
 
-    Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
-    Uint8List productNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("أغراض"));
-    Uint8List qtyEnc = await CharsetConverter.encode("ISO-8859-6", setString(" الكمية "));
-    Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
-    Uint8List netEnc = await CharsetConverter.encode("ISO-8859-6", setString("المجموع"));
+    Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم ",reverseArabicOption));
+    Uint8List productNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("إسم المادة ",reverseArabicOption));
+    Uint8List qtyEnc = await CharsetConverter.encode("ISO-8859-6", setString(" كمية ",reverseArabicOption));
+    Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("السعر ",reverseArabicOption));
+    Uint8List netEnc = await CharsetConverter.encode("ISO-8859-6", setString("إجمالي ",reverseArabicOption));
 
     print("------------------------*1111111111111111111111");
 
@@ -1346,11 +1421,13 @@ bool isCancelled;
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(text: 'Item Name', width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(text: 'Qty', width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(text: 'Item Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
       PosColumn(text: 'Rate', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: 'Net', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Total', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
+
+    printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
 
     printer += generator.row([
       PosColumn(
@@ -1360,18 +1437,18 @@ bool isCancelled;
             height: PosTextSize.size1,
             fontType: PosFontType.fontA,
           )),
-      PosColumn(textEncoded: productNameEnc, width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(textEncoded: qtyEnc, width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(textEncoded: productNameEnc, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.left)),
+      PosColumn(textEncoded: qtyEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
       PosColumn(textEncoded: rateEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(textEncoded: netEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
-
+    printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     printer += generator.hr();
 
     for (var i = 0; i < tableDataDetailsPrint.length; i++) {
       var slNo = i + 1;
 
-      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName,reverseArabicOption));
 
       printer += generator.row([
         PosColumn(
@@ -1394,7 +1471,7 @@ bool isCancelled;
 
       var description = tableDataDetailsPrint[i].productDescription ?? '';
       if (description != "") {
-        Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
+        Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription,reverseArabicOption));
         printer += generator.row([
           PosColumn(
               textEncoded: description,
@@ -1413,7 +1490,7 @@ bool isCancelled;
       if (PrintDataDetails.type == "SO") {
         if(flavourInOrderPrint){
           if(flavour!=""){
-            Uint8List flavourNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].flavourName));
+            Uint8List flavourNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].flavourName,reverseArabicOption));
             printer += generator.row([
               PosColumn(
                   textEncoded: flavourNameEnc,
@@ -1436,13 +1513,16 @@ bool isCancelled;
       printer += generator.hr();
     }
     printer += generator.emptyLines(1);
+    printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+
+
     printer += generator.row([
-      PosColumn(text: 'Gross Amount', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(text: 'Gross Amount', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
       PosColumn(
           textEncoded: ga,
-          width: 4,
+          width: 7,
           styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: roundStringWith(grossAmount), width: 4, styles: const PosStyles(align: PosAlign.right)),
+      PosColumn(text: roundStringWith(grossAmount), width: 2, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
     if (hideTaxDetails) {
@@ -1479,30 +1559,32 @@ bool isCancelled;
       PosColumn(text: 'Discount', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
       PosColumn(
           textEncoded: dis,
-          width: 4,
+          width: 5,
           styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: roundStringWith(discount), width: 4, styles: const PosStyles(align: PosAlign.right)),
+      PosColumn(text: roundStringWith(discount), width: 3, styles: const PosStyles(align: PosAlign.right)),
     ]);
     // printer += generator.setStyles(PosStyles.defaults());
 
     printer += generator.hr();
+
+
+///
+
+    printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+
+
+
     printer += generator.row([
-      PosColumn(
-          text: 'Grand Total',
-          width: 3,
-          styles: const PosStyles(
-            bold: true,
-            fontType: PosFontType.fontB,
-            height: PosTextSize.size2,
-          )),
+
       PosColumn(
           textEncoded: gt,
-          width: 3,
+          width: 9,
           styles:
-          const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
+          const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left, bold: true)),
+
       PosColumn(
-          text: countyCodeCompany + " " + roundStringWith(grandTotal),
-          width: 6,
+          text: countyCodeCompany+ " " +roundStringWith(grandTotal),
+          width: 3,
           styles: const PosStyles(
             fontType: PosFontType.fontA,
             bold: true,
@@ -1613,6 +1695,7 @@ class ESCPrinterServicesArabicKOT {
     var userName = prefs.getString('user_name')??"";
     bool showUsernameKot = prefs.getBool('show_username_kot')??false;
     bool showDateTimeKot = prefs.getBool('show_date_time_kot')??false;
+    var reverseArabicOption = prefs.getBool("reverseArabicOption") ?? false;
 
     var currentTime = DateTime.now();
     List<int> bytes = [];
@@ -1648,14 +1731,14 @@ class ESCPrinterServicesArabicKOT {
     var updateNoteArabic = "تم إجراء بعض التغييرات في";
     var updateNote = "MADE SOME CHANGES IN";
 
-    Uint8List cancelNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(cancelNoteArabic));
-    Uint8List updateNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(updateNoteArabic));
+    Uint8List cancelNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(cancelNoteArabic,reverseArabicOption));
+    Uint8List updateNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(updateNoteArabic,reverseArabicOption));
 
     var invoiceType = "KOT";
     var invoiceTypeArabic = "(طباعة المطب";
 
-    Uint8List typeEng = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
-    Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
+    Uint8List typeEng = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType,reverseArabicOption));
+    Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic,reverseArabicOption));
     bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
 
     bytes +=generator.textEncoded(typeEng, styles:
@@ -1686,7 +1769,7 @@ class ESCPrinterServicesArabicKOT {
           const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     }
 
-    Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
+    Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز',reverseArabicOption));
     bytes +=generator.hr();
     bytes +=generator.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
     bytes +=generator.text('', styles: const PosStyles(align: PosAlign.left));
@@ -1749,10 +1832,7 @@ class ESCPrinterServicesArabicKOT {
       var slNo = i + 1;
       print("-----5.6");
       var productDescription = dataPrint[i].productDescription;
-
-
-      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
-
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName,reverseArabicOption));
       print("-----5.7");
       bytes +=generator.row([
         PosColumn(
@@ -1766,7 +1846,7 @@ class ESCPrinterServicesArabicKOT {
       ]);
 
       if (productDescription != "") {
-        Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription));
+        Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription,reverseArabicOption));
         bytes +=generator.textEncoded(productDescriptionEnc,
             styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
@@ -1792,9 +1872,6 @@ class ESCPrinterServicesArabicKOT {
           (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     bytes +=generator.cut();
-
-
-
     return bytes;
   }
 }
@@ -1802,41 +1879,75 @@ class ESCPrinterServicesArabicKOT {
 
 class ESCBTTEST {
 
-
-
+  String? option;
   List<int>? _bytes;
-
   List<int>? get bytes => _bytes;
-
   CapabilityProfile? _profile;
 
   ESCBTTEST();
 //
   Future<List<int>> getBytes({
-    PaperSize paperSize = PaperSize.mm80,
-    required CapabilityProfile profile, String name = "default",
-  }) async {
+    PaperSize paperSize = PaperSize.mm80, required CapabilityProfile profile, String name = "default",required String option}) async {
 
     List<int> printer = [];
     _profile = profile;
     final supportedCodePages = profile.codePages;
     Generator generator = Generator(PaperSize.mm80, _profile!);
 /// image printing commented
-    // final arabicImageBytes = await generateInvoice();
-    // var ii = Img.decodeImage(arabicImageBytes!);
-    // final Img.Image _resize = Img.copyResize(ii!, width: 500);
-    // printer += generator.imageRaster(_resize);
-    // //bytes += generator.image(_resize);
+//     final arabicImageBytes = await generateInvoice();
+//     var ii = Img.decodeImage(arabicImageBytes);
+//     final Img.Image _resize = Img.copyResize(ii!, width: 500);
+//     printer += generator.imageRaster(_resize);
+    //bytes += generator.image(_resize);
 
-    for(var ind = 0;ind<supportedCodePages.length ;ind++){
-      printer += generator.setGlobalCodeTable(supportedCodePages[ind].name);
-      var testData ="${supportedCodePages[ind].name} السلام ${profile.name} ";
-      Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData));
-      printer += generator.textEncoded(salam);
+
+    print("-------------------------------------$option");
+
+    if(option =="1"){
+      print("-------------------------------------$option");
+      final Uint8List imageData = await _fetchImageData("https://www.api.viknbooks.com/media/company-logo/WhatsApp_Image_2024-07-10_at_12.43.00_PM_s4PUuKU.jpeg");
+      final Img.Image? image = Img.decodeImage(imageData);
+      final Img.Image resizedImage = Img.copyResize(image!, width: 200);
+      printer += generator.imageRaster(resizedImage,imageFn:PosImageFn.bitImageRaster,highDensityVertical: true,highDensityHorizontal: true);
+    }
+    else if(option =="2"){
+      final Uint8List imageData = await _fetchImageData("https://www.api.viknbooks.com/media/company-logo/WhatsApp_Image_2024-07-10_at_12.43.00_PM_s4PUuKU.jpeg");
+      final Img.Image? image = Img.decodeImage(imageData);
+      final Img.Image resizedImage = Img.copyResize(image!, width: 200);
+      printer += generator.imageRaster(resizedImage,imageFn:PosImageFn.bitImageRaster,highDensityVertical: false,highDensityHorizontal: false);
+    }
+    else if(option =="3"){
+
+
+      final Uint8List imageData = await _fetchImageData("https://www.api.viknbooks.com/media/company-logo/WhatsApp_Image_2024-07-10_at_12.43.00_PM_s4PUuKU.jpeg");
+      final Img.Image? image = Img.decodeImage(imageData);
+      final Img.Image resizedImage = Img.copyResize(image!, width: 200);
+      printer += generator.imageRaster(resizedImage,imageFn:PosImageFn.bitImageRaster,highDensityVertical: true,highDensityHorizontal: false);
+    }
+    else if(option =="6"){
+
+      for(var ind = 0;ind<supportedCodePages.length ;ind++){
+        printer += generator.setGlobalCodeTable(supportedCodePages[ind].name);
+        var testData ="${supportedCodePages[ind].name} السلام ${profile.name} ";
+        Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData,false));
+        printer += generator.textEncoded(salam);
+      }
     }
 
-    printer += generator.text("Test Data",);
-    printer += generator.emptyLines(3);
+
+
+    else{
+      final Uint8List imageData = await _fetchImageData("https://www.api.viknbooks.com/media/company-logo/WhatsApp_Image_2024-07-10_at_12.43.00_PM_s4PUuKU.jpeg");
+      final Img.Image? image = Img.decodeImage(imageData);
+      final Img.Image resizedImage = Img.copyResize(image!, width: 200);
+      printer += generator.imageRaster(resizedImage);
+    }
+
+        //printer.image(resizedImage);
+
+
+       printer += generator.text("Test Data",);
+       printer += generator.emptyLines(3);
 
     return printer;
   }
@@ -2364,7 +2475,13 @@ returnBlankSpace(length) {
   }
   return list;
 }
-setString(String tex) {
+setString(String tex,reverseArabicOption) {
+
+  if(reverseArabicOption){
+    return tex;
+  }
+
+
   if (tex == "") {}
   String value = "";
   try {

@@ -114,7 +114,11 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
         ..onError((dynamic e) {});
     }
   }
-
+  String centerText(String text, int totalWidth) {
+    int textLength = text.length;
+    int spaces = (totalWidth - textLength) ~/ 2;
+    return ' ' * spaces + text;
+  }
   Future<void> testPrintOneByOne(capability, isArabic) async {
     int retryCount = 0;
     bool isConnected = false;
@@ -148,6 +152,37 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
             /// cpmmented upi
 
+  //           String companySecondName = "Your Company Name5565685689469846584968469861111545554";
+  //           int totalWidth = 48; // Adjust based on your paper size and font
+  //
+  //           printer.text(centerText(companySecondName, totalWidth), styles: PosStyles(
+  //             height: PosTextSize.size2,
+  //             width: PosTextSize.size1,
+  //             fontType: PosFontType.fontA,
+  //             bold: true,
+  //             align: PosAlign.center, // Align left since we manually centered the text
+  //           ));
+  //
+  //           // Another example line
+  //           String anotherLine = "Another centered line";
+  //           printer..text(centerText(anotherLine, totalWidth), styles: PosStyles(
+  //             height: PosTextSize.size1,
+  //             width: PosTextSize.size1,
+  //             fontType: PosFontType.fontA,
+  //             bold: false,
+  //             align: PosAlign.center, // Align left since we manually centered the text
+  //           ));
+  //
+  // printer..text(centerText("anotherLine", totalWidth), styles: PosStyles(
+  //             height: PosTextSize.size1,
+  //             width: PosTextSize.size1,
+  //             fontType: PosFontType.fontA,
+  //             bold: false,
+  //             align: PosAlign.center, // Align left since we manually centered the text
+  //           ));
+
+
+
             // var upiID = "8714152075@ybl";
             // var name = "Rabeeh";
             // var amount = "1";
@@ -177,6 +212,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       print('Failed to connect to printer after $maxRetries attempts.');
     }
   }
+
 
   connectionTest(printerIp) async {
     const PaperSize paper = PaperSize.mm80;

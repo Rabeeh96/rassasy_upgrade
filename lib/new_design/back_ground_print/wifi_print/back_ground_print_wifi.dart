@@ -3004,11 +3004,9 @@ class AppBlocs {
     kotList.clear();
     kotList = items;
     print("-------------------------------10----------------------------$items--------------");
-    // for (Map user in items) {
-    //   dataPrints.add(ItemsDetails.fromJson(user));
-    // }
+
     var kitchenName = "";
-    //  var totalQty = kotList[0]["Qty"].toString()??"0";
+
     var totalQty = (kotList[0]["Qty"]?.toString() ?? "0");
 
     if (isCancelNote == false) {
@@ -3087,18 +3085,18 @@ class AppBlocs {
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     printer.hr();
     print("******************************************************************************************************************7");
-    // if(showUsernameKot){
-    //   printer.row([
-    //     PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   ]);
-    // }
-    // if(showDateTimeKot){
-    //   printer.row([
-    //     PosColumn(text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(text: convertDateAndTime(currentTime), width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   ]);
-    // }
+    if(showUsernameKot){
+      printer.row([
+        PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+      ]);
+    }
+    if(showDateTimeKot){
+      printer.row([
+        PosColumn(text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: convertDateAndTime(currentTime), width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+      ]);
+    }
     printer.row([
       PosColumn(text: 'Kitchen name :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: kitchenName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
