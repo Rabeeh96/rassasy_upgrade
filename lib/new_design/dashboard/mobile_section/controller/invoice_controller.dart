@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
@@ -91,7 +92,7 @@ class InvoiceController extends GetxController {
   var printHelperUsb =   USBPrintClass();
   var printHelperIP =   AppBlocs();
   var bluetoothHelper =   AppBlocsBT();
-  printDetail({required String type}) async {
+  printDetail({required String type,required BuildContext context}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
     var printType = prefs.getString('PrintType') ?? 'Wifi';
@@ -113,8 +114,7 @@ class InvoiceController extends GetxController {
           dialogBox(Get.context!, 'Please try again later');
         }
         //
-      }
-      else{
+      }  else if(printType =="USB"){
         var ret = await printHelperUsb.printDetails();
         if (ret == 2) {
           var ip = "";
@@ -152,6 +152,27 @@ class InvoiceController extends GetxController {
         //   dialogBox(context,"Try again");
         // }
         //
+      }
+
+      else {
+        var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
+        if (loadData) {
+          var printStatus = await bluetoothHelper.scan(false);
+          if (printStatus == 1) {
+            popAlert(head: "Alert", message: "Check your bluetooth connection", position: SnackPosition.TOP);
+
+          } else if (printStatus == 2) {
+            popAlert(head: "Alert", message:"Your default printer configuration problem", position: SnackPosition.TOP);
+
+          } else if (printStatus == 3) {
+            await bluetoothHelper.scan(false);
+            // alertMessage("Try again");
+          } else if (printStatus == 4) {
+            //  alertMessage("Printed successfully");
+          }
+        } else {
+          dialogBox(context, "Try again");
+        }
       }
 
     }

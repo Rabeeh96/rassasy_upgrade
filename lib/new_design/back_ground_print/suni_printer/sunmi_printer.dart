@@ -7,7 +7,7 @@ class SunmiPrint {
   initialPrint() {
     _bindingPrinter().then((bool isBind) async {});
   }
-
+//
   Future<bool> _bindingPrinter() async {
     final bool? result = await SunmiPrinter.bindingPrinter();
     return result!;

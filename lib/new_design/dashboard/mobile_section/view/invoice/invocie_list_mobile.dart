@@ -22,7 +22,8 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
   void initState() {
     // TODO: implement initState
     super.initState();
-   // invoiceController.viewList(fromDate: invoiceController.apiDateFormat.format(invoiceController.fromDateNotifier.value), toDate: invoiceController.apiDateFormat.format(invoiceController.fromDateNotifier.value));
+
+    invoiceController.viewList(fromDate: invoiceController.apiDateFormat.format(invoiceController.fromDateNotifier.value), toDate: invoiceController.apiDateFormat.format(invoiceController.fromDateNotifier.value));
   }
 
   @override
@@ -68,7 +69,6 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                             borderRadius: BorderRadius.circular(7),
                             border:
                             Border.all(color: const Color(0xffCBCBCB))),
-
                         width: MediaQuery.of(context).size.width /3,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -83,7 +83,6 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                                   invoiceController.dateFormat.format(fromDateNewValue),
                                   style: customisedStyle(context, Colors.black, FontWeight.w700, 12.0)
                               ),
-
 
                             ],
                           ),
@@ -136,7 +135,6 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                         showDatePickerFunction(context,invoiceController.toDateNotifier);
                         invoiceController.viewList(fromDate: invoiceController.apiDateFormat.format(invoiceController.fromDateNotifier.value), toDate: invoiceController.apiDateFormat.format(toDateNewValue));
 
-
                       },
                     );
                   }),
@@ -152,7 +150,6 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                 color: Color(0xffF25F29),
                 onRefresh: () async {
                   invoiceController.viewList(fromDate: invoiceController.apiDateFormat.format(invoiceController.fromDateNotifier.value), toDate: invoiceController.apiDateFormat.format(invoiceController.fromDateNotifier.value));
-
                 },
                 child: Obx(() => invoiceController.isLoading.value
                     ? const Center(
@@ -186,7 +183,7 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                                 onPressed: (BuildContext context) async {
                                   PrintDataDetails.id = invoiceController.invoiceList[index].salesMasterID;
                                   PrintDataDetails.type = "SI";
-                                  invoiceController.printDetail(type: "SI");
+                                  invoiceController.printDetail(type: "SI",context: context);
                                 },
                                 // onPressed: doNothing ,
                                 backgroundColor: Colors.blueAccent,

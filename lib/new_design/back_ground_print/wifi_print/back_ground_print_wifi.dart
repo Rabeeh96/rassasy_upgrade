@@ -24,6 +24,11 @@ import '../Templates/template3.dart';
 import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
 import 'package:get/get.dart';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
+
+
 class AppBlocs {
   List<ProductDetailsModel> printDalesDetails = [];
 
@@ -183,20 +188,17 @@ class AppBlocs {
       if (temp == 'template4') {
         await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint,
             hideTaxDetails, defaultCodePage, isCancelled,flavourInOrderPrint);
-      } else if (temp == 'template3') {
-        await englishInvoicePrint(
-            printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails,flavourInOrderPrint);
+      }
+      else if (temp == 'template3') {
+        await englishInvoicePrint(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails,flavourInOrderPrint);
       } else {
         await printArabic(printer);
       }
       Future.delayed(const Duration(seconds: 2), () async {
-        print("------after delay----------------------------strt printing");
         printer.disconnect();
       });
     } else {
-
       popAlert(head: "Error", message: "Check your printer connection",position: SnackPosition.TOP);
-
     }
   }
 
@@ -252,8 +254,6 @@ class AppBlocs {
 
     var voucherNumber = BluetoothPrintThermalDetails.voucherNumber;
     var customerName = BluetoothPrintThermalDetails.ledgerName;
-    print("________________LedgerName   ${BluetoothPrintThermalDetails.ledgerName}");
-    print("________________customerName     ${BluetoothPrintThermalDetails.customerName}");
 
     if (BluetoothPrintThermalDetails.ledgerName == "Cash In Hand") {
       customerName = BluetoothPrintThermalDetails.customerName;
@@ -282,7 +282,7 @@ class AppBlocs {
       var cancelNoteData = "THIS ORDER WAS CANCELLED BY THE CUSTOMER.";
       printer.text(cancelNoteData,
           styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
     //
     /// image print commented
@@ -321,7 +321,7 @@ class AppBlocs {
     Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
     Uint8List exciseTax = await CharsetConverter.encode("ISO-8859-6", setString('مبلغ الضريبة الانتقائية'));
     Uint8List vatTax = await CharsetConverter.encode("ISO-8859-6", setString('ضريبة القيمة المضافة'));
-    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
+    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('تخفيض'));
     Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
 
     Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
@@ -418,7 +418,8 @@ class AppBlocs {
         ]);
         //  printer.textEncoded(companyPhoneEnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
-    } else {
+    }
+    else {
       if (companyName != "") {
         printer.textEncoded(companyNameEnc,
             styles: const PosStyles(
@@ -745,7 +746,7 @@ class AppBlocs {
           textEncoded: gt,
           width: 3,
           styles:
-              const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
+          const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
       PosColumn(
           text: countyCodeCompany + " " + roundStringWith(grandTotal),
           width: 6,
@@ -1436,7 +1437,7 @@ class AppBlocs {
     // var totalCashAmount = "12540";
     // var totalBankAmount = "3500";
     // var totalBankCredit = "500";
-///
+    ///
     printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
 
     printer.text("DAILY REPORT", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
@@ -1476,8 +1477,8 @@ class AppBlocs {
 
     printer.hr();
     printer.emptyLines(2);
-print("salesOrder -----------------");
-print(salesOrder);
+    print("salesOrder -----------------");
+    print(salesOrder);
     printer.text("Sales Order", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
     printer.emptyLines(1);
     printer.row([
@@ -3003,11 +3004,9 @@ print(salesOrder);
     kotList.clear();
     kotList = items;
     print("-------------------------------10----------------------------$items--------------");
-    // for (Map user in items) {
-    //   dataPrints.add(ItemsDetails.fromJson(user));
-    // }
+
     var kitchenName = "";
-    //  var totalQty = kotList[0]["Qty"].toString()??"0";
+
     var totalQty = (kotList[0]["Qty"]?.toString() ?? "0");
 
     if (isCancelNote == false) {
@@ -3017,10 +3016,10 @@ print(salesOrder);
       }
     }
 
-     var tableName = kotList[0]["TableName"] ?? "";
-     var tokenNumber = kotList[0]["TokenNumber"].toString();
-     var orderType = kotList[0]["OrderType"] ?? "";
-     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+    var tableName = kotList[0]["TableName"] ?? "";
+    var tokenNumber = kotList[0]["TokenNumber"].toString();
+    var orderType = kotList[0]["OrderType"] ?? "";
+    printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
@@ -3040,19 +3039,19 @@ print(salesOrder);
 
     printer.textEncoded(typeEng,
         styles:
-            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     // printer.text('', styles: PosStyles(align: PosAlign.left));
 
     if (isCancelled) {
       printer.text("ORDER CANCELLED",
           styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size3, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size3, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
 
     printer.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     printer.textEncoded(typeArabic,
         styles:
-            const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
+        const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     if (extraDetailsInKOT) {
       if (isCancelNote) {
@@ -3081,23 +3080,23 @@ print(salesOrder);
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size4, width: PosTextSize.size5, bold: false, align: PosAlign.center));
-  //  printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+    //  printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
     printer.textEncoded(tokenEnc, styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     printer.hr();
     print("******************************************************************************************************************7");
-    // if(showUsernameKot){
-    //   printer.row([
-    //     PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   ]);
-    // }
-    // if(showDateTimeKot){
-    //   printer.row([
-    //     PosColumn(text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-    //     PosColumn(text: convertDateAndTime(currentTime), width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
-    //   ]);
-    // }
+    if(showUsernameKot){
+      printer.row([
+        PosColumn(text: 'User name     :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+      ]);
+    }
+    if(showDateTimeKot){
+      printer.row([
+        PosColumn(text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: convertDateAndTime(currentTime), width: 8, styles: const PosStyles(fontType: PosFontType.fontA,height: PosTextSize.size1, width: PosTextSize.size1)),
+      ]);
+    }
     printer.row([
       PosColumn(text: 'Kitchen name :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(text: kitchenName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
@@ -3175,7 +3174,7 @@ print(salesOrder);
           text: roundStringWith(totalQty),
           width: 2,
           styles:
-              (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
+          (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
 
     printer.cut();
@@ -3241,29 +3240,29 @@ print(salesOrder);
     var invoiceType = "KOT";
     printer.text(invoiceType,
         styles:
-            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+        const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (isCancelNote) {
       printer.text(cancelNoteData,
           styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
 
     if (isUpdate) {
       printer.text(updateNote,
           styles:
-              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
     print("------------------------------------------------3");
 
     printer.hr();
     printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
-   // printer.text('', styles: const PosStyles(align: PosAlign.left));
+    // printer.text('', styles: const PosStyles(align: PosAlign.left));
 
     printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size4, width: PosTextSize.size5, bold: false, align: PosAlign.center));
 
-   // printer.text('', styles: const PosStyles(align: PosAlign.left,fontType: PosFontType.fontB,));
+    // printer.text('', styles: const PosStyles(align: PosAlign.left,fontType: PosFontType.fontB,));
     printer.hr();
 
     if (showUsernameKot) {
@@ -3385,10 +3384,10 @@ print(salesOrder);
           text: roundStringWith(totalQty),
           width: 2,
           styles:
-              (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
+          (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     printer.cut();
- //   printer.disconnect();
+    //   printer.disconnect();
   }
 
   /// arabic kot image print method
@@ -3437,6 +3436,7 @@ print(salesOrder);
       print('------------------------------${e.toString()}');
     }
   }
+
 
   Future<void> testPrint(NetworkPrinter printer) async {
     // final ByteData data = await rootBundle.load('assets/fonts/CustomArabicFont.ttf');

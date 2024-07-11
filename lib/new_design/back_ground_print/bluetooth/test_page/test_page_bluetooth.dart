@@ -100,6 +100,7 @@ class _TestPrintBTState extends State<TestPrintBT> {
           actions: <Widget>[
 
             ElevatedButton(onPressed: (){
+
              // testPrintAllCodePage(controllerName.text);
             }, child: Text("Demo")),
 
@@ -209,6 +210,41 @@ class _TestPrintBTState extends State<TestPrintBT> {
               const SizedBox(height: 25),
 
 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(onPressed: (){
+                    var bluetoothHelper = AppBlocsBTEST();
+                    bluetoothHelper.scanAndPrint("Sunmi-V2","1");
+                  }, child: Text("Option 1",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0,right: 20.0),
+                    child: ElevatedButton(onPressed: (){
+
+                      var bluetoothHelper = AppBlocsBTEST();
+                      bluetoothHelper.scanAndPrint("Sunmi-V2","2");
+                    }, child: Text("Option 2",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0,right: 20.0),
+                    child: ElevatedButton(onPressed: (){
+                      var bluetoothHelper = AppBlocsBTEST();
+                      bluetoothHelper.scanAndPrint("Sunmi-V2","3");
+                    }, child: Text("Option 3",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
+                  ),
+
+                   ElevatedButton(onPressed: (){
+                    var bluetoothHelper = AppBlocsBTEST();
+                    bluetoothHelper.scanAndPrint("Sunmi-V2","4");
+                  }, child: Text("Option 4",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
+
+
+                ],
+              ),
+
+
               Padding(
                 padding: const EdgeInsets.all(0.0),
                 child: Container(
@@ -229,8 +265,10 @@ class _TestPrintBTState extends State<TestPrintBT> {
                                   onTap: () async {
                                     //scanAndPrint();
 
+
+                                    print(printerModels[index]);
                                     var bluetoothHelper = AppBlocsBTEST();
-                                    bluetoothHelper.scanAndPrint(printerModels[index]);
+                                    bluetoothHelper.scanAndPrint(printerModels[index],"6");
 
                                     // if (withCodePage) {
                                     //   testPrintOneByONe(controllerName.text,printerModels[index]);
@@ -283,70 +321,70 @@ class _TestPrintBTState extends State<TestPrintBT> {
 
 
 
-  Future<void> scanAndPrint() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      setState(() {
-        _printers = [];
-      });
-
-
-
-      // Discover printers
-      _printers = await BluetoothPrinterManager.discover();
-      if (_printers.isEmpty) {
-        print('No printers found');
-        return;
-      }
-
-      var paperSize = PaperSize.mm80;
-      var defaultIp = prefs.getString('defaultIP') ?? '';
-      var capabilities = prefs.getString("default_capabilities") ?? "default";
-
-      var profile = capabilities == "default"
-          ? await CapabilityProfile.load()
-          : await CapabilityProfile.load(name: capabilities);
-
-      // Find the default printer
-      var printer = _printers.firstWhere(
-            (printer) => printer.address == defaultIp,
-
-      );
-
-      if (printer == null) {
-        print('Default printer is not paired with your device');
-        return;
-      }
-
-      // Initialize manager if needed
-      if (_manager == null || _manager.printer.address != printer.address) {
-        _manager = BluetoothPrinterManager(printer, paperSize, profile);
-      }
-
-      // Connect if not connected
-      if (!_manager.isConnected) {
-        print('Connecting to printer...');
-        await _manager.connect();
-        await Future.delayed(Duration(seconds: 2)); // Wait a bit for connection to stabilize
-        print('Connected to printer: ${_manager.isConnected}');
-      }
-
-      // Check connection status again
-      if (!_manager.isConnected) {
-        print('Failed to connect to the printer');
-        return;
-      }
-
-      // Send print data
-      var service = ESCBTTEST();
-      var data = await service.getBytes(paperSize: paperSize, profile: profile);
-      _manager.writeBytes(data, isDisconnect: true);
-      print('Print successful');
-
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
+  // Future<void> scanAndPrint() async {
+  //   try {
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     setState(() {
+  //       _printers = [];
+  //     });
+  //
+  //
+  //
+  //     // Discover printers
+  //     _printers = await BluetoothPrinterManager.discover();
+  //     if (_printers.isEmpty) {
+  //       print('No printers found');
+  //       return;
+  //     }
+  //
+  //     var paperSize = PaperSize.mm80;
+  //     var defaultIp = prefs.getString('defaultIP') ?? '';
+  //     var capabilities = prefs.getString("default_capabilities") ?? "default";
+  //
+  //     var profile = capabilities == "default"
+  //         ? await CapabilityProfile.load()
+  //         : await CapabilityProfile.load(name: capabilities);
+  //
+  //     // Find the default printer
+  //     var printer = _printers.firstWhere(
+  //           (printer) => printer.address == defaultIp,
+  //
+  //     );
+  //
+  //     if (printer == null) {
+  //       print('Default printer is not paired with your device');
+  //       return;
+  //     }
+  //
+  //     // Initialize manager if needed
+  //     if (_manager == null || _manager.printer.address != printer.address) {
+  //       _manager = BluetoothPrinterManager(printer, paperSize, profile);
+  //     }
+  //
+  //     // Connect if not connected
+  //     if (!_manager.isConnected) {
+  //       print('Connecting to printer...');
+  //       await _manager.connect();
+  //       await Future.delayed(Duration(seconds: 2)); // Wait a bit for connection to stabilize
+  //       print('Connected to printer: ${_manager.isConnected}');
+  //     }
+  //
+  //     // Check connection status again
+  //     if (!_manager.isConnected) {
+  //       print('Failed to connect to the printer');
+  //       return;
+  //     }
+  //
+  //     // Send print data
+  //     var service = ESCBTTEST();
+  //     var data = await service.getBytes(paperSize: paperSize, profile: profil,option: "");
+  //     _manager.writeBytes(data, isDisconnect: true);
+  //     print('Print successful');
+  //
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
 
 
 
@@ -697,7 +735,7 @@ class _TestPrintBTState extends State<TestPrintBT> {
 class AppBlocsBTEST{
   List<BluetoothPrinter> _printers = [];
   late BluetoothPrinterManager _manager;
-  void scanAndPrint(capabilities) async {
+  void scanAndPrint(capabilities,option) async {
     try {
       print("---------------------1");
 
@@ -751,7 +789,7 @@ class AppBlocsBTEST{
       print("---------------------6");
       // Send print data
       var service = ESCBTTEST();
-      var data = await service.getBytes(paperSize: paperSize, profile: profile);
+      var data = await service.getBytes(paperSize: paperSize, profile: profile,option: option);
       _manager.writeBytes(data, isDisconnect: true);
       print('Print successful');
 

@@ -1169,9 +1169,15 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     if (printType == 'Wifi') {
       var loadData = printHelperIP.printKotPrint(orderID, true, [], false, isCancelled);
-    } else {
+    }
+    else if(printType == 'BT'){
+      bluetoothHelper.bluetoothPrintKOT(orderID, true, [], false, isCancelled);
+    }
+
+    else {
       var loadData = printHelperUsb.printKotPrint(orderID, true, [], false);
     }
+
   }
 
   returnCancelHead(status) {

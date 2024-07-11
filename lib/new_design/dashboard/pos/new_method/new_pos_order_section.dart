@@ -765,8 +765,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
       }
       else {
-        /// kot is not fully completed
-      ///  bluetoothHelper.bluetoothPrintKOT(orderID, rePrint, cancelList, isUpdate, false);
+
+        bluetoothHelper.bluetoothPrintKOT(orderID, rePrint, cancelList, isUpdate, isUpdate);
       }
     } catch (e) {
       print(e.toString());
@@ -5162,7 +5162,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var stateID = prefs.getString('State') ?? 1;
         var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
-        var dateTime = getDateWithHourCondition(DateTime.now(),1);
+
+      String compensation=  prefs.getString('CompensationHour') ?? "1";
+       var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
         print(dateTime);
 
 
@@ -5500,9 +5502,20 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var stateID = prefs.getString('State') ?? 1;
         var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
+
+        String compensation=  prefs.getString('CompensationHour') ?? "1";
+        var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
+        print(dateTime);
+
+
         DateTime selectedDateAndTime = DateTime.now();
-        String convertedDate = "$selectedDateAndTime";
+        String convertedDate = "$dateTime";
         dateOnly = convertedDate.substring(0, 10);
+        var orderTime = "$selectedDateAndTime";
+
+        // DateTime selectedDateAndTime = DateTime.now();
+        // String convertedDate = "$selectedDateAndTime";
+        // dateOnly = convertedDate.substring(0, 10);
         var customerName = "walk in customer";
         var phoneNumber = "";
         var time = "";

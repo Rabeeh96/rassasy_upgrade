@@ -11,6 +11,7 @@ import 'package:rassasy_new/new_design/dashboard/mobile_section/model/TaxTreatme
 import 'package:rassasy_new/new_design/dashboard/mobile_section/model/price_category_model.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/model/route_model.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/model/taxModelListClass.dart';
+import 'package:rassasy_new/new_design/dashboard/mobile_section/view/customer/add_customer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,7 +42,7 @@ class CustomerController extends GetxController{
     ..text = "0";
   TextEditingController priceCategoryController = TextEditingController();
   TextEditingController panNoController = TextEditingController();
-  TextEditingController vatNumberController = TextEditingController();
+  //TextEditingController vatNumberController = TextEditingController();
   TextEditingController creditLimitController = TextEditingController()
     ..text = "0.00";
   TextEditingController routesController = TextEditingController();
@@ -92,15 +93,18 @@ var taxID="1";
   void openCamera() async {
     var imgCamera = await imgPicker.pickImage(source: ImageSource.camera);
     imgFile = File(imgCamera!.path);
+    print("imgFile from cam $imgFile");
     imageSelect.value = true;
+    update();
     Get.back();
   }
 
   void openGallery() async {
     var imgGallery = await imgPicker.pickImage(source: ImageSource.gallery);
     imgFile = File(imgGallery!.path);
-    print(imgFile);
+    print("imgFile from gall $imgFile");
     imageSelect.value = true;
+    update();
     Get.back();
   }
 
@@ -453,6 +457,140 @@ var taxID="1";
   }
   RxBool isCreatingCustomer = false.obs;
 
+  // Future<void> createCustomer({
+  //   required String email,
+  //   required String address,
+  //   required String customerName,
+  //   required String displayName,
+  //   required String creditLimitText,
+  //   required String balanceText,
+  //   required String dropdownvalue,
+  //   required String as_on_date_api,
+  //   required String workPhone,
+  //   required String webUrl,
+  //   required String creditPeriod,
+  //   required int priceCategoryId,
+  //   required String panNo,
+  //   required String routeId,
+  //   required String crNo,
+  //   required String bankName,
+  //   required String accName,
+  //   required String accNo,
+  //   required String ibanIfsc,
+  //   required String vatNumber,
+  //   required String treatmentID,
+  //   required bool imageSelect,
+  //   String? imgFilePath,
+  // }) async {
+  //   try {
+  //     isCreatingCustomer.value = true;
+  //
+  //
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     var userID = prefs.getInt('user_id') ?? 0;
+  //     var accessToken = prefs.getString('access') ?? '';
+  //     var companyID = prefs.getString('companyID') ?? '0';
+  //     var branchID = prefs.getInt('branchID') ?? 1;
+  //
+  //     double creditLimit = double.tryParse(creditLimitText) ?? 1;
+  //     double openingBalance = double.tryParse(balanceText) ?? 0;
+  //
+  //     String baseUrl = BaseUrl.baseUrl;
+  //     final url = '$baseUrl/posholds/customer-create/';
+  //
+  //     var headers = {
+  //       "Content-Type": "application/json",
+  //       'Authorization': 'Bearer $accessToken',
+  //     };
+  //
+  //     var request = http.MultipartRequest('POST', Uri.parse(url));
+  //     request.headers.addAll(headers);
+  //
+  //     request.fields.addAll({
+  //       "BranchID": branchID.toString(),
+  //       "CreatedUserID": userID.toString(),
+  //       "CompanyID": companyID.toString(),
+  //       "Email": email,
+  //       "Address": address,
+  //       "CustomerName": customerName,
+  //       "DisplayName": displayName,
+  //       "OpeningBalance": openingBalance.toString(),
+  //       "CrOrDr": dropdownvalue,
+  //       "as_on_date": as_on_date_api,
+  //       "WorkPhone": workPhone,
+  //       "WebURL": webUrl,
+  //       "CreditPeriod": creditPeriod,
+  //       "PriceCategoryID": priceCategoryId.toString(),
+  //       "PanNumber": panNo,
+  //       "CreditLimit": creditLimit.toString(),
+  //       "RouteID": routeId,
+  //       "CRNo": crNo,
+  //       "BankName": bankName,
+  //       "AccountName": accName,
+  //       "AccountNo": accNo,
+  //       "IBANOrIFSCCode1": ibanIfsc,
+  //       "VATNumber": vatNumber,
+  //       "VAT_Treatment": treatmentID,
+  //     });
+  //
+  //     if (imageSelect && imgFilePath != null) {
+  //       request.files.add(
+  //         await http.MultipartFile.fromPath('PartyImage', imgFile!.path),
+  //       );
+  //     }
+  //
+  //     final streamResponse = await request.send();
+  //     final response = await http.Response.fromStream(streamResponse);
+  //
+  //
+  //     print(response.body);
+  //     print(imgFile!.path);
+  //     print( "request fields ${request.fields}");
+  //
+  //     Map<String, dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+  //
+  //     var status = data["StatusCode"];
+  //     print(data);
+  //     print(status);
+  //
+  //     if (status == 6000) {
+  //       clearData();
+  //       imageSelect = false;
+  //       Get.back();
+  //       getCustomerListDetails();
+  //
+  //     } else if (status == 6001) {
+  //       var msg = data["message"];
+  //       Get.dialog(
+  //         AlertDialog(
+  //           title: Text("Error"),
+  //           content: Text(msg),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () => Get.back(),
+  //               child: Text("OK"),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     Get.dialog(
+  //       AlertDialog(
+  //         title: Text("Error"),
+  //         content: Text(e.toString()),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Get.back(),
+  //             child: Text("OK"),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   } finally {
+  //     isCreatingCustomer.value = false;
+  //   }
+  // }
   Future<void> createCustomer({
     required String email,
     required String address,
@@ -475,13 +613,10 @@ var taxID="1";
     required String ibanIfsc,
     required String vatNumber,
     required String treatmentID,
-    bool imageSelect = false,
+    required bool imageSelect,
     String? imgFilePath,
   }) async {
     try {
-      isCreatingCustomer.value = true;
-
-
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userID = prefs.getInt('user_id') ?? 0;
       var accessToken = prefs.getString('access') ?? '';
@@ -529,45 +664,54 @@ var taxID="1";
         "VAT_Treatment": treatmentID,
       });
 
+      // Add image file if imageSelect is true and imgFilePath is provided//
       if (imageSelect && imgFilePath != null) {
+        // Ensure imgFilePath is a valid path to the image file
         request.files.add(
           await http.MultipartFile.fromPath('PartyImage', imgFilePath),
         );
       }
 
-      final streamResponse = await request.send();
-      final response = await http.Response.fromStream(streamResponse);
+      // Send the request and get response
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
 
-      print(response.headers);
-      print(response.body);
-      print(response.statusCode);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
-      Map<String, dynamic> data = json.decode(utf8.decode(response.bodyBytes));
-      var status = data["StatusCode"];
+      if (response.statusCode == 200) {
+        // Parse response data if needed
+        Map<String, dynamic> responseData = json.decode(response.body);
+        var status = responseData["StatusCode"];
 
-      if (status == 6000) {
-       // clearData();
-        imageSelect = false;
-        // You can use Get.find<YourController>() to get other controllers and update state
-        // Example: Get.find<YourOtherController>().updateSomething();
-        // Here, update your state if needed using other GetX controllers
-        // And return something.
-      } else if (status == 6001) {
-        var msg = data["message"];
-        Get.dialog(
-          AlertDialog(
-            title: Text("Error"),
-            content: Text(msg),
-            actions: [
-              TextButton(
-                onPressed: () => Get.back(),
-                child: Text("OK"),
-              ),
-            ],
-          ),
-        );
+        if (status == 6000) {
+          // Handle success case
+          clearData();
+          Get.back();
+          getCustomerListDetails();
+        } else if (status == 6001) {
+          // Handle error case
+          var msg = responseData["message"];
+          Get.dialog(
+            AlertDialog(
+              title: Text("Error"),
+              content: Text(msg),
+              actions: [
+                TextButton(
+                  onPressed: () => Get.back(),
+                  child: Text("OK"),
+                ),
+              ],
+            ),
+          );
+        }
+      } else {
+        // Handle other status codes if needed
+        print('Request failed with status: ${response.statusCode}');
       }
     } catch (e) {
+      // Handle exceptions
+      print('Error creating customer: $e');
       Get.dialog(
         AlertDialog(
           title: Text("Error"),
@@ -580,8 +724,156 @@ var taxID="1";
           ],
         ),
       );
-    } finally {
-      isCreatingCustomer.value = false;
+    }}
+  clearData(){
+
+    customerNameController.clear();
+    displayNameController.clear();
+    balanceController.clear();
+    dateController.clear();
+    emailController.clear();
+    workPhoneController.clear();
+    webUrlController.clear();
+    addressController.clear();
+    creditPeriodController.clear();
+    priceCategoryController.clear();
+    panNoController.clear();
+    creditLimitController.clear();
+    routesController.clear();
+    crNoController.clear();
+    bankNameController.clear();
+    accNameController.clear();
+    accNoController.clear();
+    ibanIfscController.clear();
+    treatmentController.clear();
+    taxNoController.clear();
+  }
+
+
+
+  void getSingleView(String id) async {
+    try {
+      print("1222");
+      isLoading.value = true;
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var userID = prefs.getInt('user_id') ?? 0;
+      var accessToken = prefs.getString('access') ?? '';
+      var companyID = prefs.getString('companyID') ?? '';
+      print("123333");
+      String baseUrl = BaseUrl.baseUrl;
+      bool? gstType = prefs.getBool("check_GST");
+      print("1244");
+      bool? vatType = prefs.getBool("checkVat");
+      print("1255");
+      final url = '$baseUrl/posholds/single/customer/$id/';
+      print("1266");
+      var data = {
+        "CompanyID": companyID,
+        "CreatedUserID": userID,
+      };
+      print("12777");
+      var body = json.encode(data);
+
+      var response = await http.post(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: body,
+      );
+      print("12888");
+      var n = json.decode(utf8.decode(response.bodyBytes));
+      var status = n["StatusCode"];
+      var responseJson = n["data"];
+
+      if (status == 6000) {
+        print("12999");
+        addressController.text = responseJson['Address1'];
+        purchaseDateValue = responseJson['as_on_date'];
+        customerNameController.text = responseJson['FirstName'] ?? '';
+        webUrlController.text = responseJson['WebURL'] ?? '';       print("131");
+        creditPeriodController.text = responseJson['CreditPeriod'].toString();print("132");
+        panNoController.text = responseJson['PanNumber'] ?? '';
+        bankNameController.text = responseJson['BankName1'] ?? '';print("13223");
+        accNameController.text = responseJson['AccountName1'] ?? '';print("13244");
+        accNoController.text = responseJson['AccountNo1'] ?? '';
+        ibanIfscController.text = responseJson['IBANOrIFSCCode1'];print("dddddd");
+        priceCategoryController.text = responseJson['PriceCategoryName'];
+        workPhoneController.text = responseJson['PhoneNumber'] ?? '';print("242432");
+        emailController.text = responseJson['Email'] ?? '';
+        crNoController.text = responseJson['CRNo'] ?? '';
+        displayNameController.text = responseJson['DisplayName'] ?? '';
+        balanceController.text = roundStringWith(responseJson['OpeningBalance']) ?? '';
+        routesController.text = responseJson['RouteName'] ?? '';
+        creditLimitController.text = roundStringWith(responseJson['CreditLimit']) ?? '';
+        priceCategoryID = responseJson['PriceCategoryID'];
+        routeID = responseJson['RouteID'];
+
+        if (gstType!) {
+          treatmentController.text = findGstTreatment(responseJson['GST_Treatment']);
+        }
+
+        if (vatType!) {
+          treatmentController.text = findVatTreatment(responseJson['VAT_Treatment']);
+        }
+
+        var partyImage = responseJson["PartyImage"] ?? '';
+
+        if (partyImage.isNotEmpty) {
+          var imgData = BaseUrl.imageURL + partyImage;
+          print('---imageData-----$imgData');
+          loadImage(imgData);
+        }
+
+        isLoading.value = false;
+      } else if (status == 6001) {
+       var a = n["error"];
+       dialogBox(Get.context!,  a);
+        isLoading.value = false;
+      } else if (status == 6002) {
+        var a = n["error"]??"Something went wrong";
+        dialogBox(Get.context!,  a);
+        isLoading.value = false;
+      } else {
+
+        isLoading.value = false;
+      }
+    } catch (e) {
+      dialogBox(Get.context!, e.toString());
+
+      isLoading.value = false;
+    }
+  }
+
+  findGstTreatment(treatment) {
+    if (treatment == "0") {
+      return "Registered Business - Regular";
+    } else if (treatment == "1") {
+      return "Registered Business - Composition";
+    } else if (treatment == "2") {
+      return "Unregistered Business";
+    } else if (treatment == "3") {
+      return "Consumer";
+    } else if (treatment == "4") {
+      return "Overseas";
+    } else if (treatment == "5") {
+      return "Special Economic Zone";
+    } else {
+      return "Deemed Export";
+    }
+  }
+
+  findVatTreatment(String id) {
+    if (id == "0") {
+      return "Business to Business(B2B)";
+    } else if (id == "1") {
+      return "Business to Customer(B2C)";
+    } else if (id == "2") {
+      return "Export";
+    } else {
+      return "";
     }
   }
 }

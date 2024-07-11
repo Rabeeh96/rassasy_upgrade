@@ -31,6 +31,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   loadData() async {
+
+
+
+    log_data(orderController.orderItemList[widget.index]);
+
     orderController.flavourList.clear();
     await orderController.getAllFlavours();
     orderController.productName.value = orderController.orderItemList[widget.index]["ProductName"];
@@ -64,7 +69,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     orderController.iGSTAmount.value = double.parse(orderController.orderItemList[widget.index]["IGSTAmount"].toString());
     orderController.createdUserID.value = orderController.orderItemList[widget.index]["CreatedUserID"];
     orderController.dataBase.value = orderController.orderItemList[widget.index]["DataBase"] ?? "";
-    orderController.flavourID.value = orderController.orderItemList[widget.index]["flavour"] ?? "";
+
+    orderController.flavourID.value = orderController.orderItemList[widget.index]["Flavour"] ?? "";
+    if(orderController.flavourID.value==""){
+      orderController.flavourID.value = orderController.orderItemList[widget.index]["flavour"] ?? "";
+    }
     orderController.flavourName.value = orderController.orderItemList[widget.index]["Flavour_Name"] ?? "";
     orderController.taxableAmountPost.value = double.parse(orderController.orderItemList[widget.index]["TaxableAmount"].toString());
     var gst = orderController.orderItemList[widget.index]["gstPer"] ?? '0';
@@ -72,6 +81,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     orderController.isInclusive.value = orderController.orderItemList[widget.index]["is_inclusive"];
     orderController.inclusiveUnitPriceAmountWR.value = orderController.orderItemList[widget.index]["InclusivePrice"].toString();
     orderController.totalTax.value = double.parse(orderController.orderItemList[widget.index]["TotalTaxRounded"].toString());
+
+
+    print("orderController.flavourID.value ${orderController.flavourID.value} ");
+    print("    orderController.flavourName.value ${    orderController.flavourName.value} ");
 
     /// excise tax not working
     // orderController.exciseTaxID.value = orderController.orderItemList[widget.index]["ExciseTaxID"];
@@ -317,6 +330,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () async {
+
                             orderController.flavourName.value = orderController.flavourList[index].flavourName;
                             orderController.flavourID.value = orderController.flavourList[index].id;
                             orderController.update();

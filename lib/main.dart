@@ -59,8 +59,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
-    //  bool isTablet = true;
-    bool isTablet = isTabletDevice();
+     bool isTablet = true;
+   // bool isTablet = isTabletDevice();
     prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
     print("main isTablet: $isTablet");
 
@@ -182,14 +182,14 @@ class _MyHomePageState extends State<MyHomePage> {
         if (expire == true) {
           prefs.setBool('companySelected', false);
           await dialogBox(context, "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
+/// commented
+          // if (isTablet) {
+          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+          // } else {
+          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+          // }
 
-          if (isTablet) {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
-          } else {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
-          }
-
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         } else {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
 
@@ -210,16 +210,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // }
         }
       } else {
-        if (isTablet) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
-        } else {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
-        }
 
-        // Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => OrganizationList()));
+
+        /// commented
+
+        // if (isTablet) {
+        //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+        // } else {
+        //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+        // }
+
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => OrganizationList()));
       }
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPageNew()));

@@ -59,8 +59,8 @@ class _OrganizationDetailState extends State<OrganizationList> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-  //  bool isTablet = true;
-   bool isTablet = screenWidth > 850;
+   bool isTablet = true;
+//   bool isTablet = screenWidth > 850;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -184,8 +184,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                           child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-
-                              color: isTablet?Color(0xffF6F6F6):Colors.transparent,
+                                color: isTablet?Color(0xffF6F6F6):Colors.transparent,
                               ),
                               //  color: Colors.red,
 
@@ -195,7 +194,8 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else {
+                                }
+                                else {
                                   return companyController.companyList.isEmpty?Image.asset('assets/png/EmptyCompany.png'): ListView.builder(
                                     itemCount: companyController.companyList.length,
                                     itemBuilder: (context, index) {
@@ -290,20 +290,6 @@ class _OrganizationDetailState extends State<OrganizationList> {
 
 
 
-                                                    // if(companyList[index].isPosUser){
-                                                    //
-                                                    //   Navigator.pushReplacement(
-                                                    //       context,
-                                                    //       MaterialPageRoute(
-                                                    //           builder: (BuildContext context) =>
-                                                    //           const EnterPinNumber()));
-                                                    //
-                                                    // }
-                                                    // else{
-                                                    //
-                                                    //   userTypeData();
-                                                    //
-                                                    // }
                                                   }
 
 
@@ -333,147 +319,6 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                 }
                               }),
                           ),
-
-
-                              //
-                              // height: MediaQuery.of(context).size.height / 2,
-                              // child: companyList.isNotEmpty ?
-                              // ListView.builder(
-                              //     itemCount: companyList.length,
-                              //     itemBuilder: (BuildContext context, int index) {
-                              //
-                              //
-                              //
-                              //       return Padding(
-                              //         padding: const EdgeInsets.all(4.0),
-                              //         child: Card(
-                              //           child: ListTile(
-                              //               leading: CircleAvatar(
-                              //                 radius: 15,
-                              //                 backgroundColor: Colors.grey[300],
-                              //                 backgroundImage: companyList[index]
-                              //                     .image ==
-                              //                     ''
-                              //                     ? NetworkImage(
-                              //                     'https://www.gravatar.com/avatar/$index?s=46&d=identicon&r=PG&f=1')
-                              //                     : NetworkImage(
-                              //                     companyList[index].image),
-                              //               ),
-                              //               trailing: Container(
-                              //                 width:isTablet? MediaQuery.of(context).size.width*.10:MediaQuery.of(context).size.width*.25,
-                              //                 child: TextButton(
-                              //                   style: TextButton.styleFrom(
-                              //                     foregroundColor: Colors.white,
-                              //                     backgroundColor:
-                              //                     Color(0xff303030),
-                              //                     textStyle:
-                              //                     const TextStyle(fontSize: 10),
-                              //                   ),
-                              //                   onPressed: () async {
-                              //
-                              //
-                              //
-                              //
-                              //
-                              //                     var expire =checkExpire(companyList[index].expiryDate);
-                              //                     if(expire){
-                              //                       dialogBox(context, "${companyList[index].companyName} Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
-                              //                     }
-                              //                     else{
-                              //
-                              //                       var branchDetails=companyList[index].branchList??[];
-                              //
-                              //                       print("branchDetails  $branchDetails");
-                              //
-                              //                       if(branchDetails.isEmpty){
-                              //                         await defaultDataInitial(context:context);
-                              //
-                              //                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                              //                         prefs.setString('companyName', companyList[index].companyName);
-                              //                         prefs.setString('companyType', companyList[index].companyType);
-                              //                         prefs.setString('expiryDate', companyList[index].expiryDate);
-                              //                         prefs.setString('permission', companyList[index].permission);
-                              //                         prefs.setString('edition', companyList[index].permission);
-                              //                         prefs.setBool('isPosUser', companyList[index].isPosUser);
-                              //                         prefs.setString('companyID', companyList[index].id);
-                              //                         prefs.setBool('companySelected', true);
-                              //                         prefs.setInt('branchID',1);
-                              //
-                              //                        await Navigator.pushReplacement(
-                              //                             context,
-                              //                             MaterialPageRoute(
-                              //                                 builder: (BuildContext context) =>
-                              //                                 const EnterPinNumber()));
-                              //                       }
-                              //                       else{
-                              //
-                              //                         var result = await  Navigator.push(context, MaterialPageRoute(builder: (context) => SelectBranch(list: branchDetails)),);
-                              //                         if(result !=null){
-                              //                           await defaultDataInitial(context:context);
-                              //                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                              //                           prefs.setString('companyName', companyList[index].companyName);
-                              //                           prefs.setString('companyType', companyList[index].companyType);
-                              //                           prefs.setString('expiryDate', companyList[index].expiryDate);
-                              //                           prefs.setString('permission', companyList[index].permission);
-                              //                           prefs.setString('edition', companyList[index].permission);
-                              //                           prefs.setBool('isPosUser', companyList[index].isPosUser);
-                              //                           prefs.setString('companyID', companyList[index].id);
-                              //                           prefs.setBool('companySelected', true);
-                              //                           await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
-                              //                         }
-                              //                         else{
-                              //                           dialogBox(context, "Select branch, before go to next step");
-                              //                         }
-                              //
-                              //
-                              //                       }
-                              //
-                              //
-                              //
-                              //
-                              //
-                              //                       // if(companyList[index].isPosUser){
-                              //                       //
-                              //                       //   Navigator.pushReplacement(
-                              //                       //       context,
-                              //                       //       MaterialPageRoute(
-                              //                       //           builder: (BuildContext context) =>
-                              //                       //           const EnterPinNumber()));
-                              //                       //
-                              //                       // }
-                              //                       // else{
-                              //                       //
-                              //                       //   userTypeData();
-                              //                       //
-                              //                       // }
-                              //                     }
-                              //
-                              //
-                              //
-                              //                   },
-                              //                   child: Text(
-                              //                     'join'.tr,
-                              //                     style: TextStyle(
-                              //                         color: Colors.white,
-                              //                         fontSize: 12),
-                              //                   ),
-                              //                 ),
-                              //               ),
-                              //               title: Text(
-                              //                   companyList[index].companyName,
-                              //                   style: TextStyle(
-                              //                       color: Colors.black,
-                              //                       fontWeight: FontWeight.bold,
-                              //                       fontSize: 12)),
-                              //
-                              //
-                              //           ),
-                              //         ),
-                              //       );
-                              //     }):
-                              // Image.asset('assets/png/EmptyCompany.png')
-
-
 
                   )
 

@@ -553,6 +553,61 @@ class _PrinterSettingsDetailPageMobileState
                       height: MediaQuery.of(context).size.height /
                           18, //height of button
                       width: MediaQuery.of(context).size.width / 1.5,
+                      child: Text('print_after_payment'.tr,
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w500, 14.0)),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 7,
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: printController.isPrintAfterPayment,
+                        builder: (context, value, child) {
+                          return FlutterSwitch(
+                            width: 40.0,
+                            height: 20.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: const Color(0xffF25F29),
+                            activeTextColor: Colors.green,
+                            toggleColor: const Color(0xffffffff),
+                            inactiveTextColor: Color(0xffffffff),
+                            inactiveColor: const Color(0xffD9D9D9),
+                            onToggle: (val) {
+                              printController.isPrintAfterPayment.value = val;
+
+                              printController.switchStatus("printAfterPayment", printController.isPrintAfterPayment.value);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+
+            dividerStyle(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: Container(
+                height:
+                MediaQuery.of(context).size.height / 17, //height of button
+                // child: paidList(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      height: MediaQuery.of(context).size.height /
+                          18, //height of button
+                      width: MediaQuery.of(context).size.width / 1.5,
                       child: Text('time_in_invoice'.tr,
                           style: customisedStyle(
                               context, Colors.black, FontWeight.w500, 14.0)),

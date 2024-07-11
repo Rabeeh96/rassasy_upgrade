@@ -42,7 +42,7 @@ class _SelectTaxState extends State<SelectCategoryMobile> {
           },
         ),
         title: Text(
-          'select_cat'.tr,
+          'Category'.tr,
           style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
         ),
       ),
@@ -75,7 +75,7 @@ class _SelectTaxState extends State<SelectCategoryMobile> {
 
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 20.0, right: 20, top: 10, bottom: 10),
+                            left: 20.0, right: 20, top: 20, bottom: 20),
                         child:    Text(
                           productGroupController
                               .categoryList[index].categoryName

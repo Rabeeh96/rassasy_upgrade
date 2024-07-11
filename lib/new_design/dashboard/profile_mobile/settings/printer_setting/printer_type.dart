@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -16,7 +18,7 @@ class PrinterSettingsMobilePage extends StatefulWidget {
 class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
   // Initialize it with the default selected index
   PrintSettingController printSettingController = Get.put(PrintSettingController());
-  String _selectedOption="Wifi"; // Declare _selectedOption as a nullable String
+// Declare _selectedOption as a nullable String
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,8 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
               color: const Color(0xffE9E9E9),
             ),
           ),
-          Padding(
+
+          Obx(() =>   Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,19 +60,22 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                 ),
                 DropdownButton<String>(
-                  hint: const Text('Select an option'),
-                  value: _selectedOption,
+                  hint:   Text('Select an option'),
+                  value: printSettingController.selectedOption.value,
                   onChanged: (String? newValue) async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
-                    setState(() {
-                      _selectedOption = newValue!;
+                 //   setState(() {
+                      printSettingController.selectedOption.value = newValue!;
 
                       prefs.setString("PrintType", newValue);
-                      if(_selectedOption=="Wifi"||_selectedOption=="USB"){
+                      if(printSettingController.selectedOption.value=="Wifi"||printSettingController.selectedOption.value=="USB"){
                         printSettingController.selectedIndex.value=0;
                       }
+                      else{
+                        printSettingController.selectedIndex.value=1;
+                      }
 
-                   });
+                //    });
                   },
                   items: <String>['Wifi', 'USB', 'BT'].map<DropdownMenuItem<String>>(
                         (String value) {
@@ -88,62 +94,10 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
                 ),
               ],
             ),
-          ),
+          ),),
 
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 20.0, right: 15),
-          //   child: Container(
-          //     height: MediaQuery.of(context).size.height / 17, //height of button
-          //     // child: paidList(),
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: [
-          //         Container(
-          //           alignment: Alignment.centerLeft,
-          //           height: MediaQuery.of(context).size.height / 18, //height of button
-          //           width: MediaQuery.of(context).size.width / 1.5,
-          //           child: Text('enable_wifi'.tr, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
-          //         ),
-          //         Container(
-          //           alignment: Alignment.centerRight,
-          //           height: MediaQuery.of(context).size.height / 18, //height of button
-          //           width: MediaQuery.of(context).size.width / 7,
-          //           child: ValueListenableBuilder<bool>(
-          //             valueListenable: printSettingController.isEnableWifiPrinter,
-          //             builder: (context, value, child) {
-          //               return FlutterSwitch(
-          //                 width: 40.0,
-          //                 height: 20.0,
-          //                 valueFontSize: 30.0,
-          //                 toggleSize: 15.0,
-          //                 value: value,
-          //                 borderRadius: 20.0,
-          //                 padding: 1.0,
-          //                 activeColor: const Color(0xffF25F29),
-          //                 activeTextColor: Colors.green,
-          //                 toggleColor: const Color(0xffffffff),
-          //                 inactiveTextColor: Color(0xffffffff),
-          //                 inactiveColor: const Color(0xffD9D9D9),
-          //                 onToggle: (val) async {
-          //                   SharedPreferences prefs = await SharedPreferences.getInstance();
-          //                   printSettingController.isEnableWifiPrinter.value = val;
-          //                   if (val == true) {
-          //                     prefs.setString("PrintType", "Wifi");
-          //
-          //                   } else {
-          //                     printSettingController.isEnableWifiPrinter.value=true;
-          //                     popAlert(head: "Alert", message: "Currently wifi printer is support",   position: SnackPosition.TOP);
-          //                  //   prefs.setString("PrintType", "USB");
-          //                   }
-          //                 },
-          //               );
-          //             },
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
+
+
           Padding(
               padding: const EdgeInsets.only(
                 left: 20.0,
@@ -172,57 +126,59 @@ class _PrinterSettingsMobilePageState extends State<PrinterSettingsMobilePage> {
           const SizedBox(
             height: 20,
           ),
-          _selectedOption=="BT"?Expanded(child: GestureDetector(
-            onTap: () async {
-              printSettingController.selectedIndex.value=1;
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setString("template", "template1");
-            },
-            child: Padding(
-                padding:  EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 20),
-                child:Obx(() => Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xffEBEBEB),
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                      color: printSettingController.selectedIndex.value == 1 ? Colors.red : Colors.transparent,
-                    ),
-                  ),
-                  child: Image.asset("assets/png/gst.png"),
-                ),)
-            ),
-          )):  Expanded(
-            child: Obx(() => ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: printSettingController.imagePaths.length,
-              itemBuilder: (context, index) {
-                String imagePath = printSettingController.imagePaths[index];
-                return GestureDetector(
-                  onTap: () {
-                    printSettingController.setSelectedIndex(index);
-                    if (index == 0) {
-                      printSettingController.setTemplate(3);
-                    } else {
-                      printSettingController.setTemplate(4);
-                    }
+          Obx(() =>printSettingController.selectedOption.value=="BT"?Expanded(child: GestureDetector(
+    onTap: () async {
+    printSettingController.selectedIndex.value=1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("template", "template4");
+    },
+    child: Padding(
+    padding:  EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 20),
+    child:Obx(() => Container(
+    decoration: BoxDecoration(
+    color: Color(0xffEBEBEB),
+    borderRadius: BorderRadius.circular(4),
+    border: Border.all(
+    color: printSettingController.selectedIndex.value == 1 ? Colors.red : Colors.transparent,
+    ),
+    ),
+    child: Image.asset("assets/png/vat.png"),
+    ),)
+    ),
+    )):  Expanded(
+    child: Obx(() => ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: printSettingController.imagePaths.length,
+    itemBuilder: (context, index) {
+    String imagePath = printSettingController.imagePaths[index];
+    return GestureDetector(
+    onTap: () {
+    printSettingController.setSelectedIndex(index);
+    if (index == 0) {
+    printSettingController.setTemplate(3);
+    } else {
+    printSettingController.setTemplate(4);
+    }
 
-                  },
-                  child: Padding(
-                      padding:  EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 20),
-                      child:Obx(() => Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xffEBEBEB),
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(
-                            color: printSettingController.selectedIndex.value == index ? Colors.red : Colors.transparent,
-                          ),
-                        ),
-                        child: Image.asset(imagePath),
-                      ),)
-                  ),
-                );
-              },
-            )),
+    },
+    child: Padding(
+    padding:  EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 20),
+    child:Obx(() => Container(
+    decoration: BoxDecoration(
+    color: Color(0xffEBEBEB),
+    borderRadius: BorderRadius.circular(4),
+    border: Border.all(
+    color: printSettingController.selectedIndex.value == index ? Colors.red : Colors.transparent,
+    ),
+    ),
+    child: Image.asset(imagePath),
+    ),)
+    ),
+    );
+    },
+    )) )
+
+          ,
           ),
         ],
       ),

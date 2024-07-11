@@ -336,9 +336,6 @@ class USBPrintClass {
     Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
 
 
-
-
-
     Uint8List companyTaxEnc = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
     Uint8List companyCREnc = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
     Uint8List companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
@@ -393,9 +390,7 @@ class USBPrintClass {
        }
 
       if (streetName != "") {
-
         Uint8List streetNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
-
         bytes +=generator.row([
           PosColumn(text: 'Street ', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
@@ -427,7 +422,7 @@ class USBPrintClass {
               width: 9,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
-        //  bytes +=generator.textEncoded(companyPhoneEnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
+        ///  bytes +=generator.textEncoded(companyPhoneEnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
 
       if (salesMan != "") {
@@ -865,6 +860,7 @@ class USBPrintClass {
       if (PrintDataDetails.type == "SI") {
         invoiceType = "SIMPLIFIED TAX INVOICE";
       }
+
       if (PrintDataDetails.type == "SO") {
         logoAvailable = false;
         qrCodeAvailable = false;

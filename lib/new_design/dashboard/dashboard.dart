@@ -69,13 +69,11 @@ class _DashboardNewState extends State<DashboardNew> {
         Get.updateLocale(const Locale('en', 'US'));
       }
       baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
-
       userName = prefs.getString('user_name') ?? '';
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
       expireDate = prefs.getString('expiryDate') ?? '';
       organisationLogo = prefs.getString('companyLogo') ?? 'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
-
       settingsPermission = prefs.getBool('General Setting') ?? false;
     });
   }
@@ -369,13 +367,14 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = true;
+    /// bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
       appBar: isProfileNotifier.value
-          ? AppBar(
+          ?AppBar(
               toolbarHeight: .1,
             )
-          : AppBar(
+          :AppBar(
               elevation: 0.0,
               automaticallyImplyLeading: false,
               backgroundColor: isTablet == true ? Color(0xffF3F3F3) : Colors.white,
@@ -532,8 +531,7 @@ class _DashboardNewState extends State<DashboardNew> {
                       ),
               ],
             ),
-      //  body: networkConnection == true ? isTablet == true ? dashboardPage() : dashboardPageMobile() : noNetworkConnectionPage(),
-
+      //body:networkConnection == true ? isTablet == true ? dashboardPage() : dashboardPageMobile() : noNetworkConnectionPage(),
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           backgroundColor: Colors.black,
@@ -545,12 +543,10 @@ class _DashboardNewState extends State<DashboardNew> {
                 : dashboardPageMobile()
             : noNetworkConnectionPage(),
       ),
-
       bottomNavigationBar: isTablet == true
           ? Container(
               height: 1,
-            )
-          : Container(
+            ):Container(
               decoration: const BoxDecoration(color: Colors.white, border: Border(top: BorderSide(color: Color(0xffE9E9E9), width: 1))),
               height: MediaQuery.of(context).size.height / 10,
               child: Row(
@@ -669,8 +665,8 @@ class _DashboardNewState extends State<DashboardNew> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = false;
+  //  bool isTablet = screenWidth > defaultScreenWidth;
     print(isTablet);
     print(screenWidth);
     print("dash");
