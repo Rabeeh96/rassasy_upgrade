@@ -513,9 +513,9 @@ class USBPrintClass {
       PosColumn(text: 'Voucher No  ', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
       PosColumn(
           textEncoded: voucherNoEnc,
-          width: 3,
+          width: 4,
           styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(text: voucherNumber, width: 6, styles: const PosStyles(align: PosAlign.right)),
+      PosColumn(text: voucherNumber, width: 5, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
     bytes +=generator.row([
@@ -578,7 +578,7 @@ class USBPrintClass {
       var time = BluetoothPrintThermalDetails.time;
 
       String timeInvoice = convertToSaudiArabiaTime(time,countyCodeCompany);
-      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('وقت'));
 
       bytes +=generator.row([
         PosColumn(text: 'Time   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
