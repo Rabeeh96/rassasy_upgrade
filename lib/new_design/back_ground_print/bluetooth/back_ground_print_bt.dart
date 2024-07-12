@@ -1302,7 +1302,7 @@ bool isCancelled;
     Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString('تاريخ ',reverseArabicOption));
     Uint8List customerEnc = await CharsetConverter.encode("ISO-8859-6", setString(' اسم ',reverseArabicOption));
     Uint8List typeEnc = await CharsetConverter.encode("ISO-8859-6", setString('يكتب ',reverseArabicOption));
-    // printer += generator.setStyles(PosStyles.defaults());
+    // printer += generator.setStyles(PosStyles.defaults()); ///
 
 
     if (highlightTokenNumber) {
