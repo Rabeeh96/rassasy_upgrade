@@ -178,7 +178,8 @@ class _MyHomePageState extends State<MyHomePage> {
         var companyName = prefs.getString('companyName') ?? '';
         var selectPos = prefs.getBool('IsSelectPos') ?? false;
         print("____________________________$selectPos");
-        var expire = checkExpire(expireDate);
+        var expire = isDateExpired(expireDate);
+        // var expire = checkExpire(expireDate);
         if (expire == true) {
           prefs.setBool('companySelected', false);
           await dialogBox(context, "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");

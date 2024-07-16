@@ -210,39 +210,39 @@ class _TestPrintBTState extends State<TestPrintBT> {
               const SizedBox(height: 25),
 
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(onPressed: (){
-                    var bluetoothHelper = AppBlocsBTEST();
-                    bluetoothHelper.scanAndPrint("Sunmi-V2","1");
-                  }, child: Text("Option 1",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0,right: 20.0),
-                    child: ElevatedButton(onPressed: (){
-
-                      var bluetoothHelper = AppBlocsBTEST();
-                      bluetoothHelper.scanAndPrint("Sunmi-V2","2");
-                    }, child: Text("Option 2",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0,right: 20.0),
-                    child: ElevatedButton(onPressed: (){
-                      var bluetoothHelper = AppBlocsBTEST();
-                      bluetoothHelper.scanAndPrint("Sunmi-V2","3");
-                    }, child: Text("Option 3",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
-                  ),
-
-                   ElevatedButton(onPressed: (){
-                    var bluetoothHelper = AppBlocsBTEST();
-                    bluetoothHelper.scanAndPrint("Sunmi-V2","4");
-                  }, child: Text("Option 4",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
-
-
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     ElevatedButton(onPressed: (){
+              //       var bluetoothHelper = AppBlocsBTEST();
+              //       bluetoothHelper.scanAndPrint("Sunmi-V2","1");
+              //     }, child: Text("Option 1",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
+              //
+              //     Padding(
+              //       padding: const EdgeInsets.only(left: 20.0,right: 20.0),
+              //       child: ElevatedButton(onPressed: (){
+              //
+              //         var bluetoothHelper = AppBlocsBTEST();
+              //         bluetoothHelper.scanAndPrint("Sunmi-V2","2");
+              //       }, child: Text("Option 2",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
+              //     ),
+              //
+              //     Padding(
+              //       padding: const EdgeInsets.only(left: 20.0,right: 20.0),
+              //       child: ElevatedButton(onPressed: (){
+              //         var bluetoothHelper = AppBlocsBTEST();
+              //         bluetoothHelper.scanAndPrint("Sunmi-V2","3");
+              //       }, child: Text("Option 3",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
+              //     ),
+              //
+              //      ElevatedButton(onPressed: (){
+              //       var bluetoothHelper = AppBlocsBTEST();
+              //       bluetoothHelper.scanAndPrint("Sunmi-V2","4");
+              //     }, child: Text("Option 4",style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),
+              //
+              //
+              //   ],
+              // ),
 
 
               Padding(

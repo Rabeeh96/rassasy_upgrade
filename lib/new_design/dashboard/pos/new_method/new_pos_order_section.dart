@@ -152,7 +152,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
   String user_name = "";
   var printAfterPayment = false;
-
+  var highlightsProductDetails = false;
   bool autoFocusField = false;
   bool isGst = false;
 
@@ -194,7 +194,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     } else {
       changeVal(widget.orderType);
        printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
-
+       highlightsProductDetails = prefs.getBool("highlightsProductDetails") ?? false;
        print("===================================================================printAfterPayment  $printAfterPayment");
        currency = prefs.getString('CurrencySymbol') ?? "";
        isGst = prefs.getBool("check_GST") ?? false;
@@ -3141,14 +3141,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                 children: [
                                   SizedBox(
                                     child: Text(returnProductName(productList[i].productName),
-                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 11.5)),
+                                        style: customisedStyle(context, Colors.black, FontWeight.w500,highlightsProductDetails ? 14.5:11.5)),
                                   ),
                                   SizedBox(
                                     // height: MediaQuery.of(context).size.height /                                    17, //height of button
                                     //  width: MediaQuery.of(context).size.width / 11,
                                     child: Text(
                                       returnProductName(productList[i].description),
-                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 11.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.w600,highlightsProductDetails ? 14.0:11.0),
                                     ),
                                   ),
                                   SizedBox(
@@ -5184,8 +5184,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
 
-      String compensation=  prefs.getString('CompensationHour') ?? "1";
-       var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
+        String compensation=  prefs.getString('CompensationHour') ?? "1";
+        var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
         print(dateTime);
 
 
@@ -5317,6 +5317,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           Future.delayed(const Duration(seconds: 1), () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             var kot = prefs.getBool("KOT") ?? false;
+            var kotAfterPayment = prefs.getBool("KotafterPayment") ?? false;
+            if(kotAfterPayment){
+              kot = false;
+            }
             if (kot == true) {
               PrintDataDetails.type = "SO";
               PrintDataDetails.id = id;

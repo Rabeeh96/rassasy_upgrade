@@ -369,7 +369,9 @@ class LocaleChange extends Translations {
           'login': 'Login',
           'flavour_in_order_print': 'Flavour in order print',
           'Add_Product': "Add Product",
-          'table_order_settings': "Table order settings"
+          'table_order_settings': "Table order settings",
+          'highlightsProductDetails': 'Highlights ProductDetails',
+          'KotafterPayment': 'KOT After Payment',
         },
 
         ///
@@ -377,9 +379,12 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'KotafterPayment': 'كوت بعد الدفع',
           'flavour_in_order_print': 'نكهة من أجل الطباعة',
+          'Kot afte rPayment': 'نكهة من أجل الطباعة',
            'table_order_settings': "إعدادات ترتيب الجدول",
           'reverseArabicOption': 'عكس الخيار العربي',
+          'highlightsProductDetails': 'يسلط الضوء على تفاصيل المنتج',
           'Add_Product': "أضف منتج",
           'bluetoothPrinter': 'طابعة بلوتوث',
           'select_printer_type': 'حدد نوع الطابعة',

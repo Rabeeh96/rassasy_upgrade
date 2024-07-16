@@ -102,6 +102,8 @@ class _SettingsPageState extends State<SettingsPage> {
   bool showInvoice = false;
   bool clearTable = false;
   bool printAfterPayment = false;
+  bool highlightsProductDetails = false;
+  bool kotafterPayment = false;
   bool hilightTokenNumber = false;
   bool paymentDetailsInPrint = false;
   bool headerAlignment = false;
@@ -319,6 +321,8 @@ class _SettingsPageState extends State<SettingsPage> {
       showInvoice = prefs.getBool("AutoClear") ?? false;
       clearTable = prefs.getBool("tableClearAfterPayment") ?? false;
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
+      highlightsProductDetails = prefs.getBool("highlightsProductDetails") ?? false;
+      kotafterPayment = prefs.getBool("kotafterPayment") ?? false;
 
       directOrderOption = prefs.getBool("directOrderOption") ?? false;
       printAfterOrder = prefs.getBool("print_after_order") ?? false;
@@ -3907,6 +3911,91 @@ class _SettingsPageState extends State<SettingsPage> {
             //     },
             //   ),
             // ),
+
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'KotafterPayment'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: kotafterPayment,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        setState(() {
+                          kotafterPayment = val;
+                          switchStatus("KotafterPayment", kotafterPayment);
+
+
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'highlightsProductDetails'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: highlightsProductDetails,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        setState(() {
+                          highlightsProductDetails = val;
+                          switchStatus(
+                              "highlightsProductDetails", highlightsProductDetails);
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Card(
               shape: RoundedRectangleBorder(
                 side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
