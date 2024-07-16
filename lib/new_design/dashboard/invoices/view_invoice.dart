@@ -9,6 +9,7 @@ import 'package:rassasy_new/global/customclass.dart';
 
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/test_page/test_file.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/new.dart';
@@ -356,7 +357,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                     onPressed: () {
                                       PrintDataDetails.type = "SI";
                                       PrintDataDetails.id = invoiceList[index].salesMasterID;
-                                      printDetail();
+                                      printDetail(invoiceList[index].salesMasterID,"SI");
                                     },
                                     child: Text(
                                       'print'.tr,
@@ -501,16 +502,16 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       ),
     );
   }
-
+  var printHelperNew = USBPrintClassTest();
   var printHelperUsb =   USBPrintClass();
   var printHelperIP =   AppBlocs();
   var bluetoothHelper =   AppBlocsBT();
-  printDetail() async {
+  printDetail(id,voucherType) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
-
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
+    var temp = prefs.getString("template") ?? "template4";
     if (defaultIp == "") {
       popAlert(head: "Error", message: "Please select a printer",position: SnackPosition.TOP);
 
@@ -532,20 +533,27 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         //
       }
       else if (printType =='USB'){
-        var ret = await printHelperUsb.printDetails();
-        if (ret == 2) {
-          var ip = "";
-
-          if (PrintDataDetails.type == "SO") {
-            ip = defaultOrderIP;
-          } else {
-            ip = defaultIp;
-          }
-          printHelperUsb.printReceipt(ip, context);
-        } else {
-          popAlert(head: "Error", message: "Please try again later",position: SnackPosition.TOP);
-
+        if(temp =="template5"){
+          printHelperNew.printDetails(id: id,type: voucherType,context: context);
         }
+        else{
+          var ret = await printHelperUsb.printDetails();
+          if (ret == 2) {
+            var ip = "";
+            if (PrintDataDetails.type == "SO") {
+              ip = defaultOrderIP;
+            } else {
+              ip = defaultIp;
+            }
+            printHelperUsb.printReceipt(ip, context);
+          } else {
+            popAlert(head: "Error", message: "Please try again later",position: SnackPosition.TOP);
+
+          }
+        }
+
+
+
 
         /// commented
 

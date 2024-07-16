@@ -307,11 +307,9 @@ class AppBlocs {
     Uint8List salesManDetailsEnc = await CharsetConverter.encode("ISO-8859-6", setString('رجل المبيعات ' + salesMan));
 
     if (headerAlignment) {
-
       if(companyPhone!=""){
         companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
       }
-
     }
 
     Uint8List invoiceTypeEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
@@ -3188,52 +3186,27 @@ class AppBlocs {
     bool showUsernameKot = prefs.getBool('show_username_kot') ?? false;
     bool showDateTimeKot = prefs.getBool('show_date_time_kot') ?? false;
     var currentTime = DateTime.now();
-    print("------------------------------------------------1");
-    // List<ItemsDetails> dataPrint = [];
-    // dataPrint.clear();
-    //
-    // for (Map user in items) {
-    //   dataPrint.add(ItemsDetails.fromJson(user));
-    // }
 
     List kotList = [];
 
-    //   List<ItemsDetails> dataPrints = [];
     kotList.clear();
     kotList = items;
 
     var kitchenName = "";
-    //  var totalQty = kotList[0]["Qty"].toString()??"0";
-    print("------------------------------------------------1");
+
     var totalQty = (kotList[0]["Qty"]?.toString() ?? "0");
-    print("------------------------------------------------1");
     if (isCancelNote == false) {
-      print("------------------------------------------------2");
       if (printListData.isNotEmpty) {
-        print("------------------------------------------------2");
         kitchenName = printListData[id].kitchenName ?? "";
-        print("------------------------------------------------2");
         totalQty = printListData[id].totalQty ?? "0";
-        print("------------------------------------------------2");
+
       }
     }
-
-    print("------------------------------------------------3");
 
     var tableName = kotList[0]["TableName"] ?? "";
     var tokenNumber = kotList[0]["TokenNumber"].toString();
     var orderType = kotList[0]["OrderType"] ?? "";
-    print("------------------------------------------------3");
 
-    // var kitchenName = printListData[id].kitchenName;
-    // var tableName = dataPrint[0].tableName;
-    // var totalQty = printListData[id].totalQty;
-    // var tokenNumber = dataPrint[0].tokenNumber;
-    // var orderType = dataPrint[0].orderTypeI ?? "";
-    // printer.setStyles(const PosStyles.defaults());
-    // printer.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
-
-    print("------------------------------------------------3");
 
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
     var updateNote = "RUNNING ORDER";

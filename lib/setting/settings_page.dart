@@ -76,10 +76,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Color template2Color = const Color(0xffFFFFFF);
   Color template3Color = const Color(0xffFFFFFF);
   Color template4Color = const Color(0xffFFFFFF);
+  Color template5Color = const Color(0xffFFFFFF);
   Color template1Text = const Color(0xffffffff);
   Color template2Text = const Color(0xffC8C8C8);
   Color template3Text = const Color(0xffC8C8C8);
   Color template4Text = const Color(0xffC8C8C8);
+  Color template5Text = const Color(0xffC8C8C8);
 
   bool edit = false;
   bool kitchenEdit = false;
@@ -255,8 +257,13 @@ class _SettingsPageState extends State<SettingsPage> {
         templateIndex = 2;
       } else if (templateBT == "template3") {
         templateIndex = 3;
-      } else {
+      }
+      else if (templateBT == "template4") {
         templateIndex = 4;
+      }
+
+      else {
+        templateIndex = 5;
       }
 
       templateViewColor(templateIndex);
@@ -1311,6 +1318,30 @@ class _SettingsPageState extends State<SettingsPage> {
                       const SizedBox(
                         width: 20,
                       ),
+                      _selectedOption =='USB'?
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            templateIndex = 5;
+                            templateViewColor(templateIndex);
+                            setTemplate(5);
+                            //templateViewColor=
+                          });
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 12,
+                          width: MediaQuery.of(context).size.width / 18,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: template5Color,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "3",
+                            style: customisedStyle(context, template5Text, FontWeight.w700, 22.0),
+                          ),
+                        ),
+                      ):Container(),
                     ],
                   )
                 ],
@@ -2185,51 +2216,9 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
 
-      // Card(
-      //   color: setting4,
-      //   shape: RoundedRectangleBorder(
-      //     side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
-      //     borderRadius: BorderRadius.circular(2),
-      //   ),
-      //   child: ListTile(
-      //     onTap: () {
-      //       setState(() {
-      //         index = 4;
-      //         test(index);
-      //         printerDefault();
-      //
-      //       });
-      //     },
-      //     leading: IconButton(
-      //         onPressed: () {},
-      //         icon: SvgPicture.asset('assets/svg/printseting.svg')),
-      //     title: const Text('Default',
-      //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-      //   ),
-      // ),
 
-      /// template selection is commented
-      // Card(
-      //   color: setting4,
-      //   shape: RoundedRectangleBorder(
-      //     side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
-      //     borderRadius: BorderRadius.circular(2),
-      //   ),
-      //   child: ListTile(
-      //     onTap: () {
-      //       setState(() {
-      //         index = 4;
-      //         test(index);
-      //         printerTemplate();
-      //       });
-      //     },
-      //     leading: IconButton(
-      //         onPressed: () {},
-      //         icon: SvgPicture.asset('assets/svg/printseting.svg')),
-      //     title: const Text('Printer Template',
-      //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-      //   ),
-      // ),
+
+
 
       Card(
         color: setting3,
@@ -5018,12 +5007,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return null;
   }
 
-  ///printer Template
-  Widget printerTemplate() {
-    return Container(
-      child: templateViewt(),
-    );
-  }
+
 
   ///printer Template
   Widget printerDefault() {
@@ -5087,280 +5071,30 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget templateViewt() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        //  color: const Color(0xffEEEEEE),
-      ),
-      padding: const EdgeInsets.all(6),
-      height: MediaQuery.of(context).size.height / 3,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text(
-              'select_print'.tr,
-              style: const TextStyle(fontSize: 20),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                templateIndex = 1;
-                templateViewColor(templateIndex);
-                setTemplate(1);
-              });
-            },
 
-            child: Container(
-              height: MediaQuery.of(context).size.height / 6,
-              width: MediaQuery.of(context).size.width / 8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: template1Color,
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                "1",
-                style: TextStyle(color: template1Text, fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                templateIndex = 2;
-                templateViewColor(templateIndex);
-                setTemplate(2);
 
-                //templateViewColor=
-              });
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height / 6,
-              width: MediaQuery.of(context).size.width / 8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: template2Color,
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                "2",
-                style: TextStyle(color: template2Text, fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                templateIndex = 3;
-                templateViewColor(templateIndex);
-                setTemplate(3);
-              });
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height / 6,
-              width: MediaQuery.of(context).size.width / 8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: template3Color,
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                "3",
-                style: TextStyle(color: template3Text, fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                templateIndex = 4;
-                templateViewColor(templateIndex);
-                setTemplate(4);
-              });
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height / 6,
-              width: MediaQuery.of(context).size.width / 8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: template4Color,
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                "4",
-                style: TextStyle(color: template4Text, fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  // Widget templateView() {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       borderRadius: BorderRadius.circular(6),
-  //       //  color: const Color(0xffEEEEEE),
-  //     ),
-  //     padding: const EdgeInsets.all(6),
-  //     height: MediaQuery.of(context).size.height / 3,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.start,
-  //       children: [
-  //         Padding(
-  //           padding: const EdgeInsets.all(10.0),
-  //           child: Text(
-  //             "Select printer:",
-  //             style: TextStyle(fontSize: 20),
-  //           ),
-  //         ),
-  //         GestureDetector(
-  //           onTap: () {
-  //             setState(() {
-  //               templateIndex = 1;
-  //               templateViewColor(templateIndex);
-  //               setTemplate(1);
-  //             });
-  //           },
-  //           child: Container(
-  //             height: MediaQuery.of(context).size.height / 6,
-  //             width: MediaQuery.of(context).size.width / 8,
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(6),
-  //               color: template1Color,
-  //             ),
-  //             alignment: Alignment.center,
-  //             child: Text(
-  //               "1",
-  //               style: TextStyle(
-  //                   color: template1Text,
-  //                   fontSize: 22,
-  //                   fontWeight: FontWeight.bold),
-  //             ),
-  //           ),
-  //         ),
-  //         const SizedBox(
-  //           width: 20,
-  //         ),
-  //         GestureDetector(
-  //           onTap: () {
-  //             setState(() {
-  //               templateIndex = 2;
-  //               templateViewColor(templateIndex);
-  //               setTemplate(2);
-  //
-  //               //templateViewColor=
-  //             });
-  //           },
-  //           child: Container(
-  //             height: MediaQuery.of(context).size.height / 6,
-  //             width: MediaQuery.of(context).size.width / 8,
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(6),
-  //               color: template2Color,
-  //             ),
-  //             alignment: Alignment.center,
-  //             child: Text(
-  //               "2",
-  //               style: TextStyle(
-  //                   color: template2Text,
-  //                   fontSize: 22,
-  //                   fontWeight: FontWeight.bold),
-  //             ),
-  //           ),
-  //         ),
-  //         const SizedBox(
-  //           width: 20,
-  //         ),
-  //         GestureDetector(
-  //           onTap: () {
-  //             setState(() {
-  //               templateIndex = 3;
-  //               templateViewColor(templateIndex);
-  //               setTemplate(3);
-  //               //templateViewColor=
-  //             });
-  //           },
-  //           child: Container(
-  //             height: MediaQuery.of(context).size.height / 6,
-  //             width: MediaQuery.of(context).size.width / 8,
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(6),
-  //               color: template3Color,
-  //             ),
-  //             alignment: Alignment.center,
-  //             child: Text(
-  //               "3",
-  //               style: TextStyle(
-  //                   color: template3Text,
-  //                   fontSize: 22,
-  //                   fontWeight: FontWeight.bold),
-  //             ),
-  //           ),
-  //         ),
-  //         const SizedBox(
-  //           width: 20,
-  //         ),
-  //         GestureDetector(
-  //           onTap: () {
-  //             setState(() {
-  //               templateIndex = 4;
-  //               templateViewColor(templateIndex);
-  //               setTemplate(4);
-  //               //templateViewColor=
-  //             });
-  //           },
-  //           child: Container(
-  //             height: MediaQuery.of(context).size.height / 6,
-  //             width: MediaQuery.of(context).size.width / 8,
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(6),
-  //               color: template4Color,
-  //             ),
-  //             alignment: Alignment.center,
-  //             child: Text(
-  //               "4",
-  //               style: TextStyle(
-  //                   color: template4Text,
-  //                   fontSize: 22,
-  //                   fontWeight: FontWeight.bold),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
   templateViewColor(int templateIndex) async {
     if (templateIndex == 1) {
       template1Color = const Color(0xff009253);
       template2Color = const Color(0xffFFFFFF);
       template3Color = const Color(0xffFFFFFF);
       template4Color = const Color(0xffFFFFFF);
+      template5Color = const Color(0xffFFFFFF);
 
-      template4Text = const Color(0xffC8C8C8);
       template1Text = const Color(0xffffffff);
       template2Text = const Color(0xffC8C8C8);
       template3Text = const Color(0xffC8C8C8);
+      template4Text = const Color(0xffC8C8C8);
+      template5Text = const Color(0xffC8C8C8);
     } else if (templateIndex == 2) {
       template1Color = const Color(0xffFFFFFF);
       template2Color = const Color(0xff009253);
       template3Color = const Color(0xffffffff);
       template4Color = const Color(0xffFFFFFF);
+      template5Color = const Color(0xffFFFFFF);
+
+      template5Text = const Color(0xffC8C8C8);
 
       template4Text = const Color(0xffC8C8C8);
       template1Text = const Color(0xffC8C8C8);
@@ -5371,22 +5105,41 @@ class _SettingsPageState extends State<SettingsPage> {
       template2Color = const Color(0xffFFFFFF);
       template3Color = const Color(0xff009253);
       template4Color = const Color(0xffFFFFFF);
-
       template4Text = const Color(0xffC8C8C8);
+      template5Color = const Color(0xffFFFFFF);
+
+      template5Text = const Color(0xffC8C8C8);
 
       template1Text = const Color(0xffC8C8C8);
       template2Text = const Color(0xffC8C8C8);
       template3Text = const Color(0xffffffff);
-    } else {
+    }
+ else if (templateIndex == 4) {
       template1Color = const Color(0xffFFFFFF);
       template2Color = const Color(0xffFFFFFF);
       template3Color = const Color(0xffFFFFFF);
       template4Color = const Color(0xff009253);
+      template5Color = const Color(0xffFFFFFF);
+      template5Text = const Color(0xffC8C8C8);
 
       template1Text = const Color(0xffC8C8C8);
       template2Text = const Color(0xffC8C8C8);
       template3Text = const Color(0xffC8C8C8);
       template4Text = const Color(0xffffffff);
+    }
+
+    else {
+      template1Color = const Color(0xffFFFFFF);
+      template2Color = const Color(0xffFFFFFF);
+      template3Color = const Color(0xffFFFFFF);
+      template5Color = const Color(0xff009253);
+      template4Color = const Color(0xffFFFFFF);
+      template4Text = const Color(0xffC8C8C8);
+
+      template1Text = const Color(0xffC8C8C8);
+      template2Text = const Color(0xffC8C8C8);
+      template3Text = const Color(0xffC8C8C8);
+      template5Text = const Color(0xffffffff);
     }
   }
 
