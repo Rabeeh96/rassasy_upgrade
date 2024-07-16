@@ -1,4 +1,6 @@
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:image/image.dart' as Img;
 
 
 class ViewInvoice extends StatefulWidget {
@@ -208,6 +211,31 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         body: networkConnection == true
             ?  ListView(
           children: [
+
+
+            /// COMMENTED FOR TESTING
+            // Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     // Step 3: Display the image if it has been resized
+            //     resizedImageBytes != null
+            //         ? Container(
+            //         height: 500,
+            //         width: 520,
+            //
+            //         child: Image.memory(resizedImageBytes!))
+            //         : Text('Click the button to resize the image'),
+            //     SizedBox(height: 20),
+            //     ElevatedButton(
+            //       onPressed: (){
+            //         _resizeImage();
+            //       },
+            //       child: Text('Resize Image'),
+            //     ),
+            //   ],
+            // ),
+
+
             Container(
               height: MediaQuery.of(context).size.height / 10,
               child: Row(
@@ -326,7 +354,6 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                 ],
               ),
             ),
-
             Container(
               height: MediaQuery.of(context).size.height / 1.3,
               child: Padding(
@@ -357,7 +384,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                     onPressed: () {
                                       PrintDataDetails.type = "SI";
                                       PrintDataDetails.id = invoiceList[index].salesMasterID;
-                                      printDetail(invoiceList[index].salesMasterID,"SI");
+                                        printDetail(invoiceList[index].salesMasterID,"SI");
                                     },
                                     child: Text(
                                       'print'.tr,
@@ -502,6 +529,32 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       ),
     );
   }
+
+  Uint8List? resizedImageBytes;
+  void _resizeImage() async{
+
+
+    print("Date ---------1   ---------1   ---------1    ${DateTime.now().second} ");
+
+    var id = "9eee65e7-d6f7-4ece-b0dc-5341a33365e6";
+    var arabicImageBytes =await printHelperNew.printDetails(id: id,type: "SI",context: context);
+
+    print("Date ---------4   ---------4   ---------4    ${DateTime.now().second} ");
+    // Step 1: Decode and resize the image using the image package
+
+    print("Date ---------5   ---------5   ---------5    ${DateTime.now().second} ");
+
+    final Img.Image? image = Img.decodeImage(arabicImageBytes);
+    print("Date ---------6   ---------6   ---------6    ${DateTime.now().second} ");
+    final Img.Image resizedImage = Img.copyResize(image!, width: 570);
+    print("Date ---------7   ---------7   ---------7    ${DateTime.now().second} ");
+    // Step 2: Convert the Img.Image back to Uint8List
+    resizedImageBytes = Uint8List.fromList(Img.encodePng(resizedImage));
+    print("Date ---------8   ---------8   ---------8    ${DateTime.now().second} ");
+    // Trigger a rebuild to display the resized image
+    setState(() {});
+  }
+
   //
   var printHelperNew = USBPrintClassTest();
   var printHelperUsb =   USBPrintClass();
@@ -535,6 +588,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       }
       else if (printType =='USB'){
         if(temp =="template5"){
+          print("Date ---------step 1   ---------   ---------     ${DateTime.now().second} ");
           printHelperNew.printDetails(id: id,type: voucherType,context: context);
         }
         else{
