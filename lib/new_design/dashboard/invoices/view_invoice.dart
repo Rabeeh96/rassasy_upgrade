@@ -502,6 +502,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       ),
     );
   }
+  //
   var printHelperNew = USBPrintClassTest();
   var printHelperUsb =   USBPrintClass();
   var printHelperIP =   AppBlocs();
