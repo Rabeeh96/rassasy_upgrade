@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 // }
 //////
 
-String appVersion = "1.1.38";
+String appVersion = "1.1.39";
 double defaultScreenWidth=550;
 start(context) {
   Loader.show(context,
@@ -495,6 +495,17 @@ stop() {
     Loader.hide();
   });
 }
+
+
+bool isDateExpired(String dateString) {
+
+  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+  DateTime expiryDate = dateFormat.parse(dateString);
+  DateTime adjustedExpiryDate = expiryDate.add(const Duration(days: 1));
+  DateTime currentDate = DateTime.now();
+  return currentDate.isAfter(adjustedExpiryDate);
+}
+
 
 checkExpire(date) {
 

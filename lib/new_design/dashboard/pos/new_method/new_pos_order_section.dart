@@ -5163,8 +5163,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
 
-      String compensation=  prefs.getString('CompensationHour') ?? "1";
-       var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
+        String compensation=  prefs.getString('CompensationHour') ?? "1";
+        var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
         print(dateTime);
 
 

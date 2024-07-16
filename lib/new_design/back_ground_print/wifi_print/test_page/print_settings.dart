@@ -315,50 +315,50 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
             ),
       body: isTablet ? tabPrintPage() : mobilePrintPage(),
       /// commented
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.green,
-      //   onPressed: () async {
-      //
-      //
-      //     // InvoiceDesignWidget invoiceWidget = InvoiceDesignWidget();
-      //     // await invoiceWidget.createInvoice();
-      //     //
-      //     //
-      //     // if (invoiceWidget.pngBytes != null) {
-      //     //   // Handle _pngBytes, such as saving to a file or sending over a network
-      //     //   print('Generated invoice image size: ${invoiceWidget.pngBytes!.lengthInBytes} bytes');
-      //     // } else {
-      //     //   print('Failed to generate invoice image.');
-      //     // }
-      //
-      //     // print("1");
-      //     // var data = await createInvoice();
-      //     //  print("2  data $data");
-      //     // final imageBytes = await _generateImageFromString(
-      //     //   "textToPrint",
-      //     //   TextAlign.center,
-      //     // );
-      //     //
-      //     // print(imageBytes);
-      //     //
-      //     // Future.delayed(Duration(seconds: 2), () async {
-      //     //   print("1");
-      //     //   var data = await createInvoice();
-      //     //   print("2");
-      //     //
-      //     printHelperIP.print_demo(ipController.text, context);
-      //     //  // Code to be executed after 3 seconds
-      //     //   print("This code runs after a 3-second delay.");
-      //     // });
-      //
-      //     // printHelperIP.print_demo(ipController.text, context,data);
-      //     //
-      //   }, // If button is disabled, onPressed is null
-      //   child: const Icon(
-      //     Icons.print,
-      //     color: Colors.white,
-      //   ),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        onPressed: () async {
+
+
+          // InvoiceDesignWidget invoiceWidget = InvoiceDesignWidget();
+          // await invoiceWidget.createInvoice();
+          //
+          //
+          // if (invoiceWidget.pngBytes != null) {
+          //   // Handle _pngBytes, such as saving to a file or sending over a network
+          //   print('Generated invoice image size: ${invoiceWidget.pngBytes!.lengthInBytes} bytes');
+          // } else {
+          //   print('Failed to generate invoice image.');
+          // }
+
+          // print("1");
+          // var data = await createInvoice();
+          //  print("2  data $data");
+          // final imageBytes = await _generateImageFromString(
+          //   "textToPrint",
+          //   TextAlign.center,
+          // );
+          //
+          // print(imageBytes);
+          //
+          // Future.delayed(Duration(seconds: 2), () async {
+          //   print("1");
+          //   var data = await createInvoice();
+          //   print("2");
+          //
+          printHelperIP.print_demo(ipController.text, context);
+          //  // Code to be executed after 3 seconds
+          //   print("This code runs after a 3-second delay.");
+          // });
+
+          // printHelperIP.print_demo(ipController.text, context,data);
+          //
+        }, // If button is disabled, onPressed is null
+        child: const Icon(
+          Icons.print,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 
