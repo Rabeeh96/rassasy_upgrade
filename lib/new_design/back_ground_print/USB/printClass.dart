@@ -649,6 +649,7 @@ class USBPrintClass {
             align: PosAlign.center));
     bytes += generator.textEncoded(invoiceTypeArabicEnc,
         styles: const PosStyles(
+          bold: true,
             height: PosTextSize.size1,
             width: PosTextSize.size2,
             align: PosAlign.center));
