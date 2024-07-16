@@ -143,7 +143,7 @@ var imageData;
          // var data = await createInvoice();
           print("2");
 
-          printHelperIP.printReq();
+         //printHelperIP.printDetails(id: "7d31ae19-b311-4d39-8291-faee1e0030ee",type: "SO");
           //
         }, // If button is disabled, onPressed is null
         child: const Icon(
@@ -383,10 +383,7 @@ var imageData;
                 : Container(),
 
 
-            Container(
-                height: 500,
-                width: 250,
-                child: invoiceDesign()),
+
           ],
         );
       },

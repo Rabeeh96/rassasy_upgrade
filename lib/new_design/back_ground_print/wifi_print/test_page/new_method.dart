@@ -111,14 +111,12 @@ class NewMethod {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
 
-    // Define canvas size and background color
-    // const Size canvasSize = Size(500, 600);
     const Size canvasSize1 = Size(500, 1200);
 
-    // Adjust size as needed
+
     const Color backgroundColor = Colors.white; // Specify your desired background color
 
-    // Draw background
+
 
     canvas.drawRect(Rect.fromLTWH(0, 0, canvasSize1.width, canvasSize1.height), Paint()..color = backgroundColor);
 

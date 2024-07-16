@@ -13,6 +13,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
+import 'package:rassasy_new/new_design/back_ground_print/USB/test_page/test_file.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/barcode/barcode.dart';
@@ -193,6 +194,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     } else {
       changeVal(widget.orderType);
        printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
+
+       print("===================================================================printAfterPayment  $printAfterPayment");
        currency = prefs.getString('CurrencySymbol') ?? "";
        isGst = prefs.getBool("check_GST") ?? false;
        ledgerID = prefs.getInt("Cash_Account") ?? 1;
@@ -687,14 +690,18 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     });
   }
   var printHelperUsb =  USBPrintClass();
+  var printHelperNew = USBPrintClassTest();
   var printHelper =   AppBlocs();
   var bluetoothHelper =   AppBlocsBT();
 
-  printDetail(BuildContext context) async {
+  printDetail(BuildContext context,id,voucherType) async {
+
+    print("===================================================== print Detail called");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
+    var temp = prefs.getString("template") ?? "template4";
 
     if (defaultIp == "") {
       dialogBox(context, "Please select a default printer");
@@ -716,18 +723,28 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       }
 
       else if(printType == 'USB') {
-        var ret = await printHelperUsb.printDetails();
-        if (ret == 2) {
-          var ip = "";
-          if (PrintDataDetails.type == "SO") {
-            ip = defaultOrderIP;
-          } else {
-            ip = defaultIp;
-          }
-          printHelperUsb.printReceipt(ip, context);
-        } else {
-          dialogBox(context, 'Please try again later');
+
+        print("===================================================== print Detail called 1");
+        if(temp == "template5") {
+          print("===================================================== print Detail called2");
+          printHelperNew.printDetails(id: id, type: voucherType, context: context);
         }
+        else{
+          var ret = await printHelperUsb.printDetails();
+          if (ret == 2) {
+            var ip = "";
+            if (PrintDataDetails.type == "SO") {
+              ip = defaultOrderIP;
+            } else {
+              ip = defaultIp;
+            }
+            printHelperUsb.printReceipt(ip, context);
+          } else {
+            dialogBox(context, 'Please try again later');
+          }
+        }
+
+
         /// commented bluetooth print option
 
       }
@@ -758,14 +775,18 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var printType = prefs.getString('PrintType') ?? 'Wifi';
+      var temp = prefs.getString("template") ?? "template4";
       if (printType == 'Wifi') {
         printHelper.printKotPrint(orderID, rePrint, cancelList, isUpdate,false);
       }
       else if (printType == 'USB') {
-        printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
+        if (temp == "template5") {
+          printHelperNew.printKotPrint(orderID, true, [], false);
+        } else {
+          printHelperUsb.printKotPrint(orderID, rePrint, cancelList, isUpdate);
+        }
       }
       else {
-
         bluetoothHelper.bluetoothPrintKOT(orderID, rePrint, cancelList, isUpdate, isUpdate);
       }
     } catch (e) {
@@ -5284,10 +5305,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
 
+
+          print("------------------------------$printAfterOrder------------print after order");
           if(printAfterOrder){
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = n["OrderID"];
-            await printDetail(context);
+            await printDetail(context,n["OrderID"],"SO");
           }
 
          // dialogBoxHide(context, 'Order created successfully !!!');
@@ -5622,7 +5645,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           if(printAfterOrder){
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = id;
-            await printDetail(context);
+            await printDetail(context,id,"SO");
           }
 
           // dialogBoxHide(context, 'Order updated successfully !!!');
@@ -7167,13 +7190,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           dialogBoxHide(context, "Sales created successfully!!!");
 
-
           Navigator.pop(context, [widget.orderType, false]);
           Future.delayed(const Duration(milliseconds: 500), () {
             if (print_save == true) {
               PrintDataDetails.type = "SI";
               PrintDataDetails.id = n["invoice_id"];
-              printDetail(context);
+              printDetail(context,n["invoice_id"],"SI");
             }
           });
         }
