@@ -73,7 +73,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           "CreatedUserID": userID,
           "BranchID": branchID,
           "page_number": 1,
-          "page_size": 25,
+          "page_size": 50,
           "from_date": apiDateFormat.format(fromDateNotifier.value),
           "to_date": apiDateFormat.format(toDateNotifier.value),
         };
@@ -93,7 +93,6 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
         print(status);
-
 
         var responseJson = n["data"];
         print(responseJson);
