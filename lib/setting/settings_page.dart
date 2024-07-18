@@ -322,8 +322,7 @@ class _SettingsPageState extends State<SettingsPage> {
       clearTable = prefs.getBool("tableClearAfterPayment") ?? false;
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
       highlightsProductDetails = prefs.getBool("highlightsProductDetails") ?? false;
-      kotafterPayment = prefs.getBool("kotafterPayment") ?? false;
-
+      kotafterPayment = prefs.getBool("KotafterPayment") ?? false;
       directOrderOption = prefs.getBool("directOrderOption") ?? false;
       printAfterOrder = prefs.getBool("print_after_order") ?? false;
       printPreview = prefs.getBool('print_preview') ?? false;

@@ -43,7 +43,7 @@ class USBPrintClassTest {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
         var currency = prefs.getString('CurrencySymbol') ?? "";
-
+        print("  ---------step 2   ---------   ---------     ${DateTime.now().second} ");
         final String url = '$baseUrl/posholds/view/pos-sale/invoice/$id/';
         print(url);
         print(accessToken);
@@ -154,12 +154,15 @@ class USBPrintClassTest {
               voucherType: type,
               saleDetails: salesDetails);
         //  stop();
+
+          print("  ---------step 3   ---------   ---------     ${DateTime.now().second} ");
+
+     //  return  arabicImageBytes;
           var isoDate = DateTime.parse(date).toIso8601String();
           var qrCode = await b64Qrcode(companyName, taxNumberCompany, isoDate, grandTotal, totalTax);
-
           await printReq(arabicImageBytes, qrCode, type == "SI" ? true : false);
 
-          print("-------------  everything is fine-------------  ");
+      //     print("-------------  everything is fine-------------  ");
           return 2;
         } else if (status == 6001) {
          // stop();
@@ -179,7 +182,7 @@ class USBPrintClassTest {
   }
 
   printReq(arabicImageBytes,qrCode, needQR) async {
-
+    print("  ---------step 4  ---------   ---------     ${DateTime.now().second} ");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
     List<int> bytes = [];
@@ -203,17 +206,19 @@ class USBPrintClassTest {
     // bytes += generator.imageRaster(resizedImage2);
     /// commented for test purpose
     final Img.Image? image = Img.decodeImage(arabicImageBytes);
+    print("  ---------step 5   ---------   ---------     ${DateTime.now().second} ");
     final Img.Image resizedImage = Img.copyResize(image!, width: 570);
+    print("  ---------step 6   ---------   ---------     ${DateTime.now().second} ");
     bytes += generator.imageRaster(resizedImage);
-
+    print("  ---------step 7   ---------   ---------     ${DateTime.now().second} ");
     if (needQR) {
       bytes += generator.feed(1);
       bytes += generator.qrcode(qrCode, size: QRSize.Size5);
     }
 
     bytes += generator.cut();
-    final res =
-        await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIp);
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIp,);
+    print("  ---------final step 7   ---------   ---------     ${DateTime.now().second} ");
     String msg = "";
 
     if (res == "success") {
@@ -306,7 +311,7 @@ class USBPrintClassTest {
     double totalHeight = companyDetailsHeight +
         voucherDetailsHeight +
         detailHeight +
-        footerHeight;
+        footerHeight+80;
 
     if (hilightTokenNumber) {
       totalHeight = totalHeight + 80;
@@ -510,7 +515,7 @@ class USBPrintClassTest {
     if (hilightTokenNumber) {
       final tokenNumberBuilder =
           ui.ParagraphBuilder(companyDetailsParagraphStyle)
-            ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0))
+            ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 30.0))
             ..addText("Token Number");
       final tokenNumberParagraph = tokenNumberBuilder.build()
         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
@@ -518,7 +523,7 @@ class USBPrintClassTest {
       positionHeight = positionHeight + 40;
 
       final tokenDetail = ui.ParagraphBuilder(companyDetailsParagraphStyle)
-        ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0))
+        ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0 ,fontWeight: FontWeight.w500,))
         ..addText(token);
       final tokenNumberDetail = tokenDetail.build()
         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
@@ -527,7 +532,7 @@ class USBPrintClassTest {
 
       final tokenNumberArabic =
           ui.ParagraphBuilder(companyDetailsParagraphStyle)
-            ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0))
+            ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0, fontWeight: FontWeight.w500,))
             ..addText("رقم الرمز المميز");
       final tokenNumberArabicBuilder = tokenNumberArabic.build()
         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
@@ -561,7 +566,10 @@ class USBPrintClassTest {
     for (final item in voucherDetails) {
       // English label
       final englishTextBuilder = ui.ParagraphBuilder(voucherDetailsStyleLeft)
-        ..pushStyle(ui.TextStyle(color: Colors.black))
+        ..pushStyle(ui.TextStyle(color: Colors.black,
+          fontWeight: FontWeight.w500,
+          fontSize: 25.0,
+        ))
         ..addText(item[0]);
       final englishTextParagraph = englishTextBuilder.build()
         ..layout(ui.ParagraphConstraints(width: column1Width));
@@ -571,6 +579,9 @@ class USBPrintClassTest {
       final arabicTextBuilder = ui.ParagraphBuilder(voucherDetailsStyleCenter)
         ..pushStyle(ui.TextStyle(
           color: Colors.black,
+            fontWeight: FontWeight.w500,
+            fontSize: 25.0,
+
         ))
         ..addText(item[1]);
       final arabicTextParagraph = arabicTextBuilder.build()
@@ -579,15 +590,13 @@ class USBPrintClassTest {
           arabicTextParagraph, Offset(column1Width, positionHeight));
 
       // Value
-      final valueTextBuilder = ui.ParagraphBuilder(voucherDetailsStyleRight)
-        ..pushStyle(ui.TextStyle(color: Colors.black))
-        ..addText(item[2]);
-      final valueTextParagraph = valueTextBuilder.build()
-        ..layout(ui.ParagraphConstraints(width: column3Width));
-      canvas.drawParagraph(valueTextParagraph,
-          Offset(column1Width + column2Width, positionHeight));
+      final valueTextBuilder = ui.ParagraphBuilder(voucherDetailsStyleRight)..pushStyle(ui.TextStyle( color: Colors.black,
+        fontWeight: FontWeight.w500,
+        fontSize: 25.0,))..addText(item[2]);
+      final valueTextParagraph = valueTextBuilder.build()..layout(ui.ParagraphConstraints(width: column3Width));
+      canvas.drawParagraph(valueTextParagraph, Offset(column1Width + column2Width, positionHeight));
 
-      // Adjust offsetY based on the tallest paragraph in the row
+
       positionHeight += [
             englishTextParagraph.height,
             arabicTextParagraph.height,
@@ -623,7 +632,7 @@ class USBPrintClassTest {
           fontFamily: headerStyle.fontFamily,
         ),
       )
-        ..pushStyle(ui.TextStyle(color: Colors.black))
+        ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 25))
         ..addText(headers[i]);
       final headerParagraph = headerBuilder.build()
         ..layout(ui.ParagraphConstraints(width: headerWidths[i]));
@@ -644,6 +653,7 @@ class USBPrintClassTest {
           : (i == 0)
               ? TextAlign.center
               : TextAlign.right;
+
       final headerBuilder = ui.ParagraphBuilder(
         ui.ParagraphStyle(
           textAlign: alignment,
@@ -651,7 +661,7 @@ class USBPrintClassTest {
           fontFamily: headerStyle.fontFamily,
         ),
       )
-        ..pushStyle(ui.TextStyle(color: Colors.black))
+        ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w400,fontSize: 23))
         ..addText(headersArab[i]);
       final headerParagraph = headerBuilder.build()
         ..layout(ui.ParagraphConstraints(width: headerWidths[i]));
@@ -660,11 +670,9 @@ class USBPrintClassTest {
           Offset(headerWidths.sublist(0, i).fold(0.0, (a, b) => a + b),
               positionHeight));
     }
-    positionHeight = positionHeight + 30;
-    canvas.drawLine(Offset(0, positionHeight),
-        Offset(canvasSize1.width, positionHeight), linePaint);
-
     positionHeight = positionHeight + 40;
+    canvas.drawLine(Offset(0, positionHeight), Offset(canvasSize1.width, positionHeight), linePaint);
+    positionHeight = positionHeight + 30;
     for (int index = 0; index < saleDetails.length; index++) {
       final item = saleDetails[index];
       double offsetX = 0;
@@ -692,7 +700,7 @@ class USBPrintClassTest {
             fontFamily: itemStyle.fontFamily,
           ),
         )
-          ..pushStyle(ui.TextStyle(color: Colors.black))
+          ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w400,fontSize: 23))
           ..addText(itemDetails[i]);
         final itemParagraph = itemBuilder.build()
           ..layout(ui.ParagraphConstraints(width: headerWidths[i]));
@@ -714,7 +722,7 @@ class USBPrintClassTest {
             fontFamily: itemStyle.fontFamily,
           ),
         )
-          ..pushStyle(ui.TextStyle(color: Colors.black))
+          ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 24))
           ..addText(item["ProductDescription"]);
         final descriptionParagraph = descriptionBuilder.build()
           ..layout(ui.ParagraphConstraints(
@@ -882,13 +890,13 @@ class USBPrintClassTest {
       final totalTextStyle = (total[0] == 'Grand Total:')
           ? TextStyle(
               fontFamily: 'Poppins',
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
+              fontSize: 27,
+              fontWeight: FontWeight.w600,
               color: Colors.black,
             )
           : TextStyle(
               fontFamily: 'Poppins',
-              fontSize: 18,
+              fontSize: 26,
               fontWeight: FontWeight.w400,
               color: Colors.black,
             );

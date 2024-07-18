@@ -2925,7 +2925,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           getProductListDetails(categoryList[index].categoryGroupId);
                         },
                         child: Text(categoryList[index].categoryName,
-                            style: customisedStyle(context, _selectedIndex == index ? Colors.white : const Color(0xff172026), FontWeight.w500, 10.5)
+                            style: customisedStyle(context, _selectedIndex == index ? Colors.white : const Color(0xff172026), FontWeight.w500,highlightsProductDetails ?  13.0:11.0)
                             //    style: TextStyle(color:_selectedIndex == index ? Colors.white :const Color(0xff172026),),
                             )),
                   );
@@ -3148,7 +3148,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                     //  width: MediaQuery.of(context).size.width / 11,
                                     child: Text(
                                       returnProductName(productList[i].description),
-                                      style: customisedStyle(context, Colors.black, FontWeight.w600,highlightsProductDetails ? 14.0:11.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.w600,highlightsProductDetails ? 15.0:11.0),
                                     ),
                                   ),
                                   SizedBox(
