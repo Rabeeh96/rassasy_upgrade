@@ -5302,11 +5302,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           var id = n["OrderID"];
 
-
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
 
-
-          print("------------------------------$printAfterOrder------------print after order");
           if(printAfterOrder){
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = n["OrderID"];
@@ -5332,7 +5329,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         } else if (status == 6001) {
           stop();
           var errorMessage = n["message"]??"";
-
           if(errorMessage =="Table not vacant!"){
             print("-*-*/-/*-/--/-*/-*/-*//-*/-*/-*/-*$errorMessage");
             changeTableAlertWithMessage(context, errorMessage,isPayment);

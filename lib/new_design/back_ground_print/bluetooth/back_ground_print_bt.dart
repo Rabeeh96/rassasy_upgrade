@@ -1641,7 +1641,6 @@ bool isCancelled;
         printer += generator.drawer();
       }
     }
-
     return printer;
   }
 }
