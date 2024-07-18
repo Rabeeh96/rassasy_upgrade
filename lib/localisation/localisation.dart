@@ -374,7 +374,7 @@ class LocaleChange extends Translations {
           'KotafterPayment': 'KOT After Payment',
         },
 
-        ///
+        /////
         ///
         ///
         ///
