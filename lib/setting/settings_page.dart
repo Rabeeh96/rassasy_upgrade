@@ -111,6 +111,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool show_username_kot = false;
   bool hideTaxDetails = false;
   bool extraDetailsInKOT = false;
+  bool autoFocusSearch = false;
 
   bool time_in_invoice = false;
   bool printForCancellOrder = false;
@@ -366,6 +367,7 @@ class _SettingsPageState extends State<SettingsPage> {
       show_username_kot = prefs.getBool("show_username_kot")??false;
       hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
       extraDetailsInKOT = prefs.getBool("extraDetailsInKOT")??false;
+      autoFocusSearch = prefs.getBool("autoFocusSearch")??false;
 
     });
   }
@@ -4029,6 +4031,50 @@ class _SettingsPageState extends State<SettingsPage> {
                           isComplimentaryBill = val;
                           switchStatus(
                               "complimentary_bill", isComplimentaryBill);
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'autofocus_field'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: autoFocusSearch,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        setState(() {
+
+
+
+                          autoFocusSearch = val;
+                          switchStatus(
+                              "autoFocusSearch", autoFocusSearch);
                         });
                       },
                     ),

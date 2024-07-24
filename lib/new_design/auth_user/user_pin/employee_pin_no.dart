@@ -42,6 +42,33 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
   void _handleKey(RawKeyEvent event) {
     if (event is RawKeyDownEvent) {
+      // Handle numeric keys (0-9) and numeric keypad keys
+      if (event.logicalKey.keyId >= LogicalKeyboardKey.digit0.keyId &&
+          event.logicalKey.keyId <= LogicalKeyboardKey.digit9.keyId) {
+        setState(() {
+          num.add(event.logicalKey.keyId - LogicalKeyboardKey.digit0.keyId);
+          changeColor();
+        });
+      } else if (event.logicalKey.keyId >= LogicalKeyboardKey.numpad0.keyId &&
+          event.logicalKey.keyId <= LogicalKeyboardKey.numpad9.keyId) {
+        setState(() {
+          num.add(event.logicalKey.keyId - LogicalKeyboardKey.numpad0.keyId);
+          changeColor();
+        });
+      }
+      // Handle backspace key
+      else if (event.logicalKey == LogicalKeyboardKey.backspace && num.isNotEmpty) {
+        setState(() {
+          num.removeLast();
+          changeColor();
+        });
+      }
+    }
+  }
+
+
+  void _handleKeyq(RawKeyEvent event) {
+    if (event is RawKeyDownEvent) {
       String keyLabel = event.data.logicalKey.keyLabel;
       if (keyLabel.isEmpty) return;
       // Handle numeric keys (0-9)

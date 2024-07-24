@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 // }
 //////
 
-String appVersion = "1.1.40";
+String appVersion = "1.1.41";
 double defaultScreenWidth=550;
 start(context) {
   Loader.show(context,
