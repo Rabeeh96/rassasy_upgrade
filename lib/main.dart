@@ -59,8 +59,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
-     bool isTablet = true;
-   // bool isTablet = isTabletDevice();
+  //   bool isTablet = true;
+     bool isTablet = isTabletDevice();
     prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
     print("main isTablet: $isTablet");
 

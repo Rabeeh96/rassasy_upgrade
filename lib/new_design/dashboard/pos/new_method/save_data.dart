@@ -5296,7 +5296,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             print("kot   $kot");
             var kotAfterPayment = prefs.getBool("KotafterPayment") ?? false;
 
-
             if(kotAfterPayment){
               kot = false;
             }
