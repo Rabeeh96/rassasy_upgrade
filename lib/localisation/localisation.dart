@@ -290,7 +290,7 @@ class LocaleChange extends Translations {
           'Remove_table': 'Remove Table',
           'convert': 'Convert',
           'Barcode': 'Barcode',
-          'autoFocusField': 'Auto focus field',
+          'autoFocusField': 'Auto focus field For Barcode',
           'excise_tax': 'Excise Tax',
           'total_vat': 'Total VAT ',
           'print_after_order': 'Print after order',
@@ -372,6 +372,7 @@ class LocaleChange extends Translations {
           'table_order_settings': "Table order settings",
           'highlightsProductDetails': 'Highlights ProductDetails',
           'KotafterPayment': 'KOT After Payment',
+          'autofocus_field': 'Auto Focus field',
         },
 
         /////
@@ -379,6 +380,7 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'autofocus_field': 'مجال التركيز التلقائي',
           'KotafterPayment': 'كوت بعد الدفع',
           'flavour_in_order_print': 'نكهة من أجل الطباعة',
           'Kot afte rPayment': 'نكهة من أجل الطباعة',
@@ -462,7 +464,7 @@ class LocaleChange extends Translations {
           'usbPrinter': 'طابعة USB',
           'payment_method': 'طريقة الدفع او السداد',
           'time_in_invoice': 'الوقت في الفاتورة',
-          'autoFocusField': 'مجال التركيز التلقائي',
+          'autoFocusField': 'مجال التركيز التلقائي للباركود',
           'print': 'مطبعة',
           'select_branch': 'اختر فرعك',
           'edit': 'يحرر',
@@ -746,7 +748,7 @@ class LocaleChange extends Translations {
           'excise_tax': 'الضريبة',
           'total_vat': 'ضريبة القيمة المضافة',
           'select_code_page': 'حدد صفحة الرموز',
-          'extraDetailsInKOT': 'extraDetailsInKOT'
+          'extraDetailsInKOT': 'تفاصيل إضافية في KOT'
         },
       };
 }

@@ -178,6 +178,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     }
   }
 
+  final FocusNode searchFocusNode= FocusNode();
   Future<Null> posFunctions() async {
 
     start(context);
@@ -200,11 +201,16 @@ class _POSOrderSectionState extends State<POSOrderSection> {
        isGst = prefs.getBool("check_GST") ?? false;
        ledgerID = prefs.getInt("Cash_Account") ?? 1;
        isComplimentory = prefs.getBool("complimentary_bill") ?? false;
+       bool autoFocusSearch = prefs.getBool("autoFocusSearch") ?? false;
 
        networkConnection = true;
       if (widget.sectionType == "Create") {
+
+
+
         mainPageIndex = 7;
       } else if (widget.sectionType == "Edit") {
+
         mainPageIndex = 7;
         await getOrderDetails(widget.UUID);
       } else {
@@ -212,6 +218,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         listItemDetails(widget.UUID);
       }
       if (widget.sectionType != "Payment") {
+        if(autoFocusSearch){
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            searchFocusNode.requestFocus();
+          });
+        }
         await getCategoryListDetail();
         await loadCard();
       }
@@ -2556,6 +2567,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                         width: MediaQuery.of(context).size.width / 9,
                         child: TextField(
                           controller: searchController,
+                          focusNode:searchFocusNode,
                           style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
                           textAlign: TextAlign.center,
                           onChanged: (text) {

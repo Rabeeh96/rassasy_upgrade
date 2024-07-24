@@ -348,8 +348,6 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                         );
                       }),
 
-
-
                 ],
               ),
             ),
@@ -543,7 +541,12 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
     print("Date ---------5   ---------5   ---------5    ${DateTime.now().second} ");
 
+
+
+    log_data("--------------${arabicImageBytes.runtimeType}---------$arabicImageBytes");
+
     final Img.Image? image = Img.decodeImage(arabicImageBytes);
+
     print("Date ---------6   ---------6   ---------6    ${DateTime.now().second} ");
     final Img.Image resizedImage = Img.copyResize(image!, width: 570);
     print("Date ---------7   ---------7   ---------7    ${DateTime.now().second} ");
@@ -616,10 +619,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
         // handlePrint(context);
 
-
         if(loadData){
           var printStatus =await bluetoothHelper.scan(false);
-
           if(printStatus ==1){
             dialogBox(context,"Check your bluetooth connection");
           }

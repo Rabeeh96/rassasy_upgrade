@@ -17,7 +17,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart'
-    as usb_esc_printer_windows;
+as usb_esc_printer_windows;
 
 class USBPrintClass {
   List<ProductDetailsModel> printDalesDetails = [];
@@ -102,9 +102,9 @@ class USBPrintClass {
           BluetoothPrintThermalDetails.ledgerName =
               responseJson["LedgerName"] ?? '';
           BluetoothPrintThermalDetails.customerAddress =
-              responseJson["Address1"];
+          responseJson["Address1"];
           BluetoothPrintThermalDetails.customerAddress2 =
-              responseJson["Address2"];
+          responseJson["Address2"];
           BluetoothPrintThermalDetails.customerCrNumber =
               responseJson["CustomerCRNo"] ?? "";
           BluetoothPrintThermalDetails.cashReceived =
@@ -119,9 +119,9 @@ class USBPrintClass {
           BluetoothPrintThermalDetails.salesType =
               responseJson["OrderType"] ?? "";
           BluetoothPrintThermalDetails.salesDetails =
-              responseJson["SalesDetails"];
+          responseJson["SalesDetails"];
           BluetoothPrintThermalDetails.totalVATAmount =
-              responseJson["VATAmount"];
+          responseJson["VATAmount"];
           BluetoothPrintThermalDetails.totalExciseAmount =
               responseJson["ExciseTaxAmount"] ?? "0";
           BluetoothPrintThermalDetails.totalTax =
@@ -365,9 +365,9 @@ class USBPrintClass {
     var totalTax = roundStringWith(BluetoothPrintThermalDetails.totalTax);
     var grandTotal = roundStringWith(BluetoothPrintThermalDetails.grandTotal);
     var vatAmountTotal =
-        roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
+    roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
     var exciseAmountTotal =
-        roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
+    roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
     bool showExcise = double.parse(exciseAmountTotal) > 0.0 ? true : false;
     var companyLogo = BluetoothPrintThermalDetails.companyLogoCompany;
 
@@ -394,7 +394,7 @@ class USBPrintClass {
 
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
     Uint8List companyNameEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString(companyName));
+    await CharsetConverter.encode("ISO-8859-6", setString(companyName));
 
     Uint8List companyTaxEnc = await CharsetConverter.encode(
         "ISO-8859-6", setString('ضريبه  ' + companyTax));
@@ -407,33 +407,33 @@ class USBPrintClass {
 
     if (headerAlignment) {
       companyPhoneEnc =
-          await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
+      await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
     }
 
     Uint8List invoiceTypeEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
     Uint8List invoiceTypeArabicEnc = await CharsetConverter.encode(
         "ISO-8859-6", setString(invoiceTypeArabic));
 
     Uint8List ga = await CharsetConverter.encode(
         "ISO-8859-6", setString('المبلغ الإجمالي'));
     Uint8List tt =
-        await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
+    await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
     Uint8List exciseTax = await CharsetConverter.encode(
         "ISO-8859-6", setString('مبلغ الضريبة الانتقائية'));
     Uint8List vatTax = await CharsetConverter.encode(
         "ISO-8859-6", setString('ضريبة القيمة المضافة'));
     Uint8List dis =
-        await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
+    await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
     Uint8List gt = await CharsetConverter.encode(
         "ISO-8859-6", setString('المبلغ الإجمالي'));
 
     Uint8List bl =
-        await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
+    await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
     Uint8List cr = await CharsetConverter.encode(
         "ISO-8859-6", setString('المبلغ المستلم'));
     Uint8List br =
-        await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
+    await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
 
     if (headerAlignment) {
       bytes +=
@@ -483,7 +483,7 @@ class USBPrintClass {
 
       if (streetName != "") {
         Uint8List streetNameEncode =
-            await CharsetConverter.encode("ISO-8859-6", setString(streetName));
+        await CharsetConverter.encode("ISO-8859-6", setString(streetName));
         bytes += generator.row([
           PosColumn(
               text: 'Street ',
@@ -599,7 +599,7 @@ class USBPrintClass {
 
       if (streetName != "") {
         Uint8List streetEncode =
-            await CharsetConverter.encode("ISO-8859-6", setString(streetName));
+        await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
         bytes += generator.textEncoded(streetEncode,
             styles: const PosStyles(
@@ -649,27 +649,27 @@ class USBPrintClass {
             align: PosAlign.center));
     bytes += generator.textEncoded(invoiceTypeArabicEnc,
         styles: const PosStyles(
-          bold: true,
+            bold: true,
             height: PosTextSize.size1,
             width: PosTextSize.size2,
             align: PosAlign.center));
 
     var isoDate =
-        DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
+    DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
     Uint8List tokenEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
+    await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     Uint8List voucherNoEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('رقم الفاتورة'));
+    await CharsetConverter.encode("ISO-8859-6", setString('رقم الفاتورة'));
     Uint8List dateEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('تاريخ'));
+    await CharsetConverter.encode("ISO-8859-6", setString('تاريخ'));
     Uint8List customerEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('اسم'));
+    await CharsetConverter.encode("ISO-8859-6", setString('اسم'));
     Uint8List phoneEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
+    await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
     Uint8List typeEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
+    await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
     Uint8List tableEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+    await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
 
     if (tokenVal) {
       bytes += generator.hr();
@@ -750,7 +750,7 @@ class USBPrintClass {
 
     if (customerName != "") {
       Uint8List customerNameEnc =
-          await CharsetConverter.encode("ISO-8859-6", setString(customerName));
+      await CharsetConverter.encode("ISO-8859-6", setString(customerName));
 
       bytes += generator.row([
         PosColumn(
@@ -776,7 +776,7 @@ class USBPrintClass {
     }
     if (customerPhone != "") {
       Uint8List phoneNoEncoded =
-          await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
+      await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
 
       bytes += generator.row([
         PosColumn(
@@ -854,7 +854,7 @@ class USBPrintClass {
 
       String timeInvoice = convertToSaudiArabiaTime(time, countyCodeCompany);
       Uint8List timeEnc =
-          await CharsetConverter.encode("ISO-8859-6", setString('وقت'));
+      await CharsetConverter.encode("ISO-8859-6", setString('وقت'));
 
       bytes += generator.row([
         PosColumn(
@@ -881,15 +881,15 @@ class USBPrintClass {
     bytes += generator.hr();
 
     Uint8List slNoEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
+    await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
     Uint8List productNameEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("أغراض"));
+    await CharsetConverter.encode("ISO-8859-6", setString("أغراض"));
     Uint8List qtyEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString(" الكمية "));
+    await CharsetConverter.encode("ISO-8859-6", setString(" الكمية "));
     Uint8List rateEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
+    await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
     Uint8List netEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("المجموع"));
+    await CharsetConverter.encode("ISO-8859-6", setString("المجموع"));
 
     bytes += generator.row([
       PosColumn(
@@ -1252,14 +1252,14 @@ class USBPrintClass {
     }
 
     final res =
-        await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
+    await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
     String msg = "";
 
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
       msg =
-          "Failed to generate a print please make sure to use the correct printer name";
+      "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
@@ -1326,16 +1326,16 @@ class USBPrintClass {
       var date = BluetoothPrintThermalDetails.date;
       var customerPhone = BluetoothPrintThermalDetails.customerPhone;
       var grossAmount =
-          roundStringWith(BluetoothPrintThermalDetails.grossAmount);
+      roundStringWith(BluetoothPrintThermalDetails.grossAmount);
       var discount = roundStringWith(BluetoothPrintThermalDetails.discount);
       var totalTax = roundStringWith(BluetoothPrintThermalDetails.totalTax);
       var sGstAmount = roundStringWith(BluetoothPrintThermalDetails.sGstAmount);
       var cGstAmount = roundStringWith(BluetoothPrintThermalDetails.cGstAmount);
       var grandTotal = roundStringWith(BluetoothPrintThermalDetails.grandTotal);
       var vatAmountTotal =
-          roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
+      roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
       var exciseAmountTotal =
-          roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
+      roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
       bool showExcise = double.parse(exciseAmountTotal) > 0.0 ? true : false;
       var companyLogo = BluetoothPrintThermalDetails.companyLogoCompany;
       var token = BluetoothPrintThermalDetails.tokenNumber;
@@ -1707,7 +1707,7 @@ class USBPrintClass {
 
         String timeInvoice = convertToSaudiArabiaTime(time, countyCodeCompany);
         Uint8List timeEnc =
-            await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+        await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
 
         bytes += generator.row([
           PosColumn(
@@ -2041,7 +2041,7 @@ class USBPrintClass {
 
       print("-------------------------------------------- Start $bytes");
       final res =
-          await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
+      await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
       print(res);
       String msg = "";
 
@@ -2049,7 +2049,7 @@ class USBPrintClass {
         msg = "Printed Successfully";
       } else {
         msg =
-            "Failed to generate a print please make sure to use the correct printer name";
+        "Failed to generate a print please make sure to use the correct printer name";
       }
     } catch (e) {
       print("error in ${e.toString()}");
@@ -2224,7 +2224,7 @@ class USBPrintClass {
     var invoiceTypeArabic = "طباعة المطب";
 
     Uint8List typeEng =
-        await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
     Uint8List typeArabic = await CharsetConverter.encode(
         "ISO-8859-6", setString(invoiceTypeArabic));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
@@ -2286,7 +2286,7 @@ class USBPrintClass {
     }
 
     Uint8List tokenEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
+    await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     bytes += generator.hr();
     bytes += generator.text('Token No',
         styles: const PosStyles(
@@ -2486,13 +2486,13 @@ class USBPrintClass {
     bytes += generator.cut();
     print("-----8   $printerAddress");
     final res =
-        await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
       msg =
-          "Failed to generate a print please make sure to use the correct printer name";
+      "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
@@ -2755,13 +2755,13 @@ class USBPrintClass {
     ]);
     bytes += generator.cut();
     final res =
-        await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
       msg =
-          "Failed to generate a print please make sure to use the correct printer name";
+      "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
@@ -2815,7 +2815,7 @@ class USBPrintClass {
     var invoiceTypeArabic = "(طباعة المطب";
 
     Uint8List typeEng =
-        await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
     Uint8List typeArabic = await CharsetConverter.encode(
         "ISO-8859-6", setString(invoiceTypeArabic));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
@@ -2877,7 +2877,7 @@ class USBPrintClass {
     }
 
     Uint8List tokenEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
+    await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     bytes += generator.hr();
     bytes += generator.text('Token No',
         styles: const PosStyles(
@@ -3077,13 +3077,13 @@ class USBPrintClass {
     bytes += generator.cut();
     print("-----8   $printerAddress");
     final res =
-        await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
       msg =
-          "Failed to generate a print please make sure to use the correct printer name";
+      "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
@@ -3537,13 +3537,13 @@ class USBPrintClass {
 
     bytes += generator.cut();
     final res =
-        await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
       msg =
-          "Failed to generate a print please make sure to use the correct printer name";
+      "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
@@ -3615,16 +3615,16 @@ class USBPrintClass {
           "------------------template   ------------------template   $template");
       if (template == 'template4') {
         Uint8List slNoEnc =
-            await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
+        await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
         Uint8List dateEnc =
-            await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
+        await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
         Uint8List voucherNoEnc = await CharsetConverter.encode(
             "ISO-8859-6", setString("رقم القسيمة"));
 
         Uint8List ledgerNameEnc = await CharsetConverter.encode(
             "ISO-8859-6", setString("اسم دفتر الأستاذ"));
         Uint8List rateEnc =
-            await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
+        await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
 
         bytes += generator.row([
           PosColumn(
@@ -3813,11 +3813,11 @@ class USBPrintClass {
           "------------------template   ------------------template   $template");
       if (template == 'template4') {
         Uint8List slNoEnc =
-            await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
+        await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
         Uint8List dateEnc =
-            await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
+        await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
         Uint8List unitName =
-            await CharsetConverter.encode("ISO-8859-6", setString("وحدة"));
+        await CharsetConverter.encode("ISO-8859-6", setString("وحدة"));
 
         Uint8List productNameEnc = await CharsetConverter.encode(
             "ISO-8859-6", setString("اسم المنتج"));
@@ -3941,13 +3941,13 @@ class USBPrintClass {
 
     bytes += generator.cut();
     final res =
-        await usb_esc_printer_windows.sendPrintRequest(bytes, printerIP);
+    await usb_esc_printer_windows.sendPrintRequest(bytes, printerIP);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
       msg =
-          "Failed to generate a print please make sure to use the correct printer name";
+      "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 

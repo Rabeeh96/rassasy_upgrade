@@ -11,6 +11,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/p
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart' if (dart.library.html) '';
 
 import 'global/global.dart';
 import 'localisation/localisation.dart';
@@ -57,6 +58,18 @@ import 'package:http/http.dart' as http;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+
+  if (Platform.isWindows) {
+    doWhenWindowReady(() {
+      const initialSize = Size(800, 600);
+      appWindow.minSize = initialSize;
+      appWindow.size = initialSize;
+      appWindow.maximize();
+      appWindow.show();
+    });
+  }
+
 
   SharedPreferences.getInstance().then((prefs) {
      bool isTablet = true;

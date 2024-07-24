@@ -769,6 +769,8 @@ class AppBlocs {
         ]);
 
         printer.row([
+
+
           PosColumn(text: 'Bank receipt', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: br,
