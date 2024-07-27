@@ -430,7 +430,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                           children: [
                                             Padding(
                                               padding: EdgeInsets.only(right: 15.0),
-                                              child: Text(roundStringWith(invoiceList[index].netTotal),
+                                              child: Text(roundStringWith(invoiceList[index].salesData["GrandTotal"].toString()),
                                                   style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0)),
                                             ),
 
@@ -819,7 +819,7 @@ List<InvoiceModelClass> invoiceList = [];
 
 class InvoiceModelClass {
   String id, voucherNo, saleOrderID, date, deliveryDate, deliveryTime, custName, netTotal, salesMasterID, tokenNo;
-
+  var salesData;
   InvoiceModelClass(
       {required this.id,
       required this.voucherNo,
@@ -828,6 +828,7 @@ class InvoiceModelClass {
       required this.deliveryDate,
       required this.deliveryTime,
       required this.salesMasterID,
+      required this.salesData,
       required this.custName,
       required this.netTotal,
       required this.tokenNo});
@@ -840,6 +841,7 @@ class InvoiceModelClass {
         date: json['Date'],
         deliveryDate: json['DeliveryDate'],
         deliveryTime: json['DeliveryTime'],
+        salesData: json['SalesData'],
         custName: json['CustomerName'],
         netTotal: json['NetTotal'],
         salesMasterID: json['SalesMasterID'] ?? '',
