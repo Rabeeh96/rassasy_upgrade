@@ -162,7 +162,6 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       dining_edit_perm = prefs.getBool('Diningedit') ?? true;
       take_away_edit_perm = prefs.getBool('Take awayedit') ?? true;
       car_edit_perm = prefs.getBool('Caredit') ?? true;
-
       bool kotPrint = prefs.getBool("KOT") ?? false;
 
       dining_delete_perm = prefs.getBool('Diningdelete') ?? true;
@@ -285,7 +284,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
   Future<bool> _onWillPop() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var selectPos = prefs.getBool('IsSelectPos') ?? false;
+    var selectPos = prefs.getBool('Only POS Access') ?? false;
     print("object");
     if (selectPos == false) {
       return true;
@@ -5025,7 +5024,7 @@ class UserDetailsAppBar extends StatelessWidget {
                                 onPressed: () async {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
-                                  prefs.setBool('IsSelectPos', false);
+                                  prefs.setBool('Only POS Access', false);
                                   Navigator.pop(context);
                                   Navigator.pushReplacement(
                                       context,
@@ -5078,7 +5077,7 @@ class BackButtonAppBar extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                var selectPos = prefs.getBool('IsSelectPos') ?? false;
+                var selectPos = prefs.getBool('Only POS Access') ?? false;
                 if (selectPos) {
                   await showDialog<bool>(
                     context: context,

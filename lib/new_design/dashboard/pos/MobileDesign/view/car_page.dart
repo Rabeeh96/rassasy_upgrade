@@ -195,7 +195,9 @@ class _TakeAwayState extends State<CarPage> {
                                 ],
                               ),
                             ),
-                            carController.carOrders[index].status == 'Ordered'? CustomSlidableAction(
+                            carController.carOrders[index].status == 'Ordered'?
+                            posController.pay_perm.value?
+                            CustomSlidableAction(
                               onPressed: (BuildContext context) async {
                                 var resultPayment = await Get.to(PaymentPage(
                                   uID: carController.carOrders[index].salesOrderID!,
@@ -223,7 +225,7 @@ class _TakeAwayState extends State<CarPage> {
                                   )
                                 ],
                               ),
-                            ):Container(),
+                            ):Container():Container(),
 
 
                           ],

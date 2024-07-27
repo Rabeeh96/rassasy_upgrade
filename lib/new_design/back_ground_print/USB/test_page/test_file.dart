@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
- import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 import 'package:flutter/foundation.dart';
 
 import 'dart:ui' as ui;
@@ -178,22 +178,7 @@ class USBPrintClassTest {
       }
     }
   }
-  Future<Uint8List> compressImage(Uint8List imageBytes) async {
-    try{
-      final compressedBytes = await FlutterImageCompress.compressWithList(
-        imageBytes,
 
-        minWidth: 570,  // Adjust if needed
-        quality: 80,    // Adjust quality (0-100)
-      );
-      return Uint8List.fromList(compressedBytes);
-    }
-    catch(e){
-      print("====================${e.toString()}");
-      return imageBytes;
-    }
-
-  }
   // dependencies:
   // flutter_image_compress: ^1.1.0
   // Import the package in your Dart file:
@@ -216,16 +201,7 @@ class USBPrintClassTest {
     return response.bodyBytes;
   }
 
-  Future<Uint8List> testComporessList(Uint8List list) async {
-    var result = await FlutterImageCompress.compressWithList(
-      list,
-      quality: 96,
-      rotate: 135,
-    );
-    print(list.length);
-    print(result.length);
-    return result;
-  }
+
   printReq(arabicImageBytes,qrCode, needQR) async {
     print("  ---------start print method  ---------   ---------     ${DateTime.now().second} ");
     SharedPreferences prefs = await SharedPreferences.getInstance();

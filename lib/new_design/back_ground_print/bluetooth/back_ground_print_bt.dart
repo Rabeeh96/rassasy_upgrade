@@ -1637,12 +1637,25 @@ bool isCancelled;
 
     printer += generator.cut();
     if (PrintDataDetails.type == "SI") {
+      openDrawer= checkCashDrawer(cashReceived,bankReceived);
       if (openDrawer) {
         printer += generator.drawer();
       }
     }
     return printer;
   }
+  bool checkCashDrawer(cash,bank) {
+    double cashReceived = double.parse(cash??'0');
+    double bankAmount = double.parse(bank??'0');
+
+    if (cashReceived > 0.0) {
+      return true;
+    } else if (cashReceived == 0.0 && bankAmount > 0.0) {
+      return false;
+    }
+    return false;
+  }
+
 }
 
 class ESCPrinterServicesArabicKOT {
@@ -1892,12 +1905,15 @@ class ESCBTTEST {
     _profile = profile;
     final supportedCodePages = profile.codePages;
     Generator generator = Generator(PaperSize.mm80, _profile!);
-/// image printing commented
+// image printing commented
 //     final arabicImageBytes = await generateInvoice();
 //     var ii = Img.decodeImage(arabicImageBytes);
-//     final Img.Image _resize = Img.copyResize(ii!, width: 500);
+//     final Img.Image _resize = Img.copyResize(ii!, width: 300);
 //     printer += generator.imageRaster(_resize);
-    //bytes += generator.image(_resize);
+
+
+  //  printer += generator.image(_resize);
+
 
 
     print("-------------------------------------$option");
@@ -1925,11 +1941,20 @@ class ESCBTTEST {
     }
     else if(option =="6"){
 
+      // const utf8Encoder = Utf8Encoder();
+      // printer += generator.reset();
+      // final encodedStr = utf8Encoder.convert(".السلامالسلامالسلامالسلامالسلام",);
+      // printer += generator.textEncoded(Uint8List.fromList([
+      //   ...[0x1C, 0x26, 0x1C, 0x43, 0xFF],
+      //   ...encodedStr
+      // ]));
+
       for(var ind = 0;ind<supportedCodePages.length ;ind++){
         printer += generator.setGlobalCodeTable(supportedCodePages[ind].name);
         var testData ="${supportedCodePages[ind].name} السلام ${profile.name} ";
         Uint8List salam = await CharsetConverter.encode("ISO-8859-6", setString(testData,false));
-        printer += generator.textEncoded(salam);
+        printer += generator.text("السلام------------------------",containsChinese: true);
+        printer += generator.textEncoded(salam,styles: const PosStyles(align:PosAlign.center),);
       }
     }
 

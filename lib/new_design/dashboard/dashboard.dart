@@ -368,7 +368,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenHeight = screenSize.height;
 
     bool isTablet = true;
-    /// bool isTablet = screenWidth > defaultScreenWidth;
+   // bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
       appBar: isProfileNotifier.value
           ?AppBar(
@@ -1188,7 +1188,14 @@ class _DashboardNewState extends State<DashboardNew> {
           ],
         ));
   }
+  Future<void> _refresh() async {
+    // Simulate network request
+    userTypeData(true);
+  }
 
+  refreshData(){
+
+  }
   Widget dashboardPageMobile() {
     final mHeight = MediaQuery.of(context).size.height;
     final mWidth = MediaQuery.of(context).size.width;
@@ -1450,8 +1457,10 @@ class _DashboardNewState extends State<DashboardNew> {
                           height: mHeight * .01,
                         ),
                         GestureDetector(
-                          onTap: () {
-                            Get.to(SettingsMobilePage());
+                          onTap: () async{
+                            Get.to(SettingsMobilePage(generalSettingsPermission: settingsPermission,));
+
+
                           },
                           child: Card(
                             color: Colors.transparent,
@@ -1680,554 +1689,559 @@ class _DashboardNewState extends State<DashboardNew> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(color: Colors.white),
-            child: Column(
-              children: [
-                dividerStyle(),
-                Container(
-                  height: screenHeight / 12,
-                  width: MediaQuery.of(context).size.width / 1,
-                  decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: .1, color: Colors.grey))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        //     Get.to(MobOrganizationList());
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          organisationLogo == ''
-                              ? Icon(
-                                  Icons.circle,
-                                  color: const Color(0xffF4F4F4),
-                                  size: 30,
-                                )
-                              : CircleAvatar(backgroundImage: NetworkImage(organisationLogo), maxRadius: 13),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              companyName,
-                              style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // child: Row(
-                      //   crossAxisAlignment: CrossAxisAlignment.center,
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //
-                      //
-                      //     const Icon(
-                      //       Icons.circle,
-                      //       color: Color(0xffF4F4F4),
-                      //     ),
-                      //     Padding(
-                      //       padding: const EdgeInsets.only(left: 8.0),
-                      //       child: Text(
-                      //         "Organization",
-                      //         style: customisedStyleBold(
-                      //             context, Colors.black, FontWeight.w400, 15.0),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: screenWidth / 1.1,
-                  height: screenHeight / 1.5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    //   updateAlert();
-                                    var perm = await checkingPerm("Groupview");
-                                    print(perm);
-                                    if (perm) {
-                                      Get.to(ProductGroupMobile());
-                                    } else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 11,
-                                          child: SvgPicture.asset('assets/svg/product_group.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    'Group'.tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    var perm = await checkingPerm("Productview");
+            child: RefreshIndicator(
+              onRefresh: _refresh,
 
-                                    if (perm) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
-                                    }
-                                    else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 10,
-                                          child: SvgPicture.asset('assets/svg/product.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    'Products'.tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    // updateAlert();
-                                    // Get.to(TestPrintUSB());
-                                    var perm = await checkingPerm("Customerview");
-                                    print(perm);
-                                    if (perm) {
-                                      Get.to(CustomerListMobile());
-                                    } else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 12,
-                                          child: SvgPicture.asset('assets/svg/customer.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    'customer'.tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    updateAlert();
-                                    // var salesReport =
-                                    //     await checkingPerm("Sale Report");
-                                    // var tableWiseReport =
-                                    //     await checkingPerm("Table Wise Report");
-                                    // var productReport =
-                                    //     await checkingPerm("Product Report");
-                                    //
-                                    // var rmsReport =
-                                    //     await checkingPerm("RMS Report");
-                                    //
-                                    // var diningReport =
-                                    //     await checkingPerm("Dining Report");
-                                    //
-                                    // var takeAwayReport =
-                                    //     await checkingPerm("Take Away Report");
-                                    //
-                                    // var carReport =
-                                    //     await checkingPerm("Car Report");
-                                    //
-                                    // ///     var salesReport = await checkingPerm("Online Report");
-                                    //
-                                    // if (salesReport == true ||
-                                    //     tableWiseReport == true ||
-                                    //     productReport == true ||
-                                    //     rmsReport == true ||
-                                    //     diningReport == true ||
-                                    //     takeAwayReport == true ||
-                                    //     carReport == true) {
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (BuildContext context) =>
-                                    //               const ReportPageNew()));
-                                    // } else {
-                                    //   dialogBoxPermissionDenied(context);
-                                    // }
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 13,
-                                          child: SvgPicture.asset('assets/svg/report.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    'Report'.tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 12,
-                                          child: SvgPicture.asset('assets/svg/POS.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    var dinePerm = await checkingPerm("Diningview");
-                                    var takeAwayPerm = await checkingPerm("Take awayview");
-                                    var carPerm = await checkingPerm("Carview");
+              child: ListView(
+                children: [
 
-                                    if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
-                                      Get.to(POSMobilePage());
-                                    } else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
-                                  },
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    "POS".tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(TaxListMobile());
-                                    ///  updateAlert();
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 12,
-                                          child: SvgPicture.asset('assets/svg/tax.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    'tax'.tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  dividerStyle(),
+                  Container(
+                    height: screenHeight / 12,
+                    width: MediaQuery.of(context).size.width / 1,
+                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: .1, color: Colors.grey))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          //     Get.to(MobOrganizationList());
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-
-                                    var flavour = await checkingPerm("Flavourview");
-                                    if (flavour == true) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => FlavourListMobile()));
-                                    } else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 10,
-                                          child: SvgPicture.asset('assets/svg/flavour.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    'Flavour'.tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
+                            organisationLogo == ''
+                                ? const Icon(
+                                    Icons.circle,
+                                    color: Color(0xffF4F4F4),
+                                    size: 30,
+                                  )
+                                : CircleAvatar(backgroundImage: NetworkImage(organisationLogo), maxRadius: 13),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                companyName,
+                                style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
+                              ),
                             ),
-                            SizedBox(
-                              width: 35,
-                            ),
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-
-                                    var invoices = await checkingPerm('Invoices'.tr);
-                                    if (invoices == true) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => InvoiceListMobile()));
-                                    } else {
-                                      dialogBoxPermissionDenied(context);
-                                    }
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    height: screenHeight / 12,
-                                    width: screenWidth / 5.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 20,
-                                          width: MediaQuery.of(context).size.width / 14,
-                                          child: SvgPicture.asset('assets/svg/invoice.svg'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    'Invoices'.tr,
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-
-                            /// daily report commented
-                            //      Column(
-                            //        children: [
-                            //          // GestureDetector(
-                            //          //   onTap: () async {
-                            //          //        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
-                            //          //
-                            //          //     // Navigator.push(
-                            //          //     //     context,
-                            //          //     //     MaterialPageRoute(
-                            //          //     //         builder: (BuildContext context) =>
-                            //          //     //             const DragableList()));
-                            //          //
-                            //          //     // var invoices = await checkingPerm('Invoices'.tr);
-                            //          //     //
-                            //          //     // if (invoices == true) {
-                            //          //     //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
-                            //          //     //
-                            //          //     // } else {
-                            //          //     //   dialogBoxPermissionDenied(context);
-                            //          //     // }
-                            //          //   },
-                            //          //   child: Container(
-                            //          //     decoration: const BoxDecoration(
-                            //          //         color: Color(0xffEEEEEE),
-                            //          //         borderRadius:
-                            //          //             BorderRadius.all(Radius.circular(20))),
-                            //          //     height: isTablet
-                            //          //         ? screenHeight / 12
-                            //          //         : screenHeight / 15,
-                            //          //     width: isTablet
-                            //          //         ? screenWidth / 17
-                            //          //         : screenWidth / 6,
-                            //          //     child: Row(
-                            //          //       mainAxisAlignment: MainAxisAlignment.center,
-                            //          //       crossAxisAlignment: CrossAxisAlignment.center,
-                            //          //       children: [
-                            //          //         Container(
-                            //          //           height:
-                            //          //               MediaQuery.of(context).size.height /
-                            //          //                   20,
-                            //          //           width: MediaQuery.of(context).size.width /
-                            //          //               20,
-                            //          //           child: SvgPicture.asset(
-                            //          //               'assets/svg/report.svg'),
-                            //          //         ),
-                            //          //       ],
-                            //          //     ),
-                            //          //   ),
-                            //          // ),
-                            //          // Padding(
-                            //          //   padding: const EdgeInsets.only(
-                            //          //     top: 12,
-                            //          //   ),
-                            //          //   child: Text(
-                            //          //     'Daily Report'.tr,
-                            //          //     style: const TextStyle(fontSize: 12),
-                            //          //   ),
-                            //          // )
-                            //        ],
-                            //      ),
-
-                            /// new taxz commented
-                            // Column(
-                            //   children: [
-                            //     GestureDetector(
-                            //       onTap: () {
-                            //
-                            //         Navigator.push(
-                            //           context,
-                            //           MaterialPageRoute(builder: (context) => TaxCategory()),
-                            //         );
-                            //       },
-                            //       child: Container(
-                            //         decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
-                            //         height: MediaQuery.of(context).size.height / 12,
-                            //         width: MediaQuery.of(context).size.width / 17,
-                            //         child: Row(
-                            //           mainAxisAlignment: MainAxisAlignment.center,
-                            //           crossAxisAlignment: CrossAxisAlignment.center,
-                            //           children: [
-                            //             Container(
-                            //               height: MediaQuery.of(context).size.height / 20,
-                            //               width: MediaQuery.of(context).size.width / 20,
-                            //               child: SvgPicture.asset('assets/svg/tax.svg'),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     const Padding(
-                            //       padding: EdgeInsets.only(
-                            //         top: 12,
-                            //       ),
-                            //       child: Text(
-                            //         'New tax',
-                            //         style: TextStyle(fontSize: 12),
-                            //       ),
-                            //     )
-                            //   ],
-                            // ),
                           ],
                         ),
+                        // child: Row(
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //
+                        //
+                        //     const Icon(
+                        //       Icons.circle,
+                        //       color: Color(0xffF4F4F4),
+                        //     ),
+                        //     Padding(
+                        //       padding: const EdgeInsets.only(left: 8.0),
+                        //       child: Text(
+                        //         "Organization",
+                        //         style: customisedStyleBold(
+                        //             context, Colors.black, FontWeight.w400, 15.0),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ),
-                    ],
+                    ),
                   ),
-                )
-              ],
+                  Container(
+                    width: screenWidth / 1.1,
+                    height: screenHeight / 1.5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      //   updateAlert();
+                                      var perm = await checkingPerm("Groupview");
+                                      print(perm);
+                                      if (perm) {
+                                        Get.to(ProductGroupMobile());
+                                      } else {
+                                        dialogBoxPermissionDenied(context);
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      height: screenHeight / 12,
+                                      width: screenWidth / 5.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height / 20,
+                                            width: MediaQuery.of(context).size.width / 11,
+                                            child: SvgPicture.asset('assets/svg/product_group.svg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      'Group'.tr,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      var perm = await checkingPerm("Productview");
+
+                                      if (perm) {
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProductListMobile()));
+                                      }
+                                      else {
+                                        dialogBoxPermissionDenied(context);
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      height: screenHeight / 12,
+                                      width: screenWidth / 5.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height / 20,
+                                            width: MediaQuery.of(context).size.width / 10,
+                                            child: SvgPicture.asset('assets/svg/product.svg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      'Products'.tr,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      // updateAlert();
+                                      // Get.to(TestPrintUSB());
+                                      var perm = await checkingPerm("Customerview");
+                                      print(perm);
+                                      if (perm) {
+                                        Get.to(CustomerListMobile());
+                                      } else {
+                                        dialogBoxPermissionDenied(context);
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      height: screenHeight / 12,
+                                      width: screenWidth / 5.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height / 20,
+                                            width: MediaQuery.of(context).size.width / 12,
+                                            child: SvgPicture.asset('assets/svg/customer.svg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      'customer'.tr,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      updateAlert();
+                                      // var salesReport =
+                                      //     await checkingPerm("Sale Report");
+                                      // var tableWiseReport =
+                                      //     await checkingPerm("Table Wise Report");
+                                      // var productReport =
+                                      //     await checkingPerm("Product Report");
+                                      //
+                                      // var rmsReport =
+                                      //     await checkingPerm("RMS Report");
+                                      //
+                                      // var diningReport =
+                                      //     await checkingPerm("Dining Report");
+                                      //
+                                      // var takeAwayReport =
+                                      //     await checkingPerm("Take Away Report");
+                                      //
+                                      // var carReport =
+                                      //     await checkingPerm("Car Report");
+                                      //
+                                      // ///     var salesReport = await checkingPerm("Online Report");
+                                      //
+                                      // if (salesReport == true ||
+                                      //     tableWiseReport == true ||
+                                      //     productReport == true ||
+                                      //     rmsReport == true ||
+                                      //     diningReport == true ||
+                                      //     takeAwayReport == true ||
+                                      //     carReport == true) {
+                                      //   Navigator.push(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //           builder: (BuildContext context) =>
+                                      //               const ReportPageNew()));
+                                      // } else {
+                                      //   dialogBoxPermissionDenied(context);
+                                      // }
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      height: screenHeight / 12,
+                                      width: screenWidth / 5.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height / 20,
+                                            width: MediaQuery.of(context).size.width / 13,
+                                            child: SvgPicture.asset('assets/svg/report.svg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      'Report'.tr,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    child: Container(
+                                      decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      height: screenHeight / 12,
+                                      width: screenWidth / 5.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height / 20,
+                                            width: MediaQuery.of(context).size.width / 12,
+                                            child: SvgPicture.asset('assets/svg/POS.svg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      var dinePerm = await checkingPerm("Diningview");
+                                      var takeAwayPerm = await checkingPerm("Take awayview");
+                                      var carPerm = await checkingPerm("Carview");
+
+                                      if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
+                                        Get.to(POSMobilePage());
+                                      } else {
+                                        dialogBoxPermissionDenied(context);
+                                      }
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      "POS".tr,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(TaxListMobile());
+                                      ///  updateAlert();
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      height: screenHeight / 12,
+                                      width: screenWidth / 5.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height / 20,
+                                            width: MediaQuery.of(context).size.width / 12,
+                                            child: SvgPicture.asset('assets/svg/tax.svg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      'tax'.tr,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+
+                                      var flavour = await checkingPerm("Flavourview");
+                                      if (flavour == true) {
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => FlavourListMobile()));
+                                      } else {
+                                        dialogBoxPermissionDenied(context);
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      height: screenHeight / 12,
+                                      width: screenWidth / 5.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height / 20,
+                                            width: MediaQuery.of(context).size.width / 10,
+                                            child: SvgPicture.asset('assets/svg/flavour.svg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      'Flavour'.tr,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                width: 35,
+                              ),
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+
+                                      var invoices = await checkingPerm('Invoices'.tr);
+                                      if (invoices == true) {
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => InvoiceListMobile()));
+                                      } else {
+                                        dialogBoxPermissionDenied(context);
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      height: screenHeight / 12,
+                                      width: screenWidth / 5.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height / 20,
+                                            width: MediaQuery.of(context).size.width / 14,
+                                            child: SvgPicture.asset('assets/svg/invoice.svg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      'Invoices'.tr,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+
+                              /// daily report commented
+                              //      Column(
+                              //        children: [
+                              //          // GestureDetector(
+                              //          //   onTap: () async {
+                              //          //        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+                              //          //
+                              //          //     // Navigator.push(
+                              //          //     //     context,
+                              //          //     //     MaterialPageRoute(
+                              //          //     //         builder: (BuildContext context) =>
+                              //          //     //             const DragableList()));
+                              //          //
+                              //          //     // var invoices = await checkingPerm('Invoices'.tr);
+                              //          //     //
+                              //          //     // if (invoices == true) {
+                              //          //     //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                              //          //     //
+                              //          //     // } else {
+                              //          //     //   dialogBoxPermissionDenied(context);
+                              //          //     // }
+                              //          //   },
+                              //          //   child: Container(
+                              //          //     decoration: const BoxDecoration(
+                              //          //         color: Color(0xffEEEEEE),
+                              //          //         borderRadius:
+                              //          //             BorderRadius.all(Radius.circular(20))),
+                              //          //     height: isTablet
+                              //          //         ? screenHeight / 12
+                              //          //         : screenHeight / 15,
+                              //          //     width: isTablet
+                              //          //         ? screenWidth / 17
+                              //          //         : screenWidth / 6,
+                              //          //     child: Row(
+                              //          //       mainAxisAlignment: MainAxisAlignment.center,
+                              //          //       crossAxisAlignment: CrossAxisAlignment.center,
+                              //          //       children: [
+                              //          //         Container(
+                              //          //           height:
+                              //          //               MediaQuery.of(context).size.height /
+                              //          //                   20,
+                              //          //           width: MediaQuery.of(context).size.width /
+                              //          //               20,
+                              //          //           child: SvgPicture.asset(
+                              //          //               'assets/svg/report.svg'),
+                              //          //         ),
+                              //          //       ],
+                              //          //     ),
+                              //          //   ),
+                              //          // ),
+                              //          // Padding(
+                              //          //   padding: const EdgeInsets.only(
+                              //          //     top: 12,
+                              //          //   ),
+                              //          //   child: Text(
+                              //          //     'Daily Report'.tr,
+                              //          //     style: const TextStyle(fontSize: 12),
+                              //          //   ),
+                              //          // )
+                              //        ],
+                              //      ),
+
+                              /// new taxz commented
+                              // Column(
+                              //   children: [
+                              //     GestureDetector(
+                              //       onTap: () {
+                              //
+                              //         Navigator.push(
+                              //           context,
+                              //           MaterialPageRoute(builder: (context) => TaxCategory()),
+                              //         );
+                              //       },
+                              //       child: Container(
+                              //         decoration: const BoxDecoration(color: Color(0xffEEEEEE), borderRadius: BorderRadius.all(Radius.circular(20))),
+                              //         height: MediaQuery.of(context).size.height / 12,
+                              //         width: MediaQuery.of(context).size.width / 17,
+                              //         child: Row(
+                              //           mainAxisAlignment: MainAxisAlignment.center,
+                              //           crossAxisAlignment: CrossAxisAlignment.center,
+                              //           children: [
+                              //             Container(
+                              //               height: MediaQuery.of(context).size.height / 20,
+                              //               width: MediaQuery.of(context).size.width / 20,
+                              //               child: SvgPicture.asset('assets/svg/tax.svg'),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     const Padding(
+                              //       padding: EdgeInsets.only(
+                              //         top: 12,
+                              //       ),
+                              //       child: Text(
+                              //         'New tax',
+                              //         style: TextStyle(fontSize: 12),
+                              //       ),
+                              //     )
+                              //   ],
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ));
   }
 

@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -21,7 +20,6 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:image/image.dart' as Img;
 
-
 class ViewInvoice extends StatefulWidget {
   @override
   State<ViewInvoice> createState() => _ViewInvoiceState();
@@ -29,7 +27,8 @@ class ViewInvoice extends StatefulWidget {
 
 class _ViewInvoiceState extends State<ViewInvoice> {
   @override
- var messageShow = "";
+  var messageShow = "";
+
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -37,26 +36,21 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     fromDateNotifier = ValueNotifier(DateTime.now());
     toDateNotifier = ValueNotifier(DateTime.now());
     viewList();
-
   }
 
   DateFormat apiDateFormat = DateFormat("yyyy-MM-dd");
   DateFormat timeFormat = DateFormat.jm();
   DateFormat dateFormat = DateFormat("dd/MM/yyy");
 
-  late  ValueNotifier<DateTime> fromDateNotifier = ValueNotifier(DateTime.now());
-  late  ValueNotifier<DateTime> toDateNotifier = ValueNotifier(DateTime.now());
-
+  late ValueNotifier<DateTime> fromDateNotifier = ValueNotifier(DateTime.now());
+  late ValueNotifier<DateTime> toDateNotifier = ValueNotifier(DateTime.now());
 
   Future<Null> viewList() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-
       dialogBox(context, "Please check your network connection");
     } else {
-
       try {
-
         SharedPreferences prefs = await SharedPreferences.getInstance();
         start(context);
         String baseUrl = BaseUrl.baseUrl;
@@ -65,21 +59,19 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
-
         final String url = '$baseUrl/posholds/list-pos-hold-invoices/';
 
         Map data = {
           "CompanyID": companyID,
           "CreatedUserID": userID,
           "BranchID": branchID,
-          "page_number": 1,
-          "page_size": 50,
+          "page_number": pageNumber,
+          "page_size": 10,
           "from_date": apiDateFormat.format(fromDateNotifier.value),
           "to_date": apiDateFormat.format(toDateNotifier.value),
         };
         print(url);
         print(data);
-
 
         var body = json.encode(data);
         var response = await http.post(Uri.parse(url),
@@ -89,49 +81,52 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             },
             body: body);
 
-
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
         print(status);
 
         var responseJson = n["data"];
-        print(responseJson);
+        print(response.body);
 
         if (status == 6000) {
+          isLoading = false;
           stop();
           setState(() {
             messageShow = "";
-            invoiceList.clear();
+           // invoiceList.clear();
 
             for (Map user in responseJson) {
               invoiceList.add(InvoiceModelClass.fromJson(user));
             }
-            if(invoiceList.isEmpty){
+            if (invoiceList.isEmpty) {
               messageShow = "No sale during these period";
             }
             print("11");
           });
         } else if (status == 6001) {
+          isLoading = false;
           messageShow = "No sale during these period";
           stop();
           print("12");
         } else {
+          isLoading = false;
           stop();
           print("13");
         }
       } catch (e) {
+        isLoading = false;
         stop();
         print("Error ${e.toString()}");
       }
     }
   }
 
-
   var networkConnection = true;
-  TextEditingController searchController = TextEditingController();
-  showDatePickerFunction(context,ValueNotifier dateNotifier) {
+
+
+  showDatePickerFunction(context, ValueNotifier dateNotifier) {
     final mHeight = MediaQuery.of(context).size.height;
-    final mWidth = MediaQuery.of(context).size.width/2;
+    final mWidth = MediaQuery.of(context).size.width / 2;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -148,15 +143,13 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                    EdgeInsets.only(left: mWidth * .13, top: mHeight * .01),
-                    child:  Center(
+                    padding: EdgeInsets.only(left: mWidth * .13, top: mHeight * .01),
+                    child: Center(
                       child: Text(
                         'select_date'.tr,
                         style: customisedStyle(context, Colors.black, FontWeight.bold, 18.0),
-                        ),
                       ),
-
+                    ),
                   ),
                 ],
               ),
@@ -179,6 +172,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -198,350 +192,483 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children:   [
+            children: [
               Text(
                 'Invoices'.tr,
-                style:customisedStyle(context, Colors.black, FontWeight.bold, 18.0),
+                style: customisedStyle(context, Colors.black, FontWeight.bold, 18.0),
               ),
             ],
           ),
-
         ),
         body: networkConnection == true
-            ?  ListView(
-          children: [
-
-
-            /// COMMENTED FOR TESTING
-            // Column(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     // Step 3: Display the image if it has been resized
-            //     resizedImageBytes != null
-            //         ? Container(
-            //         height: 500,
-            //         width: 520,
-            //
-            //         child: Image.memory(resizedImageBytes!))
-            //         : Text('Click the button to resize the image'),
-            //     SizedBox(height: 20),
-            //     ElevatedButton(
-            //       onPressed: (){
-            //         _resizeImage();
-            //       },
-            //       child: Text('Resize Image'),
-            //     ),
-            //   ],
-            // ),
-
-
-            Container(
-              height: MediaQuery.of(context).size.height / 10,
-              child: Row(
+            ? Column(
                 children: [
 
-                  ValueListenableBuilder(
-                      valueListenable: fromDateNotifier,
-                      builder: (BuildContext ctx,DateTime fromDateNewValue, _) {
 
-                        return GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-
-                                Text('from'.tr,style: customisedStyle(context, Colors.black, FontWeight.w800, 12.0),),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      border:
-                                      Border.all(color: const Color(0xffCBCBCB))),
-                                  height: MediaQuery.of(context).size.height / 15,
-                                  width: MediaQuery.of(context).size.width / 7,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: 10,),
-                                      Icon(
-                                        Icons.calendar_today_outlined,
-                                        color: Colors.black,
-                                      ),
-
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                              dateFormat.format(fromDateNewValue),
-                                              style: customisedStyle(context, Colors.black, FontWeight.w700, 12.0)
-                                          ),
-
-                                        //  Text("12.00", style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0)),
-                                        ],
-                                      )
-
-
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          onTap: (){
-                            showDatePickerFunction(context,fromDateNotifier);
-                          },
-                        );
-                      }),
-                  ValueListenableBuilder(
-                      valueListenable: toDateNotifier,
-                      builder: (BuildContext ctx,DateTime fromDateNewValue, _) {
-
-                        return GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-
-                                Text('to'.tr,style: customisedStyle(context, Colors.black, FontWeight.w800, 12.0),),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      border:
-                                      Border.all(color: const Color(0xffCBCBCB))),
-                                  height: MediaQuery.of(context).size.height / 15,
-                                  width: MediaQuery.of(context).size.width / 7,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: 10,),
-                                      Icon(
-                                        Icons.calendar_today_outlined,
-                                        color: Colors.black,
-                                      ),
-
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                              dateFormat.format(fromDateNewValue),
-                                              style: customisedStyle(context, Colors.black, FontWeight.w700, 12.0)
-                                          ),
-                                       //  Text("12.00", style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0)),
-                                        ],
-                                      )
-
-
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          onTap: (){
-
-                            showDatePickerFunction(context,toDateNotifier);
-
-                          },
-                        );
-                      }),
-
-                ],
-              ),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height / 1.3,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: invoiceList.isNotEmpty?ListView.builder(
-                  // the number of items in the list
-                    itemCount: invoiceList.length,
-                    // display each item of the product list
-                    itemBuilder: (context, index) {
-                      return Card(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3),
-                            side: BorderSide(
-                                width: 1, color: Color(0xffDFDFDF))),
-                        color: Color(0xffffffff),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 1.1,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 15.0,left: 15.0),
-                                child: Container(
-                                  width: 100,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
-                                    onPressed: () {
-                                      PrintDataDetails.type = "SI";
-                                      PrintDataDetails.id = invoiceList[index].salesMasterID;
-                                        printDetail(invoiceList[index].salesMasterID,"SI");
-                                    },
-                                    child: Text(
-                                      'print'.tr,
-                                      style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-
-
-                                width: MediaQuery.of(context).size.width / 1.5,
+                  Container(
+                    height: MediaQuery.of(context).size.height / 10,
+                    child: Row(
+                      children: [
+                        ValueListenableBuilder(
+                            valueListenable: fromDateNotifier,
+                            builder: (BuildContext ctx, DateTime fromDateNewValue, _) {
+                              return GestureDetector(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
+                                      Text(
+                                        'from'.tr,
+                                        style: customisedStyle(context, Colors.black, FontWeight.w800, 12.0),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
                                       Container(
-
-                                        width: MediaQuery.of(context).size.width / 8,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children:  [
-                                            Text(invoiceList[index].voucherNo,
-                                              style:  customisedStyle(context,  Colors.black, FontWeight.w600, 13.0),),
-
-                                            Text(
-                                              invoiceList[index].date,
-                                              style:  customisedStyle(context,  Color(0xff585858), FontWeight.w600, 12.0),
-
+                                        decoration: BoxDecoration(border: Border.all(color: const Color(0xffCBCBCB))),
+                                        height: MediaQuery.of(context).size.height / 15,
+                                        width: MediaQuery.of(context).size.width / 7,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 10,
                                             ),
+                                            Icon(
+                                              Icons.calendar_today_outlined,
+                                              color: Colors.black,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(dateFormat.format(fromDateNewValue),
+                                                    style: customisedStyle(context, Colors.black, FontWeight.w700, 12.0)),
+
+                                                //  Text("12.00", style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0)),
+                                              ],
+                                            )
                                           ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                onTap: () {
+                                  showDatePickerFunction(context, fromDateNotifier);
+                                },
+                              );
+                            }),
+                        ValueListenableBuilder(
+                            valueListenable: toDateNotifier,
+                            builder: (BuildContext ctx, DateTime fromDateNewValue, _) {
+                              return GestureDetector(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'to'.tr,
+                                        style: customisedStyle(context, Colors.black, FontWeight.w800, 12.0),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(border: Border.all(color: const Color(0xffCBCBCB))),
+                                        height: MediaQuery.of(context).size.height / 15,
+                                        width: MediaQuery.of(context).size.width / 7,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Icon(
+                                              Icons.calendar_today_outlined,
+                                              color: Colors.black,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(dateFormat.format(fromDateNewValue),
+                                                    style: customisedStyle(context, Colors.black, FontWeight.w700, 12.0)),
+                                                //  Text("12.00", style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0)),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                onTap: () {
+                                  showDatePickerFunction(context, toDateNotifier);
+                                },
+                              );
+                            }),
+                      ],
+                    ),
+                  ),
+
+                  Expanded(
+                      child: NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      print("-**********************1");
+                      if (!isLoading && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+
+                        print("-**********************");
+                        pageNumber = pageNumber + 1;
+                            firstTime = 10;
+                            viewList();
+                            setState(() {
+                              isLoading = true;
+                            });
+                      }
+                      return true;
+                    },
+                    child:  ListView.builder(
+                            // the number of items in the list
+                            itemCount: invoiceList.length,
+                            // display each item of the product list
+                            itemBuilder: (context, index) {
+                              return Card(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(3), side: BorderSide(width: 1, color: Color(0xffDFDFDF))),
+                                color: Color(0xffffffff),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 1.1,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 15.0, left: 15.0),
+                                        child: Container(
+                                          width: 100,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                                            onPressed: () {
+                                              PrintDataDetails.type = "SI";
+                                              PrintDataDetails.id = invoiceList[index].salesMasterID;
+                                              printDetail(invoiceList[index].salesMasterID, "SI");
+                                            },
+                                            child: Text(
+                                              'print'.tr,
+                                              style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       Container(
-
-                                        width: MediaQuery.of(context).size.width / 8,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'token_no'.tr,
-                                              style:  customisedStyle(context, Color(0xff9A9A9A), FontWeight.w600, 12.0),
-                                            ),
-                                            Text(
-                                              invoiceList[index].tokenNo,
-                                              style:  customisedStyle(context, Colors.black, FontWeight.w600, 12.0),
-                                            ),
-                                          ],
+                                        width: MediaQuery.of(context).size.width / 1.5,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context).size.width / 8,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      invoiceList[index].voucherNo,
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0),
+                                                    ),
+                                                    Text(
+                                                      invoiceList[index].date,
+                                                      style: customisedStyle(context, Color(0xff585858), FontWeight.w600, 12.0),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width / 8,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'token_no'.tr,
+                                                      style: customisedStyle(context, Color(0xff9A9A9A), FontWeight.w600, 12.0),
+                                                    ),
+                                                    Text(
+                                                      invoiceList[index].tokenNo,
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width / 3,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'customer'.tr,
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0),
+                                                    ),
+                                                    Text(
+                                                      invoiceList[index].custName,
+                                                      style: customisedStyle(context, Color(0xff585858), FontWeight.w600, 12.0),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       Container(
-
-                                        width: MediaQuery.of(context).size.width / 3,
-
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                        width: MediaQuery.of(context).size.width / 5,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Text('customer'.tr,
-                                              style:  customisedStyle(context, Colors.black, FontWeight.w600, 13.0),),
-                                            Text(
-                                              invoiceList[index].custName,
-                                              style:  customisedStyle(context,  Color(0xff585858), FontWeight.w600, 12.0),
-
+                                            Padding(
+                                              padding: EdgeInsets.only(right: 15.0),
+                                              child: Text(roundStringWith(invoiceList[index].salesData["GrandTotal"].toString()),
+                                                  style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0)),
                                             ),
+
+                                            /// export and print commented
+                                            //   Container(
+                                            //       height: MediaQuery.of(context).size.height/20,
+                                            //       width: MediaQuery.of(context).size.width/14,
+                                            //       decoration: BoxDecoration(
+                                            //           color: Colors.black,
+                                            //           borderRadius:
+                                            //           BorderRadius.circular(2)),
+                                            //       child: TextButton(
+                                            //           onPressed: () {},
+                                            //           child: Text(
+                                            //             "Export",
+                                            //             style:
+                                            //             TextStyle(color: Colors.white),
+                                            //           ))),
+
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(right: 15.0,left: 15.0),
+                                            //   child: Container(
+                                            //     width: 100,
+                                            //     child: ElevatedButton(
+                                            //       style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                                            //       onPressed: () {
+                                            //         PrintDataDetails.type = "SI";
+                                            //         PrintDataDetails.id = invoiceList[index].salesMasterID;
+                                            //         printDetail();
+                                            //       },
+                                            //       child: Text(
+                                            //         'print'.tr,
+                                            //         style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Container(
-
-                                width: MediaQuery.of(context).size.width / 5,
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:   EdgeInsets.only(right: 15.0),
-                                      child: Text( roundStringWith(invoiceList[index].netTotal),style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0)),
-                                    ),
-
-                                  /// export and print commented
-                                  //   Container(
-                                  //       height: MediaQuery.of(context).size.height/20,
-                                  //       width: MediaQuery.of(context).size.width/14,
-                                  //       decoration: BoxDecoration(
-                                  //           color: Colors.black,
-                                  //           borderRadius:
-                                  //           BorderRadius.circular(2)),
-                                  //       child: TextButton(
-                                  //           onPressed: () {},
-                                  //           child: Text(
-                                  //             "Export",
-                                  //             style:
-                                  //             TextStyle(color: Colors.white),
-                                  //           ))),
+                              );
+                            })),
+                  ),
 
 
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(right: 15.0,left: 15.0),
-                                    //   child: Container(
-                                    //     width: 100,
-                                    //     child: ElevatedButton(
-                                    //       style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
-                                    //       onPressed: () {
-                                    //         PrintDataDetails.type = "SI";
-                                    //         PrintDataDetails.id = invoiceList[index].salesMasterID;
-                                    //         printDetail();
-                                    //       },
-                                    //       child: Text(
-                                    //         'print'.tr,
-                                    //         style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
 
-
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }):Container(
-                  child: Center(child: Text(messageShow,style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),)),),
-              ),
-            ),
-          ],
-        )
+                  // Container(
+                  //   height: MediaQuery.of(context).size.height / 1.3,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: invoiceList.isNotEmpty
+                  //         ? ListView.builder(
+                  //             // the number of items in the list
+                  //             itemCount: invoiceList.length,
+                  //             // display each item of the product list
+                  //             itemBuilder: (context, index) {
+                  //               return Card(
+                  //                 elevation: 0,
+                  //                 shape: RoundedRectangleBorder(
+                  //                     borderRadius: BorderRadius.circular(3), side: BorderSide(width: 1, color: Color(0xffDFDFDF))),
+                  //                 color: Color(0xffffffff),
+                  //                 child: Container(
+                  //                   width: MediaQuery.of(context).size.width / 1.1,
+                  //                   child: Row(
+                  //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Padding(
+                  //                         padding: const EdgeInsets.only(right: 15.0, left: 15.0),
+                  //                         child: Container(
+                  //                           width: 100,
+                  //                           child: ElevatedButton(
+                  //                             style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                  //                             onPressed: () {
+                  //                               PrintDataDetails.type = "SI";
+                  //                               PrintDataDetails.id = invoiceList[index].salesMasterID;
+                  //                               printDetail(invoiceList[index].salesMasterID, "SI");
+                  //                             },
+                  //                             child: Text(
+                  //                               'print'.tr,
+                  //                               style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                  //                             ),
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                       Container(
+                  //                         width: MediaQuery.of(context).size.width / 1.5,
+                  //                         child: Padding(
+                  //                           padding: const EdgeInsets.all(8.0),
+                  //                           child: Row(
+                  //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //                             crossAxisAlignment: CrossAxisAlignment.center,
+                  //                             children: [
+                  //                               Container(
+                  //                                 width: MediaQuery.of(context).size.width / 8,
+                  //                                 child: Column(
+                  //                                   mainAxisAlignment: MainAxisAlignment.start,
+                  //                                   crossAxisAlignment: CrossAxisAlignment.start,
+                  //                                   children: [
+                  //                                     Text(
+                  //                                       invoiceList[index].voucherNo,
+                  //                                       style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0),
+                  //                                     ),
+                  //                                     Text(
+                  //                                       invoiceList[index].date,
+                  //                                       style: customisedStyle(context, Color(0xff585858), FontWeight.w600, 12.0),
+                  //                                     ),
+                  //                                   ],
+                  //                                 ),
+                  //                               ),
+                  //                               Container(
+                  //                                 width: MediaQuery.of(context).size.width / 8,
+                  //                                 child: Column(
+                  //                                   mainAxisAlignment: MainAxisAlignment.start,
+                  //                                   crossAxisAlignment: CrossAxisAlignment.start,
+                  //                                   children: [
+                  //                                     Text(
+                  //                                       'token_no'.tr,
+                  //                                       style: customisedStyle(context, Color(0xff9A9A9A), FontWeight.w600, 12.0),
+                  //                                     ),
+                  //                                     Text(
+                  //                                       invoiceList[index].tokenNo,
+                  //                                       style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),
+                  //                                     ),
+                  //                                   ],
+                  //                                 ),
+                  //                               ),
+                  //                               Container(
+                  //                                 width: MediaQuery.of(context).size.width / 3,
+                  //                                 child: Column(
+                  //                                   mainAxisAlignment: MainAxisAlignment.start,
+                  //                                   crossAxisAlignment: CrossAxisAlignment.start,
+                  //                                   children: [
+                  //                                     Text(
+                  //                                       'customer'.tr,
+                  //                                       style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0),
+                  //                                     ),
+                  //                                     Text(
+                  //                                       invoiceList[index].custName,
+                  //                                       style: customisedStyle(context, Color(0xff585858), FontWeight.w600, 12.0),
+                  //                                     ),
+                  //                                   ],
+                  //                                 ),
+                  //                               ),
+                  //                             ],
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                       Container(
+                  //                         width: MediaQuery.of(context).size.width / 5,
+                  //                         child: Row(
+                  //                           mainAxisAlignment: MainAxisAlignment.end,
+                  //                           crossAxisAlignment: CrossAxisAlignment.center,
+                  //                           children: [
+                  //                             Padding(
+                  //                               padding: EdgeInsets.only(right: 15.0),
+                  //                               child: Text(roundStringWith(invoiceList[index].netTotal),
+                  //                                   style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0)),
+                  //                             ),
+                  //
+                  //                             /// export and print commented
+                  //                             //   Container(
+                  //                             //       height: MediaQuery.of(context).size.height/20,
+                  //                             //       width: MediaQuery.of(context).size.width/14,
+                  //                             //       decoration: BoxDecoration(
+                  //                             //           color: Colors.black,
+                  //                             //           borderRadius:
+                  //                             //           BorderRadius.circular(2)),
+                  //                             //       child: TextButton(
+                  //                             //           onPressed: () {},
+                  //                             //           child: Text(
+                  //                             //             "Export",
+                  //                             //             style:
+                  //                             //             TextStyle(color: Colors.white),
+                  //                             //           ))),
+                  //
+                  //                             // Padding(
+                  //                             //   padding: const EdgeInsets.only(right: 15.0,left: 15.0),
+                  //                             //   child: Container(
+                  //                             //     width: 100,
+                  //                             //     child: ElevatedButton(
+                  //                             //       style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                  //                             //       onPressed: () {
+                  //                             //         PrintDataDetails.type = "SI";
+                  //                             //         PrintDataDetails.id = invoiceList[index].salesMasterID;
+                  //                             //         printDetail();
+                  //                             //       },
+                  //                             //       child: Text(
+                  //                             //         'print'.tr,
+                  //                             //         style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                  //                             //       ),
+                  //                             //     ),
+                  //                             //   ),
+                  //                             // ),
+                  //                           ],
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               );
+                  //             })
+                  //         : Container(
+                  //             child: Center(
+                  //                 child: Text(
+                  //               messageShow,
+                  //               style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),
+                  //             )),
+                  //           ),
+                  //   ),
+                  // ),
+                ],
+              )
             : noNetworkConnectionPage(),
         //  bottomNavigationBar: bottomBar(),
       ),
     );
   }
 
+  bool isLoading = false;
+  var pageNumber = 1;
+  var itemPerPage = 10;
+  var firstTime = 1;
+  var listLength = 1;
   Uint8List? resizedImageBytes;
-  void _resizeImage() async{
 
-
+  void _resizeImage() async {
     print("Date ---------1   ---------1   ---------1    ${DateTime.now().second} ");
 
     var id = "9eee65e7-d6f7-4ece-b0dc-5341a33365e6";
-    var arabicImageBytes =await printHelperNew.printDetails(id: id,type: "SI",context: context);
+    var arabicImageBytes = await printHelperNew.printDetails(id: id, type: "SI", context: context);
 
     print("Date ---------4   ---------4   ---------4    ${DateTime.now().second} ");
     // Step 1: Decode and resize the image using the image package
 
     print("Date ---------5   ---------5   ---------5    ${DateTime.now().second} ");
-
-
 
     log_data("--------------${arabicImageBytes.runtimeType}---------$arabicImageBytes");
 
@@ -559,20 +686,20 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 
   //
   var printHelperNew = USBPrintClassTest();
-  var printHelperUsb =   USBPrintClass();
-  var printHelperIP =   AppBlocs();
-  var bluetoothHelper =   AppBlocsBT();
-  printDetail(id,voucherType) async {
+  var printHelperUsb = USBPrintClass();
+  var printHelperIP = AppBlocs();
+  var bluetoothHelper = AppBlocsBT();
+
+  printDetail(id, voucherType) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
     var printType = prefs.getString('PrintType') ?? 'Wifi';
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
     var temp = prefs.getString("template") ?? "template4";
     if (defaultIp == "") {
-      popAlert(head: "Error", message: "Please select a printer",position: SnackPosition.TOP);
-
+      popAlert(head: "Error", message: "Please select a printer", position: SnackPosition.TOP);
     } else {
-      if(printType =='Wifi'){
+      if (printType == 'Wifi') {
         var ret = await printHelperIP.printDetails();
         if (ret == 2) {
           var ip = "";
@@ -581,19 +708,16 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           } else {
             ip = defaultIp;
           }
-          printHelperIP.print_receipt(ip, context,false);
+          printHelperIP.print_receipt(ip, context, false);
         } else {
-          popAlert(head: "Error", message: "Please try again later",position: SnackPosition.TOP);
-
+          popAlert(head: "Error", message: "Please try again later", position: SnackPosition.TOP);
         }
         //
-      }
-      else if (printType =='USB'){
-        if(temp =="template5"){
+      } else if (printType == 'USB') {
+        if (temp == "template5") {
           print("Date ---------step 1   ---------   ---------     ${DateTime.now().second} ");
-          printHelperNew.printDetails(id: id,type: voucherType,context: context);
-        }
-        else{
+          printHelperNew.printDetails(id: id, type: voucherType, context: context);
+        } else {
           var ret = await printHelperUsb.printDetails();
           if (ret == 2) {
             var ip = "";
@@ -604,47 +728,33 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             }
             printHelperUsb.printReceipt(ip, context);
           } else {
-            popAlert(head: "Error", message: "Please try again later",position: SnackPosition.TOP);
-
+            popAlert(head: "Error", message: "Please try again later", position: SnackPosition.TOP);
           }
         }
-
-
-
 
         /// commented
-
-      }
-      else{
-          var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
+      } else {
+        var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
         // handlePrint(context);
 
-        if(loadData){
-          var printStatus =await bluetoothHelper.scan(false);
-          if(printStatus ==1){
-            dialogBox(context,"Check your bluetooth connection");
-          }
-          else if(printStatus ==2){
-            dialogBox(context,"Your default printer configuration problem");
-          }
-          else if(printStatus ==3){
+        if (loadData) {
+          var printStatus = await bluetoothHelper.scan(false);
+          if (printStatus == 1) {
+            dialogBox(context, "Check your bluetooth connection");
+          } else if (printStatus == 2) {
+            dialogBox(context, "Your default printer configuration problem");
+          } else if (printStatus == 3) {
             await bluetoothHelper.scan(false);
             // alertMessage("Try again");
-          }
-          else if(printStatus ==4){
+          } else if (printStatus == 4) {
             //  alertMessage("Printed successfully");
           }
+        } else {
+          dialogBox(context, "Try again");
         }
-        else{
-          dialogBox(context,"Try again");
-        }
-
       }
-
     }
-
   }
-
 
   Future<void> handlePrint(BuildContext context) async {
     var bluetoothHelper = BluetoothHelperNew();
@@ -662,11 +772,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         // alertMessage("Try again");
         break;
       case 4:
-      // alertMessage("Printed successfully");
+        // alertMessage("Printed successfully");
         break;
     }
   }
-
 
   Widget noNetworkConnectionPage() {
     return Center(
@@ -684,8 +793,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ),
           Text(
             'no_network'.tr,
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
           SizedBox(
             height: 10,
@@ -699,8 +807,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                 style: TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
           ),
         ],
       ),
@@ -711,28 +818,20 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 List<InvoiceModelClass> invoiceList = [];
 
 class InvoiceModelClass {
-  String id,
-      voucherNo,
-      saleOrderID,
-      date,
-      deliveryDate,
-      deliveryTime,
-      custName,
-      netTotal,
-      salesMasterID,
-      tokenNo;
-
+  String id, voucherNo, saleOrderID, date, deliveryDate, deliveryTime, custName, netTotal, salesMasterID, tokenNo;
+  var salesData;
   InvoiceModelClass(
       {required this.id,
-        required this.voucherNo,
-        required this.saleOrderID,
-        required this.date,
-        required this.deliveryDate,
-        required this.deliveryTime,
-        required this.salesMasterID,
-        required this.custName,
-        required this.netTotal,
-        required this.tokenNo});
+      required this.voucherNo,
+      required this.saleOrderID,
+      required this.date,
+      required this.deliveryDate,
+      required this.deliveryTime,
+      required this.salesMasterID,
+      required this.salesData,
+      required this.custName,
+      required this.netTotal,
+      required this.tokenNo});
 
   factory InvoiceModelClass.fromJson(Map<dynamic, dynamic> json) {
     return InvoiceModelClass(
@@ -742,9 +841,10 @@ class InvoiceModelClass {
         date: json['Date'],
         deliveryDate: json['DeliveryDate'],
         deliveryTime: json['DeliveryTime'],
+        salesData: json['SalesData'],
         custName: json['CustomerName'],
         netTotal: json['NetTotal'],
-        salesMasterID: json['SalesMasterID']??'',
-        tokenNo: json['TokenNumber']);
+        salesMasterID: json['SalesMasterID'] ?? '',
+        tokenNo: json['TokenNumber'].toString());
   }
 }

@@ -10,6 +10,11 @@ import 'online_platforms/list_online_platforms.dart';
 import 'printer_setting/printer_type.dart';
 
 class SettingsMobilePage extends StatefulWidget {
+
+  bool  generalSettingsPermission;
+
+  SettingsMobilePage({super.key, required this.generalSettingsPermission});
+
   @override
   State<SettingsMobilePage> createState() => _SettingsMobilePageState();
 }
@@ -37,14 +42,14 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
       ),
       body: Column(
         children: [
-          Padding(
+          widget.generalSettingsPermission?  Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: Container(
               height: 1,
               color: const Color(0xffE9E9E9),
             ),
-          ),
-          GestureDetector(
+          ):Container(),
+          widget.generalSettingsPermission?GestureDetector(
             onTap: () {
               Get.to(GeneralSettingsMobile());
             },
@@ -79,7 +84,7 @@ class _SettingsMobilePageState extends State<SettingsMobilePage> {
                 ),
               ),
             ),
-          ),
+          ):Container(),
           dividerStyle(),
           GestureDetector(
             onTap: () {

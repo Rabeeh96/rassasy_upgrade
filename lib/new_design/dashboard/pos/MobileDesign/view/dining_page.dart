@@ -309,7 +309,7 @@ class _DiningPageState extends State<DiningPage> {
                                     ),
 
                                     diningController.tableData[index].status == 'Ordered'
-                                        ? CustomSlidableAction(
+                                        ? posController.pay_perm.value? CustomSlidableAction(
                                             onPressed: (BuildContext context) async {
                                               var resultPayment = await Get.to(PaymentPage(
                                                 uID: diningController.tableData[index].salesOrderID!,
@@ -339,7 +339,7 @@ class _DiningPageState extends State<DiningPage> {
                                                 )
                                               ],
                                             ),
-                                          )
+                                          ):Container()
                                         : Container(),
 
                                     ///kot commented here
@@ -646,7 +646,7 @@ enum ConfirmAction { cancel, accept }
 Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
   return showDialog<ConfirmAction>(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(

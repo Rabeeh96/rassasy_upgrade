@@ -103,6 +103,7 @@ class OrderController extends GetxController {
   RxDouble gstPer = 0.0.obs;
   RxDouble gstAmount = 0.0.obs;
   RxBool isInclusive = false.obs;
+  RxBool unitPriceEdit = false.obs;
 
   RxList kartChange = [].obs;
   bool checkValueInList(value) {
@@ -1369,6 +1370,26 @@ class OrderController extends GetxController {
       popAlert(head: "Alert", message: "You are connected to the internet", position: SnackPosition.TOP);
     }
   }
+
+  DateTime getDateWithHourCondition(DateTime date, int hour) {
+
+    // Ensure the hour is within valid range (0 to 23)
+    if (hour < 0 || hour > 23) {
+      throw ArgumentError('Hour must be between 0 and 23');
+    }
+
+    DateTime specifiedTime = DateTime(date.year, date.month, date.day, hour);
+
+    if (date.isAfter(specifiedTime)) {
+      // If current time is after the specified hour, return the current date
+      return DateTime(date.year, date.month, date.day);
+    } else {
+      // If current time is before the specified hour, return the previous day
+      DateTime previousDay = date.subtract(Duration(days: 1));
+      return DateTime(previousDay.year, previousDay.month, previousDay.day);
+    }
+  }
+
   final POSController posController = Get.put(POSController());
   /// function for create
   Future<Null> createSalesOrderRequest({
@@ -1416,10 +1437,19 @@ class OrderController extends GetxController {
       var stateID = prefs.getString('State') ?? 1;
       var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
+
+
+      String compensation=  prefs.getString('CompensationHour') ?? "1";
+      var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
       DateTime selectedDateAndTime = DateTime.now();
-      String convertedDate = "$selectedDateAndTime";
+      String convertedDate = "$dateTime";
       dateOnly.value = convertedDate.substring(0, 10);
       var orderTime = "$selectedDateAndTime";
+
+      // DateTime selectedDateAndTime = DateTime.now();
+      // String convertedDate = "$selectedDateAndTime";
+      // dateOnly.value = convertedDate.substring(0, 10);
+      // var orderTime = "$selectedDateAndTime";
 
       var type = "Dining";
       var customerName = "walk in customer";
@@ -1457,7 +1487,6 @@ class OrderController extends GetxController {
       if (sectionType == "Edit") {
         url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
        }
-      log_data("--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $orderItemList");
 
       Map data = {
         "Table": tableID,

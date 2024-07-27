@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:image/image.dart' as Img;
 import 'dart:typed_data';
 import 'package:flutter/material.dart' hide Image;
@@ -63,7 +64,7 @@ class AppBlocs {
             body: body);
 
         print("${response.statusCode}");
-        print("${response.body}");
+        log("${response.body}");
         Map n = json.decode(utf8.decode(response.bodyBytes));
 
         var status = n["StatusCode"];
@@ -799,14 +800,32 @@ class AppBlocs {
     }
     // printer.emptyLines(1);
     // printer.text('Powered By Vikn Codes', styles: PosStyles(height: PosTextSize.size1, bold: true, width: PosTextSize.size1, align: PosAlign.center));
-
+    print("OpenDrawerOpenDrawerOpenDrawerOpenDrawerOpenDrawer$OpenDrawer");
     printer.cut();
     if (PrintDataDetails.type == "SI") {
+      OpenDrawer= checkCashDrawer(cashReceived,bankReceived);
+
+
+
       if (OpenDrawer) {
         printer.drawer();
       }
     }
   }
+  bool checkCashDrawer(cash,bank) {
+    double cashReceived = double.parse(cash??'0');
+    double bankAmount = double.parse(bank??'0');
+
+    if (cashReceived > 0.0) {
+      return true;
+    } else if (cashReceived == 0.0 && bankAmount > 0.0) {
+      return false;
+    }
+    return false;
+  }
+
+
+
 
   /// template supported only english
   Future<void> englishInvoicePrint(
