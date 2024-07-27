@@ -7210,6 +7210,23 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               printDetail(context,n["invoice_id"],"SI");
             }
           });
+
+
+          Future.delayed(const Duration(milliseconds: 500), () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            var kot = prefs.getBool("KOT") ?? false;
+            var kotAfterPayment = prefs.getBool("KotafterPayment") ?? false;
+            if(kotAfterPayment ==false){
+              kot = false;
+            }
+            if (kot == true) {
+              // PrintDataDetails.type = "SO";
+              // PrintDataDetails.id = widget.UUID;
+              printKOT(widget.UUID, false, [], false);
+            } else {}
+          });
+
+
         }
         else if (status == 6001) {
           stop();
