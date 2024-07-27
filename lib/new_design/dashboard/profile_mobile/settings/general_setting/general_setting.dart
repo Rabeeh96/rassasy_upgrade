@@ -43,18 +43,18 @@ class _GeneralSettingsMobileState extends State<GeneralSettingsMobile> {
           'gen_setting'.tr,
           style: TextStyle(color: Color(0xff000000), fontSize: 20),
         ),
-        actions: [
-          GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 15.0),
-              child: Text(
-                'Save'.tr,
-                style: customisedStyle(
-                    context, Color(0xffF25F29), FontWeight.w400, 14.0),
-              ),
-            ),
-          )
-        ],
+        // actions: [
+        //   GestureDetector(
+        //     child: Padding(
+        //       padding: const EdgeInsets.only(right: 15.0),
+        //       child: Text(
+        //         'Save'.tr,
+        //         style: customisedStyle(
+        //             context, Color(0xffF25F29), FontWeight.w400, 14.0),
+        //       ),
+        //     ),
+        //   )
+        // ],
       ),
       body: SingleChildScrollView(
         child: Column(

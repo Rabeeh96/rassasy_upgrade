@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/order_controller.dart';
 
@@ -85,6 +85,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
     print("orderController.flavourID.value ${orderController.flavourID.value} ");
     print("    orderController.flavourName.value ${    orderController.flavourName.value} ");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    orderController.unitPriceEdit.value = prefs.getBool("Unit Price Edit")??true;
+
+    print("------------------------${orderController.unitPriceEdit}---orderController.unitPriceEdit---------");
 
     /// excise tax not working
     // orderController.exciseTaxID.value = orderController.orderItemList[widget.index]["ExciseTaxID"];
@@ -217,43 +221,44 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(
-                        orderController.currency.value,
-                        style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 15.0),
-                      ),
+              Obx(() =>   Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      orderController.currency.value,
+                      style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 15.0),
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height / 19,
-                      width: MediaQuery.of(context).size.height / 7,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        // border: Border.all(color: Color(0xffE7E7E7))
-                      ),
-                      child: TextField(
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
-                        ],
-                        //  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                        onTap: () => orderController.unitPriceChangingController.selection =
-                            TextSelection(baseOffset: 0, extentOffset: orderController.unitPriceChangingController.value.text.length),
-                        onChanged: (value) {
-                          if (value != "") {
-                            orderController.quantity.value = double.parse(orderController.orderItemList[widget.index]["Qty"].toString());
-                            orderController.calculationOnEditing(index: widget.index, isQuantityButton: false, value: value.toString());
-                          }
-                        },
-                        controller: orderController.unitPriceChangingController,
-                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                        decoration: TextFieldDecoration.defaultTextField(hintTextStr: ""),
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height / 19,
+                    width: MediaQuery.of(context).size.height / 7,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      // border: Border.all(color: Color(0xffE7E7E7))
+                    ),
+                    child: TextField(
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
+                      ],
+                      readOnly: orderController.unitPriceEdit.value?false:true,
+                      //  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                      onTap: () => orderController.unitPriceChangingController.selection =
+                          TextSelection(baseOffset: 0, extentOffset: orderController.unitPriceChangingController.value.text.length),
+                      onChanged: (value) {
+                        if (value != "") {
+                          orderController.quantity.value = double.parse(orderController.orderItemList[widget.index]["Qty"].toString());
+                          orderController.calculationOnEditing(index: widget.index, isQuantityButton: false, value: value.toString());
+                        }
+                      },
+                      controller: orderController.unitPriceChangingController,
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                      decoration: TextFieldDecoration.defaultTextField(hintTextStr: ""),
+                    ),
+                  )
+                ],
+              ),),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,

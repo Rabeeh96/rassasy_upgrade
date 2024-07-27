@@ -58,8 +58,6 @@ import 'package:http/http.dart' as http;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-
   if (Platform.isWindows) {
     doWhenWindowReady(() {
       const initialSize = Size(800, 600);
@@ -72,10 +70,10 @@ void main() {
 
 
   SharedPreferences.getInstance().then((prefs) {
-  //   bool isTablet = true;
-     bool isTablet = isTabletDevice();
-    prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
-    print("main isTablet: $isTablet");
+   bool isTablet = true;
+  //   bool isTablet = isTabletDevice();
+     prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
+     print("main isTablet: $isTablet");
 
     SystemChrome.setPreferredOrientations([
        isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
@@ -97,16 +95,7 @@ bool isTabletDevice() {
   return screenWidth > defaultScreenWidth;
 }
 
-bool isTabletDevice2(BuildContext context) {
-  /// Determine if the device is a tablet based on the screen width
-  double screenWidth = MediaQuery.of(context).size.width;
-  print("screenWidth is tablet device: $screenWidth");
 
-  /// You may need to adjust this threshold based on your requirements
-  double tabletThreshold = 600.0; // Example threshold, adjust as needed
-
-  return screenWidth > tabletThreshold;
-}
 
 class MyApp extends StatelessWidget {
   final bool isTablet;
@@ -191,8 +180,8 @@ class _MyHomePageState extends State<MyHomePage> {
         await defaultData(context: context,);
         var expireDate = prefs.getString('expiryDate') ?? '';
         var companyName = prefs.getString('companyName') ?? '';
-        var selectPos = prefs.getBool('IsSelectPos') ?? false;
-        print("____________________________$selectPos");
+
+
         var expire = isDateExpired(expireDate);
         // var expire = checkExpire(expireDate);
         if (expire == true) {
@@ -205,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
           // }
 
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         } else {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
 

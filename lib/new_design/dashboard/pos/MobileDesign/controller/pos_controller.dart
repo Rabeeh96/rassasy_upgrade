@@ -456,7 +456,7 @@ final isLoadTable=false.obs;
 
 
 
-    dining_view_perm.value = prefs.getBool('Diningview') ?? true;
+      dining_view_perm.value = prefs.getBool('Diningview') ?? true;
       reservation_view_perm.value = prefs.getBool('View Reservation') ?? true;
       directOrderOption.value = prefs.getBool('directOrderOption') ?? false;
       take_away_view_perm.value = prefs.getBool('Take awayview') ?? true;
@@ -480,8 +480,11 @@ final isLoadTable=false.obs;
       cancel_order_perm.value = prefs.getBool('Cancel Order') ?? true;
       pay_perm.value = prefs.getBool('Payment') ?? true;
 
-      kitchen_print_perm.value = prefs.getBool('KOT Print') ?? true;
 
+      log_data("pay_perm   pay_perm  ${pay_perm.value}");
+
+      kitchen_print_perm.value = prefs.getBool('KOT Print') ?? true;
+    log_data("kitchen_print_perm   kitchen_print_perm  ${kitchen_print_perm.value}");
       if (kotPrint == false) {
         kitchen_print_perm.value = false;
       }

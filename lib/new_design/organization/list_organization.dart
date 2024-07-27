@@ -59,8 +59,8 @@ class _OrganizationDetailState extends State<OrganizationList> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-   bool isTablet = true;
-//   bool isTablet = screenWidth > 850;
+  // bool isTablet = true;
+   bool isTablet = screenWidth > 850;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -248,6 +248,7 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                       prefs.setString('expiryDate', companyController.companyList[index].expiryDate);
                                                       prefs.setString('permission', companyController.companyList[index].permission);
                                                       prefs.setString('edition', companyController.companyList[index].edition);
+                                                      prefs.setString('companyLogo', companyController.companyList[index].image??'');
                                                      // prefs.setBool('isPosUser', companyController.companyList[index].isPosUser);
                                                       prefs.setString('companyID', companyController.companyList[index].id);
                                                       prefs.setString('BaseURL', companyController.companyList[index].baseurl);
@@ -271,9 +272,10 @@ class _OrganizationDetailState extends State<OrganizationList> {
                                                         prefs.setString('expiryDate', companyController.companyList[index].expiryDate);
                                                         prefs.setString('permission', companyController.companyList[index].permission);
                                                         prefs.setString('edition', companyController.companyList[index].permission);
-                                                        prefs.setBool('isPosUser', false);                                                        prefs.setString('companyID', companyController.companyList[index].id);
+                                                        prefs.setBool('isPosUser', false);
+                                                        prefs.setString('companyID', companyController.companyList[index].id);
                                                         prefs.setString('BaseURL', companyController.companyList[index].baseurl);
-
+                                                        prefs.setString('companyLogo', companyController.companyList[index].image??'');
                                                         prefs.setBool('companySelected', true);
                                                         baseURlApi=companyController.companyList[index].baseurl;
                                                         await defaultDataInitial(context:context);

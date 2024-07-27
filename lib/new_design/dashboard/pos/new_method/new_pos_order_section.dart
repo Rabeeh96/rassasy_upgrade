@@ -165,6 +165,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     });
   }
   bool isComplimentory=false;
+  bool unitPriceEditPermission=false;
 
   changeVal(val) {
     if (val == 1) {
@@ -202,7 +203,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
        ledgerID = prefs.getInt("Cash_Account") ?? 1;
        isComplimentory = prefs.getBool("complimentary_bill") ?? false;
        bool autoFocusSearch = prefs.getBool("autoFocusSearch") ?? false;
-
+       unitPriceEditPermission = prefs.getBool("Unit Price Edit")??true;
        networkConnection = true;
       if (widget.sectionType == "Create") {
 
@@ -240,7 +241,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     );
   }
 
-  bool IsSelectPos = false;
+
   String waiterNameInitial = "";
   bool diningStatusPermission = false;
   bool carStatusPermission = false;
@@ -4184,6 +4185,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     child: TextField(
                       textAlign: TextAlign.end,
                       controller: unitPriceDetailController,
+                      readOnly:  unitPriceEditPermission?false:true,
                       style: customisedStyle(context, Colors.black, FontWeight.w500, 12.00),
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
@@ -5198,9 +5200,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
         String compensation=  prefs.getString('CompensationHour') ?? "1";
         var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
-        print(dateTime);
-
-
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$dateTime";
         dateOnly = convertedDate.substring(0, 10);
@@ -7400,7 +7399,7 @@ class UserDetailsAppBar extends StatelessWidget {
                             TextButton(
                                 onPressed: () async {
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
-                                  prefs.setBool('IsSelectPos', false);
+                                  prefs.setBool('Only POS Access', false);
                                   Navigator.pop(context);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                 },
@@ -7447,7 +7446,7 @@ class BackButtonAppBar extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                var selectPos = prefs.getBool('IsSelectPos') ?? false;
+                var selectPos = prefs.getBool('Only POS Access') ?? false;
                 if (selectPos) {
                 } else {
                   Navigator.pop(context);

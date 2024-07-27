@@ -1637,12 +1637,25 @@ bool isCancelled;
 
     printer += generator.cut();
     if (PrintDataDetails.type == "SI") {
+      openDrawer= checkCashDrawer(cashReceived,bankReceived);
       if (openDrawer) {
         printer += generator.drawer();
       }
     }
     return printer;
   }
+  bool checkCashDrawer(cash,bank) {
+    double cashReceived = double.parse(cash??'0');
+    double bankAmount = double.parse(bank??'0');
+
+    if (cashReceived > 0.0) {
+      return true;
+    } else if (cashReceived == 0.0 && bankAmount > 0.0) {
+      return false;
+    }
+    return false;
+  }
+
 }
 
 class ESCPrinterServicesArabicKOT {

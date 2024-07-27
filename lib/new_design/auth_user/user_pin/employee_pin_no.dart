@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/dashboard/dashboard.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/new_method/pos_list_section.dart';
 import 'package:rassasy_new/new_design/organization/list_organization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -98,9 +99,14 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     defaultAPi();
   }
 
+  var companyName ="";
   defaultAPi() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    companyName = prefs.getString('companyName') ?? '';
     baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+    setState(() {
+
+    });
   }
 
   // KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
@@ -122,8 +128,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = true;
-    //  bool isTablet = screenWidth > defaultScreenWidth;
+   bool isTablet = true;
+      // bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
         // appBar: AppBar(
         //   elevation: 0.0,
@@ -157,6 +163,15 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                   //  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+
+                    Container(
+                        alignment: Alignment.center,
+
+                        child: Text(
+                          companyName,
+                          style:customisedStyle(context, const Color(0xffF25F29), FontWeight.w600, 18.0),
+                        )),
+
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: IconButton(
@@ -177,6 +192,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                               'enter_pin'.tr,
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                             )),
+
+
                         passwordEnteringField(),
 
                         oneToThreeNumbers(),
@@ -200,6 +217,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var branchID = prefs.getInt('branchID') ?? 1;
         var companyID = prefs.getString('companyID') ?? '';
+        bool onlyPosUser = prefs.getBool('Only POS Access') ?? false;
 
         baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
         String baseUrl = BaseUrl.baseUrlV11;
@@ -233,23 +251,39 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
           stop();
 
           await Future.delayed(Duration(seconds: 1), () {
+            bool onlyPosUser = prefs.getBool('Only POS Access') ?? false;
             print("start   01");
 
-            bool result = checkConditions(userRollData);
-            if (result) {
-              prefs.setBool('IsSelectPos', false) ?? '';
+           // bool result = checkConditions(userRollData);
+            if (onlyPosUser) {
+              prefs.setBool('Only POS Access', true) ?? '';
+              Size screenSize = MediaQuery.of(context).size;
+              double screenWidth = screenSize.width;
+              double screenHeight = screenSize.height;
+                 bool isTablet = true;
+            //  bool isTablet = screenWidth > defaultScreenWidth;
+              if(isTablet){
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => POSListItemsSection()),
+                );
+              }
+              else{
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => POSMobilePage()),
+                );
+              }
+
+
+            } else {
+              prefs.setBool('Only POS Access', false) ?? '';
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => DashboardNew()),
               );
-            } else {
-              prefs.setBool('IsSelectPos', true) ?? '';
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => POSListItemsSection()),
-              );
             }
-            print("result__________________________$result");
+
           });
         } else if (status == 6001) {
           stop();
