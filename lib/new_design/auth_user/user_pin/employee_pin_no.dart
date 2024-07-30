@@ -109,27 +109,14 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     });
   }
 
-  // KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
-  //   // Check if the event is a RawKeyDownEvent
-  //   final logicalKey = event.logicalKey;
-  //   // Check if the key is a numeric key and the entered numbers length is less than 6
-  //   if (RegExp('[0-9]').hasMatch(logicalKey.keyLabel!) &&
-  //       _enteredNumbersNotifier.value.length < 6) {
-  //     // Append numeric keys to the entered numbers
-  //     _enteredNumbersNotifier.value += logicalKey.keyLabel!;
-  //   }
-  //   return KeyEventResult.handled;
-  // }
-  // void _clearEnteredNumbers() {
-  //   _enteredNumbersNotifier.value = '';
-  // }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-   bool isTablet = true;
-      // bool isTablet = screenWidth > defaultScreenWidth;
+  // bool isTablet = true;
+       bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
         // appBar: AppBar(
         //   elevation: 0.0,
@@ -260,8 +247,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
               Size screenSize = MediaQuery.of(context).size;
               double screenWidth = screenSize.width;
               double screenHeight = screenSize.height;
-                 bool isTablet = true;
-            //  bool isTablet = screenWidth > defaultScreenWidth;
+               ///  bool isTablet = true;
+                 bool isTablet = screenWidth > defaultScreenWidth;
               if(isTablet){
                 Navigator.pushReplacement(
                   context,

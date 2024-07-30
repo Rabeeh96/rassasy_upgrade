@@ -206,9 +206,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
        unitPriceEditPermission = prefs.getBool("Unit Price Edit")??true;
        networkConnection = true;
       if (widget.sectionType == "Create") {
-
-
-
         mainPageIndex = 7;
       } else if (widget.sectionType == "Edit") {
 

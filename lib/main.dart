@@ -70,8 +70,8 @@ void main() {
 
 
   SharedPreferences.getInstance().then((prefs) {
-   bool isTablet = true;
-  //   bool isTablet = isTabletDevice();
+  // bool isTablet = true;
+    bool isTablet = isTabletDevice();
      prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
      print("main isTablet: $isTablet");
 
@@ -87,9 +87,7 @@ void main() {
 bool isTabletDevice() {
   /// Determine if the device is a tablet based on the screen width
   double screenWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
-
   print("--screenWidth  $screenWidth   ---------  defaultScreenWidth   $defaultScreenWidth");
-
 
   /// You may need to adjust this threshold based on your requirements
   return screenWidth > defaultScreenWidth;
@@ -160,7 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
       navigateUser();
     });
   }
-
 
 //test
   void navigateUser() async {
