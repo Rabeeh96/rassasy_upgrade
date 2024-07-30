@@ -27,6 +27,7 @@ import 'package:intl/intl.dart';
 // import 'package:pos_printer_manager/pos_printer_manager.dart';
 import '../detail/select_cardtype.dart';
 import '../detail/selected_customer.dart';
+import 'controller.dart';
 import 'model/model_class.dart';
 import 'package:get/get.dart';
 
@@ -44,7 +45,7 @@ class POSOrderSection extends StatefulWidget {
 
 class _POSOrderSectionState extends State<POSOrderSection> {
   Color borderColor = const Color(0xffB8B8B8);
-
+  SettingsController settingsController=Get.put(SettingsController());
   /// scroll controller declaration
 
   ScrollController productController = ScrollController();
@@ -161,11 +162,22 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     super.initState();
     Future.delayed(Duration.zero, () {
       posFunctions();
+      defaultValues();
 
     });
   }
+
+  defaultValues() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    productGroupFontSize= prefs.getDouble('ProductGroupFontSize')??12.0;
+    productFontSize=prefs.getDouble('ProductFontSize')??12.0;
+    descriptionFontSize= prefs.getDouble('DescriptionFontSize')??12.0;
+    rateFontSize=prefs.getDouble('RateFontSize')??12.0;
+    rowCountGridView= prefs.getInt('RowCountGridView')??4;
+    showImage= prefs.getBool('ShowImage')??true;
+  }
   bool isComplimentory=false;
-  bool unitPriceEditPermission=false;
 
   changeVal(val) {
     if (val == 1) {
@@ -179,7 +191,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     }
   }
 
-  final FocusNode searchFocusNode= FocusNode();
   Future<Null> posFunctions() async {
 
     start(context);
@@ -195,20 +206,18 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       });
     } else {
       changeVal(widget.orderType);
-       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
-       highlightsProductDetails = prefs.getBool("highlightsProductDetails") ?? false;
-       print("===================================================================printAfterPayment  $printAfterPayment");
-       currency = prefs.getString('CurrencySymbol') ?? "";
-       isGst = prefs.getBool("check_GST") ?? false;
-       ledgerID = prefs.getInt("Cash_Account") ?? 1;
-       isComplimentory = prefs.getBool("complimentary_bill") ?? false;
-       bool autoFocusSearch = prefs.getBool("autoFocusSearch") ?? false;
-       unitPriceEditPermission = prefs.getBool("Unit Price Edit")??true;
-       networkConnection = true;
+      printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
+      highlightsProductDetails = prefs.getBool("highlightsProductDetails") ?? false;
+      print("===================================================================printAfterPayment  $printAfterPayment");
+      currency = prefs.getString('CurrencySymbol') ?? "";
+      isGst = prefs.getBool("check_GST") ?? false;
+      ledgerID = prefs.getInt("Cash_Account") ?? 1;
+      isComplimentory = prefs.getBool("complimentary_bill") ?? false;
+
+      networkConnection = true;
       if (widget.sectionType == "Create") {
         mainPageIndex = 7;
       } else if (widget.sectionType == "Edit") {
-
         mainPageIndex = 7;
         await getOrderDetails(widget.UUID);
       } else {
@@ -216,11 +225,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         listItemDetails(widget.UUID);
       }
       if (widget.sectionType != "Payment") {
-        if(autoFocusSearch){
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            searchFocusNode.requestFocus();
-          });
-        }
         await getCategoryListDetail();
         await loadCard();
       }
@@ -238,7 +242,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     );
   }
 
-
+  bool IsSelectPos = false;
   String waiterNameInitial = "";
   bool diningStatusPermission = false;
   bool carStatusPermission = false;
@@ -389,7 +393,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         Container(
           color: Colors.white,
           height: MediaQuery.of(context).size.height / 1, //height of button
-        //  width: MediaQuery.of(context).size.width / 11,
+          //  width: MediaQuery.of(context).size.width / 11,
           child: orderTypeDetailScreen(),
         )
       ],
@@ -563,32 +567,32 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     if(values["ExciseTaxData"]!=null&&values["ExciseTaxData"]!=""){
       Map<String, dynamic> data = values;
 
-        final exciseTaxData = Map<String, dynamic>.from(data['ExciseTaxData']);
-        final iTaxBefore = exciseTaxData['TaxBefore'].toString();
-        final isAmountTaxBefore = exciseTaxData['IsAmountTaxBefore'];
-        final taxAfter = exciseTaxData['TaxAfter'].toString();
-        final isAmountTaxAfter = exciseTaxData['IsAmountTaxAfter'];
-        final TaxID = exciseTaxData['TaxID'];
-        final TaxName = exciseTaxData['TaxName'];
-        final BPValue = exciseTaxData['BPValue'].toString();
-        print("----TotalTaxRounded------${values["TotalTaxRounded"]}");
-        print("----ExciseTax------${values["ExciseTax"]}");
-        print("----VATAmount------${values["VATAmount"]}");
+      final exciseTaxData = Map<String, dynamic>.from(data['ExciseTaxData']);
+      final iTaxBefore = exciseTaxData['TaxBefore'].toString();
+      final isAmountTaxBefore = exciseTaxData['IsAmountTaxBefore'];
+      final taxAfter = exciseTaxData['TaxAfter'].toString();
+      final isAmountTaxAfter = exciseTaxData['IsAmountTaxAfter'];
+      final TaxID = exciseTaxData['TaxID'];
+      final TaxName = exciseTaxData['TaxName'];
+      final BPValue = exciseTaxData['BPValue'].toString();
+      print("----TotalTaxRounded------${values["TotalTaxRounded"]}");
+      print("----ExciseTax------${values["ExciseTax"]}");
+      print("----VATAmount------${values["VATAmount"]}");
 
 
-        double totalTax= double.parse(values["VATAmount"].toString())+double.parse(values["ExciseTax"].toString());
+      double totalTax= double.parse(values["VATAmount"].toString())+double.parse(values["ExciseTax"].toString());
       print("----totalTax------$totalTax");
-        // Remove ExciseTaxData from data
-        data.remove('ExciseTaxData');
-        data['ExciseTaxID'] = TaxID;
-        data['BPValue'] = BPValue;
-        data['ExciseTaxName'] = TaxName;
-        data['ExciseTaxBefore'] = iTaxBefore;
-        data['IsAmountTaxBefore'] = isAmountTaxBefore;
-        data['ExciseTaxAfter'] = taxAfter;
-        data['IsAmountTaxAfter'] = isAmountTaxAfter;
-        data['IsExciseProduct'] = true;
-        data['TotalTaxRounded'] = totalTax.toString();
+      // Remove ExciseTaxData from data
+      data.remove('ExciseTaxData');
+      data['ExciseTaxID'] = TaxID;
+      data['BPValue'] = BPValue;
+      data['ExciseTaxName'] = TaxName;
+      data['ExciseTaxBefore'] = iTaxBefore;
+      data['IsAmountTaxBefore'] = isAmountTaxBefore;
+      data['ExciseTaxAfter'] = taxAfter;
+      data['IsAmountTaxAfter'] = isAmountTaxAfter;
+      data['IsExciseProduct'] = true;
+      data['TotalTaxRounded'] = totalTax.toString();
 
 
 
@@ -1027,49 +1031,49 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                         ),
                         widget.orderType == 2
                             ? Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 5,
-                                    height: MediaQuery.of(context).size.height / 20,
-                                    child: TextField(
-                                      style: const TextStyle(fontSize: 12),
-                                      readOnly: true,
-                                      onTap: () async {
-                                        var result = await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const SelectPaymentDeliveryMan()),
-                                        );
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 5,
+                              height: MediaQuery.of(context).size.height / 20,
+                              child: TextField(
+                                style: const TextStyle(fontSize: 12),
+                                readOnly: true,
+                                onTap: () async {
+                                  var result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const SelectPaymentDeliveryMan()),
+                                  );
 
-                                        if (result != null) {
-                                          deliveryManID = result[1];
-                                          deliveryManSelection.text = result[0];
-                                        }
-                                      },
-                                      controller: deliveryManSelection,
-                                      focusNode: customerFcNode,
-                                      onEditingComplete: () {},
-                                      keyboardType: TextInputType.text,
+                                  if (result != null) {
+                                    deliveryManID = result[1];
+                                    deliveryManSelection.text = result[0];
+                                  }
+                                },
+                                controller: deliveryManSelection,
+                                focusNode: customerFcNode,
+                                onEditingComplete: () {},
+                                keyboardType: TextInputType.text,
 
-                                      textCapitalization: TextCapitalization.words,
-                                      decoration: InputDecoration(
-                                          suffixIcon: const Icon(
-                                            Icons.keyboard_arrow_down,
-                                            color: Colors.black,
-                                          ),
-                                          enabledBorder: const OutlineInputBorder(borderSide: const BorderSide(color: Color(0xffEEEEEE))),
-                                          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffEEEEEE))),
-                                          disabledBorder: const OutlineInputBorder(borderSide: const BorderSide(color: Color(0xffEEEEEE))),
-                                          contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
-                                          filled: true,
-                                          hintStyle: const TextStyle(color: Color(0xff858585), fontSize: 14),
-                                          hintText: 'select_delivery_man'.tr,
-                                          fillColor: const Color(0xffFFFFFF)),
-                                      // decoration: TextFieldDecoration.rectangleTextFieldIconFillColor(hintTextStr: 'Select Delivery man',),
+                                textCapitalization: TextCapitalization.words,
+                                decoration: InputDecoration(
+                                    suffixIcon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Colors.black,
                                     ),
-                                  ),
-                                ],
-                              )
+                                    enabledBorder: const OutlineInputBorder(borderSide: const BorderSide(color: Color(0xffEEEEEE))),
+                                    focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffEEEEEE))),
+                                    disabledBorder: const OutlineInputBorder(borderSide: const BorderSide(color: Color(0xffEEEEEE))),
+                                    contentPadding: const EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+                                    filled: true,
+                                    hintStyle: const TextStyle(color: Color(0xff858585), fontSize: 14),
+                                    hintText: 'select_delivery_man'.tr,
+                                    fillColor: const Color(0xffFFFFFF)),
+                                // decoration: TextFieldDecoration.rectangleTextFieldIconFillColor(hintTextStr: 'Select Delivery man',),
+                              ),
+                            ),
+                          ],
+                        )
                             : Container(),
                       ],
                     ),
@@ -1159,7 +1163,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                 child: Container(
-               //   height: MediaQuery.of(context).size.height / 5.5,
+                  //   height: MediaQuery.of(context).size.height / 5.5,
                   //height of button
                   width: MediaQuery.of(context).size.width / 1.8,
                   decoration: BoxDecoration(
@@ -1632,8 +1636,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                 ),
 
                               ])
-                              // color: Colors.grey,
-                              ),
+                            // color: Colors.grey,
+                          ),
                         ],
                       ),
                       //color: Colors.grey,
@@ -1854,7 +1858,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Container(
-                             //   width: MediaQuery.of(context).size.width / 10,
+                                //   width: MediaQuery.of(context).size.width / 10,
                                 //  height: MediaQuery.of(context).size.height / 18,
                                 child: TextButton(
                                     style: TextButton.styleFrom(
@@ -1916,49 +1920,49 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     ),
                     printAfterPayment == false
                         ? SizedBox(
-                            height: MediaQuery.of(context).size.height / 17, //h //height of button
-                            width: MediaQuery.of(context).size.width / 8,
-                            child: TextButton(
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.all(2.0),
-                                  backgroundColor: const Color(0xff1155F3),
-                                  textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                                ),
-                                onPressed: ()async {
+                      height: MediaQuery.of(context).size.height / 17, //h //height of button
+                      width: MediaQuery.of(context).size.width / 8,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.all(2.0),
+                            backgroundColor: const Color(0xff1155F3),
+                            textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                          ),
+                          onPressed: ()async {
 
-                                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                                  var id = prefs.getInt("Cash_Account") ?? 1;
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            var id = prefs.getInt("Cash_Account") ?? 1;
 
-                                  print("ledger ID $ledgerID   id $id");
-
-
-
-                                  if(ledgerID !=id){
-                                    createSaleInvoice(printAfterPayment, context);
-                                  }
-                                  else{
-                                    if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
-                                      createSaleInvoice(printAfterPayment, context);
-                                    } else {
-                                      dialogBox(context, "You cant make credit sale");
-                                    }
-                                  }
+                            print("ledger ID $ledgerID   id $id");
 
 
 
+                            if(ledgerID !=id){
+                              createSaleInvoice(printAfterPayment, context);
+                            }
+                            else{
+                              if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
+                                createSaleInvoice(printAfterPayment, context);
+                              } else {
+                                dialogBox(context, "You cant make credit sale");
+                              }
+                            }
 
-                                  // if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
-                                  //   createSaleInvoice(true, context);
-                                  // } else {
-                                  //   dialogBox(context, "You cant make credit sale");
-                                  // }
-                                },
-                                child: Text('print_save'.tr, style: customisedStyle(context, Colors.white, FontWeight.w500, 12.00))),
-                          )
+
+
+
+                            // if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
+                            //   createSaleInvoice(true, context);
+                            // } else {
+                            //   dialogBox(context, "You cant make credit sale");
+                            // }
+                          },
+                          child: Text('print_save'.tr, style: customisedStyle(context, Colors.white, FontWeight.w500, 12.00))),
+                    )
                         : Container(),
                     const SizedBox(
                       width: 4,
@@ -2132,7 +2136,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       ],
     );
   }
-
+  TextEditingController productFontSizeController=TextEditingController();
+  TextEditingController productGroupFontSizeController=TextEditingController();
+  TextEditingController rateFontSizeController=TextEditingController();
+  TextEditingController descriptionFontSizeController=TextEditingController();
+  TextEditingController rowCountController=TextEditingController();
   /// pos section
   Widget posDetailScreen() {
     return ListView(
@@ -2141,25 +2149,26 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         Row(
           children: [
             Container(
+
               decoration: BoxDecoration(
-                  //   color: Colors.red,
+
                   border: Border(
-                right: BorderSide(
-                  //                   <--- left side
-                  color: borderColor,
-                  width: .5,
-                ),
-                bottom: BorderSide(
-                  //                   <--- left side
-                  color: borderColor,
-                  width: .5,
-                ),
-                left: BorderSide(
-                  //                   <--- left side
-                  color: borderColor,
-                  width: .5,
-                ),
-              )),
+                    right: BorderSide(
+                      //                   <--- left side
+                      color: borderColor,
+                      width: .5,
+                    ),
+                    bottom: BorderSide(
+                      //                   <--- left side
+                      color: borderColor,
+                      width: .5,
+                    ),
+                    left: BorderSide(
+                      //                   <--- left side
+                      color: borderColor,
+                      width: .5,
+                    ),
+                  )),
               height: MediaQuery.of(context).size.height / 1.14, //height of button
               width: MediaQuery.of(context).size.width / 1.8,
               //  padding: const EdgeInsets.all(5),
@@ -2175,8 +2184,561 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               ),
             ),
             Container(
-              decoration: BoxDecoration(border: Border.all(color: borderColor, width: .5)),
-              child: ordersList(order),
+              decoration: BoxDecoration(
+
+                  border: Border.all(color: borderColor, width: .5)),
+              child: isSettingOpen?Container(
+                height: MediaQuery.of(context).size.height / 1.15, //height of button
+                width: MediaQuery.of(context).size.width / 2.9,
+                color: Colors.grey.shade50,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Font Size",style: customisedStyle(context, Colors.black, FontWeight.normal, 13.0),),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0,bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+
+                        children: [
+                          Text("Product Group Name",style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),),
+
+
+                          Container(
+                            height: MediaQuery.of(context).size.height / 18, //height of button
+                            width: MediaQuery.of(context).size.width / 7,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () async{
+
+                                        setState(() {
+                                          if (productGroupFontSize <= 0) {
+                                          } else {
+                                            productGroupFontSize = productGroupFontSize - 1;
+                                            productGroupFontSizeController.text = "$productGroupFontSize";
+
+                                          }
+                                        });
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/increment_qty.svg')),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height / 13, //height of button
+                                  width: MediaQuery.of(context).size.width / 15,
+                                  child: TextField(
+                                    controller: productGroupFontSizeController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 14.00),
+                                    onChanged: (text) async{
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                                      if (text.isNotEmpty) {
+                                        productGroupFontSize = double.parse(text);
+                                        productGroupFontSizeController.text = "$productGroupFontSize";
+                                        prefs.setDouble('ProductGroupFontSize', productGroupFontSize);
+                                      } else {}
+                                    },
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  //height of button
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          productGroupFontSize = productGroupFontSize + 1;
+                                          productGroupFontSizeController.text = "$productGroupFontSize";
+
+                                        });
+
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/decrease_item.svg')),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+
+                    ///
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0,bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        children: [
+                          Text("Product Name",style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),),
+
+                          Container(
+                            height: MediaQuery.of(context).size.height / 18, //height of button
+                            width: MediaQuery.of(context).size.width / 7,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (productFontSize <= 0) {
+                                          } else {
+                                            productFontSize = productFontSize - 1;
+                                            productFontSizeController.text = "$productFontSize";
+                                          }
+                                        });
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/increment_qty.svg')),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height / 13, //height of button
+                                  width: MediaQuery.of(context).size.width / 15,
+                                  child: TextField(
+                                    controller: productFontSizeController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 14.00),
+                                    onChanged: (text) async{
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+
+                                      if (text.isNotEmpty) {
+                                        productFontSize = double.parse(text);
+                                        productFontSizeController.text = "$productFontSize";
+                                        prefs.setDouble('ProductFontSize', productFontSize);
+                                      } else {}
+                                    },
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  //height of button
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          productFontSize = productFontSize + 1;
+                                          productFontSizeController.text = "$productFontSize";
+
+                                        });
+
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/decrease_item.svg')),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0,bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        children: [
+                          Text("Description",style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),),
+
+                          Container(
+                            height: MediaQuery.of(context).size.height / 18, //height of button
+                            width: MediaQuery.of(context).size.width / 7,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (descriptionFontSize <= 0) {
+                                          } else {
+                                            descriptionFontSize = descriptionFontSize - 1;
+                                            descriptionFontSizeController.text = "$descriptionFontSize";
+                                          }
+                                        });
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/increment_qty.svg')),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height / 13, //height of button
+                                  width: MediaQuery.of(context).size.width / 15,
+                                  child: TextField(
+                                    controller: descriptionFontSizeController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 14.00),
+                                    onChanged: (text) async{
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+                                      if (text.isNotEmpty) {
+                                        descriptionFontSize = double.parse(text);
+                                        descriptionFontSizeController.text = "$descriptionFontSize";
+                                        prefs.setDouble('DescriptionFontSize', descriptionFontSize);
+
+                                      } else {}
+                                    },
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  //height of button
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          descriptionFontSize = descriptionFontSize + 1;
+                                          descriptionFontSizeController.text = "$descriptionFontSize";
+
+                                        });
+
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/decrease_item.svg')),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0,bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        children: [
+                          Text("Rate",style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),),
+
+                          Container(
+                            height: MediaQuery.of(context).size.height / 18, //height of button
+                            width: MediaQuery.of(context).size.width / 7,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (rateFontSize <= 0) {
+                                          } else {
+                                            rateFontSize = rateFontSize - 1;
+                                            rateFontSizeController.text = "$rateFontSize";
+                                          }
+                                        });
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/increment_qty.svg')),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height / 13, //height of button
+                                  width: MediaQuery.of(context).size.width / 15,
+                                  child: TextField(
+                                    controller: rateFontSizeController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 14.00),
+                                    onChanged: (text) async{
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+                                      if (text.isNotEmpty) {
+                                        rateFontSize = double.parse(text);
+                                        rateFontSizeController.text = "$rateFontSize";
+                                        prefs.setDouble('RateFontSize', rateFontSize);
+
+                                      } else {}
+                                    },
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  //height of button
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          rateFontSize = rateFontSize + 1;
+                                          rateFontSizeController.text = "$rateFontSize";
+
+                                        });
+
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/decrease_item.svg')),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text("Styles",style: customisedStyle(context, Colors.black, FontWeight.normal, 13.0),),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        children: [
+                          Text("Count of Row",style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),),
+
+                          Container(
+                            height: MediaQuery.of(context).size.height / 18, //height of button
+                            width: MediaQuery.of(context).size.width / 7,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (rowCountGridView <= 0) {
+                                          } else {
+                                            rowCountGridView = rowCountGridView - 1;
+                                            rowCountController.text = "$rowCountGridView";
+                                          }
+                                        });
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/increment_qty.svg')),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height / 13, //height of button
+                                  width: MediaQuery.of(context).size.width / 15,
+                                  child: TextField(
+                                    controller: rowCountController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 14.00),
+                                    onChanged: (text) async{
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+
+                                      if (text.isNotEmpty) {
+                                        rowCountGridView = int.parse(text);
+                                        rowCountController.text = "$rowCountGridView";
+                                        prefs.setInt('RowCountGridView', rowCountGridView);
+
+                                      } else {}
+                                    },
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+
+                                  height: MediaQuery.of(context).size.height / 13,
+                                  //height of button
+                                  width: MediaQuery.of(context).size.width / 29,
+                                  decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          rowCountGridView = rowCountGridView + 1;
+                                          rowCountController.text = "$rowCountGridView";
+
+                                        });
+
+                                      },
+                                      icon: SvgPicture.asset('assets/svg/decrease_item.svg')),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+
+                      children: <Widget>[
+                        Checkbox(
+                          value: showImage,
+                          onChanged: (newValue) async{
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+                            setState(() {
+                              showImage = newValue!;
+                              prefs.setBool('ShowImage', showImage);
+
+                            });
+                          },
+                        ),
+                        Text('Show Product Image',style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          style: ButtonStyle(backgroundColor:MaterialStateProperty.all<Color>(Colors.teal)),
+                          child: Text('Save Changes',style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),),
+                          onPressed: () async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                            setState(() {
+
+                              if(productFontSizeController.text==''){
+                                productFontSize=12.0;
+                              }
+                              productFontSize=double.parse(productFontSizeController.text);
+                              print("23");
+                              if(descriptionFontSizeController.text==''){
+                                descriptionFontSize=12.0;
+                              }
+                              descriptionFontSize=double.parse(descriptionFontSizeController.text);
+                              if(productGroupFontSizeController.text==''){
+                                productGroupFontSize=12.0;
+                              }
+                              print("33");
+
+                              productGroupFontSize=double.parse(productGroupFontSizeController.text);
+                              if(rateFontSizeController.text==''){
+                                rateFontSize=12.0;
+                              }
+                              rateFontSize=double.parse(rateFontSizeController.text);
+                              print("55");
+                              if(rowCountController.text==''){
+                                rowCountGridView=4;
+                              }
+                              rowCountGridView=int.parse(rowCountController.text);
+
+                            });
+                            prefs.setDouble('ProductGroupFontSize', productGroupFontSize);
+                            prefs.setDouble('ProductFontSize', productFontSize);
+                            prefs.setDouble('DescriptionFontSize', descriptionFontSize);
+                            prefs.setDouble('RateFontSize', rateFontSize);
+                            prefs.setInt('RowCountGridView', rowCountGridView);
+                            prefs.setBool('ShowImage', showImage);
+
+
+
+
+
+
+
+
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ):ordersList(order),
             ),
           ],
         ),
@@ -2220,20 +2782,20 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       Navigator.pop(context);
     }
   }
+  bool isSettingOpen=false;
 
   Widget tableNameHeader() {
     return SafeArea(
       child: Container(
           padding: const EdgeInsets.only(left: 8, right: 8),
           decoration: BoxDecoration(
-              //  color: Colors.red,
               border: Border(
-            bottom: BorderSide(
-              //                   <--- left side
-              color: borderColor,
-              width: .5,
-            ),
-          )),
+                bottom: BorderSide(
+                  //                   <--- left side
+                  color: borderColor,
+                  width: .5,
+                ),
+              )),
           height: MediaQuery.of(context).size.height / 10,
           //height of button
           width: MediaQuery.of(context).size.width / 1,
@@ -2342,7 +2904,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                           }
                         },
-               //         onTap: () => customerNameController.selection = TextSelection(baseOffset: 0, extentOffset: customerNameController.value.text.length),
+                        //         onTap: () => customerNameController.selection = TextSelection(baseOffset: 0, extentOffset: customerNameController.value.text.length),
 
                         controller: customerNameController,
                         decoration: TextFieldDecoration.rectangleTextField(hintTextStr: 'cus_name'.tr),
@@ -2382,7 +2944,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  TextButton(onPressed: (){
+                    setState(() {
+                      isSettingOpen=true;
+                    });
+
+
+                  }, child: Text("Settings"))
 
                   ///loyalty customer add
                   // GestureDetector(
@@ -2426,12 +2995,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     return Container(
       decoration: BoxDecoration(
           border: Border(
-        bottom: BorderSide(
-          //                   <--- left side
-          color: borderColor,
-          width: 1,
-        ),
-      )),
+            bottom: BorderSide(
+              //                   <--- left side
+              color: borderColor,
+              width: 1,
+            ),
+          )),
       height: MediaQuery.of(context).size.height / 14,
       width: MediaQuery.of(context).size.width / 1.6,
       child: Row(
@@ -2466,7 +3035,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width / 16,
-                          child: ElevatedButton(
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
@@ -2506,58 +3075,58 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     ),
                     autoFocusField
                         ? Padding(
-                            padding: const EdgeInsets.all(7.0),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height / 13,
-                              width: MediaQuery.of(context).size.width / 9,
-                              child: TextField(
-                                controller: autoBarcodeController,
-                                style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
-                                onEditingComplete: () {
-                                  FocusScope.of(context).requestFocus(FocusNode());
-                                  getBarcodeProduct(context: context, barcode: autoBarcodeController.text);
-                                },
-                                textAlign: TextAlign.center,
-                                // onChanged: (text) {
-                                //   setState(() {
-                                //     _selectedIndex = 1000;
-                                //
-                                //   });
-                                // },
-                                decoration: InputDecoration(
-                                    hintText: 'Barcode'.tr,
-                                    hintStyle: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
-                                    isDense: true,
-                                    fillColor: const Color(0xffFFFFFF),
-                                    border: const OutlineInputBorder(),
-                                    contentPadding: const EdgeInsets.all(11)),
-                              ),
-                            ),
-                          )
+                      padding: const EdgeInsets.all(7.0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 13,
+                        width: MediaQuery.of(context).size.width / 9,
+                        child: TextField(
+                          controller: autoBarcodeController,
+                          style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
+                          onEditingComplete: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            getBarcodeProduct(context: context, barcode: autoBarcodeController.text);
+                          },
+                          textAlign: TextAlign.center,
+                          // onChanged: (text) {
+                          //   setState(() {
+                          //     _selectedIndex = 1000;
+                          //
+                          //   });
+                          // },
+                          decoration: InputDecoration(
+                              hintText: 'Barcode'.tr,
+                              hintStyle: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
+                              isDense: true,
+                              fillColor: const Color(0xffFFFFFF),
+                              border: const OutlineInputBorder(),
+                              contentPadding: const EdgeInsets.all(11)),
+                        ),
+                      ),
+                    )
                         : Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width / 14,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),backgroundColor: productSearchNotifier.value == 4 ? const Color(0xffF25F29) : Colors.white),
-                                onPressed: () async {
-                                  // productSearchNotifier.value = 4;
-                                  // String? barcode = await BarcodeScannerClass.scanBarcode(context);
-                                  // if (barcode != null) {
-                                  //   getBarcodeProduct(context: context, barcode: barcode);
-                                  // }
-                                },
-                                child: Text(
-                                  'Barcode'.tr,
-                                  style:
-                                      customisedStyle(context, productSearchNotifier.value == 4 ? Colors.white : Colors.black, FontWeight.w600, 9.0),
-                                ),
-                              ),
-                            ),
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 14,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),backgroundColor: productSearchNotifier.value == 4 ? const Color(0xffF25F29) : Colors.white),
+                          onPressed: () async {
+                            // productSearchNotifier.value = 4;
+                            // String? barcode = await BarcodeScannerClass.scanBarcode(context);
+                            // if (barcode != null) {
+                            //   getBarcodeProduct(context: context, barcode: barcode);
+                            // }
+                          },
+                          child: Text(
+                            'Barcode'.tr,
+                            style:
+                            customisedStyle(context, productSearchNotifier.value == 4 ? Colors.white : Colors.black, FontWeight.w600, 9.0),
                           ),
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(7.0),
                       child: Container(
@@ -2565,7 +3134,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                         width: MediaQuery.of(context).size.width / 9,
                         child: TextField(
                           controller: searchController,
-                          focusNode:searchFocusNode,
                           style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
                           textAlign: TextAlign.center,
                           onChanged: (text) {
@@ -2673,7 +3241,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           start(context);
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var companyID = prefs.getString('companyID') ?? '';
-           var branchID = prefs.getInt('branchID') ?? 1;
+          var branchID = prefs.getInt('branchID') ?? 1;
           var priceRounding = BaseUrl.priceRounding;
           String baseUrl = BaseUrl.baseUrl;
           var userID = prefs.getInt('user_id') ?? 0;
@@ -2858,10 +3426,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
   Widget displayCategoryNames() {
     return Container(
-   //  color: Colors.grey,
+      //  color: Colors.grey,
       padding: const EdgeInsets.only(left: 2, right: 2),
       height: MediaQuery.of(context).size.height / 6, //height of button
-   //   width: MediaQuery.of(context).size.width / 1.6,
+      //   width: MediaQuery.of(context).size.width / 1.6,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -2894,8 +3462,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           categoryList.isNotEmpty?
           Container(
             height: MediaQuery.of(context).size.height / 8, //height of button
-           // width: _width,
-           width: MediaQuery.of(context).size.width / 2.2,
+            // width: _width,
+            width: MediaQuery.of(context).size.width / 2.2,
 
             child: GridView.builder(
                 controller: categoryController,
@@ -2935,9 +3503,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           getProductListDetails(categoryList[index].categoryGroupId);
                         },
                         child: Text(categoryList[index].categoryName,
-                            style: customisedStyle(context, _selectedIndex == index ? Colors.white : const Color(0xff172026), FontWeight.w500,highlightsProductDetails ?  13.0:11.0)
-                            //    style: TextStyle(color:_selectedIndex == index ? Colors.white :const Color(0xff172026),),
-                            )),
+                            style: customisedStyle(context, _selectedIndex == index ? Colors.white : const Color(0xff172026), FontWeight.w500,highlightsProductDetails ?  13.0:productGroupFontSize)
+                          //    style: TextStyle(color:_selectedIndex == index ? Colors.white :const Color(0xff172026),),
+                        )),
                   );
                 }),
           ):Container(),
@@ -2981,7 +3549,20 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     }
     return out;
   }
+  var showImage = true; // Observable boolean for showing image
 
+  // Observable font sizes
+  var productFontSize = 11.5;
+  var descriptionFontSize = 11.0;
+  var productGroupFontSize = 12.0;
+  var rateFontSize = 12.0;
+  var buttonsFontSize = 13.0;
+  var labelHeight = 15.0;
+
+  // Observable dimensions
+  var widthOFTable = 5.0;
+  var heightOFTable = 1.6;
+  var rowCountGridView = 4;
   Widget displayProductDetails() {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
@@ -3099,44 +3680,44 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           color: const Color(0xffC9C9C9),
                         ),
                         borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
-                            )),
+                        )),
                     child: Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          productList[i].productImage == ''
+                          showImage?  productList[i].productImage == ''
                               ? Container(
-                                  height: MediaQuery.of(context).size.height / 15, //height of button
-                                  width: MediaQuery.of(context).size.width / 22,
-                                  decoration: BoxDecoration(
-                                      //  color: Colors.red,
-                                      border: Border.all(
-                                        width: .1,
-                                        color: const Color(0xffC9C9C9),
-                                      ),
-                                      borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
-                                          )),
-
-                                  child: SvgPicture.asset("assets/svg/Logo.svg"),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height / 15, //height of button
-                                    width: MediaQuery.of(context).size.width / 22,
-
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(image:
-                                        NetworkImage(productList[i].productImage), fit: BoxFit.cover),
-                                        border: Border.all(
-                                          width: .1,
-                                          color: const Color(0xffC9C9C9),
-                                        ),
-                                        borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
-                                            )),
-                                  ),
+                            height: MediaQuery.of(context).size.height / 15, //height of button
+                            width: MediaQuery.of(context).size.width / 22,
+                            decoration: BoxDecoration(
+                              //  color: Colors.red,
+                                border: Border.all(
+                                  width: .1,
+                                  color: const Color(0xffC9C9C9),
                                 ),
+                                borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                                )),
+
+                            child: SvgPicture.asset("assets/svg/Logo.svg"),
+                          )
+                              :Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 15, //height of button
+                              width: MediaQuery.of(context).size.width / 22,
+
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(image:
+                                  NetworkImage(productList[i].productImage), fit: BoxFit.cover),
+                                  border: Border.all(
+                                    width: .1,
+                                    color: const Color(0xffC9C9C9),
+                                  ),
+                                  borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                                  )),
+                            ),
+                          ):Container(),
 
                           Padding(
                             padding: const EdgeInsets.only(left: 5.0),
@@ -3151,14 +3732,14 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                 children: [
                                   SizedBox(
                                     child: Text(returnProductName(productList[i].productName),
-                                        style: customisedStyle(context, Colors.black, FontWeight.w500,highlightsProductDetails ? 14.5:11.5)),
+                                        style: customisedStyle(context, Colors.black, FontWeight.w500,highlightsProductDetails ? 14.5:productFontSize)),
                                   ),
                                   SizedBox(
                                     // height: MediaQuery.of(context).size.height /                                    17, //height of button
                                     //  width: MediaQuery.of(context).size.width / 11,
                                     child: Text(
                                       returnProductName(productList[i].description),
-                                      style: customisedStyle(context, Colors.black, FontWeight.w600,highlightsProductDetails ? 15.0:11.0),
+                                      style: customisedStyle(context, Colors.black, FontWeight.w600,highlightsProductDetails ? 15.0:descriptionFontSize),
                                     ),
                                   ),
                                   SizedBox(
@@ -3170,7 +3751,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                       children: [
                                         Text("$currency ${roundStringWith(productList[i].defaultSalesPrice)}",
                                             //'Rs.95 ',
-                                            style: customisedStyle(context, Colors.blueGrey, FontWeight.w500, 12.0)),
+                                            style: customisedStyle(context, Colors.blueGrey, FontWeight.w500, rateFontSize)),
                                         Container(
                                           height: MediaQuery.of(context).size.height / 42,
                                           child: SvgPicture.asset(returnVegOrNonVeg(productList[i].vegOrNonVeg)),
@@ -3465,46 +4046,46 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           ),
           lngPress
               ? Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 10.00),
-                  child: Container(
-                    // height: mHeight * .12,
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              checkColor: Colors.white,
-                              activeColor: const Color(0xff08A103),
-                              value: newCheckValue,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              onChanged: (value) {
-                                newCheckValue = !newCheckValue;
-                                print(newCheckValue);
-                                if (newCheckValue) {
-                                  selectAll();
-                                } else {
-                                  setState(() {
-                                    selectedItemsDelivery.clear();
-                                    lngPress = false;
-                                  });
-                                }
-                              },
-                            ),
-                            Text(
-                              "Select all",
-                              style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+            padding: const EdgeInsets.only(top: 8.0, bottom: 10.00),
+            child: Container(
+              // height: mHeight * .12,
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        activeColor: const Color(0xff08A103),
+                        value: newCheckValue,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        onChanged: (value) {
+                          newCheckValue = !newCheckValue;
+                          print(newCheckValue);
+                          if (newCheckValue) {
+                            selectAll();
+                          } else {
+                            setState(() {
+                              selectedItemsDelivery.clear();
+                              lngPress = false;
+                            });
+                          }
+                        },
+                      ),
+                      Text(
+                        "Select all",
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                    ],
                   ),
-                )
+                ],
+              ),
+            ),
+          )
               : Container(),
           Padding(
             padding: const EdgeInsets.only(top: 15.0),
@@ -3525,20 +4106,20 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       lngPress == true
                           ? Checkbox(
-                              checkColor: Colors.white,
-                              activeColor: const Color(0xff08A103),
-                              value: isSelected,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              onChanged: (value) {
-                                setState(() {
-                                  if (isSelected) {
-                                    selectedItemsDelivery.remove(index);
-                                  } else {
-                                    selectedItemsDelivery.add(index);
-                                  }
-                                });
-                              },
-                            )
+                        checkColor: Colors.white,
+                        activeColor: const Color(0xff08A103),
+                        value: isSelected,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        onChanged: (value) {
+                          setState(() {
+                            if (isSelected) {
+                              selectedItemsDelivery.remove(index);
+                            } else {
+                              selectedItemsDelivery.add(index);
+                            }
+                          });
+                        },
+                      )
                           : Container(),
                       Container(
                         //   width: MediaQuery.of(context).size.width / 4.2,
@@ -3624,7 +4205,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                                 crossAxisAlignment: CrossAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                      //' ',
+                                                    //' ',
                                                       roundStringWith(orderDetTable[index].unitPrice),
                                                       style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0)),
                                                   Text(roundStringWith(orderDetTable[index].quantity),
@@ -3729,17 +4310,17 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                     quantityRounded = roundDouble(double.parse(orderDetTable[index].quantity), qtyDecimal);
                                     netAmountRounded = roundDouble(double.parse(orderDetTable[index].netAmount), qtyDecimal);
                                     totalTax = double.parse(orderDetTable[index].totalTaxRounded);
-                                     exciseTaxID = orderDetTable[index].exciseTaxID;
-                                     exciseTaxName = orderDetTable[index].exciseTaxName;
-                                     BPValue = orderDetTable[index].bPValue;
-                                     exciseTaxBefore = orderDetTable[index].exciseTaxBefore;
-                                     isAmountTaxBefore = orderDetTable[index].isAmountTaxBefore;
-                                     isAmountTaxAfter = orderDetTable[index].isAmountTaxAfter;
-                                     isExciseProduct = orderDetTable[index].isExciseProduct;
-                                     exciseTaxAfter = orderDetTable[index].exciseTaxAfter;
-                                     exciseTaxAmount= double.parse(orderDetTable[index].exciseTaxAmount);
+                                    exciseTaxID = orderDetTable[index].exciseTaxID;
+                                    exciseTaxName = orderDetTable[index].exciseTaxName;
+                                    BPValue = orderDetTable[index].bPValue;
+                                    exciseTaxBefore = orderDetTable[index].exciseTaxBefore;
+                                    isAmountTaxBefore = orderDetTable[index].isAmountTaxBefore;
+                                    isAmountTaxAfter = orderDetTable[index].isAmountTaxAfter;
+                                    isExciseProduct = orderDetTable[index].isExciseProduct;
+                                    exciseTaxAfter = orderDetTable[index].exciseTaxAfter;
+                                    exciseTaxAmount= double.parse(orderDetTable[index].exciseTaxAmount);
 
-                                     order = 2;
+                                    order = 2;
                                     if (flavourList.isEmpty) {
                                       print('its empty-*------------------------------------its empty-*------------------------------------its empty-*------------------------------------its empty-*------------------------------------');
                                       getAllFlavours();
@@ -3796,7 +4377,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
 
                 SizedBox(
-                //  height: MediaQuery.of(context).size.height / 27,
+                  //  height: MediaQuery.of(context).size.height / 27,
                   width: MediaQuery.of(context).size.width / 2.5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -3814,12 +4395,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                 ),
                 Container(
                   // color: Colors.red,
-               //   height: MediaQuery.of(context).size.height / 15,
+                  //   height: MediaQuery.of(context).size.height / 15,
                   width: MediaQuery.of(context).size.width / 2.5,
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     SizedBox(
                       // height: MediaQuery.of(context).size.height / 20,
-                   //   width: MediaQuery.of(context).size.width / 10,
+                      //   width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -3851,7 +4432,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     ),
                     SizedBox(
                       //  height: MediaQuery.of(context).size.height / 17,
-                     // width: MediaQuery.of(context).size.width / 10,
+                      // width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -3874,21 +4455,21 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                         child: InkWell(
                           child: Row(mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                            SvgPicture.asset("assets/svg/check.svg", width: 15),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5.0),
-                              child: Text(
-                                'payment'.tr,
-                                style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),
-                              ),
-                            ),
-                          ]),
+                                SvgPicture.asset("assets/svg/check.svg", width: 15),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                  child: Text(
+                                    'payment'.tr,
+                                    style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),
+                                  ),
+                                ),
+                              ]),
                         ),
                       ),
                     ),
                     SizedBox(
                       //  height: MediaQuery.of(context).size.height / 17,
-                    //  width: MediaQuery.of(context).size.width / 10,
+                      //  width: MediaQuery.of(context).size.width / 10,
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -4182,7 +4763,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     child: TextField(
                       textAlign: TextAlign.end,
                       controller: unitPriceDetailController,
-                      readOnly:  unitPriceEditPermission?false:true,
                       style: customisedStyle(context, Colors.black, FontWeight.w500, 12.00),
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
@@ -4241,19 +4821,19 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
                           child: ListTile(
-                        tileColor: flavourID == flavourList[index].id ? Colors.redAccent : const Color(0xffEEEEEE),
-                        title: Text(
-                          flavourList[index].flavourName,
-                          style: customisedStyle(context, Colors.black, FontWeight.w400, 12.00),
-                        ),
-                        onTap: () async {
-                          setState(() {
-                            flavourID = flavourList[index].id;
-                            flavourName = flavourList[index].flavourName;
-                            // selectedIndexFlavour = index;
-                          });
-                        },
-                      ));
+                            tileColor: flavourID == flavourList[index].id ? Colors.redAccent : const Color(0xffEEEEEE),
+                            title: Text(
+                              flavourList[index].flavourName,
+                              style: customisedStyle(context, Colors.black, FontWeight.w400, 12.00),
+                            ),
+                            onTap: () async {
+                              setState(() {
+                                flavourID = flavourList[index].id;
+                                flavourName = flavourList[index].flavourName;
+                                // selectedIndexFlavour = index;
+                              });
+                            },
+                          ));
                     }),
               ),
             ),
@@ -4304,8 +4884,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       ),
                       onPressed: () {
 
-                          order = 1;
-                          addData();
+                        order = 1;
+                        addData();
 
                       },
                       child: Text(
@@ -4384,7 +4964,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
     grossAmount = quantity * unit;
 
-      exciseTaxAmount = 0.0;
+    exciseTaxAmount = 0.0;
     if (isExciseProduct) {
       exciseTaxAmount = calculateExciseTax(
         breakEvenValue: double.parse(BPValue),
@@ -4543,7 +5123,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
     totalAmount();
   }
-/// update quantity
+  /// update quantity
   updateQty(int val, int i) async {
     int indexChanging = i;
     quantity = double.parse(orderDetTable[indexChanging].quantity);
@@ -4771,7 +5351,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     totalAmount();
   }
 
-/// on edit data method
+  /// on edit data method
   calculationOnEditing(isQuantityButton) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -5018,11 +5598,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
   calculateExciseTax(
       {required double price,
-      required double breakEvenValue,
-      required bool lessAmount,
-      required bool greaterAmount,
-      required double lessThanValue,
-      required double greaterThanValue}) {
+        required double breakEvenValue,
+        required bool lessAmount,
+        required bool greaterAmount,
+        required double lessThanValue,
+        required double greaterThanValue}) {
     // Define the threshold for tax rate change
     double exciseTaxAmount = 0.0;
     if (price >= breakEvenValue) {
@@ -5197,6 +5777,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
         String compensation=  prefs.getString('CompensationHour') ?? "1";
         var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
+        print(dateTime);
+
+
         DateTime selectedDateAndTime = DateTime.now();
         String convertedDate = "$dateTime";
         dateOnly = convertedDate.substring(0, 10);
@@ -5310,15 +5893,18 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           stop();
           var id = n["OrderID"];
 
+
           Navigator.pop(context, [widget.orderType, isPayment, id, widget.tableID, widget.tableHead]);
 
+
+          print("------------------------------$printAfterOrder------------print after order");
           if(printAfterOrder){
             PrintDataDetails.type = "SO";
             PrintDataDetails.id = n["OrderID"];
             await printDetail(context,n["OrderID"],"SO");
           }
 
-         // dialogBoxHide(context, 'Order created successfully !!!');
+          // dialogBoxHide(context, 'Order created successfully !!!');
           Future.delayed(const Duration(seconds: 1), () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             var kot = prefs.getBool("KOT") ?? false;
@@ -5337,6 +5923,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         } else if (status == 6001) {
           stop();
           var errorMessage = n["message"]??"";
+
           if(errorMessage =="Table not vacant!"){
             print("-*-*/-/*-/--/-*/-*/-*//-*/-*/-*/-*$errorMessage");
             changeTableAlertWithMessage(context, errorMessage,isPayment);
@@ -5453,7 +6040,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                             FilteringTextInputFormatter.allow(RegExp('[0-9-.]')),
                           ],
                           onTap: () =>
-                              tokenNumberController.selection = TextSelection(baseOffset: 0, extentOffset: tokenNumberController.value.text.length),
+                          tokenNumberController.selection = TextSelection(baseOffset: 0, extentOffset: tokenNumberController.value.text.length),
 
                           style: const TextStyle(fontSize: 12, color: Color(0xff000000)),
                           decoration: CommonStyleTextField.textFieldStyle(labelTextStr: "Token Number", hintTextStr: "Token Number"),
@@ -5816,7 +6403,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                     Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Container(
-                          //  width: MediaQuery.of(context).size.width / 5,
+                        //  width: MediaQuery.of(context).size.width / 5,
                           height: MediaQuery.of(context).size.height / 18,
                           child: const Text(
                             'Loyalty Customer',
@@ -5877,7 +6464,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       ],
                     ),
                     Container(
-                        // color: Color(0xffF5F5F5),
+                      // color: Color(0xffF5F5F5),
 
                         height: MediaQuery.of(context).size.height / 3,
                         child: ListView.builder(
@@ -6631,7 +7218,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
         var userID = prefs.getInt('user_id') ?? 0;
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/flavours/flavours/';
@@ -6692,8 +7279,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
-         user_name = prefs.getString('user_name')!;
-         autoFocusField = prefs.getBool('autoFocusField') ?? false;
+        user_name = prefs.getString('user_name')!;
+        autoFocusField = prefs.getBool('autoFocusField') ?? false;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos/product-group/list/';
@@ -6731,7 +7318,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
             if (widget.sectionType != "Edit") {
               tokenNumber = n["TokenNumber"];
-              }
+            }
           });
         } else if (status == 6001) {
           stop();
@@ -6765,7 +7352,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var priceRounding = BaseUrl.priceRounding;
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos-product-list/';
@@ -6832,7 +7419,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           String baseUrl = BaseUrl.baseUrl;
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var companyID = prefs.getString('companyID') ?? '';
-           var branchID = prefs.getInt('branchID') ?? 1;
+          var branchID = prefs.getInt('branchID') ?? 1;
           var priceRounding = BaseUrl.priceRounding;
           var userID = prefs.getInt('user_id') ?? 0;
           var accessToken = prefs.getString('access') ?? '';
@@ -7206,23 +7793,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               printDetail(context,n["invoice_id"],"SI");
             }
           });
-
-
-          Future.delayed(const Duration(milliseconds: 500), () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            var kot = prefs.getBool("KOT") ?? false;
-            var kotAfterPayment = prefs.getBool("KotafterPayment") ?? false;
-            if(kotAfterPayment ==false){
-              kot = false;
-            }
-            if (kot == true) {
-              // PrintDataDetails.type = "SO";
-              // PrintDataDetails.id = widget.UUID;
-              printKOT(widget.UUID, false, [], false);
-            } else {}
-          });
-
-
         }
         else if (status == 6001) {
           stop();
@@ -7413,7 +7983,7 @@ class UserDetailsAppBar extends StatelessWidget {
                             TextButton(
                                 onPressed: () async {
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
-                                  prefs.setBool('Only POS Access', false);
+                                  prefs.setBool('IsSelectPos', false);
                                   Navigator.pop(context);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const EnterPinNumber()));
                                 },
@@ -7423,8 +7993,8 @@ class UserDetailsAppBar extends StatelessWidget {
                                 )),
                             TextButton(
                                 onPressed: () => {
-                                      Navigator.pop(context),
-                                    },
+                                  Navigator.pop(context),
+                                },
                                 child: Text(
                                   'cancel'.tr,
                                   style: customisedStyle(context, Colors.black, FontWeight.w600, 12.00),
@@ -7460,7 +8030,7 @@ class BackButtonAppBar extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                var selectPos = prefs.getBool('Only POS Access') ?? false;
+                var selectPos = prefs.getBool('IsSelectPos') ?? false;
                 if (selectPos) {
                 } else {
                   Navigator.pop(context);
