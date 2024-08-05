@@ -58,13 +58,14 @@ class _PrinterListState extends State<PrinterList> {
                       child: CircularProgressIndicator(
                       color: Color(0xffF25F29),
                     ))
-                  : ListView.builder(
+                  : ListView.separated(
+                  separatorBuilder: (BuildContext context, int index) =>dividerStyle(),
                       shrinkWrap: true,
                       itemCount: printerController.printDetailList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            print("herer");
+
                             bottomDialogueFunction(
                                 isDismissible: true,
                                 context: context,
@@ -78,9 +79,7 @@ class _PrinterListState extends State<PrinterList> {
                                 secondBtnText: 'Ok');
 
                           },
-                          child: Column(
-                            children: [
-                              ListTile(
+                          child:  ListTile(
                                 onTap: () async {  bottomDialogueFunction(
                                     isDismissible: true,
                                     context: context,
@@ -94,32 +93,34 @@ class _PrinterListState extends State<PrinterList> {
                                     },
                                     secondBtnText: 'Ok');
                                 },
-                                leading:  SvgPicture.asset(returnPrinterListIcon( printerController.printDetailList[index].type),
-                                ),
+                               // leading:SvgPicture.asset(returnPrinterListIcon( printerController.printDetailList[index].type),),
 
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      printerController
-                                          .printDetailList[index].printerName,
-                                      style: customisedStyle(context,
-                                          Colors.black, FontWeight.w400, 15.0),
-                                    ),
-                                    Text(
-                                      printerController
-                                          .printDetailList[index].iPAddress,
-                                      style: customisedStyle(context,
-                                          Colors.grey, FontWeight.w400, 14.0),
-                                    ),
-                                  ],
+                                title: Padding(
+                                  padding: const EdgeInsets.only(top: 5,bottom: 5),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        printerController
+                                            .printDetailList[index].printerName,
+                                        style: customisedStyle(context,
+                                            Colors.black, FontWeight.w400, 15.0),
+                                      ),
+                                      Text(
+                                        printerController
+                                            .printDetailList[index].iPAddress,
+                                        style: customisedStyle(context,
+                                            Colors.grey, FontWeight.w400, 14.0),
+                                      ),
+                                    ],
+                                  ),
                                 ),
 
                               ),
-                              dividerStyle()
-                            ],
-                          ),
+
+
+
                         );
                       })))
         ]),

@@ -39,7 +39,6 @@ class DetailedPrintSettingController extends GetxController {
         "BranchID": branchID,
         "CreatedUserID": userID,
         "CompanyID": companyID,
-        "Type": "WF"
       };
 
       // Encode Map to JSON
@@ -51,7 +50,6 @@ class DetailedPrintSettingController extends GetxController {
           },
           body: body);
       print(response.body);
-
       Map n = json.decode(utf8.decode(response.bodyBytes));
       var status = n["StatusCode"];
       var responseJson = n["data"];

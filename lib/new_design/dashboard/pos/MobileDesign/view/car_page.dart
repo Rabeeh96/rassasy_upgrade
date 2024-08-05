@@ -167,10 +167,19 @@ class _TakeAwayState extends State<CarPage> {
                             CustomSlidableAction(
                               onPressed: (BuildContext context) async {
                                 if(carController.carOrders[index].status == 'Ordered'){
-                                  var result = await Get.to(CancelOrderList());
-                                  if(result !=null){
-                                    carController.cancelOrderApi(context:context,type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: carController.carOrders[index].salesOrderID!);
+
+                                  if(posController.print_perm.value){
+                                    var result = await Get.to(CancelOrderList());
+                                    if(result !=null){
+                                      carController.cancelOrderApi(context:context,type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: carController.carOrders[index].salesOrderID!);
+                                    }
                                   }
+                                  else{
+                                    dialogBoxPermissionDenied(context);
+                                  }
+
+
+
                                 }
                                 else{
                                   carController.cancelOrderApi(context:context,type: "Car", tableID: "", cancelReasonId: "", orderID:carController.carOrders[index].salesOrderID!);

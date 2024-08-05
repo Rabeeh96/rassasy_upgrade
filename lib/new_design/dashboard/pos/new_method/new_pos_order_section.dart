@@ -168,14 +168,15 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   }
 
   defaultValues() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    productGroupFontSize= prefs.getDouble('ProductGroupFontSize')??12.0;
-    productFontSize=prefs.getDouble('ProductFontSize')??12.0;
-    descriptionFontSize= prefs.getDouble('DescriptionFontSize')??12.0;
-    rateFontSize=prefs.getDouble('RateFontSize')??12.0;
-    rowCountGridView= prefs.getInt('RowCountGridView')??4;
-    showImage= prefs.getBool('ShowImage')??true;
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    //
+    //
+    // productGroupFontSize= prefs.getDouble('ProductGroupFontSize')??12.0;
+    // productFontSize=prefs.getDouble('ProductFontSize')??12.0;
+    // descriptionFontSize= prefs.getDouble('DescriptionFontSize')??12.0;
+    // rateFontSize=prefs.getDouble('RateFontSize')??12.0;
+    // rowCountGridView= prefs.getInt('RowCountGridView')??4;
+    // showImage= prefs.getBool('ShowImage')??true;
   }
   bool isComplimentory=false;
 
@@ -6231,7 +6232,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         print("Cancel print -----------Cancel print-----Cancel print--$cancelPrint");
 
 
-
         if (status == 6000) {
           stop();
           var id = n["OrderID"];
@@ -6259,7 +6259,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
             }
           });
-        } else if (status == 6001) {
+        }
+        else if (status == 6001) {
           stop();
           var errorMessage = n["message"]??"";
           dialogBox(context, errorMessage);
