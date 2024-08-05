@@ -108,12 +108,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   }
 
   getDefaultValues() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    buttonFontSize = prefs.getDouble('ButtonFontSize') ?? 12.0;
-    amountFontSize = prefs.getDouble('AmountFontSize') ?? 12.0;
-    buttonHeight = prefs.getDouble('ButtonHeight') ?? 17.0;
-    rowCountGridView = prefs.getInt('RowCountGridView') ?? 4;
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    //
+    // buttonFontSize = prefs.getDouble('ButtonFontSize') ?? 12.0;
+    // amountFontSize = prefs.getDouble('AmountFontSize') ?? 12.0;
+    // buttonHeight = prefs.getDouble('ButtonHeight') ?? 17.0;
+    // rowCountGridView = prefs.getInt('RowCountGridView') ?? 4;
   }
 
   String waiterNameInitial = "";
@@ -1774,6 +1774,9 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   returnDiningListItem(dineIndex) {
     return GestureDetector(
         onTap: () {
+          
+          
+          
           bool isInvoice = false;
           bool isConvert = false;
           bool paymentSection = false;
@@ -1800,6 +1803,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
               dialogBoxPermissionDenied(context);
             }
           } else if (diningOrderList[dineIndex].status == "Ordered") {
+            print("-*/*-*/*-*/*-*/*/-*-*/*--#${diningOrderList[dineIndex].tableId}");
             paymentSection = false;
             isConvert = true;
             isVacant = false;
@@ -4032,12 +4036,14 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
+
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/table-create/';
         var suffix = "";
 
         var tableName = tableNameController.text;
         var name = suffix + tableName;
+
 
         print(url);
         Map data = {
@@ -4062,13 +4068,14 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
 
-        if (status == 6000) {
+        if(status == 6000) {
           stop();
           Navigator.pop(context);
           getTableOrderList();
           tableNameController.clear();
           dialogBoxHide(context, "Table created");
-        } else if (status == 6001) {
+        }
+        else if (status == 6001) {
           stop();
           var msg = n["message"];
           dialogBox(context, msg);

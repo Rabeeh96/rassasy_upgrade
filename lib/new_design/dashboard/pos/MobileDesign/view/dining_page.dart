@@ -207,7 +207,8 @@ class _DiningPageState extends State<DiningPage> {
                                   motion: const ScrollMotion(),
 
                                   children: [
-                                    diningController.tableData[index].status == 'Ordered'&& posController.kitchen_print_perm.value?  CustomSlidableAction(
+                                    diningController.tableData[index].status == 'Ordered'&& posController.kitchen_print_perm.value?
+                                    CustomSlidableAction(
                                       flex: 1,
                                       onPressed: (BuildContext context) async {
                                         posController.printKOT(cancelList: [],isUpdate:false,orderID:diningController.tableData[index].salesOrderID!,rePrint:true);
@@ -228,7 +229,8 @@ class _DiningPageState extends State<DiningPage> {
                                         ],
                                       ),
                                     ):Container(),
-                                    posController.print_perm.value?  CustomSlidableAction(
+                                    posController.print_perm.value?
+                                    CustomSlidableAction(
                                       flex: 1,
                                       onPressed: (BuildContext context) async {
 

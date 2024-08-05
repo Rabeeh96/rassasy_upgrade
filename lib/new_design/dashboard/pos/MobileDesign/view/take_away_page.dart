@@ -167,8 +167,7 @@ class _TakeAwayState extends State<TakeAway> {
                                             flex: 2,
                                             onPressed:
                                                 (BuildContext context) async {
-                                              print(
-                                                  "${takeAwayController.takeAwayOrders[index].salesID!}");
+
 
                                               takeAwayController.printSection(
                                                   context: context,
@@ -224,21 +223,26 @@ class _TakeAwayState extends State<TakeAway> {
                                   children: [
                                     CustomSlidableAction(
                                       onPressed: (BuildContext context) async {
-                                        if (takeAwayController
-                                                .takeAwayOrders[index].status ==
-                                            'Ordered') {
-                                          var result =
-                                              await Get.to(CancelOrderList());
-                                          if (result != null) {
-                                            takeAwayController.cancelOrderApi(
-                                                context: context,
-                                                type: "Cancel",
-                                                tableID: "",
-                                                cancelReasonId: result[1],
-                                                orderID: takeAwayController
-                                                    .takeAwayOrders[index]
-                                                    .salesOrderID!);
+                                        if (takeAwayController.takeAwayOrders[index].status == 'Ordered') {
+                                          if(posController.print_perm.value){
+                                            var result = await Get.to(CancelOrderList());
+                                            if (result != null) {
+
+                                              takeAwayController.cancelOrderApi(
+                                                  context: context,
+                                                  type: "Cancel",
+                                                  tableID: "",
+                                                  cancelReasonId: result[1],
+                                                  orderID: takeAwayController
+                                                      .takeAwayOrders[index]
+                                                      .salesOrderID!);
+                                            }
                                           }
+                                          else{
+                                            dialogBoxPermissionDenied(context);
+                                          }
+
+
                                         } else {
                                           takeAwayController.cancelOrderApi(
                                               context: context,
@@ -263,12 +267,7 @@ class _TakeAwayState extends State<TakeAway> {
                                             color: Colors.white,
                                           ),
                                           Text(
-                                            takeAwayController
-                                                        .takeAwayOrders[index]
-                                                        .status ==
-                                                    'Ordered'
-                                                ? "Cancel"
-                                                : "Clear",
+                                            takeAwayController.takeAwayOrders[index].status == 'Ordered' ? "Cancel" : "Clear",
                                             style: customisedStyle(
                                                 context,
                                                 Colors.white,
@@ -278,10 +277,9 @@ class _TakeAwayState extends State<TakeAway> {
                                         ],
                                       ),
                                     ),
-                                    takeAwayController
-                                                .takeAwayOrders[index].status ==
-                                            'Ordered'
-                                        ? CustomSlidableAction(
+                                    takeAwayController.takeAwayOrders[index].status == 'Ordered' ?
+                                    posController.pay_perm.value?
+                                    CustomSlidableAction(
                                             onPressed:
                                                 (BuildContext context) async {
                                               var resultPayment =
@@ -321,7 +319,7 @@ class _TakeAwayState extends State<TakeAway> {
                                                 )
                                               ],
                                             ),
-                                          )
+                                          ):Container()
                                         : Container(),
 
                                     ///kot commented here
