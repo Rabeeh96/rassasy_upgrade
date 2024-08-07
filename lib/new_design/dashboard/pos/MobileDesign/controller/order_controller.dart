@@ -1438,7 +1438,6 @@ class OrderController extends GetxController {
       var printAfterOrder = prefs.getBool('print_after_order') ?? false;
 
 
-
       String compensation=  prefs.getString('CompensationHour') ?? "1";
       var dateTime = getDateWithHourCondition(DateTime.now(),int.parse(compensation));
       DateTime selectedDateAndTime = DateTime.now();

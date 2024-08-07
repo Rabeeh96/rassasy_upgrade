@@ -480,7 +480,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
         var accessToken = prefs.getString('access') ?? '';
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
-
+        print(" widget.tableID ${widget.tableID}");
         final String url = '$baseUrl/posholds/view-pos/salesOrder/${widget.UUID}/';
         print(url);
         Map data = {"BranchID": branchID, "CompanyID": companyID, "CreatedUserID": userID, "PriceRounding": 2};
@@ -496,7 +496,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             body: body);
 
         Map n = json.decode(utf8.decode(response.bodyBytes));
-        print(response.body);
+        log_data(response.body);
         var status = n["StatusCode"];
         var message = n["message"]??"";
         var responseJson = n["data"];
@@ -634,6 +634,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             body: body);
         print("${response.statusCode}");
         print("${response.body}");
+        print(" widget.tableID ${widget.tableID}");
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
         var message = n["message"]??"";

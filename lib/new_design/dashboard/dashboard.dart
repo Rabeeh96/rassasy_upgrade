@@ -26,6 +26,8 @@ import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:rassasy_new/new_design/report/new_report_page.dart';
 import 'package:rassasy_new/setting/settings_page.dart';
+import 'package:rassasy_new/test/local_db/data_base_working.dart';
+import 'package:rassasy_new/test/local_db/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'customer/customer_detail_page.dart';
 import 'flavour/view_flavour.dart';
@@ -684,9 +686,13 @@ class _DashboardNewState extends State<DashboardNew> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // ElevatedButton(onPressed: (){}
-                  //
-                  //     , child: Text("Local DB")),
+                  ElevatedButton(onPressed: (){
+
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>   SyncScreen()));
+
+                  }
+
+                      , child: Text("Local DB")),
 
 
                   Padding(

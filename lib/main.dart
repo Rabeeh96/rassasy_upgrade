@@ -10,6 +10,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/car_page.
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/payment_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
+import 'package:rassasy_new/test/local_db/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart' if (dart.library.html) '';
 
@@ -55,8 +56,11 @@ import 'package:http/http.dart' as http;
 //     });
 //   }
 // }
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+import 'package:path_provider/path_provider.dart' as path_provider;
+void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
     doWhenWindowReady(() {
@@ -69,9 +73,24 @@ void main() {
   }
 
 
+
+
+  // Get application documents directory
+  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
+
+  // Initialize Hive and open the box
+  Hive.init(appDocumentDir.path);
+
+  // Register the type adapter for ProductListModel
+ // Hive.registerAdapter(ProductListModelHiveAdapter());
+
+  // Open a box for storing ProductListModel objects
+  await Hive.openBox<ProductListModelHive>('products');
+
+
   SharedPreferences.getInstance().then((prefs) {
   // bool isTablet = true;
-    bool isTablet = isTabletDevice();
+     bool isTablet = isTabletDevice();
      prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
      print("main isTablet: $isTablet");
 
@@ -99,6 +118,8 @@ class MyApp extends StatelessWidget {
   final bool isTablet;
 
   MyApp({required this.isTablet});
+
+
 
   @override
   Widget build(BuildContext context) {
