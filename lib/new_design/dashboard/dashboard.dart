@@ -20,6 +20,8 @@ import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/pos_list_tab_design.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/pos_order_page.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
@@ -397,7 +399,27 @@ class _DashboardNewState extends State<DashboardNew> {
                     ),
               actions: [
 
-
+                IconButton(
+                    onPressed: () {
+                      Get.to(PosListTabDesign());
+                    },
+                    icon:Text("Pos List")),
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PosOrderPage(
+                              orderType: 4,
+                              sectionType: "Create",
+                              uID: "",
+                              tableHead: "Order",
+                              tableID: "",
+                              cancelOrder: [],
+                            )),
+                      );
+                    },
+                    icon:Text("Pos Order")),
                 isTablet == true
                     ? Theme(
                         data: Theme.of(context).copyWith(

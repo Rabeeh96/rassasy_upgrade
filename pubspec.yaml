@@ -103,6 +103,7 @@ dev_dependencies:
   bitsdojo_window:
   flutter_charset_detector:
   printing: ^5.13.1
+
 #  sqflite_common_ffi: ^2.3.3
 #  sqflite:
 
@@ -318,6 +319,10 @@ flutter:
     - assets/svg/user-2.svg
     - assets/svg/key-round.svg
     - assets/svg/no_image.svg
+    - assets/svg/search-grey.svg
+    - assets/svg/as.svg
+    - assets/png/search_grey_png.png
+    - assets/png/drop.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
