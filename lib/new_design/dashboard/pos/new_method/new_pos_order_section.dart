@@ -2138,11 +2138,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
       ],
     );
   }
-  TextEditingController productFontSizeController=TextEditingController();
-  TextEditingController productGroupFontSizeController=TextEditingController();
-  TextEditingController rateFontSizeController=TextEditingController();
-  TextEditingController descriptionFontSizeController=TextEditingController();
-  TextEditingController rowCountController=TextEditingController();
+  TextEditingController productFontSizeController=TextEditingController()..text='12.0';
+  TextEditingController productGroupFontSizeController=TextEditingController()..text='12.0';
+  TextEditingController rateFontSizeController=TextEditingController()..text='12.0';
+  TextEditingController descriptionFontSizeController=TextEditingController()..text='12.0';
+  TextEditingController rowCountController=TextEditingController()..text='4.0';
   /// pos section
   Widget posDetailScreen() {
     return ListView(
@@ -2688,7 +2688,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       children: [
                         TextButton(
                           style: ButtonStyle(backgroundColor:MaterialStateProperty.all<Color>(Colors.teal)),
-                          child: Text('Save Changes',style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),),
+                          child: Text('OK',style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),),
                           onPressed: () async {
                             SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -3564,7 +3564,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   // Observable dimensions
   var widthOFTable = 5.0;
   var heightOFTable = 1.6;
-  var rowCountGridView = 4;
+  var rowCountGridView = 3;
   Widget displayProductDetails() {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
@@ -3575,8 +3575,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 30),
               controller: productController,
               shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
+              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: rowCountGridView,
                 childAspectRatio: 2.3, //2.4 will workk
                 crossAxisSpacing: 5,
                 mainAxisSpacing: 5,

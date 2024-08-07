@@ -630,585 +630,614 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             decoration: BoxDecoration(
                 border: Border.all(color: const Color(0xffD6D6D6), width: 0.5)),
             height: isSettingOpen
-                ? MediaQuery.of(context).size.height / 8
+                ? MediaQuery.of(context).size.height / 6
                 : MediaQuery.of(context).size.height / 14, //height of button
             //width: MediaQuery.of(context).size.width / 1,
             child: isSettingOpen
                 ? Container(
-              child: Row(
+                color: Colors.grey.shade50,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text("Font Style",style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),),
+                  ),
+
                   Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          "Amount Font Size ",
-                          style: customisedStyle(context, Colors.black,
-                              FontWeight.w600, 12.0),
-                        ),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height /
-                            8.5, //height of button
-                        width: MediaQuery.of(context).size.width / 10,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height /
-                                  13, //height of button
-                              width:
-                              MediaQuery.of(context).size.width / 17,
-                              child: TextField(
-                                controller: amountFontSizeController,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                ],
-                                style: customisedStyle(
-                                    context,
-                                    const Color(0xff000000),
-                                    FontWeight.w500,
-                                    14.00),
-                                onChanged: (text) async {
-                                  SharedPreferences prefs =
-                                  await SharedPreferences
-                                      .getInstance();
-
-                                  if (text.isNotEmpty) {
-                                    amountFontSize = double.parse(text);
-                                    amountFontSizeController.text =
-                                    "$amountFontSize";
-                                    prefs.setDouble(
-                                        'AmountFontSize', amountFontSize);
-                                  } else {}
-                                },
-                                decoration: const InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(12),
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              "Amount Font Size ",
+                              style: customisedStyle(context, Colors.black,
+                                  FontWeight.w600, 12.0),
                             ),
-                            SizedBox(width: 5,),
+                          ),
+                          Container(
 
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.center,
+                            height: MediaQuery.of(context).size.height /
+                                15, //height of button
+                            width: MediaQuery.of(context).size.width / 10,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                RotatedBox(quarterTurns: 2,child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (amountFontSize <= 0) {
-                                        } else {
-                                          amountFontSize =
-                                              amountFontSize - 1;
-                                          amountFontSizeController.text =
-                                          "$amountFontSize";
-                                        }
-                                      });
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height /
+                                      18, //height of button
+                                  width:
+                                  MediaQuery.of(context).size.width / 17,
+                                  child: TextField(
+                                    controller: amountFontSizeController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(
+                                        context,
+                                        const Color(0xff000000),
+                                        FontWeight.w500,
+                                        14.00),
+                                    onChanged: (text) async {
+                                      SharedPreferences prefs =
+                                      await SharedPreferences
+                                          .getInstance();
+
+                                      if (text.isNotEmpty) {
+                                        amountFontSize = double.parse(text);
+                                        amountFontSizeController.text =
+                                        "$amountFontSize";
+                                        prefs.setDouble(
+                                            'AmountFontSize', amountFontSize);
+                                      } else {}
                                     },
-                                    child: InkWell(
-                                      child: Icon(
-                                          Icons.arrow_drop_down_circle),
-                                    )),),
-                                SizedBox(
-                                  height: 3,
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
                                 ),
-                                RotatedBox(
-                                  quarterTurns: 4,
-                                  child: Container(
-                                    alignment: Alignment.center,
+                                SizedBox(width: 5,),
 
-                                    // height: MediaQuery.of(context).size.height / 20,
-                                    // //height of button
-                                    // width: MediaQuery.of(context).size.width / 29,
-                                    // decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
-
-                                    child: GestureDetector(
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(quarterTurns: 2,child: GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            amountFontSize =
-                                                amountFontSize + 1;
-                                            amountFontSizeController
-                                                .text = "$amountFontSize";
+                                            if (amountFontSize <= 0) {
+                                            } else {
+                                              amountFontSize =
+                                                  amountFontSize - 1;
+                                              amountFontSizeController.text =
+                                              "$amountFontSize";
+                                            }
                                           });
                                         },
                                         child: InkWell(
-                                          child: Icon(Icons
-                                              .arrow_drop_down_circle),
-                                        )),
+                                          child: Icon(
+                                              Icons.arrow_drop_down_circle),
+                                        )),),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    RotatedBox(
+                                      quarterTurns: 4,
+                                      child: Container(
+                                        alignment: Alignment.center,
+
+                                        // height: MediaQuery.of(context).size.height / 20,
+                                        // //height of button
+                                        // width: MediaQuery.of(context).size.width / 29,
+                                        // decoration: const BoxDecoration(color: Color(0xffF25F29), borderRadius: BorderRadius.all(Radius.circular(3))),
+
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                amountFontSize =
+                                                    amountFontSize + 1;
+                                                amountFontSizeController
+                                                    .text = "$amountFontSize";
+                                              });
+                                            },
+                                            child: InkWell(
+                                              child: Icon(Icons
+                                                  .arrow_drop_down_circle),
+                                            )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right:20.0),
+                            child: Text(
+                              "Button Font Size",
+                              style: customisedStyle(
+                                  context, Colors.black, FontWeight.w600, 12.0),
+                            ),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height /
+                                15, //height of button
+
+                            width: MediaQuery.of(context).size.width / 7,
+                            child: Row(
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height /
+                                      18, //height of button
+                                  width:
+                                  MediaQuery.of(context).size.width / 17,
+                                  child: TextField(
+                                    controller: buttonsFontSizeController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(
+                                        context,
+                                        const Color(0xff000000),
+                                        FontWeight.w500,
+                                        14.00),
+                                    onChanged: (text) async {
+                                      SharedPreferences prefs =
+                                      await SharedPreferences
+                                          .getInstance();
+
+                                      if (text.isNotEmpty) {
+                                        buttonFontSize = double.parse(text);
+                                        buttonsFontSizeController.text =
+                                        "$buttonFontSize";
+                                        prefs.setDouble(
+                                            'ButtonFontSize', buttonFontSize);
+                                      } else {}
+                                    },
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
                                   ),
                                 ),
+                                SizedBox(width: 5,),
+
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(quarterTurns: 2,child:  GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            buttonFontSize =
+                                                buttonFontSize + 1;
+                                            buttonsFontSizeController.text =
+                                            "$buttonFontSize";
+                                          });
+
+                                        },
+                                        child: InkWell(
+                                          child: Icon(
+                                              Icons.arrow_drop_down_circle),
+                                        )),),
+                                    RotatedBox(
+                                      quarterTurns: 4,
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              if (buttonFontSize <= 0) {
+                                              } else {
+                                                buttonFontSize =
+                                                    buttonFontSize - 1;
+                                                buttonsFontSizeController.text =
+                                                "$buttonFontSize";
+                                              }
+                                            });
+                                          },
+                                          child: InkWell(
+                                            child: Icon(
+                                                Icons.arrow_drop_down_circle),
+                                          )),
+                                    )
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
+                          )
+                        ],
+                      ),
+                      // Row(
+                      //   children: [
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(right: 16.0),
+                      //       child: Text(
+                      //         "Button Width",
+                      //         style: customisedStyle(context, Colors.black,
+                      //             FontWeight.w600, 12.0),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 7,
+                      //     ),
+                      //     Container(
+                      //       height: MediaQuery.of(context).size.height /
+                      //           8.5, //height of button
+                      //
+                      //       width: MediaQuery.of(context).size.width / 7,
+                      //       child: Row(
+                      //         children: [
+                      //           // Container(
+                      //           //   height:
+                      //           //       MediaQuery.of(context).size.height / 13,
+                      //           //   width:
+                      //           //       MediaQuery.of(context).size.width / 29,
+                      //           //   decoration: const BoxDecoration(
+                      //           //       color: Color(0xffF25F29),
+                      //           //       borderRadius: BorderRadius.all(
+                      //           //           Radius.circular(3))),
+                      //           //   child: IconButton(
+                      //           //       onPressed: () {
+                      //           //         setState(() {
+                      //           //           if (buttonWidth <= 0) {
+                      //           //           } else {
+                      //           //             buttonWidth = buttonWidth - 1;
+                      //           //             buttonWidthController.text =
+                      //           //                 "$buttonWidth";
+                      //           //           }
+                      //           //         });
+                      //           //       },
+                      //           //       icon: SvgPicture.asset(
+                      //           //           'assets/svg/increment_qty.svg')),
+                      //           // ),
+                      //           // const SizedBox(
+                      //           //   width: 4,
+                      //           // ),
+                      //           Container(
+                      //             alignment: Alignment.center,
+                      //             height: MediaQuery.of(context).size.height /
+                      //                 13, //height of button
+                      //             width:
+                      //                 MediaQuery.of(context).size.width / 17,
+                      //             child: TextField(
+                      //               controller: buttonWidthController,
+                      //               textAlign: TextAlign.center,
+                      //               inputFormatters: [
+                      //                 FilteringTextInputFormatter.allow(
+                      //                     RegExp(r'[0-9]')),
+                      //               ],
+                      //               style: customisedStyle(
+                      //                   context,
+                      //                   const Color(0xff000000),
+                      //                   FontWeight.w500,
+                      //                   14.00),
+                      //               onChanged: (text) async {
+                      //                 SharedPreferences prefs =
+                      //                     await SharedPreferences
+                      //                         .getInstance();
+                      //
+                      //                 if (text.isNotEmpty) {
+                      //                   buttonWidth = double.parse(text);
+                      //                   buttonWidthController.text =
+                      //                       "$buttonWidth";
+                      //                   prefs.setDouble(
+                      //                       'ButtonWidth', buttonWidth);
+                      //                 } else {}
+                      //               },
+                      //               decoration: const InputDecoration(
+                      //                 isDense: true,
+                      //                 contentPadding: EdgeInsets.all(12),
+                      //                 border: OutlineInputBorder(),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //
+                      //           Column(
+                      //             children: [
+                      //               GestureDetector(
+                      //                   onTap: () {
+                      //                     setState(() {
+                      //                       if (buttonWidth <= 0) {
+                      //                       } else {
+                      //                         buttonWidth = buttonWidth - 1;
+                      //                         buttonWidthController.text =
+                      //                             "$buttonWidth";
+                      //                       }
+                      //                     });
+                      //                   },
+                      //                   child: InkWell(
+                      //                     child: Icon(
+                      //                         Icons.arrow_drop_down_circle),
+                      //                   )),
+                      //               RotatedBox(
+                      //                 quarterTurns: 4,
+                      //                 child: GestureDetector(
+                      //                     onTap: () {
+                      //                       setState(() {
+                      //                         buttonWidth = buttonWidth + 1;
+                      //                         buttonWidthController.text =
+                      //                             "$buttonWidth";
+                      //                       });
+                      //                     },
+                      //                     child: InkWell(
+                      //                       child: Icon(
+                      //                           Icons.arrow_drop_down_circle),
+                      //                     )),
+                      //               )
+                      //             ],
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
+
+                      TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.teal)),
                         child: Text(
-                          "Items in a Row",
-                          style: customisedStyle(context, Colors.black,
-                              FontWeight.w600, 12.0),
+                          'OK',
+                          style: customisedStyle(
+                              context, Colors.white, FontWeight.normal, 13.0),
                         ),
+                        onPressed: () async {
+                          SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+
+                          setState(() {
+                            amountFontSize =
+                                double.parse(amountFontSizeController.text);
+                            buttonFontSize =
+                                double.parse(buttonsFontSizeController.text);
+                            buttonHeight =
+                                double.parse(buttonHeightController.text);
+                            buttonWidth =
+                                double.parse(buttonWidthController.text);
+                            rowCountGridView =
+                                int.parse(itemCountRowController.text);
+
+                            prefs.setDouble('ButtonFontSize', buttonFontSize);
+                            prefs.setDouble('AmountFontSize', amountFontSize);
+                            prefs.setDouble('ButtonHeight', buttonHeight);
+                            prefs.setInt(
+                                'RowCountGridView', rowCountGridView);
+                          });
+                          // String value2 = _textFieldController2.text;
+                          // bool printSecondCopy = _printSecondCopy;
+                          /// await  posFunctions(callFunction: true);
+
+                          /// Navigator.of(context).pop(); // Close the dialog
+                        },
                       ),
-                      Container(
-                        height: MediaQuery.of(context).size.height /
-                            8.5, //height of button
-
-                        width: MediaQuery.of(context).size.width / 10,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height /
-                                  13, //height of button
-                              width:
-                              MediaQuery.of(context).size.width / 17,
-                              child: TextField(
-                                controller: itemCountRowController,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                ],
-                                style: customisedStyle(
-                                    context,
-                                    const Color(0xff000000),
-                                    FontWeight.w500,
-                                    14.00),
-                                onChanged: (text) async {
-                                  SharedPreferences prefs =
-                                  await SharedPreferences
-                                      .getInstance();
-
-                                  if (text.isNotEmpty) {
-                                    rowCountGridView = int.parse(text);
-                                    itemCountRowController.text =
-                                    "$rowCountGridView";
-                                    prefs.setInt('RowCountGridView',
-                                        rowCountGridView);
-                                  } else {}
-                                },
-                                decoration: const InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(12),
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 5,),
-
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                RotatedBox(quarterTurns: 2,child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (rowCountGridView <= 0) {
-                                        } else {
-                                          rowCountGridView =
-                                              rowCountGridView - 1;
-                                          itemCountRowController.text =
-                                          "$rowCountGridView";
-                                        }
-                                      });
-                                    },
-                                    child: InkWell(
-                                      child: Icon(
-                                          Icons.arrow_drop_down_circle),
-                                    )),),
-                                RotatedBox(
-                                  quarterTurns: 4,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          rowCountGridView =
-                                              rowCountGridView + 1;
-                                          itemCountRowController.text =
-                                          "$rowCountGridView";
-                                        });
-                                      },
-                                      child: InkWell(
-                                        child: Icon(
-                                            Icons.arrow_drop_down_circle),
-                                      )),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
                     ],
                   ),
                   Row(
                     children: [
-                      Text(
-                        "Button Font Size",
-                        style: customisedStyle(
-                            context, Colors.black, FontWeight.w600, 12.0),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height /
-                            8.5, //height of button
-
-                        width: MediaQuery.of(context).size.width / 7,
-                        child: Row(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height /
-                                  13, //height of button
-                              width:
-                              MediaQuery.of(context).size.width / 17,
-                              child: TextField(
-                                controller: buttonsFontSizeController,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                ],
-                                style: customisedStyle(
-                                    context,
-                                    const Color(0xff000000),
-                                    FontWeight.w500,
-                                    14.00),
-                                onChanged: (text) async {
-                                  SharedPreferences prefs =
-                                  await SharedPreferences
-                                      .getInstance();
-
-                                  if (text.isNotEmpty) {
-                                    buttonFontSize = double.parse(text);
-                                    buttonsFontSizeController.text =
-                                    "$buttonFontSize";
-                                    prefs.setDouble(
-                                        'ButtonFontSize', buttonFontSize);
-                                  } else {}
-                                },
-                                decoration: const InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(12),
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0,right: 37),
+                            child: Text(
+                              "Button Height",
+                              style: customisedStyle(
+                                  context, Colors.black, FontWeight.w600, 12.0),
                             ),
-                            SizedBox(width: 5,),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height /
+                                15, //height of button
 
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            width: MediaQuery.of(context).size.width / 10,
+                            child: Row(
                               children: [
-                                RotatedBox(quarterTurns: 2,child:  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (buttonFontSize <= 0) {
-                                        } else {
-                                          buttonFontSize =
-                                              buttonFontSize - 1;
-                                          buttonsFontSizeController.text =
-                                          "$buttonFontSize";
-                                        }
-                                      });
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height /
+                                      18, //height of button
+                                  width:
+                                  MediaQuery.of(context).size.width / 17,
+                                  child: TextField(
+                                    controller: buttonHeightController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(
+                                        context,
+                                        const Color(0xff000000),
+                                        FontWeight.w500,
+                                        14.00),
+                                    onChanged: (text) async {
+                                      SharedPreferences prefs =
+                                      await SharedPreferences
+                                          .getInstance();
+
+                                      if (text.isNotEmpty) {
+                                        buttonHeight = double.parse(text);
+                                        buttonHeightController.text =
+                                        "$buttonHeight";
+                                        prefs.setDouble(
+                                            'ButtonHeight', buttonHeight);
+                                      } else {}
                                     },
-                                    child: InkWell(
-                                      child: Icon(
-                                          Icons.arrow_drop_down_circle),
-                                    )),),
-                                RotatedBox(
-                                  quarterTurns: 4,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          buttonFontSize =
-                                              buttonFontSize + 1;
-                                          buttonsFontSizeController.text =
-                                          "$buttonFontSize";
-                                        });
-                                      },
-                                      child: InkWell(
-                                        child: Icon(
-                                            Icons.arrow_drop_down_circle),
-                                      )),
-                                )
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 5,),
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(quarterTurns: 2,child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            buttonHeight = buttonHeight + 1;
+                                            buttonHeightController.text =
+                                            "$buttonHeight";
+                                          });
+                                        },
+                                        child: InkWell(
+                                          child: Icon(
+                                              Icons.arrow_drop_down_circle),
+                                        )),),
+                                    RotatedBox(
+                                      quarterTurns: 4,
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              if (buttonHeight <= 0) {
+                                              } else {
+                                                buttonHeight = buttonHeight - 1;
+                                                buttonHeightController.text =
+                                                "$buttonHeight";
+                                              }
+                                            });
+
+                                          },
+                                          child: InkWell(
+                                            child: Icon(
+                                                Icons.arrow_drop_down_circle),
+                                          )),
+                                    )
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  // Row(
-                  //   children: [
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(right: 16.0),
-                  //       child: Text(
-                  //         "Button Width",
-                  //         style: customisedStyle(context, Colors.black,
-                  //             FontWeight.w600, 12.0),
-                  //       ),
-                  //     ),
-                  //     SizedBox(
-                  //       width: 7,
-                  //     ),
-                  //     Container(
-                  //       height: MediaQuery.of(context).size.height /
-                  //           8.5, //height of button
-                  //
-                  //       width: MediaQuery.of(context).size.width / 7,
-                  //       child: Row(
-                  //         children: [
-                  //           // Container(
-                  //           //   height:
-                  //           //       MediaQuery.of(context).size.height / 13,
-                  //           //   width:
-                  //           //       MediaQuery.of(context).size.width / 29,
-                  //           //   decoration: const BoxDecoration(
-                  //           //       color: Color(0xffF25F29),
-                  //           //       borderRadius: BorderRadius.all(
-                  //           //           Radius.circular(3))),
-                  //           //   child: IconButton(
-                  //           //       onPressed: () {
-                  //           //         setState(() {
-                  //           //           if (buttonWidth <= 0) {
-                  //           //           } else {
-                  //           //             buttonWidth = buttonWidth - 1;
-                  //           //             buttonWidthController.text =
-                  //           //                 "$buttonWidth";
-                  //           //           }
-                  //           //         });
-                  //           //       },
-                  //           //       icon: SvgPicture.asset(
-                  //           //           'assets/svg/increment_qty.svg')),
-                  //           // ),
-                  //           // const SizedBox(
-                  //           //   width: 4,
-                  //           // ),
-                  //           Container(
-                  //             alignment: Alignment.center,
-                  //             height: MediaQuery.of(context).size.height /
-                  //                 13, //height of button
-                  //             width:
-                  //                 MediaQuery.of(context).size.width / 17,
-                  //             child: TextField(
-                  //               controller: buttonWidthController,
-                  //               textAlign: TextAlign.center,
-                  //               inputFormatters: [
-                  //                 FilteringTextInputFormatter.allow(
-                  //                     RegExp(r'[0-9]')),
-                  //               ],
-                  //               style: customisedStyle(
-                  //                   context,
-                  //                   const Color(0xff000000),
-                  //                   FontWeight.w500,
-                  //                   14.00),
-                  //               onChanged: (text) async {
-                  //                 SharedPreferences prefs =
-                  //                     await SharedPreferences
-                  //                         .getInstance();
-                  //
-                  //                 if (text.isNotEmpty) {
-                  //                   buttonWidth = double.parse(text);
-                  //                   buttonWidthController.text =
-                  //                       "$buttonWidth";
-                  //                   prefs.setDouble(
-                  //                       'ButtonWidth', buttonWidth);
-                  //                 } else {}
-                  //               },
-                  //               decoration: const InputDecoration(
-                  //                 isDense: true,
-                  //                 contentPadding: EdgeInsets.all(12),
-                  //                 border: OutlineInputBorder(),
-                  //               ),
-                  //             ),
-                  //           ),
-                  //
-                  //           Column(
-                  //             children: [
-                  //               GestureDetector(
-                  //                   onTap: () {
-                  //                     setState(() {
-                  //                       if (buttonWidth <= 0) {
-                  //                       } else {
-                  //                         buttonWidth = buttonWidth - 1;
-                  //                         buttonWidthController.text =
-                  //                             "$buttonWidth";
-                  //                       }
-                  //                     });
-                  //                   },
-                  //                   child: InkWell(
-                  //                     child: Icon(
-                  //                         Icons.arrow_drop_down_circle),
-                  //                   )),
-                  //               RotatedBox(
-                  //                 quarterTurns: 4,
-                  //                 child: GestureDetector(
-                  //                     onTap: () {
-                  //                       setState(() {
-                  //                         buttonWidth = buttonWidth + 1;
-                  //                         buttonWidthController.text =
-                  //                             "$buttonWidth";
-                  //                       });
-                  //                     },
-                  //                     child: InkWell(
-                  //                       child: Icon(
-                  //                           Icons.arrow_drop_down_circle),
-                  //                     )),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
-                  Row(
-                    children: [
-                      Text(
-                        "Button Height",
-                        style: customisedStyle(
-                            context, Colors.black, FontWeight.w600, 12.0),
+                          )
+                        ],
                       ),
-                      Container(
-                        height: MediaQuery.of(context).size.height /
-                            8.5, //height of button
-
-                        width: MediaQuery.of(context).size.width / 7,
-                        child: Row(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height /
-                                  13, //height of button
-                              width:
-                              MediaQuery.of(context).size.width / 17,
-                              child: TextField(
-                                controller: buttonHeightController,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                ],
-                                style: customisedStyle(
-                                    context,
-                                    const Color(0xff000000),
-                                    FontWeight.w500,
-                                    14.00),
-                                onChanged: (text) async {
-                                  SharedPreferences prefs =
-                                  await SharedPreferences
-                                      .getInstance();
-
-                                  if (text.isNotEmpty) {
-                                    buttonHeight = double.parse(text);
-                                    buttonHeightController.text =
-                                    "$buttonHeight";
-                                    prefs.setDouble(
-                                        'ButtonHeight', buttonHeight);
-                                  } else {}
-                                },
-                                decoration: const InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(12),
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Text(
+                              "Items in a Row",
+                              style: customisedStyle(context, Colors.black,
+                                  FontWeight.w600, 12.0),
                             ),
-                            SizedBox(width: 5,),
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.center,
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height /
+                                15, //height of button
+
+                            width: MediaQuery.of(context).size.width / 10,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                RotatedBox(quarterTurns: 2,child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (buttonHeight <= 0) {
-                                        } else {
-                                          buttonHeight = buttonHeight - 1;
-                                          buttonHeightController.text =
-                                          "$buttonHeight";
-                                        }
-                                      });
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: MediaQuery.of(context).size.height /
+                                      18, //height of button
+                                  width:
+                                  MediaQuery.of(context).size.width / 17,
+                                  child: TextField(
+                                    controller: itemCountRowController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(
+                                        context,
+                                        const Color(0xff000000),
+                                        FontWeight.w500,
+                                        14.00),
+                                    onChanged: (text) async {
+                                      SharedPreferences prefs =
+                                      await SharedPreferences
+                                          .getInstance();
+
+                                      if (text.isNotEmpty) {
+                                        rowCountGridView = int.parse(text);
+                                        itemCountRowController.text =
+                                        "$rowCountGridView";
+                                        prefs.setInt('RowCountGridView',
+                                            rowCountGridView);
+                                      } else {}
                                     },
-                                    child: InkWell(
-                                      child: Icon(
-                                          Icons.arrow_drop_down_circle),
-                                    )),),
-                                RotatedBox(
-                                  quarterTurns: 4,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          buttonHeight = buttonHeight + 1;
-                                          buttonHeightController.text =
-                                          "$buttonHeight";
-                                        });
-                                      },
-                                      child: InkWell(
-                                        child: Icon(
-                                            Icons.arrow_drop_down_circle),
-                                      )),
-                                )
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(12),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 5,),
+
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(quarterTurns: 2,child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            rowCountGridView =
+                                                rowCountGridView + 1;
+                                            itemCountRowController.text =
+                                            "$rowCountGridView";
+                                          });
+
+                                        },
+                                        child: InkWell(
+                                          child: Icon(
+                                              Icons.arrow_drop_down_circle),
+                                        )),),
+                                    RotatedBox(
+                                      quarterTurns: 4,
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              if (rowCountGridView <= 0) {
+                                              } else {
+                                                rowCountGridView =
+                                                    rowCountGridView - 1;
+                                                itemCountRowController.text =
+                                                "$rowCountGridView";
+                                              }
+                                            });
+                                          },
+                                          child: InkWell(
+                                            child: Icon(
+                                                Icons.arrow_drop_down_circle),
+                                          )),
+                                    )
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      )
+                          )
+                        ],
+                      ),
+
                     ],
-                  ),
-
-                  TextButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.teal)),
-                    child: Text(
-                      'Save Changes',
-                      style: customisedStyle(
-                          context, Colors.white, FontWeight.normal, 13.0),
-                    ),
-                    onPressed: () async {
-                      SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-
-                      setState(() {
-                        amountFontSize =
-                            double.parse(amountFontSizeController.text);
-                        buttonFontSize =
-                            double.parse(buttonsFontSizeController.text);
-                        buttonHeight =
-                            double.parse(buttonHeightController.text);
-                        buttonWidth =
-                            double.parse(buttonWidthController.text);
-                        rowCountGridView =
-                            int.parse(itemCountRowController.text);
-
-                        prefs.setDouble('ButtonFontSize', buttonFontSize);
-                        prefs.setDouble('AmountFontSize', amountFontSize);
-                        prefs.setDouble('ButtonHeight', buttonHeight);
-                        prefs.setInt(
-                            'RowCountGridView', rowCountGridView);
-                      });
-                      // String value2 = _textFieldController2.text;
-                      // bool printSecondCopy = _printSecondCopy;
-                      /// await  posFunctions(callFunction: true);
-
-                      /// Navigator.of(context).pop(); // Close the dialog
-                    },
                   ),
                 ],
               ),
@@ -1840,7 +1869,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width / 5,
-                height: MediaQuery.of(context).size.height / 18,
+                height: MediaQuery.of(context).size.height /buttonHeight,
                 child: DottedBorder(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -4481,8 +4510,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         child: Column(
                           children: [
                             Container(
-                              height: MediaQuery.of(context).size.height /
-                                  19, //height of button
+                              height: MediaQuery.of(context).size.height / buttonHeight, //height of button
                               width: MediaQuery.of(context).size.width / 5.1,
                               child: DottedBorder(
                                 strokeWidth: .5,
@@ -4539,7 +4567,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                           context,
                                           const Color(0xff005B37),
                                           FontWeight.w600,
-                                          12.00),
+                                          amountFontSize),
                                     ),
                                   ],
                                 ),
@@ -4607,7 +4635,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         child: Text(
                           takeAwayOrderLists[takeIndex].status,
                           style: customisedStyle(
-                              context, Colors.white, FontWeight.w400, 13.0),
+                              context, Colors.white, FontWeight.w400, buttonFontSize),
                         ),
                       ),
                     ),
@@ -4949,7 +4977,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                                         context,
                                         const Color(0xff005B37),
                                         FontWeight.w600,
-                                        12.0),
+                                        amountFontSize),
                                   ),
                                 ],
                               ),
@@ -5015,7 +5043,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                         child: Text(
                           onlineOrderLists[onlineIndex].status,
                           style: customisedStyle(
-                              context, Colors.white, FontWeight.w400, 13.0),
+                              context, Colors.white, FontWeight.w400, buttonFontSize),
                         ),
                       ),
                     ),
@@ -5296,7 +5324,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           children: [
                             SizedBox(
                               height: MediaQuery.of(context).size.height /
-                                  19, //height of button
+                                  buttonHeight, //height of button
                               width: MediaQuery.of(context).size.width / 4.9,
                               child: DottedBorder(
                                 child: Row(
