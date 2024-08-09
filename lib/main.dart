@@ -73,21 +73,6 @@ void main()async {
   }
 
 
-
-
-  // Get application documents directory
-  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
-
-  // Initialize Hive and open the box
-  Hive.init(appDocumentDir.path);
-
-  // Register the type adapter for ProductListModel
- // Hive.registerAdapter(ProductListModelHiveAdapter());
-
-  // Open a box for storing ProductListModel objects
-  await Hive.openBox<ProductListModelHive>('products');
-
-
   SharedPreferences.getInstance().then((prefs) {
   // bool isTablet = true;
      bool isTablet = isTabletDevice();

@@ -30,7 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  drift: ^2.19.1+1
+  drift_flutter: ^0.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -45,12 +46,12 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  drift_dev: ^2.19.1
   flutter_svg: ^2.0.9
-  hive_generator: ^1.0.0
+  hive_generator:
   build_runner: ^2.0.0
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
+  hive:
+  hive_flutter:
 
   passcode_screen: ^2.0.1
   shared_preferences: ^2.2.2
@@ -108,6 +109,8 @@ dev_dependencies:
   bitsdojo_window:
   flutter_charset_detector:
   printing: ^5.13.1
+  sqlite3_flutter_libs: ^0.5.24
+# drift
 
 #  sqflite:
 
@@ -323,6 +326,8 @@ flutter:
     - assets/svg/user-2.svg
     - assets/svg/key-round.svg
     - assets/svg/no_image.svg
+    - assets/png/search_grey_png.png
+    - assets/png/drop.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -12,6 +12,7 @@
 #include <file_selector_windows/file_selector_windows.h>
 #include <network_info_plus/network_info_plus_windows_plugin.h>
 #include <printing/printing_plugin.h>
+#include <sqlite3_flutter_libs/sqlite3_flutter_libs_plugin.h>
 #include <webview_universal/webview_universal_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
@@ -27,6 +28,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("NetworkInfoPlusWindowsPlugin"));
   PrintingPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("PrintingPlugin"));
+  Sqlite3FlutterLibsPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("Sqlite3FlutterLibsPlugin"));
   WebviewUniversalPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("WebviewUniversalPlugin"));
 }
