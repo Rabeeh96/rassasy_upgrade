@@ -1,47 +1,43 @@
-import 'package:hive/hive.dart';
+class Product {
+  final String id;
+  final int productId;
+  final String name;
+  final String salePrice;
+  final String purchasePrice;
+  final String salesTax;
+  final String description;
 
-@HiveType(typeId: 0)
-class ProductListModelHive extends HiveObject {
-  @HiveField(0)
-  String groupName;
-
-  @HiveField(1)
-  int categoryID;
-
-  @HiveField(2)
-  String categoryName;
-
-  @HiveField(3)
-  int productGroupId;
-
-  @HiveField(4)
-  String uID;
-
-  ProductListModelHive({
-    required this.groupName,
-    required this.categoryID,
-    required this.categoryName,
-    required this.productGroupId,
-    required this.uID,
+  Product({
+    required this.id,
+    required this.productId,
+    required this.name,
+    required this.salePrice,
+    required this.purchasePrice,
+    required this.salesTax,
+    required this.description,
   });
 
-  factory ProductListModelHive.fromJson(Map<String, dynamic> json) {
-    return ProductListModelHive(
-      groupName: json['groupName'] ?? '',
-      categoryID: json['categoryID'] ?? 0,
-      categoryName: json['categoryName'] ?? '',
-      productGroupId: json['productGroupId'] ?? 0,
-      uID: json['uID'] ?? '',
-    );
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'productId': productId,
+      'name': name,
+      'salePrice': salePrice,
+      'purchasePrice': purchasePrice,
+      'salesTax': salesTax,
+      'description': description,
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'groupName': groupName,
-      'categoryID': categoryID,
-      'categoryName': categoryName,
-      'productGroupId': productGroupId,
-      'uID': uID,
-    };
+  static Product fromMap(Map<dynamic, dynamic> map) {
+    return Product(
+      id: map['id'],
+      productId: map['ProductID'],
+      name: map['ProductName'],
+      salePrice: map['DefaultSalesPrice'].toString(),
+      purchasePrice: map['DefaultPurchasePrice'].toString(),
+      salesTax: map['SalesTax'].toString(),
+      description: map['Description'],
+    );
   }
 }
