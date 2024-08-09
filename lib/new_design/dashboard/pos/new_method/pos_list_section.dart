@@ -558,7 +558,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       UserDetailsAppBar(user_name: userName),
 
                       Container(
-                        width: 100,
+                       // width: 100,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xff0347A1)),
@@ -574,16 +574,17 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       ),
 
                       ///here changed
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              isSettingOpen = true;
-                            });
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(builder: (context) => PosSettings()));
-                          },
-                          child: Text("Settings"))
+                      // TextButton(
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         isSettingOpen = true;
+                      //       });
+                      //
+                      //       //   Navigator.push(
+                      //       //     context,
+                      //       //     MaterialPageRoute(builder: (context) => PosSettings()));
+                      //     },
+                      //     child: Text("Settings"))
                     ],
                   )
                 ],
@@ -1794,6 +1795,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             isVacant = true;
 
             if (dining_create_perm) {
+              print("-*/*-*/*-*/*-*/*/-*-*/*--#${diningOrderList[dineIndex].tableId}");
               navigateToOrderSection(
                   tableID: diningOrderList[dineIndex].tableId,
                   sectionType: "Create",
@@ -1803,7 +1805,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
               dialogBoxPermissionDenied(context);
             }
           } else if (diningOrderList[dineIndex].status == "Ordered") {
-            print("-*/*-*/*-*/*-*/*/-*-*/*--#${diningOrderList[dineIndex].tableId}");
+            print("table id#${diningOrderList[dineIndex].tableId}");
             paymentSection = false;
             isConvert = true;
             isVacant = false;
@@ -4035,16 +4037,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
-
-
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/table-create/';
         var suffix = "";
 
         var tableName = tableNameController.text;
         var name = suffix + tableName;
-
-
         print(url);
         Map data = {
           "CompanyID": companyID,
@@ -4056,14 +4054,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         print(data);
         //encode Map to JSON
         var body = json.encode(data);
-
         var response = await http.post(Uri.parse(url),
             headers: {
               "Content-Type": "application/json",
               'Authorization': 'Bearer $accessToken',
             },
             body: body);
-
         print(response.body);
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
