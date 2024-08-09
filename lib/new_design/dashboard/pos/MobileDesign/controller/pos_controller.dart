@@ -19,6 +19,9 @@ import '../../../../../global/global.dart';
 class POSController extends GetxController {
   RxInt tabIndex=0.obs;
 final isLoadTable=false.obs;
+final isLoadDine=false.obs;
+final isLoadTakeaway=false.obs;
+final isLoadCar=false.obs;
   POSController({int defaultIndex = 0}) : tabIndex = defaultIndex.obs;
 
  // var tabIndex = 0.obs;
@@ -172,7 +175,7 @@ final isLoadTable=false.obs;
 
       String baseUrl = BaseUrl.baseUrl;
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var companyID = prefs.getString('companyID') ?? '0'; // Change to string
+      var companyID = prefs.getString('companyID')??'' ; // Change to string
       var branchID = prefs.getInt('branchID') ?? 1;
 
       var accessToken = prefs.getString('access') ?? '';

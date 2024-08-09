@@ -207,7 +207,8 @@ class _DiningPageState extends State<DiningPage> {
                                   motion: const ScrollMotion(),
 
                                   children: [
-                                    diningController.tableData[index].status == 'Ordered'&& posController.kitchen_print_perm.value?
+                                    diningController.tableData[index].status == 'Ordered'&&
+                                        posController.kitchen_print_perm.value?
                                     CustomSlidableAction(
                                       flex: 1,
                                       onPressed: (BuildContext context) async {

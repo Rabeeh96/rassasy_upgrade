@@ -104,7 +104,9 @@ dev_dependencies:
   flutter_charset_detector:
   printing: ^5.13.1
 
-#  sqflite_common_ffi: ^2.3.3
+
+
+  #  sqflite_common_ffi: ^2.3.3
 #  sqflite:
 
 
@@ -323,6 +325,15 @@ flutter:
     - assets/svg/as.svg
     - assets/png/search_grey_png.png
     - assets/png/drop.png
+    - assets/png/image.png
+    - assets/png/image2.png
+    - assets/png/image3.png
+    - assets/png/image4.png
+    - assets/png/image5.png
+    - assets/svg/print_blue.svg
+    - assets/svg/cancel_order_red.svg
+    - assets/svg/Group 5163.svg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
