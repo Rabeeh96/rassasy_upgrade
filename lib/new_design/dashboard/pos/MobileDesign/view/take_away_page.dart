@@ -107,8 +107,7 @@ class _TakeAwayState extends State<TakeAway> {
                             itemCount:
                                 takeAwayController.takeAwayOrders.length + 1,
                             itemBuilder: (context, index) {
-                              if (index ==
-                                  takeAwayController.takeAwayOrders.length) {
+                              if (index ==  takeAwayController.takeAwayOrders.length) {
                                 return Container();
                               }
                               return Slidable(
@@ -546,7 +545,8 @@ class _TakeAwayState extends State<TakeAway> {
                               );
                             },
                           ),
-                        )))),
+                        ))
+            )),
       ]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top: 10.0, bottom: 10),

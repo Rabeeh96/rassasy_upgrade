@@ -42,19 +42,19 @@ class OrderController extends GetxController {
   TextEditingController categoryNameKartController = TextEditingController();
   TextEditingController unitPriceChangingController = TextEditingController();
   TextEditingController rowCountController = TextEditingController()
-    ..text = '2';
+    ;
   TextEditingController heightController = TextEditingController()
-    ..text = '12';
+    ;
   TextEditingController widthController = TextEditingController()
-    ..text = '4';
+    ;
   TextEditingController amountFontSizeController = TextEditingController()
-    ..text = '15';
+   ;
   TextEditingController productNameFontSizeController = TextEditingController()
-    ..text = '15';
+    ;
   TextEditingController groupNameFontSizeController = TextEditingController()
-    ..text = '13';
+  ;
   TextEditingController descriptionFontSizeController = TextEditingController()
-    ..text = '13';
+    ;
   String selectedFontSize = 'Medium';
   Rx<FontWeight> selectedFontWeight = FontWeight.normal.obs;
   Rx<FontWeight> productFontWeight = FontWeight.normal.obs;
@@ -95,7 +95,7 @@ class OrderController extends GetxController {
   double groupFontSize = 13.0;
   double descriptionFontSize = 13.0;
   var rowCountGridView = 2;
-  var heightOfITem = 120.0;
+  var heightOfITem = 12.0;
   var widthOfItem = 4.0;
   late ValueNotifier<int> productSearchNotifier;
   var detailPage = 'item_add'.obs;
@@ -122,22 +122,31 @@ class OrderController extends GetxController {
     detailPage = 'item_add'.obs;
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    productNameFontSizeController.text =
-        prefs.getDouble('product_font_size').toString();
-    amountFontSizeController.text =
-        prefs.getDouble('amount_font_size').toString();
+
+     amountFontSize=prefs.getDouble('amount_font_size')??15.0;
+    productFontSize=prefs.getDouble('product_font_size')??15.0;
+    groupFontSize=prefs.getDouble('group_font_size')??13.0;
+    rowCountGridView=prefs.getInt('count_of_row')??2;
+    heightOfITem=prefs.getDouble('height_of_item')??12.0;
+    descriptionFontSize=prefs.getDouble('description_fontSize')??13.0;
+    widthOfItem=prefs.getDouble('widthOfItem')??4.0;
+    productNameFontSizeController.text = productFontSize.toString();
+    amountFontSizeController.text = amountFontSize.toString();
+
     groupNameFontSizeController.text =
-        prefs.getDouble('group_font_size').toString();
+        groupFontSize.toString();
     heightController.text =
-        prefs.getDouble('height_of_item').toString();
+        heightOfITem.toString();
     widthController.text =
-        prefs.getDouble('widthOfItem').toString();
+        widthOfItem.toString();
     descriptionFontSizeController.text =
-        prefs.getDouble('description_fontSize').toString();
+        descriptionFontSize.toString();
     rowCountController.text =
-        prefs.getInt('count_of_row').toString();
-    isShowImage.value =
-        prefs.getBool('show_product_image') ?? false;
+        rowCountGridView.toString();
+    isShowImage.value =    prefs.getBool('show_product_image') ?? true;
+
+
+
   }
 
 

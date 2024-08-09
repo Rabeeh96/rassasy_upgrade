@@ -529,8 +529,8 @@ class Data {
       String? priceid, 
       String? salesOrderID, 
       String? salesMasterID, 
-      double? salesOrderGrandTotal, 
-      double? salesGrandTotal, 
+      String? salesOrderGrandTotal,
+      String? salesGrandTotal,
       String? orderTime, 
       bool? isActive, 
       bool? isReserved,
@@ -561,8 +561,8 @@ class Data {
     _priceid = json['priceid'];
     _salesOrderID = json['SalesOrderID'];
     _salesMasterID = json['SalesMasterID'];
-    _salesOrderGrandTotal = json['SalesOrderGrandTotal'];
-    _salesGrandTotal = json['SalesGrandTotal'];
+    _salesOrderGrandTotal = json['SalesOrderGrandTotal'].toString();
+    _salesGrandTotal = json['SalesGrandTotal'].toString();
     _orderTime = json['OrderTime'];
     _isActive = json['IsActive'];
     _isReserved = json['IsReserved'];
@@ -582,8 +582,8 @@ class Data {
   String? _priceid;
   String? _salesOrderID;
   String? _salesMasterID;
-  double? _salesOrderGrandTotal;
-  double? _salesGrandTotal;
+  String? _salesOrderGrandTotal;
+  String? _salesGrandTotal;
   String? _orderTime;
   bool? _isActive;
   bool? _isReserved;
@@ -596,8 +596,8 @@ Data copyWith({  String? id,
   String? priceid,
   String? salesOrderID,
   String? salesMasterID,
-  double? salesOrderGrandTotal,
-  double? salesGrandTotal,
+  String? salesOrderGrandTotal,
+  String? salesGrandTotal,
   String? orderTime,
   bool? isActive,
   bool? isReserved,
@@ -625,8 +625,8 @@ Data copyWith({  String? id,
   String? get priceid => _priceid;
   String? get salesOrderID => _salesOrderID;
   String? get salesMasterID => _salesMasterID;
-  double? get salesOrderGrandTotal => _salesOrderGrandTotal;
-  double? get salesGrandTotal => _salesGrandTotal;
+  String? get salesOrderGrandTotal => _salesOrderGrandTotal;
+  String? get salesGrandTotal => _salesGrandTotal;
   String? get orderTime => _orderTime;
   bool? get isActive => _isActive;
   bool? get isReserved => _isReserved;

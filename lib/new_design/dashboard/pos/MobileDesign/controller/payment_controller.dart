@@ -46,7 +46,7 @@ class POSPaymentController extends GetxController {
   TextEditingController bankReceivedController = TextEditingController();
   TextEditingController discountPerController = TextEditingController();
   TextEditingController discountAmountController = TextEditingController();
-
+var saleOrderDetail=[].obs;
 
   var detailLoading = false.obs;
   Future<Null> getOrderDetails({required String uID}) async {
@@ -101,6 +101,9 @@ class POSPaymentController extends GetxController {
           ledgerID.value = responseJson["LedgerID"];
           paymentCustomerSelection.text = responseJson["CustomerName"] ?? "";
           customerPhoneSelection.text = responseJson["Phone"] ?? "";
+          saleOrderDetail.assignAll(responseJson["SalesOrderDetails"]);
+         // saleOrderDetail.value= responseJson["SalesOrderDetails"];
+          print("saleOrderDetail ........$saleOrderDetail");
           cashReceived.value = 0.0;
           bankReceived.value = 0.0;
           balance.value = 0.0;
