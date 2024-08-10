@@ -4223,7 +4223,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   String compensationHour = '1';
-  List<String> dropdownValues = ['1','2','3','4','5','6','7'];
+  List<String> dropdownValues = ['0','1','2','3','4','5','6','7'];
   String kotDetail = 'Product Name';
   List<String> kotDetailsValues = [
     'Product Name',

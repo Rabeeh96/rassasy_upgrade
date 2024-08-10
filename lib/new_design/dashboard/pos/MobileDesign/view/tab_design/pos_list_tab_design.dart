@@ -6,11 +6,13 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/payment_section.dart';
 
 import '../../../../../../global/textfield_decoration.dart';
+import '../../../../../../test/dragable.dart';
 import '../../../new_method/pos_list_section.dart';
 import '../../controller/pos_controller.dart';
 import '../../controller/tab_controller.dart';
 import '../detail_page/cancel_reason_list.dart';
 import '../detail_page/reservation_list.dart';
+import 'draggable_list.dart';
 
 ///image size not correct ,in bottom sheet cancel order and print
 ///index
@@ -77,6 +79,26 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
           style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
         ),
         actions: [
+          IconButton(
+              onPressed: () {
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                         DragTableList()));
+              },
+              icon:Text("Table Setting")),
+          IconButton(
+              onPressed: () {
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            const TableSettings()));
+                     },
+              icon:Text("Draggable")),
           IconButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
@@ -433,6 +455,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                       .tableData[index].status!, salesOrderID: diningController
                                       .tableData[index].salesOrderID!, orderID: diningController
                                       .tableData[index].id!,salesMasterID: diningController.tableData[index].salesMasterID!);
+
 
                                 }
 
@@ -1407,7 +1430,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                       text: 'Pay',
                       type: 'pay',
                       onPressed: () {
-                        if (posController.pay_perm.value) {
+                        if (posController.pay_perm.value) { Navigator.pop(context);
                           Get.to(PaymentSection(uID: salesOrderID,  orderType: 0,));
                           // orderController.createMethod(
                           //     tableID: widget.tableID,

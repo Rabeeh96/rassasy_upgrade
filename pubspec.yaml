@@ -103,6 +103,8 @@ dev_dependencies:
   bitsdojo_window:
   flutter_charset_detector:
   printing: ^5.13.1
+  hive_flutter:
+  hive:
 
 
 

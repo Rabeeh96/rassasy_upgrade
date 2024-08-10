@@ -48,7 +48,8 @@ class _PosOrderPageState extends State<PosOrderPage> {
     orderController.productList.clear();
     orderController.groupList.clear();
     orderController.orderItemList.clear();
-    orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
+    orderController.posFunctions(
+        sectionType: widget.sectionType, uUID: widget.uID);
     orderController.getDefaultValue();
   }
 
@@ -80,7 +81,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
               Text(
                 diningController.userName.value,
                 style: customisedStyle(
-                    context, Color(0xff585858), FontWeight.w500, 13.0),
+                    context, const Color(0xff585858), FontWeight.w500, 13.0),
               ),
               Text(
                 orderController.tokenNumber.value,
@@ -105,7 +106,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                 orderController.detailPage.value = 'settings';
                 orderController.update();
               },
-              icon: Text('Settings'))
+              icon: const Text('Settings'))
         ],
       ),
       body: Container(
@@ -391,9 +392,9 @@ class _PosOrderPageState extends State<PosOrderPage> {
                     //   diningController.selectedIndexNotifier.value =
                     /// product list
                     Obx(() => orderController.productIsLoading.value
-                        ? SizedBox(
+                        ? const SizedBox(
                             height: 500,
-                            child: const Center(
+                            child: Center(
                                 child: CircularProgressIndicator()))
                         : Expanded(
                             child: Obx(() => GridView.builder(
@@ -407,7 +408,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                     mainAxisExtent:
                                         orderController.heightOfITem * 10,
 
-                                   // childAspectRatio: widthGrid/heightGrid,
+                                    // childAspectRatio: widthGrid/heightGrid,
                                     childAspectRatio: 3.2,
 
                                     crossAxisSpacing: 2,
@@ -421,209 +422,143 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                     print(
                                         "-----------------------already $alreadyExist");
                                     return Container(
-                                      color:Colors.red.shade50,
 
+                                      color: Colors.red.shade50,
                                       child: GestureDetector(
                                         onTap: () async {
-                                          orderController.detailPage.value = 'item_add';
-                                            SharedPreferences
-                                            prefs =
-                                            await SharedPreferences
-                                                .getInstance();
+                                          orderController.detailPage.value =
+                                              'item_add';
+                                          SharedPreferences prefs =
+                                              await SharedPreferences
+                                                  .getInstance();
 
-                                            var qtyIncrement =
-                                                prefs.getBool("qtyIncrement") ??
-                                                    true;
+                                          var qtyIncrement =
+                                              prefs.getBool("qtyIncrement") ??
+                                                  true;
 
-                                            orderController
-                                                .unitPriceAmount
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .defaultSalesPrice;
-                                            orderController
-                                                .inclusiveUnitPriceAmountWR
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .defaultSalesPrice;
-                                            orderController
-                                                .vatPer
-                                                .value =
-                                                double.parse(orderController
-                                                    .productList[index]
-                                                    .vatsSalesTax);
-                                            orderController
-                                                .gstPer
-                                                .value =
-                                                double.parse(orderController
-                                                    .productList[index]
-                                                    .gSTSalesTax);
+                                          orderController
+                                                  .unitPriceAmount.value =
+                                              orderController.productList[index]
+                                                  .defaultSalesPrice;
+                                          orderController
+                                                  .inclusiveUnitPriceAmountWR
+                                                  .value =
+                                              orderController.productList[index]
+                                                  .defaultSalesPrice;
+                                          orderController.vatPer.value =
+                                              double.parse(orderController
+                                                  .productList[index]
+                                                  .vatsSalesTax);
+                                          orderController.gstPer.value =
+                                              double.parse(orderController
+                                                  .productList[index]
+                                                  .gSTSalesTax);
 
-                                            orderController
-                                                .priceListID
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .defaultUnitID;
-                                            orderController
-                                                .productName
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .productName;
-                                            orderController
-                                                .item_status
-                                                .value = "pending";
-                                            orderController
-                                                .unitName
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .defaultUnitName;
+                                          orderController.priceListID.value =
+                                              orderController.productList[index]
+                                                  .defaultUnitID;
+                                          orderController.productName.value =
+                                              orderController.productList[index]
+                                                  .productName;
+                                          orderController.item_status.value =
+                                              "pending";
+                                          orderController.unitName.value =
+                                              orderController.productList[index]
+                                                  .defaultUnitName;
 
-                                            var taxDetails = orderController
-                                                .productList[
-                                            index]
-                                                .taxDetails;
+                                          var taxDetails = orderController
+                                              .productList[index].taxDetails;
 
-                                            if (taxDetails !=
-                                                "") {
-                                              orderController
-                                                  .productTaxID
-                                                  .value = taxDetails["TaxID"];
-                                              orderController
-                                                  .productTaxName
-                                                  .value = taxDetails["TaxName"];
-                                            }
+                                          if (taxDetails != "") {
+                                            orderController.productTaxID.value =
+                                                taxDetails["TaxID"];
+                                            orderController.productTaxName
+                                                .value = taxDetails["TaxName"];
+                                          }
 
-                                            orderController
-                                                .detailID
-                                                .value = 1;
-                                            orderController
-                                                .salesPrice
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .defaultSalesPrice;
-                                            orderController
-                                                .purchasePrice
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .defaultPurchasePrice;
-                                            orderController
-                                                .productID
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .productID;
-                                            orderController
-                                                .isInclusive
-                                                .value =
-                                                orderController
-                                                    .productList[index]
-                                                    .isInclusive;
+                                          orderController.detailID.value = 1;
+                                          orderController.salesPrice.value =
+                                              orderController.productList[index]
+                                                  .defaultSalesPrice;
+                                          orderController.purchasePrice.value =
+                                              orderController.productList[index]
+                                                  .defaultPurchasePrice;
+                                          orderController.productID.value =
+                                              orderController
+                                                  .productList[index].productID;
+                                          orderController.isInclusive.value =
+                                              orderController.productList[index]
+                                                  .isInclusive;
 
+                                          orderController.detailIdEdit.value =
+                                              0;
+                                          orderController.flavourID.value = "";
+                                          orderController.flavourName.value =
+                                              "";
+
+                                          var newTax = orderController
+                                              .productList[index].exciseData;
+
+                                          if (newTax != "") {
                                             orderController
-                                                .detailIdEdit
-                                                .value = 0;
+                                                .isExciseProduct.value = true;
+                                            orderController.exciseTaxID.value =
+                                                newTax["TaxID"];
+                                            orderController.exciseTaxName
+                                                .value = newTax["TaxName"];
+                                            orderController.BPValue.value =
+                                                newTax["BPValue"].toString();
                                             orderController
-                                                .flavourID
-                                                .value = "";
+                                                    .exciseTaxBefore.value =
+                                                newTax["TaxBefore"].toString();
                                             orderController
-                                                .flavourName
-                                                .value = "";
-
-                                            var newTax = orderController
-                                                .productList[
-                                            index]
-                                                .exciseData;
-
-                                            if (newTax !=
-                                                "") {
-                                              orderController
-                                                  .isExciseProduct
-                                                  .value = true;
-                                              orderController
-                                                  .exciseTaxID
-                                                  .value = newTax["TaxID"];
-                                              orderController
-                                                  .exciseTaxName
-                                                  .value = newTax["TaxName"];
-                                              orderController
-                                                  .BPValue
-                                                  .value = newTax[
-                                              "BPValue"]
-                                                  .toString();
-                                              orderController
-                                                  .exciseTaxBefore
-                                                  .value = newTax[
-                                              "TaxBefore"]
-                                                  .toString();
-                                              orderController
-                                                  .isAmountTaxBefore
-                                                  .value = newTax["IsAmountTaxBefore"];
-                                              orderController
-                                                  .isAmountTaxAfter
-                                                  .value = newTax["IsAmountTaxAfter"];
-                                              orderController
-                                                  .exciseTaxAfter
-                                                  .value = newTax[
-                                              "TaxAfter"]
-                                                  .toString();
-                                            } else {
-                                              orderController
-                                                  .exciseTaxID
-                                                  .value = 0;
-                                              orderController
-                                                  .exciseTaxName
-                                                  .value = "";
-                                              orderController
-                                                  .BPValue
-                                                  .value = "0";
-                                              orderController
-                                                  .exciseTaxBefore
-                                                  .value = "0";
-                                              orderController
-                                                  .isAmountTaxBefore
-                                                  .value = false;
-                                              orderController
-                                                  .isAmountTaxAfter
-                                                  .value = false;
-                                              orderController
-                                                  .isExciseProduct
-                                                  .value = false;
-                                              orderController
-                                                  .exciseTaxAfter
-                                                  .value = "0";
-                                            }
-
+                                                    .isAmountTaxBefore.value =
+                                                newTax["IsAmountTaxBefore"];
                                             orderController
-                                                .unique_id
-                                                .value = "0";
+                                                    .isAmountTaxAfter.value =
+                                                newTax["IsAmountTaxAfter"];
                                             orderController
-                                                .calculation();
+                                                    .exciseTaxAfter.value =
+                                                newTax["TaxAfter"].toString();
+                                          } else {
+                                            orderController.exciseTaxID.value =
+                                                0;
+                                            orderController
+                                                .exciseTaxName.value = "";
+                                            orderController.BPValue.value = "0";
+                                            orderController
+                                                .exciseTaxBefore.value = "0";
+                                            orderController.isAmountTaxBefore
+                                                .value = false;
+                                            orderController
+                                                .isAmountTaxAfter.value = false;
+                                            orderController
+                                                .isExciseProduct.value = false;
+                                            orderController
+                                                .exciseTaxAfter.value = "0";
+                                          }
 
-                                            //setState(() {});
-                                            /// commented for new tax working
+                                          orderController.unique_id.value = "0";
+                                          orderController.calculation();
 
-                                            /// qty increment
+                                          //setState(() {});
+                                          /// commented for new tax working
 
-                                            // if (qtyIncrement == true) {
-                                            //   var checkingAlready = orderController.checking(orderController.priceListID.value);
-                                            //   if (checkingAlready[0]) {
-                                            //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
-                                            //     orderController.updateQty(type: 1,index:checkingAlready[1]);
-                                            //   } else {
-                                            //     orderController.unique_id.value = "0";
-                                            //     orderController.calculation();
-                                            //   }
-                                            // } else {
-                                            //   orderController.unique_id.value = "0";
-                                            //   orderController.calculation();
-                                            // }
+                                          /// qty increment
 
+                                          // if (qtyIncrement == true) {
+                                          //   var checkingAlready = orderController.checking(orderController.priceListID.value);
+                                          //   if (checkingAlready[0]) {
+                                          //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
+                                          //     orderController.updateQty(type: 1,index:checkingAlready[1]);
+                                          //   } else {
+                                          //     orderController.unique_id.value = "0";
+                                          //     orderController.calculation();
+                                          //   }
+                                          // } else {
+                                          //   orderController.unique_id.value = "0";
+                                          //   orderController.calculation();
+                                          // }
                                         },
                                         child: InkWell(
                                           child: Padding(
@@ -634,701 +569,700 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                                 bottom: 8),
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                               children: [
                                                 ///productname,des,rate,veg
-                                                Container(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                        "assets/svg/veg_mob.svg",
-                                                        color: orderController
-                                                            .productList[
-                                                        index]
-                                                            .vegOrNonVeg ==
-                                                            "Non-veg"
-                                                            ? const Color(
-                                                            0xff00775E)
-                                                            : const Color(
-                                                            0xffDF1515),
-                                                      ),
-                                                      Container(
-
-                                                        // width: MediaQuery.of(
-                                                        //     context)
-                                                        //     .size
-                                                        //     .width *
-                                                        //     .13,
-                                                        child: Obx(() {
-                                                          // Use Obx to rebuild the text widget when selectedFontWeight changes
-                                                          return Expanded(child: Text(
-                                                            orderController
-                                                                .productList[
-                                                            index]
-                                                                .productName,
-                                                            style: customisedStyle(
-                                                                context,
-                                                                Colors.black,
-                                                                orderController
-                                                                    .productFontWeight
-                                                                    .value,
-                                                                orderController
-                                                                    .productFontSize),
-                                                            // maxLines: 3,
-                                                            overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                          ));
-                                                        }),
-                                                      ),
-                                                      Container(
-                                                        // width:
-                                                        // MediaQuery.of(context)
-                                                        //     .size
-                                                        //     .width *
-                                                        //     .13,
-                                                        child: Obx(() {
-                                                          return Text(
-                                                            orderController
-                                                                .productList[
-                                                            index]
-                                                                .description,
-                                                            style: customisedStyle(
-                                                                context,
-                                                                Colors.black,
-                                                                orderController
-                                                                    .descriptionFontWeight
-                                                                    .value,
-                                                                orderController
-                                                                    .descriptionFontSize),
-                                                          );
-                                                        }),
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                        // crossAxisAlignment:
-                                                        // CrossAxisAlignment
-                                                        //     .center,
-                                                        children: [
-                                                          Text(
-                                                            orderController
-                                                                .currency.value,
-                                                            style: customisedStyle(
-                                                                context,
-                                                                const Color(
-                                                                    0xffA5A5A5),
-                                                                FontWeight.w400,
-                                                                13.0),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                left: 5.0),
-                                                            child: Obx(() {
-                                                              return Text(
-                                                                roundStringWith(
-                                                                    orderController
-                                                                        .productList[
-                                                                    index]
-                                                                        .defaultSalesPrice),
-                                                                style: customisedStyle(
-                                                                    context,
-                                                                    Colors.black,
-                                                                    orderController
-                                                                        .amountFontWeight
-                                                                        .value,
-                                                                    orderController
-                                                                        .amountFontSize),
-                                                              );
-                                                            }),
-                                                          ),
-                                                          //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                ///image
-                                                Obx(() =>  orderController
-                                                    .isShowImage
-                                                    .value
-                                                    ? Container(
-                                                  height:
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                      8,
-                                                  width:
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                      18,
-                                                  //  width: MediaQuery.of(context).size.width / 4,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        10),
-                                                    // Set border radius to make the Container round
-                                                  ),
-                                                  child: Stack(
-                                                    children: <Widget>[
-                                                      Positioned.fill(
-                                                        child:
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              10),
-                                                          // Clip image to match the rounded corners of the Container
-                                                          child: Image
-                                                              .network(
-                                                            orderController.productList[index].productImage !=
-                                                                ""
-                                                                ? orderController
-                                                                .productList[index]
-                                                                .productImage
-                                                                : 'https://www.api.viknbooks.com/media/uploads/Group_5140.png',
-                                                            fit: BoxFit
-                                                                .cover,
-                                                          ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .start,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      "assets/svg/veg_mob.svg",
+                                                      color: orderController
+                                                                  .productList[
+                                                                      index]
+                                                                  .vegOrNonVeg ==
+                                                              "Non-veg"
+                                                          ? const Color(
+                                                              0xff00775E)
+                                                          : const Color(
+                                                              0xffDF1515),
+                                                    ),
+                                                    Obx(() {
+                                                      // Use Obx to rebuild the text widget when selectedFontWeight changes
+                                                      return  Container(
+                                                        constraints: BoxConstraints(maxWidth: 150),
+                                                        child: Text(
+                                                          orderController
+                                                              .productList[
+                                                          index]
+                                                              .productName,
+                                                          style: customisedStyle(
+                                                              context,
+                                                              Colors.black,
+                                                              orderController
+                                                                  .productFontWeight
+                                                                  .value,
+                                                              orderController
+                                                                  .productFontSize),
+                                                          overflow: TextOverflow.ellipsis,
+                                                            softWrap: true,
+                                                          maxLines: 2,
                                                         ),
-                                                      ),
+                                                      )
+                                                      ;
+                                                    }),
+                                                    Obx(() {
+                                                      return Container(
+                                                        constraints: BoxConstraints(maxWidth: 100),
 
-                                                      /// add section commented here
+                                                        child: Text(
+                                                          orderController
+                                                              .productList[
+                                                                  index]
+                                                              .description,
+                                                          style: customisedStyle(
+                                                              context,
+                                                              Colors.black,
+                                                              orderController
+                                                                  .descriptionFontWeight
+                                                                  .value,
+                                                              orderController
+                                                                  .descriptionFontSize),
+                                                          overflow: TextOverflow.ellipsis,
+                                                          softWrap: true,
+                                                          maxLines: 2,
+                                                        ),
+                                                      );
+                                                    }),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      // crossAxisAlignment:
+                                                      // CrossAxisAlignment
+                                                      //     .center,
+                                                      children: [
+                                                        Text(
+                                                          orderController
+                                                              .currency.value,
+                                                          style: customisedStyle(
+                                                              context,
+                                                              const Color(
+                                                                  0xffA5A5A5),
+                                                              FontWeight.w400,
+                                                              13.0),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 5.0),
+                                                          child: Obx(() {
+                                                            return Text(
+                                                              roundStringWith(
+                                                                  orderController
+                                                                      .productList[
+                                                                          index]
+                                                                      .defaultSalesPrice),
+                                                              style: customisedStyle(
+                                                                  context,
+                                                                  Colors
+                                                                      .black,
+                                                                  orderController
+                                                                      .amountFontWeight
+                                                                      .value,
+                                                                  orderController
+                                                                      .amountFontSize),
+                                                            );
+                                                          }),
+                                                        ),
+                                                        //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
 
-                                                      // Obx(
-                                                      //       () => orderController
-                                                      //       .quantityIncrement
-                                                      //       .value
-                                                      //       ?
-                                                      //
-                                                      //   /// The quantity increment is on here, so make sure this product has been added already.
-                                                      //   alreadyExist[0]
-                                                      //       ? Align(
-                                                      //     alignment:
-                                                      //     Alignment
-                                                      //         .bottomCenter,
-                                                      //     child:
-                                                      //     Container(
-                                                      //       height:                                                                            MediaQuery.of(context).size.height /
-                                                      //           32,
-                                                      //       decoration:
-                                                      //       const BoxDecoration(
-                                                      //         color:
-                                                      //         Color(0xffF25F29),
-                                                      //         borderRadius:
-                                                      //         BorderRadius.only(
-                                                      //           bottomLeft:
-                                                      //           Radius.circular(10),
-                                                      //           // Match the bottom left and right corners of the Container
-                                                      //           bottomRight:
-                                                      //           Radius.circular(10),
-                                                      //         ),
-                                                      //       ),
-                                                      //       child:
-                                                      //       Padding(
-                                                      //         padding: const EdgeInsets
-                                                      //             .only(
-                                                      //             left: 3.0,
-                                                      //             right: 3),
-                                                      //         child:
-                                                      //         Row(
-                                                      //           mainAxisAlignment:
-                                                      //           MainAxisAlignment.spaceBetween,
-                                                      //           crossAxisAlignment:
-                                                      //           CrossAxisAlignment.center,
-                                                      //           children: <Widget>[
-                                                      //             GestureDetector(
-                                                      //               onTap: () {
-                                                      //                 var alreadyExist = orderController.checking(orderController.productList[index].productID);
-                                                      //                 if (double.parse(orderController.orderItemList[alreadyExist[1]]["Qty"].toString()) >= 2.0) {
-                                                      //                   orderController.updateQty(index: alreadyExist[1], type: 0);
-                                                      //                 }
-                                                      //               },
-                                                      //               child: const Icon(
-                                                      //                 Icons.remove,
-                                                      //                 color: Colors.white,size: 15,
-                                                      //               ),
-                                                      //             ),
-                                                      //             Obx(
-                                                      //                   () => alreadyExist[0]
-                                                      //                   ? Text(
-                                                      //                 roundStringWith(orderController.orderItemList[alreadyExist[1]]["Qty"].toString()),
-                                                      //                 style: customisedStyle(context, Colors.white, FontWeight.w400, 13.0),
-                                                      //               )
-                                                      //                   : Container(),
-                                                      //             ),
-                                                      //             GestureDetector(
-                                                      //               onTap: () {
-                                                      //                 var alreadyExist = orderController.checking(orderController.productList[index].productID);
-                                                      //                 orderController.updateQty(index: alreadyExist[1], type: 1);
-                                                      //               },
-                                                      //               child: const Icon(
-                                                      //                 Icons.add,
-                                                      //                 color: Colors.white,size: 15,
-                                                      //               ),
-                                                      //             ),
-                                                      //           ],
-                                                      //         ),
-                                                      //       ),
-                                                      //     ),
-                                                      //   )
-                                                      //       : Align(
-                                                      //     alignment:
-                                                      //     Alignment
-                                                      //         .bottomCenter,
-                                                      //     child:
-                                                      //     GestureDetector(
-                                                      //       onTap:
-                                                      //           () async {
-                                                      //         SharedPreferences
-                                                      //         prefs =
-                                                      //         await SharedPreferences.getInstance();
-                                                      //
-                                                      //         var qtyIncrement =
-                                                      //             prefs.getBool("qtyIncrement") ?? true;
-                                                      //
-                                                      //         orderController
-                                                      //             .unitPriceAmount
-                                                      //             .value = orderController.productList[index].defaultSalesPrice;
-                                                      //         orderController
-                                                      //             .inclusiveUnitPriceAmountWR
-                                                      //             .value = orderController.productList[index].defaultSalesPrice;
-                                                      //         orderController
-                                                      //             .vatPer
-                                                      //             .value = double.parse(orderController.productList[index].vatsSalesTax);
-                                                      //         orderController
-                                                      //             .gstPer
-                                                      //             .value = double.parse(orderController.productList[index].gSTSalesTax);
-                                                      //
-                                                      //         orderController
-                                                      //             .priceListID
-                                                      //             .value = orderController.productList[index].defaultUnitID;
-                                                      //         orderController
-                                                      //             .productName
-                                                      //             .value = orderController.productList[index].productName;
-                                                      //         orderController
-                                                      //             .item_status
-                                                      //             .value = "pending";
-                                                      //         orderController
-                                                      //             .unitName
-                                                      //             .value = orderController.productList[index].defaultUnitName;
-                                                      //
-                                                      //         var taxDetails = orderController
-                                                      //             .productList[index]
-                                                      //             .taxDetails;
-                                                      //         if (taxDetails !=
-                                                      //             "") {
-                                                      //           orderController.productTaxID.value =
-                                                      //           taxDetails["TaxID"];
-                                                      //           orderController.productTaxName.value =
-                                                      //           taxDetails["TaxName"];
-                                                      //         }
-                                                      //
-                                                      //         orderController
-                                                      //             .detailID
-                                                      //             .value = 1;
-                                                      //         orderController
-                                                      //             .salesPrice
-                                                      //             .value = orderController.productList[index].defaultSalesPrice;
-                                                      //         orderController
-                                                      //             .purchasePrice
-                                                      //             .value = orderController.productList[index].defaultPurchasePrice;
-                                                      //         orderController
-                                                      //             .productID
-                                                      //             .value = orderController.productList[index].productID;
-                                                      //         orderController
-                                                      //             .isInclusive
-                                                      //             .value = orderController.productList[index].isInclusive;
-                                                      //
-                                                      //         orderController
-                                                      //             .detailIdEdit
-                                                      //             .value = 0;
-                                                      //         orderController
-                                                      //             .flavourID
-                                                      //             .value = "";
-                                                      //         orderController
-                                                      //             .flavourName
-                                                      //             .value = "";
-                                                      //
-                                                      //         var newTax = orderController
-                                                      //             .productList[index]
-                                                      //             .exciseData;
-                                                      //
-                                                      //         if (newTax !=
-                                                      //             "") {
-                                                      //           orderController.isExciseProduct.value =
-                                                      //           true;
-                                                      //           orderController.exciseTaxID.value =
-                                                      //           newTax["TaxID"];
-                                                      //           orderController.exciseTaxName.value =
-                                                      //           newTax["TaxName"];
-                                                      //           orderController.BPValue.value =
-                                                      //               newTax["BPValue"].toString();
-                                                      //           orderController.exciseTaxBefore.value =
-                                                      //               newTax["TaxBefore"].toString();
-                                                      //           orderController.isAmountTaxBefore.value =
-                                                      //           newTax["IsAmountTaxBefore"];
-                                                      //           orderController.isAmountTaxAfter.value =
-                                                      //           newTax["IsAmountTaxAfter"];
-                                                      //           orderController.exciseTaxAfter.value =
-                                                      //               newTax["TaxAfter"].toString();
-                                                      //         } else {
-                                                      //           orderController.exciseTaxID.value =
-                                                      //           0;
-                                                      //           orderController.exciseTaxName.value =
-                                                      //           "";
-                                                      //           orderController.BPValue.value =
-                                                      //           "0";
-                                                      //           orderController.exciseTaxBefore.value =
-                                                      //           "0";
-                                                      //           orderController.isAmountTaxBefore.value =
-                                                      //           false;
-                                                      //           orderController.isAmountTaxAfter.value =
-                                                      //           false;
-                                                      //           orderController.isExciseProduct.value =
-                                                      //           false;
-                                                      //           orderController.exciseTaxAfter.value =
-                                                      //           "0";
-                                                      //         }
-                                                      //
-                                                      //         orderController
-                                                      //             .unique_id
-                                                      //             .value = "0";
-                                                      //         orderController
-                                                      //             .calculation();
-                                                      //         orderController
-                                                      //             .update();
-                                                      //         setState(
-                                                      //                 () {});
-                                                      //
-                                                      //         /// commented for new tax working
-                                                      //
-                                                      //         /// qty increment
-                                                      //
-                                                      //         // if (qtyIncrement == true) {
-                                                      //         //   var checkingAlready = orderController.checking(orderController.priceListID.value);
-                                                      //         //   if (checkingAlready[0]) {
-                                                      //         //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
-                                                      //         //     orderController.updateQty(type: 1,index:checkingAlready[1]);
-                                                      //         //   } else {
-                                                      //         //     orderController.unique_id.value = "0";
-                                                      //         //     orderController.calculation();
-                                                      //         //   }
-                                                      //         // } else {
-                                                      //         //   orderController.unique_id.value = "0";
-                                                      //         //   orderController.calculation();
-                                                      //         // }
-                                                      //       },
-                                                      //       child:
-                                                      //       InkWell(
-                                                      //         child:
-                                                      //         Container(
-                                                      //           height:
-                                                      //           MediaQuery.of(context).size.height / 32,
-                                                      //           width:
-                                                      //           65,
-                                                      //           decoration:
-                                                      //           const BoxDecoration(
-                                                      //             borderRadius: BorderRadius.only(
-                                                      //               bottomLeft: Radius.circular(10),
-                                                      //               bottomRight: Radius.circular(10),
-                                                      //             ),
-                                                      //           ),
-                                                      //           child:
-                                                      //           DecoratedBox(
-                                                      //             decoration: ShapeDecoration(
-                                                      //               shape: RoundedRectangleBorder(
-                                                      //                 side: const BorderSide(color: Color(0xffF25F29)),
-                                                      //                 borderRadius: BorderRadius.circular(10),
-                                                      //               ),
-                                                      //               color: Colors.white,
-                                                      //             ),
-                                                      //             child: Center(
-                                                      //               child: Text(
-                                                      //                 'add'.tr,
-                                                      //                 style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
-                                                      //                 // style: TextStyle(
-                                                      //                 //   color: Color(0xffF25F29),
-                                                      //                 // ),
-                                                      //                 textAlign: TextAlign.center,
-                                                      //               ),
-                                                      //             ),
-                                                      //           ),
-                                                      //         ),
-                                                      //       ),
-                                                      //     ),
-                                                      //   )
-                                                      //       :
-                                                      //
-                                                      //   /// Quantity increment off case
-                                                      //   Align(
-                                                      //     alignment:
-                                                      //     Alignment
-                                                      //         .bottomCenter,
-                                                      //     child:
-                                                      //     GestureDetector(
-                                                      //       onTap:
-                                                      //           () async {
-                                                      //         SharedPreferences
-                                                      //         prefs =
-                                                      //         await SharedPreferences
-                                                      //             .getInstance();
-                                                      //
-                                                      //         var qtyIncrement =
-                                                      //             prefs.getBool("qtyIncrement") ??
-                                                      //                 true;
-                                                      //
-                                                      //         orderController
-                                                      //             .unitPriceAmount
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .defaultSalesPrice;
-                                                      //         orderController
-                                                      //             .inclusiveUnitPriceAmountWR
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .defaultSalesPrice;
-                                                      //         orderController
-                                                      //             .vatPer
-                                                      //             .value =
-                                                      //             double.parse(orderController
-                                                      //                 .productList[index]
-                                                      //                 .vatsSalesTax);
-                                                      //         orderController
-                                                      //             .gstPer
-                                                      //             .value =
-                                                      //             double.parse(orderController
-                                                      //                 .productList[index]
-                                                      //                 .gSTSalesTax);
-                                                      //
-                                                      //         orderController
-                                                      //             .priceListID
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .defaultUnitID;
-                                                      //         orderController
-                                                      //             .productName
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .productName;
-                                                      //         orderController
-                                                      //             .item_status
-                                                      //             .value = "pending";
-                                                      //         orderController
-                                                      //             .unitName
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .defaultUnitName;
-                                                      //
-                                                      //         var taxDetails = orderController
-                                                      //             .productList[
-                                                      //         index]
-                                                      //             .taxDetails;
-                                                      //
-                                                      //         if (taxDetails !=
-                                                      //             "") {
-                                                      //           orderController
-                                                      //               .productTaxID
-                                                      //               .value = taxDetails["TaxID"];
-                                                      //           orderController
-                                                      //               .productTaxName
-                                                      //               .value = taxDetails["TaxName"];
-                                                      //         }
-                                                      //
-                                                      //         orderController
-                                                      //             .detailID
-                                                      //             .value = 1;
-                                                      //         orderController
-                                                      //             .salesPrice
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .defaultSalesPrice;
-                                                      //         orderController
-                                                      //             .purchasePrice
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .defaultPurchasePrice;
-                                                      //         orderController
-                                                      //             .productID
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .productID;
-                                                      //         orderController
-                                                      //             .isInclusive
-                                                      //             .value =
-                                                      //             orderController
-                                                      //                 .productList[index]
-                                                      //                 .isInclusive;
-                                                      //
-                                                      //         orderController
-                                                      //             .detailIdEdit
-                                                      //             .value = 0;
-                                                      //         orderController
-                                                      //             .flavourID
-                                                      //             .value = "";
-                                                      //         orderController
-                                                      //             .flavourName
-                                                      //             .value = "";
-                                                      //
-                                                      //         var newTax = orderController
-                                                      //             .productList[
-                                                      //         index]
-                                                      //             .exciseData;
-                                                      //
-                                                      //         if (newTax !=
-                                                      //             "") {
-                                                      //           orderController
-                                                      //               .isExciseProduct
-                                                      //               .value = true;
-                                                      //           orderController
-                                                      //               .exciseTaxID
-                                                      //               .value = newTax["TaxID"];
-                                                      //           orderController
-                                                      //               .exciseTaxName
-                                                      //               .value = newTax["TaxName"];
-                                                      //           orderController
-                                                      //               .BPValue
-                                                      //               .value = newTax[
-                                                      //           "BPValue"]
-                                                      //               .toString();
-                                                      //           orderController
-                                                      //               .exciseTaxBefore
-                                                      //               .value = newTax[
-                                                      //           "TaxBefore"]
-                                                      //               .toString();
-                                                      //           orderController
-                                                      //               .isAmountTaxBefore
-                                                      //               .value = newTax["IsAmountTaxBefore"];
-                                                      //           orderController
-                                                      //               .isAmountTaxAfter
-                                                      //               .value = newTax["IsAmountTaxAfter"];
-                                                      //           orderController
-                                                      //               .exciseTaxAfter
-                                                      //               .value = newTax[
-                                                      //           "TaxAfter"]
-                                                      //               .toString();
-                                                      //         } else {
-                                                      //           orderController
-                                                      //               .exciseTaxID
-                                                      //               .value = 0;
-                                                      //           orderController
-                                                      //               .exciseTaxName
-                                                      //               .value = "";
-                                                      //           orderController
-                                                      //               .BPValue
-                                                      //               .value = "0";
-                                                      //           orderController
-                                                      //               .exciseTaxBefore
-                                                      //               .value = "0";
-                                                      //           orderController
-                                                      //               .isAmountTaxBefore
-                                                      //               .value = false;
-                                                      //           orderController
-                                                      //               .isAmountTaxAfter
-                                                      //               .value = false;
-                                                      //           orderController
-                                                      //               .isExciseProduct
-                                                      //               .value = false;
-                                                      //           orderController
-                                                      //               .exciseTaxAfter
-                                                      //               .value = "0";
-                                                      //         }
-                                                      //
-                                                      //         orderController
-                                                      //             .unique_id
-                                                      //             .value = "0";
-                                                      //         orderController
-                                                      //             .calculation();
-                                                      //
-                                                      //         //setState(() {});
-                                                      //         /// commented for new tax working
-                                                      //
-                                                      //         /// qty increment
-                                                      //
-                                                      //         // if (qtyIncrement == true) {
-                                                      //         //   var checkingAlready = orderController.checking(orderController.priceListID.value);
-                                                      //         //   if (checkingAlready[0]) {
-                                                      //         //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
-                                                      //         //     orderController.updateQty(type: 1,index:checkingAlready[1]);
-                                                      //         //   } else {
-                                                      //         //     orderController.unique_id.value = "0";
-                                                      //         //     orderController.calculation();
-                                                      //         //   }
-                                                      //         // } else {
-                                                      //         //   orderController.unique_id.value = "0";
-                                                      //         //   orderController.calculation();
-                                                      //         // }
-                                                      //       },
-                                                      //       child:
-                                                      //       InkWell(
-                                                      //         child:
-                                                      //         Container(
-                                                      //           height:
-                                                      //           MediaQuery.of(context).size.height /
-                                                      //               32,
-                                                      //           width:
-                                                      //           65,
-                                                      //           decoration:
-                                                      //           const BoxDecoration(
-                                                      //             borderRadius:
-                                                      //             BorderRadius.only(
-                                                      //               bottomLeft:
-                                                      //               Radius.circular(10),
-                                                      //               bottomRight:
-                                                      //               Radius.circular(10),
-                                                      //             ),
-                                                      //           ),
-                                                      //           child:
-                                                      //           DecoratedBox(
-                                                      //             decoration:
-                                                      //             ShapeDecoration(
-                                                      //               shape:
-                                                      //               RoundedRectangleBorder(
-                                                      //                 side: const BorderSide(color: Color(0xffF25F29)),
-                                                      //                 borderRadius: BorderRadius.circular(10),
-                                                      //               ),
-                                                      //               color:
-                                                      //               Colors.white,
-                                                      //             ),
-                                                      //             child:
-                                                      //             Center(
-                                                      //               child:
-                                                      //               Text(
-                                                      //                 'add'.tr,
-                                                      //                 style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
-                                                      //                 // style: TextStyle(
-                                                      //                 //   color: Color(0xffF25F29),
-                                                      //                 // ),
-                                                      //                 textAlign: TextAlign.center,
-                                                      //               ),
-                                                      //             ),
-                                                      //           ),
-                                                      //         ),
-                                                      //       ),
-                                                      //     ),
-                                                      //   ),
-                                                      // ),
-                                                    ],
-                                                  ),
-                                                ):Container()),
+                                                ///image
+                                                Obx(
+                                                    () =>
+                                                        orderController
+                                                                .isShowImage
+                                                                .value
+                                                            ? Container(
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height /
+                                                                    orderController.heightOfImage,
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width /
+                                                                    orderController.widthOfImage,
+                                                                //  width: MediaQuery.of(context).size.width / 4,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  // Set border radius to make the Container round
+                                                                ),
+                                                                child: Stack(
+                                                                  children: <Widget>[
+                                                                    Positioned
+                                                                        .fill(
+                                                                      child:
+                                                                          ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                        // Clip image to match the rounded corners of the Container
+                                                                        child: Image
+                                                                            .network(
+                                                                          orderController.productList[index].productImage != ""
+                                                                              ? orderController.productList[index].productImage
+                                                                              : 'https://www.api.viknbooks.com/media/uploads/Group_5140.png',
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+
+                                                                    /// add section commented here
+
+                                                                    // Obx(
+                                                                    //       () => orderController
+                                                                    //       .quantityIncrement
+                                                                    //       .value
+                                                                    //       ?
+                                                                    //
+                                                                    //   /// The quantity increment is on here, so make sure this product has been added already.
+                                                                    //   alreadyExist[0]
+                                                                    //       ? Align(
+                                                                    //     alignment:
+                                                                    //     Alignment
+                                                                    //         .bottomCenter,
+                                                                    //     child:
+                                                                    //     Container(
+                                                                    //       height:                                                                            MediaQuery.of(context).size.height /
+                                                                    //           32,
+                                                                    //       decoration:
+                                                                    //       const BoxDecoration(
+                                                                    //         color:
+                                                                    //         Color(0xffF25F29),
+                                                                    //         borderRadius:
+                                                                    //         BorderRadius.only(
+                                                                    //           bottomLeft:
+                                                                    //           Radius.circular(10),
+                                                                    //           // Match the bottom left and right corners of the Container
+                                                                    //           bottomRight:
+                                                                    //           Radius.circular(10),
+                                                                    //         ),
+                                                                    //       ),
+                                                                    //       child:
+                                                                    //       Padding(
+                                                                    //         padding: const EdgeInsets
+                                                                    //             .only(
+                                                                    //             left: 3.0,
+                                                                    //             right: 3),
+                                                                    //         child:
+                                                                    //         Row(
+                                                                    //           mainAxisAlignment:
+                                                                    //           MainAxisAlignment.spaceBetween,
+                                                                    //           crossAxisAlignment:
+                                                                    //           CrossAxisAlignment.center,
+                                                                    //           children: <Widget>[
+                                                                    //             GestureDetector(
+                                                                    //               onTap: () {
+                                                                    //                 var alreadyExist = orderController.checking(orderController.productList[index].productID);
+                                                                    //                 if (double.parse(orderController.orderItemList[alreadyExist[1]]["Qty"].toString()) >= 2.0) {
+                                                                    //                   orderController.updateQty(index: alreadyExist[1], type: 0);
+                                                                    //                 }
+                                                                    //               },
+                                                                    //               child: const Icon(
+                                                                    //                 Icons.remove,
+                                                                    //                 color: Colors.white,size: 15,
+                                                                    //               ),
+                                                                    //             ),
+                                                                    //             Obx(
+                                                                    //                   () => alreadyExist[0]
+                                                                    //                   ? Text(
+                                                                    //                 roundStringWith(orderController.orderItemList[alreadyExist[1]]["Qty"].toString()),
+                                                                    //                 style: customisedStyle(context, Colors.white, FontWeight.w400, 13.0),
+                                                                    //               )
+                                                                    //                   : Container(),
+                                                                    //             ),
+                                                                    //             GestureDetector(
+                                                                    //               onTap: () {
+                                                                    //                 var alreadyExist = orderController.checking(orderController.productList[index].productID);
+                                                                    //                 orderController.updateQty(index: alreadyExist[1], type: 1);
+                                                                    //               },
+                                                                    //               child: const Icon(
+                                                                    //                 Icons.add,
+                                                                    //                 color: Colors.white,size: 15,
+                                                                    //               ),
+                                                                    //             ),
+                                                                    //           ],
+                                                                    //         ),
+                                                                    //       ),
+                                                                    //     ),
+                                                                    //   )
+                                                                    //       : Align(
+                                                                    //     alignment:
+                                                                    //     Alignment
+                                                                    //         .bottomCenter,
+                                                                    //     child:
+                                                                    //     GestureDetector(
+                                                                    //       onTap:
+                                                                    //           () async {
+                                                                    //         SharedPreferences
+                                                                    //         prefs =
+                                                                    //         await SharedPreferences.getInstance();
+                                                                    //
+                                                                    //         var qtyIncrement =
+                                                                    //             prefs.getBool("qtyIncrement") ?? true;
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .unitPriceAmount
+                                                                    //             .value = orderController.productList[index].defaultSalesPrice;
+                                                                    //         orderController
+                                                                    //             .inclusiveUnitPriceAmountWR
+                                                                    //             .value = orderController.productList[index].defaultSalesPrice;
+                                                                    //         orderController
+                                                                    //             .vatPer
+                                                                    //             .value = double.parse(orderController.productList[index].vatsSalesTax);
+                                                                    //         orderController
+                                                                    //             .gstPer
+                                                                    //             .value = double.parse(orderController.productList[index].gSTSalesTax);
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .priceListID
+                                                                    //             .value = orderController.productList[index].defaultUnitID;
+                                                                    //         orderController
+                                                                    //             .productName
+                                                                    //             .value = orderController.productList[index].productName;
+                                                                    //         orderController
+                                                                    //             .item_status
+                                                                    //             .value = "pending";
+                                                                    //         orderController
+                                                                    //             .unitName
+                                                                    //             .value = orderController.productList[index].defaultUnitName;
+                                                                    //
+                                                                    //         var taxDetails = orderController
+                                                                    //             .productList[index]
+                                                                    //             .taxDetails;
+                                                                    //         if (taxDetails !=
+                                                                    //             "") {
+                                                                    //           orderController.productTaxID.value =
+                                                                    //           taxDetails["TaxID"];
+                                                                    //           orderController.productTaxName.value =
+                                                                    //           taxDetails["TaxName"];
+                                                                    //         }
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .detailID
+                                                                    //             .value = 1;
+                                                                    //         orderController
+                                                                    //             .salesPrice
+                                                                    //             .value = orderController.productList[index].defaultSalesPrice;
+                                                                    //         orderController
+                                                                    //             .purchasePrice
+                                                                    //             .value = orderController.productList[index].defaultPurchasePrice;
+                                                                    //         orderController
+                                                                    //             .productID
+                                                                    //             .value = orderController.productList[index].productID;
+                                                                    //         orderController
+                                                                    //             .isInclusive
+                                                                    //             .value = orderController.productList[index].isInclusive;
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .detailIdEdit
+                                                                    //             .value = 0;
+                                                                    //         orderController
+                                                                    //             .flavourID
+                                                                    //             .value = "";
+                                                                    //         orderController
+                                                                    //             .flavourName
+                                                                    //             .value = "";
+                                                                    //
+                                                                    //         var newTax = orderController
+                                                                    //             .productList[index]
+                                                                    //             .exciseData;
+                                                                    //
+                                                                    //         if (newTax !=
+                                                                    //             "") {
+                                                                    //           orderController.isExciseProduct.value =
+                                                                    //           true;
+                                                                    //           orderController.exciseTaxID.value =
+                                                                    //           newTax["TaxID"];
+                                                                    //           orderController.exciseTaxName.value =
+                                                                    //           newTax["TaxName"];
+                                                                    //           orderController.BPValue.value =
+                                                                    //               newTax["BPValue"].toString();
+                                                                    //           orderController.exciseTaxBefore.value =
+                                                                    //               newTax["TaxBefore"].toString();
+                                                                    //           orderController.isAmountTaxBefore.value =
+                                                                    //           newTax["IsAmountTaxBefore"];
+                                                                    //           orderController.isAmountTaxAfter.value =
+                                                                    //           newTax["IsAmountTaxAfter"];
+                                                                    //           orderController.exciseTaxAfter.value =
+                                                                    //               newTax["TaxAfter"].toString();
+                                                                    //         } else {
+                                                                    //           orderController.exciseTaxID.value =
+                                                                    //           0;
+                                                                    //           orderController.exciseTaxName.value =
+                                                                    //           "";
+                                                                    //           orderController.BPValue.value =
+                                                                    //           "0";
+                                                                    //           orderController.exciseTaxBefore.value =
+                                                                    //           "0";
+                                                                    //           orderController.isAmountTaxBefore.value =
+                                                                    //           false;
+                                                                    //           orderController.isAmountTaxAfter.value =
+                                                                    //           false;
+                                                                    //           orderController.isExciseProduct.value =
+                                                                    //           false;
+                                                                    //           orderController.exciseTaxAfter.value =
+                                                                    //           "0";
+                                                                    //         }
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .unique_id
+                                                                    //             .value = "0";
+                                                                    //         orderController
+                                                                    //             .calculation();
+                                                                    //         orderController
+                                                                    //             .update();
+                                                                    //         setState(
+                                                                    //                 () {});
+                                                                    //
+                                                                    //         /// commented for new tax working
+                                                                    //
+                                                                    //         /// qty increment
+                                                                    //
+                                                                    //         // if (qtyIncrement == true) {
+                                                                    //         //   var checkingAlready = orderController.checking(orderController.priceListID.value);
+                                                                    //         //   if (checkingAlready[0]) {
+                                                                    //         //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
+                                                                    //         //     orderController.updateQty(type: 1,index:checkingAlready[1]);
+                                                                    //         //   } else {
+                                                                    //         //     orderController.unique_id.value = "0";
+                                                                    //         //     orderController.calculation();
+                                                                    //         //   }
+                                                                    //         // } else {
+                                                                    //         //   orderController.unique_id.value = "0";
+                                                                    //         //   orderController.calculation();
+                                                                    //         // }
+                                                                    //       },
+                                                                    //       child:
+                                                                    //       InkWell(
+                                                                    //         child:
+                                                                    //         Container(
+                                                                    //           height:
+                                                                    //           MediaQuery.of(context).size.height / 32,
+                                                                    //           width:
+                                                                    //           65,
+                                                                    //           decoration:
+                                                                    //           const BoxDecoration(
+                                                                    //             borderRadius: BorderRadius.only(
+                                                                    //               bottomLeft: Radius.circular(10),
+                                                                    //               bottomRight: Radius.circular(10),
+                                                                    //             ),
+                                                                    //           ),
+                                                                    //           child:
+                                                                    //           DecoratedBox(
+                                                                    //             decoration: ShapeDecoration(
+                                                                    //               shape: RoundedRectangleBorder(
+                                                                    //                 side: const BorderSide(color: Color(0xffF25F29)),
+                                                                    //                 borderRadius: BorderRadius.circular(10),
+                                                                    //               ),
+                                                                    //               color: Colors.white,
+                                                                    //             ),
+                                                                    //             child: Center(
+                                                                    //               child: Text(
+                                                                    //                 'add'.tr,
+                                                                    //                 style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
+                                                                    //                 // style: TextStyle(
+                                                                    //                 //   color: Color(0xffF25F29),
+                                                                    //                 // ),
+                                                                    //                 textAlign: TextAlign.center,
+                                                                    //               ),
+                                                                    //             ),
+                                                                    //           ),
+                                                                    //         ),
+                                                                    //       ),
+                                                                    //     ),
+                                                                    //   )
+                                                                    //       :
+                                                                    //
+                                                                    //   /// Quantity increment off case
+                                                                    //   Align(
+                                                                    //     alignment:
+                                                                    //     Alignment
+                                                                    //         .bottomCenter,
+                                                                    //     child:
+                                                                    //     GestureDetector(
+                                                                    //       onTap:
+                                                                    //           () async {
+                                                                    //         SharedPreferences
+                                                                    //         prefs =
+                                                                    //         await SharedPreferences
+                                                                    //             .getInstance();
+                                                                    //
+                                                                    //         var qtyIncrement =
+                                                                    //             prefs.getBool("qtyIncrement") ??
+                                                                    //                 true;
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .unitPriceAmount
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .defaultSalesPrice;
+                                                                    //         orderController
+                                                                    //             .inclusiveUnitPriceAmountWR
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .defaultSalesPrice;
+                                                                    //         orderController
+                                                                    //             .vatPer
+                                                                    //             .value =
+                                                                    //             double.parse(orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .vatsSalesTax);
+                                                                    //         orderController
+                                                                    //             .gstPer
+                                                                    //             .value =
+                                                                    //             double.parse(orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .gSTSalesTax);
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .priceListID
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .defaultUnitID;
+                                                                    //         orderController
+                                                                    //             .productName
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .productName;
+                                                                    //         orderController
+                                                                    //             .item_status
+                                                                    //             .value = "pending";
+                                                                    //         orderController
+                                                                    //             .unitName
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .defaultUnitName;
+                                                                    //
+                                                                    //         var taxDetails = orderController
+                                                                    //             .productList[
+                                                                    //         index]
+                                                                    //             .taxDetails;
+                                                                    //
+                                                                    //         if (taxDetails !=
+                                                                    //             "") {
+                                                                    //           orderController
+                                                                    //               .productTaxID
+                                                                    //               .value = taxDetails["TaxID"];
+                                                                    //           orderController
+                                                                    //               .productTaxName
+                                                                    //               .value = taxDetails["TaxName"];
+                                                                    //         }
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .detailID
+                                                                    //             .value = 1;
+                                                                    //         orderController
+                                                                    //             .salesPrice
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .defaultSalesPrice;
+                                                                    //         orderController
+                                                                    //             .purchasePrice
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .defaultPurchasePrice;
+                                                                    //         orderController
+                                                                    //             .productID
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .productID;
+                                                                    //         orderController
+                                                                    //             .isInclusive
+                                                                    //             .value =
+                                                                    //             orderController
+                                                                    //                 .productList[index]
+                                                                    //                 .isInclusive;
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .detailIdEdit
+                                                                    //             .value = 0;
+                                                                    //         orderController
+                                                                    //             .flavourID
+                                                                    //             .value = "";
+                                                                    //         orderController
+                                                                    //             .flavourName
+                                                                    //             .value = "";
+                                                                    //
+                                                                    //         var newTax = orderController
+                                                                    //             .productList[
+                                                                    //         index]
+                                                                    //             .exciseData;
+                                                                    //
+                                                                    //         if (newTax !=
+                                                                    //             "") {
+                                                                    //           orderController
+                                                                    //               .isExciseProduct
+                                                                    //               .value = true;
+                                                                    //           orderController
+                                                                    //               .exciseTaxID
+                                                                    //               .value = newTax["TaxID"];
+                                                                    //           orderController
+                                                                    //               .exciseTaxName
+                                                                    //               .value = newTax["TaxName"];
+                                                                    //           orderController
+                                                                    //               .BPValue
+                                                                    //               .value = newTax[
+                                                                    //           "BPValue"]
+                                                                    //               .toString();
+                                                                    //           orderController
+                                                                    //               .exciseTaxBefore
+                                                                    //               .value = newTax[
+                                                                    //           "TaxBefore"]
+                                                                    //               .toString();
+                                                                    //           orderController
+                                                                    //               .isAmountTaxBefore
+                                                                    //               .value = newTax["IsAmountTaxBefore"];
+                                                                    //           orderController
+                                                                    //               .isAmountTaxAfter
+                                                                    //               .value = newTax["IsAmountTaxAfter"];
+                                                                    //           orderController
+                                                                    //               .exciseTaxAfter
+                                                                    //               .value = newTax[
+                                                                    //           "TaxAfter"]
+                                                                    //               .toString();
+                                                                    //         } else {
+                                                                    //           orderController
+                                                                    //               .exciseTaxID
+                                                                    //               .value = 0;
+                                                                    //           orderController
+                                                                    //               .exciseTaxName
+                                                                    //               .value = "";
+                                                                    //           orderController
+                                                                    //               .BPValue
+                                                                    //               .value = "0";
+                                                                    //           orderController
+                                                                    //               .exciseTaxBefore
+                                                                    //               .value = "0";
+                                                                    //           orderController
+                                                                    //               .isAmountTaxBefore
+                                                                    //               .value = false;
+                                                                    //           orderController
+                                                                    //               .isAmountTaxAfter
+                                                                    //               .value = false;
+                                                                    //           orderController
+                                                                    //               .isExciseProduct
+                                                                    //               .value = false;
+                                                                    //           orderController
+                                                                    //               .exciseTaxAfter
+                                                                    //               .value = "0";
+                                                                    //         }
+                                                                    //
+                                                                    //         orderController
+                                                                    //             .unique_id
+                                                                    //             .value = "0";
+                                                                    //         orderController
+                                                                    //             .calculation();
+                                                                    //
+                                                                    //         //setState(() {});
+                                                                    //         /// commented for new tax working
+                                                                    //
+                                                                    //         /// qty increment
+                                                                    //
+                                                                    //         // if (qtyIncrement == true) {
+                                                                    //         //   var checkingAlready = orderController.checking(orderController.priceListID.value);
+                                                                    //         //   if (checkingAlready[0]) {
+                                                                    //         //     orderController.unique_id.value = orderController.orderItemList[checkingAlready[1]].uniqueId;
+                                                                    //         //     orderController.updateQty(type: 1,index:checkingAlready[1]);
+                                                                    //         //   } else {
+                                                                    //         //     orderController.unique_id.value = "0";
+                                                                    //         //     orderController.calculation();
+                                                                    //         //   }
+                                                                    //         // } else {
+                                                                    //         //   orderController.unique_id.value = "0";
+                                                                    //         //   orderController.calculation();
+                                                                    //         // }
+                                                                    //       },
+                                                                    //       child:
+                                                                    //       InkWell(
+                                                                    //         child:
+                                                                    //         Container(
+                                                                    //           height:
+                                                                    //           MediaQuery.of(context).size.height /
+                                                                    //               32,
+                                                                    //           width:
+                                                                    //           65,
+                                                                    //           decoration:
+                                                                    //           const BoxDecoration(
+                                                                    //             borderRadius:
+                                                                    //             BorderRadius.only(
+                                                                    //               bottomLeft:
+                                                                    //               Radius.circular(10),
+                                                                    //               bottomRight:
+                                                                    //               Radius.circular(10),
+                                                                    //             ),
+                                                                    //           ),
+                                                                    //           child:
+                                                                    //           DecoratedBox(
+                                                                    //             decoration:
+                                                                    //             ShapeDecoration(
+                                                                    //               shape:
+                                                                    //               RoundedRectangleBorder(
+                                                                    //                 side: const BorderSide(color: Color(0xffF25F29)),
+                                                                    //                 borderRadius: BorderRadius.circular(10),
+                                                                    //               ),
+                                                                    //               color:
+                                                                    //               Colors.white,
+                                                                    //             ),
+                                                                    //             child:
+                                                                    //             Center(
+                                                                    //               child:
+                                                                    //               Text(
+                                                                    //                 'add'.tr,
+                                                                    //                 style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
+                                                                    //                 // style: TextStyle(
+                                                                    //                 //   color: Color(0xffF25F29),
+                                                                    //                 // ),
+                                                                    //                 textAlign: TextAlign.center,
+                                                                    //               ),
+                                                                    //             ),
+                                                                    //           ),
+                                                                    //         ),
+                                                                    //       ),
+                                                                    //     ),
+                                                                    //   ),
+                                                                    // ),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            : Container()),
                                                 // else
                                               ],
                                             ),
@@ -1551,37 +1485,39 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Color(0xffD7D7D7), width: .5),
+                                          color: const Color(0xffD7D7D7), width: .5),
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                          const BorderRadius.all(Radius.circular(8))),
                                   height: MediaQuery.of(context).size.height /
                                       23, //height of button
                                   width: MediaQuery.of(context).size.width / 9,
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         alignment: Alignment.center,
-                                        width: MediaQuery.of(context).size.width /
-                                            40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                40,
                                         // height:
                                         //     MediaQuery.of(context).size.height / 22,
                                         child: GestureDetector(
                                           onTap: () {
                                             setState(() {
                                               if (orderController
-                                                  .productFontSize <=
+                                                      .productFontSize <=
                                                   0) {
                                               } else {
-                                                orderController.productFontSize =
+                                                orderController
+                                                        .productFontSize =
                                                     orderController
-                                                        .productFontSize -
+                                                            .productFontSize -
                                                         1;
                                                 orderController
-                                                    .productNameFontSizeController
-                                                    .text =
-                                                "${orderController.productFontSize}";
+                                                        .productNameFontSizeController
+                                                        .text =
+                                                    "${orderController.productFontSize}";
                                               }
                                             });
                                           },
@@ -1591,17 +1527,20 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                         ),
                                       ),
                                       Container(
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            left: BorderSide(color: Color(0xffD7D7D7),width: .5),
-                                            right:  BorderSide(color: Color(0xffD7D7D7),width: .5)
-                                          )
-                                        ),
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                left: BorderSide(
+                                                    color: Color(0xffD7D7D7),
+                                                    width: .5),
+                                                right: BorderSide(
+                                                    color: Color(0xffD7D7D7),
+                                                    width: .5))),
                                         alignment: Alignment.center,
                                         // height: MediaQuery.of(context).size.height /
                                         //     18, //height of button
-                                        width: MediaQuery.of(context).size.width /
-                                            20,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                20,
                                         child: TextField(
                                           controller: orderController
                                               .productNameFontSizeController,
@@ -1617,16 +1556,16 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                               11.5),
                                           onChanged: (text) async {
                                             SharedPreferences prefs =
-                                            await SharedPreferences
-                                                .getInstance();
+                                                await SharedPreferences
+                                                    .getInstance();
 
                                             if (text.isNotEmpty) {
                                               orderController.productFontSize =
                                                   double.parse(text);
                                               orderController
-                                                  .productNameFontSizeController
-                                                  .text =
-                                              "${orderController.productFontSize}";
+                                                      .productNameFontSizeController
+                                                      .text =
+                                                  "${orderController.productFontSize}";
                                               prefs.setDouble(
                                                   'product_font_size',
                                                   orderController
@@ -1634,29 +1573,29 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                             } else {}
                                           },
                                           decoration: const InputDecoration(
-                                            hintText: '0.0',
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.all(6),
-                                            border: InputBorder.none
-
-                                          ),
+                                              hintText: '0.0',
+                                              isDense: true,
+                                              contentPadding: EdgeInsets.all(6),
+                                              border: InputBorder.none),
                                         ),
                                       ),
                                       Container(
                                         alignment: Alignment.center,
-                                        width: MediaQuery.of(context).size.width /
-                                            40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                40,
                                         child: GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                orderController.productFontSize =
+                                                orderController
+                                                        .productFontSize =
                                                     orderController
-                                                        .productFontSize +
+                                                            .productFontSize +
                                                         1;
                                                 orderController
-                                                    .productNameFontSizeController
-                                                    .text =
-                                                "${orderController.productFontSize}";
+                                                        .productNameFontSizeController
+                                                        .text =
+                                                    "${orderController.productFontSize}";
                                               });
                                             },
                                             child: InkWell(
@@ -1674,9 +1613,9 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       border:
-                                      Border.all(color: Color(0xffD7D7D7)),
+                                          Border.all(color: const Color(0xffD7D7D7)),
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                          const BorderRadius.all(Radius.circular(8))),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 8.0, right: 5),
@@ -1685,24 +1624,25 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                       return DropdownButton<FontWeight>(
                                         focusColor: Colors.transparent,
                                         borderRadius: BorderRadius.circular(8),
-                                        underline: SizedBox(),
+                                        underline: const SizedBox(),
                                         value: orderController
                                             .productFontWeight.value,
                                         items: orderController.fontWeights.map(
-                                                (Map<String, FontWeight> fontWeight) {
-                                              String key = fontWeight.keys.first;
-                                              return DropdownMenuItem<FontWeight>(
-                                                value: fontWeight[key],
-                                                child: Text(
-                                                  key,
-                                                  style: customisedStyle(
-                                                      context,
-                                                      Colors.black,
-                                                      FontWeight.normal,
-                                                      12.0),
-                                                ),
-                                              );
-                                            }).toList(),
+                                            (Map<String, FontWeight>
+                                                fontWeight) {
+                                          String key = fontWeight.keys.first;
+                                          return DropdownMenuItem<FontWeight>(
+                                            value: fontWeight[key],
+                                            child: Text(
+                                              key,
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.black,
+                                                  FontWeight.normal,
+                                                  12.0),
+                                            ),
+                                          );
+                                        }).toList(),
                                         onChanged: (FontWeight? newWeight) {
                                           if (newWeight != null) {
                                             orderController.updateFontWeight(
@@ -1733,7 +1673,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                             style: customisedStyle(
                                 context, Colors.black, FontWeight.w500, 13.0),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Container(
@@ -1744,39 +1684,40 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Color(0xffD7D7D7), width: .5),
+                                          color: const Color(0xffD7D7D7), width: .5),
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                          const BorderRadius.all(Radius.circular(8))),
                                   height: MediaQuery.of(context).size.height /
                                       23, //height of button
                                   width: MediaQuery.of(context).size.width / 9,
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         alignment: Alignment.center,
-                                        width: MediaQuery.of(context).size.width /
-                                            40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                40,
                                         height:
-                                        MediaQuery.of(context).size.height /
-                                            22,
+                                            MediaQuery.of(context).size.height /
+                                                22,
                                         child: GestureDetector(
                                           onTap: () {
                                             setState(() {
                                               if (orderController
-                                                  .descriptionFontSize <=
+                                                      .descriptionFontSize <=
                                                   0) {
                                               } else {
                                                 orderController
-                                                    .descriptionFontSize =
+                                                        .descriptionFontSize =
                                                     orderController
-                                                        .descriptionFontSize -
+                                                            .descriptionFontSize -
                                                         1;
                                                 orderController
-                                                    .descriptionFontSizeController
-                                                    .text =
-                                                "${orderController.descriptionFontSize}";
+                                                        .descriptionFontSizeController
+                                                        .text =
+                                                    "${orderController.descriptionFontSize}";
                                               }
                                             });
                                           },
@@ -1786,16 +1727,18 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                         ),
                                       ),
                                       Container(
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             border: Border(
-                                                left: BorderSide(color: Color(0xffD7D7D7),width: .5),
-                                                right:  BorderSide(color: Color(0xffD7D7D7),width: .5)
-                                            )
-                                        ),
+                                                left: BorderSide(
+                                                    color: Color(0xffD7D7D7),
+                                                    width: .5),
+                                                right: BorderSide(
+                                                    color: Color(0xffD7D7D7),
+                                                    width: .5))),
                                         alignment: Alignment.center,
-
-                                        width: MediaQuery.of(context).size.width /
-                                            20,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                20,
                                         child: TextField(
                                           controller: orderController
                                               .descriptionFontSizeController,
@@ -1811,17 +1754,17 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                               11.0),
                                           onChanged: (text) async {
                                             SharedPreferences prefs =
-                                            await SharedPreferences
-                                                .getInstance();
+                                                await SharedPreferences
+                                                    .getInstance();
 
                                             if (text.isNotEmpty) {
                                               orderController
-                                                  .descriptionFontSize =
+                                                      .descriptionFontSize =
                                                   double.parse(text);
                                               orderController
-                                                  .descriptionFontSizeController
-                                                  .text =
-                                              "${orderController.descriptionFontSize}";
+                                                      .descriptionFontSizeController
+                                                      .text =
+                                                  "${orderController.descriptionFontSize}";
                                               prefs.setDouble(
                                                   'description_fontSize',
                                                   orderController
@@ -1829,29 +1772,29 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                             } else {}
                                           },
                                           decoration: const InputDecoration(
-                                            hintText: '0.0',
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.all(6),
-                                          border: InputBorder.none
-                                          ),
+                                              hintText: '0.0',
+                                              isDense: true,
+                                              contentPadding: EdgeInsets.all(6),
+                                              border: InputBorder.none),
                                         ),
                                       ),
                                       Container(
                                         alignment: Alignment.center,
-                                        width: MediaQuery.of(context).size.width /
-                                            40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                40,
                                         child: GestureDetector(
                                             onTap: () {
                                               setState(() {
                                                 orderController
-                                                    .descriptionFontSize =
+                                                        .descriptionFontSize =
                                                     orderController
-                                                        .descriptionFontSize +
+                                                            .descriptionFontSize +
                                                         1;
                                                 orderController
-                                                    .descriptionFontSizeController
-                                                    .text =
-                                                "${orderController.descriptionFontSize}";
+                                                        .descriptionFontSizeController
+                                                        .text =
+                                                    "${orderController.descriptionFontSize}";
                                               });
                                             },
                                             child: InkWell(
@@ -1869,9 +1812,9 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       border:
-                                      Border.all(color: Color(0xffD7D7D7)),
+                                          Border.all(color: const Color(0xffD7D7D7)),
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                          const BorderRadius.all(Radius.circular(8))),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 8.0, right: 5),
@@ -1880,28 +1823,30 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                       return DropdownButton<FontWeight>(
                                         focusColor: Colors.transparent,
                                         borderRadius: BorderRadius.circular(8),
-                                        underline: SizedBox(),
+                                        underline: const SizedBox(),
                                         value: orderController
                                             .descriptionFontWeight.value,
                                         items: orderController.fontWeights.map(
-                                                (Map<String, FontWeight> fontWeight) {
-                                              String key = fontWeight.keys.first;
-                                              return DropdownMenuItem<FontWeight>(
-                                                value: fontWeight[key],
-                                                child: Text(
-                                                  key,
-                                                  style: customisedStyle(
-                                                      context,
-                                                      Colors.black,
-                                                      FontWeight.normal,
-                                                      12.0),
-                                                ),
-                                              );
-                                            }).toList(),
+                                            (Map<String, FontWeight>
+                                                fontWeight) {
+                                          String key = fontWeight.keys.first;
+                                          return DropdownMenuItem<FontWeight>(
+                                            value: fontWeight[key],
+                                            child: Text(
+                                              key,
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.black,
+                                                  FontWeight.normal,
+                                                  12.0),
+                                            ),
+                                          );
+                                        }).toList(),
                                         onChanged: (FontWeight? newWeight) {
                                           if (newWeight != null) {
                                             orderController.updateFontWeight(
-                                                newWeight, 'description_weight');
+                                                newWeight,
+                                                'description_weight');
                                           }
                                         },
                                       );
@@ -1924,9 +1869,9 @@ class _PosOrderPageState extends State<PosOrderPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Amount ",
-                              style: customisedStyle(
-                                  context, Colors.black, FontWeight.w500, 13.0)),
-                          SizedBox(
+                              style: customisedStyle(context, Colors.black,
+                                  FontWeight.w500, 13.0)),
+                          const SizedBox(
                             width: 10,
                           ),
                           Container(
@@ -1937,38 +1882,39 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Color(0xffD7D7D7), width: .5),
+                                          color: const Color(0xffD7D7D7), width: .5),
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                          const BorderRadius.all(Radius.circular(8))),
                                   height: MediaQuery.of(context).size.height /
                                       23, //height of button
                                   width: MediaQuery.of(context).size.width / 9,
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         alignment: Alignment.center,
-                                        width: MediaQuery.of(context).size.width /
-                                            40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                40,
                                         height:
-                                        MediaQuery.of(context).size.height /
-                                            22,
+                                            MediaQuery.of(context).size.height /
+                                                22,
                                         child: GestureDetector(
                                           onTap: () {
                                             setState(() {
                                               if (orderController
-                                                  .amountFontSize <=
+                                                      .amountFontSize <=
                                                   0) {
                                               } else {
                                                 orderController.amountFontSize =
                                                     orderController
-                                                        .amountFontSize -
+                                                            .amountFontSize -
                                                         1;
                                                 orderController
-                                                    .amountFontSizeController
-                                                    .text =
-                                                "${orderController.amountFontSize}";
+                                                        .amountFontSizeController
+                                                        .text =
+                                                    "${orderController.amountFontSize}";
                                               }
                                             });
                                           },
@@ -1979,11 +1925,18 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                       ),
                                       Container(
                                         alignment: Alignment.center,
-                                        height:
-                                        MediaQuery.of(context).size.height /
-                                            20, //height of button
-                                        width: MediaQuery.of(context).size.width /
-                                            20,
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                left: BorderSide(
+                                                    color: Color(0xffD7D7D7),
+                                                    width: .5),
+                                                right: BorderSide(
+                                                    color: Color(0xffD7D7D7),
+                                                    width:
+                                                        .5))), //height of button
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                20,
                                         child: TextField(
                                           controller: orderController
                                               .amountFontSizeController,
@@ -1999,54 +1952,45 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                               11.0),
                                           onChanged: (text) async {
                                             SharedPreferences prefs =
-                                            await SharedPreferences
-                                                .getInstance();
+                                                await SharedPreferences
+                                                    .getInstance();
 
                                             if (text.isNotEmpty) {
                                               orderController.amountFontSize =
                                                   double.parse(text);
                                               orderController
-                                                  .descriptionFontSizeController
-                                                  .text =
-                                              "${orderController.amountFontSize}";
-                                              prefs.setDouble('amount_font_size',
-                                                  orderController.amountFontSize);
+                                                      .descriptionFontSizeController
+                                                      .text =
+                                                  "${orderController.amountFontSize}";
+                                              prefs.setDouble(
+                                                  'amount_font_size',
+                                                  orderController
+                                                      .amountFontSize);
                                             } else {}
                                           },
                                           decoration: const InputDecoration(
-                                            hintText: '0.0',
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.all(6),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    width: .5,
-                                                    color: Color(0xffD7D7D7))),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    width: .5,
-                                                    color: Color(0xffD7D7D7))),
-                                            disabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xffD7D7D7),
-                                                    width: .5)),
-                                          ),
+                                              hintText: '0.0',
+                                              isDense: true,
+                                              contentPadding: EdgeInsets.all(6),
+                                              border: InputBorder.none),
                                         ),
                                       ),
                                       Container(
                                         alignment: Alignment.center,
-                                        width: MediaQuery.of(context).size.width /
-                                            40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                40,
                                         child: GestureDetector(
                                             onTap: () {
                                               setState(() {
                                                 orderController.amountFontSize =
                                                     orderController
-                                                        .amountFontSize +
+                                                            .amountFontSize +
                                                         1;
                                                 orderController
-                                                    .amountFontSizeController
-                                                    .text =
-                                                "${orderController.amountFontSize}";
+                                                        .amountFontSizeController
+                                                        .text =
+                                                    "${orderController.amountFontSize}";
                                               });
                                             },
                                             child: InkWell(
@@ -2064,9 +2008,9 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       border:
-                                      Border.all(color: Color(0xffD7D7D7)),
+                                          Border.all(color: const Color(0xffD7D7D7)),
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                          const BorderRadius.all(Radius.circular(8))),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 8.0, right: 5),
@@ -2075,24 +2019,25 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                       return DropdownButton<FontWeight>(
                                         focusColor: Colors.transparent,
                                         borderRadius: BorderRadius.circular(8),
-                                        underline: SizedBox(),
+                                        underline: const SizedBox(),
                                         value: orderController
                                             .amountFontWeight.value,
                                         items: orderController.fontWeights.map(
-                                                (Map<String, FontWeight> fontWeight) {
-                                              String key = fontWeight.keys.first;
-                                              return DropdownMenuItem<FontWeight>(
-                                                value: fontWeight[key],
-                                                child: Text(
-                                                  key,
-                                                  style: customisedStyle(
-                                                      context,
-                                                      Colors.black,
-                                                      FontWeight.normal,
-                                                      12.0),
-                                                ),
-                                              );
-                                            }).toList(),
+                                            (Map<String, FontWeight>
+                                                fontWeight) {
+                                          String key = fontWeight.keys.first;
+                                          return DropdownMenuItem<FontWeight>(
+                                            value: fontWeight[key],
+                                            child: Text(
+                                              key,
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.black,
+                                                  FontWeight.normal,
+                                                  12.0),
+                                            ),
+                                          );
+                                        }).toList(),
                                         onChanged: (FontWeight? newWeight) {
                                           if (newWeight != null) {
                                             orderController.updateFontWeight(
@@ -2123,7 +2068,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                             style: customisedStyle(
                                 context, Colors.black, FontWeight.w500, 13.0),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Container(
@@ -2134,37 +2079,39 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Color(0xffD7D7D7), width: .5),
+                                          color: const Color(0xffD7D7D7), width: .5),
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                          const BorderRadius.all(Radius.circular(8))),
                                   height: MediaQuery.of(context).size.height /
                                       23, //height of button
                                   width: MediaQuery.of(context).size.width / 9,
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         alignment: Alignment.center,
-                                        width: MediaQuery.of(context).size.width /
-                                            40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                40,
                                         height:
-                                        MediaQuery.of(context).size.height /
-                                            22,
+                                            MediaQuery.of(context).size.height /
+                                                22,
                                         child: GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              if (orderController.groupFontSize <=
+                                              if (orderController
+                                                      .groupFontSize <=
                                                   0) {
                                               } else {
                                                 orderController.groupFontSize =
                                                     orderController
-                                                        .groupFontSize -
+                                                            .groupFontSize -
                                                         1;
                                                 orderController
-                                                    .groupNameFontSizeController
-                                                    .text =
-                                                "${orderController.groupFontSize}";
+                                                        .groupNameFontSizeController
+                                                        .text =
+                                                    "${orderController.groupFontSize}";
                                               }
                                             });
                                           },
@@ -2174,16 +2121,18 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                         ),
                                       ),
                                       Container(
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             border: Border(
-                                                left: BorderSide(color: Color(0xffD7D7D7),width: .5),
-                                                right:  BorderSide(color: Color(0xffD7D7D7),width: .5)
-                                            )
-                                        ),
+                                                left: BorderSide(
+                                                    color: Color(0xffD7D7D7),
+                                                    width: .5),
+                                                right: BorderSide(
+                                                    color: Color(0xffD7D7D7),
+                                                    width: .5))),
                                         alignment: Alignment.center,
-
-                                        width: MediaQuery.of(context).size.width /
-                                            20,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                20,
                                         child: TextField(
                                           controller: orderController
                                               .groupNameFontSizeController,
@@ -2199,43 +2148,45 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                               11.0),
                                           onChanged: (text) async {
                                             SharedPreferences prefs =
-                                            await SharedPreferences
-                                                .getInstance();
+                                                await SharedPreferences
+                                                    .getInstance();
 
                                             if (text.isNotEmpty) {
                                               orderController.groupFontSize =
                                                   double.parse(text);
                                               orderController
-                                                  .groupNameFontSizeController
-                                                  .text =
-                                              "${orderController.groupFontSize}";
-                                              prefs.setDouble('group_font_size',
-                                                  orderController.groupFontSize);
+                                                      .groupNameFontSizeController
+                                                      .text =
+                                                  "${orderController.groupFontSize}";
+                                              prefs.setDouble(
+                                                  'group_font_size',
+                                                  orderController
+                                                      .groupFontSize);
                                             } else {}
                                           },
                                           decoration: const InputDecoration(
-                                            hintText: '0.0',
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.all(6),
-                                          border: InputBorder.none
-                                          ),
+                                              hintText: '0.0',
+                                              isDense: true,
+                                              contentPadding: EdgeInsets.all(6),
+                                              border: InputBorder.none),
                                         ),
                                       ),
                                       Container(
                                         alignment: Alignment.center,
-                                        width: MediaQuery.of(context).size.width /
-                                            40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                40,
                                         child: GestureDetector(
                                             onTap: () {
                                               setState(() {
                                                 orderController.groupFontSize =
                                                     orderController
-                                                        .groupFontSize +
+                                                            .groupFontSize +
                                                         1;
                                                 orderController
-                                                    .groupNameFontSizeController
-                                                    .text =
-                                                "${orderController.groupFontSize}";
+                                                        .groupNameFontSizeController
+                                                        .text =
+                                                    "${orderController.groupFontSize}";
                                               });
                                             },
                                             child: InkWell(
@@ -2253,9 +2204,9 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                       border:
-                                      Border.all(color: Color(0xffD7D7D7)),
+                                          Border.all(color: const Color(0xffD7D7D7)),
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
+                                          const BorderRadius.all(Radius.circular(8))),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 8.0, right: 5),
@@ -2264,24 +2215,25 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                       return DropdownButton<FontWeight>(
                                         focusColor: Colors.transparent,
                                         borderRadius: BorderRadius.circular(8),
-                                        underline: SizedBox(),
-                                        value:
-                                        orderController.groupFontWeight.value,
+                                        underline: const SizedBox(),
+                                        value: orderController
+                                            .groupFontWeight.value,
                                         items: orderController.fontWeights.map(
-                                                (Map<String, FontWeight> fontWeight) {
-                                              String key = fontWeight.keys.first;
-                                              return DropdownMenuItem<FontWeight>(
-                                                value: fontWeight[key],
-                                                child: Text(
-                                                  key,
-                                                  style: customisedStyle(
-                                                      context,
-                                                      Colors.black,
-                                                      FontWeight.normal,
-                                                      12.0),
-                                                ),
-                                              );
-                                            }).toList(),
+                                            (Map<String, FontWeight>
+                                                fontWeight) {
+                                          String key = fontWeight.keys.first;
+                                          return DropdownMenuItem<FontWeight>(
+                                            value: fontWeight[key],
+                                            child: Text(
+                                              key,
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.black,
+                                                  FontWeight.normal,
+                                                  12.0),
+                                            ),
+                                          );
+                                        }).toList(),
                                         onChanged: (FontWeight? newWeight) {
                                           if (newWeight != null) {
                                             orderController.updateFontWeight(
@@ -2314,7 +2266,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height / 17,
-                    decoration: BoxDecoration(color: Color(0xffF5F5F5)),
+                    decoration: const BoxDecoration(color: Color(0xffF5F5F5)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -2322,12 +2274,8 @@ class _PosOrderPageState extends State<PosOrderPage> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Row(
                             children: [
-                              // Text(
-                              //   'Display Product Image ',
-                              //   style: customisedStyle(
-                              //       context, Colors.black, FontWeight.w500, 13.0),
-                              // ),
-                              Text(
+
+                              const Text(
                                 'Display Product Image ',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -2335,21 +2283,20 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                   fontSize: 13.0,
                                 ),
                               ),
-                              SizedBox(width: 20),
+                              const SizedBox(width: 20),
                               Tooltip(
                                 message: 'Show/Hide Product Image',
-                                textStyle: TextStyle(color: Colors.white),
+                                textStyle: const TextStyle(color: Colors.white),
                                 decoration: BoxDecoration(
                                   color: Colors.grey,
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
-                                child: Icon(
-                                  Icons.info,color: Color(0xffF25F29),
+                                child: const Icon(
+                                  Icons.info,
+                                  color: Color(0xffF25F29),
                                   size: 25.0,
                                 ),
                               )
-
-
                             ],
                           ),
                         ),
@@ -2362,16 +2309,16 @@ class _PosOrderPageState extends State<PosOrderPage> {
                             value: orderController.isShowImage.value,
                             borderRadius: 20.0,
                             padding: 1.0,
-                            activeColor: Color(0xff3183FF),
+                            activeColor: const Color(0xff3183FF),
                             activeTextColor: Colors.green,
                             //   inactiveTextColor: Repository.textColor(context),
                             inactiveColor: Colors.grey,
                             // showOnOff: true,
                             onToggle: (val) async {
                               SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                                  await SharedPreferences.getInstance();
                               orderController.isShowImage.value =
-                              !orderController.isShowImage.value;
+                                  !orderController.isShowImage.value;
                               prefs.setBool('show_product_image',
                                   orderController.isShowImage.value);
                             },
@@ -2389,35 +2336,37 @@ class _PosOrderPageState extends State<PosOrderPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Count of Row",
-                              style: customisedStyle(
-                                  context, Colors.black, FontWeight.w500, 13.0)),
+                              style: customisedStyle(context, Colors.black,
+                                  FontWeight.w500, 13.0)),
                           Container(
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: Color(0xffD7D7D7), width: .5),
+                                    color: const Color(0xffD7D7D7), width: .5),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(8))),
+                                    const BorderRadius.all(Radius.circular(8))),
                             height: MediaQuery.of(context).size.height /
                                 23, //height of button
-                            width: MediaQuery.of(context).size.width /9,
+                            width: MediaQuery.of(context).size.width / 9,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   alignment: Alignment.center,
                                   width: MediaQuery.of(context).size.width / 40,
-                                  height: MediaQuery.of(context).size.height / 22,
+                                  height:
+                                      MediaQuery.of(context).size.height / 22,
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        if (orderController.rowCountGridView <= 1) {
+                                        if (orderController.rowCountGridView <=
+                                            1) {
                                         } else {
                                           orderController.rowCountGridView =
                                               orderController.rowCountGridView -
                                                   1;
                                           orderController
-                                              .rowCountController.text =
-                                          "${orderController.rowCountGridView}";
+                                                  .rowCountController.text =
+                                              "${orderController.rowCountGridView}";
                                         }
                                       });
                                     },
@@ -2428,12 +2377,18 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 ),
                                 Container(
                                   alignment: Alignment.center,
-                                  height: MediaQuery.of(context).size.height /
-                                      20, //height of button
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                          left: BorderSide(
+                                              color: Color(0xffD7D7D7),
+                                              width: .5),
+                                          right: BorderSide(
+                                              color: Color(0xffD7D7D7),
+                                              width: .5))),
                                   width: MediaQuery.of(context).size.width / 20,
                                   child: TextField(
                                     controller:
-                                    orderController.rowCountController,
+                                        orderController.rowCountController,
                                     textAlign: TextAlign.center,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
@@ -2446,36 +2401,24 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                         11.00),
                                     onChanged: (text) async {
                                       SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
+                                          await SharedPreferences.getInstance();
 
                                       if (text.isNotEmpty) {
                                         orderController.rowCountGridView =
                                             int.parse(text);
                                         orderController
-                                            .groupNameFontSizeController
-                                            .text =
-                                        "${orderController.rowCountGridView}";
+                                                .groupNameFontSizeController
+                                                .text =
+                                            "${orderController.rowCountGridView}";
                                         prefs.setInt('count_of_row',
                                             orderController.rowCountGridView);
                                       } else {}
                                     },
                                     decoration: const InputDecoration(
-                                      hintText: '0.0',
-                                      isDense: true,
-                                      contentPadding: EdgeInsets.all(6),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: .5,
-                                              color: Color(0xffD7D7D7))),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: .5,
-                                              color: Color(0xffD7D7D7))),
-                                      disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xffD7D7D7),
-                                              width: .5)),
-                                    ),
+                                        hintText: '0.0',
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(6),
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Container(
@@ -2488,8 +2431,8 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                               orderController.rowCountGridView +
                                                   1;
                                           orderController
-                                              .rowCountController.text =
-                                          "${orderController.rowCountGridView}";
+                                                  .rowCountController.text =
+                                              "${orderController.rowCountGridView}";
                                         });
                                       },
                                       child: InkWell(
@@ -2505,8 +2448,6 @@ class _PosOrderPageState extends State<PosOrderPage> {
                       ),
                     ),
                   ),
-
-                  ///height
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 8),
                     child: Container(
@@ -2515,15 +2456,15 @@ class _PosOrderPageState extends State<PosOrderPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Height",
-                              style: customisedStyle(
-                                  context, Colors.black, FontWeight.w500, 13.0)),
+                          Text("Image Height",
+                              style: customisedStyle(context, Colors.black,
+                                  FontWeight.w500, 13.0)),
                           Container(
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: Color(0xffD7D7D7), width: .5),
+                                    color: const Color(0xffD7D7D7), width: .5),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(8))),
+                                const BorderRadius.all(Radius.circular(8))),
                             height: MediaQuery.of(context).size.height /
                                 23, //height of button
                             width: MediaQuery.of(context).size.width / 9,
@@ -2533,16 +2474,20 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 Container(
                                   alignment: Alignment.center,
                                   width: MediaQuery.of(context).size.width / 40,
-                                  height: MediaQuery.of(context).size.height / 22,
+                                  height:
+                                  MediaQuery.of(context).size.height / 22,
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        if (orderController.heightOfITem <= 0) {
+                                        if (orderController.heightOfImage <=
+                                            1) {
                                         } else {
-                                          orderController.heightOfITem =
-                                              orderController.heightOfITem - 1;
-                                          orderController.heightController.text =
-                                          "${orderController.heightOfITem}";
+                                          orderController.heightOfImage =
+                                              orderController.heightOfImage -
+                                                  1;
+                                          orderController
+                                              .heightImageSizeController.text =
+                                          "${orderController.heightOfImage}";
                                         }
                                       });
                                     },
@@ -2553,11 +2498,259 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                 ),
                                 Container(
                                   alignment: Alignment.center,
-                                  height: MediaQuery.of(context).size.height /
-                                      20, //height of button
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                          left: BorderSide(
+                                              color: Color(0xffD7D7D7),
+                                              width: .5),
+                                          right: BorderSide(
+                                              color: Color(0xffD7D7D7),
+                                              width: .5))),
                                   width: MediaQuery.of(context).size.width / 20,
                                   child: TextField(
-                                    controller: orderController.heightController,
+                                    controller:
+                                    orderController.heightImageSizeController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(
+                                        context,
+                                        const Color(0xff000000),
+                                        FontWeight.w500,
+                                        11.00),
+                                    onChanged: (text) async {
+                                      SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+
+                                      if (text.isNotEmpty) {
+                                        orderController.heightOfImage =
+                                            double.parse(text);
+                                        orderController
+                                            .heightImageSizeController
+                                            .text =
+                                        "${orderController.heightOfImage}";
+                                        prefs.setDouble('heightOfImage',
+                                            orderController.heightOfImage);
+                                      } else {}
+                                    },
+                                    decoration: const InputDecoration(
+                                        hintText: '0.0',
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(6),
+                                        border: InputBorder.none),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: MediaQuery.of(context).size.width / 40,
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          orderController.heightOfImage =
+                                              orderController.heightOfImage +
+                                                  1;
+                                          orderController
+                                              .heightImageSizeController.text =
+                                          "${orderController.heightOfImage}";
+                                        });
+                                      },
+                                      child: InkWell(
+                                        child: Center(
+                                            child: SvgPicture.asset(
+                                                'assets/svg/plus_mob.svg')),
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, top: 8),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Image Width",
+                              style: customisedStyle(context, Colors.black,
+                                  FontWeight.w500, 13.0)),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: const Color(0xffD7D7D7), width: .5),
+                                borderRadius:
+                                const BorderRadius.all(Radius.circular(8))),
+                            height: MediaQuery.of(context).size.height /
+                                23, //height of button
+                            width: MediaQuery.of(context).size.width / 9,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: MediaQuery.of(context).size.width / 40,
+                                  height:
+                                  MediaQuery.of(context).size.height / 22,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        orderController.widthOfImage =
+                                            orderController.widthOfImage +
+                                                1;
+                                        orderController.widthImageSizeController.text =
+                                        "${orderController.widthOfImage}";
+                                      });
+                                    },
+                                    child: InkWell(
+                                        child: SvgPicture.asset(
+                                            'assets/svg/minus_mob.svg')),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                          left: BorderSide(
+                                              color: Color(0xffD7D7D7),
+                                              width: .5),
+                                          right: BorderSide(
+                                              color: Color(0xffD7D7D7),
+                                              width: .5))),
+                                  width: MediaQuery.of(context).size.width / 20,
+                                  child: TextField(
+                                    controller:
+                                    orderController.widthImageSizeController,
+                                    textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[0-9]')),
+                                    ],
+                                    style: customisedStyle(
+                                        context,
+                                        const Color(0xff000000),
+                                        FontWeight.w500,
+                                        11.00),
+                                    onChanged: (text) async {
+                                      SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+
+                                      if (text.isNotEmpty) {
+                                        orderController.widthOfImage =
+                                            double.parse(text);
+                                        orderController
+                                            .widthImageSizeController
+                                            .text =
+                                        "${orderController.rowCountGridView}";
+                                        prefs.setDouble('widthOfImage',
+                                            orderController.widthOfImage);
+                                      } else {}
+                                    },
+                                    decoration: const InputDecoration(
+                                        hintText: '0.0',
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(6),
+                                        border: InputBorder.none),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: MediaQuery.of(context).size.width / 40,
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (orderController.widthOfImage <=
+                                              1) {
+                                          } else {
+                                            orderController.widthOfImage =
+                                                orderController.widthOfImage -
+                                                    1;
+                                            orderController.widthImageSizeController.text =
+                                            "${orderController.widthOfImage}";
+                                          }
+
+
+                                        });
+                                      },
+                                      child: InkWell(
+                                        child: Center(
+                                            child: SvgPicture.asset(
+                                                'assets/svg/plus_mob.svg')),
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ///height
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, top: 8),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Height",
+                              style: customisedStyle(context, Colors.black,
+                                  FontWeight.w500, 13.0)),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: const Color(0xffD7D7D7), width: .5),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(8))),
+                            height: MediaQuery.of(context).size.height /
+                                23, //height of button
+                            width: MediaQuery.of(context).size.width / 9,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: MediaQuery.of(context).size.width / 40,
+                                  height:
+                                      MediaQuery.of(context).size.height / 22,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (orderController.heightOfITem <= 0) {
+                                        } else {
+                                          orderController.heightOfITem =
+                                              orderController.heightOfITem - 1;
+                                          orderController
+                                                  .heightController.text =
+                                              "${orderController.heightOfITem}";
+                                        }
+                                      });
+                                    },
+                                    child: InkWell(
+                                        child: SvgPicture.asset(
+                                            'assets/svg/minus_mob.svg')),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                          left: BorderSide(
+                                              color: Color(0xffD7D7D7),
+                                              width: .5),
+                                          right: BorderSide(
+                                              color: Color(0xffD7D7D7),
+                                              width: .5))),
+                                  width: MediaQuery.of(context).size.width / 20,
+                                  child: TextField(
+                                    controller:
+                                        orderController.heightController,
                                     textAlign: TextAlign.center,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
@@ -2570,7 +2763,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                         11.0),
                                     onChanged: (text) async {
                                       SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
+                                          await SharedPreferences.getInstance();
 
                                       if (text.isNotEmpty) {
                                         orderController.heightOfITem =
@@ -2581,22 +2774,10 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                       } else {}
                                     },
                                     decoration: const InputDecoration(
-                                      hintText: '0.0',
-                                      isDense: true,
-                                      contentPadding: EdgeInsets.all(6),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: .5,
-                                              color: Color(0xffD7D7D7))),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: .5,
-                                              color: Color(0xffD7D7D7))),
-                                      disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xffD7D7D7),
-                                              width: .5)),
-                                    ),
+                                        hintText: '0.0',
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(6),
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Container(
@@ -2607,8 +2788,9 @@ class _PosOrderPageState extends State<PosOrderPage> {
                                         setState(() {
                                           orderController.heightOfITem =
                                               orderController.heightOfITem + 1;
-                                          orderController.heightController.text =
-                                          "${orderController.heightOfITem}";
+                                          orderController
+                                                  .heightController.text =
+                                              "${orderController.heightOfITem}";
                                         });
                                       },
                                       child: InkWell(
@@ -2772,7 +2954,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                             SvgPicture.asset("assets/svg/close-circle.svg"),
                             Padding(
                               padding:
-                              const EdgeInsets.only(left: 12.0, right: 12),
+                                  const EdgeInsets.only(left: 12.0, right: 12),
                               child: Text(
                                 'cancel'.tr,
                                 style: customisedStyle(
@@ -2799,7 +2981,8 @@ class _PosOrderPageState extends State<PosOrderPage> {
                           children: [
                             SvgPicture.asset('assets/svg/save_mob.svg'),
                             Padding(
-                              padding: const EdgeInsets.only(left: 8.0, right: 8),
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, right: 8),
                               child: Text(
                                 'Ok',
                                 style: customisedStyle(
@@ -4925,15 +5108,12 @@ class _PosOrderPageState extends State<PosOrderPage> {
                             backgroundColor: WidgetStateProperty.all(
                                 const Color(0xff00775E))),
                         onPressed: () {
-
-///payment new page navigation
-
+                          ///payment new page navigation
 
                           orderController.update();
 
                           print(
                               ".....................................................");
-
                         },
                         child: Row(
                           children: [
@@ -5039,7 +5219,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                     child: Text(
                       'balance'.tr,
                       style: customisedStyle(
-                          context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
+                          context, const Color(0xff8C8C8C), FontWeight.w400, 14.0),
                     ),
                   ),
                   Padding(
@@ -5047,14 +5227,14 @@ class _PosOrderPageState extends State<PosOrderPage> {
                     child: Text(
                       orderController.currency.value,
                       style: customisedStyle(
-                          context, Color(0xff8C8C8C), FontWeight.w400, 15.0),
+                          context, const Color(0xff8C8C8C), FontWeight.w400, 15.0),
                     ),
                   ),
                   Obx(
                     () => Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Text(orderController.customerBalance.value,
-                          style: customisedStyle(context, Color(0xff000000),
+                          style: customisedStyle(context, const Color(0xff000000),
                               FontWeight.w500, 15.0)),
                     ),
                   )
