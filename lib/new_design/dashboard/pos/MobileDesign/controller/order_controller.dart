@@ -53,8 +53,9 @@ class OrderController extends GetxController {
     ;
   TextEditingController groupNameFontSizeController = TextEditingController()
   ;
-  TextEditingController descriptionFontSizeController = TextEditingController()
-    ;
+  TextEditingController descriptionFontSizeController = TextEditingController()  ;
+  TextEditingController heightImageSizeController = TextEditingController()  ;
+  TextEditingController widthImageSizeController = TextEditingController()  ;
   String selectedFontSize = 'Medium';
   Rx<FontWeight> selectedFontWeight = FontWeight.normal.obs;
   Rx<FontWeight> productFontWeight = FontWeight.normal.obs;
@@ -102,7 +103,8 @@ class OrderController extends GetxController {
   var isShowImage = true.obs;
   var productNameDetail = '';
   var indexDetail = 0;
-
+  var heightOfImage = 8.0;
+  var widthOfImage = 18.0;
   ///added
   var selectedIndex = RxInt(0);
   saveDefaultValue() async {
@@ -116,6 +118,7 @@ class OrderController extends GetxController {
     prefs.setDouble('description_fontSize',descriptionFontSize).toString();
     prefs.setInt('count_of_row',rowCountGridView).toString();
     prefs.setBool('show_product_image',isShowImage.value) ;
+    prefs.setDouble('heightOfImage',heightOfImage) ;
   }
 
   getDefaultValue() async {
@@ -130,6 +133,11 @@ class OrderController extends GetxController {
     heightOfITem=prefs.getDouble('height_of_item')??12.0;
     descriptionFontSize=prefs.getDouble('description_fontSize')??13.0;
     widthOfItem=prefs.getDouble('widthOfItem')??4.0;
+    heightOfImage=prefs.getDouble('heightOfImage')??8.0;
+    widthOfImage=prefs.getDouble('widthOfImage')??18.0;
+
+    heightImageSizeController.text = heightOfImage.toString();
+    widthImageSizeController.text = widthOfImage.toString();
     productNameFontSizeController.text = productFontSize.toString();
     amountFontSizeController.text = amountFontSize.toString();
 
