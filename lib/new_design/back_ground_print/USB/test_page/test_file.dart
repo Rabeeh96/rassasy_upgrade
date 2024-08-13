@@ -239,39 +239,39 @@ class USBPrintClassTest {
 
 
 /// crop method
-    // var ii = Img.decodeImage(arabicImageBytes!);
-    // final Img.Image _resize = Img.copyResize(ii!, width:PaperSize.mm80.width);
-    // // bytes += generator.imageRaster(_resize,);
-    // int width = ii!.width;
-    // int height = ii.height;
-    // print('Original Resolution: ${width}x${height}');
-    // print('Resized Resolution: ${_resize.width}x${_resize.height}');
-    // print('--------------: ${_resize.width*_resize.height}');
-    // // Get the total height
-    // // int totalHeight = _resize.height;
-    //
-    // // Calculate height for each part
-    //
+    var ii = Img.decodeImage(arabicImageBytes!);
+    final Img.Image _resize = Img.copyResize(ii!, width:PaperSize.mm80.width);
+    // bytes += generator.imageRaster(_resize,);
+    int width = ii!.width;
+    int height = ii.height;
+    print('Original Resolution: ${width}x${height}');
+    print('Resized Resolution: ${_resize.width}x${_resize.height}');
+    print('--------------: ${_resize.width*_resize.height}');
+    // Get the total height
     // int totalHeight = _resize.height;
-    // print("totalHeight $totalHeight");
-    //
-    // // Calculate number of parts
-    // int parts = (totalHeight / 10).ceil();
-    //
-    // for (int i = 0; i < parts; i++) {
-    //   // Calculate the start y position for cropping
-    //   int startY = i * 10;
-    //
-    //   print("startY $startY");
-    //   // Ensure the last part captures any remaining height
-    //   int height = (i == parts - 1) ? (totalHeight - startY) : 10;
-    //   print("height $height");
-    //   // Crop the image
-    //   final Img.Image cropped = Img.copyCrop(_resize, x: 0, y: startY, width: _resize.width, height: height);
-    //
-    //   // Add the cropped part to bytes
-    //   bytes += generator.imageRaster(cropped);
-    // }
+
+    // Calculate height for each part
+
+    int totalHeight = _resize.height;
+    print("totalHeight $totalHeight");
+
+    // Calculate number of parts
+    int parts = (totalHeight / 10).ceil();
+
+    for (int i = 0; i < parts; i++) {
+      // Calculate the start y position for cropping
+      int startY = i * 10;
+
+      print("startY $startY");
+      // Ensure the last part captures any remaining height
+      int height = (i == parts - 1) ? (totalHeight - startY) : 10;
+      print("height $height");
+      // Crop the image
+      final Img.Image cropped = Img.copyCrop(_resize, x: 0, y: startY, width: _resize.width, height: height);
+
+      // Add the cropped part to bytes
+      bytes += generator.imageRaster(cropped);
+    }
 
 
 
@@ -308,17 +308,17 @@ class USBPrintClassTest {
     // final Img.Image? image2 = Img.decodeImage(arabicImageBytes2);
     // final Img.Image resizedImage2 = Img.copyResize(image2!, width: 570);
     // bytes += generator.imageRaster(resizedImage2);
-    /// commented for test purpose
-
-
-    print("  ---------    --------- img function 1 before decode  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-    final Img.Image? image = Img.decodeImage(arabicImageBytes);
-    print("  ---------   --------- img function 2 cafter decode------resize ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-    final Img.Image resizedImage = Img.copyResize(image!, width: 530);
-    print("resizedImage.frames${resizedImage.frames}");
-    print("  ---------   --------- img function 3  ---------b raster         ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-    bytes += generator.imageRaster(resizedImage,);
-    print("  ---------   --------- img function 4  ---------a raster         ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond} ");
+    // /// commented for test purpose
+    //
+    //
+    // print("  ---------    --------- img function 1 before decode  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
+    // final Img.Image? image = Img.decodeImage(arabicImageBytes);
+    // print("  ---------   --------- img function 2 cafter decode------resize ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
+    // final Img.Image resizedImage = Img.copyResize(image!, width: 530);
+    // print("resizedImage.frames${resizedImage.frames}");
+    // print("  ---------   --------- img function 3  ---------b raster         ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
+    // bytes += generator.imageRaster(resizedImage,);
+    // print("  ---------   --------- img function 4  ---------a raster         ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond} ");
 
     if (needQR) {
       bytes += generator.feed(1);

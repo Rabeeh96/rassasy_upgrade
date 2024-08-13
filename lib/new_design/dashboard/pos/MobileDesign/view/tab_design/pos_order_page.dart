@@ -2448,7 +2448,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                       ),
                     ),
                   ),
-                  Padding(
+                  orderController.isShowImage.value?  Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 8),
                     child: Container(
                       alignment: Alignment.centerLeft,
@@ -2568,8 +2568,8 @@ class _PosOrderPageState extends State<PosOrderPage> {
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
+                  ):Container(),
+                  orderController.isShowImage.value?  Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 8),
                     child: Container(
                       alignment: Alignment.centerLeft,
@@ -2689,7 +2689,7 @@ class _PosOrderPageState extends State<PosOrderPage> {
                         ],
                       ),
                     ),
-                  ),
+                  ):Container(),
                   ///height
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 8),
