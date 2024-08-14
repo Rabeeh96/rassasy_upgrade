@@ -711,7 +711,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           else {
             ip = defaultIp;
           }
-          printHelper.print_receipt(ip, context,false);
+          printHelper.print_receipt(ip, context,false,false);
         } else {
           dialogBox(context, 'Please try again later');
         }

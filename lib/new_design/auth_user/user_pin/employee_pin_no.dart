@@ -115,8 +115,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-  // bool isTablet = true;
-       bool isTablet = screenWidth > defaultScreenWidth;
+   bool isTablet = true;
+  //     bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
         // appBar: AppBar(
         //   elevation: 0.0,
@@ -247,8 +247,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
               Size screenSize = MediaQuery.of(context).size;
               double screenWidth = screenSize.width;
               double screenHeight = screenSize.height;
-               ///  bool isTablet = true;
-                 bool isTablet = screenWidth > defaultScreenWidth;
+               bool isTablet = true;
+                // bool isTablet = screenWidth > defaultScreenWidth;
               if(isTablet){
                 Navigator.pushReplacement(
                   context,

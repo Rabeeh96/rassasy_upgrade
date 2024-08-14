@@ -366,7 +366,7 @@ final isLoadCar=false.obs;
             } else {
               ip = defaultIp;
             }
-            printHelperIP.print_receipt(ip, context, isCancelled);
+            printHelperIP.print_receipt(ip, context, isCancelled,false);
           } else {
             popAlert(head: "Error", message: "Error on loading Data ! Please try again later", position: SnackPosition.TOP);
 

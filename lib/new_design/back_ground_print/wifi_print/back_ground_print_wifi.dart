@@ -157,7 +157,7 @@ class AppBlocs {
   }
 
   /// print order and invoice ////
-  void print_receipt(String printerIp, BuildContext ctx, isCancelled) async {
+  void print_receipt(String printerIp, BuildContext ctx, isCancelled,orderSection) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var temp = prefs.getString("template") ?? "template4";
     var capabilities = prefs.getString("default_capabilities") ?? "default";
@@ -170,8 +170,16 @@ class AppBlocs {
     var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
     var hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;
     var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
-    print("------flavourInOrderPrint---------------flavourInOrderPrint-------------------------$flavourInOrderPrint");
+    String copies = prefs.getString("number_of_print") ?? '1';
 
+    print("------flavourInOrderPrint---------------flavourInOrderPrint-------------------------$copies");
+
+    int numberOfCopies = 1;
+
+    if(orderSection){
+      numberOfCopies = int.parse(copies);
+    }
+    print("------numberOfCopies---------------numberOfCopies-------------------------$numberOfCopies");
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
     var profile;
@@ -187,15 +195,27 @@ class AppBlocs {
 
     if (res == PosPrintResult.success) {
       if (temp == 'template4') {
-        await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint,
-            hideTaxDetails, defaultCodePage, isCancelled,flavourInOrderPrint);
+
+        for(var i = 0;i<numberOfCopies ;i++){
+          await arabicTemplateForInvoiceAndOrder(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint,
+              hideTaxDetails, defaultCodePage, isCancelled,flavourInOrderPrint);
+
+        }
+
       }
       else if (temp == 'template3') {
-        await englishInvoicePrint(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails,flavourInOrderPrint);
+        for(var i = 0;i<numberOfCopies ;i++){
+          await englishInvoicePrint(printer, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, hideTaxDetails,isCancelled,flavourInOrderPrint);
+
+        }
+
       } else {
+
+
         await printArabic(printer);
       }
-      Future.delayed(const Duration(seconds: 2), () async {
+
+      Future.delayed( Duration(seconds: numberOfCopies+2), () async {
         printer.disconnect();
       });
     } else {
@@ -827,7 +847,7 @@ class AppBlocs {
 
   /// template supported only english
   Future<void> englishInvoicePrint(
-      NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, taxDetails,flavourInOrderPrint) async {
+      NetworkPrinter printer, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint, taxDetails,isCancelled,flavourInOrderPrint) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -894,6 +914,13 @@ class AppBlocs {
     //
     /// image print commented
 
+
+    if (isCancelled) {
+      var cancelNoteData = "THIS ORDER WAS CANCELLED BY THE CUSTOMER.";
+      printer.text(cancelNoteData,
+          styles:
+          const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    }
 
     if (PrintDataDetails.type == "SI") {
       if (companyLogo != "") {

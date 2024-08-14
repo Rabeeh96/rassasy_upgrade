@@ -14,6 +14,7 @@ import 'package:rassasy_new/new_design/back_ground_print/USB/test_page/test_file
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/new.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/customisation_template/customisation_template.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -689,7 +690,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
   var printHelperUsb = USBPrintClass();
   var printHelperIP = AppBlocs();
   var bluetoothHelper = AppBlocsBT();
-
+  var wifiNewMethod = WifiPrintClassTest();
   printDetail(id, voucherType) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
@@ -700,19 +701,35 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       popAlert(head: "Error", message: "Please select a printer", position: SnackPosition.TOP);
     } else {
       if (printType == 'Wifi') {
-        var ret = await printHelperIP.printDetails();
-        if (ret == 2) {
-          var ip = "";
+
+
+        if (temp == "template5") {
+          var  ip ="";
           if (PrintDataDetails.type == "SO") {
             ip = defaultOrderIP;
           } else {
             ip = defaultIp;
           }
-          printHelperIP.print_receipt(ip, context, false);
-        } else {
-          popAlert(head: "Error", message: "Please try again later", position: SnackPosition.TOP);
+
+          print("temp  $temp");
+          wifiNewMethod.printDetails(id: id, type: voucherType, context: context,ipAddress: ip,isCancelled: false,orderSection: false);
         }
-        //
+        else{
+          var ret = await printHelperIP.printDetails();
+          if (ret == 2) {
+            var ip = "";
+            if (PrintDataDetails.type == "SO") {
+              ip = defaultOrderIP;
+            } else {
+              ip = defaultIp;
+            }
+            printHelperIP.print_receipt(ip, context, false,false);
+          } else {
+            popAlert(head: "Error", message: "Please try again later", position: SnackPosition.TOP);
+          }
+
+        }
+
       } else if (printType == 'USB') {
         if (temp == "template5") {
           print("Date ---------step 1   ---------   ---------     ${DateTime.now().second} ");
