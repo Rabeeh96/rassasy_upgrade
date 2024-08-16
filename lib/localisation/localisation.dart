@@ -358,7 +358,7 @@ class LocaleChange extends Translations {
           'Table_Order': 'Table Order',
           'Details': 'Details',
           'Platform(Online Only)': 'Platform(Online Only)',
-          'Print For Cancelled Order': 'Print For Cancelled Order',
+          'Print For Cancelled Order': 'Order Print For Cancelled Order',
           'direct_order_option': 'Direct order option',
           'company_alignments': "Company Details Alignments",
           'token': 'Highlighted Token No',
@@ -373,6 +373,8 @@ class LocaleChange extends Translations {
           'highlightsProductDetails': 'Highlights ProductDetails',
           'KotafterPayment': 'KOT After Payment',
           'autofocus_field': 'Auto Focus field',
+          'No_of_copies': 'No of copies for invoice print',
+          'kot For Cancelled Order': 'Kot For Cancelled Order',
         },
 
         /////
@@ -380,11 +382,13 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'kot For Cancelled Order': 'كوت للطلب الملغى',
+          'No_of_copies': 'عدد النسخ لطباعة الفاتورة',
           'autofocus_field': 'مجال التركيز التلقائي',
           'KotafterPayment': 'كوت بعد الدفع',
           'flavour_in_order_print': 'نكهة من أجل الطباعة',
           'Kot afte rPayment': 'نكهة من أجل الطباعة',
-           'table_order_settings': "إعدادات ترتيب الجدول",
+          'table_order_settings': "إعدادات ترتيب الجدول",
           'reverseArabicOption': 'عكس الخيار العربي',
           'highlightsProductDetails': 'يسلط الضوء على تفاصيل المنتج',
           'Add_Product': "أضف منتج",
@@ -397,7 +401,7 @@ class LocaleChange extends Translations {
           'initial_token': 'الرمز الأولي ',
           'token': "الرمز المميز لا",
           'company_alignments': 'تفاصيل الشركة التوافقات',
-          'Print For Cancelled Order': 'طباعة للطلب الملغى',
+          'Print For Cancelled Order': 'طباعة الطلب للطلب الملغى',
           'direct_order_option': 'خيار الطلب المباشر',
           'Platform(Online Only)': 'النظام الأساسي (عبر الإنترنت فقط)',
           'Details': 'تفاصيل',

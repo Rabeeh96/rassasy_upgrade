@@ -371,8 +371,8 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-  ///  bool isTablet = true;
-    bool isTablet = screenWidth > defaultScreenWidth;
+   bool isTablet = true;
+  //  bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
       appBar: isProfileNotifier.value
           ?AppBar(
@@ -401,27 +401,27 @@ class _DashboardNewState extends State<DashboardNew> {
                     ),
               actions: [
 
-                IconButton(
-                    onPressed: () {
-                      Get.to(PosListTabDesign());
-                    },
-                    icon:Text("Pos List")),
-                IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PosOrderPage(
-                              orderType: 4,
-                              sectionType: "Create",
-                              uID: "",
-                              tableHead: "Order",
-                              tableID: "",
-                              cancelOrder: [],
-                            )),
-                      );
-                    },
-                    icon:Text("Pos Order")),
+                // IconButton(
+                //     onPressed: () {
+                //       Get.to(PosListTabDesign());
+                //     },
+                //     icon:Text("Pos List")),
+                // IconButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => PosOrderPage(
+                //               orderType: 4,
+                //               sectionType: "Create",
+                //               uID: "",
+                //               tableHead: "Order",
+                //               tableID: "",
+                //               cancelOrder: [],
+                //             )),
+                //       );
+                //     },
+                //     icon:Text("Pos Order")),
                 isTablet == true
                     ? Theme(
                         data: Theme.of(context).copyWith(
@@ -689,7 +689,7 @@ class _DashboardNewState extends State<DashboardNew> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = false;
+    bool isTablet = true;
   //  bool isTablet = screenWidth > defaultScreenWidth;
     print(isTablet);
     print(screenWidth);

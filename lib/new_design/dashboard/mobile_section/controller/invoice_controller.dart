@@ -109,7 +109,7 @@ class InvoiceController extends GetxController {
           } else {
             ip = defaultIp;
           }
-          printHelperIP.print_receipt(ip, Get.context!,false);
+          printHelperIP.print_receipt(ip, Get.context!,false,false);
         } else {
           dialogBox(Get.context!, 'Please try again later');
         }

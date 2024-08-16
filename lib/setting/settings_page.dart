@@ -115,6 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   bool time_in_invoice = false;
   bool printForCancellOrder = false;
+  bool kotForCanceledOrder = false;
   bool flavourInOrderPrint = false;
   bool reverseArabicOption = false;
 
@@ -319,6 +320,7 @@ class _SettingsPageState extends State<SettingsPage> {
       compensationHour = prefs.getString('CompensationHour') ?? "1";
       quantityIncrement = prefs.getBool("qtyIncrement") ?? true;
       userType = prefs.getInt("user_type") ?? 1;
+      numberOfCopies = prefs.getString("number_of_print") ?? '1';
       showInvoice = prefs.getBool("AutoClear") ?? false;
       clearTable = prefs.getBool("tableClearAfterPayment") ?? false;
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
@@ -330,14 +332,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
       time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
       printForCancellOrder = prefs.getBool('print_for_cancel_order') ?? false;
+      kotForCanceledOrder = prefs.getBool('kot_for_cancel_order') ?? false;
       flavourInOrderPrint = prefs.getBool('flavour_in_order_print') ?? false;
       reverseArabicOption = prefs.getBool('reverseArabicOption') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
       _selectedOption= prefs.getString('PrintType') ?? "Wifi";
-
-
-
-
 
       hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
       paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
@@ -1122,6 +1121,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         defaultSalesInvoiceController.clear();
                         defaultSalesOrderController.clear();
                         prefs.setString("PrintType", newValue);
+                        templateIndex = 3;
+                        if (newValue == "BT") {
+                          templateIndex = 4;
+                        }
+                        templateViewColor(templateIndex);
+                        setTemplate(templateIndex);
+
 
                       //   if (newValue == "Wifi") {
                       //     defaultSalesInvoiceController.clear();
@@ -1319,7 +1325,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       const SizedBox(
                         width: 20,
                       ),
-                      _selectedOption =='USB'?
+                      _selectedOption =='USB' || _selectedOption =='Wifi'?
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -1552,6 +1558,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
+
 
           Card(
             shape: RoundedRectangleBorder(
@@ -1973,6 +1980,46 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {},
             ),
           ),
+          printType==
+          "Wifi" ? Card(
+
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+            color: Colors.grey[100],
+            child: ListTile(
+              title: Text(
+                'No_of_copies'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
+              ),
+              trailing: DropdownButton<String>(
+                value: numberOfCopies,
+                underline: Container(),
+                items: numberOfCopiesList.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value + "  Copies ",
+                      style: customisedStyle(context, const Color(0xffF25F29),
+                          FontWeight.normal, 15.0),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (newValue)async {
+                  numberOfCopies = newValue!;
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.setString('number_of_print', newValue);
+                  setState(() {
+
+                  });
+                },
+              ),
+              onTap: () {
+
+              },
+            ),
+          ):Container(),
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
@@ -2013,6 +2060,47 @@ class _SettingsPageState extends State<SettingsPage> {
                       //   printAfterPayment = val;
                       //   switchStatus("printAfterPayment", printAfterPayment);
                       // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'kot For Cancelled Order'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: kotForCanceledOrder,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        kotForCanceledOrder = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('kot_for_cancel_order', val);
                     },
                   ),
                 ),
@@ -4223,6 +4311,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   String compensationHour = '1';
+  String numberOfCopies = '1';
+  List<String> numberOfCopiesList = ['1','2','3'];
   List<String> dropdownValues = ['0','1','2','3','4','5','6','7'];
   String kotDetail = 'Product Name';
   List<String> kotDetailsValues = [
@@ -5057,11 +5147,11 @@ class _SettingsPageState extends State<SettingsPage> {
   ///printer Template
   Widget printerDefault() {
     return Container(
-      child: templateView(),
+      child: printerSelectionWidget(),
     );
   }
 
-  Widget templateView() {
+  Widget printerSelectionWidget() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),

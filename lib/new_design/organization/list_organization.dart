@@ -59,8 +59,8 @@ class _OrganizationDetailState extends State<OrganizationList> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-  // bool isTablet = true;
-   bool isTablet = screenWidth > 850;
+   bool isTablet = true;
+  // bool isTablet = screenWidth > 850;
     return Scaffold(
       body: Container(
         width: double.infinity,
