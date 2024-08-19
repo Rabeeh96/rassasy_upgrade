@@ -744,7 +744,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
               ip = defaultIp;
             }
 
-            printHelper.print_receipt(ip, context, false, PrintDataDetails.type == "SO" ? true : false);
+            printHelper.print_receipt(ip, context, false, PrintDataDetails.type == "SO" ? false : true);
           } else {
             dialogBox(context, 'Please try again later');
           }
@@ -2947,13 +2947,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       ],
                     ),
                   ),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          isSettingOpen = true;
-                        });
-                      },
-                      child: Text("Settings"))
+                  // TextButton(
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         isSettingOpen = true;
+                  //       });
+                  //     },
+                  //     child: Text("Settings"))
 
                   ///loyalty customer add
                   // GestureDetector(

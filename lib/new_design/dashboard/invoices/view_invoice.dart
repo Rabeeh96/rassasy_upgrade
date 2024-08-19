@@ -30,6 +30,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
   @override
   var messageShow = "";
 
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -121,10 +122,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       }
     }
   }
-
   var networkConnection = true;
-
-
   showDatePickerFunction(context, ValueNotifier dateNotifier) {
     final mHeight = MediaQuery.of(context).size.height;
     final mWidth = MediaQuery.of(context).size.width / 2;

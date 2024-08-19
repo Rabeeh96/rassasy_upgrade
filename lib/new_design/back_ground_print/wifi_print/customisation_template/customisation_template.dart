@@ -180,7 +180,6 @@ class WifiPrintClassTest {
 
             await printReq(arabicImageBytes, qrCode, type == "SI" ? true : false,type,ipAddress,companyLogoCompany,countyCodeCompany,numberOfCopies);
 
-
           return 2;
         } else if (status == 6001) {
           // stop();
@@ -269,16 +268,14 @@ class WifiPrintClassTest {
       for (int i = 0; i < parts; i++) {
         // Calculate the start y position for cropping
         int startY = i * 10;
-
       //  print("startY $startY");
         // Ensure the last part captures any remaining height
         int height = (i == parts - 1) ? (totalHeight - startY) : 10;
        // print("height $height");
         // Crop the image
         final Img.Image cropped = Img.copyCrop(_resize, x: 0, y: startY, width: _resize.width, height: height);
-
-        // Add the cropped part to bytes
         printer.imageRaster(cropped);
+        // Add the cropped part to bytes
       }
 
 
@@ -831,10 +828,10 @@ class WifiPrintClassTest {
 
     // positionHeight = positionHeight + 25;
     // canvas.drawLine(Offset(0, positionHeight), Offset(canvasSize1.width, positionHeight), linePaint);
-
+/// hide tax details for qatar
+    ///  ['Total Tax:', roundStringWith(totalTax)],
     var totals = [
       ['Gross Amount:', roundStringWith(grossAmount)],
-      ['Total Tax:', roundStringWith(totalTax)],
       ['Discount:', roundStringWith(discount)],
       ['Grand Total:', roundStringWith(grandTotal)],
     ];
@@ -842,15 +839,12 @@ class WifiPrintClassTest {
 
     if (voucherType == "SI") {
       print("--------------------------------------------------------------------------123123123");
-
       totals = [
         ['Gross Amount:', roundStringWith(grossAmount)],
-        ['Total Tax:', roundStringWith(totalTax)],
         ['Discount:', roundStringWith(discount)],
         ['Grand Total:', roundStringWith(grandTotal)],
         ['Cash:', roundStringWith(cashReceived)],
         ['Bank:', roundStringWith(bankReceived)],
-
       ];
     }
     positionHeight = positionHeight + 25; // Space before totals

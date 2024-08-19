@@ -517,6 +517,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           ],
                         ),
                       ),
+
                       // IconButton(
                       //     onPressed: () {
                       //       _showFullWidthBottomSheet(context);
@@ -1947,15 +1948,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             } else {
               ip = defaultIp;
             }
-            printHelperIP.print_receipt(ip, context, isCancelled,PrintDataDetails.type == "SO"?false:true);
+            printHelperIP.print_receipt(ip, context, isCancelled,PrintDataDetails.type == "SO"?false:false);
           } else {
             dialogBox(context, 'Please try again later1');
           }
 
         }
-
-
-
 
       } else if (printType == 'USB') {
         if (temp == "template5") {
