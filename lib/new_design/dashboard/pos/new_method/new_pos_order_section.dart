@@ -176,15 +176,21 @@ class _POSOrderSectionState extends State<POSOrderSection> {
   }
 
   defaultValues() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    //
-    //
-    // productGroupFontSize= prefs.getDouble('ProductGroupFontSize')??12.0;
-    // productFontSize=prefs.getDouble('ProductFontSize')??12.0;
-    // descriptionFontSize= prefs.getDouble('DescriptionFontSize')??12.0;
-    // rateFontSize=prefs.getDouble('RateFontSize')??12.0;
-    // rowCountGridView= prefs.getInt('RowCountGridView')??4;
-    // showImage= prefs.getBool('ShowImage')??true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+    productGroupFontSize= prefs.getDouble('ProductGroupFontSize')??12.0;
+    productFontSize=prefs.getDouble('ProductFontSize')??12.0;
+    descriptionFontSize= prefs.getDouble('DescriptionFontSize')??12.0;
+    rateFontSize=prefs.getDouble('RateFontSize')??12.0;
+    rowCountGridView= prefs.getInt('RowCountGridView')??4;
+    showImage= prefs.getBool('ShowImage')??true;
+    productFontSizeController.text=productFontSize.toString();
+    productGroupFontSizeController.text=productGroupFontSize.toString();
+    rateFontSizeController.text=rateFontSize.toString();
+
+    descriptionFontSizeController.text=descriptionFontSize.toString();
+    rowCountController.text=rowCountGridView.toString();
   }
 
   bool isComplimentory = false;
@@ -2163,11 +2169,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
     );
   }
 
-  TextEditingController productFontSizeController = TextEditingController()..text = '12.0';
-  TextEditingController productGroupFontSizeController = TextEditingController()..text = '12.0';
-  TextEditingController rateFontSizeController = TextEditingController()..text = '12.0';
-  TextEditingController descriptionFontSizeController = TextEditingController()..text = '12.0';
-  TextEditingController rowCountController = TextEditingController()..text = '4.0';
+  TextEditingController productFontSizeController = TextEditingController();
+  TextEditingController productGroupFontSizeController = TextEditingController();
+  TextEditingController rateFontSizeController = TextEditingController();
+  TextEditingController descriptionFontSizeController = TextEditingController();
+  TextEditingController rowCountController = TextEditingController();
 
   /// pos section
   Widget posDetailScreen() {
@@ -2602,7 +2608,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                         child: IconButton(
                                             onPressed: () {
                                               setState(() {
-                                                if (rowCountGridView <= 0) {
+                                                if (rowCountGridView <= 1) {
                                                 } else {
                                                   rowCountGridView = rowCountGridView - 1;
                                                   rowCountController.text = "$rowCountGridView";
@@ -2700,8 +2706,12 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                 ),
                                 onPressed: () async {
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
-
                                   setState(() {
+                                    isSettingOpen = false;
+                                  });
+                                  setState(() {
+
+
                                     if (productFontSizeController.text == '') {
                                       productFontSize = 12.0;
                                     }
@@ -2733,6 +2743,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                   prefs.setDouble('RateFontSize', rateFontSize);
                                   prefs.setInt('RowCountGridView', rowCountGridView);
                                   prefs.setBool('ShowImage', showImage);
+
+
                                 },
                               ),
                             ],
@@ -2947,13 +2959,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                       ],
                     ),
                   ),
-                  // TextButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         isSettingOpen = true;
-                  //       });
-                  //     },
-                  //     child: Text("Settings"))
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          isSettingOpen = true;
+                        });
+                      },
+                      child: Icon(Icons.settings,color: Colors.blue,))
 
                   ///loyalty customer add
                   // GestureDetector(

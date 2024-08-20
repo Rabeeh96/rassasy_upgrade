@@ -1,25 +1,25 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:image/image.dart' as Img;
+import 'package:intl/intl.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/global/customclass.dart';
-
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/test_page/test_file.dart';
-import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/new.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/customisation_template/customisation_template.dart';
+import 'package:rassasy_new/new_design/dashboard/invoices/preview_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
-import 'package:image/image.dart' as Img;
 
 class ViewInvoice extends StatefulWidget {
   @override
@@ -95,7 +95,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           stop();
           setState(() {
             messageShow = "";
-           // invoiceList.clear();
+            // invoiceList.clear();
 
             for (Map user in responseJson) {
               invoiceList.add(InvoiceModelClass.fromJson(user));
@@ -122,7 +122,9 @@ class _ViewInvoiceState extends State<ViewInvoice> {
       }
     }
   }
+
   var networkConnection = true;
+
   showDatePickerFunction(context, ValueNotifier dateNotifier) {
     final mHeight = MediaQuery.of(context).size.height;
     final mWidth = MediaQuery.of(context).size.width / 2;
@@ -142,11 +144,13 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: mWidth * .13, top: mHeight * .01),
+                    padding:
+                        EdgeInsets.only(left: mWidth * .13, top: mHeight * .01),
                     child: Center(
                       child: Text(
                         'select_date'.tr,
-                        style: customisedStyle(context, Colors.black, FontWeight.bold, 18.0),
+                        style: customisedStyle(
+                            context, Colors.black, FontWeight.bold, 18.0),
                       ),
                     ),
                   ),
@@ -194,23 +198,24 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             children: [
               Text(
                 'Invoices'.tr,
-                style: customisedStyle(context, Colors.black, FontWeight.bold, 18.0),
+                style: customisedStyle(
+                    context, Colors.black, FontWeight.bold, 18.0),
               ),
             ],
           ),
+          actions: [],
         ),
         body: networkConnection == true
             ? Column(
                 children: [
-
-
                   Container(
                     height: MediaQuery.of(context).size.height / 10,
                     child: Row(
                       children: [
                         ValueListenableBuilder(
                             valueListenable: fromDateNotifier,
-                            builder: (BuildContext ctx, DateTime fromDateNewValue, _) {
+                            builder: (BuildContext ctx,
+                                DateTime fromDateNewValue, _) {
                               return GestureDetector(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -218,15 +223,26 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                     children: [
                                       Text(
                                         'from'.tr,
-                                        style: customisedStyle(context, Colors.black, FontWeight.w800, 12.0),
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w800,
+                                            12.0),
                                       ),
                                       const SizedBox(
                                         width: 10,
                                       ),
                                       Container(
-                                        decoration: BoxDecoration(border: Border.all(color: const Color(0xffCBCBCB))),
-                                        height: MediaQuery.of(context).size.height / 15,
-                                        width: MediaQuery.of(context).size.width / 7,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color:
+                                                    const Color(0xffCBCBCB))),
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                15,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                7,
                                         child: Row(
                                           children: [
                                             SizedBox(
@@ -237,11 +253,19 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                               color: Colors.black,
                                             ),
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                Text(dateFormat.format(fromDateNewValue),
-                                                    style: customisedStyle(context, Colors.black, FontWeight.w700, 12.0)),
+                                                Text(
+                                                    dateFormat.format(
+                                                        fromDateNewValue),
+                                                    style: customisedStyle(
+                                                        context,
+                                                        Colors.black,
+                                                        FontWeight.w700,
+                                                        12.0)),
 
                                                 //  Text("12.00", style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0)),
                                               ],
@@ -253,13 +277,15 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                   ),
                                 ),
                                 onTap: () {
-                                  showDatePickerFunction(context, fromDateNotifier);
+                                  showDatePickerFunction(
+                                      context, fromDateNotifier);
                                 },
                               );
                             }),
                         ValueListenableBuilder(
                             valueListenable: toDateNotifier,
-                            builder: (BuildContext ctx, DateTime fromDateNewValue, _) {
+                            builder: (BuildContext ctx,
+                                DateTime fromDateNewValue, _) {
                               return GestureDetector(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -267,15 +293,26 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                     children: [
                                       Text(
                                         'to'.tr,
-                                        style: customisedStyle(context, Colors.black, FontWeight.w800, 12.0),
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w800,
+                                            12.0),
                                       ),
                                       const SizedBox(
                                         width: 10,
                                       ),
                                       Container(
-                                        decoration: BoxDecoration(border: Border.all(color: const Color(0xffCBCBCB))),
-                                        height: MediaQuery.of(context).size.height / 15,
-                                        width: MediaQuery.of(context).size.width / 7,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color:
+                                                    const Color(0xffCBCBCB))),
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                15,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                7,
                                         child: Row(
                                           children: [
                                             SizedBox(
@@ -286,11 +323,19 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                               color: Colors.black,
                                             ),
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                Text(dateFormat.format(fromDateNewValue),
-                                                    style: customisedStyle(context, Colors.black, FontWeight.w700, 12.0)),
+                                                Text(
+                                                    dateFormat.format(
+                                                        fromDateNewValue),
+                                                    style: customisedStyle(
+                                                        context,
+                                                        Colors.black,
+                                                        FontWeight.w700,
+                                                        12.0)),
                                                 //  Text("12.00", style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0)),
                                               ],
                                             )
@@ -301,7 +346,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                   ),
                                 ),
                                 onTap: () {
-                                  showDatePickerFunction(context, toDateNotifier);
+                                  showDatePickerFunction(
+                                      context, toDateNotifier);
                                 },
                               );
                             }),
@@ -310,174 +356,278 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                   ),
 
                   Expanded(
-                      child: NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification scrollInfo) {
-                      print("-**********************1");
-                      if (!isLoading && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-
-                        print("-**********************");
-                        pageNumber = pageNumber + 1;
+                    child: NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          print("-**********************1");
+                          if (!isLoading &&
+                              scrollInfo.metrics.pixels ==
+                                  scrollInfo.metrics.maxScrollExtent) {
+                            print("-**********************");
+                            pageNumber = pageNumber + 1;
                             firstTime = 10;
                             viewList();
                             setState(() {
                               isLoading = true;
                             });
-                      }
-                      return true;
-                    },
-                    child:  ListView.builder(
+                          }
+                          return true;
+                        },
+                        child: ListView.builder(
                             // the number of items in the list
                             itemCount: invoiceList.length,
                             // display each item of the product list
                             itemBuilder: (context, index) {
-                              return Card(
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(3), side: BorderSide(width: 1, color: Color(0xffDFDFDF))),
-                                color: Color(0xffffffff),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width / 1.1,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 15.0, left: 15.0),
-                                        child: Container(
-                                          width: 100,
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
-                                            onPressed: () {
-                                              PrintDataDetails.type = "SI";
-                                              PrintDataDetails.id = invoiceList[index].salesMasterID;
-                                              printDetail(invoiceList[index].salesMasterID, "SI");
-                                            },
-                                            child: Text(
-                                              'print'.tr,
-                                              style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                              return GestureDetector(
+                                  onTap: () {
+                                    Get.to(InvoiceDetailPage(
+                                      MasterUID:
+                                          invoiceList[index].salesMasterID,
+                                      masterType: 'SI',
+                                    ));
+                                  },
+                                  child: Card(
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(3),
+                                        side: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xffDFDFDF))),
+                                    color: Color(0xffffffff),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.1,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 15.0, left: 15.0),
+                                            child: Container(
+                                              width: 100,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Color(0xff0347A1)),
+                                                onPressed: () {
+                                                  PrintDataDetails.type = "SI";
+                                                  PrintDataDetails.id =
+                                                      invoiceList[index]
+                                                          .salesMasterID;
+                                                  printDetail(
+                                                      invoiceList[index]
+                                                          .salesMasterID,
+                                                      "SI");
+                                                },
+                                                child: Text(
+                                                  'print'.tr,
+                                                  style: customisedStyle(
+                                                      context,
+                                                      Colors.white,
+                                                      FontWeight.w500,
+                                                      11.0),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 1.5,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context).size.width / 8,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      invoiceList[index].voucherNo,
-                                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            8,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          invoiceList[index]
+                                                              .voucherNo,
+                                                          style:
+                                                              customisedStyle(
+                                                                  context,
+                                                                  Colors.black,
+                                                                  FontWeight
+                                                                      .w600,
+                                                                  13.0),
+                                                        ),
+                                                        Text(
+                                                          invoiceList[index]
+                                                              .date,
+                                                          style: customisedStyle(
+                                                              context,
+                                                              Color(0xff585858),
+                                                              FontWeight.w600,
+                                                              12.0),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      invoiceList[index].date,
-                                                      style: customisedStyle(context, Color(0xff585858), FontWeight.w600, 12.0),
+                                                  ),
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            8,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'token_no'.tr,
+                                                          style: customisedStyle(
+                                                              context,
+                                                              Color(0xff9A9A9A),
+                                                              FontWeight.w600,
+                                                              12.0),
+                                                        ),
+                                                        Text(
+                                                          invoiceList[index]
+                                                              .tokenNo,
+                                                          style:
+                                                              customisedStyle(
+                                                                  context,
+                                                                  Colors.black,
+                                                                  FontWeight
+                                                                      .w600,
+                                                                  12.0),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            3,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'customer'.tr,
+                                                          style:
+                                                              customisedStyle(
+                                                                  context,
+                                                                  Colors.black,
+                                                                  FontWeight
+                                                                      .w600,
+                                                                  13.0),
+                                                        ),
+                                                        Text(
+                                                          invoiceList[index]
+                                                              .custName,
+                                                          style: customisedStyle(
+                                                              context,
+                                                              Color(0xff585858),
+                                                              FontWeight.w600,
+                                                              12.0),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              Container(
-                                                width: MediaQuery.of(context).size.width / 8,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'token_no'.tr,
-                                                      style: customisedStyle(context, Color(0xff9A9A9A), FontWeight.w600, 12.0),
-                                                    ),
-                                                    Text(
-                                                      invoiceList[index].tokenNo,
-                                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 12.0),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context).size.width / 3,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'customer'.tr,
-                                                      style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0),
-                                                    ),
-                                                    Text(
-                                                      invoiceList[index].custName,
-                                                      style: customisedStyle(context, Color(0xff585858), FontWeight.w600, 12.0),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 5,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(right: 15.0),
-                                              child: Text(roundStringWith(invoiceList[index].salesData["GrandTotal"].toString()),
-                                                  style: customisedStyle(context, Colors.black, FontWeight.w600, 13.0)),
                                             ),
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                5,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: 15.0),
+                                                  child: Text(
+                                                      roundStringWith(
+                                                          invoiceList[index]
+                                                              .salesData[
+                                                                  "GrandTotal"]
+                                                              .toString()),
+                                                      style: customisedStyle(
+                                                          context,
+                                                          Colors.black,
+                                                          FontWeight.w600,
+                                                          13.0)),
+                                                ),
 
-                                            /// export and print commented
-                                            //   Container(
-                                            //       height: MediaQuery.of(context).size.height/20,
-                                            //       width: MediaQuery.of(context).size.width/14,
-                                            //       decoration: BoxDecoration(
-                                            //           color: Colors.black,
-                                            //           borderRadius:
-                                            //           BorderRadius.circular(2)),
-                                            //       child: TextButton(
-                                            //           onPressed: () {},
-                                            //           child: Text(
-                                            //             "Export",
-                                            //             style:
-                                            //             TextStyle(color: Colors.white),
-                                            //           ))),
+                                                /// export and print commented
+                                                //   Container(
+                                                //       height: MediaQuery.of(context).size.height/20,
+                                                //       width: MediaQuery.of(context).size.width/14,
+                                                //       decoration: BoxDecoration(
+                                                //           color: Colors.black,
+                                                //           borderRadius:
+                                                //           BorderRadius.circular(2)),
+                                                //       child: TextButton(
+                                                //           onPressed: () {},
+                                                //           child: Text(
+                                                //             "Export",
+                                                //             style:
+                                                //             TextStyle(color: Colors.white),
+                                                //           ))),
 
-                                            // Padding(
-                                            //   padding: const EdgeInsets.only(right: 15.0,left: 15.0),
-                                            //   child: Container(
-                                            //     width: 100,
-                                            //     child: ElevatedButton(
-                                            //       style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
-                                            //       onPressed: () {
-                                            //         PrintDataDetails.type = "SI";
-                                            //         PrintDataDetails.id = invoiceList[index].salesMasterID;
-                                            //         printDetail();
-                                            //       },
-                                            //       child: Text(
-                                            //         'print'.tr,
-                                            //         style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
-                                            //       ),
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),
+                                                // Padding(
+                                                //   padding: const EdgeInsets.only(right: 15.0,left: 15.0),
+                                                //   child: Container(
+                                                //     width: 100,
+                                                //     child: ElevatedButton(
+                                                //       style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                                                //       onPressed: () {
+                                                //         PrintDataDetails.type = "SI";
+                                                //         PrintDataDetails.id = invoiceList[index].salesMasterID;
+                                                //         printDetail();
+                                                //       },
+                                                //       child: Text(
+                                                //         'print'.tr,
+                                                //         style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                                                //       ),
+                                                //     ),
+                                                //   ),
+                                                // ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
+                                    ),
+                                  ));
                             })),
                   ),
-
-
 
                   // Container(
                   //   height: MediaQuery.of(context).size.height / 1.3,
@@ -659,26 +809,34 @@ class _ViewInvoiceState extends State<ViewInvoice> {
   Uint8List? resizedImageBytes;
 
   void _resizeImage() async {
-    print("Date ---------1   ---------1   ---------1    ${DateTime.now().second} ");
+    print(
+        "Date ---------1   ---------1   ---------1    ${DateTime.now().second} ");
 
     var id = "9eee65e7-d6f7-4ece-b0dc-5341a33365e6";
-    var arabicImageBytes = await printHelperNew.printDetails(id: id, type: "SI", context: context);
+    var arabicImageBytes =
+        await printHelperNew.printDetails(id: id, type: "SI", context: context);
 
-    print("Date ---------4   ---------4   ---------4    ${DateTime.now().second} ");
+    print(
+        "Date ---------4   ---------4   ---------4    ${DateTime.now().second} ");
     // Step 1: Decode and resize the image using the image package
 
-    print("Date ---------5   ---------5   ---------5    ${DateTime.now().second} ");
+    print(
+        "Date ---------5   ---------5   ---------5    ${DateTime.now().second} ");
 
-    log_data("--------------${arabicImageBytes.runtimeType}---------$arabicImageBytes");
+    log_data(
+        "--------------${arabicImageBytes.runtimeType}---------$arabicImageBytes");
 
     final Img.Image? image = Img.decodeImage(arabicImageBytes);
 
-    print("Date ---------6   ---------6   ---------6    ${DateTime.now().second} ");
+    print(
+        "Date ---------6   ---------6   ---------6    ${DateTime.now().second} ");
     final Img.Image resizedImage = Img.copyResize(image!, width: 570);
-    print("Date ---------7   ---------7   ---------7    ${DateTime.now().second} ");
+    print(
+        "Date ---------7   ---------7   ---------7    ${DateTime.now().second} ");
     // Step 2: Convert the Img.Image back to Uint8List
     resizedImageBytes = Uint8List.fromList(Img.encodePng(resizedImage));
-    print("Date ---------8   ---------8   ---------8    ${DateTime.now().second} ");
+    print(
+        "Date ---------8   ---------8   ---------8    ${DateTime.now().second} ");
     // Trigger a rebuild to display the resized image
     setState(() {});
   }
@@ -689,6 +847,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
   var printHelperIP = AppBlocs();
   var bluetoothHelper = AppBlocsBT();
   var wifiNewMethod = WifiPrintClassTest();
+
   printDetail(id, voucherType) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
@@ -696,13 +855,14 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
     var temp = prefs.getString("template") ?? "template4";
     if (defaultIp == "") {
-      popAlert(head: "Error", message: "Please select a printer", position: SnackPosition.TOP);
+      popAlert(
+          head: "Error",
+          message: "Please select a printer",
+          position: SnackPosition.TOP);
     } else {
       if (printType == 'Wifi') {
-
-
         if (temp == "template5") {
-          var  ip ="";
+          var ip = "";
           if (PrintDataDetails.type == "SO") {
             ip = defaultOrderIP;
           } else {
@@ -710,9 +870,14 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           }
 
           print("temp  $temp");
-          wifiNewMethod.printDetails(id: id, type: voucherType, context: context,ipAddress: ip,isCancelled: false,orderSection: false);
-        }
-        else{
+          wifiNewMethod.printDetails(
+              id: id,
+              type: voucherType,
+              context: context,
+              ipAddress: ip,
+              isCancelled: false,
+              orderSection: false);
+        } else {
           var ret = await printHelperIP.printDetails();
           if (ret == 2) {
             var ip = "";
@@ -721,17 +886,20 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             } else {
               ip = defaultIp;
             }
-            printHelperIP.print_receipt(ip, context, false,false);
+            printHelperIP.print_receipt(ip, context, false, false);
           } else {
-            popAlert(head: "Error", message: "Please try again later", position: SnackPosition.TOP);
+            popAlert(
+                head: "Error",
+                message: "Please try again later",
+                position: SnackPosition.TOP);
           }
-
         }
-
       } else if (printType == 'USB') {
         if (temp == "template5") {
-          print("Date ---------step 1   ---------   ---------     ${DateTime.now().second} ");
-          printHelperNew.printDetails(id: id, type: voucherType, context: context);
+          print(
+              "Date ---------step 1   ---------   ---------     ${DateTime.now().second} ");
+          printHelperNew.printDetails(
+              id: id, type: voucherType, context: context);
         } else {
           var ret = await printHelperUsb.printDetails();
           if (ret == 2) {
@@ -743,13 +911,17 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             }
             printHelperUsb.printReceipt(ip, context);
           } else {
-            popAlert(head: "Error", message: "Please try again later", position: SnackPosition.TOP);
+            popAlert(
+                head: "Error",
+                message: "Please try again later",
+                position: SnackPosition.TOP);
           }
         }
 
         /// commented
       } else {
-        var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
+        var loadData =
+            await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
         // handlePrint(context);
 
         if (loadData) {
@@ -808,7 +980,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           ),
           Text(
             'no_network'.tr,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
           SizedBox(
             height: 10,
@@ -822,7 +995,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                 style: TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
           ),
         ],
       ),
@@ -833,8 +1007,18 @@ class _ViewInvoiceState extends State<ViewInvoice> {
 List<InvoiceModelClass> invoiceList = [];
 
 class InvoiceModelClass {
-  String id, voucherNo, saleOrderID, date, deliveryDate, deliveryTime, custName, netTotal, salesMasterID, tokenNo;
+  String id,
+      voucherNo,
+      saleOrderID,
+      date,
+      deliveryDate,
+      deliveryTime,
+      custName,
+      netTotal,
+      salesMasterID,
+      tokenNo;
   var salesData;
+
   InvoiceModelClass(
       {required this.id,
       required this.voucherNo,
