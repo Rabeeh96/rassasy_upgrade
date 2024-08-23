@@ -404,6 +404,7 @@ class WifiPrintClassTest {
     // Set up text styles with custom font
     const titleStyle = TextStyle(
       fontSize: 30,
+
       fontWeight: FontWeight.bold,
       color: Colors.black,
     );

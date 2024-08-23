@@ -11,8 +11,9 @@ import 'package:intl/intl.dart';
 // }
 //////
 
-String appVersion = "1.1.47";
+String appVersion = "1.1.50";
 double defaultScreenWidth=550;
+bool isTabDesign = false;
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),

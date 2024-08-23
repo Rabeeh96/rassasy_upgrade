@@ -1601,12 +1601,13 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
   }
 
   redirectToOrder(sectionType) async {
+
     var result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => POSOrderSection(
                 sectionType: sectionType,
-                orderType: mainPageIndex,
+                orderType: 2,
                 tableID: "",
                 UUID: "",
                 tableHead: "Take away",
@@ -1955,7 +1956,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
         }
 
-      } else if (printType == 'USB') {
+      }
+      else if (printType == 'USB') {
         if (temp == "template5") {
           printHelperNew.printDetails(id: id, type: voucherType, context: context);
         }
@@ -1974,7 +1976,8 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
             dialogBox(context, 'Please try again later');
           }
         }
-      } else {
+      }
+      else {
         var loadData = await bluetoothHelper.bluetoothPrintOrderAndInvoice(context);
         if (loadData) {
           var printStatus = await bluetoothHelper.scan(isCancelled);

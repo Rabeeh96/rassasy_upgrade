@@ -34,7 +34,7 @@ class InvoiceControllerA extends GetxController{
   var dateText = "".obs;
   var cashAmountReceived = "".obs;
   var bankAmountReceived = "".obs;
-  var total_tax = "".obs;
+  var total_tax = "0.0".obs;
   var discount_amount = "0.0".obs;
   var gross_amount = "0.0".obs;
   var grand_total = "0.0".obs;
@@ -118,7 +118,7 @@ class InvoiceControllerA extends GetxController{
         },
         body: body,
       );
-      print("response ");
+      log_data("response ${response.body}  ");
       Map n = json.decode(utf8.decode(response.bodyBytes));
       var status = n["StatusCode"];
       var message = n["message"];
@@ -237,7 +237,8 @@ class InvoiceControllerA extends GetxController{
                 position: SnackPosition.TOP);
           }
         }
-      } else if (printType == 'USB') {
+      }
+      else if (printType == 'USB') {
         if (temp == "template5") {
           print(
               "Date ---------step 1   ---------   ---------     ${DateTime.now().second} ");
@@ -262,7 +263,8 @@ class InvoiceControllerA extends GetxController{
         }
 
         /// commented
-      } else {
+      }
+      else {
         var loadData =
         await bluetoothHelper.bluetoothPrintOrderAndInvoice(Get.context!);
         // handlePrint(context);
