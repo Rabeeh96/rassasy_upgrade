@@ -2273,6 +2273,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                         child: TextField(
                                           controller: productGroupFontSizeController,
                                           textAlign: TextAlign.center,
+                                          readOnly: true,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                           ],
@@ -2361,6 +2362,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                         child: TextField(
                                           controller: productFontSizeController,
                                           textAlign: TextAlign.center,
+                                          readOnly: true,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                           ],
@@ -2446,6 +2448,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                         width: MediaQuery.of(context).size.width / 15,
                                         child: TextField(
                                           controller: descriptionFontSizeController,
+                                          readOnly: true,
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -2532,6 +2535,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                         width: MediaQuery.of(context).size.width / 15,
                                         child: TextField(
                                           controller: rateFontSizeController,
+                                          readOnly: true,
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -2627,6 +2631,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                         child: TextField(
                                           controller: rowCountController,
                                           textAlign: TextAlign.center,
+                                          readOnly: true,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                           ],
@@ -2698,6 +2703,32 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              // TextButton(
+                              //   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent)),
+                              //   child: Text(
+                              //     'Cancel',
+                              //     style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),
+                              //   ),
+                              //   onPressed: () async {
+                              //     SharedPreferences prefs = await SharedPreferences.getInstance();
+                              //     setState(() {
+                              //       productFontSize = 12.0;
+                              //
+                              //       descriptionFontSize = 12.0;
+                              //
+                              //       productGroupFontSize = 12.0;
+                              //
+                              //       rateFontSize = 12.0;
+                              //
+                              //       rowCountGridView = 4;
+                              //
+                              //       isSettingOpen = false;
+                              //     });
+                              //
+                              //
+                              //   },
+                              // ),
+                              SizedBox(width: 20,),
                               TextButton(
                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
                                 child: Text(
@@ -3553,8 +3584,8 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
   returnProductName(String val) {
     var out = val;
-    if (val.length > 30) {
-      out = val.substring(0, 28);
+    if (val.length > 50) {
+      out = val.substring(0, 48);
     }
     return out;
   }

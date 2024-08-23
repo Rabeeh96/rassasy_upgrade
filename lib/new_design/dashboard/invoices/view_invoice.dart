@@ -400,36 +400,36 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 15.0, left: 15.0),
-                                            child: Container(
-                                              width: 100,
-                                              child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Color(0xff0347A1)),
-                                                onPressed: () {
-                                                  PrintDataDetails.type = "SI";
-                                                  PrintDataDetails.id =
-                                                      invoiceList[index]
-                                                          .salesMasterID;
-                                                  printDetail(
-                                                      invoiceList[index]
-                                                          .salesMasterID,
-                                                      "SI");
-                                                },
-                                                child: Text(
-                                                  'print'.tr,
-                                                  style: customisedStyle(
-                                                      context,
-                                                      Colors.white,
-                                                      FontWeight.w500,
-                                                      11.0),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          // Padding(
+                                          //   padding: const EdgeInsets.only(
+                                          //       right: 15.0, left: 15.0),
+                                          //   child: Container(
+                                          //     width: 100,
+                                          //     child: ElevatedButton(
+                                          //       style: ElevatedButton.styleFrom(
+                                          //           backgroundColor:
+                                          //               Color(0xff0347A1)),
+                                          //       onPressed: () {
+                                          //         PrintDataDetails.type = "SI";
+                                          //         PrintDataDetails.id =
+                                          //             invoiceList[index]
+                                          //                 .salesMasterID;
+                                          //         printDetail(
+                                          //             invoiceList[index]
+                                          //                 .salesMasterID,
+                                          //             "SI");
+                                          //       },
+                                          //       child: Text(
+                                          //         'print'.tr,
+                                          //         style: customisedStyle(
+                                          //             context,
+                                          //             Colors.white,
+                                          //             FontWeight.w500,
+                                          //             11.0),
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          // ),
                                           Container(
                                             width: MediaQuery.of(context)
                                                     .size

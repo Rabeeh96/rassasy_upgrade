@@ -192,37 +192,38 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
             if (invoiceControllerA.errorMessage.isNotEmpty) {
               return Center(child: Text(invoiceControllerA.errorMessage.value));
             }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            return ListView(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
-
-                Padding(
-                  padding: const EdgeInsets.only(right: 23.0, bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      InkWell(
-                          child: SizedBox(
-                        width: 100,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue),
-                          onPressed: () {
-                            _showSelectableListDialog(context);
-                          },
-                          child: Text(
-                            'Return',
-                            style: customisedStyle(
-                                context, Colors.white, FontWeight.w500, 11.0),
-                          ),
-                        ),
-                      )),
-                    ],
-                  ),
-                ),
+                /// retuen commented
+                //
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 23.0, bottom: 10),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     crossAxisAlignment: CrossAxisAlignment.end,
+                //     children: [
+                //       InkWell(
+                //           child: SizedBox(
+                //         width: 100,
+                //         child: ElevatedButton(
+                //           style: ElevatedButton.styleFrom(
+                //               backgroundColor: Colors.blue),
+                //           onPressed: () {
+                //             _showSelectableListDialog(context);
+                //           },
+                //           child: Text(
+                //             'Return',
+                //             style: customisedStyle(
+                //                 context, Colors.white, FontWeight.w500, 11.0),
+                //           ),
+                //         ),
+                //       )),
+                //     ],
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(right: 23.0),
                   child: Row(
@@ -404,41 +405,72 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    invoiceControllerA.itemTableList[index]
-                                        ["ProductName"],
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xff0A9EF3),
-                                        FontWeight.w400,
-                                        14.0),
+                                  Container(
+                                    width:MediaQuery.of(context).size.width/5,
+                                   // color: Colors.red,
+                                    child: Text(
+                                      invoiceControllerA.itemTableList[index]
+                                          ["ProductName"],
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff0A9EF3),
+                                          FontWeight.w400,
+                                          14.0),
+                                    ),
                                   ),
-                                  Text(
-                                    "${invoiceControllerA.itemTableList[index]["UnitPrice"].toString()} ${invoiceControllerA.currency}",
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xff0000000),
-                                        FontWeight.w400,
-                                        14.0),
-                                  ),
+                                 //  Container(
+                                 // //   color: Colors.green,
+                                 //    //width:MediaQuery.of(context).size.width/10,
+                                 //    child: Text(
+                                 //      "${roundStringWith(invoiceControllerA.itemTableList[index]["UnitPrice"].toString())}   ${invoiceControllerA.currency}",
+                                 //      style: customisedStyle(
+                                 //          context,
+                                 //          const Color(0xff0000000),
+                                 //          FontWeight.w400,
+                                 //          14.0),
+                                 //    ),
+                                 //  ),
                                 ],
                               ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    invoiceControllerA.itemTableList[index]
-                                            ["Qty"]
-                                        .toString(),
-                                    style: customisedStyle(
-                                        context,
-                                        const Color(0xffa1a1a1),
-                                        FontWeight.w400,
-                                        12.0),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        roundStringWith(invoiceControllerA.itemTableList[index]
+                                        ["Qty"]
+                                            .toString()),
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xffa1a1a1),
+                                            FontWeight.w400,
+                                            12.0),
+                                      ),
+                                      Text(
+                                        " * ",
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xffa1a1a1),
+                                            FontWeight.w400,
+                                            14.0),
+                                      ),
+                                      Text(
+                                        "${roundStringWith(invoiceControllerA.itemTableList[index]["UnitPrice"].toString())}",
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xffa1a1a1),
+                                            FontWeight.w400,
+                                            14.0),
+                                      ),
+
+                                    ],
                                   ),
                                   Text(
-                                    "${invoiceControllerA.itemTableList[index]["GrossAmount"].toString()} ${invoiceControllerA.currency}",
+                                    "${invoiceControllerA.itemTableList[index]["NetAmount"].toString()} ${invoiceControllerA.currency}",
                                     style: customisedStyle(
                                         context,
                                         const Color(0xff0000000),
@@ -494,7 +526,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "${invoiceControllerA.gross_amount.value} ${invoiceControllerA.currency}",
+                                "${roundStringWith(invoiceControllerA.gross_amount.value)} ${invoiceControllerA.currency}",
                                 style: customisedStyle(
                                     context,
                                     const Color(0xffA1A1A1),
@@ -502,7 +534,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                     15.0),
                               ),
                               Text(
-                                "${invoiceControllerA.total_tax.value} ${invoiceControllerA.currency}",
+                                "${roundStringWith(invoiceControllerA.total_tax.value)} ${invoiceControllerA.currency}",
                                 style: customisedStyle(
                                     context,
                                     const Color(0xffA1A1A1),
@@ -510,7 +542,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                     15.0),
                               ),
                               Text(
-                                "${invoiceControllerA.discount_amount.value} ${invoiceControllerA.currency}",
+                                "${roundStringWith(invoiceControllerA.discount_amount.value)} ${invoiceControllerA.currency}",
                                 style: customisedStyle(
                                     context,
                                     const Color(0xffA1A1A1),
@@ -521,7 +553,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                 height: 15,
                               ),
                               Text(
-                                '${invoiceControllerA.grand_total.value} ${invoiceControllerA.currency}',
+                                '${roundStringWith(invoiceControllerA.grand_total.value)} ${invoiceControllerA.currency}',
                                 style: const TextStyle(
                                     color: Color(0xff1A9C01),
                                     fontSize: 17,

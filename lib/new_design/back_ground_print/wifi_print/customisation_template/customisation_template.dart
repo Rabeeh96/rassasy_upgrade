@@ -404,6 +404,7 @@ class WifiPrintClassTest {
     // Set up text styles with custom font
     const titleStyle = TextStyle(
       fontSize: 30,
+
       fontWeight: FontWeight.bold,
       color: Colors.black,
     );
@@ -828,7 +829,7 @@ class WifiPrintClassTest {
 
     // positionHeight = positionHeight + 25;
     // canvas.drawLine(Offset(0, positionHeight), Offset(canvasSize1.width, positionHeight), linePaint);
-/// hide tax details for qatar
+/// //hide tax details for qatar
     ///  ['Total Tax:', roundStringWith(totalTax)],
     var totals = [
       ['Gross Amount:', roundStringWith(grossAmount)],

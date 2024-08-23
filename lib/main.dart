@@ -73,9 +73,11 @@ void main()async {
 
 
   SharedPreferences.getInstance().then((prefs) {
-    bool isTablet = true;
-   //  bool isTablet = isTabletDevice();
-     prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
+
+    //   bool isTablet = true;
+     bool isTablet = prefs.getBool('isTablet')??isTabletDevice();
+     isTabDesign=isTablet;
+     prefs.setBool('isTablet',isTablet); // Save isTablet value to SharedPreferences
      print("main isTablet: $isTablet");
 
     SystemChrome.setPreferredOrientations([
@@ -88,6 +90,7 @@ void main()async {
 }
 
 bool isTabletDevice() {
+
   /// Determine if the device is a tablet based on the screen width
   double screenWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
   print("--screenWidth  $screenWidth   ---------  defaultScreenWidth   $defaultScreenWidth");
@@ -160,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () {
-      navigateUser();
+     navigateUser();
     });
   }
 
@@ -221,16 +224,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
         /// commented
 
-        // if (isTablet) {
-        //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
-        // } else {
-        //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
-        // }
+        if (isTablet) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+        } else {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+        }
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => OrganizationList()));
+        // Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (BuildContext context) => OrganizationList()));
       }
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPageNew()));

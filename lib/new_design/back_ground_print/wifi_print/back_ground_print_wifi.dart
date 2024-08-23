@@ -691,11 +691,10 @@ class AppBlocs {
                   width: 5,
                   styles: const PosStyles(
                     height: PosTextSize.size1,
-                  ))
+                  )
+              )
             ]);
           }
-
-
         }
       }
 
