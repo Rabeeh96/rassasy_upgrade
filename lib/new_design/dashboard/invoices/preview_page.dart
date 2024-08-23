@@ -16,6 +16,7 @@ class InvoiceDetailPage extends StatefulWidget {
   State<InvoiceDetailPage> createState() => _InvoiceDetailPageState();
 }
 
+
 class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
   InvoiceControllerA invoiceControllerA = Get.put(InvoiceControllerA());
 
