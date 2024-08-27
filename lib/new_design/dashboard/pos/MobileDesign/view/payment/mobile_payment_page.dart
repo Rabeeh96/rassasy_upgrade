@@ -11,17 +11,17 @@ import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_pa
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/select_deliveryman.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PaymentPage extends StatefulWidget {
+class MobilePaymentPage extends StatefulWidget {
   final String uID, tableID;
   final int orderType;
 
-  const PaymentPage({super.key, required this.uID, required this.tableID, required this.orderType});
+  const MobilePaymentPage({super.key, required this.uID, required this.tableID, required this.orderType});
 
   @override
-  State<PaymentPage> createState() => _PaymentPageState();
+  State<MobilePaymentPage> createState() => _MobilePaymentPageState();
 }
 
-class _PaymentPageState extends State<PaymentPage> {
+class _MobilePaymentPageState extends State<MobilePaymentPage> {
   POSPaymentController paymentController = Get.put(POSPaymentController());
 
   @override
@@ -797,10 +797,13 @@ class _PaymentPageState extends State<PaymentPage> {
                                               FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
                                             ],
                                             onChanged: (val) {
-                                              if (val.isEmpty) {
-                                              } else {
+
+                                              if (paymentController.checkBank(val)) {
                                                 paymentController.calculationOnPayment();
+                                              } else {
+                                                popAlert(head: "Waring", message: "More Amount received in bank", position: SnackPosition.TOP);
                                               }
+
                                             },
                                             onEditingComplete: () {
                                               FocusScope.of(context).requestFocus();
@@ -882,19 +885,26 @@ class _PaymentPageState extends State<PaymentPage> {
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                     onPressed: () async {
 
-                      // SharedPreferences prefs = await SharedPreferences.getInstance();
-                      // var id = prefs.getInt("Cash_Account") ?? 1;
 
-                      if (paymentController.paymentCustomerSelection.text != "walk in customer") {
-                        paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
-                      } else {
-                        if ((paymentController.cashReceived.value + paymentController.bankReceived.value) >=
-                            double.parse(paymentController.grandTotalAmount.value)) {
+
+                      if(double.parse(paymentController.grandTotalAmount.value) >0){
+                        if (paymentController.paymentCustomerSelection.text != "walk in customer") {
                           paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
                         } else {
-                          popAlert(head: "Waring", message: "You cant make credit sale", position: SnackPosition.TOP);
+                          if ((paymentController.cashReceived.value + paymentController.bankReceived.value) >= double.parse(paymentController.grandTotalAmount.value)) {
+                            paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
+                          } else {
+                            popAlert(head: "Waring", message: "You cant make credit sale", position: SnackPosition.TOP);
+                          }
                         }
                       }
+                      else{
+                        popAlert(head: "Waring", message: "You cant make this sale ..Please check Grand Total", position: SnackPosition.TOP);
+                      }
+
+
+
+
                     },
                     child: Row(
                       children: [

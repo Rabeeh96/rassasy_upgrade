@@ -10,7 +10,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/delivery
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/flavour.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/groupModel.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/productModel.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/payment_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/mobile_payment_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -19,12 +19,10 @@ import '../model/customerModel.dart';
 import 'pos_controller.dart';
 
 class OrderController extends GetxController {
-  ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(
-      false); // Initialize with initial value
+  ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(false); // Initialize with initial value
   final ValueNotifier<int> selectedGroupNotifierss = ValueNotifier<int>(0);
 
-  ValueNotifier<bool> isOrderCreate = ValueNotifier<bool>(
-      false); // Initialize with initial value
+  ValueNotifier<bool> isOrderCreate = ValueNotifier<bool>(false); // Initialize with initial value
   var groupIsLoading = false.obs;
   var productIsLoading = false.obs;
   final ScrollController scrollController = ScrollController();
@@ -41,28 +39,30 @@ class OrderController extends GetxController {
   TextEditingController searchListController = TextEditingController();
   TextEditingController categoryNameKartController = TextEditingController();
   TextEditingController unitPriceChangingController = TextEditingController();
-  TextEditingController rowCountController = TextEditingController()
-    ;
-  TextEditingController heightController = TextEditingController()
-    ;
-  TextEditingController widthController = TextEditingController()
-    ;
-  TextEditingController amountFontSizeController = TextEditingController()
-   ;
-  TextEditingController productNameFontSizeController = TextEditingController()
-    ;
-  TextEditingController groupNameFontSizeController = TextEditingController()
-  ;
-  TextEditingController descriptionFontSizeController = TextEditingController()  ;
-  TextEditingController heightImageSizeController = TextEditingController()  ;
-  TextEditingController widthImageSizeController = TextEditingController()  ;
+  TextEditingController rowCountController = TextEditingController();
+
+  TextEditingController heightController = TextEditingController();
+
+  TextEditingController widthController = TextEditingController();
+
+  TextEditingController amountFontSizeController = TextEditingController();
+
+  TextEditingController productNameFontSizeController = TextEditingController();
+
+  TextEditingController groupNameFontSizeController = TextEditingController();
+
+  TextEditingController descriptionFontSizeController = TextEditingController();
+
+  TextEditingController heightImageSizeController = TextEditingController();
+
+  TextEditingController widthImageSizeController = TextEditingController();
+
   String selectedFontSize = 'Medium';
   Rx<FontWeight> selectedFontWeight = FontWeight.normal.obs;
   Rx<FontWeight> productFontWeight = FontWeight.normal.obs;
   Rx<FontWeight> groupFontWeight = FontWeight.normal.obs;
   Rx<FontWeight> amountFontWeight = FontWeight.normal.obs;
   Rx<FontWeight> descriptionFontWeight = FontWeight.normal.obs;
-
 
   final List<Map<String, FontWeight>> fontWeights = [
     {'Regular': FontWeight.normal},
@@ -71,23 +71,18 @@ class OrderController extends GetxController {
   ];
 
   // Method to update font weight
-  void updateFontWeight(FontWeight newWeight,String type) {
-    if(type=='product_weight'){
+  void updateFontWeight(FontWeight newWeight, String type) {
+    if (type == 'product_weight') {
       productFontWeight.value = newWeight;
-    }else if(type=='group_weight'){
+    } else if (type == 'group_weight') {
       groupFontWeight.value = newWeight;
-
-    }else if(type=='description_weight'){
+    } else if (type == 'description_weight') {
       print("type  $type");
       descriptionFontWeight.value = newWeight;
-
-    }else if(type=='amount_weight'){
+    } else if (type == 'amount_weight') {
       amountFontWeight.value = newWeight;
-
-    }
-    else{
+    } else {
       amountFontWeight.value = newWeight;
-
     }
   }
 
@@ -95,68 +90,68 @@ class OrderController extends GetxController {
   double productFontSize = 15.0;
   double groupFontSize = 13.0;
   double descriptionFontSize = 13.0;
+
   var rowCountGridView = 2;
   var heightOfITem = 12.0;
   var widthOfItem = 4.0;
   late ValueNotifier<int> productSearchNotifier;
   var detailPage = 'item_add'.obs;
   var isShowImage = true.obs;
+  RxBool showProductDescription = true.obs;
+  RxBool showWegOrNoVeg = true.obs;
   var productNameDetail = '';
   var indexDetail = 0;
   var heightOfImage = 8.0;
   var widthOfImage = 18.0;
+
   ///added
   var selectedIndex = RxInt(0);
-  saveDefaultValue() async {
 
+  saveDefaultValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble('product_font_size',productFontSize).toString();
-    prefs.setDouble('amount_font_size',amountFontSize).toString();
-    prefs.setDouble('group_font_size',groupFontSize).toString();
-    prefs.setDouble('height_of_item',heightOfITem).toString();
-    prefs.setDouble('widthOfItem',widthOfItem).toString();
-    prefs.setDouble('description_fontSize',descriptionFontSize).toString();
-    prefs.setInt('count_of_row',rowCountGridView).toString();
-    prefs.setBool('show_product_image',isShowImage.value) ;
-    prefs.setDouble('heightOfImage',heightOfImage) ;
+    prefs.setDouble('product_font_size', productFontSize).toString();
+    prefs.setDouble('amount_font_size', amountFontSize).toString();
+    prefs.setDouble('group_font_size', groupFontSize).toString();
+    prefs.setDouble('height_of_item', heightOfITem).toString();
+    prefs.setDouble('widthOfItem', widthOfItem).toString();
+    prefs.setBool('showProductDescription', showProductDescription.value);
+    prefs.setBool('showWegOrNoVeg', showWegOrNoVeg.value);
+    prefs.setDouble('description_fontSize', descriptionFontSize).toString();
+    prefs.setInt('count_of_row', rowCountGridView).toString();
+    prefs.setBool('show_product_image', isShowImage.value);
+    prefs.setDouble('heightOfImage', heightOfImage);
   }
 
   getDefaultValue() async {
     detailPage = 'item_add'.obs;
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    amountFontSize = prefs.getDouble('amount_font_size') ?? 15.0;
+    productFontSize = prefs.getDouble('product_font_size') ?? 15.0;
+    groupFontSize = prefs.getDouble('group_font_size') ?? 13.0;
+    rowCountGridView = prefs.getInt('count_of_row') ?? 2;
+    heightOfITem = prefs.getDouble('height_of_item') ?? 12.0;
+    descriptionFontSize = prefs.getDouble('description_fontSize') ?? 13.0;
+    widthOfItem = prefs.getDouble('widthOfItem') ?? 4.0;
+    heightOfImage = prefs.getDouble('heightOfImage') ?? 8.0;
+    widthOfImage = prefs.getDouble('widthOfImage') ?? 18.0;
 
-     amountFontSize=prefs.getDouble('amount_font_size')??15.0;
-    productFontSize=prefs.getDouble('product_font_size')??15.0;
-    groupFontSize=prefs.getDouble('group_font_size')??13.0;
-    rowCountGridView=prefs.getInt('count_of_row')??2;
-    heightOfITem=prefs.getDouble('height_of_item')??12.0;
-    descriptionFontSize=prefs.getDouble('description_fontSize')??13.0;
-    widthOfItem=prefs.getDouble('widthOfItem')??4.0;
-    heightOfImage=prefs.getDouble('heightOfImage')??8.0;
-    widthOfImage=prefs.getDouble('widthOfImage')??18.0;
 
     heightImageSizeController.text = heightOfImage.toString();
     widthImageSizeController.text = widthOfImage.toString();
     productNameFontSizeController.text = productFontSize.toString();
     amountFontSizeController.text = amountFontSize.toString();
 
-    groupNameFontSizeController.text =
-        groupFontSize.toString();
-    heightController.text =
-        heightOfITem.toString();
-    widthController.text =
-        widthOfItem.toString();
-    descriptionFontSizeController.text =
-        descriptionFontSize.toString();
-    rowCountController.text =
-        rowCountGridView.toString();
-    isShowImage.value =    prefs.getBool('show_product_image') ?? true;
+    groupNameFontSizeController.text = groupFontSize.toString();
+    heightController.text = heightOfITem.toString();
+    widthController.text = widthOfItem.toString();
+    descriptionFontSizeController.text = descriptionFontSize.toString();
+    rowCountController.text = rowCountGridView.toString();
 
-
-
+    showProductDescription.value = prefs.getBool('showProductDescription') ?? true;
+    showWegOrNoVeg.value = prefs.getBool('showWegOrNoVeg') ?? true;
+    isShowImage.value = prefs.getBool('show_product_image') ?? true;
   }
-
 
   // Method to update selected index
   void selectIndex(int index) {
@@ -236,7 +231,6 @@ class OrderController extends GetxController {
     return kartChange.contains(value);
   }
 
-
   changeStatus(status) {
     for (var i = 0; i < kartChange.length; i++) {
       orderItemList[i]["Status"] = status;
@@ -247,7 +241,6 @@ class OrderController extends GetxController {
     totalAmount();
   }
 
-
   returnStatus(status) {
     if (status == "pending") {
       return "Pending";
@@ -257,7 +250,6 @@ class OrderController extends GetxController {
       return "Take away";
     }
   }
-
 
   RxString actualProductTaxName = "".obs;
   RxString unitPriceAmount = "0.00".obs;
@@ -288,8 +280,7 @@ class OrderController extends GetxController {
     }
   }
 
-  calculationOnEditing(
-      {required int index, required bool isQuantityButton, required String value}) async {
+  calculationOnEditing({required int index, required bool isQuantityButton, required String value}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     RxDouble grossAmount = 0.0.obs;
@@ -338,8 +329,7 @@ class OrderController extends GetxController {
       inclusiveUnitPriceAmountWR.value = (unit.value + taxAmount).toString();
       unit.value = unit.value;
     } else {
-      var taxAmount = (unit.value * inclusivePer.value) /
-          (100 + inclusivePer.value);
+      var taxAmount = (unit.value * inclusivePer.value) / (100 + inclusivePer.value);
       print(taxAmount);
       unit.value = unit.value - taxAmount;
       inclusiveUnitPriceAmountWR.value = (unit.value + taxAmount).toString();
@@ -366,8 +356,7 @@ class OrderController extends GetxController {
     }
     grossAmountWR.value = "$grossAmount";
     taxableAmountPost.value = grossAmount.value - discount.value;
-    vatAmount.value =
-    ((taxableAmountPost.value + exciseTaxAmount.value) * vatPer.value / 100);
+    vatAmount.value = ((taxableAmountPost.value + exciseTaxAmount.value) * vatPer.value / 100);
 
     gstAmount.value = (taxableAmountPost.value * gstPer.value / 100);
 
@@ -598,8 +587,7 @@ class OrderController extends GetxController {
       }
     }
 
-    print("------${checkVat}------${inclusivePer.value}----------${vatPer
-        .value}--------${exclusivePer}--------------------------------");
+    print("------${checkVat}------${inclusivePer.value}----------${vatPer.value}--------${exclusivePer}--------------------------------");
     if (checkGst == true) {
       taxType = "GST Intra-state B2C".obs;
       taxID = 22.obs;
@@ -614,15 +602,13 @@ class OrderController extends GetxController {
     print("inclusivePer.value ${inclusivePer.value}");
     print("coming value ${unit.value}");
 
-
     if (inclusivePer.value == 0.0) {
       unitPriceAmount.value = (unit.value).toString();
       var taxAmount = (unit.value * exclusivePer.value) / 100;
       inclusiveUnitPriceAmountWR.value = (unit.value + taxAmount).toString();
       unit.value = unit.value;
     } else {
-      var taxAmount = (unit.value * inclusivePer.value) /
-          (100 + inclusivePer.value);
+      var taxAmount = (unit.value * inclusivePer.value) / (100 + inclusivePer.value);
       unit.value = unit.value - taxAmount;
       inclusiveUnitPriceAmountWR.value = (unit.value + taxAmount).toString();
       unitPriceAmount.value = (unit.value).toString();
@@ -645,8 +631,7 @@ class OrderController extends GetxController {
     }
     grossAmountWR.value = "${grossAmount.value}";
     taxableAmountPost.value = grossAmount.value - discount.value;
-    vatAmount.value =
-    ((taxableAmountPost.value + exciseTaxAmount.value) * vatPer.value / 100);
+    vatAmount.value = ((taxableAmountPost.value + exciseTaxAmount.value) * vatPer.value / 100);
     gstAmount.value = (taxableAmountPost * gstPer.value / 100);
 
     if (checkVat == false) {
@@ -775,7 +760,6 @@ class OrderController extends GetxController {
       "SerialNos": [],
     };
 
-
     log_data(" data $data");
     orderItemList.insert(0, data);
     update();
@@ -784,8 +768,7 @@ class OrderController extends GetxController {
 
   updateQty({required int type, required int index}) async {
     int indexChanging = index;
-    quantity.value =
-        double.parse(orderItemList[indexChanging]["Qty"].toString());
+    quantity.value = double.parse(orderItemList[indexChanging]["Qty"].toString());
     if (type == 1) {
       quantity.value = quantity.value + 1.0;
     } else {
@@ -793,28 +776,21 @@ class OrderController extends GetxController {
     }
 
     detailID.value = orderItemList[indexChanging]["detailID"];
-    unitPriceAmount.value =
-        orderItemList[indexChanging]["UnitPrice"].toString();
-    inclusiveUnitPriceAmountWR.value =
-        orderItemList[indexChanging]["InclusivePrice"].toString();
-    vatPer.value =
-        double.parse(orderItemList[indexChanging]["VATPerc"].toString());
-    gstPer.value =
-        double.parse(orderItemList[indexChanging]["gstPer"].toString());
+    unitPriceAmount.value = orderItemList[indexChanging]["UnitPrice"].toString();
+    inclusiveUnitPriceAmountWR.value = orderItemList[indexChanging]["InclusivePrice"].toString();
+    vatPer.value = double.parse(orderItemList[indexChanging]["VATPerc"].toString());
+    gstPer.value = double.parse(orderItemList[indexChanging]["gstPer"].toString());
     unique_id.value = orderItemList[indexChanging]["unq_id"];
     productName.value = orderItemList[indexChanging]["ProductName"];
     item_status.value = orderItemList[indexChanging]["Status"];
     unitName.value = orderItemList[indexChanging]["UnitName"];
     // detailDescriptionController.text = orderItemList[indexChanging].description;
     salesPrice.value = orderItemList[indexChanging]["SalesPrice"].toString();
-    purchasePrice.value =
-        orderItemList[indexChanging]["CostPerPrice"].toString();
+    purchasePrice.value = orderItemList[indexChanging]["CostPerPrice"].toString();
     productID.value = orderItemList[indexChanging]["ProductID"];
     isInclusive.value = orderItemList[indexChanging]["is_inclusive"];
-    actualProductTaxName.value =
-    orderItemList[indexChanging]["ActualProductTaxName"];
-    actualProductTaxID.value =
-    orderItemList[indexChanging]["ActualProductTaxID"];
+    actualProductTaxName.value = orderItemList[indexChanging]["ActualProductTaxName"];
+    actualProductTaxID.value = orderItemList[indexChanging]["ActualProductTaxID"];
     priceListID.value = orderItemList[indexChanging]["PriceListID"];
     priceListID.value = orderItemList[indexChanging]["PriceListID"];
 
@@ -861,7 +837,6 @@ class OrderController extends GetxController {
     percentageDiscount.value = 0.0;
     discountAmount.value = 0.0;
 
-
     exciseTaxAmount.value = 0.0;
     grossAmount.value = quantity.value * unit;
     if (isExciseProduct.value) {
@@ -876,8 +851,7 @@ class OrderController extends GetxController {
     }
     grossAmountWR.value = "${grossAmount.value}";
     taxableAmountPost.value = grossAmount.value - discount;
-    vatAmount.value =
-    ((taxableAmountPost.value + exciseTaxAmount.value) * vatPer.value / 100);
+    vatAmount.value = ((taxableAmountPost.value + exciseTaxAmount.value) * vatPer.value / 100);
 
     gstAmount.value = (taxableAmountPost.value * gstPer.value / 100);
 
@@ -1004,9 +978,7 @@ class OrderController extends GetxController {
       "KFCAmount": "0",
       "BatchCode": "0",
       "SerialNos": [],
-
     };
-
 
     log_data(data);
     orderItemList[indexChanging] = data;
@@ -1034,7 +1006,6 @@ class OrderController extends GetxController {
     return [false, 0];
   }
 
-
   returnQuantity(int index) {
     var qty = orderItemList[index]["Qty"];
     return qty;
@@ -1048,7 +1019,6 @@ class OrderController extends GetxController {
     }
     return "Add";
   }
-
 
   totalAmount() {
     double totalNet = 0;
@@ -1065,12 +1035,9 @@ class OrderController extends GetxController {
       totalNet += double.parse(orderItemList[i]["NetAmount"].toString());
       totalTaxM += double.parse(orderItemList[i]["TotalTaxRounded"].toString());
       vatAmountTotal += double.parse(orderItemList[i]["VATAmount"].toString());
-      cGstAmountTotal +=
-          double.parse(orderItemList[i]["CGSTAmount"].toString());
-      sGstAmountTotal +=
-          double.parse(orderItemList[i]["SGSTAmount"].toString());
-      iGstAmountTotal +=
-          double.parse(orderItemList[i]["IGSTAmount"].toString());
+      cGstAmountTotal += double.parse(orderItemList[i]["CGSTAmount"].toString());
+      sGstAmountTotal += double.parse(orderItemList[i]["SGSTAmount"].toString());
+      iGstAmountTotal += double.parse(orderItemList[i]["IGSTAmount"].toString());
       totalGross += double.parse(orderItemList[i]["GrossAmount"].toString());
       exciseTaxAmount += double.parse(orderItemList[i]["ExciseTax"].toString());
     }
@@ -1098,8 +1065,7 @@ class OrderController extends GetxController {
       orderItemList.removeAt(index);
       totalAmount();
       update();
-    }
-    catch (e) {
+    } catch (e) {
       print("---------${e.toString()}");
     }
   }
@@ -1126,11 +1092,7 @@ class OrderController extends GetxController {
       var accessToken = prefs.getString('access') ?? '';
       final String url = '$baseUrl/flavours/flavours/';
       print(url);
-      Map data = {
-        "CompanyID": companyID,
-        "BranchID": branchID,
-        "CreatedUserID": userID
-      };
+      Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID};
       print(data);
       //encode Map to JSON
       var body = json.encode(data);
@@ -1169,13 +1131,12 @@ class OrderController extends GetxController {
     }
   }
 
-  Future<Null> posFunctions(
-      {required String sectionType, required String uUID}) async {
+  Future<Null> posFunctions({required String sectionType, required String uUID}) async {
     // loader dd
     // start(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     productSearchNotifier = ValueNotifier(2);
-    // productList.clear();
+
     groupList.clear();
     //changeVal(widget.orderType);
     printAfterPayment.value = prefs.getBool("printAfterPayment") ?? false;
@@ -1211,12 +1172,7 @@ class OrderController extends GetxController {
 
       final String url = '$baseUrl/posholds/pos/product-group/list/';
       print(url);
-      Map data = {
-        "CompanyID": companyID,
-        "BranchID": branchID,
-        "CreatedUserID": userID,
-        "is_used_group": true
-      };
+      Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID, "is_used_group": true};
       print(data);
       //encode Map to JSON
       var body = json.encode(data);
@@ -1233,8 +1189,7 @@ class OrderController extends GetxController {
       print(responseJson);
       print(status);
       if (status == 6000) {
-        print(
-            "1........................................................................11");
+        print("1........................................................................11");
         groupList.clear();
         for (Map user in responseJson) {
           groupList.add(GroupListModelClass.fromJson(user));
@@ -1412,10 +1367,10 @@ class OrderController extends GetxController {
   /// function for load edit details
   Future<Null> getOrderDetails({required String uID}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {} else {
+    if (connectivityResult == ConnectivityResult.none) {
+    } else {
       try {
-        print(
-            "_________________________________________________________________its called");
+        print("_________________________________________________________________its called");
 
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1426,12 +1381,7 @@ class OrderController extends GetxController {
 
         final String url = '$baseUrl/posholds/view-pos/salesOrder/$uID/';
         print(url);
-        Map data = {
-          "BranchID": branchID,
-          "CompanyID": companyID,
-          "CreatedUserID": userID,
-          "PriceRounding": 2
-        };
+        Map data = {"BranchID": branchID, "CompanyID": companyID, "CreatedUserID": userID, "PriceRounding": 2};
         print(data);
         print(accessToken);
         var body = json.encode(data);
@@ -1453,24 +1403,17 @@ class OrderController extends GetxController {
           ledgerID.value = responseJson["LedgerID"];
           totalNetP.value = double.parse(responseJson["NetTotal"].toString());
           totalTaxMP.value = double.parse(responseJson["TotalTax"].toString());
-          totalGrossP.value =
-              double.parse(responseJson["TotalGrossAmt"].toString());
-          vatAmountTotalP.value =
-              double.parse(responseJson["VATAmount"].toString());
-          cGstAmountTotalP.value =
-              double.parse(responseJson["CGSTAmount"].toString());
-          sGstAmountTotalP.value =
-              double.parse(responseJson["SGSTAmount"].toString());
-          iGstAmountTotalP.value =
-              double.parse(responseJson["IGSTAmount"].toString());
-          iGstAmountTotalP.value =
-              double.parse(responseJson["IGSTAmount"].toString());
+          totalGrossP.value = double.parse(responseJson["TotalGrossAmt"].toString());
+          vatAmountTotalP.value = double.parse(responseJson["VATAmount"].toString());
+          cGstAmountTotalP.value = double.parse(responseJson["CGSTAmount"].toString());
+          sGstAmountTotalP.value = double.parse(responseJson["SGSTAmount"].toString());
+          iGstAmountTotalP.value = double.parse(responseJson["IGSTAmount"].toString());
+          iGstAmountTotalP.value = double.parse(responseJson["IGSTAmount"].toString());
           dateOnly.value = responseJson["Date"] ?? "";
           tokenNumber.value = responseJson["TokenNumber"] ?? "";
           phoneNumberController.text = responseJson["Phone"] ?? "";
           customerNameController.text = responseJson["CustomerName"] ?? "";
-          print(
-              "_________________________________________________________________12");
+          print("_________________________________________________________________12");
           var checkVat = prefs.getBool("checkVat") ?? false;
           var checkGst = prefs.getBool("check_GST") ?? false;
 
@@ -1487,21 +1430,16 @@ class OrderController extends GetxController {
           totalAmount();
           //   getLoyaltyCustomer();
         } else if (status == 6001) {
-          popAlert(head: "Waring",
-              message: message ?? "",
-              position: SnackPosition.TOP);
+          popAlert(head: "Waring", message: message ?? "", position: SnackPosition.TOP);
         }
 
         //DB Error
         else {
-          popAlert(head: "Error",
-              message: "Some Network Error please try again Later",
-              position: SnackPosition.TOP);
+          popAlert(head: "Error", message: "Some Network Error please try again Later", position: SnackPosition.TOP);
         }
       } catch (e) {
         print("-------${e.toString()}");
-        popAlert(
-            head: "Error", message: e.toString(), position: SnackPosition.TOP);
+        popAlert(head: "Error", message: e.toString(), position: SnackPosition.TOP);
       }
     }
   }
@@ -1519,13 +1457,12 @@ class OrderController extends GetxController {
     var netWork = await checkNetwork();
     if (netWork) {
       if (orderItemList.isEmpty) {
-        popAlert(head: "Waring",
-            message: "At least one product",
-            position: SnackPosition.TOP);
+        popAlert(head: "Waring", message: "At least one product", position: SnackPosition.TOP);
       } else {
         bool val = await checkNonRatableItem();
         if (val) {
-          createSalesOrderRequest(context: context,
+          createSalesOrderRequest(
+              context: context,
               isPayment: isPayment,
               sectionType: sectionType,
               orderType: orderType,
@@ -1533,15 +1470,11 @@ class OrderController extends GetxController {
               tableID: tableID,
               orderID: orderID);
         } else {
-          popAlert(head: "Waring",
-              message: "Price must be greater than 0",
-              position: SnackPosition.TOP);
+          popAlert(head: "Waring", message: "Price must be greater than 0", position: SnackPosition.TOP);
         }
       }
     } else {
-      popAlert(head: "Alert",
-          message: "You are connected to the internet",
-          position: SnackPosition.TOP);
+      popAlert(head: "Alert", message: "You are connected to the internet", position: SnackPosition.TOP);
     }
   }
 
@@ -1626,8 +1559,7 @@ class OrderController extends GetxController {
         customerName = customerNameController.text;
         phoneNumber = phoneNumberController.text;
         time = "";
-      }
-      else {}
+      } else {}
 
       String url = '$baseUrl/posholds/create-pos/salesOrder/';
 
@@ -1715,21 +1647,14 @@ class OrderController extends GetxController {
 
         if (printAfterOrder) {
           /// printing section
-          posController.printSection(
-              context: context,
-              id: n["OrderID"],
-              isCancelled: false,
-              voucherType: "SO");
+          posController.printSection(context: context, id: n["OrderID"], isCancelled: false, voucherType: "SO");
         }
 
         Future.delayed(const Duration(seconds: 1), () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var kot = prefs.getBool("KOT") ?? false;
           if (kot == true) {
-            posController.printKOT(cancelList: cancelPrint,
-                isUpdate: sectionType == "Edit" ? true : false,
-                orderID: n["OrderID"],
-                rePrint: false);
+            posController.printKOT(cancelList: cancelPrint, isUpdate: sectionType == "Edit" ? true : false, orderID: n["OrderID"], rePrint: false);
 
             /// commented kot print
             // PrintDataDetails.type = "SO";
@@ -1740,22 +1665,14 @@ class OrderController extends GetxController {
       } else if (status == 6001) {
         stop();
         var errorMessage = n["message"] ?? "";
-        popAlert(
-            head: "Waring", message: errorMessage, position: SnackPosition.TOP);
-      }
-      else if (status == 6002) {
+        popAlert(head: "Waring", message: errorMessage, position: SnackPosition.TOP);
+      } else if (status == 6002) {
         stop();
         var errorMessage = n["error"] ?? "";
-        popAlert(
-            head: "Waring", message: errorMessage, position: SnackPosition.TOP);
-      }
-
-      else if (status == 6003) {
+        popAlert(head: "Waring", message: errorMessage, position: SnackPosition.TOP);
+      } else if (status == 6003) {
         stop();
-        popAlert(head: "Waring",
-            message: "Change token number and retry please",
-            position: SnackPosition.TOP);
-
+        popAlert(head: "Waring", message: "Change token number and retry please", position: SnackPosition.TOP);
 
         /// commented repeated token number issuer solution
         // tokenNumberController.text = "$tokenNumber";
@@ -1765,14 +1682,11 @@ class OrderController extends GetxController {
       //DB Error
       else {
         stop();
-        popAlert(head: "Error",
-            message: "Please try again later",
-            position: SnackPosition.TOP);
+        popAlert(head: "Error", message: "Please try again later", position: SnackPosition.TOP);
       }
     } catch (e) {
       stop();
-      popAlert(
-          head: "Error", message: e.toString(), position: SnackPosition.TOP);
+      popAlert(head: "Error", message: e.toString(), position: SnackPosition.TOP);
     }
   }
 
@@ -1788,11 +1702,9 @@ class OrderController extends GetxController {
     'Description',
   ].obs;
 
-
   var isLoading = false.obs;
 
-  void searchItems(
-      {required String productName, required bool isCode, required bool isDescription}) async {
+  void searchItems({required String productName, required bool isCode, required bool isDescription}) async {
     isLoading.value = true;
     String baseUrl = BaseUrl.baseUrl;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1836,7 +1748,6 @@ class OrderController extends GetxController {
           searchProductList.add(ProductListModel.fromJson(user));
         }
 
-
         //  productList.assignAll(data['data']);
         update();
         print("7");
@@ -1849,8 +1760,7 @@ class OrderController extends GetxController {
     }
   }
 
-  void searchItemsTab(
-      {required String productName, required bool isCode, required bool isDescription}) async {
+  void searchItemsTab({required String productName, required bool isCode, required bool isDescription}) async {
     isLoading.value = true;
     print("enter");
     String baseUrl = BaseUrl.baseUrl;
@@ -1903,7 +1813,6 @@ class OrderController extends GetxController {
         }
         print("productList $productList");
 
-
         //  productList.assignAll(data['data']);
         update();
         print("7");
@@ -1937,7 +1846,6 @@ class OrderController extends GetxController {
       "is_deliveryman": true,
     };
 
-
     print("----url  $url");
     print("----payload  $payload");
     final response = await http.post(url,
@@ -1951,8 +1859,7 @@ class OrderController extends GetxController {
       isCustomerLoading.value = false;
       final jsonResponse = json.decode(response.body);
 
-      users.assignAll((jsonResponse['data'] as List).map((data) =>
-          DeliveryManModel.fromJson(data)).toList());
+      users.assignAll((jsonResponse['data'] as List).map((data) => DeliveryManModel.fromJson(data)).toList());
     } else {
       isCustomerLoading.value = false;
       throw Exception('Failed to load users');
@@ -1978,7 +1885,6 @@ class OrderController extends GetxController {
       "is_deliveryman": true,
     };
 
-
     print("----url  $url");
     print("----payload  $payload");
     final response = await http.post(url,
@@ -1992,8 +1898,7 @@ class OrderController extends GetxController {
       isCustomerLoading.value = false;
       final jsonResponse = json.decode(response.body);
 
-      users.assignAll((jsonResponse['data'] as List).map((data) =>
-          DeliveryManModel.fromJson(data)).toList());
+      users.assignAll((jsonResponse['data'] as List).map((data) => DeliveryManModel.fromJson(data)).toList());
     } else {
       isCustomerLoading.value = false;
       throw Exception('Failed to load users');
@@ -2037,12 +1942,10 @@ class OrderController extends GetxController {
     if (response.statusCode == 200) {
       isLoadingValue.value = false;
       final jsonResponse = json.decode(response.body);
-      customerList.assignAll((jsonResponse['data'] as List).map((data) =>
-          CustomerModel.fromJson(data)).toList());
+      customerList.assignAll((jsonResponse['data'] as List).map((data) => CustomerModel.fromJson(data)).toList());
     } else {
       isLoadingValue.value = false;
       throw Exception('Failed to load users');
     }
   }
-
 }

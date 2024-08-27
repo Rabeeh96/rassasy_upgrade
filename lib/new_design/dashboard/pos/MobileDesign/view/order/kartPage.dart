@@ -9,7 +9,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/ord
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/customer_detail.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/select_deliveryman.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/payment_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/mobile_payment_page.dart';
 
 import 'product_detail_page.dart';
 import 'search_items.dart';

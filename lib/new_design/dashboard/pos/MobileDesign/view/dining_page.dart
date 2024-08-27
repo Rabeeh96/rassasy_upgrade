@@ -18,7 +18,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_pa
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/reservation_list.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'order/add_order_page.dart';
-import 'payment/payment_page.dart';
+import 'payment/mobile_payment_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DiningPage extends StatefulWidget {
@@ -314,7 +314,7 @@ class _DiningPageState extends State<DiningPage> {
                                     diningController.tableData[index].status == 'Ordered'
                                         ? posController.pay_perm.value? CustomSlidableAction(
                                             onPressed: (BuildContext context) async {
-                                              var resultPayment = await Get.to(PaymentPage(
+                                              var resultPayment = await Get.to(MobilePaymentPage(
                                                 uID: diningController.tableData[index].salesOrderID!,
                                                 tableID: diningController.tableData[index].id!,
                                                 orderType: 0,
@@ -377,7 +377,7 @@ class _DiningPageState extends State<DiningPage> {
 
                                       if (result != null) {
                                         if (result[1]) {
-                                          var resultPayment = await Get.to(PaymentPage(
+                                          var resultPayment = await Get.to(MobilePaymentPage(
                                             uID: result[2],
                                             tableID: diningController.tableData[index].id!,
                                             orderType: 0,
@@ -405,7 +405,7 @@ class _DiningPageState extends State<DiningPage> {
 
                                       if (result != null) {
                                         if (result[1]) {
-                                          var res= await Get.to(PaymentPage(
+                                          var res= await Get.to(MobilePaymentPage(
                                             uID: result[2],
                                             tableID: diningController.tableData[index].id!,
                                             orderType: 1,

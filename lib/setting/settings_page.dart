@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
+import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
 import 'package:rassasy_new/new_design/waiter_list/waiter_select_from_dash.dart';
 import 'package:rassasy_new/test/dragable.dart';
@@ -112,6 +113,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool hideTaxDetails = false;
   bool extraDetailsInKOT = false;
   bool autoFocusSearch = false;
+  bool isTabDesign = false;
 
   bool time_in_invoice = false;
   bool printForCancellOrder = false;
@@ -367,6 +369,7 @@ class _SettingsPageState extends State<SettingsPage> {
       hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
       extraDetailsInKOT = prefs.getBool("extraDetailsInKOT")??false;
       autoFocusSearch = prefs.getBool("autoFocusSearch")??false;
+      isTabDesign = prefs.getBool("isTablet")??false;
 
     });
   }
@@ -4161,8 +4164,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
 
                           autoFocusSearch = val;
-                          switchStatus(
-                              "autoFocusSearch", autoFocusSearch);
+                          switchStatus("autoFocusSearch", autoFocusSearch);
                         });
                       },
                     ),
@@ -4170,7 +4172,97 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'is_tab_design'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: isTabDesign,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
 
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirm Design Switch',style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),),
+                              content: Text('Are you sure you want to confirm? The app design may be changed to ${isTabDesign?'Mobile app design':'Tablet app design'}  Please be careful.',style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false); // Return false when cancelled
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('OK'),
+                                  onPressed: () {
+
+
+
+                                    Navigator.of(context).pop(true);
+                                    setState(() {
+
+
+                                      isTabDesign = val;
+                                      enableTabDesign = val;
+                                      switchStatus("isTablet", isTabDesign);
+                                      print("");
+                                    });
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+                                    );
+
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ).then((confirmed) {
+                          if (confirmed != null && confirmed) {
+                            // User confirmed, perform your action here
+                            print('User confirmed');
+                          } else {
+                            // User cancelled, perform your action here or do nothing
+                            print('User cancelled');
+                          }
+                        });
+
+                        // setState(() {
+                        //
+                        //
+                        //   isTabDesign = val;
+                        //   enableTabDesign = val;
+                        //   switchStatus("isTablet", isTabDesign);
+                        // });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
             /// commented
             // Padding(
             //   padding: const EdgeInsets.only(bottom: 10.0, top: 10),
