@@ -156,6 +156,21 @@ var saleOrderDetail=[].obs;
 
   }
 
+  checkBank(String value) {
+
+
+    var amount = double.parse(value);
+    var grandT = double.parse(grandTotalAmount.value);
+
+    if (amount > grandT) {
+      bankReceived.value = 0.0;
+      bankReceivedController.text = "0.0";
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   calculationOnPayment() {
     var net = double.parse(totalNetP.value.toString());
 

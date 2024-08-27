@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/car_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/payment_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/mobile_payment_page.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:rassasy_new/test/local_db/model.dart';
@@ -74,9 +74,9 @@ void main()async {
 
   SharedPreferences.getInstance().then((prefs) {
 
-    //   bool isTablet = true;
-     bool isTablet = prefs.getBool('isTablet')??isTabletDevice();
-     isTabDesign=isTablet;
+     // bool isTablet = true;
+      bool isTablet = prefs.getBool('isTablet')??isTabletDevice();
+     enableTabDesign=isTablet;
      prefs.setBool('isTablet',isTablet); // Save isTablet value to SharedPreferences
      print("main isTablet: $isTablet");
 

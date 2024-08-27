@@ -375,6 +375,8 @@ class LocaleChange extends Translations {
           'autofocus_field': 'Auto Focus field',
           'No_of_copies': 'No of copies for invoice print',
           'kot For Cancelled Order': 'Kot For Cancelled Order',
+          'is_tab_design': 'Tab Design',
+
         },
 
         /////
@@ -382,6 +384,7 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'is_tab_design': 'تصميم علامة التبويب',
           'kot For Cancelled Order': 'كوت للطلب الملغى',
           'No_of_copies': 'عدد النسخ لطباعة الفاتورة',
           'autofocus_field': 'مجال التركيز التلقائي',

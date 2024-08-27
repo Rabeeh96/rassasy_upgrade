@@ -9,20 +9,21 @@ import '../../../../../../global/textfield_decoration.dart';
 import '../../controller/order_controller.dart';
 import '../../controller/payment_controller.dart';
 
-class PaymentSection extends StatefulWidget {
-  final String uID;
+class TabPaymentSection extends StatefulWidget {
+  final String uID,tableID;
   final int orderType;
 
-  const PaymentSection(
+  const TabPaymentSection(
       {super.key,
       required this.uID,
+      required this.tableID,
       required this.orderType});
 
   @override
-  State<PaymentSection> createState() => _PaymentSectionState();
+  State<TabPaymentSection> createState() => _TabPaymentSectionState();
 }
 
-class _PaymentSectionState extends State<PaymentSection> {
+class _TabPaymentSectionState extends State<TabPaymentSection> {
   POSPaymentController paymentController = Get.put(POSPaymentController());
 @override
   void initState() {
@@ -1398,8 +1399,15 @@ class _PaymentSectionState extends State<PaymentSection> {
                                                                 if (val
                                                                     .isEmpty) {
                                                                 } else {
-                                                                  paymentController
-                                                                      .calculationOnPayment();
+
+
+                                                                  if (paymentController.checkBank(val)) {
+                                                                    paymentController.calculationOnPayment();
+                                                                  } else {
+                                                                    popAlert(head: "Waring", message: "More Amount received in bank", position: SnackPosition.TOP);
+                                                                  }
+
+
                                                                 }
                                                               },
                                                               onEditingComplete:
@@ -1650,22 +1658,21 @@ class _PaymentSectionState extends State<PaymentSection> {
                                               WidgetStateProperty.all(
                                                   const Color(0xff00775E))),
                                       onPressed: () {
-                                        // if (widget.orderType == 1 ||
-                                        //     widget.orderType == 4 ||
-                                        //     widget.orderType == 2) {
-                                        //   if (posController.pay_perm.value) {
-                                        //     orderController.createMethod(
-                                        //         tableID: widget.tableID,
-                                        //         tableHead: widget.tableHead,
-                                        //         orderID: widget.uID,
-                                        //         orderType: widget.orderType,
-                                        //         context: context,
-                                        //         isPayment: true,
-                                        //         sectionType: widget.sectionType);
-                                        //   } else {
-                                        //     dialogBoxPermissionDenied(context);
-                                        //   }
-                                        // } else {}
+                                        if(double.parse(paymentController.grandTotalAmount.value) >0){
+                                          if (paymentController.paymentCustomerSelection.text != "walk in customer") {
+                                            paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
+                                          } else {
+                                            if ((paymentController.cashReceived.value + paymentController.bankReceived.value) >= double.parse(paymentController.grandTotalAmount.value)) {
+                                              paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
+                                            } else {
+                                              popAlert(head: "Waring", message: "You cant make credit sale", position: SnackPosition.TOP);
+                                            }
+                                          }
+                                        }
+                                        else{
+                                          popAlert(head: "Waring", message: "You cant make this sale ..Please check Grand Total", position: SnackPosition.TOP);
+                                        }
+
                                       },
                                       child: Row(
                                         children: [

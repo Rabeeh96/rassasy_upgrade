@@ -74,44 +74,14 @@ class _DragTableListState extends State<DragTableList> {
                       //     color: Color(0xffE9E9E9), width: 1),
                     ),
                   ),
-                  child: GridTile(
-
-                    header: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            tableListController.tableList[index]
-                            ['TableName'],
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            tableListController.tableList[index]
-                            ['Position']
-                                .toString(),
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
+                  child: Center(
+                    child: Text(
+                      tableListController.tableList[index]
+                      ['TableName'],
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.0,
                       ),
                     ),
                   ),
@@ -119,8 +89,9 @@ class _DragTableListState extends State<DragTableList> {
         return Padding(
           padding: const EdgeInsets.all(20.0),
           child: ReorderableBuilder(
+
             scrollController: _scrollController,
-            enableLongPress: false,
+            enableLongPress: true,
             onReorder: (
               List<OrderUpdateEntity> orderUpdateEntities,
             ) {
@@ -138,11 +109,11 @@ class _DragTableListState extends State<DragTableList> {
               return GridView(
                 key: _gridViewKey,
                 controller: _scrollController,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: tableListController.selectedValue.value,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 6,
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 20,
-                  childAspectRatio: 2.0,
+                  childAspectRatio: 3.0,
                 ),
                 children: children,
               );

@@ -20,8 +20,8 @@ import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/pos_list_tab_design.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/pos_order_page.dart';
+
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/tab_pos_order_page.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
@@ -37,6 +37,7 @@ import 'mobile_section/view/customer/customer_list_mobile.dart';
 import 'mobile_section/view/invoice/invocie_list_mobile.dart';
 import 'mobile_section/view/product/product_list_mobile.dart';
 import 'mobile_section/view/product_group/product_group_list.dart';
+import 'pos/MobileDesign/view/tab_design/tab_pos_list_design.dart';
 import 'pos/new_method/pos_list_section.dart';
 import 'product/create_products.dart';
 import 'profile_mobile/about_us/about_us_page.dart';
@@ -232,6 +233,8 @@ class _DashboardNewState extends State<DashboardNew> {
           MaterialPageRoute(builder: (context) => const EnterPinNumber()),
         );
 
+      case 6 :
+        Get.to(TabPosListDesign());
         // if (posUser == true) {
         //   Navigator.of(context).pushReplacement(
         //     MaterialPageRoute(builder: (context) => const EnterPinNumber()),
@@ -371,7 +374,7 @@ class _DashboardNewState extends State<DashboardNew> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = isTabDesign;
+    bool isTablet = enableTabDesign;
   //  bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
       appBar: isProfileNotifier.value
@@ -401,27 +404,8 @@ class _DashboardNewState extends State<DashboardNew> {
                     ),
               actions: [
 
-                // IconButton(
-                //     onPressed: () {
-                //       Get.to(PosListTabDesign());
-                //     },
-                //     icon:Text("Pos List")),
-                // IconButton(
-                //     onPressed: () {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) => PosOrderPage(
-                //               orderType: 4,
-                //               sectionType: "Create",
-                //               uID: "",
-                //               tableHead: "Order",
-                //               tableID: "",
-                //               cancelOrder: [],
-                //             )),
-                //       );
-                //     },
-                //     icon:Text("Pos Order")),
+               
+
                 isTablet == true
                     ? Theme(
                         data: Theme.of(context).copyWith(
@@ -537,6 +521,24 @@ class _DashboardNewState extends State<DashboardNew> {
                                     ),
                                     Text(
                                       'user_log_out'.tr,
+                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                                    )
+                                  ],
+                                )),
+                            const PopupMenuDivider(),
+                            PopupMenuItem<int>(
+                                value: 6,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.dashboard,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      'POS',
                                       style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
@@ -1494,6 +1496,8 @@ class _DashboardNewState extends State<DashboardNew> {
                             Get.to(SettingsMobilePage(generalSettingsPermission: settingsPermission,));
 
 
+
+
                           },
                           child: Card(
                             color: Colors.transparent,
@@ -1589,6 +1593,83 @@ class _DashboardNewState extends State<DashboardNew> {
                               )),
                         ),
 
+                        dividerStyle(),
+                        Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
+                            child: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Confirm Switch user',style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),),
+                                      content: Text('Are you sure you want to exit?  ',style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false); // Return false when cancelled
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('OK'),
+                                          onPressed: () {
+
+                                            Navigator.of(context).pop(true);
+
+                                            Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+                                            );
+
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ).then((confirmed) {
+                                  if (confirmed != null && confirmed) {
+                                    // User confirmed, perform your action here
+                                    print('User confirmed');
+                                  } else {
+                                    // User cancelled, perform your action here or do nothing
+                                    print('User cancelled');
+                                  }
+                                });
+
+                              },
+                              child: InkWell(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/svg/profile_mob.svg",
+                                          color: Color(0xffF25F29),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            'user_log_out'.tr.tr,
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 18,
+                                      color: Colors.black,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         dividerStyle(),
                         Card(
                           color: Colors.transparent,
@@ -1710,6 +1791,42 @@ class _DashboardNewState extends State<DashboardNew> {
                             ),
                           ),
                         ),
+                        // GestureDetector(
+                        //   onTap: () async {
+                        //      Get.to(TabPosListDesign());
+                        //
+                        //   },
+                        //   child: Card(
+                        //     color: Colors.transparent,
+                        //     elevation: 0,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
+                        //       child: Row(
+                        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //               SvgPicture.asset(
+                        //                 "assets/svg/language-hiragana.svg",
+                        //               ),
+                        //               Padding(
+                        //                 padding: const EdgeInsets.only(left: 10.0),
+                        //                 child: Text(
+                        //                   'New POS Section',
+                        //                   style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //           Text(
+                        //             'New POS Section',
+                        //             style: customisedStyle(context, Color(0xff7D7D7D), FontWeight.normal, 14.0),
+                        //           )
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
 
 
 

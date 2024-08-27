@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,10 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     }
   }
 
-
+  void switchStatus(key, value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
 
   @override
   void initState() {
@@ -79,6 +83,16 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     defaultAPi();
   }
 
+
+  callExit(){
+    start(context);
+    Future.delayed(Duration(seconds: 1), () {
+      exit(0);
+    });
+
+  }
+
+
   var companyName ="";
   defaultAPi() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -89,30 +103,17 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     });
   }
 
+ // bool isTabDesign = false;
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-     bool isTablet = isTabDesign;
+      bool isTablet = enableTabDesign;
   //     bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
-        // appBar: AppBar(
-        //   elevation: 0.0,
-        //   backgroundColor: Color(0xffF3F3F3),
-        //   actions: [
-        //     Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: IconButton(
-        //           onPressed: () {
-        //             _asyncConfirmDialog(context);
-        //           },
-        //           icon: SvgPicture.asset('assets/svg/logout_from_pinNo.svg')),
-        //     )
-        //
-        //   ],
-        // ),
+
         body: Container(
       width: double.infinity,
       height: double.infinity,
@@ -131,13 +132,65 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                    Container(
-                        alignment: Alignment.center,
 
-                        child: Text(
-                          companyName,
-                          style:customisedStyle(context, const Color(0xffF25F29), FontWeight.w600, 18.0),
-                        )),
+
+                    GestureDetector(
+                      onLongPress: (){
+                        print("aaa");
+
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirm Design Switch',style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),),
+                              content: Text('Are you sure you want to confirm? The app design may be changed to ${isTablet?'Mobile app design':'Tablet app design'}  Please be careful..',style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false); // Return false when cancelled
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('OK'),
+                                  onPressed: () async{
+
+
+                                      print("isTabDesign  $isTablet");
+                                      isTablet = !isTablet;
+                                      print("isTabDesign  $isTablet");
+                                      enableTabDesign = isTablet;
+                                      // enableTabDesign = val;
+                                      switchStatus("isTablet", isTablet);
+                                      await callExit();
+
+                                    // Navigator.of(context).pushReplacement(
+                                    //   MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+                                    // );
+
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ).then((confirmed) {
+                          if (confirmed != null && confirmed) {
+                            // User confirmed, perform your action here
+                            print('User confirmed');
+                          } else {
+                            // User cancelled, perform your action here or do nothing
+                            print('User cancelled');
+                          }
+                        });
+                      },
+                      child: Container(
+                          alignment: Alignment.center,
+
+                          child: Text(
+                            companyName,
+                            style:customisedStyle(context, const Color(0xffF25F29), FontWeight.w600, 18.0),
+                          )),
+                    ),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -227,7 +280,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
               Size screenSize = MediaQuery.of(context).size;
               double screenWidth = screenSize.width;
               double screenHeight = screenSize.height;
-              bool isTablet = isTabDesign;
+              bool isTablet = enableTabDesign;
                 // bool isTablet = screenWidth > defaultScreenWidth;
               if(isTablet){
                 Navigator.pushReplacement(
@@ -796,7 +849,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
               'Authorization': 'Bearer $accessToken',
             },
             body: body);
-        print('5');
+
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
         print(response.body);

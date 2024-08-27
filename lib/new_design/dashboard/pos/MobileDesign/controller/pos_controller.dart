@@ -10,6 +10,7 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
+import 'package:rassasy_new/new_design/back_ground_print/wifi_print/customisation_template/customisation_template.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/pos_list_model.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/service/pos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -320,7 +321,7 @@ final isLoadCar=false.obs;
   var printHelperUsb = USBPrintClass();
   var printHelperIP = AppBlocs();
   var bluetoothHelper =   AppBlocsBT();
-
+  var wifiNewMethod = WifiPrintClassTest();
 
 
   printKOT({required String orderID,required bool  rePrint,required List cancelList,required bool isUpdate}) async {
@@ -346,7 +347,7 @@ final isLoadCar=false.obs;
   printSection({required BuildContext context,required String voucherType,required String id,required bool isCancelled})async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
       var defaultIp = prefs.getString('defaultIP') ?? '';
-
+        var temp = prefs.getString("template") ?? "template4";
        var printType = prefs.getString('PrintType') ?? 'Wifi';
 
       var defaultOrderIP = prefs.getString('defaultOrderIP') ?? '';
@@ -355,23 +356,38 @@ final isLoadCar=false.obs;
 
       } else {
         if (printType == 'Wifi') {
-          PrintDataDetails.type = voucherType;
-          PrintDataDetails.id = id;
-          var ret = await printHelperIP.printDetails();
-          print("==========ret $ret");
-          if (ret == 2) {
+          if (temp == "template5") {
             var ip = "";
-            if (voucherType == "SO") {
+            if (PrintDataDetails.type == "SO") {
               ip = defaultOrderIP;
             } else {
               ip = defaultIp;
             }
-            printHelperIP.print_receipt(ip, context, isCancelled,false);
-          } else {
-            popAlert(head: "Error", message: "Error on loading Data ! Please try again later", position: SnackPosition.TOP);
 
-
+            await wifiNewMethod.printDetails(id: id, type: voucherType, context: context, ipAddress: ip,isCancelled:false,orderSection: true);
           }
+          else{
+            PrintDataDetails.type = voucherType;
+            PrintDataDetails.id = id;
+            var ret = await printHelperIP.printDetails();
+            print("==========ret $ret");
+            if (ret == 2) {
+              var ip = "";
+              if (voucherType == "SO") {
+                ip = defaultOrderIP;
+              } else {
+                ip = defaultIp;
+              }
+              printHelperIP.print_receipt(ip, context, isCancelled,false);
+            } else {
+              popAlert(head: "Error", message: "Error on loading Data ! Please try again later", position: SnackPosition.TOP);
+
+            }
+          }
+
+
+
+
         }
         else  if (printType == 'USB'){
           PrintDataDetails.type = voucherType;

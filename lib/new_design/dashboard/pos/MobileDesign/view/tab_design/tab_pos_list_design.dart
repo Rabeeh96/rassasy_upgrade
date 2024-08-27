@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/payment_section.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/tab_pos_payment_section.dart';
 
 import '../../../../../../global/textfield_decoration.dart';
 import '../../../../../../test/dragable.dart';
@@ -13,20 +13,21 @@ import '../../controller/tab_controller.dart';
 import '../detail_page/cancel_reason_list.dart';
 import '../detail_page/reservation_list.dart';
 import 'draggable_list.dart';
+import 'tab_pos_order_page.dart';
 
 ///image size not correct ,in bottom sheet cancel order and print
 ///index
-class PosListTabDesign extends StatefulWidget {
+class TabPosListDesign extends StatefulWidget {
   @override
-  State<PosListTabDesign> createState() => _PosListTabDesignState();
+  State<TabPosListDesign> createState() => _TabPosListDesignState();
 }
 
-class _PosListTabDesignState extends State<PosListTabDesign> {
+class _TabPosListDesignState extends State<TabPosListDesign> {
   final IconController controller = Get.put(IconController());
-  final POSController diningController = Get.put(POSController());
+//  final POSController diningController = Get.put(POSController());
   final POSController posController = Get.put(POSController());
-  final POSController takeAwayController = Get.put(POSController());
-  final POSController carController = Get.put(POSController());
+  // final POSController takeAwayController = Get.put(POSController());
+  // final POSController carController = Get.put(POSController());
 
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
@@ -53,10 +54,10 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
   void initState() {
     /// TODO: implement initState
     super.initState();
-    diningController.selectedIndexNotifier.value = 0;
-    diningController.tableData.clear();
-    diningController.fetchAllData();
-    diningController.update();
+    posController.selectedIndexNotifier.value = 0;
+    posController.tableData.clear();
+    posController.fetchAllData();
+    posController.update();
   }
 
   @override
@@ -80,30 +81,16 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
         ),
         actions: [
           IconButton(
-              onPressed: () {
+              onPressed: () async{
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                         DragTableList()));
+                var result = await Get.to(DragTableList());
+                posController.tableData.clear();
+                posController.fetchAllData();
+                posController.update();
               },
               icon:Text("Table Setting")),
-          IconButton(
-              onPressed: () {
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            const TableSettings()));
-                     },
-              icon:Text("Draggable")),
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
-              },
-              icon:Text("POS")),
+
         ],
       ),
       body: Container(
@@ -419,12 +406,12 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
 
             height: MediaQuery.of(context).size.height *
                 .73, // Specify your desired height here
-            child: Obx(() => diningController.isLoading.value
+            child: Obx(() => posController.isLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(
                     color: Color(0xffffab00),
                   ))
-                : diningController.tableData.isEmpty
+                : posController.tableData.isEmpty
                     ? Center(
                         child: Text(
                         "No recent orders",
@@ -439,23 +426,54 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                           crossAxisSpacing: 20,
                           childAspectRatio: 2.0,
                         ),
-                        itemCount: diningController.tableData.length + 1,
+                        itemCount: posController.tableData.length + 1,
                         itemBuilder: (context, index) {
-                          if (index == diningController.tableData.length) {
+                          if (index == posController.tableData.length) {
                             return Container();
                           }
                           return GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 controller.selectItem(index);
-                                if(diningController
-                                    .tableData[index].status=='Vacant'){
+                                if(posController.tableData[index].status=='Vacant'){
+                                  var result = await Get.to(TabPosOrderPage(
+                                    orderType: 1,
+                                    sectionType: "Create",
+                                    uID: "",
+                                    tableHead: "Order",
+                                    cancelOrder: posController.cancelOrder,
+                                    tableID: posController.tableData[index].id!,
+                                  ));
+
+                                  if (result != null) {
+                                    if (result[1]) {
+                                      var resultPayment = await Get.to(TabPaymentSection(
+                                        uID: result[2],
+                                        tableID: posController.tableData[index].id!,
+                                        orderType: 0,
+                                      ));
+                                      posController.tableData.clear();
+                                      posController.fetchAllData();
+                                      posController.update();
+                                    } else {
+                                      posController.tableData.clear();
+                                      posController.fetchAllData();
+                                      posController.update();
+                                    }
+                                  }
+                                  else{
+
+                                    posController.tableData.clear();
+                                    posController.fetchAllData();
+                                    posController.update();
+                                  }
+
+
 
                                 }else{
-                                  showCustomDialog(context: context, type: diningController
-                                      .tableData[index].status!, salesOrderID: diningController
-                                      .tableData[index].salesOrderID!, orderID: diningController
-                                      .tableData[index].id!,salesMasterID: diningController.tableData[index].salesMasterID!);
-
+                                  showCustomDialog(context: context, type: posController
+                                      .tableData[index].status!, salesOrderID: posController
+                                      .tableData[index].salesOrderID!, orderID: posController
+                                      .tableData[index].id!,salesMasterID: posController.tableData[index].salesMasterID!);
 
                                 }
 
@@ -477,7 +495,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                           border: Border(
                                             left: BorderSide(
                                               color: _getBackgroundColor(
-                                                  diningController
+                                                  posController
                                                       .tableData[index].status),
                                               width: 4,
                                             ),
@@ -500,7 +518,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                   borderRadius:
                                                       BorderRadius.circular(4),
                                                   color: (_getBackgroundColor(
-                                                      diningController
+                                                      posController
                                                           .tableData[index]
                                                           .status))),
                                               child: Center(
@@ -508,7 +526,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    diningController
+                                                    posController
                                                         .tableData[index]
                                                         .status!,
                                                     style: const TextStyle(
@@ -531,7 +549,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  diningController
+                                                  posController
                                                       .tableData[index].title!,
                                                   style: const TextStyle(
                                                     color: Colors.black,
@@ -539,13 +557,13 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                     fontSize: 16.0,
                                                   ),
                                                 ),
-                                                diningController
+                                                posController
                                                             .returnOrderTime(
-                                                                diningController
+                                                                posController
                                                                     .tableData[
                                                                         index]
                                                                     .orderTime!,
-                                                                diningController
+                                                                posController
                                                                     .tableData[
                                                                         index]
                                                                     .status!) !=
@@ -559,12 +577,12 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            diningController.returnOrderTime(
-                                                                diningController
+                                                            posController.returnOrderTime(
+                                                                posController
                                                                     .tableData[
                                                                         index]
                                                                     .orderTime!,
-                                                                diningController
+                                                                posController
                                                                     .tableData[
                                                                         index]
                                                                     .status!),
@@ -590,7 +608,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                diningController
+                                                posController
                                                             .tableData[index]
                                                             .status ==
                                                         "Vacant"
@@ -605,13 +623,13 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                           fontSize: 10.0,
                                                         ),
                                                       ),
-                                                diningController
+                                                posController
                                                             .tableData[index]
                                                             .status ==
                                                         "Vacant"
                                                     ? const Text("")
                                                     : Text(
-                                                        "${diningController.currency} ${roundStringWith(diningController.tableData[index].status != "Vacant" ? diningController.tableData[index].status != "Paid" ? diningController.tableData[index].salesOrderGrandTotal.toString() : diningController.tableData[index].salesGrandTotal.toString() : '0')}",
+                                                        "${posController.currency} ${roundStringWith(posController.tableData[index].status != "Vacant" ? posController.tableData[index].status != "Paid" ? posController.tableData[index].salesOrderGrandTotal.toString() : posController.tableData[index].salesGrandTotal.toString() : '0')}",
                                                         style: customisedStyle(
                                                             context,
                                                             Colors.black,
@@ -714,12 +732,12 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
               height: MediaQuery.of(context).size.height *
                   .77, // Specify your desired height here
               child: Obx(
-                () => takeAwayController.isLoading.value
+                () => posController.isLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(
                         color: Color(0xffffab00),
                       ))
-                    : takeAwayController.takeAwayOrders.isEmpty
+                    : posController.takeAwayOrders.isEmpty
                         ? Center(
                             child: Text(
                             "No recent orders",
@@ -735,10 +753,10 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                               childAspectRatio: 2.0,
                             ),
                             itemCount:
-                                takeAwayController.takeAwayOrders.length + 1,
+                                posController.takeAwayOrders.length + 1,
                             itemBuilder: (context, index) {
                               if (index ==
-                                  takeAwayController.takeAwayOrders.length) {
+                                  posController.takeAwayOrders.length) {
                                 print("index -------$index");
                                 return DottedBorder(
                                   color: const Color(0xffC2C8D0),
@@ -754,8 +772,20 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                   child: Container(
                                     alignment: Alignment.center,
                                     child: GestureDetector(
-                                      onTap: () {
-                                        /// showCustomDialog(context);
+                                      onTap: () async{
+
+                                        var result = await Get.to(TabPosOrderPage(
+                                          orderType: 2,
+                                          sectionType: "Create",
+                                          uID: "",
+                                          tableHead: "Order",
+                                          cancelOrder: posController.cancelOrder,
+                                          tableID: "",
+                                        ));
+
+                                        posController.takeAwayOrders.clear();
+                                        posController.fetchAllData();
+                                        posController.update();
                                       },
                                       child: InkWell(
                                         child: Center(
@@ -800,14 +830,12 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                               return GestureDetector(
                                   onTap: () {
                                 controller.selectItem(index);
-                                if(takeAwayController.takeAwayOrders[index].status=='Vacant'){
 
-                                }else{
-                                  showCustomDialog(context: context, type: takeAwayController.takeAwayOrders[index].status!,
-                                      salesOrderID: takeAwayController.takeAwayOrders[index].salesOrderID!,
-                                      orderID: '',salesMasterID: takeAwayController.takeAwayOrders[index].salesID!);
+                                  showCustomDialog(context: context, type: posController.takeAwayOrders[index].status!,
+                                      salesOrderID: posController.takeAwayOrders[index].salesOrderID!,
+                                      orderID: '',salesMasterID: posController.takeAwayOrders[index].salesID!);
 
-                                }
+
 
 
                               },
@@ -827,7 +855,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                       border: Border(
                                         left: BorderSide(
                                           color: _getBackgroundColor(
-                                              takeAwayController
+                                              posController
                                                   .takeAwayOrders[index]
                                                   .status!),
                                           width: 3,
@@ -848,7 +876,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                               borderRadius:
                                                   BorderRadius.circular(4),
                                               color: (_getBackgroundColor(
-                                                  takeAwayController
+                                                  posController
                                                       .takeAwayOrders[index]
                                                       .status))),
                                           child: Center(
@@ -856,7 +884,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Text(
-                                                takeAwayController
+                                                posController
                                                     .takeAwayOrders[index]
                                                     .status!,
                                                 style: const TextStyle(
@@ -883,7 +911,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                  "Parcel ${takeAwayController.takeAwayOrders[index].tokenNumber!}",
+                                                  "Parcel ${posController.takeAwayOrders[index].tokenNumber!}",
 
                                                   /// "Parcel ${index + 1} -",
                                                   style: customisedStyle(
@@ -893,13 +921,13 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                       15.0),
                                                 ),
                                                 Text(
-                                                  takeAwayController
+                                                  posController
                                                       .returnOrderTime(
-                                                          takeAwayController
+                                                          posController
                                                               .takeAwayOrders[
                                                                   index]
                                                               .orderTime!,
-                                                          takeAwayController
+                                                          posController
                                                               .takeAwayOrders[
                                                                   index]
                                                               .status!),
@@ -912,7 +940,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                               ],
                                             ),
                                             Text(
-                                              takeAwayController
+                                              posController
                                                   .takeAwayOrders[index]
                                                   .customerName!,
                                               style: customisedStyle(
@@ -948,7 +976,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  takeAwayController
+                                                  posController
                                                       .takeAwayOrders[index]
                                                       .tokenNumber!,
                                                   style: customisedStyle(
@@ -960,7 +988,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                               ],
                                             ),
                                             Text(
-                                              "${takeAwayController.currency} ${roundStringWith(takeAwayController.takeAwayOrders[index].salesOrderGrandTotal!)}",
+                                              "${posController.currency} ${roundStringWith(posController.takeAwayOrders[index].salesOrderGrandTotal!)}",
                                               style: customisedStyle(
                                                   context,
                                                   Colors.black,
@@ -995,12 +1023,12 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
 
             height: MediaQuery.of(context).size.height *
                 .77, // Specify your desired height here
-            child: Obx(() => carController.isLoading.value
+            child: Obx(() => posController.isLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(
                     color: Color(0xffffab00),
                   ))
-                : carController.carOrders.isEmpty
+                : posController.carOrders.isEmpty
                     ? Center(
                         child: Text(
                         "No recent orders",
@@ -1015,9 +1043,9 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                           crossAxisSpacing: 10,
                           childAspectRatio: 2.0,
                         ),
-                        itemCount: carController.carOrders.length + 1,
+                        itemCount: posController.carOrders.length + 1,
                         itemBuilder: (context, index) {
-                          if (index == carController.carOrders.length) {
+                          if (index == posController.carOrders.length) {
                             // Special item (e.g., Add Orders button)
                             return DottedBorder(
                               color: const Color(0xffC2C8D0),
@@ -1028,7 +1056,21 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                               child: Container(
                                 alignment: Alignment.center,
                                 child: GestureDetector(
-                                  onTap: () {
+                                  onTap: () async{
+                                    var result = await Get.to(TabPosOrderPage(
+                                      orderType: 4,
+                                      sectionType: "Create",
+                                      uID: "",
+                                      tableHead:"Order",
+                                      cancelOrder:posController.cancelOrder,
+                                      tableID: "",
+                                    ));
+
+
+                                    posController.carOrders.clear();
+                                    posController.fetchAllData();
+                                    posController.update();
+
                                     // Handle add orders or other actions
                                   },
                                   child: const Center(
@@ -1076,16 +1118,11 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                   onTap: () {
                                     controller.selectItem(index);
 
-                                    if( carController
-                                        .carOrders[index]
-                                        .status=='Vacant'){
-
-                                    }else{
-                                      showCustomDialog(context: context, type: carController
+                                    showCustomDialog(context: context, type: posController
                                           .carOrders[index]
-                                          .status!, salesOrderID:carController.carOrders[index].salesOrderID!, orderID:'',salesMasterID: carController.carOrders[index].salesID!);
+                                          .status!, salesOrderID:posController.carOrders[index].salesOrderID!, orderID:'',salesMasterID: posController.carOrders[index].salesID!);
 
-                                    }
+
 
 
                                   },
@@ -1106,7 +1143,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                             border: Border(
                                               left: BorderSide(
                                                 color: _getBackgroundColor(
-                                                    carController
+                                                    posController
                                                         .carOrders[index]
                                                         .status),
                                                 width: 3,
@@ -1132,7 +1169,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                         BorderRadius.circular(
                                                             4),
                                                     color: (_getBackgroundColor(
-                                                        carController
+                                                        posController
                                                             .carOrders[index]
                                                             .status))),
                                                 child: Center(
@@ -1140,7 +1177,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                     padding:
                                                         const EdgeInsets.all(8.0),
                                                     child: Text(
-                                                      carController
+                                                      posController
                                                           .carOrders[index]
                                                           .status!,
                                                       style: const TextStyle(
@@ -1183,13 +1220,13 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                                   14.0),
                                                         ),
                                                         Text(
-                                                          carController
+                                                          posController
                                                               .returnOrderTime(
-                                                                  carController
+                                                                  posController
                                                                       .carOrders[
                                                                           index]
                                                                       .orderTime!,
-                                                                  carController
+                                                                  posController
                                                                       .carOrders[
                                                                           index]
                                                                       .status!),
@@ -1204,7 +1241,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    carController
+                                                    posController
                                                         .carOrders[index]
                                                         .customerName!,
                                                     style: customisedStyle(
@@ -1239,7 +1276,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                         ),
                                                       ),
                                                       Text(
-                                                        carController
+                                                        posController
                                                             .carOrders[index]
                                                             .tokenNumber!,
                                                         style: customisedStyle(
@@ -1251,7 +1288,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                                     ],
                                                   ),
                                                   Text(
-                                                    "${carController.currency} ${roundStringWith(carController.carOrders[index].salesOrderGrandTotal!)}",
+                                                    "${posController.currency} ${roundStringWith(posController.carOrders[index].salesOrderGrandTotal!)}",
                                                     style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                                   )
                                                 ],
@@ -1315,13 +1352,13 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                 width: MediaQuery.of(context).size.width / 4,
                 child: TextField(
                   textCapitalization: TextCapitalization.words,
-                  controller: diningController.customerNameController,
+                  controller: posController.customerNameController,
                   style: customisedStyle(
                       context, Colors.black, FontWeight.w500, 14.0),
-                  focusNode: diningController.customerNode,
+                  focusNode: posController.customerNode,
                   onEditingComplete: () {
                     FocusScope.of(context)
-                        .requestFocus(diningController.saveFocusNode);
+                        .requestFocus(posController.saveFocusNode);
                   },
                   keyboardType: TextInputType.text,
                   decoration: TextFieldDecoration.defaultTextField(
@@ -1346,10 +1383,10 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                         WidgetStateProperty.all(const Color(0xffF25F29)),
                   ),
                   onPressed: () {
-                    if (diningController.customerNameController.text == "") {
+                    if (posController.customerNameController.text == "") {
                       dialogBox(context, "Please enter table name");
                     } else {
-                      diningController.createTableApi();
+                      posController.createTableApi();
                     }
                   },
                   child: Text(
@@ -1376,9 +1413,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
       transitionDuration: const Duration(milliseconds: 700),
       context: context,
       pageBuilder: (context, anim1, anim2) {
-        print("selectedType.value ${controller.selectedType.value}");
-        print("type ${type}");
-        print("indexOfITem ${salesOrderID}");
+
         return Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
@@ -1405,7 +1440,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                       text: 'Print',
                       type: 'print',
                       onPressed: () {
-                        diningController.printSection(
+                        posController.printSection(
                             context: context,
                             id: type == 'Ordered'
                                 ? salesOrderID
@@ -1429,9 +1464,18 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                       assetName: 'assets/png/image3.png',
                       text: 'Pay',
                       type: 'pay',
-                      onPressed: () {
-                        if (posController.pay_perm.value) { Navigator.pop(context);
-                          Get.to(PaymentSection(uID: salesOrderID,  orderType: 0,));
+                      onPressed: () async{
+                        if (posController.pay_perm.value) {
+                          Navigator.pop(context);
+                        var result=await  Get.to(TabPaymentSection(uID: salesOrderID,  orderType: 0,tableID: '',));
+
+                        posController.tableData.clear();
+                        posController.takeAwayOrders.clear();
+                        posController.carOrders.clear();
+                        posController.fetchAllData();
+                        posController.update();
+
+
                           // orderController.createMethod(
                           //     tableID: widget.tableID,
                           //     tableHead: widget.tableHead,
@@ -1455,7 +1499,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                         if (type == 'Ordered') {
                           var result = await Get.to(CancelOrderList());
                           if (result != null) {
-                            diningController.cancelOrderApi(
+                            posController.cancelOrderApi(
                                 context:context,
                                 type: "Dining&Cancel",
                                 tableID: salesOrderID,
@@ -1463,7 +1507,7 @@ class _PosListTabDesignState extends State<PosListTabDesign> {
                                 orderID: salesOrderID);
                           }
                         } else {
-                          diningController.cancelOrderApi(
+                          posController.cancelOrderApi(
                               context:context,
                               type: "Dining", tableID: orderID, cancelReasonId: "", orderID: salesOrderID);
                         }

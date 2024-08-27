@@ -10,7 +10,7 @@ import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/cancel_reason_list.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/order/add_order_page.dart';
 
-import 'payment/payment_page.dart';
+import 'payment/mobile_payment_page.dart';
 
 class TakeAway extends StatefulWidget {
   final String title;
@@ -282,7 +282,7 @@ class _TakeAwayState extends State<TakeAway> {
                                             onPressed:
                                                 (BuildContext context) async {
                                               var resultPayment =
-                                                  await Get.to(PaymentPage(
+                                                  await Get.to(MobilePaymentPage(
                                                 uID: takeAwayController
                                                     .takeAwayOrders[index]
                                                     .salesOrderID!,
@@ -361,7 +361,7 @@ class _TakeAwayState extends State<TakeAway> {
 
                                         if (result != null) {
                                           if (result[1]) {
-                                            Get.to(PaymentPage(
+                                            Get.to(MobilePaymentPage(
                                               uID: result[2],
                                               tableID: takeAwayController
                                                   .takeAwayOrders[index]
@@ -570,7 +570,7 @@ class _TakeAwayState extends State<TakeAway> {
 
                   if (result != null) {
                     if (result[1]) {
-                      var resultPayment = await Get.to(PaymentPage(
+                      var resultPayment = await Get.to(MobilePaymentPage(
                         uID: result[2],
                         tableID: "",
                         orderType: 2,

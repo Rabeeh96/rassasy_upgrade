@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/cancel_reason_list.dart';
 import 'order/add_order_page.dart';
-import 'payment/payment_page.dart';
+import 'payment/mobile_payment_page.dart';
 
 class CarPage extends StatefulWidget {
   final String title;
@@ -208,7 +208,7 @@ class _TakeAwayState extends State<CarPage> {
                             posController.pay_perm.value?
                             CustomSlidableAction(
                               onPressed: (BuildContext context) async {
-                                var resultPayment = await Get.to(PaymentPage(
+                                var resultPayment = await Get.to(MobilePaymentPage(
                                   uID: carController.carOrders[index].salesOrderID!,
                                   tableID: "",
                                   orderType: 4,
@@ -254,7 +254,7 @@ class _TakeAwayState extends State<CarPage> {
 
                                 if (result != null) {
                                   if (result[1]) {
-                                    Get.to(PaymentPage(
+                                    Get.to(MobilePaymentPage(
                                       uID: result[2],
                                       tableID: carController.carOrders[index].salesOrderID!,
                                       orderType: 4,
@@ -385,7 +385,7 @@ class _TakeAwayState extends State<CarPage> {
 
                   if (result != null) {
                     if (result[1]) {
-                      var resultPayment = await Get.to(PaymentPage(
+                      var resultPayment = await Get.to(MobilePaymentPage(
                         uID: result[2],
                         tableID: "",
                         orderType: 4,
