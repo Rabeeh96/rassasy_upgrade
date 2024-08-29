@@ -25,18 +25,18 @@ class _OnlinePlatformsState extends State<OnlinePlatforms> {
         titleSpacing: 0,
         title: Text('Platforms',style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),),
         actions: [
-          TextButton(onPressed: (){
-            controller.platformNameController.clear();
-
-            addPlatform(platformName: '', platformID: '', isEdit: false);
-          }, child: Text("Add"))
+          // TextButton(onPressed: (){
+          //   controller.platformNameController.clear();
+          //
+          //   addPlatform(platformName: '', platformID: '', isEdit: false);
+          // }, child: Text("Add"))
         ],
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
           return Center(child: CircularProgressIndicator());
         }
-        return controller.platforms.isEmpty?Text("No Platforms found "): Center(
+        return controller.platforms.isEmpty?Center(child: Text("No Platforms found ")): Center(
           child: Container(
             width: MediaQuery.of(context).size.width/3,
             child: SlidableAutoCloseBehavior(
@@ -137,6 +137,28 @@ class _OnlinePlatformsState extends State<OnlinePlatforms> {
         );
      
       }),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+
+
+        onPressed: () {
+        controller.platformNameController.clear();
+
+          addPlatform(platformName: '', platformID: '', isEdit: false);
+
+
+      },
+        child: Icon(Icons.add,color: Colors.white,),
+
+      ),
+      // floatingActionButton: TextButton(
+      //
+      //     onPressed: (){
+      //   controller.platformNameController.clear();
+      //
+      //   addPlatform(platformName: '', platformID: '', isEdit: false);
+      // }, child: Text("Add")),
     );
   }
 

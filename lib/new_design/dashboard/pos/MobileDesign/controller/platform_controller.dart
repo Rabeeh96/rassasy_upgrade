@@ -84,7 +84,7 @@ class PlatformController extends GetxController {
       var responseData = jsonDecode(response.body);
       if (responseData['StatusCode'] == 6000) {
         Get.back();
-        popAlert(head: "Success", message: "Successfully Create platform", position: SnackPosition.TOP);
+       // popAlert(head: "Success", message: "Successfully Create platform", position: SnackPosition.TOP);
         fetchPlatforms();
         platformNameController.clear();
 
@@ -131,7 +131,7 @@ class PlatformController extends GetxController {
       var responseData = jsonDecode(response.body);
       if (responseData['StatusCode'] == 6000) {
         Get.back();
-        popAlert(head: "Success", message: "Successfully Edit platform", position: SnackPosition.TOP);
+      //  popAlert(head: "Success", message: "Successfully Edit platform", position: SnackPosition.TOP);
         platforms.clear();
         fetchPlatforms();
         platformNameController.clear();

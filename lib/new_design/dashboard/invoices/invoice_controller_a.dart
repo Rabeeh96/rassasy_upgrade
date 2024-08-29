@@ -39,6 +39,8 @@ class InvoiceControllerA extends GetxController{
   var gross_amount = "0.0".obs;
   var grand_total = "0.0".obs;
   var itemTableList = [].obs;
+  var salesMasterID=0;
+  var salesDetailIds = <int>[];
   var isSelectInvoice=false.obs;
   void selectAll() {
     selectedItems.assignAll(
@@ -79,7 +81,8 @@ class InvoiceControllerA extends GetxController{
   // var notesVisibility = false;
   // var statusShow = false;
   Future<void> getSingleSalesDetails(String masterUID) async {
-    // Check network status
+
+    print("master id ${masterUID}");
     bool network = await checkNetwork();
     if (!network) {
       // Handle network error
@@ -163,8 +166,9 @@ class InvoiceControllerA extends GetxController{
          // discount_amount.value = roundStringWith(salesData['DiscountAmount']);
         // grand_total.value = roundStringWith(salesData["GrandTotal"]);
         gross_amount.value = roundStringWith(salesData['TotalGrossAmt']?.toString() ?? '0');
-
+        salesMasterID=responseJson['SalesMasterID'];
         itemTableList.assignAll(responseJson["SalesDetails"]);
+       // salesDetailsID=itemTableList['SalesDetailsID']
         print("12");
 
       } else {
@@ -311,4 +315,47 @@ class InvoiceControllerA extends GetxController{
   }
 
 
+  // Method to make the API call with an authentication token
+  void createSalesReturn() async {
+     String apiUrl = '${BaseUrl.baseUrlV11}/salesReturns/sales-return-rassasy/';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     int userID = prefs.getInt('user_id') ?? 0;
+     int branchID = prefs.getInt('branchID') ?? 1;
+     String accessToken = prefs.getString('access') ?? '';
+     String companyID = prefs.getString('companyID') ?? '';
+    final payload = {
+      "CompanyID": companyID,
+      "BranchID": branchID,
+      "CreatedUserID": userID,
+      "SalesMasterID": salesMasterID,
+      "SalesDetailID": salesDetailIds
+    };
+
+    try {
+      // Make the HTTP POST request with the token in headers
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Add token to headers
+        },
+        body: jsonEncode(payload),
+      );
+
+      // Check for successful response
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+        if (responseBody['StatusCode'] == 6000) {
+          print('Success: ${responseBody['message']}');
+          Get.back();
+        } else {
+          print('Error: ${responseBody['message']}');
+        }
+      } else {
+        print('Failed to connect to the API');
+      }
+    } catch (e) {
+      print('Exception: $e');
+    }
+  }
 }

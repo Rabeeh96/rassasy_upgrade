@@ -379,9 +379,13 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                   onTap: () {
+print("......a.....s......s.....a........");
+                                    print(invoiceList[index].salesMasterID);
+                                    print(invoiceList[index].saleOrderID);
+                                    print(invoiceList[index].salesData);
                                     Get.to(InvoiceDetailPage(
-                                      MasterUID:
-                                          invoiceList[index].salesMasterID,
+                                      MasterUID:invoiceList[index].salesMasterID,
+                                      detailID:invoiceList[index].saleOrderID,
                                       masterType: 'SI',
                                     ));
                                   },
