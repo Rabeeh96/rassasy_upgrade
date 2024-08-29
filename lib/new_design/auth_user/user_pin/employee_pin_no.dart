@@ -137,7 +137,6 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                     GestureDetector(
                       onLongPress: (){
                         print("aaa");
-
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
