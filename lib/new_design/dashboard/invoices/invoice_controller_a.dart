@@ -70,6 +70,7 @@ class InvoiceControllerA extends GetxController{
 
   String currency = " SR";
 
+
  var place_of_supply = "".obs;
   // var whatsUppNumber = "";
   // var warehouseName = "";

@@ -672,6 +672,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
   /// working
 
+
   Future<Null> loginAccount(BuildContext context, stopLoading) async {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;

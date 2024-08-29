@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/platform_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/deliveryMan.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/flavour.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/groupModel.dart';
@@ -27,11 +28,10 @@ class OrderController extends GetxController {
   var productIsLoading = false.obs;
   final ScrollController scrollController = ScrollController();
 
-// var isLoading=false.obs;
   TextEditingController customerNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController deliveryManController = TextEditingController();
-  TextEditingController platformController = TextEditingController();
+  TextEditingController platformNameController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController categoryNameController = TextEditingController();
   TextEditingController platformKartController = TextEditingController();
@@ -71,20 +71,107 @@ class OrderController extends GetxController {
   ];
 
   // Method to update font weight
-  void updateFontWeight(FontWeight newWeight, String type) {
-    if (type == 'product_weight') {
-      productFontWeight.value = newWeight;
-    } else if (type == 'group_weight') {
-      groupFontWeight.value = newWeight;
-    } else if (type == 'description_weight') {
-      print("type  $type");
-      descriptionFontWeight.value = newWeight;
-    } else if (type == 'amount_weight') {
-      amountFontWeight.value = newWeight;
-    } else {
-      amountFontWeight.value = newWeight;
+  // void updateFontWeight(FontWeight newWeight, String type) {
+  //   if (type == 'product_weight') {
+  //     productFontWeight.value = newWeight;
+  //   } else if (type == 'group_weight') {
+  //     groupFontWeight.value = newWeight;
+  //   } else if (type == 'description_weight') {
+  //     print("type  $type");
+  //     descriptionFontWeight.value = newWeight;
+  //   } else if (type == 'amount_weight') {
+  //     amountFontWeight.value = newWeight;
+  //   } else {
+  //     amountFontWeight.value = newWeight;
+  //   }
+  // }
+
+   Map<FontWeight, int> fontWeightToInt = {
+    FontWeight.normal: 400,
+    FontWeight.bold: 700,
+    FontWeight.w600: 600,
+    // Add any other mappings as needed
+  };
+
+  FontWeight intToFontWeight(int weight) {
+    switch (weight) {
+      case 100:
+        return FontWeight.w100;
+      case 200:
+        return FontWeight.w200;
+      case 300:
+        return FontWeight.w300;
+      case 400:
+        return FontWeight.w400; // Normal
+      case 500:
+        return FontWeight.w500;
+      case 600:
+        return FontWeight.w600;
+      case 700:
+        return FontWeight.w700; // Bold
+      case 800:
+        return FontWeight.w800;
+      case 900:
+        return FontWeight.w900;
+      default:
+        return FontWeight.normal; // Default to normal weight
     }
   }
+
+  Future<void> updateFontWeight(FontWeight newWeight, String type) async {
+    print("new weight $newWeight");
+    print("new type $type");
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int weightValue = fontWeightToInt[newWeight] ?? 400; // Default value
+print("weightValue   $weightValue");
+    switch (type) {
+      case 'product_weight':
+        productFontWeight.value = newWeight;
+        await prefs.setInt('product_weight', weightValue);
+        print("ty${prefs.getInt('product_weight')}");
+        break;
+      case 'group_weight':
+        groupFontWeight.value = newWeight;
+        await prefs.setInt('group_weight', weightValue);
+        break;
+      case 'description_weight':
+        descriptionFontWeight.value = newWeight;
+        await prefs.setInt('description_weight', weightValue);
+        break;
+      case 'amount_weight':
+        amountFontWeight.value = newWeight;
+        await prefs.setInt('amount_weight', weightValue);
+        break;
+      default:
+      // Default case
+        amountFontWeight.value = newWeight;
+        await prefs.setInt('amount_weight', weightValue);
+        break;
+    }
+  }
+
+  // Future<void> updateFontWeight(FontWeight newWeight, String type) async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   int weightValue = fontWeightToInt[newWeight] ?? 400; // Default to 400 if not found
+  //   if (type == 'product_weight') {
+  //     productFontWeight.value = newWeight;
+  //     await prefs.setInt('product_weight', weightValue);
+  //   } else if (type == 'group_weight') {
+  //     groupFontWeight.value = newWeight;
+  //     await prefs.setInt('group_weight', weightValue);
+  //   } else if (type == 'description_weight') {
+  //     descriptionFontWeight.value = newWeight;
+  //     await prefs.setInt('description_weight', weightValue);
+  //   } else if (type == 'amount_weight') {
+  //     amountFontWeight.value = newWeight;
+  //     await prefs.setInt('amount_weight', weightValue);
+  //   } else {
+  //     amountFontWeight.value = newWeight;
+  //     await prefs.setInt('amount_weight', weightValue); // Default case
+  //   }
+  // }
+
+
 
   double amountFontSize = 15.0;
   double productFontSize = 15.0;
@@ -102,7 +189,7 @@ class OrderController extends GetxController {
   var productNameDetail = '';
   var indexDetail = 0;
   var heightOfImage = 8.0;
-  var widthOfImage = 18.0;
+  var widthOfImage = 8.0;
 
   ///added
   var selectedIndex = RxInt(0);
@@ -113,13 +200,15 @@ class OrderController extends GetxController {
     prefs.setDouble('amount_font_size', amountFontSize).toString();
     prefs.setDouble('group_font_size', groupFontSize).toString();
     prefs.setDouble('height_of_item', heightOfITem).toString();
-    prefs.setDouble('widthOfItem', widthOfItem).toString();
+    prefs.setDouble('widthOfItem', widthOfItem);
+
     prefs.setBool('showProductDescription', showProductDescription.value);
     prefs.setBool('showWegOrNoVeg', showWegOrNoVeg.value);
     prefs.setDouble('description_fontSize', descriptionFontSize).toString();
     prefs.setInt('count_of_row', rowCountGridView).toString();
     prefs.setBool('show_product_image', isShowImage.value);
     prefs.setDouble('heightOfImage', heightOfImage);
+    prefs.setDouble('widthOfImage', widthOfImage);
   }
 
   getDefaultValue() async {
@@ -134,7 +223,7 @@ class OrderController extends GetxController {
     descriptionFontSize = prefs.getDouble('description_fontSize') ?? 13.0;
     widthOfItem = prefs.getDouble('widthOfItem') ?? 4.0;
     heightOfImage = prefs.getDouble('heightOfImage') ?? 8.0;
-    widthOfImage = prefs.getDouble('widthOfImage') ?? 18.0;
+    widthOfImage = prefs.getDouble('widthOfImage') ?? 8.0;
 
 
     heightImageSizeController.text = heightOfImage.toString();
@@ -151,6 +240,10 @@ class OrderController extends GetxController {
     showProductDescription.value = prefs.getBool('showProductDescription') ?? true;
     showWegOrNoVeg.value = prefs.getBool('showWegOrNoVeg') ?? true;
     isShowImage.value = prefs.getBool('show_product_image') ?? true;
+    productFontWeight.value= intToFontWeight(prefs.getInt('product_weight')!) ;
+    groupFontWeight.value= intToFontWeight(prefs.getInt('group_weight')!);
+    descriptionFontWeight.value=intToFontWeight(prefs.getInt('description_weight')!);
+    amountFontWeight.value=intToFontWeight(prefs.getInt('amount_weight')!);
   }
 
   // Method to update selected index
@@ -173,6 +266,7 @@ class OrderController extends GetxController {
   RxBool quantityIncrement = false.obs;
 
   RxList orderItemList = [].obs;
+  RxList searchOrderItemList = [].obs;
   RxList deletedList = [].obs;
   RxInt selectedGroup = 0.obs;
 
@@ -226,6 +320,16 @@ class OrderController extends GetxController {
   RxBool isInclusive = false.obs;
   RxBool unitPriceEdit = false.obs;
   RxList kartChange = [].obs;
+   filterList(String query) {
+    String query = searchListController.text.toLowerCase();
+    if (query.isEmpty) {
+      searchOrderItemList.value = List.from(orderItemList); // Show all items if query is empty
+    } else {
+      searchOrderItemList.value = orderItemList.where((item) {
+        return item["ProductName"].toLowerCase().contains(query);
+      }).toList();
+    }
+  }
 
   bool checkValueInList(value) {
     return kartChange.contains(value);
@@ -421,6 +525,7 @@ class OrderController extends GetxController {
     update();
   }
 
+  ///add aitems to lsit
   addItemToList({required int index}) {
     Map data = {
       "ProductName": productName.value,
@@ -762,6 +867,9 @@ class OrderController extends GetxController {
 
     log_data(" data $data");
     orderItemList.insert(0, data);
+    ///heree adding item to search
+    searchOrderItemList.value=orderItemList;
+
     update();
     totalAmount();
   }
@@ -1260,10 +1368,12 @@ class OrderController extends GetxController {
       print(responseJson);
       print(status);
       if (status == 6000) {
+        print("........................");
         productList.clear();
         for (Map user in responseJson) {
           productList.add(ProductListModel.fromJson(user));
         }
+        print(".....ddddddddd...................");
 
         productIsLoading.value = false;
       } else if (status == 6001) {
@@ -1300,69 +1410,7 @@ class OrderController extends GetxController {
 
   /// update list
 
-  /// crete order function
-//   postingData(isPayment) {
-//     var detailsList = [];
-//
-//     print("=====================================================");
-//     print(orderItemList.length);
-//
-//
-//     print("=====================================================");
-//     for (var i = 0; i < orderItemList.length; i++) {
-//       var dictionary = {
-//         "detailID": orderItemList[i]["detailID"],
-//         "Status": orderItemList[i]["Status"],
-//         "Qty": orderItemList[i]["Qty"],
-//         "ProductID": orderItemList[i]["ProductID"],
-//         "UnitPrice": orderItemList[i]["UnitPrice"],
-//         "RateWithTax": orderItemList[i]["RateWithTax"],
-//         "PriceListID": orderItemList[i]["PriceListID"],
-//         "GrossAmount": orderItemList[i]["GrossAmount"],
-//         "TaxableAmount": orderItemList[i]["TaxableAmount"],
-//         "VATPerc": orderItemList[i]["VATPerc"],
-//         "VATAmount": orderItemList[i]["VATAmount"],
-//         "SGSTPerc": orderItemList[i]["SGSTPerc"],
-//         "SGSTAmount": orderItemList[i]["SGSTAmount"],
-//         "CGSTPerc": orderItemList[i]["CGSTPerc"],
-//         "CGSTAmount": orderItemList[i]["CGSTAmount"],
-//         "IGSTPerc": orderItemList[i]["IGSTPerc"],
-//         "IGSTAmount": orderItemList[i]["IGSTAmount"],
-//         "NetAmount": orderItemList[i]["NetAmount"],
-//         "InclusivePrice": orderItemList[i]["InclusivePrice"],
-//         "Description": orderItemList[i]["Description"],
-//         "ProductTaxID": orderItemList[i]["ProductTaxID"],
-//         "unq_id": orderItemList[i]["unq_id"],
-//         "Flavour": orderItemList[i]["flavour"],
-//         "ExciseTax": orderItemList[i]["ExciseTax"],
-//         "ExciseTaxID": orderItemList[i]["ExciseTaxID"],
-//         "FreeQty": "0",
-//         "DiscountPerc": "0",
-//         "DiscountAmount": "0",
-//         "TAX1Perc": "0",
-//         "TAX1Amount": "0",
-//         "TAX2Perc": "0",
-//         "TAX2Amount": "0",
-//         "TAX3Perc": "0",
-//         "TAX3Amount": "0",
-//         "KFCAmount": "0",
-//         "BatchCode": "0",
-//         "SerialNos": [],
-//       };
-//
-//       print("=================================================================");
-//       print(i);
-//       print(dictionary);
-//       detailsList.add(dictionary);
-//     }
-//
-//    //  if (widget.type == "Edit") {
-//    // ///   updateSalesOrderRequest(detailsList, isPayment);
-//    //  } else {
-//    //    createSalesOrderRequest(detailsList, isPayment);
-//    //  }
-//     createSalesOrderRequest(detailsList, isPayment);
-//   }
+
 
   /// function for load edit details
   Future<Null> getOrderDetails({required String uID}) async {
@@ -1425,7 +1473,10 @@ class OrderController extends GetxController {
           }
 
           orderItemList.clear();
+          searchOrderItemList.clear();
           orderItemList.value = responseJson["SalesOrderDetails"];
+          searchOrderItemList.value = responseJson["SalesOrderDetails"];
+
           update();
           totalAmount();
           //   getLoyaltyCustomer();
@@ -1453,6 +1504,7 @@ class OrderController extends GetxController {
     required bool isPayment,
     required String tableID,
     required String orderID,
+    required String platformID,
   }) async {
     var netWork = await checkNetwork();
     if (netWork) {
@@ -1468,6 +1520,7 @@ class OrderController extends GetxController {
               orderType: orderType,
               tableHead: tableHead,
               tableID: tableID,
+              platformID: platformID,
               orderID: orderID);
         } else {
           popAlert(head: "Waring", message: "Price must be greater than 0", position: SnackPosition.TOP);
@@ -1488,6 +1541,7 @@ class OrderController extends GetxController {
     required String tableID,
     required String tableHead,
     required String sectionType,
+    required String platformID,
     required String orderID,
   }) async {
     start(context);
@@ -1620,6 +1674,7 @@ class OrderController extends GetxController {
         "RoundOff": "0",
         "IsActive": true,
         "IsInvoiced": "N",
+        "onlinePlatform":platformID
       };
       log_data(data);
       //encode Map to JSON

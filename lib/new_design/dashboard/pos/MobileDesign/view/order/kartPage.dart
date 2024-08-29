@@ -8,8 +8,6 @@ import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/order_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/customer_detail.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/select_deliveryman.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/mobile_payment_page.dart';
 
 import 'product_detail_page.dart';
 import 'search_items.dart';
@@ -57,7 +55,10 @@ class _KartPageState extends State<KartPage> {
           children: [
             Text(
               'Table_Order'.tr,
-              style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -65,13 +66,18 @@ class _KartPageState extends State<KartPage> {
               children: [
                 Text(
                   'Table_Order'.tr,
-                  style: const TextStyle(color: Color(0xff585858), fontSize: 14, fontWeight: FontWeight.w400),
+                  style: const TextStyle(
+                      color: Color(0xff585858),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400),
                 ),
                 Obx(() => Text(
                       orderController.tokenNumber.value,
-                      style: const TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
-                    )
-                ),
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
+                    )),
               ],
             ),
           ],
@@ -81,7 +87,6 @@ class _KartPageState extends State<KartPage> {
             padding: const EdgeInsets.only(right: 6.0),
             child: IconButton(
                 onPressed: () {
-
                   addDetails();
                 },
                 icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
@@ -110,13 +115,19 @@ class _KartPageState extends State<KartPage> {
                           Get.to(SearchItems());
                         },
                         readOnly: true,
-                        style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
+                        style: customisedStyle(
+                            context, Colors.black, FontWeight.normal, 15.0),
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color(0xffFBFBFB),
                             hintText: "Search",
-                            hintStyle: customisedStyle(context, const Color(0xff929292), FontWeight.normal, 15.0),
-                            contentPadding: const EdgeInsets.only(left: 10.0, bottom: 10, top: 8),
+                            hintStyle: customisedStyle(
+                                context,
+                                const Color(0xff929292),
+                                FontWeight.normal,
+                                15.0),
+                            contentPadding: const EdgeInsets.only(
+                                left: 10.0, bottom: 10, top: 8),
                             border: InputBorder.none)),
                   ),
                   IconButton(
@@ -164,22 +175,28 @@ class _KartPageState extends State<KartPage> {
                     },
                     child: InkWell(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 0.0, right: 2, top: 10, bottom: 10),
+                        padding: const EdgeInsets.only(
+                            left: 0.0, right: 2, top: 10, bottom: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Obx(
                               () => IconButton(
-                                icon: Icon(Icons.check_circle,size: 25,
-                                    color: orderController.checkValueInList(index) == true ? const Color(0xffF25F29) :  const Color(0xffFDDDDDD)),
+                                icon: Icon(Icons.check_circle,
+                                    size: 25,
+                                    color: orderController
+                                                .checkValueInList(index) ==
+                                            true
+                                        ? const Color(0xffF25F29)
+                                        : const Color(0xffFDDDDDD)),
                                 onPressed: () {
-                                  var result = orderController.checkValueInList(index);
+                                  var result =
+                                      orderController.checkValueInList(index);
                                   if (result) {
                                     orderController.kartChange.remove(index);
                                     orderController.update();
-                                  }
-                                  else {
+                                  } else {
                                     orderController.kartChange.add(index);
                                   }
                                 },
@@ -195,16 +212,28 @@ class _KartPageState extends State<KartPage> {
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      SvgPicture.asset("assets/svg/veg_mob.svg"),
+                                      SvgPicture.asset(
+                                          "assets/svg/veg_mob.svg"),
                                       Padding(
-                                        padding: const EdgeInsets.only(right: 10.0, top: 0, left: 10),
+                                        padding: const EdgeInsets.only(
+                                            right: 10.0, top: 0, left: 10),
                                         child: Container(
-                                          width: MediaQuery.of(context).size.width * 0.35,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.35,
                                           child: Text(
-                                            orderController.orderItemList[index]["ProductName"] ?? '',
-                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                            orderController.orderItemList[index]
+                                                    ["ProductName"] ??
+                                                '',
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w400,
+                                                15.0),
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -212,12 +241,20 @@ class _KartPageState extends State<KartPage> {
                                       ),
                                     ],
                                   ),
-                                  orderController.orderItemList[index]["Description"] != ""
+                                  orderController.orderItemList[index]
+                                              ["Description"] !=
+                                          ""
                                       ? Padding(
-                                          padding: const EdgeInsets.only(left: 20.0, right: 5),
+                                          padding: const EdgeInsets.only(
+                                              left: 20.0, right: 5),
                                           child: Text(
-                                            orderController.orderItemList[index]["Description"],
-                                            style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                            orderController.orderItemList[index]
+                                                ["Description"],
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffF25F29),
+                                                FontWeight.w400,
+                                                13.0),
                                           ),
                                         )
                                       : Container(),
@@ -225,58 +262,105 @@ class _KartPageState extends State<KartPage> {
                                     () => Padding(
                                       padding: const EdgeInsets.only(top: 10.0),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          orderController.orderItemList[index]["Flavour_Name"] != ""
+                                          orderController.orderItemList[index]
+                                                      ["Flavour_Name"] !=
+                                                  ""
                                               ? Padding(
-                                                padding: const EdgeInsets.only(left: 5.0),
-                                                child: Container(
-                                                                                            width:MediaQuery.of(context).size.width/4.5,
-                                                  child: Padding(
-                                                      padding: const EdgeInsets.only(right: 5),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5.0),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            4.5,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 5),
                                                       child: Text(
-                                                        orderController.orderItemList[index]["Flavour_Name"] ?? "",
-                                                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                                        orderController.orderItemList[
+                                                                    index][
+                                                                "Flavour_Name"] ??
+                                                            "",
+                                                        style: customisedStyle(
+                                                            context,
+                                                            const Color(
+                                                                0xffF25F29),
+                                                            FontWeight.w400,
+                                                            13.0),
                                                       ),
                                                     ),
-                                                ),
-                                              )
-                                              :   Container(
-                                            height: MediaQuery.of(context).size.height / 30,
-                                            width:MediaQuery.of(context).size.width/4.5,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xffFFF6F2),
-                                              borderRadius: BorderRadius.circular(30),
-                                            ),
-                                            child: const Center(
-                                              child: Padding(
-                                                padding: EdgeInsets.only( right: 10),
-                                                child: Text(
-                                                  "  + Flavour",
-                                                  style: TextStyle(fontSize: 11, color: Colors.redAccent),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          Obx(() => Container(
-                                                height: MediaQuery.of(context).size.height / 33,
-                                                decoration: BoxDecoration(
-                                                  color: orderController.returnIconStatus(orderController.orderItemList[index]["Status"]),
-                                                  borderRadius: BorderRadius.circular(30),
-                                                ),
-                                                child: Center(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(left: 10.0, right: 10),
-                                                    child: Text(
-                                                      orderController.returnStatus(orderController.orderItemList[index]["Status"]),
-                                                      style: const TextStyle(fontSize: 11, color: Colors.white),
+                                                  ),
+                                                )
+                                              : Container(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      30,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      4.5,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffFFF6F2),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                  ),
+                                                  child: const Center(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          right: 10),
+                                                      child: Text(
+                                                        "  + Flavour",
+                                                        style: TextStyle(
+                                                            fontSize: 11,
+                                                            color: Colors
+                                                                .redAccent),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              )
-                                          )
+                                          Obx(() => Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    33,
+                                                decoration: BoxDecoration(
+                                                  color: orderController
+                                                      .returnIconStatus(
+                                                          orderController
+                                                                  .orderItemList[
+                                                              index]["Status"]),
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                ),
+                                                child: Center(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10.0,
+                                                            right: 10),
+                                                    child: Text(
+                                                      orderController.returnStatus(
+                                                          orderController
+                                                                  .orderItemList[
+                                                              index]["Status"]),
+                                                      style: const TextStyle(
+                                                          fontSize: 11,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ))
                                         ],
                                       ),
                                     ),
@@ -291,37 +375,61 @@ class _KartPageState extends State<KartPage> {
                                   children: [
                                     Text(
                                       orderController.currency.value,
-                                      style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 14.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffA5A5A5),
+                                          FontWeight.w400,
+                                          14.0),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 3.0),
                                       child: Text(
-                                        roundStringWith(orderController.orderItemList[index]["UnitPrice"].toString()),
-                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                        roundStringWith(orderController
+                                            .orderItemList[index]["UnitPrice"]
+                                            .toString()),
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff000000),
+                                            FontWeight.w500,
+                                            16.0),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     IconButton(
-                                      icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
+                                      icon: SvgPicture.asset(
+                                          "assets/svg/minus_mob.svg"),
                                       onPressed: () {
-                                        if (double.parse(orderController.orderItemList[index]["Qty"].toString()) >= 2.0) {
-                                          orderController.updateQty(index: index, type: 0);
+                                        if (double.parse(orderController
+                                                .orderItemList[index]["Qty"]
+                                                .toString()) >=
+                                            2.0) {
+                                          orderController.updateQty(
+                                              index: index, type: 0);
                                         }
                                       },
                                     ),
                                     Container(
-                                      height: MediaQuery.of(context).size.height / 21,
-                                      width: MediaQuery.of(context).size.width / 7,
-                                      decoration:
-                                          BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xffE7E7E7))),
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              21,
+                                      width:
+                                          MediaQuery.of(context).size.width / 7,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: const Color(0xffE7E7E7))),
                                       child: Center(
                                         child: Text(
-                                          roundStringWith(orderController.orderItemList[index]["Qty"].toString()),
+                                          roundStringWith(orderController
+                                              .orderItemList[index]["Qty"]
+                                              .toString()),
                                           style: const TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -330,9 +438,11 @@ class _KartPageState extends State<KartPage> {
                                       ),
                                     ),
                                     IconButton(
-                                      icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
+                                      icon: SvgPicture.asset(
+                                          "assets/svg/plus_mob.svg"),
                                       onPressed: () {
-                                        orderController.updateQty(index: index, type: 1);
+                                        orderController.updateQty(
+                                            index: index, type: 1);
                                       },
                                     ),
                                   ],
@@ -362,7 +472,9 @@ class _KartPageState extends State<KartPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextButton(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEEF5FF))),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(const Color(0xffEEF5FF))),
                   onPressed: () {
                     orderController.changeStatus("take_away");
                     orderController.update();
@@ -371,7 +483,8 @@ class _KartPageState extends State<KartPage> {
                     padding: const EdgeInsets.only(left: 5.0, right: 5),
                     child: Text(
                       "TakeAway",
-                      style: customisedStyle(context, const Color(0xff034FC1), FontWeight.normal, 12.0),
+                      style: customisedStyle(context, const Color(0xff034FC1),
+                          FontWeight.normal, 12.0),
                     ),
                   ),
                 ),
@@ -379,7 +492,9 @@ class _KartPageState extends State<KartPage> {
                   width: 7,
                 ),
                 TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffF0F0F0))),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xffF0F0F0))),
                     onPressed: () {
                       orderController.changeStatus("delivered");
                       orderController.update();
@@ -388,14 +503,17 @@ class _KartPageState extends State<KartPage> {
                       padding: const EdgeInsets.only(left: 5.0, right: 5),
                       child: Text(
                         'Delivered',
-                        style: customisedStyle(context, const Color(0xff000000), FontWeight.normal, 12.0),
+                        style: customisedStyle(context, const Color(0xff000000),
+                            FontWeight.normal, 12.0),
                       ),
                     )),
                 const SizedBox(
                   width: 7,
                 ),
                 TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffFFF6F2))),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xffFFF6F2))),
                     onPressed: () {
                       Get.back();
                     },
@@ -409,7 +527,11 @@ class _KartPageState extends State<KartPage> {
                           padding: const EdgeInsets.only(left: 5.0, right: 5),
                           child: Text(
                             'Items',
-                            style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 12.0),
+                            style: customisedStyle(
+                                context,
+                                const Color(0xffF25F29),
+                                FontWeight.normal,
+                                12.0),
                           ),
                         )
                       ],
@@ -436,18 +558,21 @@ class _KartPageState extends State<KartPage> {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Text(
                         'to_be_paid'.tr,
-                        style: customisedStyle(context, const Color(0xff9E9E9E), FontWeight.w400, 17.0),
+                        style: customisedStyle(context, const Color(0xff9E9E9E),
+                            FontWeight.w400, 17.0),
                       ),
                     ),
                     Text(
                       orderController.currency.value,
-                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w400, 16.0),
+                      style: customisedStyle(context, const Color(0xff000000),
+                          FontWeight.w400, 16.0),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 3.0),
                       child: Text(
                         roundStringWith(orderController.totalNetP.toString()),
-                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                        style: customisedStyle(context, const Color(0xff000000),
+                            FontWeight.w500, 18.0),
                       ),
                     ),
                   ],
@@ -461,7 +586,9 @@ class _KartPageState extends State<KartPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xffDF1515))),
                       onPressed: () {
                         Get.back();
                       },
@@ -472,7 +599,11 @@ class _KartPageState extends State<KartPage> {
                             padding: const EdgeInsets.only(left: 5.0, right: 5),
                             child: Text(
                               'cancel'.tr,
-                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
+                              style: customisedStyle(
+                                  context,
+                                  const Color(0xffffffff),
+                                  FontWeight.normal,
+                                  12.0),
                             ),
                           ),
                         ],
@@ -481,7 +612,9 @@ class _KartPageState extends State<KartPage> {
                     width: 7,
                   ),
                   TextButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xff10C103))),
                       onPressed: () async {
                         if (widget.orderType == 1) {
                           if (posController.dining_create_perm.value) {
@@ -492,7 +625,8 @@ class _KartPageState extends State<KartPage> {
                                 context: context,
                                 orderID: widget.uID,
                                 isPayment: false,
-                                sectionType: widget.sectionType);
+                                sectionType: widget.sectionType,
+                                platformID: '');
                           } else {
                             dialogBoxPermissionDenied(context);
                           }
@@ -505,7 +639,8 @@ class _KartPageState extends State<KartPage> {
                                 context: context,
                                 orderID: widget.uID,
                                 isPayment: false,
-                                sectionType: widget.sectionType);
+                                sectionType: widget.sectionType,
+                                platformID: '');
                           } else {
                             dialogBoxPermissionDenied(context);
                           }
@@ -518,7 +653,8 @@ class _KartPageState extends State<KartPage> {
                                 context: context,
                                 orderID: widget.uID,
                                 isPayment: false,
-                                sectionType: widget.sectionType);
+                                sectionType: widget.sectionType,
+                                platformID: '');
                           } else {
                             dialogBoxPermissionDenied(context);
                           }
@@ -531,7 +667,11 @@ class _KartPageState extends State<KartPage> {
                             padding: const EdgeInsets.only(left: 5.0, right: 5),
                             child: Text(
                               'Save'.tr,
-                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
+                              style: customisedStyle(
+                                  context,
+                                  const Color(0xffffffff),
+                                  FontWeight.normal,
+                                  12.0),
                             ),
                           )
                         ],
@@ -540,9 +680,13 @@ class _KartPageState extends State<KartPage> {
                     width: 7,
                   ),
                   TextButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff00775E))),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xff00775E))),
                       onPressed: () {
-                        if (widget.orderType == 1 || widget.orderType == 4 || widget.orderType == 2) {
+                        if (widget.orderType == 1 ||
+                            widget.orderType == 4 ||
+                            widget.orderType == 2) {
                           if (posController.pay_perm.value) {
                             orderController.createMethod(
                                 tableID: widget.tableID,
@@ -551,7 +695,8 @@ class _KartPageState extends State<KartPage> {
                                 orderType: widget.orderType,
                                 context: context,
                                 isPayment: true,
-                                sectionType: widget.sectionType);
+                                sectionType: widget.sectionType,
+                                platformID: '');
                           } else {
                             dialogBoxPermissionDenied(context);
                           }
@@ -564,7 +709,11 @@ class _KartPageState extends State<KartPage> {
                             padding: const EdgeInsets.only(left: 5.0, right: 5),
                             child: Text(
                               'payment'.tr,
-                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
+                              style: customisedStyle(
+                                  context,
+                                  const Color(0xffffffff),
+                                  FontWeight.normal,
+                                  12.0),
                             ),
                           )
                         ],
@@ -585,7 +734,8 @@ class _KartPageState extends State<KartPage> {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0),
           // Set border radius to the top left corner
-          topRight: Radius.circular(10.0), // Set border radius to the top right corner
+          topRight: Radius.circular(
+              10.0), // Set border radius to the top right corner
         ),
       ),
       backgroundColor: Colors.white,
@@ -602,7 +752,8 @@ class _KartPageState extends State<KartPage> {
                   children: [
                     Text(
                       'Details'.tr,
-                      style: customisedStyle(context, Colors.black, FontWeight.w700, 18.0),
+                      style: customisedStyle(
+                          context, Colors.black, FontWeight.w700, 18.0),
                     ),
                     IconButton(
                         onPressed: () {
@@ -617,14 +768,16 @@ class _KartPageState extends State<KartPage> {
               ),
               dividerStyle(),
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
+                padding: const EdgeInsets.only(
+                    left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.customerNameController,
                     readOnly: true,
-                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                    style: customisedStyle(
+                        context, Colors.black, FontWeight.w500, 14.0),
                     onTap: () async {
                       final result = await Get.to(CustomerDetailPage());
 
@@ -635,7 +788,8 @@ class _KartPageState extends State<KartPage> {
                       }
                     },
                     keyboardType: TextInputType.text,
-                    decoration: TextFieldDecoration.defaultTextFieldIcon(hintTextStr: 'customer'.tr),
+                    decoration: TextFieldDecoration.defaultTextFieldIcon(
+                        hintTextStr: 'customer'.tr),
                   ),
                 ),
               ),
@@ -648,35 +802,44 @@ class _KartPageState extends State<KartPage> {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                       'balance'.tr,
-                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 14.0),
+                      style: customisedStyle(context, const Color(0xff8C8C8C),
+                          FontWeight.w400, 14.0),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                       orderController.currency.value,
-                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 15.0),
+                      style: customisedStyle(context, const Color(0xff8C8C8C),
+                          FontWeight.w400, 15.0),
                     ),
                   ),
                   Obx(
                     () => Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Text(orderController.customerBalance.value, style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0)),
+                      child: Text(orderController.customerBalance.value,
+                          style: customisedStyle(context,
+                              const Color(0xff000000), FontWeight.w500, 15.0)),
                     ),
                   )
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
+                padding: const EdgeInsets.only(
+                    left: 16, right: 16, top: 15, bottom: 15),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: orderController.phoneNumberController,
-                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+                    style: customisedStyle(
+                        context, Colors.black, FontWeight.w500, 14.0),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                    ],
                     keyboardType: TextInputType.number,
-                    decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'ph_no'.tr),
+                    decoration: TextFieldDecoration.defaultTextField(
+                        hintTextStr: 'ph_no'.tr),
                   ),
                 ),
               ),
@@ -721,17 +884,20 @@ class _KartPageState extends State<KartPage> {
               //   ),
               // ),
               Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16, bottom: 16, top: 5),
                 child: Container(
                   height: MediaQuery.of(context).size.height / 17,
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                          borderRadius: BorderRadius.circular(
+                              8.0), // Adjust the radius as needed
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
+                      backgroundColor:
+                          MaterialStateProperty.all(const Color(0xffF25F29)),
                     ),
                     onPressed: () {
                       // Do something with the text
@@ -739,7 +905,8 @@ class _KartPageState extends State<KartPage> {
                     },
                     child: Text(
                       'save'.tr,
-                      style: customisedStyle(context, Colors.white, FontWeight.normal, 15.0),
+                      style: customisedStyle(
+                          context, Colors.white, FontWeight.normal, 15.0),
                     ),
                   ),
                 ),

@@ -16,6 +16,7 @@ class POSPaymentController extends GetxController {
   RxString  currency = "SR".obs;
   RxString  customerBalance = "0".obs;
   RxString deliveryManName = "".obs;
+  RxString platformName = "".obs;
 
   RxInt ledgerID = 1.obs;
   RxString totalNetP = "0.0".obs;

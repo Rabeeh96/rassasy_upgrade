@@ -452,11 +452,13 @@ final isLoadCar=false.obs;
 
   var dining_create_perm = false.obs;
   var take_away_create_perm = false.obs;
+  var online_create_perm = false.obs;
   var car_create_perm = false.obs;
 
   var dining_edit_perm =false.obs;
   var take_away_edit_perm = false.obs;
   var car_edit_perm = false.obs;
+  var online_edit_perm = false.obs;
 
   var dining_delete_perm =false.obs;
   var take_away_delete_perm =false.obs;
@@ -484,10 +486,12 @@ final isLoadCar=false.obs;
       dining_create_perm.value = prefs.getBool('Diningsave') ?? true;
       take_away_create_perm.value = prefs.getBool('Take awaysave') ?? true;
       car_create_perm.value = prefs.getBool('Carsave') ?? true;
+     online_create_perm.value = prefs.getBool('Onlinesave') ?? true;
 
       dining_edit_perm.value = prefs.getBool('Diningedit') ?? true;
       take_away_edit_perm.value = prefs.getBool('Take awayedit') ?? true;
       car_edit_perm.value = prefs.getBool('Caredit') ?? true;
+    online_edit_perm.value = prefs.getBool('Onlineedit') ?? true;
 
       bool kotPrint = prefs.getBool("KOT") ?? false;
 
