@@ -808,7 +808,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      left: 8.0,
+                      left: 8.0,top:8
                     ),
                     child: Container(
                       alignment: Alignment.centerLeft,
