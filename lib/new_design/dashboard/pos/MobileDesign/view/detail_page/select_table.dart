@@ -29,6 +29,7 @@ class _SelectTableReservationState extends State<SelectTableReservation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
@@ -51,121 +52,103 @@ class _SelectTableReservationState extends State<SelectTableReservation> {
         ),
       ),
       body: Column(children: [
-
         dividerStyle(),
         SizedBox(height: 20,),
-        // Expanded(
-        //     child: Obx(() =>
-        //         reservationController.isLoading.value?
-        //         const Center(child: CircularProgressIndicator()):
-        //         reservationController.tableData.isEmpty
-        //             ? const Center(child: Text("Table not found"))
-        //             : ListView.separated(
-        //
-        //           separatorBuilder: (context, index) => DividerStyle(),
-        //           itemCount: reservationController.tableData.length,
-        //           itemBuilder: (context, index) {
-        //             return GestureDetector(
-        //               onTap: () {
-        //
-        //
-        //                 print("----${reservationController.tableData[index].tableName}");
-        //
-        //             //    Navigator.pop(context);
-        //               },
-        //               child: InkWell(
-        //                 child: Padding(
-        //                   padding: const EdgeInsets.only(left: 15.0, right: 15, top: 18, bottom: 18),
-        //                   child: Padding(
-        //                     padding:   const EdgeInsets.only(right: 8.0),
-        //                     child: Text(
-        //                       reservationController.tableData[index]["title"]??"",
-        //                       style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ),
-        //             );
-        //           },
-        //         )
-        //     )
-        //
-        //
-        // ),
+        Container(
+          height:  MediaQuery.of(context).size.height *.88,
+          child: CustomScrollView(
+              slivers: <Widget>[
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 25, right: 25, top: 20),
+                    height:  MediaQuery.of(context).size.height *.88,
+                    child: Obx(() => reservationController.isLoading.value
+                        ? const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xffffab00),
+                        ))
+                        : reservationController.tableData.isEmpty
+                        ? Center(
+                        child: Text(
+                          "No recent orders",
+                          style: customisedStyle(
+                              context, Colors.black, FontWeight.w400, 18.0),
+                        ))
+                        : GridView.builder(
+                      gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 6,
+                        mainAxisSpacing: 15,
+                        crossAxisSpacing: 20,
+                        childAspectRatio: 2.0,
+                        mainAxisExtent: 100
+                      ),
+                      itemCount: reservationController.tableData.length,
+                      itemBuilder: (context, index) {
 
-
-        Expanded(
-          child: Obx(
-            () => reservationController.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
-                : reservationController.tableData.isEmpty
-                    ? const Center(child: Text("Table not found"))
-                    : GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, // Number of columns in the grid
-                          crossAxisSpacing: 10.0, // Spacing between columns
-                          mainAxisSpacing: 10.0, // Spacing between rows
-                          childAspectRatio: 2, // Aspect ratio of each grid item
-                        ),
-                        itemCount: reservationController.tableData.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
+                        return GestureDetector(
                             onTap: () {
                               Navigator.pop(context,[reservationController.tableData[index]["title"],reservationController.tableData[index]["id"],]);
                             },
-                            child: InkWell(
-                              child: Container(
-                                  height: MediaQuery.of(context).size.height / 14, //height of button
-                                  //    width: MediaQuery.of(context).size.width / 3,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        width: 1,
-                                        color: const Color(0xffC9C9C9),
-                                      ),
-                                      borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
-                                      )),
 
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
-                                        child: Container(
-
-                                          height: MediaQuery.of(context).size.height / 18, //height of button
-                                          width: MediaQuery.of(context).size.width / 16,
-                                          decoration: BoxDecoration(
-                                            //  color: Colors.red,
-                                              border: Border.all(
-                                                width: .1,
-                                                color: const Color(0xffC9C9C9),
-                                              ),
-                                              borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
-                                              )),
-
-                                          child: SvgPicture.asset("assets/svg/table.svg"),
-                                        ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      left: BorderSide(
+                                        color: Colors.grey,
+                                        width: 4,
                                       ),
-                                      Expanded(
-                                        child: Text(
-                                          reservationController.tableData[index]["title"] ?? "",
-                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
-                                        ),
-                                      ),
-                                    ],
+                                      right: BorderSide(
+                                          color: Color(0xffE9E9E9),
+                                          width: 1),
+                                      bottom: BorderSide(
+                                          color: Color(0xffE9E9E9),
+                                          width: 1),
+                                      top: BorderSide(
+                                          color: Color(0xffE9E9E9),
+                                          width: 1),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-          ),
+                                  child: GridTile(
+
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+
+                                            height: MediaQuery.of(context).size.height / 18, //height of button
+                                            width: MediaQuery.of(context).size.width / 20,
+                                            decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        width: .1,
+                                                  color: const Color(0xffC9C9C9),
+                                                ),
+                                                borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                                                )),
+                                            child: SvgPicture.asset("assets/svg/table.svg"),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            reservationController.tableData[index]["title"] ?? "",
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )));
+                      },
+                    )),
+                  ),
+                ),
+              ]),
         )
-      ]),
+    ]),
     );
   }
 }

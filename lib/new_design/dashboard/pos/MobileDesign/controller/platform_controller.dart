@@ -78,28 +78,49 @@ class PlatformController extends GetxController {
       body: json.encode(payload),
     );
     print("s$payload h");
+    print("-------------s-----s----------");
 
     if (response.statusCode == 200) {
+      print("----------200---------");
+
       final data = json.decode(response.body);
       var responseData = jsonDecode(response.body);
+      print("----------300---------");
+
       if (responseData['StatusCode'] == 6000) {
+        print("----------statuscode---------");
+
         Get.back();
-       // popAlert(head: "Success", message: "Successfully Create platform", position: SnackPosition.TOP);
+      /// popAlert(head: "Success", message: "Successfully Create platform", position: SnackPosition.TOP);
         fetchPlatforms();
         platformNameController.clear();
 
         print("----------------------------");
         update();
-      } else {
+      }
+      else if(responseData['StatusCode'] == 6001){
+        print("----------6001---------");
+
+        Get.snackbar("Error", responseData['message']);
+      }else  if(responseData['StatusCode'] == 6002){
+        print("----------6002---------");
+
+        Get.snackbar("Error", responseData['message']??responseData['error']);
+
+      }
+      else {
+        print("----------exe---------");
+
         throw Exception(responseData['message']);
       }
        // Check for success status code
     } else {
+      print("----------efghfghfgj---------");
+
       throw Exception('Failed to create platform');
     }
   }
     editPlatform(String name,String id) async {
-    print("sgdhssfh");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String apiUrl = '${BaseUrl.baseUrlV11}/posholds/pos-online-platforms/';
 
@@ -136,11 +157,18 @@ class PlatformController extends GetxController {
         fetchPlatforms();
         platformNameController.clear();
 
-        print("----------------------------");
         update();
-      } else {
-        throw Exception(responseData['message']);
+      } else if(responseData['StatusCode'] == 6001){
+      Get.snackbar("Error", responseData['message']);
+      }else  if(responseData['StatusCode'] == 6002){
+        Get.snackbar("Error", responseData['message']??responseData['error']);
+
       }
+      else {
+        throw Exception(responseData['message']);
+
+      }
+
       // Check for success status code
     } else {
       throw Exception('Failed to create platform');
@@ -165,24 +193,18 @@ class PlatformController extends GetxController {
       body: json.encode(payload),
     );
 print(apiUrl);
-     print("------------------s----------");
 
     if (response.statusCode == 200) {
-      print("-------------s-----s----------");
 
       json.decode(response.body);
-      print("-------s------s-----s----------");
-
-      var responseData = jsonDecode(response.body);
+   var responseData = jsonDecode(response.body);
       if (responseData['StatusCode'] == 6000) {
-        print("------------------ssssssssssssssss----------");
 
         Get.back();
         popAlert(head: "Success", message: "Successfully Deleted", position: SnackPosition.TOP);
         fetchPlatforms();
 
 
-        print("----------------------------");
         update();
       } else {
         throw Exception(responseData['message']);

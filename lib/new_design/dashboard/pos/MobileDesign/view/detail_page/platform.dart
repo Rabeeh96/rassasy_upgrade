@@ -37,102 +37,108 @@ class _OnlinePlatformsState extends State<OnlinePlatforms> {
           return Center(child: CircularProgressIndicator());
         }
         return controller.platforms.isEmpty?Center(child: Text("No Platforms found ")): Center(
-          child: Container(
+          child: SizedBox(height: MediaQuery.of(context).size.height/1.1,
             width: MediaQuery.of(context).size.width/3,
-            child: SlidableAutoCloseBehavior(
-                closeWhenOpened: true,
-                child: ListView.separated(
-                  itemCount: controller.platforms.length,
-                  itemBuilder: (context, index) {
-                    final platform = controller.platforms[index];
-                    return Slidable(
-                        key: ValueKey(
-                            controller.platforms[index]),
-                        // The start action pane is the one at the left or the top side.
-                        startActionPane: ActionPane(
-                          // A motion is a widget used to control how the pane animates.
-                          motion: const ScrollMotion(),
-                          // A pane can dismiss the Slidable.
-                          // All actions are defined in the children parameter.
-                          children: [
-                            // A LiableAction can have an icon and/or a label.
-                            SlidableAction(
-                              onPressed: (BuildContext context) async {
+            child: Column(
+              children: [
+                SlidableAutoCloseBehavior(
+                    closeWhenOpened: true,
+                    child: Expanded(child: ListView.separated(
+                      scrollDirection: Axis.vertical,
 
-                                // bool hasPermission =
-                                // await checkingPerm("Flavourdelete");
-                                //
-                                // if (hasPermission) {
-                                bottomDialogueFunction(
-                                    isDismissible: true,
-                                    textMsg: "Sure want to delete",
-                                    fistBtnOnPressed: () {
-                                      Get.back(); // Close the dialog
-                                    },
-                                    secondBtnPressed: () async {
-                                      controller.deletePlatform(controller.platforms[index].id);
+                      itemCount: controller.platforms.length,
+                      itemBuilder: (context, index) {
+                        final platform = controller.platforms[index];
+                        return Slidable(
+                            key: ValueKey(
+                                controller.platforms[index]),
+                            // The start action pane is the one at the left or the top side.
+                            startActionPane: ActionPane(
+                              // A motion is a widget used to control how the pane animates.
+                              motion: const ScrollMotion(),
+                              // A pane can dismiss the Slidable.
+                              // All actions are defined in the children parameter.
+                              children: [
+                                // A LiableAction can have an icon and/or a label.
+                                SlidableAction(
+                                  onPressed: (BuildContext context) async {
 
-                                    },
-                                    secondBtnText: 'Ok',
-                                    context: context);
-                                // } else {
-                                //   dialogBoxPermissionDenied(
-                                //       context); // Assuming this function also uses Get.dialog
-                                // }
-                              },
-                              // onPressed: doNothing ,
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete,
-                              label: 'Delete',
+                                    // bool hasPermission =
+                                    // await checkingPerm("Flavourdelete");
+                                    //
+                                    // if (hasPermission) {
+                                    bottomDialogueFunction(
+                                        isDismissible: true,
+                                        textMsg: "Sure want to delete",
+                                        fistBtnOnPressed: () {
+                                          Get.back(); // Close the dialog
+                                        },
+                                        secondBtnPressed: () async {
+                                          controller.deletePlatform(controller.platforms[index].id);
+
+                                        },
+                                        secondBtnText: 'Ok',
+                                        context: context);
+                                    // } else {
+                                    //   dialogBoxPermissionDenied(
+                                    //       context); // Assuming this function also uses Get.dialog
+                                    // }
+                                  },
+                                  // onPressed: doNothing ,
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        endActionPane: ActionPane(
-                          // A motion is a widget used to control how the pane animates.
-                          motion: const ScrollMotion(),
-                          // A pane can dismiss the Slidable.
-                          // All actions are defined in the children parameter.
-                          children: [
-                            // A LiableAction can have an icon and/or a label.
-                            SlidableAction(
-                              onPressed: (BuildContext context) async {
-                                print("entetr");
+                            endActionPane: ActionPane(
+                              // A motion is a widget used to control how the pane animates.
+                              motion: const ScrollMotion(),
+                              // A pane can dismiss the Slidable.
+                              // All actions are defined in the children parameter.
+                              children: [
+                                // A LiableAction can have an icon and/or a label.
+                                SlidableAction(
+                                  onPressed: (BuildContext context) async {
+                                    print("entetr");
 
-                                controller.platformNameController.text=platform.name;
-                                controller.platformID.value=platform.id;
-                                controller.isEdit.value=true;
+                                    controller.platformNameController.text=platform.name;
+                                    controller.platformID.value=platform.id;
+                                    controller.isEdit.value=true;
 
-                                addPlatform(platformName: platform.name, platformID: platform.id, isEdit: true,);
+                                    addPlatform(platformName: platform.name, platformID: platform.id, isEdit: true,);
 
 
-                              },
-                              // onPressed: doNothing ,
-                              backgroundColor: Colors.blue,
-                              foregroundColor: Colors.white,
-                              icon: Icons.edit,
-                              label: 'Edit',
+                                  },
+                                  // onPressed: doNothing ,
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.edit,
+                                  label: 'Edit',
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        // The end action pane is the one at the right or the bottom side.
+                            // The end action pane is the one at the right or the bottom side.
 
-                        // The child of the Slidable is what the user sees when the
-                        // component is not dragged.
-                        child:  Card(
-                          child: ListTile(
+                            // The child of the Slidable is what the user sees when the
+                            // component is not dragged.
+                            child:  Card(
+                              child: ListTile(
 
-                            onTap: (){
-                              Get.back(result: [platform.name,platform.id]);
-                            },
-                            title: Text(platform.name),
+                                onTap: (){
+                                  Get.back(result: [platform.name,platform.id]);
+                                },
+                                title: Text(platform.name),
 
-                          ),
-                        ));
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      dividerStyle(),
-                )),
+                              ),
+                            ));
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          dividerStyle(),
+                    ),)),
+              ],
+            ),
           ),
         );
      

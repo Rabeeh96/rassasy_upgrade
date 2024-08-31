@@ -11,6 +11,7 @@ import '../../controller/tab_controller.dart';
 import '../detail_page/cancel_reason_list.dart';
 import '../detail_page/platform.dart';
 import '../detail_page/reservation_list.dart';
+import 'drag_drop.dart';
 import 'draggable_list.dart';
 import 'tab_pos_order_page.dart';
 
@@ -81,19 +82,35 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
           style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
         ),
         actions: [
-          IconButton(
-              onPressed: () async {
-                Get.to(OnlinePlatforms());
-              },
-              icon: Text("Platform")),
-          IconButton(
-              onPressed: () async {
-                var result = await Get.to(DragTableList());
-                posController.tableData.clear();
-                posController.fetchAllData();
-                posController.update();
-              },
-              icon: Text("Table Setting")),
+
+          PopupMenuButton<String>(
+            icon: Icon(Icons.settings),
+            onSelected: (value) {
+              _handleMenuSelection(value);
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'table',
+                  child: Text('Add a Table'),
+                ),
+                PopupMenuItem<String>(
+                  value: 'reservation',
+                  child: Text('Reservation'),
+                ),
+                PopupMenuItem<String>(
+                  value: 'platform',
+                  child: Text('Platform'),
+                ),
+                PopupMenuItem<String>(
+                  value: 'settings',
+                  child: Text('Table Settings'),
+                ),
+              ];
+            },
+          ),
+          SizedBox(width: 20,)
+
         ],
       ),
       body: Container(
@@ -603,6 +620,40 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       ),
     );
   }
+  void _handleMenuSelection(String value) {
+    switch (value) {
+      case 'table':
+      // Add your print functionality here
+        return addTable();
+        break;
+      case 'reservation':
+        return addReservation();
+
+      case 'platform':
+        return  navigatePlatform();
+      case 'settings':
+        return navigateSettings();
+
+      default:
+         break;
+    }
+  }
+  navigatePlatform() async {
+    var result=await Get.to(OnlinePlatforms());
+  }
+  addReservation() async {
+    if (posController.reservation_perm.value) {
+      Get.to(ReservationPage());
+    } else {
+      dialogBoxPermissionDenied(context);
+    }
+  }
+  navigateSettings() async {
+    var result = await Get.to(DragTableList());
+    posController.tableData.clear();
+    posController.fetchAllData();
+    posController.update();
+  }
 
   Widget fetchDiningList() {
     return CustomScrollView(
@@ -611,9 +662,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
         SliverToBoxAdapter(
           child: Container(
             margin: const EdgeInsets.only(left: 25, right: 25, top: 20),
-
-            height: MediaQuery.of(context).size.height *
-                .73, // Specify your desired height here
+            height: MediaQuery.of(context).size.height *.9, // Specify your desired height here
             child: Obx(() => posController.isLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(
@@ -851,74 +900,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
           ),
         ),
 
-        ///footer section of buttons reservation and add table
-        SliverToBoxAdapter(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: MediaQuery.of(context).size.height * .13,
-              alignment: Alignment.bottomCenter,
-              decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: Color(0xffE9E9E9)))),
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all(const Color(0xffFFF6F2))),
-                      onPressed: () {
-                        addTable();
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.add,
-                            color: Color(0xffF25F29),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0, right: 8),
-                            child: Text(
-                              'Add_Table'.tr,
-                              style: customisedStyle(
-                                  context,
-                                  const Color(0xffF25F29),
-                                  FontWeight.w500,
-                                  14.0),
-                            ),
-                          )
-                        ],
-                      )),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all(const Color(0xffEFF6F5))),
-                      onPressed: () {
-                        if (posController.reservation_perm.value) {
-                          Get.to(ReservationPage());
-                        } else {
-                          dialogBoxPermissionDenied(context);
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 12.0, right: 12),
-                        child: Text(
-                          'Reservations'.tr,
-                          style: customisedStyle(context,
-                              const Color(0xff00775E), FontWeight.w500, 14.0),
-                        ),
-                      )),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
+     ],
     );
   }
 

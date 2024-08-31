@@ -142,7 +142,7 @@ class ReservationController extends GetxController {
       };
 
       final response = await http.post(
-        Uri.parse('https://www.api.viknbooks.com/api/v10/posholds/pos-table-reserve/'),
+        Uri.parse('${BaseUrl.baseUrl}/posholds/pos-table-reserve/'),
         body: jsonEncode(payload),
         headers: {'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
@@ -150,26 +150,38 @@ class ReservationController extends GetxController {
       );
 
 
+      print('${BaseUrl.baseUrl}/posholds/pos-table-reserve/');
       print(payload);
       print(response.body);
 
       if (response.statusCode == 200) {
+        print(response.statusCode);
+
         isLoading.value=false;
         var responseData = jsonDecode(response.body);
         if (responseData['StatusCode'] == 6000) {
+          print("1111");
+
           Get.back();
+          print("222");
+
           popAlert(head: "Success", message: "Successfully reserved Table", position: SnackPosition.TOP);
           fetchReservations(apiDateFormat.format(fromDateNotifier.value),apiDateFormat.format(toDateNotifier.value));
+          print("33333");
 
           print("----------------------------");
           update();
         } else {
+          print("444");
+
           throw Exception(responseData['message']);
         }
       } else {
         throw Exception('Failed to load reservations');
       }
     } catch (e) {
+      print("5555");
+
       isLoading.value=false;
       throw Exception('Error: $e');
     }

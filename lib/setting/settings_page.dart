@@ -576,7 +576,7 @@ class _SettingsPageState extends State<SettingsPage> {
     } else if (index == 2) {
       return printerSettingScreen();
     } else if (index == 3) {
-      return kitchenSettingScreen();
+      return kotPrint?kitchenSettingScreen():Container();
     } else if (index == 4) {
       return printerDefault();
     } else if (index == 5) {
@@ -2312,7 +2312,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
 
 
-      Card(
+      kotPrint?   Card(
         color: setting3,
         shape: RoundedRectangleBorder(
           side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
@@ -2336,7 +2336,7 @@ class _SettingsPageState extends State<SettingsPage> {
             style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
           ),
         ),
-      ),
+      ):Container(),
 
 
       /// table list option

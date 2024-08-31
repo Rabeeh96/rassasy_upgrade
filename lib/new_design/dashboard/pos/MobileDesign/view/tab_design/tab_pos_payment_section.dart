@@ -1249,12 +1249,12 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                               crossAxisCount: 1,
 
                               mainAxisSpacing: 20.0,
-                              mainAxisExtent: 130,
+                              mainAxisExtent: 145,
 
                               childAspectRatio: 5,
                               // orderController.heightOfITem,
                               // childAspectRatio: 3.2,
-                              crossAxisSpacing: 30,
+                              crossAxisSpacing: 32,
                             ),
                             //separatorBuilder: (context, index) => dividerStyle(),
                             itemCount:
@@ -1327,7 +1327,7 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                                                             context)
                                                             .size
                                                             .width *
-                                                            .13,
+                                                            .20,
                                                         child: Text(
                                                           paymentController
                                                               .saleOrderDetail[
@@ -1346,164 +1346,162 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                                                               .ellipsis,
                                                         )),
                                                   ),
-                                                  Container(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .start,
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
-                                                      children: [
-                                                        paymentController.saleOrderDetail[
-                                                        index]
-                                                        [
-                                                        "Description"] ==
-                                                            ""
-                                                            ? Container()
-                                                            : Container(
-                                                          width: MediaQuery.of(context)
-                                                              .size
-                                                              .width *
-                                                              .13,
-                                                          child: Text(
-                                                            paymentController
-                                                                .saleOrderDetail[index]
-                                                            [
-                                                            "Description"],
-                                                            style: customisedStyle(
-                                                                context,
-                                                                const Color(
-                                                                    0xff8C8C8C),
-                                                                FontWeight
-                                                                    .w400,
-                                                                11.0),
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          paymentController.saleOrderDetail[index]['Flavour_Name'] ==
-                                                              '' ||
-                                                              paymentController.saleOrderDetail[index]['Flavour_Name'] ==
-                                                                  null
-                                                              ? ""
-                                                              : paymentController
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .start,
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      paymentController.saleOrderDetail[
+                                                      index]
+                                                      [
+                                                      "Description"] ==
+                                                          ""
+                                                          ? Container()
+                                                          : Container(
+                                                        width: MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                            .20,
+                                                        child: Text(
+                                                          paymentController
                                                               .saleOrderDetail[index]
                                                           [
-                                                          'Flavour_Name'],
+                                                          "Description"],
                                                           style: customisedStyle(
                                                               context,
-                                                              Color(
-                                                                  0xffF25F29),
+                                                              const Color(
+                                                                  0xff8C8C8C),
                                                               FontWeight
                                                                   .w400,
-                                                              13.0),
+                                                              11.0),
                                                         ),
-                                                        Container(
+                                                      ),
+                                                      Text(
+                                                        paymentController.saleOrderDetail[index]['Flavour_Name'] ==
+                                                            '' ||
+                                                            paymentController.saleOrderDetail[index]['Flavour_Name'] ==
+                                                                null
+                                                            ? ""
+                                                            : paymentController
+                                                            .saleOrderDetail[index]
+                                                        [
+                                                        'Flavour_Name'],
+                                                        style: customisedStyle(
+                                                            context,
+                                                            Color(
+                                                                0xffF25F29),
+                                                            FontWeight
+                                                                .w400,
+                                                            13.0),
+                                                      ),
+                                                      Container(
 
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                            // crossAxisAlignment:
-                                                            // CrossAxisAlignment
-                                                            //     .center,
-                                                            children: [
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                          // crossAxisAlignment:
+                                                          // CrossAxisAlignment
+                                                          //     .center,
+                                                          children: [
 
-                                                              Row(
-                                                                children: [
-                                                                  Text(
-                                                                    "Qty :",
-                                                                    style: customisedStyle(
-                                                                        context,
-                                                                        Color(
-                                                                            0xffA5A5A5),
-                                                                        FontWeight
-                                                                            .normal,
-                                                                        10.0),
-                                                                  ),
-                                                                  Text(
-                                                                    roundStringWith(paymentController
-                                                                        .saleOrderDetail[
-                                                                    index]
-                                                                    [
-                                                                    'Qty']
-                                                                        .toString()),
-                                                                    style: customisedStyle(
-                                                                        context,
-                                                                        Colors
-                                                                            .black,
-                                                                        FontWeight
-                                                                            .w500,
-                                                                        12.0),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              SizedBox(width: 15,),
-                                                              Row(
-                                                                children: [
-                                                                  Text(
-                                                                    "Unit Price :",
-                                                                    style: customisedStyle(
-                                                                        context,
-                                                                        Color(
-                                                                            0xffA5A5A5),
-                                                                        FontWeight
-                                                                            .normal,
-                                                                        10.0),
-                                                                  ),
-                                                                  Text(
-                                                                    roundStringWith(paymentController
-                                                                        .saleOrderDetail[
-                                                                    index]
-                                                                    [
-                                                                    'UnitPrice']
-                                                                        .toString()),
-                                                                    style: customisedStyle(
-                                                                        context,
-                                                                        Colors
-                                                                            .black,
-                                                                        FontWeight
-                                                                            .w500,
-                                                                        12.0),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              SizedBox(width: 15,),
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  "Qty :",
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Color(
+                                                                          0xffA5A5A5),
+                                                                      FontWeight
+                                                                          .normal,
+                                                                      10.0),
+                                                                ),
+                                                                Text(
+                                                                  roundStringWith(paymentController
+                                                                      .saleOrderDetail[
+                                                                  index]
+                                                                  [
+                                                                  'Qty']
+                                                                      .toString()),
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Colors
+                                                                          .black,
+                                                                      FontWeight
+                                                                          .w500,
+                                                                      12.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(width: 15,),
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  "Unit Price :",
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Color(
+                                                                          0xffA5A5A5),
+                                                                      FontWeight
+                                                                          .normal,
+                                                                      10.0),
+                                                                ),
+                                                                Text(
+                                                                  roundStringWith(paymentController
+                                                                      .saleOrderDetail[
+                                                                  index]
+                                                                  [
+                                                                  'UnitPrice']
+                                                                      .toString()),
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Colors
+                                                                          .black,
+                                                                      FontWeight
+                                                                          .w500,
+                                                                      12.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(width: 15,),
 
-                                                              Row(
-                                                                children: [
-                                                                  Text(
-                                                                    "Gross Amount :",
-                                                                    style: customisedStyle(
-                                                                        context,
-                                                                        Color(
-                                                                            0xffA5A5A5),
-                                                                        FontWeight
-                                                                            .normal,
-                                                                        10.0),
-                                                                  ),
-                                                                  Text(
-                                                                    roundStringWith(paymentController
-                                                                        .saleOrderDetail[
-                                                                    index]
-                                                                    [
-                                                                    'GrossAmount']
-                                                                        .toString()),
-                                                                    style: customisedStyle(
-                                                                        context,
-                                                                        Colors
-                                                                            .black,
-                                                                        FontWeight
-                                                                            .w500,
-                                                                        12.0),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  "Gross Amount :",
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Color(
+                                                                          0xffA5A5A5),
+                                                                      FontWeight
+                                                                          .normal,
+                                                                      10.0),
+                                                                ),
+                                                                Text(
+                                                                  roundStringWith(paymentController
+                                                                      .saleOrderDetail[
+                                                                  index]
+                                                                  [
+                                                                  'GrossAmount']
+                                                                      .toString()),
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Colors
+                                                                          .black,
+                                                                      FontWeight
+                                                                          .w500,
+                                                                      12.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
                                                   Container(
                                                     child: Row(

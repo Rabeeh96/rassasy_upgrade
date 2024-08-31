@@ -184,6 +184,7 @@ print("weightValue   $weightValue");
   late ValueNotifier<int> productSearchNotifier;
   var detailPage = 'item_add'.obs;
   var isShowImage = true.obs;
+  var isArrange = true.obs;
   RxBool showProductDescription = true.obs;
   RxBool showWegOrNoVeg = true.obs;
   var productNameDetail = '';
@@ -2003,4 +2004,16 @@ print("weightValue   $weightValue");
       throw Exception('Failed to load users');
     }
   }
+
+
+  ///grp reorder
+  void reorderGroups(int oldIndex, int newIndex) {
+
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final item = groupList.removeAt(oldIndex);
+    groupList.insert(newIndex, item);
+  }
+
 }
