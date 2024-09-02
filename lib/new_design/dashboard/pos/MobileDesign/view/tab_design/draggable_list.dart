@@ -146,7 +146,7 @@ class _DragTableListState extends State<DragTableList> {
           }
           tableListController.updateTables(type: 'Update', reOrderList: tableDetailList);
 
-
+Get.back();
 
         },
         label: Text(

@@ -648,11 +648,14 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       dialogBoxPermissionDenied(context);
     }
   }
+  ///not updating
   navigateSettings() async {
     var result = await Get.to(DragTableList());
+    posController.selectedIndexNotifier.value = 0;
     posController.tableData.clear();
     posController.fetchAllData();
     posController.update();
+
   }
 
   Widget fetchDiningList() {

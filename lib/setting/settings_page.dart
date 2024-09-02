@@ -120,6 +120,11 @@ class _SettingsPageState extends State<SettingsPage> {
   bool kotForCanceledOrder = false;
   bool flavourInOrderPrint = false;
   bool reverseArabicOption = false;
+  bool isDiscountInPrint = false;
+  bool isCustomerNameDisplay = false;
+  bool isCustomerPhoneDisplay = false;
+  bool isSalesmanDisplay = false;
+  bool isGrossAmountDisplay = false;
 
   bool printAfterOrder = false;
   bool directOrderOption = false;
@@ -337,6 +342,10 @@ class _SettingsPageState extends State<SettingsPage> {
       kotForCanceledOrder = prefs.getBool('kot_for_cancel_order') ?? false;
       flavourInOrderPrint = prefs.getBool('flavour_in_order_print') ?? false;
       reverseArabicOption = prefs.getBool('reverseArabicOption') ?? false;
+      isDiscountInPrint=prefs.getBool('isDiscountInPrint') ?? false;
+      isCustomerNameDisplay=prefs.getBool('isCustomerNameDisplay') ?? false;
+      isCustomerPhoneDisplay=prefs.getBool('isCustomerPhoneDisplay') ?? false;
+      isSalesmanDisplay=prefs.getBool('isSalesmanDisplay') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
       _selectedOption= prefs.getString('PrintType') ?? "Wifi";
 
@@ -2197,6 +2206,184 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {},
             ),
           ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Discount in Print',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: isDiscountInPrint
+                 ,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isDiscountInPrint = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isDiscountInPrint', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Sales Man',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: isSalesmanDisplay,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isSalesmanDisplay = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isSalesmanDisplay', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Customer Name',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value:    isCustomerNameDisplay
+                    ,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isCustomerNameDisplay = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isCustomerNameDisplay', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Customer Phone',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value:    isCustomerPhoneDisplay
+                    ,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isCustomerPhoneDisplay = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isCustomerPhoneDisplay', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+
+
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
