@@ -12,8 +12,8 @@ class DragTableList extends StatefulWidget {
 }
 
 class _DragTableListState extends State<DragTableList> {
-  final TableListController tableListController =
-      Get.put(TableListController());
+  final DragAndDropController tableListController =
+      Get.put(DragAndDropController());
 
 
   @override
@@ -146,7 +146,7 @@ class _DragTableListState extends State<DragTableList> {
           }
           tableListController.updateTables(type: 'Update', reOrderList: tableDetailList);
 
-
+Get.back();
 
         },
         label: Text(

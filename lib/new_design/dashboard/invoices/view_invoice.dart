@@ -68,7 +68,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
           "CreatedUserID": userID,
           "BranchID": branchID,
           "page_number": pageNumber,
-          "page_size": 10,
+          "page_size": itemPerPage,
           "from_date": apiDateFormat.format(fromDateNotifier.value),
           "to_date": apiDateFormat.format(toDateNotifier.value),
         };
@@ -91,6 +91,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         print(response.body);
 
         if (status == 6000) {
+          if (firstTime == 1) {
+            invoiceList.clear();
+            stop();
+          }
           isLoading = false;
           stop();
           setState(() {
@@ -106,16 +110,25 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             print("11");
           });
         } else if (status == 6001) {
+          if (firstTime == 1) {
+            stop();
+          }
           isLoading = false;
           messageShow = "No sale during these period";
           stop();
           print("12");
         } else {
+          if (firstTime == 1) {
+            stop();
+          }
           isLoading = false;
           stop();
           print("13");
         }
       } catch (e) {
+        if (firstTime == 1) {
+          stop();
+        }
         isLoading = false;
         stop();
         print("Error ${e.toString()}");
@@ -355,278 +368,298 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                     ),
                   ),
 
-                  Expanded(
-                    child: NotificationListener<ScrollNotification>(
-                        onNotification: (ScrollNotification scrollInfo) {
-                          print("-**********************1");
-                          if (!isLoading &&
-                              scrollInfo.metrics.pixels ==
-                                  scrollInfo.metrics.maxScrollExtent) {
-                            print("-**********************");
-                            pageNumber = pageNumber + 1;
-                            firstTime = 10;
-                            viewList();
-                            setState(() {
-                              isLoading = true;
-                            });
-                          }
-                          return true;
-                        },
-                        child: ListView.builder(
-                            // the number of items in the list
-                            itemCount: invoiceList.length,
-                            // display each item of the product list
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                  onTap: () {
-                                    Get.to(InvoiceDetailPage(
-                                      MasterUID:
-                                          invoiceList[index].salesMasterID,
-                                      masterType: 'SI',
-                                    ));
-                                  },
-                                  child: Card(
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(3),
-                                        side: const BorderSide(
-                                            width: 1,
-                                            color: Color(0xffDFDFDF))),
-                                    color: Color(0xffffffff),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.1,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // Padding(
-                                          //   padding: const EdgeInsets.only(
-                                          //       right: 15.0, left: 15.0),
-                                          //   child: Container(
-                                          //     width: 100,
-                                          //     child: ElevatedButton(
-                                          //       style: ElevatedButton.styleFrom(
-                                          //           backgroundColor:
-                                          //               Color(0xff0347A1)),
-                                          //       onPressed: () {
-                                          //         PrintDataDetails.type = "SI";
-                                          //         PrintDataDetails.id =
-                                          //             invoiceList[index]
-                                          //                 .salesMasterID;
-                                          //         printDetail(
-                                          //             invoiceList[index]
-                                          //                 .salesMasterID,
-                                          //             "SI");
-                                          //       },
-                                          //       child: Text(
-                                          //         'print'.tr,
-                                          //         style: customisedStyle(
-                                          //             context,
-                                          //             Colors.white,
-                                          //             FontWeight.w500,
-                                          //             11.0),
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.5,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                  Container(
+
+                   height: MediaQuery.of(context).size.height*.7,
+
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: NotificationListener<ScrollNotification>(
+                            onNotification: (ScrollNotification scrollInfo) {
+                              print("-**********************1");
+                              if (!isLoading &&
+                                  scrollInfo.metrics.pixels ==
+                                      scrollInfo.metrics.maxScrollExtent) {
+                                print("-**********************");
+                                pageNumber = pageNumber + 1;
+                                firstTime = 10;
+                                viewList();
+                                setState(() {
+                                  isLoading = true;
+                                });
+                              }
+                              return true;
+                            },
+                            child:RefreshIndicator(
+                                color: Colors.blue,
+                                onRefresh: () async {
+                                  pageNumber=1;
+                                  invoiceList.clear();
+                                  viewList();
+                                },
+                                child: ListView.builder(
+                                  // the number of items in the list
+                                    itemCount: invoiceList.length,
+                                    // display each item of the product list
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                          onTap: () {
+                                            print("......a.....s......s.....a........");
+                                            print(invoiceList[index].salesMasterID);
+                                            print(invoiceList[index].saleOrderID);
+                                            print(invoiceList[index].salesData);
+                                            Get.to(InvoiceDetailPage(
+                                              MasterUID:invoiceList[index].salesMasterID,
+                                              detailID:invoiceList[index].saleOrderID,
+                                              masterType: 'SI',
+                                            ));
+                                          },
+                                          child: Card(
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(3),
+                                                side: const BorderSide(
+                                                    width: 1,
+                                                    color: Color(0xffDFDFDF))),
+                                            color: Color(0xffffffff),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width /
+                                                  1.1,
                                               child: Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                MainAxisAlignment.spaceBetween,
                                                 children: [
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets.only(
+                                                  //       right: 15.0, left: 15.0),
+                                                  //   child: Container(
+                                                  //     width: 100,
+                                                  //     child: ElevatedButton(
+                                                  //       style: ElevatedButton.styleFrom(
+                                                  //           backgroundColor:
+                                                  //               Color(0xff0347A1)),
+                                                  //       onPressed: () {
+                                                  //         PrintDataDetails.type = "SI";
+                                                  //         PrintDataDetails.id =
+                                                  //             invoiceList[index]
+                                                  //                 .salesMasterID;
+                                                  //         printDetail(
+                                                  //             invoiceList[index]
+                                                  //                 .salesMasterID,
+                                                  //             "SI");
+                                                  //       },
+                                                  //       child: Text(
+                                                  //         'print'.tr,
+                                                  //         style: customisedStyle(
+                                                  //             context,
+                                                  //             Colors.white,
+                                                  //             FontWeight.w500,
+                                                  //             11.0),
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                   Container(
-                                                    width:
-                                                        MediaQuery.of(context)
+                                                    width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                        1.5,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.all(8.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment.center,
+                                                        children: [
+                                                          Container(
+                                                            width:
+                                                            MediaQuery.of(context)
                                                                 .size
                                                                 .width /
-                                                            8,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          invoiceList[index]
-                                                              .voucherNo,
-                                                          style:
-                                                              customisedStyle(
-                                                                  context,
-                                                                  Colors.black,
-                                                                  FontWeight
-                                                                      .w600,
-                                                                  13.0),
-                                                        ),
-                                                        Text(
-                                                          invoiceList[index]
-                                                              .date,
-                                                          style: customisedStyle(
-                                                              context,
-                                                              Color(0xff585858),
-                                                              FontWeight.w600,
-                                                              12.0),
-                                                        ),
-                                                      ],
+                                                                8,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                              children: [
+                                                                Text(
+                                                                  invoiceList[index]
+                                                                      .voucherNo,
+                                                                  style:
+                                                                  customisedStyle(
+                                                                      context,
+                                                                      Colors.black,
+                                                                      FontWeight
+                                                                          .w600,
+                                                                      13.0),
+                                                                ),
+                                                                Text(
+                                                                  invoiceList[index]
+                                                                      .date,
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Color(0xff585858),
+                                                                      FontWeight.w600,
+                                                                      12.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width:
+                                                            MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                                8,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                              children: [
+                                                                Text(
+                                                                  'token_no'.tr,
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Color(0xff9A9A9A),
+                                                                      FontWeight.w600,
+                                                                      12.0),
+                                                                ),
+                                                                Text(
+                                                                  invoiceList[index]
+                                                                      .tokenNo,
+                                                                  style:
+                                                                  customisedStyle(
+                                                                      context,
+                                                                      Colors.black,
+                                                                      FontWeight
+                                                                          .w600,
+                                                                      12.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width:
+                                                            MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                                3,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                              children: [
+                                                                Text(
+                                                                  'customer'.tr,
+                                                                  style:
+                                                                  customisedStyle(
+                                                                      context,
+                                                                      Colors.black,
+                                                                      FontWeight
+                                                                          .w600,
+                                                                      13.0),
+                                                                ),
+                                                                Text(
+                                                                  invoiceList[index]
+                                                                      .custName,
+                                                                  style: customisedStyle(
+                                                                      context,
+                                                                      Color(0xff585858),
+                                                                      FontWeight.w600,
+                                                                      12.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                   Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            8,
-                                                    child: Column(
+                                                    width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                        5,
+                                                    child: Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
+                                                      MainAxisAlignment.end,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment.center,
                                                       children: [
-                                                        Text(
-                                                          'token_no'.tr,
-                                                          style: customisedStyle(
-                                                              context,
-                                                              Color(0xff9A9A9A),
-                                                              FontWeight.w600,
-                                                              12.0),
-                                                        ),
-                                                        Text(
-                                                          invoiceList[index]
-                                                              .tokenNo,
-                                                          style:
-                                                              customisedStyle(
+                                                        Padding(
+                                                          padding: EdgeInsets.only(
+                                                              right: 15.0),
+                                                          child: Text(
+                                                              roundStringWith(
+                                                                  invoiceList[index]
+                                                                      .salesData[
+                                                                  "GrandTotal"]
+                                                                      .toString()),
+                                                              style: customisedStyle(
                                                                   context,
                                                                   Colors.black,
-                                                                  FontWeight
-                                                                      .w600,
-                                                                  12.0),
+                                                                  FontWeight.w600,
+                                                                  13.0)),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            3,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          'customer'.tr,
-                                                          style:
-                                                              customisedStyle(
-                                                                  context,
-                                                                  Colors.black,
-                                                                  FontWeight
-                                                                      .w600,
-                                                                  13.0),
-                                                        ),
-                                                        Text(
-                                                          invoiceList[index]
-                                                              .custName,
-                                                          style: customisedStyle(
-                                                              context,
-                                                              Color(0xff585858),
-                                                              FontWeight.w600,
-                                                              12.0),
-                                                        ),
+
+                                                        /// export and print commented
+                                                        //   Container(
+                                                        //       height: MediaQuery.of(context).size.height/20,
+                                                        //       width: MediaQuery.of(context).size.width/14,
+                                                        //       decoration: BoxDecoration(
+                                                        //           color: Colors.black,
+                                                        //           borderRadius:
+                                                        //           BorderRadius.circular(2)),
+                                                        //       child: TextButton(
+                                                        //           onPressed: () {},
+                                                        //           child: Text(
+                                                        //             "Export",
+                                                        //             style:
+                                                        //             TextStyle(color: Colors.white),
+                                                        //           ))),
+
+                                                        // Padding(
+                                                        //   padding: const EdgeInsets.only(right: 15.0,left: 15.0),
+                                                        //   child: Container(
+                                                        //     width: 100,
+                                                        //     child: ElevatedButton(
+                                                        //       style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
+                                                        //       onPressed: () {
+                                                        //         PrintDataDetails.type = "SI";
+                                                        //         PrintDataDetails.id = invoiceList[index].salesMasterID;
+                                                        //         printDetail();
+                                                        //       },
+                                                        //       child: Text(
+                                                        //         'print'.tr,
+                                                        //         style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
+                                                        //       ),
+                                                        //     ),
+                                                        //   ),
+                                                        // ),
                                                       ],
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                5,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 15.0),
-                                                  child: Text(
-                                                      roundStringWith(
-                                                          invoiceList[index]
-                                                              .salesData[
-                                                                  "GrandTotal"]
-                                                              .toString()),
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w600,
-                                                          13.0)),
-                                                ),
-
-                                                /// export and print commented
-                                                //   Container(
-                                                //       height: MediaQuery.of(context).size.height/20,
-                                                //       width: MediaQuery.of(context).size.width/14,
-                                                //       decoration: BoxDecoration(
-                                                //           color: Colors.black,
-                                                //           borderRadius:
-                                                //           BorderRadius.circular(2)),
-                                                //       child: TextButton(
-                                                //           onPressed: () {},
-                                                //           child: Text(
-                                                //             "Export",
-                                                //             style:
-                                                //             TextStyle(color: Colors.white),
-                                                //           ))),
-
-                                                // Padding(
-                                                //   padding: const EdgeInsets.only(right: 15.0,left: 15.0),
-                                                //   child: Container(
-                                                //     width: 100,
-                                                //     child: ElevatedButton(
-                                                //       style: ElevatedButton.styleFrom(backgroundColor: Color(0xff0347A1)),
-                                                //       onPressed: () {
-                                                //         PrintDataDetails.type = "SI";
-                                                //         PrintDataDetails.id = invoiceList[index].salesMasterID;
-                                                //         printDetail();
-                                                //       },
-                                                //       child: Text(
-                                                //         'print'.tr,
-                                                //         style: customisedStyle(context, Colors.white, FontWeight.w500, 11.0),
-                                                //       ),
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ));
-                            })),
+                                          ));
+                                    })), ),
+                        )
+                      ],
+                    ),
                   ),
 
                   // Container(

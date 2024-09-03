@@ -24,6 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../global/textfield_decoration.dart';
 import '../../../../main.dart';
+import '../MobileDesign/view/tab_design/draggable_list.dart';
 import 'model/model_class.dart';
 import 'new_pos_order_section.dart';
 
@@ -499,9 +500,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
+
                         alignment: Alignment.centerLeft,
                         height: MediaQuery.of(context).size.height / 11, //height of button
-                        width: MediaQuery.of(context).size.width / 4,
+                        width: MediaQuery.of(context).size.width / 3,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -529,34 +531,46 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                       //     iconSize: 110
                       // ),
 
-                      UserDetailsAppBar(user_name: userName),
-
                       Container(
-                        // width: 100,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
-                          onPressed: () {
-                            posFunctions(callFunction: true);
-                          },
-                          child: Text(
-                            'Refresh'.tr,
-                            style: customisedStyle(context, Colors.white, FontWeight.w500, 12.0),
-                          ),
+                        child: Row(
+                          children: [
+                            UserDetailsAppBar(user_name: userName),
+                            Container(
+                              // width: 100,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff0347A1)),
+                                onPressed: () {
+                                  posFunctions(callFunction: true);
+                                },
+                                child: Text(
+                                  'Refresh'.tr,
+                                  style: customisedStyle(context, Colors.white, FontWeight.w500, 12.0),
+                                ),
+                              ),
+                            ),
+
+                            ///here changed
+                            // TextButton(
+                            //     onPressed: () {
+                            //       setState(() {
+                            //         isSettingOpen = true;
+                            //       });
+                            //
+                            //       //   Navigator.push(
+                            //       //     context,
+                            //       //     MaterialPageRoute(builder: (context) => PosSettings()));
+                            //     },
+                            //     child: Text("Settings"))
+                            IconButton(onPressed: () async {
+                            var res=  await Get.to(DragTableList());
+                            posFunctions(callFunction: false);
+                            }, icon: Icon(Icons.settings))
+                          ],
                         ),
                       ),
 
-                      ///here changed
-                      // TextButton(
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         isSettingOpen = true;
-                      //       });
-                      //
-                      //       //   Navigator.push(
-                      //       //     context,
-                      //       //     MaterialPageRoute(builder: (context) => PosSettings()));
-                      //     },
-                      //     child: Text("Settings"))
+
+
                     ],
                   )
                 ],
@@ -926,7 +940,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                             // ),
 
                             TextButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.teal)),
+                              style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(Colors.teal)),
                               child: Text(
                                 'OK',
                                 style: customisedStyle(context, Colors.white, FontWeight.normal, 13.0),

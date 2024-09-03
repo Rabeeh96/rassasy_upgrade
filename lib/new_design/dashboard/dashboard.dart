@@ -234,7 +234,7 @@ class _DashboardNewState extends State<DashboardNew> {
         );
 
       case 6 :
-        Get.to(TabPosListDesign());
+       Get.to(TabPosListDesign());
         // if (posUser == true) {
         //   Navigator.of(context).pushReplacement(
         //     MaterialPageRoute(builder: (context) => const EnterPinNumber()),

@@ -8,14 +8,16 @@ import '../../../Print/bluetoothPrint.dart';
 
 class InvoiceDetailPage extends StatefulWidget {
   InvoiceDetailPage(
-      {super.key, required this.MasterUID, required this.masterType});
+      {super.key,
+      required this.MasterUID,
+      required this.masterType,
+      required this.detailID});
 
-  String? MasterUID, masterType;
+  String? MasterUID, masterType, detailID;
 
   @override
   State<InvoiceDetailPage> createState() => _InvoiceDetailPageState();
 }
-
 
 class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
   InvoiceControllerA invoiceControllerA = Get.put(InvoiceControllerA());
@@ -126,10 +128,35 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                             index, value ?? false);
                                         final selectedItems = invoiceControllerA
                                             .getSelectedItems();
+                                        List<int> listOfID = [];
+                                        print(
+                                            "selectedItems   ${selectedItems}");
+
                                         for (var item in selectedItems) {
                                           print(
-                                              'Selected Item - ID: ${item['id']}, Name: ${item['ProductName']}');
+                                              "selectedItems   ${selectedItems}");
+
+                                          print(
+                                              'Selected Item - ID: ${item['id']},  mstr ${item['SalesDetailsID']} Name: ${item['ProductName']}');
+                                          print(
+                                              "DetailId   ${item['SalesDetailsID']}");
+                                          listOfID.add(item['SalesDetailsID']);
+
+                                          print(".................");
+                                          print(listOfID);
+                                          print("............");
                                         }
+                                        invoiceControllerA.salesDetailIds
+                                            .clear();
+                                        invoiceControllerA.salesDetailIds
+                                            .addAll(listOfID);
+
+                                        ///
+                                        print(
+                                            "invoiceControllerA.salesDetailIds...");
+                                        print(
+                                            invoiceControllerA.salesDetailIds);
+
                                         setState(
                                             () {}); // Force rebuild of the dialog
                                       },
@@ -150,7 +177,8 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    print( "invoiceControllerA.salesDetailIds :  ${invoiceControllerA.salesDetailIds}");
+                    invoiceControllerA.createSalesReturn();
                   },
                   child: Text(
                     'OK',
@@ -197,6 +225,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
+
                 /// retuen commented
                 //
                 Padding(
@@ -406,8 +435,9 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width:MediaQuery.of(context).size.width/5,
-                                   // color: Colors.red,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5,
+                                    // color: Colors.red,
                                     child: Text(
                                       invoiceControllerA.itemTableList[index]
                                           ["ProductName"],
@@ -418,18 +448,18 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                           14.0),
                                     ),
                                   ),
-                                 //  Container(
-                                 // //   color: Colors.green,
-                                 //    //width:MediaQuery.of(context).size.width/10,
-                                 //    child: Text(
-                                 //      "${roundStringWith(invoiceControllerA.itemTableList[index]["UnitPrice"].toString())}   ${invoiceControllerA.currency}",
-                                 //      style: customisedStyle(
-                                 //          context,
-                                 //          const Color(0xff0000000),
-                                 //          FontWeight.w400,
-                                 //          14.0),
-                                 //    ),
-                                 //  ),
+                                  //  Container(
+                                  // //   color: Colors.green,
+                                  //    //width:MediaQuery.of(context).size.width/10,
+                                  //    child: Text(
+                                  //      "${roundStringWith(invoiceControllerA.itemTableList[index]["UnitPrice"].toString())}   ${invoiceControllerA.currency}",
+                                  //      style: customisedStyle(
+                                  //          context,
+                                  //          const Color(0xff0000000),
+                                  //          FontWeight.w400,
+                                  //          14.0),
+                                  //    ),
+                                  //  ),
                                 ],
                               ),
                               Row(
@@ -437,12 +467,11 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        roundStringWith(invoiceControllerA.itemTableList[index]
-                                        ["Qty"]
+                                        roundStringWith(invoiceControllerA
+                                            .itemTableList[index]["Qty"]
                                             .toString()),
                                         style: customisedStyle(
                                             context,
@@ -466,7 +495,6 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                             FontWeight.w400,
                                             14.0),
                                       ),
-
                                     ],
                                   ),
                                   Text(
