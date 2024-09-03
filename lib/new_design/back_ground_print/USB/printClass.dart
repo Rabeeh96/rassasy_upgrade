@@ -218,6 +218,7 @@ class USBPrintClass {
     var showCustomerName = prefs.getBool("isCustomerNameDisplay") ?? false;
     var showCustomerPhone = prefs.getBool("isCustomerPhoneDisplay") ?? false;
     var showSalesMan = prefs.getBool("isSalesmanDisplay") ?? false;
+    var showGrossAmount = prefs.getBool("isGrossAmountDisplay") ?? false;
     print("hideSalesMan:   ...$showSalesMan");
     print(
         "-----------------------------OpenDrawer-------------------------------$printerIp--------------$OpenDrawer");
@@ -246,7 +247,7 @@ class USBPrintClass {
           defaultCodePage,
           flavourInOrderPrint,showDiscountInPrint,showCustomerName,
           showCustomerPhone,
-          showSalesMan);
+          showSalesMan,showGrossAmount);
     } else if (temp == 'template3') {
       ///
       await invoicePrintTemplate3(
@@ -261,7 +262,7 @@ class USBPrintClass {
           hideTaxDetails,
           flavourInOrderPrint,showDiscountInPrint,showCustomerName,
           showCustomerPhone,
-          showSalesMan);
+          showSalesMan,showGrossAmount);
     } else {}
   }
 
@@ -315,7 +316,7 @@ class USBPrintClass {
       defaultCodePage,
       flavourInOrderPrint,showDiscountInPrint,showCustomerName,
       showCustomerPhone,
-      showSalesMan) async {
+      showSalesMan,showGrossAmount) async {
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, profile);
     List<ProductDetailsModel> tableDataDetailsPrint = [];
@@ -1060,24 +1061,27 @@ class USBPrintClass {
       bytes += generator.hr();
     }
     bytes += generator.emptyLines(1);
-    bytes += generator.row([
-      PosColumn(
-          text: 'Gross Amount',
-          width: 4,
-          styles: const PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(
-          textEncoded: ga,
-          width: 4,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
-      PosColumn(
-          text: roundStringWith(grossAmount),
-          width: 4,
-          styles: const PosStyles(align: PosAlign.right)),
-    ]);
+    if(showGrossAmount)
+   {
+     bytes += generator.row([
+       PosColumn(
+           text: 'Gross Amount',
+           width: 4,
+           styles: const PosStyles(fontType: PosFontType.fontB)),
+       PosColumn(
+           textEncoded: ga,
+           width: 4,
+           styles: const PosStyles(
+               fontType: PosFontType.fontA,
+               height: PosTextSize.size1,
+               width: PosTextSize.size1,
+               align: PosAlign.right)),
+       PosColumn(
+           text: roundStringWith(grossAmount),
+           width: 4,
+           styles: const PosStyles(align: PosAlign.right)),
+     ]);
+   }
 
     if (hideTaxDetails) {
       if (showExcise) {
@@ -1297,7 +1301,7 @@ class USBPrintClass {
       hideTaxDetails,
       flavourInOrderPrint,showDiscountInPrint,showCustomerName,
   showCustomerPhone,
-  showSalesMan) async {
+  showSalesMan,showGrossAmount) async {
     try {
       List<int> bytes = [];
       print("-------------------------------------------- Start ");
@@ -1489,32 +1493,27 @@ class USBPrintClass {
           ]);
         }
 
-       if(showSalesMan)
-       {
-        if (salesMan != "") {
-          bytes += generator.row([
-            PosColumn(
-                text: 'Sales man',
-                width: 4,
-                styles: const PosStyles(align: PosAlign.left)),
-            PosColumn(
-                text: '',
-                width: 1,
-                styles: const PosStyles(align: PosAlign.left)),
-            PosColumn(
-                text: salesMan,
-                width: 7,
-                styles: const PosStyles(
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.right)),
-          ]);
+        if (showSalesMan) {
+          if (salesMan != "") {
+            bytes += generator.row([
+              PosColumn(
+                  text: 'Sales man',
+                  width: 4,
+                  styles: const PosStyles(align: PosAlign.left)),
+              PosColumn(
+                  text: '',
+                  width: 1,
+                  styles: const PosStyles(align: PosAlign.left)),
+              PosColumn(
+                  text: salesMan,
+                  width: 7,
+                  styles: const PosStyles(
+                      height: PosTextSize.size1,
+                      width: PosTextSize.size1,
+                      align: PosAlign.right)),
+            ]);
+          }
         }
-      }
-
-
-
-
       } else {
         if (companyName != "") {
           bytes += generator.text(companyName,
@@ -1675,7 +1674,7 @@ class USBPrintClass {
           ]);
         }
       }
-      if (showCustomerPhone){
+      if (showCustomerPhone) {
         if (customerPhone != "") {
           bytes += generator.row([
             PosColumn(
@@ -1695,7 +1694,7 @@ class USBPrintClass {
                 )),
           ]);
         }
-    }
+      }
       bytes += generator.setStyles(const PosStyles(codeTable: 'CP864'));
       bytes += generator.row([
         PosColumn(
@@ -1740,7 +1739,7 @@ class USBPrintClass {
         var time = BluetoothPrintThermalDetails.time;
 
         String timeInvoice = convertToSaudiArabiaTime(time, countyCodeCompany);
-      
+
         bytes += generator.row([
           PosColumn(
               text: 'Time',
@@ -1759,27 +1758,27 @@ class USBPrintClass {
       }
 
       print("-------------------------------------------- Start ");
-     if(showSalesMan){
-       if (salesMan != "") {
-         bytes += generator.row([
-           PosColumn(
-               text: 'Sales man  ',
-               width: 4,
-               styles: const PosStyles(
-                 height: PosTextSize.size1,
-                 width: PosTextSize.size1,
-               )),
-           PosColumn(
-               text: salesMan,
-               width: 8,
-               styles: const PosStyles(
-                 height: PosTextSize.size1,
-                 width: PosTextSize.size1,
-                 align: PosAlign.right,
-               )),
-         ]);
-       }
-     }
+      if (showSalesMan) {
+        if (salesMan != "") {
+          bytes += generator.row([
+            PosColumn(
+                text: 'Sales man  ',
+                width: 4,
+                styles: const PosStyles(
+                  height: PosTextSize.size1,
+                  width: PosTextSize.size1,
+                )),
+            PosColumn(
+                text: salesMan,
+                width: 8,
+                styles: const PosStyles(
+                  height: PosTextSize.size1,
+                  width: PosTextSize.size1,
+                  align: PosAlign.right,
+                )),
+          ]);
+        }
+      }
 
       bytes += generator.emptyLines(1);
       bytes += generator.hr();
@@ -1894,21 +1893,22 @@ class USBPrintClass {
         bytes += generator.hr();
       }
       bytes += generator.emptyLines(1);
-      bytes += generator.row([
-        PosColumn(
-            text: "Gross Amount",
-            width: 5,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.left)),
-        PosColumn(
-            text: roundStringWith(grossAmount),
-            width: 7,
-            styles: const PosStyles(align: PosAlign.right)),
-      ]);
-
+      if (showGrossAmount){
+        bytes += generator.row([
+          PosColumn(
+              text: "Gross Amount",
+              width: 5,
+              styles: const PosStyles(
+                  fontType: PosFontType.fontA,
+                  height: PosTextSize.size1,
+                  width: PosTextSize.size1,
+                  align: PosAlign.left)),
+          PosColumn(
+              text: roundStringWith(grossAmount),
+              width: 7,
+              styles: const PosStyles(align: PosAlign.right)),
+        ]);
+    }
       if (hideTaxDetails) {
         bytes += generator.row([
           PosColumn(

@@ -217,6 +217,7 @@ class AppBlocs {
     var showCustomerName = prefs.getBool("isCustomerNameDisplay") ?? false;
     var showCustomerPhone = prefs.getBool("isCustomerPhoneDisplay") ?? false;
     var showSalesMan = prefs.getBool("isSalesmanDisplay") ?? false;
+    var showGrossAmount = prefs.getBool("isGrossAmountDisplay") ?? false;
     var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
     String copies = prefs.getString("number_of_print") ?? '1';
 
@@ -259,7 +260,7 @@ class AppBlocs {
               isCancelled,
               flavourInOrderPrint,showDiscountPrint, showCustomerName,
               showCustomerPhone,
-              showSalesMan);
+              showSalesMan,showGrossAmount);
         }
       } else if (temp == 'template3') {
         for (var i = 0; i < numberOfCopies; i++) {
@@ -278,7 +279,7 @@ class AppBlocs {
               showDiscountPrint,
               showCustomerName,
               showCustomerPhone,
-              showSalesMan);
+              showSalesMan,showGrossAmount);
         }
       } else {
         await printArabic(printer);
@@ -314,7 +315,7 @@ class AppBlocs {
       isCancelled,
       flavourInOrderPrint,showDiscountPrint, showCustomerName,
       showCustomerPhone,
-      showSalesMan) async {
+      showSalesMan,showGrossAmount) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -1088,25 +1089,26 @@ if(showCustomerName){
       printer.hr();
     }
     printer.emptyLines(1);
-    printer.row([
-      PosColumn(
-          text: 'Gross Amount',
-          width: 4,
-          styles: const PosStyles(fontType: PosFontType.fontB)),
-      PosColumn(
-          textEncoded: ga,
-          width: 4,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
-      PosColumn(
-          text: roundStringWith(grossAmount),
-          width: 4,
-          styles: const PosStyles(align: PosAlign.right)),
-    ]);
-
+    if(showGrossAmount) {
+      printer.row([
+        PosColumn(
+            text: 'Gross Amount',
+            width: 4,
+            styles: const PosStyles(fontType: PosFontType.fontB)),
+        PosColumn(
+            textEncoded: ga,
+            width: 4,
+            styles: const PosStyles(
+                fontType: PosFontType.fontA,
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+                align: PosAlign.right)),
+        PosColumn(
+            text: roundStringWith(grossAmount),
+            width: 4,
+            styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
     if (taxDetails) {
       if (showExcise) {
         printer.row([
@@ -1329,7 +1331,7 @@ if(showCustomerName){
       isDiscountPrint,
       showCustomerName,
       showCustomerPhone,
-      showSalesman) async {
+      showSalesman,showGrossAmount) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -1912,21 +1914,22 @@ if(showCustomerName){
       printer.hr();
     }
     printer.emptyLines(1);
-    printer.row([
-      PosColumn(
-          text: "Gross Amount",
-          width: 5,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.left)),
-      PosColumn(
-          text: roundStringWith(grossAmount),
-          width: 7,
-          styles: const PosStyles(align: PosAlign.right)),
-    ]);
-
+    if(showGrossAmount) {
+      printer.row([
+        PosColumn(
+            text: "Gross Amount",
+            width: 5,
+            styles: const PosStyles(
+                fontType: PosFontType.fontA,
+                height: PosTextSize.size1,
+                width: PosTextSize.size1,
+                align: PosAlign.left)),
+        PosColumn(
+            text: roundStringWith(grossAmount),
+            width: 7,
+            styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
     ///
     if (taxDetails) {
       printer.row([
