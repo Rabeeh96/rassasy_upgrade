@@ -170,9 +170,10 @@ class _MyHomePageState extends State<MyHomePage> {
 //test
   void navigateUser() async {
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getBool('isLoggedIn') ?? false;
+
     print(status);
     var companySelected = prefs.getBool('companySelected') ?? false;
     var isPosUser = true;
@@ -193,13 +194,13 @@ class _MyHomePageState extends State<MyHomePage> {
           prefs.setBool('companySelected', false);
           await dialogBox(context, "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
 /// commented
-          // if (isTablet) {
-          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
-          // } else {
-          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
-          // }
+          if (isTablet) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+          } else {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+          }
 
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         } else {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
 

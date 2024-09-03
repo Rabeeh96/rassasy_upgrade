@@ -331,9 +331,11 @@ class _ProductCreateState extends State<CreateProductNew> {
       await defaultValue();
     });
   }
+
   int productTaxID =0;
   int categoryID =0;
   int productExciseTaxID =0;
+
   defaultValue() {
     productTaxID = defaultTaxId;
     productExciseTaxID = defaultTaxId;
@@ -341,6 +343,7 @@ class _ProductCreateState extends State<CreateProductNew> {
     taxController.text = defaultTaxName;
     exciseTaxController.text = defaultTaxName;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -2147,7 +2150,6 @@ class _ProductCreateState extends State<CreateProductNew> {
 
             stop();
             categoryID = responseJson['ProductGroupID'];
-
 
             isInclusiveNotifier.value = responseJson['is_inclusive'];
             nameController.text = responseJson['ProductName'];
