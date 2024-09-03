@@ -18,12 +18,12 @@ class _ProductDetailsState extends State<SelectBranch> {
   @override
   void initState() {
     super.initState();
-    categoryLists=widget.list;
-    print(categoryLists);
+    branchList=widget.list;
+    print(branchList);
   }
 
 
-  List categoryLists = [];
+  List branchList = [];
 
 
   @override
@@ -58,19 +58,19 @@ class _ProductDetailsState extends State<SelectBranch> {
             height: isTablet?screenHeight / 1:screenHeight / 1.1, //height of button
             width: isTablet? screenWidth/ 3:screenWidth/1,
             color: Colors.grey[100],
-            child:categoryLists.isNotEmpty?Padding(
+            child:branchList.isNotEmpty?Padding(
               padding: const EdgeInsets.all (20.0),
               child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: categoryLists.length,
+                  itemCount: branchList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                         child: ListTile(
-                          title:  Text(categoryLists[index]["BranchName"],style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),),
+                          title:  Text(branchList[index]["NickName"],style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),),
                           onTap: () async {
                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                            prefs.setInt('branchID',categoryLists[index]["BranchID"]);
-                            Navigator.pop(context, categoryLists[index]["BranchName"]);
+                            prefs.setInt('branchID',branchList[index]["BranchID"]);
+                            Navigator.pop(context, branchList[index]["BranchName"]);
                           },
                         )
                     );

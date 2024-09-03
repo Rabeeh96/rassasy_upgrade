@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 // dialogBox(BuildContext context, msg) {
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
-//////
+////////
 
 String appVersion = "1.1.50";
 double defaultScreenWidth=550;
