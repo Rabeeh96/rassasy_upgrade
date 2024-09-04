@@ -86,7 +86,7 @@ class OrderController extends GetxController {
   //   }
   // }
 
-   Map<FontWeight, int> fontWeightToInt = {
+  Map<FontWeight, int> fontWeightToInt = {
     FontWeight.normal: 400,
     FontWeight.bold: 700,
     FontWeight.w600: 600,
@@ -123,7 +123,7 @@ class OrderController extends GetxController {
     print("new type $type");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int weightValue = fontWeightToInt[newWeight] ?? 400; // Default value
-print("weightValue   $weightValue");
+    print("weightValue   $weightValue");
     switch (type) {
       case 'product_weight':
         productFontWeight.value = newWeight;
@@ -143,7 +143,7 @@ print("weightValue   $weightValue");
         await prefs.setInt('amount_weight', weightValue);
         break;
       default:
-      // Default case
+        // Default case
         amountFontWeight.value = newWeight;
         await prefs.setInt('amount_weight', weightValue);
         break;
@@ -171,8 +171,6 @@ print("weightValue   $weightValue");
   //   }
   // }
 
-
-
   double amountFontSize = 15.0;
   double productFontSize = 15.0;
   double groupFontSize = 13.0;
@@ -191,6 +189,65 @@ print("weightValue   $weightValue");
   var indexDetail = 0;
   var heightOfImage = 8.0;
   var widthOfImage = 8.0;
+
+  returnProductLength(count, isShowImage) {
+    var returnValue = 100.0;
+
+    if (count == 1) {
+      if (isShowImage) {
+        returnValue = 350.0 - 100.0;
+      } else {
+        returnValue = 350.0;
+      }
+    } else if (count == 2) {
+      if (isShowImage) {
+        returnValue = 280.0 - 90.0;
+      } else {
+        returnValue = 280.0;
+      }
+    }
+    else if (count == 3) {
+      if (isShowImage) {
+        returnValue = 200.0 - 80.0;
+      } else {
+        returnValue = 200.0;
+      }
+    }
+
+    else if (count == 4) {
+      if (isShowImage) {
+        returnValue = 150.0 - 75.0;
+      } else {
+        returnValue = 150.0;
+      }
+    }
+
+
+   else if (count == 5) {
+      if (isShowImage) {
+        returnValue = 120.0 - 50.0;
+      } else {
+        returnValue = 120.0;
+      }
+    }
+
+
+    print("returnValue   $returnValue");
+    return returnValue;
+
+    // if(count ==2){
+    //   return 1;
+    // }
+    // if(count ==1){
+    //   return 1;
+    // }
+    // if(count ==1){
+    //   return 1;
+    // }
+    // if(count ==1){
+    //   return 1;
+    // }
+  }
 
   ///added
   var selectedIndex = RxInt(0);
@@ -226,7 +283,6 @@ print("weightValue   $weightValue");
     heightOfImage = prefs.getDouble('heightOfImage') ?? 8.0;
     widthOfImage = prefs.getDouble('widthOfImage') ?? 8.0;
 
-
     heightImageSizeController.text = heightOfImage.toString();
     widthImageSizeController.text = widthOfImage.toString();
     productNameFontSizeController.text = productFontSize.toString();
@@ -241,10 +297,10 @@ print("weightValue   $weightValue");
     showProductDescription.value = prefs.getBool('showProductDescription') ?? true;
     showWegOrNoVeg.value = prefs.getBool('showWegOrNoVeg') ?? true;
     isShowImage.value = prefs.getBool('show_product_image') ?? true;
-    productFontWeight.value= intToFontWeight(prefs.getInt('product_weight')!) ;
-    groupFontWeight.value= intToFontWeight(prefs.getInt('group_weight')!);
-    descriptionFontWeight.value=intToFontWeight(prefs.getInt('description_weight')!);
-    amountFontWeight.value=intToFontWeight(prefs.getInt('amount_weight')!);
+    productFontWeight.value = intToFontWeight(prefs.getInt('product_weight')!);
+    groupFontWeight.value = intToFontWeight(prefs.getInt('group_weight')!);
+    descriptionFontWeight.value = intToFontWeight(prefs.getInt('description_weight')!);
+    amountFontWeight.value = intToFontWeight(prefs.getInt('amount_weight')!);
   }
 
   // Method to update selected index
@@ -321,7 +377,8 @@ print("weightValue   $weightValue");
   RxBool isInclusive = false.obs;
   RxBool unitPriceEdit = false.obs;
   RxList kartChange = [].obs;
-   filterList(String query) {
+
+  filterList(String query) {
     String query = searchListController.text.toLowerCase();
     if (query.isEmpty) {
       searchOrderItemList.value = List.from(orderItemList); // Show all items if query is empty
@@ -868,8 +925,9 @@ print("weightValue   $weightValue");
 
     log_data(" data $data");
     orderItemList.insert(0, data);
+
     ///heree adding item to search
-    searchOrderItemList.value=orderItemList;
+    searchOrderItemList.value = orderItemList;
 
     update();
     totalAmount();
@@ -1411,8 +1469,6 @@ print("weightValue   $weightValue");
 
   /// update list
 
-
-
   /// function for load edit details
   Future<Null> getOrderDetails({required String uID}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -1675,7 +1731,7 @@ print("weightValue   $weightValue");
         "RoundOff": "0",
         "IsActive": true,
         "IsInvoiced": "N",
-        "onlinePlatform":platformID
+        "onlinePlatform": platformID
       };
       log_data(data);
       //encode Map to JSON
@@ -2005,15 +2061,12 @@ print("weightValue   $weightValue");
     }
   }
 
-
   ///grp reorder
   void reorderGroups(int oldIndex, int newIndex) {
-
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
     final item = groupList.removeAt(oldIndex);
     groupList.insert(newIndex, item);
   }
-
 }

@@ -83,9 +83,11 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                 diningController.userName.value,
                 style: customisedStyle(context, const Color(0xff585858), FontWeight.w500, 13.0),
               ),
-              Text(
-                orderController.tokenNumber.value,
-                style: customisedStyle(context, Colors.black, FontWeight.w500, 12.0),
+              Obx(
+                () => Text(
+                  orderController.tokenNumber.value,
+                  style: customisedStyle(context, Colors.black, FontWeight.w500, 12.0),
+                ),
               ),
               const SizedBox(
                 height: 3,
@@ -109,11 +111,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
           IconButton(
               onPressed: () async {
                 Get.to(() => DragDrop(uID: widget.uID, sectionType: widget.sectionType));
-
-
               },
               icon: const Text('Draggable')),
-
         ],
       ),
       body: Container(
@@ -141,13 +140,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                               orderController.selectIndex(index);
                               orderController.selectedGroup.value = index;
                               orderController.productIsLoading.value = true;
-                              print("...............${orderController.groupList[index].groupID}.........................");
+
                               orderController.getProductListDetail(orderController.groupList[index].groupID);
-
-                              print("orderController.groupList[index].groupID");
-                              print(orderController.groupList[index].groupID);
-                              print("...............................");
-
                             },
                             child: Obx(() {
                               return Container(
@@ -186,8 +180,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                       );
                     }
                   }),
-                )
-            ),
+                )),
 
             ///product list section
             Flexible(
@@ -217,15 +210,12 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   valueListenable: orderController.isVegNotifier,
                                   builder: (context, isVegValue, child) {
                                     return GestureDetector(
-                                      onTap: () async{
+                                      onTap: () async {
                                         //  orderController.productList.clear();
                                         orderController.isVegNotifier.value = !isVegValue;
 
                                         // await orderController.getCategoryListDetail('');
                                         //  await orderController.getProductListDetail(1);
-
-
-
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -267,28 +257,28 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   child: Padding(
                                       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                                       child: Obx(() => DropdownButton(
-                                        borderRadius: BorderRadius.circular(29),
-                                        // Initial Value
-                                        value: orderController.dropdownvalue.value,
-                                        underline: Container(color: Colors.transparent),
-                                        // Down Arrow Icon
-                                        icon: SvgPicture.asset("assets/svg/drop_arrow.svg"),
-                                        // Array list of items
-                                        items: orderController.items.map((String item) {
-                                          return DropdownMenuItem(
-                                            value: item,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(right: 0.0, left: 5),
-                                              child: Text(item, style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 12.0)),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        // After selecting the desired option,it will
-                                        // change button value to selected value
-                                        onChanged: (String? newValue) {
-                                          orderController.dropdownvalue.value = newValue!;
-                                        },
-                                      ))),
+                                            borderRadius: BorderRadius.circular(29),
+                                            // Initial Value
+                                            value: orderController.dropdownvalue.value,
+                                            underline: Container(color: Colors.transparent),
+                                            // Down Arrow Icon
+                                            icon: SvgPicture.asset("assets/svg/drop_arrow.svg"),
+                                            // Array list of items
+                                            items: orderController.items.map((String item) {
+                                              return DropdownMenuItem(
+                                                value: item,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(right: 0.0, left: 5),
+                                                  child: Text(item, style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 12.0)),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            // After selecting the desired option,it will
+                                            // change button value to selected value
+                                            onChanged: (String? newValue) {
+                                              orderController.dropdownvalue.value = newValue!;
+                                            },
+                                          ))),
                                 ),
                                 const SizedBox(
                                   width: 8,
@@ -329,208 +319,208 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                         ),
                       ),
                     ),
-
                     //   diningController.selectedIndexNotifier.value =
                     /// product list
                     Obx(() => orderController.productIsLoading.value
                         ? const SizedBox(height: 500, child: Center(child: CircularProgressIndicator()))
                         : Expanded(
-                        child: Obx(() => GridView.builder(
-                          padding: const EdgeInsets.all(10.0),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: orderController.rowCountGridView,
-                            mainAxisSpacing: 2.0,
-                            mainAxisExtent: orderController.heightOfITem * 10,
-                            // childAspectRatio: widthGrid/heightGrid,
-                            childAspectRatio: 3.2,
-                            crossAxisSpacing: 2,
-                          ),
-                          //separatorBuilder: (context, index) => dividerStyle(),
-                          itemCount: orderController.productList.length,
-                          itemBuilder: (context, index) {
-                            var alreadyExist = orderController.checking(orderController.productList[index].productID);
-                            print("-----------------------already $alreadyExist");
-                            return Container(
-                              color: Colors.red.shade50,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  orderController.detailPage.value = 'item_add';
-                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                            child: Obx(() => GridView.builder(
+                                  padding: const EdgeInsets.all(10.0),
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: orderController.rowCountGridView,
+                                    mainAxisSpacing: 2.0,
+                                    mainAxisExtent: orderController.heightOfITem * 10,
+                                    // childAspectRatio: widthGrid/heightGrid,
+                                    childAspectRatio: 3.2,
+                                    crossAxisSpacing: 2,
+                                  ),
+                                  //separatorBuilder: (context, index) => dividerStyle(),
+                                  itemCount: orderController.productList.length,
+                                  itemBuilder: (context, index) {
+                                    var alreadyExist = orderController.checking(orderController.productList[index].productID);
+                                    print("-----------------------already $alreadyExist");
+                                    return Card(
+                                      color: Colors.red.shade50,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          orderController.detailPage.value = 'item_add';
+                                          SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                                  var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
+                                          var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
 
-                                  orderController.unitPriceAmount.value = orderController.productList[index].defaultSalesPrice;
-                                  orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
-                                  orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
-                                  orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
+                                          orderController.unitPriceAmount.value = orderController.productList[index].defaultSalesPrice;
+                                          orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
+                                          orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
+                                          orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
 
-                                  orderController.priceListID.value = orderController.productList[index].defaultUnitID;
-                                  orderController.productName.value = orderController.productList[index].productName;
-                                  orderController.item_status.value = "pending";
-                                  orderController.unitName.value = orderController.productList[index].defaultUnitName;
+                                          orderController.priceListID.value = orderController.productList[index].defaultUnitID;
+                                          orderController.productName.value = orderController.productList[index].productName;
+                                          orderController.item_status.value = "pending";
+                                          orderController.unitName.value = orderController.productList[index].defaultUnitName;
 
-                                  var taxDetails = orderController.productList[index].taxDetails;
+                                          var taxDetails = orderController.productList[index].taxDetails;
 
-                                  if (taxDetails != "") {
-                                    orderController.productTaxID.value = taxDetails["TaxID"];
-                                    orderController.productTaxName.value = taxDetails["TaxName"];
-                                  }
+                                          if (taxDetails != "") {
+                                            orderController.productTaxID.value = taxDetails["TaxID"];
+                                            orderController.productTaxName.value = taxDetails["TaxName"];
+                                          }
 
-                                  orderController.detailID.value = 1;
-                                  orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
-                                  orderController.purchasePrice.value = orderController.productList[index].defaultPurchasePrice;
-                                  orderController.productID.value = orderController.productList[index].productID;
-                                  orderController.isInclusive.value = orderController.productList[index].isInclusive;
+                                          orderController.detailID.value = 1;
+                                          orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
+                                          orderController.purchasePrice.value = orderController.productList[index].defaultPurchasePrice;
+                                          orderController.productID.value = orderController.productList[index].productID;
+                                          orderController.isInclusive.value = orderController.productList[index].isInclusive;
 
-                                  orderController.detailIdEdit.value = 0;
-                                  orderController.flavourID.value = "";
-                                  orderController.flavourName.value = "";
+                                          orderController.detailIdEdit.value = 0;
+                                          orderController.flavourID.value = "";
+                                          orderController.flavourName.value = "";
 
-                                  var newTax = orderController.productList[index].exciseData;
+                                          var newTax = orderController.productList[index].exciseData;
 
-                                  if (newTax != "") {
-                                    orderController.isExciseProduct.value = true;
-                                    orderController.exciseTaxID.value = newTax["TaxID"];
-                                    orderController.exciseTaxName.value = newTax["TaxName"];
-                                    orderController.BPValue.value = newTax["BPValue"].toString();
-                                    orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
-                                    orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
-                                    orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
-                                    orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
-                                  } else {
-                                    orderController.exciseTaxID.value = 0;
-                                    orderController.exciseTaxName.value = "";
-                                    orderController.BPValue.value = "0";
-                                    orderController.exciseTaxBefore.value = "0";
-                                    orderController.isAmountTaxBefore.value = false;
-                                    orderController.isAmountTaxAfter.value = false;
-                                    orderController.isExciseProduct.value = false;
-                                    orderController.exciseTaxAfter.value = "0";
-                                  }
+                                          if (newTax != "") {
+                                            orderController.isExciseProduct.value = true;
+                                            orderController.exciseTaxID.value = newTax["TaxID"];
+                                            orderController.exciseTaxName.value = newTax["TaxName"];
+                                            orderController.BPValue.value = newTax["BPValue"].toString();
+                                            orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
+                                            orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
+                                            orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
+                                            orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
+                                          } else {
+                                            orderController.exciseTaxID.value = 0;
+                                            orderController.exciseTaxName.value = "";
+                                            orderController.BPValue.value = "0";
+                                            orderController.exciseTaxBefore.value = "0";
+                                            orderController.isAmountTaxBefore.value = false;
+                                            orderController.isAmountTaxAfter.value = false;
+                                            orderController.isExciseProduct.value = false;
+                                            orderController.exciseTaxAfter.value = "0";
+                                          }
 
-                                  orderController.unique_id.value = "0";
-                                  orderController.calculation();
+                                          orderController.unique_id.value = "0";
+                                          orderController.calculation();
 
-                                  //setState(() {});
-                                  /// commented for new tax working
+                                          //setState(() {});
+                                          /// commented for new tax working
 
-                                  /// qty increment
-
-
-                                },
-                                child: InkWell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 5.0, right: 5, top: 8, bottom: 8),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        ///productname,des,rate,veg
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Obx((){
-                                              return  orderController.showWegOrNoVeg.value? Container(
-                                                child: SvgPicture.asset(
-                                                  "assets/svg/veg_mob.svg",
-                                                  color: orderController.productList[index].vegOrNonVeg == "Non-veg"
-                                                      ? const Color(0xffDF1515)
-                                                      : const Color(0xff00775E),
-                                                ),
-                                              ):Container();
-                                            }),
-
-
-                                            Obx(() {
-                                              // Use Obx to rebuild the text widget when selectedFontWeight changes
-                                              return Container(
-                                                constraints: BoxConstraints(maxWidth: orderController.isShowImage.value? 150:300),
-                                                child: Text(
-                                                  orderController.productList[index].productName,
-                                                  style: customisedStyle(context, Colors.black, orderController.productFontWeight.value,
-                                                      orderController.productFontSize),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  softWrap: true,
-                                                  maxLines: 4,
-                                                ),
-                                              );
-                                            }),
-                                            Obx(() {
-                                              return orderController.showProductDescription.value? Container(
-                                                constraints: BoxConstraints(maxWidth:orderController.isShowImage.value? 150:300),
-                                                child: Text(
-                                                  orderController.productList[index].description,
-                                                  style: customisedStyle(context, Colors.black, orderController.descriptionFontWeight.value,
-                                                      orderController.descriptionFontSize),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  softWrap: true,
-                                                  maxLines: 4,
-                                                ),
-                                              ):Container();
-                                            }),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-
+                                          /// qty increment
+                                        },
+                                        child: InkWell(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(left: 5.0, right: 5, top: 8, bottom: 8),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  orderController.currency.value,
-                                                  style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 13.0),
+                                                ///productname,des,rate,veg
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Obx(() {
+                                                      return orderController.showWegOrNoVeg.value
+                                                          ? Container(
+                                                              child: SvgPicture.asset(
+                                                                "assets/svg/veg_mob.svg",
+                                                                color: orderController.productList[index].vegOrNonVeg == "Non-veg"
+                                                                    ? const Color(0xffDF1515)
+                                                                    : const Color(0xff00775E),
+                                                              ),
+                                                            )
+                                                          : Container();
+                                                    }),
+                                                    Obx(() {
+                                                      // Use Obx to rebuild the text widget when selectedFontWeight changes
+                                                      return Container(
+                                                        constraints: BoxConstraints(
+                                                            maxWidth: orderController.returnProductLength(
+                                                                orderController.rowCountGridView, orderController.isShowImage.value)),
+                                                        // constraints: BoxConstraints(maxWidth:orderController.returnProductLength(orderController.rowCountGridView,orderController.isShowImage.value)),
+                                                        child: Text(
+                                                          orderController.productList[index].productName,
+                                                          style: customisedStyle(context, Colors.black, orderController.productFontWeight.value,
+                                                              orderController.productFontSize),
+                                                          overflow: TextOverflow.ellipsis,
+                                                          softWrap: true,
+                                                          maxLines: 4,
+                                                        ),
+                                                      );
+                                                    }),
+                                                    Obx(() {
+                                                      return orderController.showProductDescription.value
+                                                          ? Container(
+                                                              constraints: BoxConstraints(maxWidth:orderController.returnProductLength(
+                                                                  orderController.rowCountGridView, orderController.isShowImage.value)),
+                                                              child: Text(
+                                                                orderController.productList[index].description,
+                                                                style: customisedStyle(context, Colors.black,
+                                                                    orderController.descriptionFontWeight.value, orderController.descriptionFontSize),
+                                                                overflow: TextOverflow.ellipsis,
+                                                                softWrap: true,
+                                                                maxLines: 4,
+                                                              ),
+                                                            )
+                                                          : Container();
+                                                    }),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text(
+                                                          orderController.currency.value,
+                                                          style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 13.0),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(left: 5.0),
+                                                          child: Obx(() {
+                                                            return Text(
+                                                              roundStringWith(orderController.productList[index].defaultSalesPrice),
+                                                              style: customisedStyle(context, Colors.black, orderController.amountFontWeight.value,
+                                                                  orderController.amountFontSize),
+                                                            );
+                                                          }),
+                                                        ),
+                                                        //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 5.0),
-                                                  child: Obx(() {
-                                                    return Text(
-                                                      roundStringWith(orderController.productList[index].defaultSalesPrice),
-                                                      style: customisedStyle(context, Colors.black, orderController.amountFontWeight.value,
-                                                          orderController.amountFontSize),
-                                                    );
-                                                  }),
-                                                ),
-                                                //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
+
+                                                ///image
+                                                Obx(() => orderController.isShowImage.value
+                                                    ? Container(
+                                                        height: MediaQuery.of(context).size.height * orderController.heightOfImage / 100,
+                                                        width: MediaQuery.of(context).size.width * (orderController.widthOfImage / 100),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(10),
+                                                          // Set border radius to make the Container round
+                                                        ),
+                                                        child: Stack(
+                                                          children: <Widget>[
+                                                            Positioned.fill(
+                                                              child: ClipRRect(
+                                                                borderRadius: BorderRadius.circular(10),
+                                                                // Clip image to match the rounded corners of the Container
+                                                                child: Image.network(
+                                                                  orderController.productList[index].productImage != ""
+                                                                      ? orderController.productList[index].productImage
+                                                                      : 'https://www.api.viknbooks.com/media/uploads/Group_5140.png',
+                                                                  fit: BoxFit.cover,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container()),
+                                                // else
                                               ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-
-                                        ///image
-                                        Obx(() => orderController.isShowImage.value
-                                            ? Container(
-                                          height: MediaQuery.of(context).size.height * orderController.heightOfImage/100,
-                                          width: MediaQuery.of(context).size.width * (orderController.widthOfImage/100),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            // Set border radius to make the Container round
-                                          ),
-                                          child: Stack(
-                                            children: <Widget>[
-                                              Positioned.fill(
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  // Clip image to match the rounded corners of the Container
-                                                  child: Image.network(
-                                                    orderController.productList[index].productImage != ""
-                                                        ? orderController.productList[index].productImage
-                                                        : 'https://www.api.viknbooks.com/media/uploads/Group_5140.png',
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-
-
-                                            ],
-                                          ),
-                                        )
-                                            : Container()),
-                                        // else
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ))))
+                                      ),
+                                    );
+                                  },
+                                ))))
                   ],
                 ),
               ),
@@ -701,7 +691,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                         alignment: Alignment.center,
                                         width: MediaQuery.of(context).size.width / 20,
                                         child: TextField(
-
                                           readOnly: true,
                                           controller: orderController.groupNameFontSizeController,
                                           textAlign: TextAlign.center,
@@ -817,9 +806,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8.0,top:8
-                    ),
+                    padding: const EdgeInsets.only(left: 8.0, top: 8),
                     child: Container(
                       alignment: Alignment.centerLeft,
                       width: MediaQuery.of(context).size.width / 3,
@@ -1245,7 +1232,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   fontSize: 13.0,
                                 ),
                               ),
-
                             ],
                           ),
                         ),
@@ -1294,7 +1280,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Tooltip(
-
                                   message: 'Show/Hide Product Veg Or Not',
                                   textStyle: const TextStyle(color: Colors.white),
                                   decoration: BoxDecoration(
@@ -1308,7 +1293,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   ),
                                 ),
                               )
-
                             ],
                           ),
                         ),
@@ -1463,10 +1447,13 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   width: MediaQuery.of(context).size.width / 40,
                                   child: GestureDetector(
                                       onTap: () {
-                                        setState(() {
-                                          orderController.rowCountGridView = orderController.rowCountGridView + 1;
-                                          orderController.rowCountController.text = "${orderController.rowCountGridView}";
-                                        });
+                                        if (orderController.rowCountGridView == 5) {
+                                        } else {
+                                          setState(() {
+                                            orderController.rowCountGridView = orderController.rowCountGridView + 1;
+                                            orderController.rowCountController.text = "${orderController.rowCountGridView}";
+                                          });
+                                        }
                                       },
                                       child: InkWell(
                                         child: Center(child: SvgPicture.asset('assets/svg/plus_mob.svg')),
@@ -1481,178 +1468,175 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   ),
                   orderController.isShowImage.value
                       ? Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 8),
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Image Height", style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0)),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: const Color(0xffD7D7D7), width: .5),
-                                borderRadius: const BorderRadius.all(Radius.circular(8))),
-                            height: MediaQuery.of(context).size.height / 23, //height of button
-                            width: MediaQuery.of(context).size.width / 9,
+                          padding: const EdgeInsets.only(left: 8.0, top: 8),
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            width: MediaQuery.of(context).size.width / 3,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Text("Image Height", style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0)),
                                 Container(
-                                  alignment: Alignment.center,
-                                  width: MediaQuery.of(context).size.width / 40,
-                                  height: MediaQuery.of(context).size.height / 22,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xffD7D7D7), width: .5),
+                                      borderRadius: const BorderRadius.all(Radius.circular(8))),
+                                  height: MediaQuery.of(context).size.height / 23, //height of button
+                                  width: MediaQuery.of(context).size.width / 9,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: MediaQuery.of(context).size.width / 40,
+                                        height: MediaQuery.of(context).size.height / 22,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              if (orderController.heightOfImage <= 1) {
+                                              } else {
+                                                orderController.heightOfImage = orderController.heightOfImage - 1;
+                                                orderController.heightImageSizeController.text = "${orderController.heightOfImage}";
+                                              }
+                                            });
+                                          },
+                                          child: InkWell(child: SvgPicture.asset('assets/svg/minus_mob.svg')),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                left: BorderSide(color: Color(0xffD7D7D7), width: .5),
+                                                right: BorderSide(color: Color(0xffD7D7D7), width: .5))),
+                                        width: MediaQuery.of(context).size.width / 20,
+                                        child: TextField(
+                                          controller: orderController.heightImageSizeController,
+                                          textAlign: TextAlign.center,
+                                          readOnly: true,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                          ],
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 11.00),
+                                          onChanged: (text) async {
+                                            SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                                        if (orderController.heightOfImage <= 1) {
-                                        } else {
-                                          orderController.heightOfImage = orderController.heightOfImage - 1;
-                                          orderController.heightImageSizeController.text = "${orderController.heightOfImage}";
-                                        }
-                                      });
-                                    },
-                                    child: InkWell(child: SvgPicture.asset('assets/svg/minus_mob.svg')),
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                          left: BorderSide(color: Color(0xffD7D7D7), width: .5),
-                                          right: BorderSide(color: Color(0xffD7D7D7), width: .5))),
-                                  width: MediaQuery.of(context).size.width / 20,
-                                  child: TextField(
-                                    controller: orderController.heightImageSizeController,
-                                    textAlign: TextAlign.center,
-                                    readOnly: true,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                            if (text.isNotEmpty) {
+                                              orderController.heightOfImage = double.parse(text);
+                                              orderController.heightImageSizeController.text = "${orderController.heightOfImage}";
+                                              prefs.setDouble('heightOfImage', orderController.heightOfImage);
+                                            } else {}
+                                          },
+                                          decoration: const InputDecoration(
+                                              hintText: '0.0', isDense: true, contentPadding: EdgeInsets.all(6), border: InputBorder.none),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: MediaQuery.of(context).size.width / 40,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                orderController.heightOfImage = orderController.heightOfImage + 1;
+                                                orderController.heightImageSizeController.text = "${orderController.heightOfImage}";
+                                              });
+                                            },
+                                            child: InkWell(
+                                              child: Center(child: SvgPicture.asset('assets/svg/plus_mob.svg')),
+                                            )),
+                                      ),
                                     ],
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 11.00),
-                                    onChanged: (text) async {
-                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                                      if (text.isNotEmpty) {
-                                        orderController.heightOfImage = double.parse(text);
-                                        orderController.heightImageSizeController.text = "${orderController.heightOfImage}";
-                                        prefs.setDouble('heightOfImage', orderController.heightOfImage);
-                                      } else {}
-                                    },
-                                    decoration: const InputDecoration(
-                                        hintText: '0.0', isDense: true, contentPadding: EdgeInsets.all(6), border: InputBorder.none),
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: MediaQuery.of(context).size.width / 40,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          orderController.heightOfImage = orderController.heightOfImage + 1;
-                                          orderController.heightImageSizeController.text = "${orderController.heightOfImage}";
-                                        });
-                                      },
-                                      child: InkWell(
-                                        child: Center(child: SvgPicture.asset('assets/svg/plus_mob.svg')),
-                                      )),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  )
+                        )
                       : Container(),
                   orderController.isShowImage.value
                       ? Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 8),
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Image Width", style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0)),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: const Color(0xffD7D7D7), width: .5),
-                                borderRadius: const BorderRadius.all(Radius.circular(8))),
-                            height: MediaQuery.of(context).size.height / 23, //height of button
-                            width: MediaQuery.of(context).size.width / 9,
+                          padding: const EdgeInsets.only(left: 8.0, top: 8),
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            width: MediaQuery.of(context).size.width / 3,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Text("Image Width", style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0)),
                                 Container(
-                                  alignment: Alignment.center,
-                                  width: MediaQuery.of(context).size.width / 40,
-                                  height: MediaQuery.of(context).size.height / 22,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (orderController.widthOfImage <= 1) {
-                                        } else {
-                                          orderController.widthOfImage = orderController.widthOfImage - 1;
-                                          orderController.widthImageSizeController.text = "${orderController.widthOfImage}";
-                                        }
-                                      });
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xffD7D7D7), width: .5),
+                                      borderRadius: const BorderRadius.all(Radius.circular(8))),
+                                  height: MediaQuery.of(context).size.height / 23, //height of button
+                                  width: MediaQuery.of(context).size.width / 9,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: MediaQuery.of(context).size.width / 40,
+                                        height: MediaQuery.of(context).size.height / 22,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              if (orderController.widthOfImage <= 1) {
+                                              } else {
+                                                orderController.widthOfImage = orderController.widthOfImage - 1;
+                                                orderController.widthImageSizeController.text = "${orderController.widthOfImage}";
+                                              }
+                                            });
+                                          },
+                                          child: InkWell(child: SvgPicture.asset('assets/svg/minus_mob.svg')),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                left: BorderSide(color: Color(0xffD7D7D7), width: .5),
+                                                right: BorderSide(color: Color(0xffD7D7D7), width: .5))),
+                                        width: MediaQuery.of(context).size.width / 20,
+                                        child: TextField(
+                                          controller: orderController.widthImageSizeController,
+                                          textAlign: TextAlign.center,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                          ],
+                                          readOnly: true,
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 11.00),
+                                          onChanged: (text) async {
+                                            SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                                    },
-                                    child: InkWell(child: SvgPicture.asset('assets/svg/minus_mob.svg')),
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                          left: BorderSide(color: Color(0xffD7D7D7), width: .5),
-                                          right: BorderSide(color: Color(0xffD7D7D7), width: .5))),
-                                  width: MediaQuery.of(context).size.width / 20,
-                                  child: TextField(
-                                    controller: orderController.widthImageSizeController,
-                                    textAlign: TextAlign.center,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                            if (text.isNotEmpty) {
+                                              orderController.widthOfImage = double.parse(text);
+                                              orderController.widthImageSizeController.text = "${orderController.rowCountGridView}";
+                                              prefs.setDouble('widthOfImage', orderController.widthOfImage);
+                                            } else {}
+                                          },
+                                          decoration: const InputDecoration(
+                                              hintText: '0.0', isDense: true, contentPadding: EdgeInsets.all(6), border: InputBorder.none),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: MediaQuery.of(context).size.width / 40,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                orderController.widthOfImage = orderController.widthOfImage + 1;
+                                                orderController.widthImageSizeController.text = "${orderController.widthOfImage}";
+                                              });
+                                            },
+                                            child: InkWell(
+                                              child: Center(child: SvgPicture.asset('assets/svg/plus_mob.svg')),
+                                            )),
+                                      ),
                                     ],
-                                    readOnly: true,
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 11.00),
-                                    onChanged: (text) async {
-
-                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                                      if (text.isNotEmpty) {
-                                        orderController.widthOfImage = double.parse(text);
-                                        orderController.widthImageSizeController.text = "${orderController.rowCountGridView}";
-                                        prefs.setDouble('widthOfImage', orderController.widthOfImage);
-                                      } else {}
-                                    },
-                                    decoration: const InputDecoration(
-                                        hintText: '0.0', isDense: true, contentPadding: EdgeInsets.all(6), border: InputBorder.none),
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: MediaQuery.of(context).size.width / 40,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          orderController.widthOfImage = orderController.widthOfImage + 1;
-                                          orderController.widthImageSizeController.text = "${orderController.widthOfImage}";
-                                        });
-                                      },
-                                      child: InkWell(
-                                        child: Center(child: SvgPicture.asset('assets/svg/plus_mob.svg')),
-                                      )),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  )
+                        )
                       : Container(),
 
                   ///height
@@ -2051,7 +2035,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     },
                   ),
                   Obx(
-                        () => Container(
+                    () => Container(
                       height: MediaQuery.of(context).size.height / 19,
                       width: MediaQuery.of(context).size.width / 15,
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xffE7E7E7))),
@@ -2090,59 +2074,59 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
         ),
         Obx(() => orderController.flavourList.isNotEmpty
             ? Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Select a Flavour",
-                style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-              ),
-            ],
-          ),
-        )
+                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Select a Flavour",
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                    ),
+                  ],
+                ),
+              )
             : Container()),
         Obx(() => orderController.flavourList.isNotEmpty ? dividerStyle() : Container()),
         Obx(() => orderController.flavourList.isNotEmpty
             ? Expanded(
-            child: ListView.separated(
-                separatorBuilder: (context, index) => dividerStyle(),
-                itemCount: orderController.flavourList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () async {
-                      orderController.flavourName.value = orderController.flavourList[index].flavourName;
-                      orderController.flavourID.value = orderController.flavourList[index].id;
-                      orderController.update();
-                    },
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * .06,
-                      child: Card(
-                        color: Colors.transparent,
-                        elevation: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 15.0, right: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                orderController.flavourList[index].flavourName,
-                                style: customisedStyle(context, Colors.black, FontWeight.w400, 13.0),
+                child: ListView.separated(
+                    separatorBuilder: (context, index) => dividerStyle(),
+                    itemCount: orderController.flavourList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () async {
+                          orderController.flavourName.value = orderController.flavourList[index].flavourName;
+                          orderController.flavourID.value = orderController.flavourList[index].id;
+                          orderController.update();
+                        },
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * .06,
+                          child: Card(
+                            color: Colors.transparent,
+                            elevation: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 15.0, right: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    orderController.flavourList[index].flavourName,
+                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 13.0),
+                                  ),
+                                  Obx(() => orderController.flavourID.value == orderController.flavourList[index].id
+                                      ? const Icon(
+                                          Icons.check_circle,
+                                          color: Color(0xffF25F29),
+                                        )
+                                      : Container()),
+                                ],
                               ),
-                              Obx(() => orderController.flavourID.value == orderController.flavourList[index].id
-                                  ? const Icon(
-                                Icons.check_circle,
-                                color: Color(0xffF25F29),
-                              )
-                                  : Container()),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }))
+                      );
+                    }))
             : Container()),
         Container(
           decoration: const BoxDecoration(
@@ -2229,95 +2213,295 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
             child: Obx(() => paymentController.detailLoading.value
                 ? Container(height: 500, child: const Center(child: CircularProgressIndicator()))
                 : Container(
-              height: MediaQuery.of(context).size.height * .57,
-              child: ListView(
-                children: [
-                  Container(
-                    height: 1,
-                    color: const Color(0xffE9E9E9),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(
-                        () => Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20),
-                      child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GestureDetector(
-                                onTap: () async {
-                                  ///  addDetails();
-                                  // final result = await Get.to(CustomerDetailPage());
-                                  // if (result != null) {
-                                  //   paymentController.paymentCustomerSelection.text = result[0];
-                                  //   paymentController.ledgerID.value = result[2];
-                                  //   setState(() {
-                                  //
-                                  //   });
-                                  //
-                                  // }
-                                },
-                                child: InkWell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                      Text(
-                                        'customer'.tr,
-                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                      ),
-                                      Text(
-                                        paymentController.paymentCustomerSelection.text,
-                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.black,
-                                        size: 15,
-                                      )
-                                    ]),
-                                  ),
-                                )),
-                            dividerStyle(),
-                            GestureDetector(
-                                onTap: () async {
-                                  ///addDetails();
-                                },
-                                child: InkWell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                      Text(
-                                        'ph_no'.tr,
-                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                      ),
-                                      Text(
-                                        paymentController.customerPhoneSelection.text ?? "",
-                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                      ),
+                    height: MediaQuery.of(context).size.height * .57,
+                    child: ListView(
+                      children: [
+                        Container(
+                          height: 1,
+                          color: const Color(0xffE9E9E9),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Obx(
+                          () => Padding(
+                            padding: const EdgeInsets.only(left: 20.0, right: 20),
+                            child: Container(
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                      onTap: () async {
+                                        ///  addDetails();
+                                        // final result = await Get.to(CustomerDetailPage());
+                                        // if (result != null) {
+                                        //   paymentController.paymentCustomerSelection.text = result[0];
+                                        //   paymentController.ledgerID.value = result[2];
+                                        //   setState(() {
+                                        //
+                                        //   });
+                                        //
+                                        // }
+                                      },
+                                      child: InkWell(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                            Text(
+                                              'customer'.tr,
+                                              style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                            ),
+                                            Text(
+                                              paymentController.paymentCustomerSelection.text,
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
+                                            ),
+                                            const Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.black,
+                                              size: 15,
+                                            )
+                                          ]),
+                                        ),
+                                      )),
+                                  dividerStyle(),
+                                  GestureDetector(
+                                      onTap: () async {
+                                        ///addDetails();
+                                      },
+                                      child: InkWell(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                            Text(
+                                              'ph_no'.tr,
+                                              style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                            ),
+                                            Text(
+                                              paymentController.customerPhoneSelection.text ?? "",
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                            ),
 
+                                            Text(
+                                              "",
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                            ),
+                                            // const Icon(
+                                            //   Icons.arrow_forward_ios,
+                                            //   color: Colors.black,
+                                            //   size: 15,
+                                            // )
+                                            //
+                                          ]),
+                                        ),
+                                      )),
+                                  dividerStyle(),
+                                  Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                       Text(
-                                        "",
-                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                        'balance1'.tr,
+                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                       ),
-                                      // const Icon(
-                                      //   Icons.arrow_forward_ios,
-                                      //   color: Colors.black,
-                                      //   size: 15,
-                                      // )
-                                      //
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 8.0),
+                                            child: Text(
+                                              paymentController.currency.value,
+                                              style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                            ),
+                                          ),
+                                          Text(
+                                            roundStringWith(paymentController.balance.toString()),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                      const Text(
+                                        "",
+                                      ),
                                     ]),
                                   ),
-                                )),
-                            dividerStyle(),
-                            Padding(
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, right: 20),
+                          child: Container(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    ///addDetails();
+                                    // final result = await Get.to(SelectDeliveryMan());
+                                    // if (result != null) {
+                                    //   paymentController.deliveryManName.value = result[0];
+                                    //   paymentController.deliveryManID.value = result[1];
+                                    //   paymentController.update();
+                                    // }
+                                  },
+                                  child: InkWell(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                        Text(
+                                          'Deliveryman'.tr,
+                                          style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                        ),
+                                        Text(
+                                          paymentController.deliveryManName.value,
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Colors.black,
+                                          size: 15,
+                                        )
+                                      ]),
+                                    ),
+                                  ),
+                                ),
+
+                                ///platform
+                                // DividerStyle(),
+                                // Padding(
+                                //   padding: const EdgeInsets.all(12.0),
+                                //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                //     Text(
+                                //       'Platform'.tr,
+                                //       style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 14.0),
+                                //     ),
+                                //     Text(
+                                //       "Zomato(online)",
+                                //       style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0),
+                                //     ),
+                                //     const Icon(
+                                //       Icons.arrow_forward_ios,
+                                //       color: Colors.black,
+                                //       size: 15,
+                                //     )
+                                //   ]),
+                                // ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, right: 20),
+                          child: Container(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    children: [
+                                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                        Text(
+                                          'Discount'.tr,
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0),
+                                        ),
+                                      ]),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 18.0),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width / 10,
+                                              child: TextField(
+                                                textCapitalization: TextCapitalization.words,
+                                                controller: paymentController.discountAmountController,
+                                                keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter.deny(RegExp('[-, ]')),
+                                                ],
+                                                onChanged: (value) {
+                                                  if (value.isEmpty) {
+                                                    paymentController.discountCalc(2, "0");
+                                                  } else {
+                                                    paymentController.discountCalc(2, value);
+                                                  }
+                                                },
+                                                onTap: () => paymentController.discountAmountController.selection = TextSelection(
+                                                    baseOffset: 0, extentOffset: paymentController.discountAmountController.value.text.length),
+                                                style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                                                // focusNode: diningController.customerNode,
+
+                                                decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 18.0),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width / 10,
+                                              child: TextField(
+                                                textCapitalization: TextCapitalization.words,
+                                                keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter.deny(RegExp('[-, ]')),
+                                                ],
+                                                onTap: () => paymentController.discountPerController.selection = TextSelection(
+                                                    baseOffset: 0, extentOffset: paymentController.discountPerController.value.text.length),
+
+                                                controller: paymentController.discountPerController,
+                                                onChanged: (value) {
+                                                  if (value.isEmpty) {
+                                                    paymentController.discountCalc(1, "0.0");
+                                                  } else {
+                                                    paymentController.discountCalc(1, value);
+                                                  }
+                                                },
+                                                style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                                                // focusNode: diningController.customerNode,
+                                                // onEditingComplete: () {
+                                                //   FocusScope.of(context).requestFocus();
+                                                // },
+                                                decoration: TextFieldDecoration.defaultTextField(hintTextStr: "Percentage"),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, right: 20),
+                          child: Container(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
+                            child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                 Text(
-                                  'balance1'.tr,
+                                  'gross_amount'.tr,
                                   style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                 ),
                                 Row(
@@ -2330,487 +2514,287 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                       ),
                                     ),
                                     Text(
-                                      roundStringWith(paymentController.balance.toString()),
+                                      roundStringWith(paymentController.totalGrossP.value.toString()),
                                       style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                     ),
                                   ],
                                 ),
-                                const Text(
-                                  "",
-                                ),
                               ]),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20),
-                    child: Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              ///addDetails();
-                              // final result = await Get.to(SelectDeliveryMan());
-                              // if (result != null) {
-                              //   paymentController.deliveryManName.value = result[0];
-                              //   paymentController.deliveryManID.value = result[1];
-                              //   paymentController.update();
-                              // }
-                            },
-                            child: InkWell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Text(
-                                    'Deliveryman'.tr,
-                                    style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                  ),
-                                  Text(
-                                    paymentController.deliveryManName.value,
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                  ),
-                                  const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.black,
-                                    size: 15,
-                                  )
-                                ]),
-                              ),
-                            ),
-                          ),
-
-                          ///platform
-                          // DividerStyle(),
-                          // Padding(
-                          //   padding: const EdgeInsets.all(12.0),
-                          //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          //     Text(
-                          //       'Platform'.tr,
-                          //       style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 14.0),
-                          //     ),
-                          //     Text(
-                          //       "Zomato(online)",
-                          //       style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0),
-                          //     ),
-                          //     const Icon(
-                          //       Icons.arrow_forward_ios,
-                          //       color: Colors.black,
-                          //       size: 15,
-                          //     )
-                          //   ]),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20),
-                    child: Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, right: 20),
+                          child: Container(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Text(
-                                    'Discount'.tr,
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0),
-                                  ),
-                                ]),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 18.0),
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width / 10,
-                                        child: TextField(
-                                          textCapitalization: TextCapitalization.words,
-                                          controller: paymentController.discountAmountController,
-                                          keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.deny(RegExp('[-, ]')),
-                                          ],
-                                          onChanged: (value) {
-                                            if (value.isEmpty) {
-                                              paymentController.discountCalc(2, "0");
-                                            } else {
-                                              paymentController.discountCalc(2, value);
-                                            }
-                                          },
-                                          onTap: () => paymentController.discountAmountController.selection = TextSelection(
-                                              baseOffset: 0, extentOffset: paymentController.discountAmountController.value.text.length),
-                                          style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                                          // focusNode: diningController.customerNode,
-
-                                          decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 18.0),
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width / 10,
-                                        child: TextField(
-                                          textCapitalization: TextCapitalization.words,
-                                          keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.deny(RegExp('[-, ]')),
-                                          ],
-                                          onTap: () => paymentController.discountPerController.selection = TextSelection(
-                                              baseOffset: 0, extentOffset: paymentController.discountPerController.value.text.length),
-
-                                          controller: paymentController.discountPerController,
-                                          onChanged: (value) {
-                                            if (value.isEmpty) {
-                                              paymentController.discountCalc(1, "0.0");
-                                            } else {
-                                              paymentController.discountCalc(1, value);
-                                            }
-                                          },
-                                          style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                                          // focusNode: diningController.customerNode,
-                                          // onEditingComplete: () {
-                                          //   FocusScope.of(context).requestFocus();
-                                          // },
-                                          decoration: TextFieldDecoration.defaultTextField(hintTextStr: "Percentage"),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20),
-                    child: Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          Text(
-                            'gross_amount'.tr,
-                            style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Text(
-                                  paymentController.currency.value,
-                                  style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                ),
-                              ),
-                              Text(
-                                roundStringWith(paymentController.totalGrossP.value.toString()),
-                                style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                              ),
-                            ],
-                          ),
-                        ]),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20),
-                    child: Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          /// to be paid commented
-                          // Padding(
-                          //   padding: const EdgeInsets.all(12.0),
-                          //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          //     Text(
-                          //       'to_be_paid'.tr,
-                          //       style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                          //     ),
-                          //     Row(
-                          //       children: [
-                          //         Padding(
-                          //           padding: const EdgeInsets.only(right: 8.0),
-                          //           child: Text(
-                          //             paymentController.currency,
-                          //             style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
-                          //           ),
-                          //         ),
-                          //         Text(
-                          //           roundStringWith(paymentController.grandTotalAmount.value),
-                          //           style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ]),
-                          // ),
-                          // DividerStyle(),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text(
-                                'total_tax'.tr,
-                                style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Text(
-                                      paymentController.currency.value,
-                                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                    ),
-                                  ),
-                                  Text(
-                                    roundStringWith(paymentController.totalTaxMP.value),
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                          ),
-                          dividerStyle(),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text(
-                                'net_total'.tr,
-                                style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Text(
-                                      paymentController.currency.value,
-                                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                    ),
-                                  ),
-                                  Text(
-                                    roundStringWith(paymentController.totalNetP.value),
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                          ),
-                          dividerStyle(),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text(
-                                'grand_total'.tr,
-                                style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 16.5),
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Text(
-                                      paymentController.currency.value,
-                                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.5),
-                                    ),
-                                  ),
-                                  Text(
-                                    roundStringWith(paymentController.grandTotalAmount.value),
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 17.0),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20),
-                    child: Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              children: [
-                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Text(
-                                    'cash'.tr,
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
-                                  ),
-                                ]),
+                                /// to be paid commented
+                                // Padding(
+                                //   padding: const EdgeInsets.all(12.0),
+                                //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                //     Text(
+                                //       'to_be_paid'.tr,
+                                //       style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                //     ),
+                                //     Row(
+                                //       children: [
+                                //         Padding(
+                                //           padding: const EdgeInsets.only(right: 8.0),
+                                //           child: Text(
+                                //             paymentController.currency,
+                                //             style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
+                                //           ),
+                                //         ),
+                                //         Text(
+                                //           roundStringWith(paymentController.grandTotalAmount.value),
+                                //           style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ]),
+                                // ),
+                                // DividerStyle(),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 18.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 10,
-                                        child: TextField(
-                                          controller: paymentController.cashReceivedController,
-                                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
-                                          ],
-                                          onChanged: (val) {
-                                            if (val.isEmpty) {
-                                              val = "0";
-                                            } else {
-                                              paymentController.calculationOnPayment();
-                                            }
-                                          },
-                                          textCapitalization: TextCapitalization.words,
-
-                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
-                                          // focusNode: diningController.customerNode,
-                                          // onEditingComplete: () {
-                                          //   FocusScope.of(context).requestFocus();
-                                          // },
-                                          onTap: () => paymentController.cashReceivedController.selection = TextSelection(
-                                              baseOffset: 0, extentOffset: paymentController.cashReceivedController.value.text.length),
-
-                                          decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 35,
-                                        width: MediaQuery.of(context).size.width / 15,
-                                        child: TextButton(
-                                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
-                                          onPressed: () {
-                                            paymentController.bankReceivedController.text = roundStringWith("0");
-                                            paymentController.cashReceivedController.text =
-                                                roundStringWith(paymentController.grandTotalAmount.value.toString());
-                                            paymentController.calculationOnPayment();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(left: 12.0, right: 12),
-                                            child: Text(
-                                              'Full'.tr,
-                                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 15.5),
-                                            ),
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                    Text(
+                                      'total_tax'.tr,
+                                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 8.0),
+                                          child: Text(
+                                            paymentController.currency.value,
+                                            style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 8,
+                                        Text(
+                                          roundStringWith(paymentController.totalTaxMP.value),
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
                                 ),
                                 dividerStyle(),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Text(
-                                    'bank'.tr,
-                                    style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
-                                  ),
-                                ]),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 18.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 10,
-                                        child: TextField(
-                                          textCapitalization: TextCapitalization.words,
-                                          controller: paymentController.bankReceivedController,
-                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
-                                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
-                                          ],
-                                          onChanged: (val) {
-                                            if (val.isEmpty) {
-                                            } else {
-                                              paymentController.calculationOnPayment();
-                                            }
-                                          },
-                                          onEditingComplete: () {
-                                            FocusScope.of(context).requestFocus();
-                                          },
-                                          onTap: () => paymentController.bankReceivedController.selection = TextSelection(
-                                              baseOffset: 0, extentOffset: paymentController.bankReceivedController.value.text.length),
-                                          decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 35,
-                                        width: MediaQuery.of(context).size.width / 15,
-                                        child: TextButton(
-                                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
-                                          onPressed: () {
-                                            paymentController.cashReceivedController.text = roundStringWith("0");
-                                            paymentController.bankReceivedController.text =
-                                                roundStringWith(paymentController.grandTotalAmount.value.toString());
-                                            paymentController.calculationOnPayment();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(left: 12.0, right: 12),
-                                            child: Text(
-                                              'Full'.tr,
-                                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 16.5),
-                                            ),
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                    Text(
+                                      'net_total'.tr,
+                                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 8.0),
+                                          child: Text(
+                                            paymentController.currency.value,
+                                            style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                                        Text(
+                                          roundStringWith(paymentController.totalNetP.value),
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
+                                ),
+                                dividerStyle(),
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                    Text(
+                                      'grand_total'.tr,
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 16.5),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 8.0),
+                                          child: Text(
+                                            paymentController.currency.value,
+                                            style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.5),
+                                          ),
+                                        ),
+                                        Text(
+                                          roundStringWith(paymentController.grandTotalAmount.value),
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 17.0),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
+                                ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, right: 20),
+                          child: Container(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    children: [
+                                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                        Text(
+                                          'cash'.tr,
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
+                                        ),
+                                      ]),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 18.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context).size.width / 10,
+                                              child: TextField(
+                                                controller: paymentController.cashReceivedController,
+                                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
+                                                ],
+                                                onChanged: (val) {
+                                                  if (val.isEmpty) {
+                                                    val = "0";
+                                                  } else {
+                                                    paymentController.calculationOnPayment();
+                                                  }
+                                                },
+                                                textCapitalization: TextCapitalization.words,
+
+                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
+                                                // focusNode: diningController.customerNode,
+                                                // onEditingComplete: () {
+                                                //   FocusScope.of(context).requestFocus();
+                                                // },
+                                                onTap: () => paymentController.cashReceivedController.selection = TextSelection(
+                                                    baseOffset: 0, extentOffset: paymentController.cashReceivedController.value.text.length),
+
+                                                decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
+                                              ),
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              width: MediaQuery.of(context).size.width / 15,
+                                              child: TextButton(
+                                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                                                onPressed: () {
+                                                  paymentController.bankReceivedController.text = roundStringWith("0");
+                                                  paymentController.cashReceivedController.text =
+                                                      roundStringWith(paymentController.grandTotalAmount.value.toString());
+                                                  paymentController.calculationOnPayment();
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 12.0, right: 12),
+                                                  child: Text(
+                                                    'Full'.tr,
+                                                    style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 15.5),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      dividerStyle(),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                        Text(
+                                          'bank'.tr,
+                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
+                                        ),
+                                      ]),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 18.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context).size.width / 10,
+                                              child: TextField(
+                                                textCapitalization: TextCapitalization.words,
+                                                controller: paymentController.bankReceivedController,
+                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
+                                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
+                                                ],
+                                                onChanged: (val) {
+                                                  if (val.isEmpty) {
+                                                  } else {
+                                                    paymentController.calculationOnPayment();
+                                                  }
+                                                },
+                                                onEditingComplete: () {
+                                                  FocusScope.of(context).requestFocus();
+                                                },
+                                                onTap: () => paymentController.bankReceivedController.selection = TextSelection(
+                                                    baseOffset: 0, extentOffset: paymentController.bankReceivedController.value.text.length),
+                                                decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
+                                              ),
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              width: MediaQuery.of(context).size.width / 15,
+                                              child: TextButton(
+                                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                                                onPressed: () {
+                                                  paymentController.cashReceivedController.text = roundStringWith("0");
+                                                  paymentController.bankReceivedController.text =
+                                                      roundStringWith(paymentController.grandTotalAmount.value.toString());
+                                                  paymentController.calculationOnPayment();
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 12.0, right: 12),
+                                                  child: Text(
+                                                    'Full'.tr,
+                                                    style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 16.5),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            ))),
+                  ))),
         Container(
           height: MediaQuery.of(context).size.height * .22,
           child: Column(
@@ -2869,7 +2853,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Obx(
-                      () => Row(
+                  () => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -2933,7 +2917,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: false,
-                                  sectionType: widget.sectionType, platformID: platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -2946,11 +2931,12 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: false,
-                                  sectionType: widget.sectionType, platformID:platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
-                          }else if (widget.orderType ==3) {
+                          } else if (widget.orderType == 3) {
                             if (posController.take_away_create_perm.value) {
                               orderController.createMethod(
                                   tableID: widget.tableID,
@@ -2959,7 +2945,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: false,
-                                  sectionType: widget.sectionType, platformID: platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -2972,7 +2959,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: false,
-                                  sectionType: widget.sectionType, platformID: platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -2996,7 +2984,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     TextButton(
                         style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff00775E))),
                         onPressed: () {
-                          if (widget.orderType == 1 || widget.orderType == 4 || widget.orderType == 2||widget.orderType == 3) {
+                          if (widget.orderType == 1 || widget.orderType == 4 || widget.orderType == 2 || widget.orderType == 3) {
                             if (posController.pay_perm.value) {
                               orderController.createMethod(
                                   tableID: widget.tableID,
@@ -3005,7 +2993,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   orderType: widget.orderType,
                                   context: context,
                                   isPayment: true,
-                                  sectionType: widget.sectionType, platformID:platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -3051,8 +3040,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
             },
             controller: orderController.searchListController,
             decoration: InputDecoration(
-              // fillColor: const Color(0xffFDFDFD),
-              // filled: true,
+                // fillColor: const Color(0xffFDFDFD),
+                // filled: true,
                 contentPadding: const EdgeInsets.all(17),
                 suffixIcon: IconButton(
                   onPressed: () {},
@@ -3065,137 +3054,137 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
         ),
         dividerStyle(),
         Obx(
-              () => Expanded(
+          () => Expanded(
               child: ListView.separated(
-                separatorBuilder: (context, index) => dividerStyle(),
-                itemCount: orderController.searchOrderItemList.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    key: Key(orderController.searchOrderItemList[index].toString()),
-                    direction: DismissDirection.startToEnd,
-                    onDismissed: (direction) {
-                      // Remove the item from your data source.
-                      orderController.deleteOrderItem(index: index);
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: const Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        print("...................trt..................................");
+            separatorBuilder: (context, index) => dividerStyle(),
+            itemCount: orderController.searchOrderItemList.length,
+            itemBuilder: (context, index) {
+              return Dismissible(
+                key: Key(orderController.searchOrderItemList[index].toString()),
+                direction: DismissDirection.startToEnd,
+                onDismissed: (direction) {
+                  // Remove the item from your data source.
+                  orderController.deleteOrderItem(index: index);
+                },
+                background: Container(
+                  color: Colors.red,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    print("...................trt..................................");
 
-                        orderController.detailPage.value = 'detail_page';
-                        orderController.update();
+                    orderController.detailPage.value = 'detail_page';
+                    orderController.update();
 
-                        loadData();
-                        print("...................57777777...............................");
+                    loadData();
+                    print("...................57777777...............................");
 
-                        orderController.productNameDetail = orderController.searchOrderItemList[index]["ProductName"];
-                        orderController.indexDetail = index;
-                        print("...................888888888888888...............................");
-                      },
-                      child: InkWell(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 0.0, right: 2, top: 10, bottom: 10),
-                          child: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Obx(
-                                      () => IconButton(
-                                    icon: Icon(Icons.check_circle,
-                                        size: 25,
-                                        color: orderController.checkValueInList(index) == true ? const Color(0xffF25F29) : const Color(0xffFDDDDDD)),
-                                    onPressed: () {
-                                      var result = orderController.checkValueInList(index);
-                                      if (result) {
-                                        orderController.kartChange.remove(index);
-                                        orderController.update();
-                                      } else {
-                                        orderController.kartChange.add(index);
-                                      }
-                                    },
-                                  ),
-                                ),
-                                Obx(
-                                      () => Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                    orderController.productNameDetail = orderController.searchOrderItemList[index]["ProductName"];
+                    orderController.indexDetail = index;
+                    print("...................888888888888888...............................");
+                  },
+                  child: InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 0.0, right: 2, top: 10, bottom: 10),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Obx(
+                              () => IconButton(
+                                icon: Icon(Icons.check_circle,
+                                    size: 25,
+                                    color: orderController.checkValueInList(index) == true ? const Color(0xffF25F29) : const Color(0xffFDDDDDD)),
+                                onPressed: () {
+                                  var result = orderController.checkValueInList(index);
+                                  if (result) {
+                                    orderController.kartChange.remove(index);
+                                    orderController.update();
+                                  } else {
+                                    orderController.kartChange.add(index);
+                                  }
+                                },
+                              ),
+                            ),
+                            Obx(
+                              () => Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset("assets/svg/veg_mob.svg"),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 10.0, top: 0, left: 10),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width * 0.11,
-                                              child: Text(
-                                                orderController.searchOrderItemList[index]["ProductName"] ?? '',
-                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
+                                      SvgPicture.asset("assets/svg/veg_mob.svg"),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 10.0, top: 0, left: 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context).size.width * 0.11,
+                                          child: Text(
+                                            orderController.searchOrderItemList[index]["ProductName"] ?? '',
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                        ],
-                                      ),
-                                      orderController.searchOrderItemList[index]["Description"] != ""
-                                          ? Padding(
-                                        padding: const EdgeInsets.only(left: 20.0, right: 5),
-                                        child: Text(
-                                          orderController.searchOrderItemList[index]["Description"],
-                                          style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
                                         ),
-                                      )
-                                          : Container(),
-                                      Obx(
-                                            () => Padding(
-                                          padding: const EdgeInsets.only(top: 10.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              orderController.searchOrderItemList[index]["Flavour_Name"] != ""
-                                                  ? Padding(
-                                                padding: const EdgeInsets.only(left: 5.0),
-                                                child: Container(
+                                      ),
+                                    ],
+                                  ),
+                                  orderController.searchOrderItemList[index]["Description"] != ""
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(left: 20.0, right: 5),
+                                          child: Text(
+                                            orderController.searchOrderItemList[index]["Description"],
+                                            style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                          ),
+                                        )
+                                      : Container(),
+                                  Obx(
+                                    () => Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          orderController.searchOrderItemList[index]["Flavour_Name"] != ""
+                                              ? Padding(
+                                                  padding: const EdgeInsets.only(left: 5.0),
+                                                  child: Container(
+                                                    width: MediaQuery.of(context).size.width / 15,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(right: 5),
+                                                      child: Text(
+                                                        orderController.searchOrderItemList[index]["Flavour_Name"] ?? "",
+                                                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(
+                                                  height: MediaQuery.of(context).size.height / 30,
                                                   width: MediaQuery.of(context).size.width / 15,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(right: 5),
-                                                    child: Text(
-                                                      orderController.searchOrderItemList[index]["Flavour_Name"] ?? "",
-                                                      style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(0xffFFF6F2),
+                                                    borderRadius: BorderRadius.circular(30),
+                                                  ),
+                                                  child: const Center(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(right: 10),
+                                                      child: Text(
+                                                        "  + Flavour",
+                                                        style: TextStyle(fontSize: 11, color: Colors.redAccent),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              )
-                                                  : Container(
-                                                height: MediaQuery.of(context).size.height / 30,
-                                                width: MediaQuery.of(context).size.width / 15,
-                                                decoration: BoxDecoration(
-                                                  color: const Color(0xffFFF6F2),
-                                                  borderRadius: BorderRadius.circular(30),
-                                                ),
-                                                child: const Center(
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(right: 10),
-                                                    child: Text(
-                                                      "  + Flavour",
-                                                      style: TextStyle(fontSize: 11, color: Colors.redAccent),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Obx(() => Container(
+                                          Obx(() => Container(
                                                 height: MediaQuery.of(context).size.height / 33,
                                                 decoration: BoxDecoration(
                                                   color: orderController.returnIconStatus(orderController.searchOrderItemList[index]["Status"]),
@@ -3211,87 +3200,84 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                                   ),
                                                 ),
                                               ))
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          orderController.currency.value,
-                                          style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 14.0),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 3.0),
-                                          child: Text(
-                                            roundStringWith(orderController.searchOrderItemList[index]["UnitPrice"].toString()),
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        IconButton(
-                                          icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
-                                          onPressed: () {
-                                            if (double.parse(orderController.searchOrderItemList[index]["Qty"].toString()) >= 2.0) {
-                                              orderController.updateQty(index: index, type: 0);
-                                              setState(() {
-
-                                              });
-                                            }
-                                          },
-                                        ),
-                                        Container(
-                                          height: MediaQuery.of(context).size.height / 21,
-                                          width: MediaQuery.of(context).size.width / 20,
-                                          decoration:
+                                  )
+                                ],
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      orderController.currency.value,
+                                      style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 14.0),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 3.0),
+                                      child: Text(
+                                        roundStringWith(orderController.searchOrderItemList[index]["UnitPrice"].toString()),
+                                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    IconButton(
+                                      icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
+                                      onPressed: () {
+                                        if (double.parse(orderController.searchOrderItemList[index]["Qty"].toString()) >= 2.0) {
+                                          orderController.updateQty(index: index, type: 0);
+                                          setState(() {});
+                                        }
+                                      },
+                                    ),
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 21,
+                                      width: MediaQuery.of(context).size.width / 20,
+                                      decoration:
                                           BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xffE7E7E7))),
-                                          child: Center(
-                                            child: Text(
-                                              roundStringWith(orderController.searchOrderItemList[index]["Qty"].toString()),
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black,
-                                              ),
-                                            ),
+                                      child: Center(
+                                        child: Text(
+                                          roundStringWith(orderController.searchOrderItemList[index]["Qty"].toString()),
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.black,
                                           ),
                                         ),
-                                        IconButton(
-                                          icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
-                                          onPressed: () {
-                                            orderController.updateQty(index: index, type: 1);
-                                            setState(() {
-
-                                            });
-                                          },
-                                        ),
-                                      ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: SvgPicture.asset("assets/svg/plus_mob.svg"),
+                                      onPressed: () {
+                                        orderController.updateQty(index: index, type: 1);
+                                        setState(() {});
+                                      },
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ),
-                  );
-                },
-              )),
+                  ),
+                ),
+              );
+            },
+          )),
         ),
+
         ///
 
         Container(
@@ -3352,7 +3338,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Obx(
-                      () => Row(
+                  () => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -3416,7 +3402,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: false,
-                                  sectionType: widget.sectionType, platformID: platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -3429,11 +3416,13 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: false,
-                                  sectionType: widget.sectionType, platformID: platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
                           }
+
                           ///
                           else if (widget.orderType == 3) {
                             if (posController.online_create_perm.value) {
@@ -3444,7 +3433,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: false,
-                                  sectionType: widget.sectionType, platformID: platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -3461,7 +3451,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: false,
-                                  sectionType: widget.sectionType, platformID: platformController.platformID.value);
+                                  sectionType: widget.sectionType,
+                                  platformID: platformController.platformID.value);
                             } else {
                               dialogBoxPermissionDenied(context);
                             }
@@ -3595,7 +3586,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     ),
                   ),
                   Obx(
-                        () => Padding(
+                    () => Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Text(orderController.customerBalance.value,
                           style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0)),

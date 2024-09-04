@@ -1,3 +1,4 @@
+
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -18,7 +19,6 @@ import 'package:reorderable_grid_view/reorderable_grid_view.dart'; // Import the
 import '../../controller/draggable_controller.dart';
 import '../../controller/platform_controller.dart';
 import '../detail_page/customer_detail.dart';
-import 'copy_code/test.dart';
 
 class DragDrop extends StatefulWidget {
   final String uID,  sectionType;
