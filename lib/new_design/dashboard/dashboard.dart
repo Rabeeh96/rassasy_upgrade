@@ -19,7 +19,7 @@ import 'package:rassasy_new/new_design/back_ground_print/wifi_print/test_page/pr
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/mobile/pos_main_page.dart';
 
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/tab_pos_order_page.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
@@ -38,7 +38,7 @@ import 'mobile_section/view/invoice/invocie_list_mobile.dart';
 import 'mobile_section/view/product/product_list_mobile.dart';
 import 'mobile_section/view/product_group/product_group_list.dart';
 import 'pos/MobileDesign/view/tab_design/tab_pos_list_design.dart';
-import 'pos/new_method/pos_list_section.dart';
+import 'pos/pos_section/pos_list_section.dart';
 import 'product/create_products.dart';
 import 'profile_mobile/about_us/about_us_page.dart';
 import 'profile_mobile/contact_us/contact_us.dart';

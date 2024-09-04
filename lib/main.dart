@@ -4,13 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/car_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/mobile_payment_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
+
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
-import 'package:rassasy_new/test/local_db/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart' if (dart.library.html) '';
 
@@ -20,11 +16,6 @@ import 'new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'new_design/organization/list_organization.dart';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
-
-import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 ///code commented here
 // void main() {

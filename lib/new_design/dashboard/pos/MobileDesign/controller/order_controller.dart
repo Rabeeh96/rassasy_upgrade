@@ -11,7 +11,6 @@ import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/delivery
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/flavour.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/groupModel.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/model/productModel.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/mobile_payment_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';

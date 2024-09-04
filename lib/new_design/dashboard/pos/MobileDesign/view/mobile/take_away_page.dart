@@ -8,7 +8,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/cancel_reason_list.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/order/add_order_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/mobile/order/add_order_page.dart';
 
 import 'payment/mobile_payment_page.dart';
 

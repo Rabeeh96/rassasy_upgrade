@@ -17,7 +17,6 @@ import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/barcode/barcode.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/detail/selectDeliveryMan.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/new_method/change_table.dart';
 import 'package:rassasy_new/new_design/report/selectDetails/select_table.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -26,6 +25,7 @@ import 'package:intl/intl.dart';
 // import 'package:pos_printer_manager/pos_printer_manager.dart';
 import '../detail/select_cardtype.dart';
 import '../detail/selected_customer.dart';
+import 'change_table.dart';
 import 'model/model_class.dart';
 import 'package:get/get.dart';
 

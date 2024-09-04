@@ -9,12 +9,12 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/global/textfield_decoration.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/order_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/controller/pos_controller.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/customer_detail.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/group_list.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/detail_page/select_deliveryman.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/order/kartPage.dart';
 import 'package:popover/popover.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../detail_page/customer_detail.dart';
+import 'kartPage.dart';
 import 'product_detail_page.dart';
 import 'search_items.dart';
 
