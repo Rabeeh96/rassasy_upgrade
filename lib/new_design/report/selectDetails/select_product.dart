@@ -18,6 +18,7 @@ class _ProductDetailsState extends State<SelectProduct> {
   @override
   void initState() {
     super.initState();
+    productLists.clear();
     getProductList(true,'');
 
   }
@@ -105,7 +106,7 @@ TextEditingController searchController =TextEditingController();
   }
   bool isLoading = false;
   var pageNumber = 1;
-  var itemPerPage = 10;
+  var itemPerPage = 40;
   var firstTime = 1;
   var listLength = 0;
 
@@ -615,8 +616,8 @@ TextEditingController searchController =TextEditingController();
           "BranchID": branchID,
           "PriceRounding": 2,
           "GroupID": null,
-          "page_no": 1,
-          "items_per_page": 20,
+          "page_no": pageNumber,
+          "items_per_page": itemPerPage,
           "search": search
         };
         print(data);

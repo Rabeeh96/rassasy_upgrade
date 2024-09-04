@@ -12,10 +12,11 @@ import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/dashboard/dashboard.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/new_method/pos_list_section.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/mobile/pos_main_page.dart';
 import 'package:rassasy_new/new_design/organization/list_organization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../dashboard/pos/pos_section/pos_list_section.dart';
 
 class EnterPinNumber extends StatefulWidget {
   const EnterPinNumber({Key? key}) : super(key: key);

@@ -9,7 +9,6 @@ import 'package:image/image.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/Print/html_kot.dart';
 import 'package:rassasy_new/Print/qr_generator.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/new_method/model/model_class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webcontent_converter/webcontent_converter.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +17,8 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart'
 as usb_esc_printer_windows;
+
+import '../../dashboard/pos/pos_section/model/model_class.dart';
 
 class USBPrintClass {
   List<ProductDetailsModel> printDalesDetails = [];

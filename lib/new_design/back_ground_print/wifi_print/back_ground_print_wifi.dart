@@ -20,10 +20,10 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/Templates/template1.dart';
 import 'package:rassasy_new/new_design/back_ground_print/Templates/template2.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/new_method/model/model_class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webcontent_converter/webcontent_converter.dart';
 
+import '../../dashboard/pos/pos_section/model/model_class.dart';
 import '../Templates/template3.dart';
 
 class AppBlocs {

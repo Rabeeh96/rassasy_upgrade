@@ -2,7 +2,8 @@
 
 
 
-import 'package:rassasy_new/new_design/dashboard/pos/new_method/model/model_class.dart';
+
+import '../new_design/dashboard/pos/pos_section/model/model_class.dart';
 
 class ThermalEnglishDesignKot {
   static String getInvoiceContent(id,data,width) {
