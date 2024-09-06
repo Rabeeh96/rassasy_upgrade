@@ -7,7 +7,6 @@ import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
-import 'package:rassasy_new/Print/html_kot.dart';
 import 'package:rassasy_new/Print/qr_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webcontent_converter/webcontent_converter.dart';
@@ -2474,8 +2473,9 @@ class USBPrintClass {
             "ISO-8859-6", setString(productDescription));
         bytes += generator.textEncoded(productDescriptionEnc,
             styles: const PosStyles(
+
                 height: PosTextSize.size1,
-                width: PosTextSize.size1,
+                width: PosTextSize.size2,
                 align: PosAlign.center));
       }
 
@@ -2513,6 +2513,7 @@ class USBPrintClass {
               align: PosAlign.right))),
     ]);
     bytes += generator.cut();
+    bytes +=generator.beep(duration: PosBeepDuration.beep300ms);
     print("-----8   $printerAddress");
     final res =
     await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
