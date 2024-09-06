@@ -20,11 +20,11 @@ import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/customisation_template/customisation_template.dart';
 import 'package:rassasy_new/new_design/dashboard/Reservation/reservation_list.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/tab_design/draggable_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../global/textfield_decoration.dart';
 import '../../../../main.dart';
-import '../MobileDesign/view/tab_design/draggable_list.dart';
+
 import 'model/model_class.dart';
 import 'new_pos_order_section.dart';
 
@@ -489,9 +489,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
         children: [
           Card(
             child: Container(
+
               padding: const EdgeInsets.all(10),
               height: MediaQuery.of(context).size.height / 11,
-              width: MediaQuery.of(context).size.width / 1,
+        //      width: MediaQuery.of(context).size.width / 1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -503,7 +504,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
                         alignment: Alignment.centerLeft,
                         height: MediaQuery.of(context).size.height / 11, //height of button
-                        width: MediaQuery.of(context).size.width / 3,
+                        width: MediaQuery.of(context).size.width / 4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -519,20 +520,10 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                           ],
                         ),
                       ),
-
-                      // IconButton(
-                      //     onPressed: () {
-                      //       _showFullWidthBottomSheet(context);
-                      //
-                      //     },
-                      //     icon: SvgPicture.asset(
-                      //       'assets/svg/Refresh_icon.svg',
-                      //     ),
-                      //     iconSize: 110
-                      // ),
-
                       Container(
+                        // width: MediaQuery.of(context).size.width / 1.2,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             UserDetailsAppBar(user_name: userName),
                             Container(
@@ -562,15 +553,12 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
                             //     },
                             //     child: Text("Settings"))
                             IconButton(onPressed: () async {
-                            var res=  await Get.to(DragTableList());
+                             var res=  await Get.to(DragTableList());
                             posFunctions(callFunction: false);
                             }, icon: Icon(Icons.settings))
                           ],
                         ),
                       ),
-
-
-
                     ],
                   )
                 ],
@@ -3622,7 +3610,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
 
         Map n = json.decode(utf8.decode(response.bodyBytes));
 
-        log_data(response.body);
+        pr(response.body);
         print("a");
         var status = n["StatusCode"];
         var statusTable = n["DiningStatusCode"];

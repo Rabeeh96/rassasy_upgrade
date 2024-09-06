@@ -856,7 +856,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     print(
         "Date ---------5   ---------5   ---------5    ${DateTime.now().second} ");
 
-    log_data(
+    pr(
         "--------------${arabicImageBytes.runtimeType}---------$arabicImageBytes");
 
     final Img.Image? image = Img.decodeImage(arabicImageBytes);

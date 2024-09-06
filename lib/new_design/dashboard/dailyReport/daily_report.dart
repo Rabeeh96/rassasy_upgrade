@@ -59,6 +59,7 @@ class DailyReportSection extends State<DailyReport> {
         };
 
         print(data);
+        print(accessToken);
         print(url);
 
         //encode Map to JSON
@@ -83,6 +84,8 @@ class DailyReportSection extends State<DailyReport> {
           Map<String, dynamic> effectiveSale = n["effective_sale"];
           Map<String, dynamic> totalRevenue = n["total_revenue"];
 
+          print(orderDetails);
+
           stop();
           printDetail(
             userName: userName,
@@ -92,7 +95,7 @@ class DailyReportSection extends State<DailyReport> {
             saleByType: saleByType,
             salesOrder: salesOrder,
             totalRevenue: totalRevenue
-          );
+           );
         } else if (status == 6001) {
           stop();
         } else if (status == 6002) {

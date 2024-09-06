@@ -509,7 +509,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
             body: body);
 
         Map n = json.decode(utf8.decode(response.bodyBytes));
-        log_data(response.body);
+        pr(response.body);
         var status = n["StatusCode"];
         var message = n["message"] ?? "";
         var responseJson = n["data"];
@@ -5874,7 +5874,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           "IsActive": true,
           "IsInvoiced": "N",
         };
-        log_data(data);
+        pr(data);
         //encode Map to JSON
         var body = json.encode(data);
 

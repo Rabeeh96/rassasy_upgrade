@@ -191,7 +191,7 @@ class _ProductDetailsState extends State<ChangeTable> {
         var statusTable = n["DiningStatusCode"];
         var responseJson = n["data"];
         print(status);
-        log_data(responseJson);
+        pr(responseJson);
         if (status == 6000) {
           setState(() {
             stop();

@@ -19,9 +19,9 @@ import 'package:rassasy_new/new_design/back_ground_print/wifi_print/test_page/pr
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/mobile/pos_main_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/mobile/pos_main_page.dart';
 
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/tab_design/tab_pos_order_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/tab_design/tab_pos_order_page.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
@@ -32,12 +32,13 @@ import 'package:rassasy_new/test/local_db/data_base_working.dart';
 import 'package:rassasy_new/test/local_db/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'customer/customer_detail_page.dart';
+import 'dailyReport/daily_report.dart';
 import 'flavour/view_flavour.dart';
 import 'mobile_section/view/customer/customer_list_mobile.dart';
 import 'mobile_section/view/invoice/invocie_list_mobile.dart';
 import 'mobile_section/view/product/product_list_mobile.dart';
 import 'mobile_section/view/product_group/product_group_list.dart';
-import 'pos/MobileDesign/view/tab_design/tab_pos_list_design.dart';
+import 'pos/pos_new_design/view/tab_design/tab_pos_list_design.dart';
 import 'pos/pos_section/pos_list_section.dart';
 import 'product/create_products.dart';
 import 'profile_mobile/about_us/about_us_page.dart';
@@ -59,24 +60,28 @@ class _DashboardNewState extends State<DashboardNew> {
     // TODO: implement initState
     super.initState();
     dataForStaff();
-    profileController.getProfileData();
+     profileController.getProfileData();
   }
 
   ProfileController profileController = Get.put(ProfileController());
 
   dataForStaff() async {
+pr("-------------------------------------------------------------------------------------------1");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      pr("-------------------------------------------------------------------------------------------2");
       var isArabic = prefs.getBool('isArabic') ?? false;
       if (isArabic) {
         Get.updateLocale(const Locale('ar'));
       } else {
         Get.updateLocale(const Locale('en', 'US'));
       }
+      pr("-------------------------------------------------------------------------------------------3");
       baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
       userName = prefs.getString('user_name') ?? '';
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
+      pr("-------------------------------------------------------------------------------------------4");
       expireDate = prefs.getString('expiryDate') ?? '';
       organisationLogo = prefs.getString('companyLogo') ?? 'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
       settingsPermission = prefs.getBool('General Setting') ?? false;
@@ -234,20 +239,8 @@ class _DashboardNewState extends State<DashboardNew> {
         );
 
       case 6 :
-       Get.to(TabPosListDesign());
-        // if (posUser == true) {
-        //   Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(builder: (context) => const EnterPinNumber()),
-        //   );
-        // } else if (posUser == false) {
-        //   prefs.setBool('isLoggedIn', false);
-        //   prefs.setBool('companySelected', false);
-        //   Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(builder: (context) => LoginPageNew()),
-        //   );
-        // }
-
-        break;
+      Get.to(TabPosListDesign());
+      break;
     }
   }
 
@@ -373,7 +366,6 @@ class _DashboardNewState extends State<DashboardNew> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-
     bool isTablet = enableTabDesign;
   //  bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
@@ -404,7 +396,7 @@ class _DashboardNewState extends State<DashboardNew> {
                     ),
               actions: [
 
-               
+
 
                 isTablet == true
                     ? Theme(
@@ -538,7 +530,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                       width: 7,
                                     ),
                                     Text(
-                                      'POS',
+                                      'New POS (Beta Version)',
                                       style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
@@ -1115,66 +1107,69 @@ class _DashboardNewState extends State<DashboardNew> {
                         ),
 
                         /// daily report commented
-                        // Column(
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () async {
-                        //         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
-                        //
-                        //         // Navigator.push(
-                        //         //     context,
-                        //         //     MaterialPageRoute(
-                        //         //         builder: (BuildContext context) =>
-                        //         //             const DragableList()));
-                        //
-                        //         // var invoices = await checkingPerm('Invoices'.tr);
-                        //         //
-                        //         // if (invoices == true) {
-                        //         //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
-                        //         //
-                        //         // } else {
-                        //         //   dialogBoxPermissionDenied(context);
-                        //         // }
-                        //       },
-                        //       child: Container(
-                        //         decoration: const BoxDecoration(
-                        //             color: Color(0xffEEEEEE),
-                        //             borderRadius:
-                        //             BorderRadius.all(Radius.circular(20))),
-                        //         height: isTablet
-                        //             ? screenHeight / 12
-                        //             : screenHeight / 15,
-                        //         width: isTablet
-                        //             ? screenWidth / 17
-                        //             : screenWidth / 6,
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           crossAxisAlignment: CrossAxisAlignment.center,
-                        //           children: [
-                        //             Container(
-                        //               height:
-                        //               MediaQuery.of(context).size.height /
-                        //                   20,
-                        //               width: MediaQuery.of(context).size.width /
-                        //                   20,
-                        //               child: SvgPicture.asset(
-                        //                   'assets/svg/report.svg'),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     Padding(
-                        //       padding: const EdgeInsets.only(
-                        //         top: 12,
-                        //       ),
-                        //       child: Text(
-                        //         'Daily Report'.tr,
-                        //         style: const TextStyle(fontSize: 12),
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (BuildContext context) =>
+                                //             const DragableList()));
+
+                                // var invoices = await checkingPerm('Invoices'.tr);
+                                //
+                                // if (invoices == true) {
+                                //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                                //
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    color: Color(0xffEEEEEE),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                                height: isTablet
+                                    ? screenHeight / 12
+                                    : screenHeight / 15,
+                                width: isTablet
+                                    ? screenWidth / 17
+                                    : screenWidth / 6,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height:
+                                      MediaQuery.of(context).size.height /
+                                          20,
+                                      width: MediaQuery.of(context).size.width /
+                                          20,
+                                      child: SvgPicture.asset(
+                                          'assets/svg/report.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'Daily Report'.tr,
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+
+
+
                         /// new taxz commented
                         // Column(
                         //   children: [

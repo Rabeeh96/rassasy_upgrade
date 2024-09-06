@@ -389,7 +389,7 @@ class BaseUrl{
 }
 
 
-log_data(data){
+pr(data){
   log("------$data");
 }
 

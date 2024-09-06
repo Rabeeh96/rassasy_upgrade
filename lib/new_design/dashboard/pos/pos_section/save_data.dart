@@ -5259,7 +5259,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
           "IsActive": true,
           "IsInvoiced": "N",
         };
-        log_data(data);
+        pr(data);
         //encode Map to JSON
         var body = json.encode(data);
 

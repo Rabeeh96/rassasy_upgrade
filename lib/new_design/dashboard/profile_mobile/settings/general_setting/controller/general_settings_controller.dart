@@ -12,6 +12,7 @@ class GeneralController extends GetxController{
   ValueNotifier<bool> isAutoFocus = ValueNotifier<bool>(false);
   ValueNotifier<bool> isArabic = ValueNotifier<bool>(false);
   ValueNotifier<bool> directOrderOption = ValueNotifier<bool>(false);
+  ValueNotifier<bool> synMethod = ValueNotifier<bool>(false);
   ValueNotifier<bool> isQuantityIncrement = ValueNotifier<bool>(false);
   ValueNotifier<bool> isShowInvoice = ValueNotifier<bool>(false);
   ValueNotifier<bool> tableClearAfterPayment = ValueNotifier<bool>(false);
@@ -35,6 +36,7 @@ class GeneralController extends GetxController{
     isShowInvoice.value = prefs.getBool("AutoClear") ?? false;
     tableClearAfterPayment.value = prefs.getBool("tableClearAfterPayment") ?? false;
     directOrderOption.value =prefs.getBool("directOrderOption") ?? false;
+    synMethod.value =prefs.getBool("synMethod") ?? false;
 
 
 

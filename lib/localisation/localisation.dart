@@ -376,6 +376,7 @@ class LocaleChange extends Translations {
           'No_of_copies': 'No of copies for invoice print',
           'kot For Cancelled Order': 'Kot For Cancelled Order',
           'is_tab_design': 'Tab Design',
+          'sync_method': 'Sync Method',
 
         },
 
@@ -384,6 +385,7 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'sync_method': 'طريقة المزامنة',
           'is_tab_design': 'تصميم علامة التبويب',
           'kot For Cancelled Order': 'كوت للطلب الملغى',
           'No_of_copies': 'عدد النسخ لطباعة الفاتورة',

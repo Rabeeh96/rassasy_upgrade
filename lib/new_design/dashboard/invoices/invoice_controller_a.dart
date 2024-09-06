@@ -122,7 +122,7 @@ class InvoiceControllerA extends GetxController{
         },
         body: body,
       );
-      log_data("response ${response.body}  ");
+      pr("response ${response.body}  ");
       Map n = json.decode(utf8.decode(response.bodyBytes));
       var status = n["StatusCode"];
       var message = n["message"];
