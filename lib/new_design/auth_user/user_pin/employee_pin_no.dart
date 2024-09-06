@@ -68,26 +68,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
   }
 
 
-  void _handleKeyq(RawKeyEvent event) {
-    if (event is RawKeyDownEvent) {
-      String keyLabel = event.data.logicalKey.keyLabel;
-      if (keyLabel.isEmpty) return;
-      // Handle numeric keys (0-9)
-      if (keyLabel.length == 1 && keyLabel.contains(RegExp(r'[0-9]'))) {
-        setState(() {
-          num.add(int.parse(keyLabel.toString()));
-          changeColor();
-        });
-      }
-      // Handle backspace key
-      if (event.logicalKey == LogicalKeyboardKey.backspace && num.isNotEmpty) {
-        setState(() {
-          num.removeLast();
-          changeColor();
-        });
-      }
-    }
-  }
+
 
   @override
   void initState() {
@@ -249,6 +230,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
           }
 
           stop();
+
+          print("------------------------------------------");
 
           await Future.delayed(Duration(seconds: 1), () {
             bool onlyPosUser = prefs.getBool('Only POS Access') ?? false;

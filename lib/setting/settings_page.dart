@@ -477,6 +477,7 @@ class _SettingsPageState extends State<SettingsPage> {
             quantityIncrement = responseJson["IsQuantityIncrement"];
             prefs.setBool("qtyIncrement", quantityIncrement);
 
+
             showInvoice = responseJson["IsShowInvoice"];
             prefs.setBool("AutoClear", showInvoice);
 
@@ -491,6 +492,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
             initialTokenNoController.text = responseJson["InitialTokenNo"].toString();
             compensationHour = responseJson["CompensationHour"].toString();
+
             // printAfterPayment = responseJson["IsPrintAfterPayment"];
             // prefs.setBool("printAfterPayment", printAfterPayment);
             //
@@ -2910,6 +2912,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           isArabic = val;
                         });
+
                       },
                     ),
                   ),
@@ -3070,6 +3073,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           //   showInvoice = val;
                           //   switchStatus("AutoClear", showInvoice);
                           // });
+
                         },
                       ),
                     ),
