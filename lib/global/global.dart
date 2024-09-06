@@ -9,10 +9,11 @@ import 'package:intl/intl.dart';
 // dialogBox(BuildContext context, msg) {
 //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 // }
-//////
+////////
 
-String appVersion = "1.1.42";
+String appVersion = "1.1.50";
 double defaultScreenWidth=550;
+bool enableTabDesign = false;
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),
@@ -364,20 +365,17 @@ String baseURlApi='';
 class BaseUrl{
 /// server details
 
-  static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
-  static String baseUrl = "$baseURlApi/api/v10";
-  static String baseUrlV11 = "$baseURlApi/api/v11";
-  static String imageURL = '$baseURlApi/media/';
+   static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
+   static String baseUrl = "$baseURlApi/api/v10";
+   static String baseUrlV11 = "$baseURlApi/api/v11";
+   static String imageURL = '$baseURlApi/media/';
 
 ///
    //
-   // api.accounts.vikncodes.in
-
   // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
-  // static String baseUrl = "https://www.api.viknbooks.in/api/v10";
-  // static String imageURL = 'https://www.api.viknbooks.in';
-  // static String baseUrlV11 = "https://www.api.viknbooks.in/api/v11";
-
+  // static String baseUrl = "$baseURlApi/api/v10";
+  // static String baseUrlV11 = "$baseURlApi/api/v11";
+  // static String imageURL = '$baseURlApi/media/';
 
  // local
  // http://192.168.1.52:8002/
@@ -391,7 +389,7 @@ class BaseUrl{
 }
 
 
-log_data(data){
+pr(data){
   log("------$data");
 }
 

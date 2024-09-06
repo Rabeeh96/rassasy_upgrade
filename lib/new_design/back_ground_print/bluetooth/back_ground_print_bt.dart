@@ -1421,9 +1421,9 @@ bool isCancelled;
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(text: 'Item Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(text: 'Item Name', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
       PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(text: 'Rate', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Rate', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(text: 'Total', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
@@ -1437,9 +1437,9 @@ bool isCancelled;
             height: PosTextSize.size1,
             fontType: PosFontType.fontA,
           )),
-      PosColumn(textEncoded: productNameEnc, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.left)),
+      PosColumn(textEncoded: productNameEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.left)),
       PosColumn(textEncoded: qtyEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(textEncoded: rateEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(textEncoded: rateEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(textEncoded: netEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     printer += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
@@ -1448,20 +1448,24 @@ bool isCancelled;
     for (var i = 0; i < tableDataDetailsPrint.length; i++) {
       var slNo = i + 1;
 
-      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName,reverseArabicOption));
+      //Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName,reverseArabicOption));
+
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString("$slNo ${tableDataDetailsPrint[i].productName}",reverseArabicOption));
+      printer+= generator.textEncoded(productName,styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.left));
+
 
       printer += generator.row([
-        PosColumn(
-            text: "$slNo",
-            width: 1,
-            styles: const PosStyles(
-              height: PosTextSize.size1,
-            )),
-        PosColumn(textEncoded: productName, width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(text: tableDataDetailsPrint[i].qty, width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center, bold: true)),
+        // PosColumn(
+        //     text: "$slNo",
+        //     width: 1,
+        //     styles: const PosStyles(
+        //       height: PosTextSize.size1,
+        //     )),
+        PosColumn(text: "", width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: tableDataDetailsPrint[i].qty, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center, bold: true)),
         PosColumn(
             text: roundStringWith(tableDataDetailsPrint[i].unitPrice),
-            width: 2,
+            width: 3,
             styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: roundStringWith(tableDataDetailsPrint[i].netAmount),
@@ -1472,18 +1476,20 @@ bool isCancelled;
       var description = tableDataDetailsPrint[i].productDescription ?? '';
       if (description != "") {
         Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription,reverseArabicOption));
-        printer += generator.row([
-          PosColumn(
-              textEncoded: description,
-              width: 7,
-              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-          PosColumn(
-              text: '',
-              width: 5,
-              styles: const PosStyles(
-                height: PosTextSize.size1,
-              ))
-        ]);
+        printer+= generator.textEncoded(  description,   styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right));
+
+        // printer += generator.row([
+        //   PosColumn(
+        //       textEncoded: description,
+        //       width: 10,
+        //       styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        //   PosColumn(
+        //       text: '',
+        //       width: 2,
+        //       styles: const PosStyles(
+        //         height: PosTextSize.size1,
+        //       ))
+       // ]);
       }
       var flavour = tableDataDetailsPrint[i].flavourName ?? '';
 
@@ -1494,11 +1500,11 @@ bool isCancelled;
             printer += generator.row([
               PosColumn(
                   textEncoded: flavourNameEnc,
-                  width: 7,
+                  width: 10,
                   styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
               PosColumn(
                   text: '',
-                  width: 5,
+                  width: 2,
                   styles: const PosStyles(
                     height: PosTextSize.size1,
                   ))
@@ -1507,9 +1513,6 @@ bool isCancelled;
 
         }
       }
-
-
-
       printer += generator.hr();
     }
     printer += generator.emptyLines(1);
@@ -1826,13 +1829,13 @@ class ESCPrinterServicesArabicKOT {
     bytes +=generator.row([
       PosColumn(
           text: 'SL',
-          width: 2,
+          width: 1,
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
       PosColumn(
           text: 'Product Name',
-          width: 8,
+          width: 9,
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
@@ -1844,23 +1847,22 @@ class ESCPrinterServicesArabicKOT {
       var slNo = i + 1;
       print("-----5.6");
       var productDescription = dataPrint[i].productDescription;
-      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName,reverseArabicOption));
-      print("-----5.7");
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString( "$slNo  "+dataPrint[i].productName,reverseArabicOption));
+
       bytes +=generator.row([
-        PosColumn(
-            text: '$slNo',
-            width: 2,
-            styles: const PosStyles(
-              height: PosTextSize.size1,
-            )),
-        PosColumn(textEncoded: productName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        // PosColumn(
+        //     text: '$slNo',
+        //     width: 2,
+        //     styles: const PosStyles(
+        //       height: PosTextSize.size1,
+        //     )),
+        PosColumn(textEncoded: productName, width: 10, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(text: dataPrint[i].qty, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       if (productDescription != "") {
         Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription,reverseArabicOption));
-        bytes +=generator.textEncoded(productDescriptionEnc,
-            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        bytes +=generator.textEncoded(productDescriptionEnc,styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       // if (dataPrint[i].f != "") {

@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
+import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
 import 'package:rassasy_new/new_design/waiter_list/waiter_select_from_dash.dart';
 import 'package:rassasy_new/test/dragable.dart';
@@ -112,11 +113,19 @@ class _SettingsPageState extends State<SettingsPage> {
   bool hideTaxDetails = false;
   bool extraDetailsInKOT = false;
   bool autoFocusSearch = false;
+  bool synMethod = false;
+  bool isTabDesign = false;
 
   bool time_in_invoice = false;
   bool printForCancellOrder = false;
+  bool kotForCanceledOrder = false;
   bool flavourInOrderPrint = false;
   bool reverseArabicOption = false;
+  bool isDiscountInPrint = false;
+  bool isCustomerNameDisplay = false;
+  bool isCustomerPhoneDisplay = false;
+  bool isSalesmanDisplay = false;
+  bool isGrossAmountDisplay = false;
 
   bool printAfterOrder = false;
   bool directOrderOption = false;
@@ -319,6 +328,7 @@ class _SettingsPageState extends State<SettingsPage> {
       compensationHour = prefs.getString('CompensationHour') ?? "1";
       quantityIncrement = prefs.getBool("qtyIncrement") ?? true;
       userType = prefs.getInt("user_type") ?? 1;
+      numberOfCopies = prefs.getString("number_of_print") ?? '1';
       showInvoice = prefs.getBool("AutoClear") ?? false;
       clearTable = prefs.getBool("tableClearAfterPayment") ?? false;
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
@@ -330,14 +340,16 @@ class _SettingsPageState extends State<SettingsPage> {
 
       time_in_invoice = prefs.getBool('time_in_invoice') ?? false;
       printForCancellOrder = prefs.getBool('print_for_cancel_order') ?? false;
+      kotForCanceledOrder = prefs.getBool('kot_for_cancel_order') ?? false;
       flavourInOrderPrint = prefs.getBool('flavour_in_order_print') ?? false;
       reverseArabicOption = prefs.getBool('reverseArabicOption') ?? false;
+      isDiscountInPrint=prefs.getBool('isDiscountInPrint') ?? false;
+      isCustomerNameDisplay=prefs.getBool('isCustomerNameDisplay') ?? false;
+      isCustomerPhoneDisplay=prefs.getBool('isCustomerPhoneDisplay') ?? false;
+      isSalesmanDisplay=prefs.getBool('isSalesmanDisplay') ?? false;
+      isGrossAmountDisplay=prefs.getBool('isGrossAmountDisplay') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
       _selectedOption= prefs.getString('PrintType') ?? "Wifi";
-
-
-
-
 
       hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
       paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
@@ -368,6 +380,8 @@ class _SettingsPageState extends State<SettingsPage> {
       hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
       extraDetailsInKOT = prefs.getBool("extraDetailsInKOT")??false;
       autoFocusSearch = prefs.getBool("autoFocusSearch")??false;
+      synMethod = prefs.getBool("synMethod")??false;
+      isTabDesign = prefs.getBool("isTablet")??false;
 
     });
   }
@@ -576,7 +590,7 @@ class _SettingsPageState extends State<SettingsPage> {
     } else if (index == 2) {
       return printerSettingScreen();
     } else if (index == 3) {
-      return kitchenSettingScreen();
+      return kotPrint?kitchenSettingScreen():Container();
     } else if (index == 4) {
       return printerDefault();
     } else if (index == 5) {
@@ -1124,6 +1138,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         defaultSalesInvoiceController.clear();
                         defaultSalesOrderController.clear();
                         prefs.setString("PrintType", newValue);
+                        templateIndex = 3;
+                        if (newValue == "BT") {
+                          templateIndex = 4;
+                        }
+                        templateViewColor(templateIndex);
+                        setTemplate(templateIndex);
+
 
                       //   if (newValue == "Wifi") {
                       //     defaultSalesInvoiceController.clear();
@@ -1321,7 +1342,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       const SizedBox(
                         width: 20,
                       ),
-                      _selectedOption =='USB'?
+                      _selectedOption =='USB' || _selectedOption =='Wifi'?
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -1554,6 +1575,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
+
 
           Card(
             shape: RoundedRectangleBorder(
@@ -1975,6 +1997,46 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {},
             ),
           ),
+          printType==
+          "Wifi" ? Card(
+
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+            color: Colors.grey[100],
+            child: ListTile(
+              title: Text(
+                'No_of_copies'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
+              ),
+              trailing: DropdownButton<String>(
+                value: numberOfCopies,
+                underline: Container(),
+                items: numberOfCopiesList.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value + "  Copies ",
+                      style: customisedStyle(context, const Color(0xffF25F29),
+                          FontWeight.normal, 15.0),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (newValue)async {
+                  numberOfCopies = newValue!;
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.setString('number_of_print', newValue);
+                  setState(() {
+
+                  });
+                },
+              ),
+              onTap: () {
+
+              },
+            ),
+          ):Container(),
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
@@ -2015,6 +2077,47 @@ class _SettingsPageState extends State<SettingsPage> {
                       //   printAfterPayment = val;
                       //   switchStatus("printAfterPayment", printAfterPayment);
                       // });
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'kot For Cancelled Order'.tr,
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: kotForCanceledOrder,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        kotForCanceledOrder = val;
+                      });
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('kot_for_cancel_order', val);
                     },
                   ),
                 ),
@@ -2108,6 +2211,228 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {},
             ),
           ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Discount in Print',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: isDiscountInPrint
+                 ,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isDiscountInPrint = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isDiscountInPrint', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Sales Man',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value: isSalesmanDisplay,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isSalesmanDisplay = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isSalesmanDisplay', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Customer Name',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value:    isCustomerNameDisplay
+                    ,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isCustomerNameDisplay = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isCustomerNameDisplay', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Customer Phone',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value:    isCustomerPhoneDisplay
+                    ,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isCustomerPhoneDisplay = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isCustomerPhoneDisplay', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+              borderRadius: BorderRadius.circular(2),
+            ),
+
+            child: ListTile(
+              title: Text(
+                'Gross Amount',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+              ),
+              trailing: SizedBox(
+                width: 50,
+                child: Center(
+                  child: FlutterSwitch(
+                    width: 40.0,
+                    height: 20.0,
+                    valueFontSize: 30.0,
+                    toggleSize: 15.0,
+                    value:    isGrossAmountDisplay
+                    ,
+                    borderRadius: 20.0,
+                    padding: 1.0,
+                    activeColor: Colors.green,
+                    activeTextColor: Colors.green,
+                    inactiveTextColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    // showOnOff: true,
+                    onToggle: (val)async {
+                      setState(() {
+                        isGrossAmountDisplay = val;
+                      });
+
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isGrossAmountDisplay', val);
+
+                    },
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ),
+
+
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
@@ -2223,7 +2548,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
 
 
-      Card(
+      kotPrint?   Card(
         color: setting3,
         shape: RoundedRectangleBorder(
           side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
@@ -2247,7 +2572,7 @@ class _SettingsPageState extends State<SettingsPage> {
             style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
           ),
         ),
-      ),
+      ):Container(),
 
 
       /// table list option
@@ -4073,12 +4398,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       // showOnOff: true,
                       onToggle: (val) {
                         setState(() {
-
-
-
                           autoFocusSearch = val;
-                          switchStatus(
-                              "autoFocusSearch", autoFocusSearch);
+                          switchStatus("autoFocusSearch", autoFocusSearch);
                         });
                       },
                     ),
@@ -4087,6 +4408,140 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
 
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'sync_method'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: synMethod,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+
+                        setState(() {
+                          synMethod = val;
+                          switchStatus("synMethod", synMethod);
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'is_tab_design'.tr,
+                  style: customisedStyle(
+                      context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: isTabDesign,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirm Design Switch',style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),),
+                              content: Text('Are you sure you want to confirm? The app design may be changed to ${isTabDesign?'Mobile app design':'Tablet app design'}  Please be careful.',style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false); // Return false when cancelled
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('OK'),
+                                  onPressed: () {
+
+
+
+                                    Navigator.of(context).pop(true);
+                                    setState(() {
+
+
+                                      isTabDesign = val;
+                                      enableTabDesign = val;
+                                      switchStatus("isTablet", isTabDesign);
+                                      print("");
+                                    });
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+                                    );
+
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ).then((confirmed) {
+                          if (confirmed != null && confirmed) {
+                            // User confirmed, perform your action here
+                            print('User confirmed');
+                          } else {
+                            // User cancelled, perform your action here or do nothing
+                            print('User cancelled');
+                          }
+                        });
+
+                        // setState(() {
+                        //
+                        //
+                        //   isTabDesign = val;
+                        //   enableTabDesign = val;
+                        //   switchStatus("isTablet", isTabDesign);
+                        // });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
             /// commented
             // Padding(
             //   padding: const EdgeInsets.only(bottom: 10.0, top: 10),
@@ -4227,7 +4682,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   String compensationHour = '1';
-  List<String> dropdownValues = ['1','2','3','4','5','6','7'];
+  String numberOfCopies = '1';
+  List<String> numberOfCopiesList = ['1','2','3'];
+  List<String> dropdownValues = ['0','1','2','3','4','5','6','7'];
   String kotDetail = 'Product Name';
   List<String> kotDetailsValues = [
     'Product Name',
@@ -5061,11 +5518,11 @@ class _SettingsPageState extends State<SettingsPage> {
   ///printer Template
   Widget printerDefault() {
     return Container(
-      child: templateView(),
+      child: printerSelectionWidget(),
     );
   }
 
-  Widget templateView() {
+  Widget printerSelectionWidget() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),

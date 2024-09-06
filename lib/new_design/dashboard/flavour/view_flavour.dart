@@ -6,7 +6,7 @@ import 'package:rassasy_new/main.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/new_method/model/model_class.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_section/model/model_class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;

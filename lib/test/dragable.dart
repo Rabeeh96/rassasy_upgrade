@@ -1,11 +1,12 @@
+import 'dart:convert';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_grid_view/entities/order_update_entity.dart';
 import 'package:flutter_reorderable_grid_view/widgets/widgets.dart';
-import 'package:rassasy_new/global/global.dart';
 import 'package:flutter_svg/svg.dart';
-import 'dart:convert';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart' as http;
+import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TableSettings extends StatefulWidget {
@@ -35,7 +36,6 @@ class _TableSettingsState extends State<TableSettings> {
 
   @override
   Widget build(BuildContext context) {
-
     final generatedChildren = List.generate(
         tablesLists.length,
         (index) => Container(
@@ -50,20 +50,23 @@ class _TableSettingsState extends State<TableSettings> {
                     width: 1,
                     color: const Color(0xffC9C9C9),
                   ),
-                  borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                  borderRadius: const BorderRadius.all(Radius.circular(
+                          5.0) //                 <--- border radius here
                       )),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height / 18, //height of button
+                    height: MediaQuery.of(context).size.height /
+                        18, //height of button
                     width: MediaQuery.of(context).size.width / 16,
                     decoration: BoxDecoration(
                         border: Border.all(
                           width: .1,
                           color: const Color(0xffC9C9C9),
                         ),
-                        borderRadius: const BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                        borderRadius: const BorderRadius.all(Radius.circular(
+                                5.0) //                 <--- border radius here
                             )),
 
                     child: SvgPicture.asset("assets/svg/table.svg"),
@@ -78,8 +81,9 @@ class _TableSettingsState extends State<TableSettings> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            child:
-                                Text(tablesLists[index].tableName.toString(), style: customisedStyle(context, Colors.white, FontWeight.w800, 18.0)),
+                            child: Text(tablesLists[index].tableName.toString(),
+                                style: customisedStyle(context, Colors.white,
+                                    FontWeight.w800, 18.0)),
                           ),
                         ],
                       ),
@@ -115,7 +119,8 @@ class _TableSettingsState extends State<TableSettings> {
         actions: [
           Text(
             "No of items in a row",
-            style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
+            style:
+                customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 30, left: 15),
@@ -143,7 +148,8 @@ class _TableSettingsState extends State<TableSettings> {
               enableLongPress: false,
               onReorder: (List<OrderUpdateEntity> orderUpdateEntities) {
                 for (final orderUpdateEntity in orderUpdateEntities) {
-                  final fruit = tablesLists.removeAt(orderUpdateEntity.oldIndex);
+                  final fruit =
+                      tablesLists.removeAt(orderUpdateEntity.oldIndex);
                   tablesLists.insert(orderUpdateEntity.newIndex, fruit);
                 }
               },
@@ -167,7 +173,10 @@ class _TableSettingsState extends State<TableSettings> {
         onPressed: () {
           print(tablesLists);
         },
-        label: Text('Save Order',style: customisedStyle(context, Colors.black, FontWeight.w500, 13.3),),
+        label: Text(
+          'Save Order',
+          style: customisedStyle(context, Colors.black, FontWeight.w500, 13.3),
+        ),
         icon: Icon(Icons.save),
         backgroundColor: Colors.grey,
         elevation: 4.0,

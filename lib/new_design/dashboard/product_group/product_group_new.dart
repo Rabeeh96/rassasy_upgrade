@@ -186,7 +186,8 @@ class AddProductGroupState extends State<AddProductGroup> {
                           ],
                         ),
                       ),
-                      Padding(
+
+                      kotPrint ?  Padding(
                           padding: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,7 +242,7 @@ class AddProductGroupState extends State<AddProductGroup> {
                                 ),
                               )
                             ],
-                          )),
+                          )):Container(),
                       Padding(
                           padding: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
                           child: Column(
@@ -721,7 +722,7 @@ class AddProductGroupState extends State<AddProductGroup> {
           }),
     );
   }
-
+bool kotPrint=false;
   @override
   void initState() {
     super.initState();
@@ -747,6 +748,7 @@ class AddProductGroupState extends State<AddProductGroup> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
          var branchID = prefs.getInt('branchID') ?? 1;
+        kotPrint = prefs.getBool("KOT") ?? false;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/pos/product-group/list/';

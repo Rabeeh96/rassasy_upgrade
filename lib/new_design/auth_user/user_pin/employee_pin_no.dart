@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,11 @@ import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/dashboard/dashboard.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/new_method/pos_list_section.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/mobile/pos_main_page.dart';
 import 'package:rassasy_new/new_design/organization/list_organization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../dashboard/pos/pos_section/pos_list_section.dart';
 
 class EnterPinNumber extends StatefulWidget {
   const EnterPinNumber({Key? key}) : super(key: key);
@@ -67,8 +69,10 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     }
   }
 
-
-
+  void switchStatus(key, value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
 
   @override
   void initState() {
@@ -78,6 +82,15 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
       _focusNode.requestFocus();
     });
     defaultAPi();
+  }
+
+
+  callExit(){
+    start(context);
+    Future.delayed(Duration(seconds: 1), () {
+      exit(0);
+    });
+
   }
 
   var companyName ="";
@@ -90,43 +103,17 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     });
   }
 
-  // KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
-  //   // Check if the event is a RawKeyDownEvent
-  //   final logicalKey = event.logicalKey;
-  //   // Check if the key is a numeric key and the entered numbers length is less than 6
-  //   if (RegExp('[0-9]').hasMatch(logicalKey.keyLabel!) &&
-  //       _enteredNumbersNotifier.value.length < 6) {
-  //     // Append numeric keys to the entered numbers
-  //     _enteredNumbersNotifier.value += logicalKey.keyLabel!;
-  //   }
-  //   return KeyEventResult.handled;
-  // }
-  // void _clearEnteredNumbers() {
-  //   _enteredNumbersNotifier.value = '';
-  // }
+ // bool isTabDesign = false;
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-   bool isTablet = true;
-      // bool isTablet = screenWidth > defaultScreenWidth;
+      bool isTablet = enableTabDesign;
+  //     bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
-        // appBar: AppBar(
-        //   elevation: 0.0,
-        //   backgroundColor: Color(0xffF3F3F3),
-        //   actions: [
-        //     Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: IconButton(
-        //           onPressed: () {
-        //             _asyncConfirmDialog(context);
-        //           },
-        //           icon: SvgPicture.asset('assets/svg/logout_from_pinNo.svg')),
-        //     )
-        //
-        //   ],
-        // ),
+
         body: Container(
       width: double.infinity,
       height: double.infinity,
@@ -145,13 +132,63 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                    Container(
-                        alignment: Alignment.center,
 
-                        child: Text(
-                          companyName,
-                          style:customisedStyle(context, const Color(0xffF25F29), FontWeight.w600, 18.0),
-                        )),
+
+                    GestureDetector(
+                      onLongPress: (){
+                        print("aaa");
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirm Design Switch',style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),),
+                              content: Text('Are you sure you want to confirm? The app design may be changed to ${isTablet?'Mobile app design':'Tablet app design'}  Please be careful..',style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false); // Return false when cancelled
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('OK'),
+                                  onPressed: () async{
+
+
+                                      print("isTabDesign  $isTablet");
+                                      isTablet = !isTablet;
+                                      print("isTabDesign  $isTablet");
+                                      enableTabDesign = isTablet;
+                                      // enableTabDesign = val;
+                                      switchStatus("isTablet", isTablet);
+                                      await callExit();
+
+                                    // Navigator.of(context).pushReplacement(
+                                    //   MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+                                    // );
+
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ).then((confirmed) {
+                          if (confirmed != null && confirmed) {
+                            // User confirmed, perform your action here
+                            print('User confirmed');
+                          } else {
+                            // User cancelled, perform your action here or do nothing
+                            print('User cancelled');
+                          }
+                        });
+                      },
+                      child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            companyName,
+                            style:customisedStyle(context, const Color(0xffF25F29), FontWeight.w600, 18.0),
+                          )),
+                    ),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -198,7 +235,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var branchID = prefs.getInt('branchID') ?? 1;
         var companyID = prefs.getString('companyID') ?? '';
-        bool onlyPosUser = prefs.getBool('Only POS Access') ?? false;
+
 
         baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
         String baseUrl = BaseUrl.baseUrlV11;
@@ -231,25 +268,20 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
 
           stop();
 
-          print("------------------------------------------");
-
           await Future.delayed(Duration(seconds: 1), () {
+            pr("-------------------------------------------------------------------------------------------1111");
             bool onlyPosUser = prefs.getBool('Only POS Access') ?? false;
             print("start   01");
-
+            pr("-------------------------------------------------------------------------------------------22222");
            // bool result = checkConditions(userRollData);
             if (onlyPosUser) {
+              pr("-------------------------------------------------------------------------------------------33333");
               prefs.setBool('Only POS Access', true) ?? '';
-              Size screenSize = MediaQuery.of(context).size;
-              double screenWidth = screenSize.width;
-              double screenHeight = screenSize.height;
-                 bool isTablet = true;
-            //  bool isTablet = screenWidth > defaultScreenWidth;
+              bool isTablet = enableTabDesign;
+                // bool isTablet = screenWidth > defaultScreenWidth;
               if(isTablet){
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => POSListItemsSection()),
-                );
+                pr("-------------------------------------------------------------------------------------------44444");
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => POSListItemsSection()),);
               }
               else{
                 Navigator.pushReplacement(
@@ -257,9 +289,9 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
                   MaterialPageRoute(builder: (context) => POSMobilePage()),
                 );
               }
-
-
-            } else {
+            }
+            else {
+              pr("-------------------------------------------------------------------------------------------33333");
               prefs.setBool('Only POS Access', false) ?? '';
               Navigator.pushReplacement(
                 context,
@@ -812,7 +844,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
               'Authorization': 'Bearer $accessToken',
             },
             body: body);
-        print('5');
+
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
         print(response.body);

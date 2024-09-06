@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:rassasy_new/global/HttpClient/HTTPClient.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/car_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/payment/payment_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
+
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart' if (dart.library.html) '';
@@ -19,11 +16,6 @@ import 'new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'new_design/organization/list_organization.dart';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
-
-import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 ///code commented here
 // void main() {
@@ -56,7 +48,11 @@ import 'package:http/http.dart' as http;
 //   }
 // }
 
-void main() {
+
+import 'package:path_provider/path_provider.dart' as path_provider;
+
+import 'test/loc/View/group.dart';
+void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
     doWhenWindowReady(() {
@@ -70,9 +66,11 @@ void main() {
 
 
   SharedPreferences.getInstance().then((prefs) {
-   bool isTablet = true;
-  //   bool isTablet = isTabletDevice();
-     prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
+
+     // bool isTablet = true;
+      bool isTablet = prefs.getBool('isTablet')??isTabletDevice();
+     enableTabDesign=isTablet;
+     prefs.setBool('isTablet',isTablet); // Save isTablet value to SharedPreferences
      print("main isTablet: $isTablet");
 
     SystemChrome.setPreferredOrientations([
@@ -85,11 +83,10 @@ void main() {
 }
 
 bool isTabletDevice() {
+
   /// Determine if the device is a tablet based on the screen width
   double screenWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
-
   print("--screenWidth  $screenWidth   ---------  defaultScreenWidth   $defaultScreenWidth");
-
 
   /// You may need to adjust this threshold based on your requirements
   return screenWidth > defaultScreenWidth;
@@ -101,6 +98,8 @@ class MyApp extends StatelessWidget {
   final bool isTablet;
 
   MyApp({required this.isTablet});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -157,17 +156,17 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () {
-      navigateUser();
+     navigateUser();
     });
   }
-
 
 //test
   void navigateUser() async {
     double screenWidth = MediaQuery.of(context).size.width;
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getBool('isLoggedIn') ?? false;
+
     print(status);
     var companySelected = prefs.getBool('companySelected') ?? false;
     var isPosUser = true;
@@ -183,19 +182,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
         var expire = isDateExpired(expireDate);
-        // var expire = checkExpire(expireDate);
+
         if (expire == true) {
           prefs.setBool('companySelected', false);
           await dialogBox(context, "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
 /// commented
-          // if (isTablet) {
-          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
-          // } else {
-          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
-          // }
+          if (isTablet) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+          } else {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+          }
 
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         } else {
+       //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => ProductGrpPage()));
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
 
           /// pos user commented
@@ -219,16 +219,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
         /// commented
 
-        // if (isTablet) {
-        //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
-        // } else {
-        //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
-        // }
+        if (isTablet) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+        } else {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+        }
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => OrganizationList()));
+        // Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (BuildContext context) => OrganizationList()));
       }
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPageNew()));

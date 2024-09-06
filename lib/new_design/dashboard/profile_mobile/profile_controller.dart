@@ -24,7 +24,7 @@ final companyLogo =''.obs;
       var userID = prefs.getInt('user_id') ?? 0;
       var accessToken = prefs.getString('access') ?? '';
       String baseUrl = BaseUrl.baseUrl;
-baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+      baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
       final url = '$baseUrl/users/user-view/$userID/';
       print(url);
 

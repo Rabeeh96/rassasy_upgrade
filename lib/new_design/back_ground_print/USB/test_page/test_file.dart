@@ -179,67 +179,142 @@ class USBPrintClassTest {
     }
   }
 
+  // dependencies:
+  // flutter_image_compress: ^1.1.0
+  // Import the package in your Dart file:
+
+
+
+// Usage
+//   final compressedImageBytes = await compressImage(arabicImageBytes);
+//   final Img.Image? image = Img.decodeImage(compressedImageBytes);
+//   final Img.Image resizedImage = Img.copyResize(image!, width: 550);
+//   bytes += generator.imageRaster(resizedImage);
+
+
+
+
+
+  Future<Uint8List> _fetchImageData(l) async {
+    final http.Response response = await http.get(Uri.parse("https://www.api.viknbooks.com/media/company-logo/blob_xAHD3sX"));
+    // final http.Response response = await http.get(Uri.parse("https://www.api.viknbooks.com/media/company-logo/WhatsApp_Image_2024-07-10_at_12.43.00_PM_s4PUuKU.jpeg"));
+    return response.bodyBytes;
+  }
+
 
   printReq(arabicImageBytes,qrCode, needQR) async {
-    print("  ---------    --------- img function 1  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
+    print("  ---------start print method  ---------   ---------     ${DateTime.now().second} ");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var defaultIp = prefs.getString('defaultIP') ?? '';
+    // List<int> bytes = [];
+    // final profile = await CapabilityProfile.load();
+    // final generator = Generator(PaperSize.mm80, profile,);
 
+
+    //
+    // print("Start");
+    // // Decode and resize image asynchronously with explicit types
+    // final Img.Image? image = await compute<Uint8List, Img.Image?>(decodeImage, arabicImageBytes);
+    // final DateTime afterDecode = DateTime.now();
+    // print("Image decoded: ${afterDecode.minute} ${afterDecode.second}");
+    //
+    // if (image == null) {
+    //   print("Failed to decode image");
+    //   return;
+    // }
+    //
+    // final Img.Image resizedImage = await compute<Img.Image, Img.Image>(resizeImage, image);
+    // final DateTime afterResize = DateTime.now();
+    // print("Image resized: ${afterResize.minute} ${afterResize.second}");
+    //
+    // // Generate ESC/POS bytes
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, await CapabilityProfile.load());
-
+    // bytes.addAll(generator.imageRaster(resizedImage));
+    // final DateTime afterRaster = DateTime.now();
+    // print("Image rasterized: ${afterRaster.minute} ${afterRaster.second}");
+    //
+    //
 
 
 
 /// crop method
-
-    print("------------------ Start to crop  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
     var ii = Img.decodeImage(arabicImageBytes!);
-    print("------------------ Start to Resize  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-
     final Img.Image _resize = Img.copyResize(ii!, width:PaperSize.mm80.width);
-    print("------------------ After resize  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-
     // bytes += generator.imageRaster(_resize,);
-    int width = ii.width;
+    int width = ii!.width;
     int height = ii.height;
     print('Original Resolution: ${width}x${height}');
     print('Resized Resolution: ${_resize.width}x${_resize.height}');
     print('--------------: ${_resize.width*_resize.height}');
+    // Get the total height
+    // int totalHeight = _resize.height;
+
+    // Calculate height for each part
 
     int totalHeight = _resize.height;
     print("totalHeight $totalHeight");
 
     // Calculate number of parts
     int parts = (totalHeight / 10).ceil();
-    print("------------------ Start For loop  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
 
     for (int i = 0; i < parts; i++) {
-
       // Calculate the start y position for cropping
       int startY = i * 10;
 
-
+      print("startY $startY");
       // Ensure the last part captures any remaining height
       int height = (i == parts - 1) ? (totalHeight - startY) : 10;
-
+      print("height $height");
       // Crop the image
       final Img.Image cropped = Img.copyCrop(_resize, x: 0, y: startY, width: _resize.width, height: height);
 
       // Add the cropped part to bytes
-
       bytes += generator.imageRaster(cropped);
     }
-    print("------------------ End For loop  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
 
 
-    /// commented for test purpose
 
 
+
+    // final Uint8List imageData = await _fetchImageData("");
+    // final Img.Image? image1 = Img.decodeImage(imageData);
+    // final Img.Image resizedImage1 = Img.copyResize(image1!, width: 500,height: 1000);
+    // bytes += generator.imageRaster(resizedImage1);
+
+
+
+
+    // bytes.addAll(generator.cut());
+
+
+    // final ByteData data = await rootBundle.load('assets/png/Edit_Icon_png.png');
+    // final Uint8List bytess = data.buffer.asUint8List();
+    // final Img.Image? image = Img.decodeImage(bytess!);
+    // bytes += generator.imageRaster(image!);
+    /// multiple pbject
+    //  var arabicImageBytes  =await testData();
+    // var arabicImageBytes1  =await testData();
+    // var arabicImageBytes2  =await testData();
+
+    // final Img.Image? image = Img.decodeImage(bytess);
+    // final Img.Image resizedImage = Img.copyResize(image!, width: 259);
+    // bytes += generator.imageRaster(resizedImage);
+    // //
+    // final Img.Image? image1 = Img.decodeImage(arabicImageBytes1);
+    // final Img.Image resizedImage1= Img.copyResize(image1!, width: 600);
+    // bytes += generator.imageRaster(resizedImage1);
+    //
+    // final Img.Image? image2 = Img.decodeImage(arabicImageBytes2);
+    // final Img.Image resizedImage2 = Img.copyResize(image2!, width: 570);
+    // bytes += generator.imageRaster(resizedImage2);
+    // /// commented for test purpose
+    //
+    //
     // print("  ---------    --------- img function 1 before decode  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
     // final Img.Image? image = Img.decodeImage(arabicImageBytes);
     // print("  ---------   --------- img function 2 cafter decode------resize ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-    // final Img.Image resizedImage = Img.copyResize(image!, width: 500);
+    // final Img.Image resizedImage = Img.copyResize(image!, width: 530);
     // print("resizedImage.frames${resizedImage.frames}");
     // print("  ---------   --------- img function 3  ---------b raster         ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
     // bytes += generator.imageRaster(resizedImage,);
@@ -264,7 +339,101 @@ class USBPrintClassTest {
     }
   }
 
-
+  /// 2.83second
+  //
+  // printReq(arabicImageBytes,qrCode, needQR) async {
+  //   print("  ---------start print method  ---------   ---------     ${DateTime.now().second} ");
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var defaultIp = prefs.getString('defaultIP') ?? '';
+  //   List<int> bytes = [];
+  //   final profile = await CapabilityProfile.load();
+  //   final generator = Generator(PaperSize.mm80, profile,);
+  //
+  //
+  //   print("Start");
+  //   final Img.Image? image = await compute<Uint8List, Img.Image?>(decodeImage, arabicImageBytes);
+  //   final DateTime afterDecode = DateTime.now();
+  //   print("Image decoded: ${afterDecode.minute} ${afterDecode.second}");
+  //
+  //   if (image == null) {
+  //     print("Failed to decode image");
+  //     return;
+  //   }
+  //
+  //   final Img.Image resizedImage = await compute<Img.Image, Img.Image>(resizeImage, image);
+  //   final DateTime afterResize = DateTime.now();
+  //   print("Image resized: ${afterResize.minute} ${afterResize.second}");
+  //
+  //
+  //
+  //
+  //   // Generate ESC/POS bytes
+  //
+  //   bytes.addAll(generator.imageRaster(resizedImage));
+  //   final DateTime afterRaster = DateTime.now();
+  //   print("Image rasterized: ${afterRaster.minute} ${afterRaster.second}");
+  //
+  //   if (needQR) {
+  //     bytes.addAll(generator.feed(1));
+  //     bytes.addAll(generator.qrcode(qrCode, size: QRSize.Size5));
+  //     final DateTime afterQR = DateTime.now();
+  //     print("QR code added: ${afterQR.minute} ${afterQR.second}");
+  //   }
+  //
+  //   bytes.addAll(generator.cut());
+  //
+  //
+  //   // final ByteData data = await rootBundle.load('assets/png/Edit_Icon_png.png');
+  //   // final Uint8List bytess = data.buffer.asUint8List();
+  //   // final Img.Image? image = Img.decodeImage(bytess!);
+  //   // bytes += generator.imageRaster(image!);
+  //   /// multiple pbject
+  //   //  var arabicImageBytes  =await testData();
+  //   // var arabicImageBytes1  =await testData();
+  //   // var arabicImageBytes2  =await testData();
+  //
+  //   // final Img.Image? image = Img.decodeImage(bytess);
+  //   // final Img.Image resizedImage = Img.copyResize(image!, width: 259);
+  //   // bytes += generator.imageRaster(resizedImage);
+  //   // //
+  //   // final Img.Image? image1 = Img.decodeImage(arabicImageBytes1);
+  //   // final Img.Image resizedImage1= Img.copyResize(image1!, width: 600);
+  //   // bytes += generator.imageRaster(resizedImage1);
+  //   //
+  //   // final Img.Image? image2 = Img.decodeImage(arabicImageBytes2);
+  //   // final Img.Image resizedImage2 = Img.copyResize(image2!, width: 570);
+  //   // bytes += generator.imageRaster(resizedImage2);
+  //   /// commented for test purpose
+  //
+  //
+  //
+  //
+  //
+  //
+  //   // final Img.Image? image = Img.decodeImage(arabicImageBytes);
+  //   // // print("  ---------   --------- img function 1  ---------   ${DateTime.now().minute} ${DateTime.now().second} ");
+  //   // final Img.Image resizedImage = Img.copyResize(image!, width: 570);
+  //   // print("  ---------   --------- img function 2  ---------   ${DateTime.now().minute} ${DateTime.now().second} ");
+  //   // bytes += generator.imageRaster(resizedImage);
+  //   // print("  ---------   --------- img function 3  ---------   ${DateTime.now().minute} ${DateTime.now().second} ");
+  //   // if (needQR) {
+  //   //   bytes += generator.feed(1);
+  //   //   bytes += generator.qrcode(qrCode, size: QRSize.Size5);
+  //   // }
+  //
+  //   //bytes += generator.text("text");
+  //
+  //   final res = await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIp,);
+  //
+  //   print("  ---------   --------- img function final  ---------   ${DateTime.now().minute} ${DateTime.now().second} ");
+  //   String msg = "";
+  //
+  //   if (res == "success") {
+  //     msg = "Printed Successfully";
+  //   } else {
+  //     msg = "Failed to generate a print please make sure to use the correct printer name";
+  //   }
+  // }
 
   Img.Image decodeImage(Uint8List bytes) {
     return Img.decodeImage(bytes)!;
@@ -345,7 +514,7 @@ class USBPrintClassTest {
     ];
     companyDetailsHeight += fields.where((field) => field.isNotEmpty).length * 40;
     double voucherDetailsHeight = 250;
-    double detailHeight = calculateItemSectionHeight(saleDetails) + 40;
+    double detailHeight = calculateItemSectionHeight(saleDetails) + 80;
     double footerHeight = 350;
 
     double totalHeight = companyDetailsHeight +
@@ -867,7 +1036,689 @@ class USBPrintClassTest {
     var number = convertedTodDouble.toStringAsFixed(decimal);
     return number;
   }
+  /// full worked
 
+//   Future<Uint8List> generateInvoice(
+//       {required String companyName,
+//       required String buildingDetails,
+//       required String streetName,
+//       required String companySecondName,
+//       required String companyLogoCompany,
+//       required String companyCountry,
+//       required String companyPhone,
+//       required String companyTax,
+//       required String companyCrNumber,
+//       required String countyCodeCompany,
+//       required String qrCodeData,
+//       required String voucherNumber,
+//       required String customerName,
+//       required String date,
+//       required String customerPhone,
+//       required String grossAmount,
+//       required String discount,
+//       required String totalTax,
+//       required String grandTotal,
+//       required String vatAmountTotal,
+//       required String exciseAmountTotal,
+//       required String token,
+//       required String cashReceived,
+//       required String bankReceived,
+//       required String balance,
+//       required String orderType,
+//       required String tableName,
+//       required String voucherType,
+//       required saleDetails}) async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//
+//     var hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
+//     final recorder = ui.PictureRecorder();
+//     final canvas = Canvas(recorder);
+//
+//     double companyDetailsHeight = 80;
+//     List<String> fields = [
+//       companySecondName,
+//       buildingDetails,
+//       streetName,
+//       companyTax
+//     ];
+//     companyDetailsHeight += fields.where((field) => field.isNotEmpty).length * 40;
+//     double voucherDetailsHeight = 250;
+//     double detailHeight = calculateItemSectionHeight(saleDetails) + 80;
+//     double footerHeight = 250;
+//
+//     double totalHeight = companyDetailsHeight +
+//         voucherDetailsHeight +
+//         detailHeight +
+//         footerHeight+80;
+//
+//     if (hilightTokenNumber) {
+//       totalHeight = totalHeight + 80;
+//     }
+//
+//
+//     Size canvasSize1 = Size(500, totalHeight);
+//     const Color backgroundColor = Colors.white; // Specify your desired background color
+//     canvas.drawRect(Rect.fromLTWH(0, 0, canvasSize1.width, canvasSize1.height), Paint()..color = backgroundColor);
+//
+//     var invoiceType = "SIMPLIFIED TAX INVOICE";
+//     var invoiceTypeArabic = "فاتورة ضريبية مبسطة";
+//
+//     if (voucherType == "SO") {
+//       // Adjusting other variables for a sales order scenario
+//       invoiceType = "SALES ORDER";
+//       invoiceTypeArabic = "طلب المبيعات";
+//     }
+//
+//     final linePaint = Paint()
+//       ..color = Colors.black
+//       ..strokeWidth = 2.0;
+//
+//     // Set up text styles with custom font
+//     const titleStyle = TextStyle(
+//       fontSize: 30,
+//       fontWeight: FontWeight.bold,
+//       color: Colors.black,
+//     );
+//     const headerStyle = TextStyle(
+//       fontSize: 20,
+//       fontWeight: FontWeight.bold,
+//       color: Colors.black,
+//     );
+//     const itemStyle = TextStyle(
+//       fontSize: 20,
+//       color: Colors.black,
+//     );
+//     const totalTextStyle = TextStyle(
+//       fontSize: 20,
+//       fontWeight: FontWeight.bold,
+//       color: Colors.black,
+//     );
+//     const companyDetailsStyle = TextStyle(
+//       fontSize: 16,
+//       color: Colors.black,
+//     );
+//     // var companyDetailsStyle = GoogleFonts.poppins(textStyle:TextStyle(fontWeight: FontWeight.w600,color: Colors.black,fontSize: 15.0));
+//     // Define paragraph styles
+//     final titleParagraphStyle = ui.ParagraphStyle(
+//       textAlign: TextAlign.center,
+//       fontSize: titleStyle.fontSize,
+//       fontWeight: titleStyle.fontWeight,
+//       fontFamily: titleStyle.fontFamily,
+//     );
+//     final headerParagraphStyle = ui.ParagraphStyle(
+//       textAlign: TextAlign.left,
+//       fontSize: headerStyle.fontSize,
+//       fontWeight: headerStyle.fontWeight,
+//       fontFamily: headerStyle.fontFamily,
+//     );
+//     final itemParagraphStyle = ui.ParagraphStyle(
+//       textAlign: TextAlign.left,
+//       fontSize: itemStyle.fontSize,
+//       fontWeight: itemStyle.fontWeight,
+//       fontFamily: itemStyle.fontFamily,
+//     );
+//
+//     final voucherDetailsStyleLeft = ui.ParagraphStyle(
+//       textAlign: TextAlign.left,
+//       fontSize: itemStyle.fontSize,
+//       fontWeight: itemStyle.fontWeight,
+//       fontFamily: itemStyle.fontFamily,
+//     );
+//     final voucherDetailsStyleRight = ui.ParagraphStyle(
+//       textAlign: TextAlign.right,
+//       fontSize: itemStyle.fontSize,
+//       fontWeight: itemStyle.fontWeight,
+//       fontFamily: itemStyle.fontFamily,
+//     );
+//     final voucherDetailsStyleCenter = ui.ParagraphStyle(
+//       textAlign: TextAlign.center,
+//       fontSize: itemStyle.fontSize,
+//       fontWeight: itemStyle.fontWeight,
+//       fontFamily: itemStyle.fontFamily,
+//     );
+//     final totalTextParagraphStyle = ui.ParagraphStyle(
+//       textAlign: TextAlign.left,
+//       fontSize: totalTextStyle.fontSize,
+//       fontWeight: totalTextStyle.fontWeight,
+//       fontFamily: totalTextStyle.fontFamily,
+//     );
+//
+//     final totalAmountParagraphStyle = ui.ParagraphStyle(
+//       textAlign: TextAlign.right,
+//       fontSize: totalTextStyle.fontSize,
+//       fontWeight: totalTextStyle.fontWeight,
+//       fontFamily: totalTextStyle.fontFamily,
+//     );
+//     final companyDetailsParagraphStyle = ui.ParagraphStyle(
+//       textAlign: TextAlign.center,
+//       fontSize: companyDetailsStyle.fontSize,
+//       fontWeight: companyDetailsStyle.fontWeight,
+//       fontFamily: companyDetailsStyle.fontFamily,
+//     );
+//
+//     double positionHeight = 5.0;
+//
+//     // Add company name
+//     final companyNameBuilder = ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//       ..pushStyle(ui.TextStyle(
+//           color: Colors.black,
+//           fontSize: 40.0,
+//           fontFamily: 'Poppins',
+//           fontWeight: FontWeight.w700))
+//       ..addText(companyName);
+//     final companyNameParagraph = companyNameBuilder.build()
+//       ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//     canvas.drawParagraph(companyNameParagraph, Offset(0, positionHeight));
+//     // Add Second name
+//
+//     if (companySecondName != "") {
+//       positionHeight = positionHeight + 40;
+//       final companySecondNameBuilder =
+//           ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//             ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 35.0))
+//             ..addText(companySecondName);
+//       final companySecondNameParagraph = companySecondNameBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//       canvas.drawParagraph(
+//           companySecondNameParagraph, Offset(0, positionHeight));
+//     }
+//
+//     // buildingDetails
+//     if (buildingDetails != "") {
+//       positionHeight = positionHeight + 40;
+//       final buildingDetailsBuilder =
+//           ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//             ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0))
+//             ..addText(buildingDetails);
+//       final buildingDetailsParagraph = buildingDetailsBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//       canvas.drawParagraph(buildingDetailsParagraph, Offset(0, positionHeight));
+//     }
+//
+//     // Street name
+//
+//     if (streetName != "") {
+//       positionHeight = positionHeight + 40;
+//       final streetBuilder = ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//         ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0))
+//         ..addText(streetName);
+//       final streetBuilderParagraph = streetBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//       canvas.drawParagraph(streetBuilderParagraph, Offset(0, positionHeight));
+//     }
+//
+//     // Company tax number
+//
+//     if (companyTax != "") {
+//       positionHeight = positionHeight + 40;
+//       final taxDetailsBuilder =
+//           ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//             ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0))
+//             ..addText(companyTax);
+//       final taxDetailsParagraph = taxDetailsBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//       canvas.drawParagraph(taxDetailsParagraph, Offset(0, positionHeight));
+//     }
+//
+//     // InvoiceDetails eng
+//     positionHeight = positionHeight + 40;
+//     final invoiceEngNameBuilder =
+//         ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//           ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0))
+//           ..addText(invoiceType);
+//     final invoiceDetailsDetailsParagraph = invoiceEngNameBuilder.build()
+//       ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//     canvas.drawParagraph(
+//         invoiceDetailsDetailsParagraph, Offset(0, positionHeight));
+//
+//     // InvoiceDetails
+//
+//     positionHeight = positionHeight + 30;
+//     final invoiceArabicNameBuilder =
+//         ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//           ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0))
+//           ..addText(invoiceTypeArabic);
+//     final invoiceDetailsArabicDetailsParagraph = invoiceArabicNameBuilder
+//         .build()
+//       ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//     canvas.drawParagraph(
+//         invoiceDetailsArabicDetailsParagraph, Offset(0, positionHeight));
+//     positionHeight = positionHeight + 40;
+//     canvas.drawLine(Offset(0, positionHeight),
+//         Offset(canvasSize1.width, positionHeight), linePaint);
+//
+//     positionHeight = positionHeight + 10;
+//     if (hilightTokenNumber) {
+//       final tokenNumberBuilder =
+//           ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//             ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 30.0))
+//             ..addText("Token Number");
+//       final tokenNumberParagraph = tokenNumberBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//       canvas.drawParagraph(tokenNumberParagraph, Offset(0, positionHeight));
+//       positionHeight = positionHeight + 40;
+//
+//       final tokenDetail = ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//         ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0 ,fontWeight: FontWeight.w500,))
+//         ..addText(token);
+//       final tokenNumberDetail = tokenDetail.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//       canvas.drawParagraph(tokenNumberDetail, Offset(0, positionHeight));
+//       positionHeight = positionHeight + 40;
+//
+//       final tokenNumberArabic =
+//           ui.ParagraphBuilder(companyDetailsParagraphStyle)
+//             ..pushStyle(ui.TextStyle(color: Colors.black, fontSize: 30.0, fontWeight: FontWeight.w500,))
+//             ..addText("رقم الرمز المميز");
+//       final tokenNumberArabicBuilder = tokenNumberArabic.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width));
+//       canvas.drawParagraph(tokenNumberArabicBuilder, Offset(0, positionHeight));
+//       positionHeight = positionHeight + 40;
+//       canvas.drawLine(Offset(0, positionHeight),
+//           Offset(canvasSize1.width, positionHeight), linePaint);
+//     }
+//
+//     var voucherDetails = [
+//       ['Token Number:', token, 'رقم الطيب '],
+//       ['Voucher No:', voucherNumber, 'رقم القسيمة '],
+//       ['Date:', date, 'التاريخ '],
+//       ['Order Type:', orderType, 'نوع الطلب '],
+//       ['Table Name:', tableName, 'اسم الطاولة '],
+//     ];
+//
+//     if (hilightTokenNumber) {
+//       voucherDetails = [
+//         ['Voucher No:', voucherNumber, 'رقم القسيمة '],
+//         ['Date:', date, 'التاريخ '],
+//         ['Order Type:', orderType, 'نوع الطلب '],
+//         ['Table Name:', tableName, 'اسم الطاولة '],
+//       ];
+//     }
+// // Layout constraints for each column
+//     final double column1Width = canvasSize1.width / 3;
+//     final double column2Width = canvasSize1.width / 3;
+//     final double column3Width = canvasSize1.width / 3;
+//
+//     for (final item in voucherDetails) {
+//       // English label
+//       final englishTextBuilder = ui.ParagraphBuilder(voucherDetailsStyleLeft)
+//         ..pushStyle(ui.TextStyle(color: Colors.black,
+//           fontWeight: FontWeight.w500,
+//           fontSize: 25.0,
+//         ))
+//         ..addText(item[0]);
+//       final englishTextParagraph = englishTextBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: column1Width));
+//       canvas.drawParagraph(englishTextParagraph, Offset(0, positionHeight));
+//
+//       // Arabic label
+//       final arabicTextBuilder = ui.ParagraphBuilder(voucherDetailsStyleCenter)
+//         ..pushStyle(ui.TextStyle(
+//           color: Colors.black,
+//             fontWeight: FontWeight.w500,
+//             fontSize: 25.0,
+//
+//         ))
+//         ..addText(item[1]);
+//       final arabicTextParagraph = arabicTextBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: column2Width));
+//       canvas.drawParagraph(
+//           arabicTextParagraph, Offset(column1Width, positionHeight));
+//
+//       // Value
+//       final valueTextBuilder = ui.ParagraphBuilder(voucherDetailsStyleRight)..pushStyle(ui.TextStyle( color: Colors.black,
+//         fontWeight: FontWeight.w500,
+//         fontSize: 25.0,))..addText(item[2]);
+//       final valueTextParagraph = valueTextBuilder.build()..layout(ui.ParagraphConstraints(width: column3Width));
+//       canvas.drawParagraph(valueTextParagraph, Offset(column1Width + column2Width, positionHeight));
+//
+//
+//       positionHeight += [
+//             englishTextParagraph.height,
+//             arabicTextParagraph.height,
+//             valueTextParagraph.height
+//           ].reduce((a, b) => a > b ? a : b) +
+//           10;
+//     }
+//
+//     positionHeight = positionHeight + 10;
+//     print("positio Height voucher height after $positionHeight");
+//     canvas.drawLine(Offset(0, positionHeight),
+//         Offset(canvasSize1.width, positionHeight), linePaint);
+//
+//     final headers = ['Sl', 'Product Details', 'Qty', 'Rate', 'Total'];
+//     final headerWidths = [
+//       40.0,
+//       250.0,
+//       70.0,
+//       70.0,
+//       70.0
+//     ]; // Adjust widths as needed
+//
+//     for (int i = 0; i < headers.length; i++) {
+//       final alignment = (i == 1)
+//           ? TextAlign.left
+//           : (i == 0)
+//               ? TextAlign.center
+//               : TextAlign.right;
+//       final headerBuilder = ui.ParagraphBuilder(
+//         ui.ParagraphStyle(
+//           textAlign: alignment,
+//           fontSize: headerStyle.fontSize,
+//           fontFamily: headerStyle.fontFamily,
+//         ),
+//       )
+//         ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 25))
+//         ..addText(headers[i]);
+//       final headerParagraph = headerBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: headerWidths[i]));
+//       canvas.drawParagraph(
+//           headerParagraph,
+//           Offset(headerWidths.sublist(0, i).fold(0.0, (a, b) => a + b),
+//               positionHeight));
+//     }
+//
+//     print(
+//         "-----------------------------------------before item section-----------------$positionHeight");
+//     positionHeight = positionHeight + 30;
+//
+//     final headersArab = ['رقم', 'منتج', 'كمية', 'معدل', 'المجموع'];
+//     for (int i = 0; i < headersArab.length; i++) {
+//       final alignment = (i == 1)
+//           ? TextAlign.left
+//           : (i == 0)
+//               ? TextAlign.center
+//               : TextAlign.right;
+//
+//       final headerBuilder = ui.ParagraphBuilder(
+//         ui.ParagraphStyle(
+//           textAlign: alignment,
+//           fontSize: headerStyle.fontSize,
+//           fontFamily: headerStyle.fontFamily,
+//         ),
+//       )
+//         ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w400,fontSize: 23))
+//         ..addText(headersArab[i]);
+//       final headerParagraph = headerBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: headerWidths[i]));
+//       canvas.drawParagraph(
+//           headerParagraph,
+//           Offset(headerWidths.sublist(0, i).fold(0.0, (a, b) => a + b),
+//               positionHeight));
+//     }
+//     positionHeight = positionHeight + 40;
+//     canvas.drawLine(Offset(0, positionHeight), Offset(canvasSize1.width, positionHeight), linePaint);
+//     positionHeight = positionHeight + 30;
+//     for (int index = 0; index < saleDetails.length; index++) {
+//       final item = saleDetails[index];
+//       double offsetX = 0;
+//       double rowHeight = 0;
+//
+//       // Draw item details
+//       final itemDetails = [
+//         (index + 1).toString(), // Index as Sl. No
+//         item["ProductName"],
+//         roundStringWith(item["Qty"].toString()),
+//         roundStringWith(item["UnitPrice"].toString()),
+//         roundStringWith(item["NetAmount"].toString())
+//       ];
+//
+//       for (int i = 0; i < itemDetails.length; i++) {
+//         final alignment = (i == 1)
+//             ? TextAlign.left
+//             : (i == 0)
+//                 ? TextAlign.center
+//                 : TextAlign.right;
+//         final itemBuilder = ui.ParagraphBuilder(
+//           ui.ParagraphStyle(
+//             textAlign: alignment,
+//             fontSize: itemStyle.fontSize,
+//             fontFamily: itemStyle.fontFamily,
+//           ),
+//         )
+//           ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w400,fontSize: 23))
+//           ..addText(itemDetails[i]);
+//         final itemParagraph = itemBuilder.build()
+//           ..layout(ui.ParagraphConstraints(width: headerWidths[i]));
+//         canvas.drawParagraph(itemParagraph, Offset(offsetX, positionHeight));
+//         offsetX += headerWidths[i];
+//         rowHeight =
+//             itemParagraph.height > rowHeight ? itemParagraph.height : rowHeight;
+//       }
+//
+//       positionHeight +=
+//           rowHeight + 10; // Adjust height after drawing item details
+//
+//       // Draw item description if not empty
+//       if (item["ProductDescription"].isNotEmpty) {
+//         final descriptionBuilder = ui.ParagraphBuilder(
+//           ui.ParagraphStyle(
+//             textAlign: TextAlign.left,
+//             fontSize: itemStyle.fontSize,
+//             fontFamily: itemStyle.fontFamily,
+//           ),
+//         )
+//           ..pushStyle(ui.TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 24))
+//           ..addText(item["ProductDescription"]);
+//         final descriptionParagraph = descriptionBuilder.build()
+//           ..layout(ui.ParagraphConstraints(
+//               width: canvasSize1.width -
+//                   headerWidths[1])); // Adjust width as needed
+//         canvas.drawParagraph(
+//             descriptionParagraph, Offset(headerWidths[1], positionHeight));
+//         positionHeight += descriptionParagraph.height +
+//             10; // Adjust height after drawing description
+//       } else {
+//         positionHeight += 10; // Skip space if description is empty
+//       }
+//     }
+//
+//     ///old one
+//     // Add items
+//     // final items = [
+//     //   ['1', 'PRINC', '1.00', '90.91', '90.91', 'Description of item 1'],
+//     //   ['2', 'P EX', '1.00', '100.00', '100.00', ''],
+//     //   ['3', '54545455454No Tax Product', '3.00', '12.96', '38.88', 'Description of item 3'],
+//     //   ['4', 'Price category product', '3.00', '100.00', '300.00', 'Description of item 4'],
+//     // ];
+//     // positionHeight = positionHeight + 40;
+//     // for (final item in items) {
+//     //   print("==============================$item");
+//     //   double offsetX = 0;
+//     //   double rowHeight = 0;
+//     //
+//     //
+//     //   // Draw item details
+//     //   for (int i = 0; i < item.length - 1; i++) {
+//     //     final alignment = (i == 1 || i == 5) ? TextAlign.left : (i == 0)
+//     //         ? TextAlign.center
+//     //         : TextAlign.right;
+//     //     final itemBuilder = ui.ParagraphBuilder(
+//     //       ui.ParagraphStyle(
+//     //         textAlign: alignment,
+//     //         fontSize: itemStyle.fontSize,
+//     //         fontFamily: itemStyle.fontFamily,
+//     //       ),
+//     //     )
+//     //       ..pushStyle(ui.TextStyle(color: Colors.black))
+//     //       ..addText(item[i]);
+//     //     final itemParagraph = itemBuilder.build()
+//     //       ..layout(ui.ParagraphConstraints(width: headerWidths[i]));
+//     //     canvas.drawParagraph(itemParagraph, Offset(offsetX, positionHeight));
+//     //     offsetX += headerWidths[i];
+//     //     rowHeight =
+//     //     itemParagraph.height > rowHeight ? itemParagraph.height : rowHeight;
+//     //   }
+//     //
+//     //   positionHeight +=
+//     //       rowHeight + 10; // Adjust height after drawing item details
+//     //
+//     //
+//     //   positionHeight = positionHeight + 40;
+//     //
+//
+//     //   for (final item in saleDetails) {
+//     //     double offsetX = 0;
+//     //     double rowHeight = 0;
+//     //
+//     //     // Draw item details
+//     //     final itemDetails = [
+//     //       "",
+//     //       item["ProductName"],
+//     //       item["Qty"].toString(),
+//     //       item["UnitPrice"].toString(),
+//     //       item["NetAmount"].toString()
+//     //     ];
+//     //
+//     //     for (int i = 0; i < itemDetails.length; i++) {
+//     //       final alignment = (i == 1)
+//     //           ? TextAlign.left
+//     //           : (i == 0)
+//     //           ? TextAlign.center
+//     //           : TextAlign.right;
+//     //       final itemBuilder = ui.ParagraphBuilder(
+//     //         ui.ParagraphStyle(
+//     //           textAlign: alignment,
+//     //           fontSize: itemStyle.fontSize,
+//     //           fontFamily: itemStyle.fontFamily,
+//     //         ),
+//     //       )
+//     //         ..pushStyle(ui.TextStyle(color: Colors.black))
+//     //         ..addText(itemDetails[i]);
+//     //       final itemParagraph = itemBuilder.build()
+//     //         ..layout(ui.ParagraphConstraints(width: headerWidths[i]));
+//     //       canvas.drawParagraph(itemParagraph, Offset(offsetX, positionHeight));
+//     //       offsetX += headerWidths[i];
+//     //       rowHeight = itemParagraph.height > rowHeight ? itemParagraph.height : rowHeight;
+//     //     }
+//     //
+//     //     positionHeight += rowHeight + 10; // Adjust height after drawing item details
+//     //
+//     //     // Draw item description if not empty
+//     //     if (item["ProductDescription"].isNotEmpty) {
+//     //       final descriptionBuilder = ui.ParagraphBuilder(
+//     //         ui.ParagraphStyle(
+//     //           textAlign: TextAlign.left,
+//     //           fontSize: itemStyle.fontSize,
+//     //           fontFamily: itemStyle.fontFamily,
+//     //         ),
+//     //       )
+//     //         ..pushStyle(ui.TextStyle(color: Colors.black))
+//     //         ..addText(item["ProductDescription"]);
+//     //       final descriptionParagraph = descriptionBuilder.build()
+//     //         ..layout(ui.ParagraphConstraints(width: canvasSize1.width - headerWidths[1])); // Adjust width as needed
+//     //       canvas.drawParagraph(descriptionParagraph, Offset(headerWidths[1], positionHeight));
+//     //
+//     //       positionHeight += descriptionParagraph.height + 10; // Adjust height after drawing description
+//     //     } else {
+//     //       positionHeight += 10; // Skip space if description is empty
+//     //     }
+//     //   }
+//     //
+//     //   positionHeight = positionHeight + 25;
+//     //   canvas.drawLine(Offset(0, positionHeight), Offset(canvasSize1.width, positionHeight), linePaint);
+//     //
+//     //
+//     //
+//     //
+//     //
+//     //   // Draw item description if not empty
+//     //   if (item[item.length - 1].isNotEmpty) {
+//     //     final descriptionBuilder = ui.ParagraphBuilder(
+//     //       ui.ParagraphStyle(
+//     //         textAlign: TextAlign.left,
+//     //         fontSize: itemStyle.fontSize,
+//     //         fontFamily: itemStyle.fontFamily,
+//     //       ),
+//     //     )
+//     //       ..pushStyle(ui.TextStyle(color: Colors.black))
+//     //       ..addText(item[item.length - 1]);
+//     //     final descriptionParagraph = descriptionBuilder.build()..layout(ui.ParagraphConstraints(width: canvasSize1.width)); // Adjust width as needed
+//     //     canvas.drawParagraph(descriptionParagraph, Offset(40, positionHeight));
+//     //
+//     //     positionHeight += descriptionParagraph.height + 10;
+//     //     // Adjust height after drawing description
+//     //   } else {
+//     //     positionHeight += 10; // Skip space if description is empty
+//     //   }
+//     // }
+//
+//     positionHeight = positionHeight + 15;
+//     print(
+//         "-----------------------------------------after item section-----------------$positionHeight");
+//     print(
+//         "-----------------------------------------------------------------------positionHeight $positionHeight");
+//     canvas.drawLine(Offset(0, positionHeight),
+//         Offset(canvasSize1.width, positionHeight), linePaint);
+//
+//     // positionHeight = positionHeight + 25;
+//     // canvas.drawLine(Offset(0, positionHeight), Offset(canvasSize1.width, positionHeight), linePaint);
+//
+//     final totals = [
+//       ['Gross Amount:', roundStringWith(grossAmount)],
+//       ['Total Tax:', roundStringWith(totalTax)],
+//       ['Discount:', roundStringWith(discount)],
+//       ['Grand Total:', roundStringWith(grandTotal)],
+//     ];
+//
+//     positionHeight = positionHeight + 25; // Space before totals
+//     for (final total in totals) {
+//       final totalTextStyle = (total[0] == 'Grand Total:')
+//           ? TextStyle(
+//               fontFamily: 'Poppins',
+//               fontSize: 27,
+//               fontWeight: FontWeight.w600,
+//               color: Colors.black,
+//             )
+//           : TextStyle(
+//               fontFamily: 'Poppins',
+//               fontSize: 26,
+//               fontWeight: FontWeight.w400,
+//               color: Colors.black,
+//             );
+//
+//       final totalTextBuilder = ui.ParagraphBuilder(
+//         ui.ParagraphStyle(
+//           textAlign: TextAlign.left,
+//           fontSize: totalTextStyle.fontSize,
+//           fontWeight: totalTextStyle.fontWeight,
+//           fontFamily: totalTextStyle.fontFamily,
+//         ),
+//       )
+//         ..pushStyle(ui.TextStyle(color: Colors.black))
+//         ..addText(total[0]);
+//       final totalTextParagraph = totalTextBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width / 2));
+//       canvas.drawParagraph(totalTextParagraph, Offset(0, positionHeight));
+//
+//       final totalAmountBuilder = ui.ParagraphBuilder(
+//         ui.ParagraphStyle(
+//           textAlign: TextAlign.right,
+//           fontSize: totalTextStyle.fontSize,
+//           fontWeight: totalTextStyle.fontWeight,
+//           fontFamily: totalTextStyle.fontFamily,
+//         ),
+//       )
+//         ..pushStyle(ui.TextStyle(color: Colors.black))
+//         ..addText(total[1]);
+//       final totalAmountParagraph = totalAmountBuilder.build()
+//         ..layout(ui.ParagraphConstraints(width: canvasSize1.width / 2));
+//       canvas.drawParagraph(
+//           totalAmountParagraph, Offset(canvasSize1.width / 2, positionHeight));
+//
+//       positionHeight += totalTextParagraph.height + 10;
+//     }
+//
+//     print(
+//         "-----------------------------------------after------------------------------positionHeight $positionHeight");
+//
+//
+//
+//     final picture = recorder.endRecording();
+//     final img = await picture.toImage(canvasSize1.width.toInt(), canvasSize1.height.toInt(),);
+//     final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png,);
+//     return pngBytes!.buffer.asUint8List();
+//   }
 
   Future<Uint8List> generateKOT({
     required String printerAddress,
@@ -1439,38 +2290,9 @@ class USBPrintClassTest {
         items: items,
         isCancelNote: isCancelNote,
         isUpdate: isUpdate);
-
-
-
-
-
-    print("ip addrrss   $printerAddress");
-    print("------------------ Start to crop  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-    var ii = Img.decodeImage(arabicImageBytes!);
-    print("------------------ Start to Resize  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-
-    final Img.Image _resize = Img.copyResize(ii!, width:PaperSize.mm80.width);
-    print("------------------ After resize  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-
-
-    int totalHeight = _resize.height;
-    print("totalHeight $totalHeight");
-
-    // Calculate number of parts
-    int parts = (totalHeight / 10).ceil();
-    print("------------------ Start For loop  ---------   ${DateTime.now().minute} ${DateTime.now().second}  ${DateTime.now().millisecond}" );
-
-    for (int i = 0; i < parts; i++) {
-
-      int startY = i * 10;
-      int height = (i == parts - 1) ? (totalHeight - startY) : 10;
-      final Img.Image cropped = Img.copyCrop(_resize, x: 0, y: startY, width: _resize.width, height: height);
-      bytes += generator.imageRaster(cropped);
-    }
-
-
-
-
+    final Img.Image? image = Img.decodeImage(arabicImageBytes);
+    final Img.Image resizedImage = Img.copyResize(image!, width: 520);
+    bytes += generator.imageRaster(resizedImage);
     bytes += generator.cut();
     final res = await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";

@@ -61,8 +61,8 @@ class _LoginPageNewState extends State<LoginPageNew> {
     double screenHeight = screenSize.height;
 
     /// chaged
-  // bool isTablet = true;
-    bool isTablet = screenWidth > defaultScreenWidth;
+   bool isTablet = enableTabDesign;
+  //  bool isTablet = screenWidth > defaultScreenWidth;
 
     return Scaffold(
       appBar: isTablet
@@ -672,10 +672,11 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
   /// working
 
+
   Future<Null> loginAccount(BuildContext context, stopLoading) async {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       popAlert(

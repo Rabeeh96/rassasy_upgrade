@@ -19,21 +19,27 @@ import 'package:rassasy_new/new_design/back_ground_print/wifi_print/test_page/pr
 import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/MobileDesign/view/pos_main_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/mobile/pos_main_page.dart';
+
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/tab_design/tab_pos_order_page.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:rassasy_new/new_design/report/new_report_page.dart';
 import 'package:rassasy_new/setting/settings_page.dart';
+import 'package:rassasy_new/test/local_db/data_base_working.dart';
+import 'package:rassasy_new/test/local_db/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'customer/customer_detail_page.dart';
+import 'dailyReport/daily_report.dart';
 import 'flavour/view_flavour.dart';
 import 'mobile_section/view/customer/customer_list_mobile.dart';
 import 'mobile_section/view/invoice/invocie_list_mobile.dart';
 import 'mobile_section/view/product/product_list_mobile.dart';
 import 'mobile_section/view/product_group/product_group_list.dart';
-import 'pos/new_method/pos_list_section.dart';
+import 'pos/pos_new_design/view/tab_design/tab_pos_list_design.dart';
+import 'pos/pos_section/pos_list_section.dart';
 import 'product/create_products.dart';
 import 'profile_mobile/about_us/about_us_page.dart';
 import 'profile_mobile/contact_us/contact_us.dart';
@@ -54,24 +60,28 @@ class _DashboardNewState extends State<DashboardNew> {
     // TODO: implement initState
     super.initState();
     dataForStaff();
-    profileController.getProfileData();
+     profileController.getProfileData();
   }
 
   ProfileController profileController = Get.put(ProfileController());
 
   dataForStaff() async {
+pr("-------------------------------------------------------------------------------------------1");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      pr("-------------------------------------------------------------------------------------------2");
       var isArabic = prefs.getBool('isArabic') ?? false;
       if (isArabic) {
         Get.updateLocale(const Locale('ar'));
       } else {
         Get.updateLocale(const Locale('en', 'US'));
       }
+      pr("-------------------------------------------------------------------------------------------3");
       baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
       userName = prefs.getString('user_name') ?? '';
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
+      pr("-------------------------------------------------------------------------------------------4");
       expireDate = prefs.getString('expiryDate') ?? '';
       organisationLogo = prefs.getString('companyLogo') ?? 'https://www.gravatar.com/avatar/0?s=46&d=identicon&r=PG&f=1';
       settingsPermission = prefs.getBool('General Setting') ?? false;
@@ -228,19 +238,9 @@ class _DashboardNewState extends State<DashboardNew> {
           MaterialPageRoute(builder: (context) => const EnterPinNumber()),
         );
 
-        // if (posUser == true) {
-        //   Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(builder: (context) => const EnterPinNumber()),
-        //   );
-        // } else if (posUser == false) {
-        //   prefs.setBool('isLoggedIn', false);
-        //   prefs.setBool('companySelected', false);
-        //   Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(builder: (context) => LoginPageNew()),
-        //   );
-        // }
-
-        break;
+      case 6 :
+      Get.to(TabPosListDesign());
+      break;
     }
   }
 
@@ -366,9 +366,8 @@ class _DashboardNewState extends State<DashboardNew> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-
-    bool isTablet = true;
-   // bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
+  //  bool isTablet = screenWidth > defaultScreenWidth;
     return Scaffold(
       appBar: isProfileNotifier.value
           ?AppBar(
@@ -396,6 +395,7 @@ class _DashboardNewState extends State<DashboardNew> {
                       //  style: TextStyle(color: Colors.black, fontSize: 24),
                     ),
               actions: [
+
 
 
                 isTablet == true
@@ -513,6 +513,24 @@ class _DashboardNewState extends State<DashboardNew> {
                                     ),
                                     Text(
                                       'user_log_out'.tr,
+                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                                    )
+                                  ],
+                                )),
+                            const PopupMenuDivider(),
+                            PopupMenuItem<int>(
+                                value: 6,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.dashboard,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      'New POS (Beta Version)',
                                       style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
                                     )
                                   ],
@@ -665,7 +683,7 @@ class _DashboardNewState extends State<DashboardNew> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = false;
+    bool isTablet = true;
   //  bool isTablet = screenWidth > defaultScreenWidth;
     print(isTablet);
     print(screenWidth);
@@ -684,6 +702,15 @@ class _DashboardNewState extends State<DashboardNew> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // ElevatedButton(onPressed: (){
+                  //
+                  // //  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>   ProductFormPage()));
+                  //
+                  // }
+                  //
+                  //     , child: Text("Local DB")),
+
+
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Row(
@@ -1080,66 +1107,69 @@ class _DashboardNewState extends State<DashboardNew> {
                         ),
 
                         /// daily report commented
-                        // Column(
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () async {
-                        //         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
-                        //
-                        //         // Navigator.push(
-                        //         //     context,
-                        //         //     MaterialPageRoute(
-                        //         //         builder: (BuildContext context) =>
-                        //         //             const DragableList()));
-                        //
-                        //         // var invoices = await checkingPerm('Invoices'.tr);
-                        //         //
-                        //         // if (invoices == true) {
-                        //         //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
-                        //         //
-                        //         // } else {
-                        //         //   dialogBoxPermissionDenied(context);
-                        //         // }
-                        //       },
-                        //       child: Container(
-                        //         decoration: const BoxDecoration(
-                        //             color: Color(0xffEEEEEE),
-                        //             borderRadius:
-                        //             BorderRadius.all(Radius.circular(20))),
-                        //         height: isTablet
-                        //             ? screenHeight / 12
-                        //             : screenHeight / 15,
-                        //         width: isTablet
-                        //             ? screenWidth / 17
-                        //             : screenWidth / 6,
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           crossAxisAlignment: CrossAxisAlignment.center,
-                        //           children: [
-                        //             Container(
-                        //               height:
-                        //               MediaQuery.of(context).size.height /
-                        //                   20,
-                        //               width: MediaQuery.of(context).size.width /
-                        //                   20,
-                        //               child: SvgPicture.asset(
-                        //                   'assets/svg/report.svg'),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     Padding(
-                        //       padding: const EdgeInsets.only(
-                        //         top: 12,
-                        //       ),
-                        //       child: Text(
-                        //         'Daily Report'.tr,
-                        //         style: const TextStyle(fontSize: 12),
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (BuildContext context) =>
+                                //             const DragableList()));
+
+                                // var invoices = await checkingPerm('Invoices'.tr);
+                                //
+                                // if (invoices == true) {
+                                //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                                //
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    color: Color(0xffEEEEEE),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                                height: isTablet
+                                    ? screenHeight / 12
+                                    : screenHeight / 15,
+                                width: isTablet
+                                    ? screenWidth / 17
+                                    : screenWidth / 6,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height:
+                                      MediaQuery.of(context).size.height /
+                                          20,
+                                      width: MediaQuery.of(context).size.width /
+                                          20,
+                                      child: SvgPicture.asset(
+                                          'assets/svg/report.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'Daily Report'.tr,
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+
+
+
                         /// new taxz commented
                         // Column(
                         //   children: [
@@ -1461,6 +1491,8 @@ class _DashboardNewState extends State<DashboardNew> {
                             Get.to(SettingsMobilePage(generalSettingsPermission: settingsPermission,));
 
 
+
+
                           },
                           child: Card(
                             color: Colors.transparent,
@@ -1556,6 +1588,83 @@ class _DashboardNewState extends State<DashboardNew> {
                               )),
                         ),
 
+                        dividerStyle(),
+                        Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
+                            child: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Confirm Switch user',style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),),
+                                      content: Text('Are you sure you want to exit?  ',style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false); // Return false when cancelled
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('OK'),
+                                          onPressed: () {
+
+                                            Navigator.of(context).pop(true);
+
+                                            Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(builder: (context) => const EnterPinNumber()),
+                                            );
+
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ).then((confirmed) {
+                                  if (confirmed != null && confirmed) {
+                                    // User confirmed, perform your action here
+                                    print('User confirmed');
+                                  } else {
+                                    // User cancelled, perform your action here or do nothing
+                                    print('User cancelled');
+                                  }
+                                });
+
+                              },
+                              child: InkWell(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/svg/profile_mob.svg",
+                                          color: Color(0xffF25F29),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            'user_log_out'.tr.tr,
+                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 18,
+                                      color: Colors.black,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         dividerStyle(),
                         Card(
                           color: Colors.transparent,
@@ -1677,6 +1786,42 @@ class _DashboardNewState extends State<DashboardNew> {
                             ),
                           ),
                         ),
+                        // GestureDetector(
+                        //   onTap: () async {
+                        //      Get.to(TabPosListDesign());
+                        //
+                        //   },
+                        //   child: Card(
+                        //     color: Colors.transparent,
+                        //     elevation: 0,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.only(left: 8.0, right: 8, top: 15, bottom: 15),
+                        //       child: Row(
+                        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //               SvgPicture.asset(
+                        //                 "assets/svg/language-hiragana.svg",
+                        //               ),
+                        //               Padding(
+                        //                 padding: const EdgeInsets.only(left: 10.0),
+                        //                 child: Text(
+                        //                   'New POS Section',
+                        //                   style: customisedStyle(context, Colors.black, FontWeight.w400, 16.0),
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //           Text(
+                        //             'New POS Section',
+                        //             style: customisedStyle(context, Color(0xff7D7D7D), FontWeight.normal, 14.0),
+                        //           )
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
 
 
 
