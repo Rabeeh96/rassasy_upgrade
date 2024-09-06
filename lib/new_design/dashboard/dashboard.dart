@@ -395,9 +395,6 @@ pr("----------------------------------------------------------------------------
                       //  style: TextStyle(color: Colors.black, fontSize: 24),
                     ),
               actions: [
-
-
-
                 isTablet == true
                     ? Theme(
                         data: Theme.of(context).copyWith(

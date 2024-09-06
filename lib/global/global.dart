@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 // }
 ////////
 
-String appVersion = "1.1.50";
+String appVersion = "1.1.51";
 double defaultScreenWidth=550;
 bool enableTabDesign = false;
 start(context) {
