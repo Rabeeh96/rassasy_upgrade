@@ -13,6 +13,7 @@ import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/back_ground_print_bt.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/barcode/barcode.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/controller/pos_controller.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/detail_page/cancel_reason_list.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/detail_page/reservation_list.dart';
@@ -95,6 +96,12 @@ class _DiningPageState extends State<DiningPage> {
           IconButton(
               onPressed: () {
                 _asyncConfirmDialog(context);
+              },
+              icon: SvgPicture.asset('assets/svg/logout_mob.svg'))      ,
+
+          IconButton(
+              onPressed: () {
+                BarcodeScannerClass.scanBarcode(context);
               },
               icon: SvgPicture.asset('assets/svg/logout_mob.svg'))
         ],

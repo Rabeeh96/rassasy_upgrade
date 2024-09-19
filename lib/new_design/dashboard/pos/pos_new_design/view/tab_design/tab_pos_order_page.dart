@@ -619,6 +619,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               ),
             ),
             //here we need condition
+
             Flexible(
                 flex: 6,
                 child: SizedBox(
@@ -627,7 +628,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                       switch (orderController.detailPage.value) {
                         case 'item_add':
                           return itemAddWidget();
-
                         case 'detail_page':
                           return productDetailPage();
                         case 'settings':
@@ -1955,9 +1955,10 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     TextButton(
                         style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffDF1515))),
                         onPressed: () {
-                          Get.back();
-                          orderController.getDefaultValue();
                           orderController.detailPage.value = 'item_add';
+                          orderController.getDefaultValue();
+                          setState(() {});
+                          //     orderController.update();
                         },
                         child: Row(
                           children: [
@@ -2260,7 +2261,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                         print("gdhsfjsdgfjdsf");
 
                         orderController.addItemToList(index: orderController.indexDetail);
-
                         orderController.detailPage.value = 'item_add';
                         orderController.update();
                       },
@@ -2286,877 +2286,48 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
     );
   }
 
-  Widget paymentMethod() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                "Payment",
-                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-              ),
-            ),
-          ],
-        ),
-        dividerStyle(),
-        SingleChildScrollView(
-            child: Obx(() => paymentController.detailLoading.value
-                ? Container(height: 500, child: const Center(child: CircularProgressIndicator()))
-                : Container(
-                    height: MediaQuery.of(context).size.height * .57,
-                    child: ListView(
-                      children: [
-                        Container(
-                          height: 1,
-                          color: const Color(0xffE9E9E9),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Obx(
-                          () => Padding(
-                            padding: const EdgeInsets.only(left: 20.0, right: 20),
-                            child: Container(
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  GestureDetector(
-                                      onTap: () async {
-                                        ///  addDetails();
-                                        // final result = await Get.to(CustomerDetailPage());
-                                        // if (result != null) {
-                                        //   paymentController.paymentCustomerSelection.text = result[0];
-                                        //   paymentController.ledgerID.value = result[2];
-                                        //   setState(() {
-                                        //
-                                        //   });
-                                        //
-                                        // }
-                                      },
-                                      child: InkWell(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                            Text(
-                                              'customer'.tr,
-                                              style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                            ),
-                                            Text(
-                                              paymentController.paymentCustomerSelection.text,
-                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
-                                            ),
-                                            const Icon(
-                                              Icons.arrow_forward_ios,
-                                              color: Colors.black,
-                                              size: 15,
-                                            )
-                                          ]),
-                                        ),
-                                      )),
-                                  dividerStyle(),
-                                  GestureDetector(
-                                      onTap: () async {
-                                        ///addDetails();
-                                      },
-                                      child: InkWell(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                            Text(
-                                              'ph_no'.tr,
-                                              style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                            ),
-                                            Text(
-                                              paymentController.customerPhoneSelection.text ?? "",
-                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                            ),
-
-                                            Text(
-                                              "",
-                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                            ),
-                                            // const Icon(
-                                            //   Icons.arrow_forward_ios,
-                                            //   color: Colors.black,
-                                            //   size: 15,
-                                            // )
-                                            //
-                                          ]),
-                                        ),
-                                      )),
-                                  dividerStyle(),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                      Text(
-                                        'balance1'.tr,
-                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 8.0),
-                                            child: Text(
-                                              paymentController.currency.value,
-                                              style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                            ),
-                                          ),
-                                          Text(
-                                            roundStringWith(paymentController.balance.toString()),
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                          ),
-                                        ],
-                                      ),
-                                      const Text(
-                                        "",
-                                      ),
-                                    ]),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0, right: 20),
-                          child: Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    ///addDetails();
-                                    // final result = await Get.to(SelectDeliveryMan());
-                                    // if (result != null) {
-                                    //   paymentController.deliveryManName.value = result[0];
-                                    //   paymentController.deliveryManID.value = result[1];
-                                    //   paymentController.update();
-                                    // }
-                                  },
-                                  child: InkWell(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                        Text(
-                                          'Deliveryman'.tr,
-                                          style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                        ),
-                                        Text(
-                                          paymentController.deliveryManName.value,
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                        ),
-                                        const Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Colors.black,
-                                          size: 15,
-                                        )
-                                      ]),
-                                    ),
-                                  ),
-                                ),
-
-                                ///platform
-                                // DividerStyle(),
-                                // Padding(
-                                //   padding: const EdgeInsets.all(12.0),
-                                //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                //     Text(
-                                //       'Platform'.tr,
-                                //       style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 14.0),
-                                //     ),
-                                //     Text(
-                                //       "Zomato(online)",
-                                //       style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0),
-                                //     ),
-                                //     const Icon(
-                                //       Icons.arrow_forward_ios,
-                                //       color: Colors.black,
-                                //       size: 15,
-                                //     )
-                                //   ]),
-                                // ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0, right: 20),
-                          child: Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    children: [
-                                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                        Text(
-                                          'Discount'.tr,
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0),
-                                        ),
-                                      ]),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 18.0),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width / 10,
-                                              child: TextField(
-                                                textCapitalization: TextCapitalization.words,
-                                                controller: paymentController.discountAmountController,
-                                                keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter.deny(RegExp('[-, ]')),
-                                                ],
-                                                onChanged: (value) {
-                                                  if (value.isEmpty) {
-                                                    paymentController.discountCalc(2, "0");
-                                                  } else {
-                                                    paymentController.discountCalc(2, value);
-                                                  }
-                                                },
-                                                onTap: () => paymentController.discountAmountController.selection = TextSelection(
-                                                    baseOffset: 0, extentOffset: paymentController.discountAmountController.value.text.length),
-                                                style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                                                // focusNode: diningController.customerNode,
-
-                                                decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 18.0),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width / 10,
-                                              child: TextField(
-                                                textCapitalization: TextCapitalization.words,
-                                                keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter.deny(RegExp('[-, ]')),
-                                                ],
-                                                onTap: () => paymentController.discountPerController.selection = TextSelection(
-                                                    baseOffset: 0, extentOffset: paymentController.discountPerController.value.text.length),
-
-                                                controller: paymentController.discountPerController,
-                                                onChanged: (value) {
-                                                  if (value.isEmpty) {
-                                                    paymentController.discountCalc(1, "0.0");
-                                                  } else {
-                                                    paymentController.discountCalc(1, value);
-                                                  }
-                                                },
-                                                style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                                                // focusNode: diningController.customerNode,
-                                                // onEditingComplete: () {
-                                                //   FocusScope.of(context).requestFocus();
-                                                // },
-                                                decoration: TextFieldDecoration.defaultTextField(hintTextStr: "Percentage"),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0, right: 20),
-                          child: Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                Text(
-                                  'gross_amount'.tr,
-                                  style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
-                                      child: Text(
-                                        paymentController.currency.value,
-                                        style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                      ),
-                                    ),
-                                    Text(
-                                      roundStringWith(paymentController.totalGrossP.value.toString()),
-                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                    ),
-                                  ],
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0, right: 20),
-                          child: Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                /// to be paid commented
-                                // Padding(
-                                //   padding: const EdgeInsets.all(12.0),
-                                //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                //     Text(
-                                //       'to_be_paid'.tr,
-                                //       style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                //     ),
-                                //     Row(
-                                //       children: [
-                                //         Padding(
-                                //           padding: const EdgeInsets.only(right: 8.0),
-                                //           child: Text(
-                                //             paymentController.currency,
-                                //             style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 18.0),
-                                //           ),
-                                //         ),
-                                //         Text(
-                                //           roundStringWith(paymentController.grandTotalAmount.value),
-                                //           style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ]),
-                                // ),
-                                // DividerStyle(),
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                    Text(
-                                      'total_tax'.tr,
-                                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 8.0),
-                                          child: Text(
-                                            paymentController.currency.value,
-                                            style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                          ),
-                                        ),
-                                        Text(
-                                          roundStringWith(paymentController.totalTaxMP.value),
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
-                                ),
-                                dividerStyle(),
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                    Text(
-                                      'net_total'.tr,
-                                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 8.0),
-                                          child: Text(
-                                            paymentController.currency.value,
-                                            style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
-                                          ),
-                                        ),
-                                        Text(
-                                          roundStringWith(paymentController.totalNetP.value),
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
-                                ),
-                                dividerStyle(),
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                    Text(
-                                      'grand_total'.tr,
-                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 16.5),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 8.0),
-                                          child: Text(
-                                            paymentController.currency.value,
-                                            style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.5),
-                                          ),
-                                        ),
-                                        Text(
-                                          roundStringWith(paymentController.grandTotalAmount.value),
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 17.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0, right: 20),
-                          child: Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    children: [
-                                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                        Text(
-                                          'cash'.tr,
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
-                                        ),
-                                      ]),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 18.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context).size.width / 10,
-                                              child: TextField(
-                                                controller: paymentController.cashReceivedController,
-                                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
-                                                ],
-                                                onChanged: (val) {
-                                                  if (val.isEmpty) {
-                                                    val = "0";
-                                                  } else {
-                                                    paymentController.calculationOnPayment();
-                                                  }
-                                                },
-                                                textCapitalization: TextCapitalization.words,
-
-                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
-                                                // focusNode: diningController.customerNode,
-                                                // onEditingComplete: () {
-                                                //   FocusScope.of(context).requestFocus();
-                                                // },
-                                                onTap: () => paymentController.cashReceivedController.selection = TextSelection(
-                                                    baseOffset: 0, extentOffset: paymentController.cashReceivedController.value.text.length),
-
-                                                decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
-                                              ),
-                                            ),
-                                            Container(
-                                              height: 35,
-                                              width: MediaQuery.of(context).size.width / 15,
-                                              child: TextButton(
-                                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
-                                                onPressed: () {
-                                                  paymentController.bankReceivedController.text = roundStringWith("0");
-                                                  paymentController.cashReceivedController.text =
-                                                      roundStringWith(paymentController.grandTotalAmount.value.toString());
-                                                  paymentController.calculationOnPayment();
-                                                },
-                                                child: Padding(
-                                                  padding: const EdgeInsets.only(left: 12.0, right: 12),
-                                                  child: Text(
-                                                    'Full'.tr,
-                                                    style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 15.5),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      dividerStyle(),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                        Text(
-                                          'bank'.tr,
-                                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
-                                        ),
-                                      ]),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 18.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context).size.width / 10,
-                                              child: TextField(
-                                                textCapitalization: TextCapitalization.words,
-                                                controller: paymentController.bankReceivedController,
-                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
-                                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,8}')),
-                                                ],
-                                                onChanged: (val) {
-                                                  if (val.isEmpty) {
-                                                  } else {
-                                                    paymentController.calculationOnPayment();
-                                                  }
-                                                },
-                                                onEditingComplete: () {
-                                                  FocusScope.of(context).requestFocus();
-                                                },
-                                                onTap: () => paymentController.bankReceivedController.selection = TextSelection(
-                                                    baseOffset: 0, extentOffset: paymentController.bankReceivedController.value.text.length),
-                                                decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
-                                              ),
-                                            ),
-                                            Container(
-                                              height: 35,
-                                              width: MediaQuery.of(context).size.width / 15,
-                                              child: TextButton(
-                                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
-                                                onPressed: () {
-                                                  paymentController.cashReceivedController.text = roundStringWith("0");
-                                                  paymentController.bankReceivedController.text =
-                                                      roundStringWith(paymentController.grandTotalAmount.value.toString());
-                                                  paymentController.calculationOnPayment();
-                                                },
-                                                child: Padding(
-                                                  padding: const EdgeInsets.only(left: 12.0, right: 12),
-                                                  child: Text(
-                                                    'Full'.tr,
-                                                    style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 16.5),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                  ))),
-        Container(
-          height: MediaQuery.of(context).size.height * .22,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /// status chnageing commented
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
-                    style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffEEF5FF))),
-                    onPressed: () {
-                      orderController.changeStatus("take_away");
-                      orderController.update();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 5.0, right: 5),
-                      child: Text(
-                        "TakeAway",
-                        style: customisedStyle(context, const Color(0xff034FC1), FontWeight.normal, 12.0),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 7,
-                  ),
-                  TextButton(
-                      style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffF0F0F0))),
-                      onPressed: () {
-                        orderController.changeStatus("delivered");
-                        orderController.update();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 5.0, right: 5),
-                        child: Text(
-                          'Delivered',
-                          style: customisedStyle(context, const Color(0xff000000), FontWeight.normal, 12.0),
-                        ),
-                      )),
-                  const SizedBox(
-                    width: 7,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 9,
-              ),
-
-              Container(
-                height: 1,
-                color: const Color(0xffE9E9E9),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                child: Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Text(
-                          'to_be_paid'.tr,
-                          style: customisedStyle(context, const Color(0xff9E9E9E), FontWeight.w400, 17.0),
-                        ),
-                      ),
-                      Text(
-                        orderController.currency.value,
-                        style: customisedStyle(context, const Color(0xff000000), FontWeight.w400, 16.0),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 3.0),
-                        child: Text(
-                          roundStringWith(orderController.totalNetP.toString()),
-                          style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 18.0),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TextButton(
-                        style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffDF1515))),
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset("assets/svg/close-circle.svg"),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5.0, right: 5),
-                              child: Text(
-                                'cancel'.tr,
-                                style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
-                              ),
-                            ),
-                          ],
-                        )),
-                    const SizedBox(
-                      width: 7,
-                    ),
-                    TextButton(
-                        style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff10C103))),
-                        onPressed: () async {
-                          if (widget.orderType == 1) {
-                            if (posController.dining_create_perm.value) {
-                              orderController.createMethod(
-                                  tableID: widget.tableID,
-                                  tableHead: widget.tableHead,
-                                  orderType: widget.orderType,
-                                  context: context,
-                                  orderID: widget.uID,
-                                  isPayment: false,
-                                  sectionType: widget.sectionType,
-                                  platformID: platformController.platformID.value);
-                            } else {
-                              dialogBoxPermissionDenied(context);
-                            }
-                          } else if (widget.orderType == 2) {
-                            if (posController.take_away_create_perm.value) {
-                              orderController.createMethod(
-                                  tableID: widget.tableID,
-                                  tableHead: widget.tableHead,
-                                  orderType: widget.orderType,
-                                  context: context,
-                                  orderID: widget.uID,
-                                  isPayment: false,
-                                  sectionType: widget.sectionType,
-                                  platformID: platformController.platformID.value);
-                            } else {
-                              dialogBoxPermissionDenied(context);
-                            }
-                          } else if (widget.orderType == 3) {
-                            if (posController.take_away_create_perm.value) {
-                              orderController.createMethod(
-                                  tableID: widget.tableID,
-                                  tableHead: widget.tableHead,
-                                  orderType: widget.orderType,
-                                  context: context,
-                                  orderID: widget.uID,
-                                  isPayment: false,
-                                  sectionType: widget.sectionType,
-                                  platformID: platformController.platformID.value);
-                            } else {
-                              dialogBoxPermissionDenied(context);
-                            }
-                          } else if (widget.orderType == 4) {
-                            if (posController.car_create_perm.value) {
-                              orderController.createMethod(
-                                  tableID: widget.tableID,
-                                  tableHead: widget.tableHead,
-                                  orderType: widget.orderType,
-                                  context: context,
-                                  orderID: widget.uID,
-                                  isPayment: false,
-                                  sectionType: widget.sectionType,
-                                  platformID: platformController.platformID.value);
-                            } else {
-                              dialogBoxPermissionDenied(context);
-                            }
-                          } else {}
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset('assets/svg/save_mob.svg'),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5.0, right: 5),
-                              child: Text(
-                                'Save'.tr,
-                                style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
-                              ),
-                            )
-                          ],
-                        )),
-                    const SizedBox(
-                      width: 7,
-                    ),
-                    TextButton(
-                        style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff00775E))),
-                        onPressed: () {
-                          if (widget.orderType == 1 || widget.orderType == 4 || widget.orderType == 2 || widget.orderType == 3) {
-                            if (posController.pay_perm.value) {
-                              orderController.createMethod(
-                                  tableID: widget.tableID,
-                                  tableHead: widget.tableHead,
-                                  orderID: widget.uID,
-                                  orderType: widget.orderType,
-                                  context: context,
-                                  isPayment: true,
-                                  sectionType: widget.sectionType,
-                                  platformID: platformController.platformID.value);
-                            } else {
-                              dialogBoxPermissionDenied(context);
-                            }
-                          } else {}
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset('assets/svg/payment_mob.svg'),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5.0, right: 5),
-                              child: Text(
-                                'payment'.tr,
-                                style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
-                              ),
-                            )
-                          ],
-                        )),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-
   Widget itemAddWidget() {
     return Column(
       children: [
-        Container(
-          height: MediaQuery.of(context).size.height / 15,
-          width: MediaQuery.of(context).size.width / 3,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
 
-            ///  border: const Border(bottom: BorderSide(color: Color(0xffE7E7E7)))
-          ),
-          child: TextField(
-            style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-            onChanged: (text) {
-              orderController.filterList(text);
-            },
-            controller: orderController.searchListController,
-            decoration: InputDecoration(
-                // fillColor: const Color(0xffFDFDFD),
-                // filled: true,
-                contentPadding: const EdgeInsets.all(17),
-                suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: Image.asset('assets/png/search_grey_png.png'),
-                ),
-                hintText: 'Search List',
-                hintStyle: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.normal, 12.0),
-                border: InputBorder.none),
-          ),
-        ),
-        dividerStyle(),
+        // Container(
+        //   height: MediaQuery.of(context).size.height / 15,
+        //   width: MediaQuery.of(context).size.width / 3,
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(5),
+        //
+        //     ///  border: const Border(bottom: BorderSide(color: Color(0xffE7E7E7)))
+        //   ),
+        //   child: TextField(
+        //     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+        //     onChanged: (text) {
+        //       orderController.filterList(text);
+        //     },
+        //     controller: orderController.searchListController,
+        //     decoration: InputDecoration(
+        //         // fillColor: const Color(0xffFDFDFD),
+        //         // filled: true,
+        //         contentPadding: const EdgeInsets.all(17),
+        //         suffixIcon: IconButton(
+        //           onPressed: () {},
+        //           icon: Image.asset('assets/png/search_grey_png.png'),
+        //         ),
+        //         hintText: 'Search List',
+        //         hintStyle: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.normal, 12.0),
+        //         border: InputBorder.none),
+        //   ),
+        // ),
+        //dividerStyle(),
         Obx(
           () => Expanded(
               child: ListView.separated(
             separatorBuilder: (context, index) => dividerStyle(),
-            itemCount: orderController.searchOrderItemList.length,
+            itemCount: orderController.orderItemList.length,
             itemBuilder: (context, index) {
               return Dismissible(
-                key: Key(orderController.searchOrderItemList[index].toString()),
-                direction: DismissDirection.startToEnd,
+                key: UniqueKey(),
+                direction: DismissDirection.endToStart,
                 onDismissed: (direction) {
-                  // Remove the item from your data source.
                   orderController.deleteOrderItem(index: index);
                 },
                 background: Container(
@@ -3170,15 +2341,10 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    print("...................trt..................................");
-
                     orderController.detailPage.value = 'detail_page';
                     orderController.update();
-
                     loadData();
-                    print("...................57777777...............................");
-
-                    orderController.productNameDetail = orderController.searchOrderItemList[index]["ProductName"];
+                    orderController.productNameDetail = orderController.orderItemList[index]["ProductName"];
                     orderController.indexDetail = index;
                     print("...................888888888888888...............................");
                   },
@@ -3221,7 +2387,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                         child: Container(
                                           width: MediaQuery.of(context).size.width * 0.11,
                                           child: Text(
-                                            orderController.searchOrderItemList[index]["ProductName"] ?? '',
+                                            orderController.orderItemList[index]["ProductName"] ?? '',
                                             style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
@@ -3230,11 +2396,11 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                       ),
                                     ],
                                   ),
-                                  orderController.searchOrderItemList[index]["Description"] != ""
+                                  orderController.orderItemList[index]["Description"] != ""
                                       ? Padding(
                                           padding: const EdgeInsets.only(left: 20.0, right: 5),
                                           child: Text(
-                                            orderController.searchOrderItemList[index]["Description"],
+                                            orderController.orderItemList[index]["Description"],
                                             style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
                                           ),
                                         )
@@ -3246,7 +2412,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          orderController.searchOrderItemList[index]["Flavour_Name"] != ""
+                                          orderController.orderItemList[index]["Flavour_Name"] != ""
                                               ? Padding(
                                                   padding: const EdgeInsets.only(left: 5.0),
                                                   child: Container(
@@ -3254,7 +2420,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                                     child: Padding(
                                                       padding: const EdgeInsets.only(right: 5),
                                                       child: Text(
-                                                        orderController.searchOrderItemList[index]["Flavour_Name"] ?? "",
+                                                        orderController.orderItemList[index]["Flavour_Name"] ?? "",
                                                         style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
                                                       ),
                                                     ),
@@ -3280,14 +2446,14 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                           Obx(() => Container(
                                                 height: MediaQuery.of(context).size.height / 33,
                                                 decoration: BoxDecoration(
-                                                  color: orderController.returnIconStatus(orderController.searchOrderItemList[index]["Status"]),
+                                                  color: orderController.returnIconStatus(orderController.orderItemList[index]["Status"]),
                                                   borderRadius: BorderRadius.circular(30),
                                                 ),
                                                 child: Center(
                                                   child: Padding(
                                                     padding: const EdgeInsets.only(left: 10.0, right: 10),
                                                     child: Text(
-                                                      orderController.returnStatus(orderController.searchOrderItemList[index]["Status"]),
+                                                      orderController.returnStatus(orderController.orderItemList[index]["Status"]),
                                                       style: const TextStyle(fontSize: 11, color: Colors.white),
                                                     ),
                                                   ),
@@ -3315,7 +2481,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 3.0),
                                       child: Text(
-                                        roundStringWith(orderController.searchOrderItemList[index]["UnitPrice"].toString()),
+                                        roundStringWith(orderController.orderItemList[index]["UnitPrice"].toString()),
                                         style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                       ),
                                     ),
@@ -3328,7 +2494,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                     IconButton(
                                       icon: SvgPicture.asset("assets/svg/minus_mob.svg"),
                                       onPressed: () {
-                                        if (double.parse(orderController.searchOrderItemList[index]["Qty"].toString()) >= 2.0) {
+                                        if (double.parse(orderController.orderItemList[index]["Qty"].toString()) >= 2.0) {
                                           orderController.updateQty(index: index, type: 0);
                                           setState(() {});
                                         }
@@ -3341,7 +2507,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                           BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xffE7E7E7))),
                                       child: Center(
                                         child: Text(
-                                          roundStringWith(orderController.searchOrderItemList[index]["Qty"].toString()),
+                                          roundStringWith(orderController.orderItemList[index]["Qty"].toString()),
                                           style: const TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -3523,7 +2689,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   orderType: widget.orderType,
                                   context: context,
                                   orderID: widget.uID,
-                                  isPayment: false,
+                                  isPayment: true,
                                   sectionType: widget.sectionType,
                                   platformID: platformController.platformID.value);
                             },

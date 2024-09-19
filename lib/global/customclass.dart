@@ -35,8 +35,6 @@ btmDialogueFunction({required BuildContext context,required String textMsg,requi
     },
   );
 }
-
-
 popAlert({required String head,required String message,required SnackPosition position}){
   Get.snackbar(
     head,

@@ -6,12 +6,8 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
-// dialogBox(BuildContext context, msg) {
-//   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-// }
-////////
 
-String appVersion = "1.1.50";
+String appVersion = "1.1.51";
 double defaultScreenWidth=550;
 bool enableTabDesign = false;
 start(context) {
@@ -23,40 +19,8 @@ start(context) {
   );
 }
 
-//
-// dialogBoxAutoHide(BuildContext context, msg) async {
-//   Fluttertoast.showToast(
-//     msg: msg,
-//     toastLength: Toast.LENGTH_SHORT,
-//     gravity: ToastGravity.CENTER,
-//     timeInSecForIosWeb: 2,
-//     backgroundColor: Colors.black,
-//     textColor: Colors.white,
-//     fontSize: 15.0,
-//
-//   );
-// }
-// dialogBoxHide1(BuildContext context, msg) async {
-//   return showDialog(
-//     context: context,
-//     barrierDismissible: true, // user must tap button for close dialog!
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         backgroundColor: Colors.white,
-//         title: Text(
-//           msg+'.',
-//           textAlign: TextAlign.center,
-//           style: TextStyle(color: Colors.black, fontSize: 13),
-//         ),
-//         // content: const Text(
-//         //     'Are Sure Want to Exit?.'),
-//       );
-//     },
-//   );
-// }
 
 dialogBoxHide(BuildContext context, msg) async {
- //Alert(message: msg).show();
 }
 
 dialogBox(BuildContext context, msg) async {
@@ -80,145 +44,6 @@ dialogBox(BuildContext context, msg) async {
     },
   );
 }
-
-
-
-
-
-dialogBoxs(BuildContext context ,String textMsg ) {
-  return showModalBottomSheet(
-    context: context,
-    enableDrag: false,
-    builder: (BuildContext context) {
-      return Container(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child:Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  // color: Colors.blue,
-               //     width: MediaQuery.of(context).size.width*.6,
-                    child: Text(textMsg,overflow:TextOverflow.fade,style:
-
-                    customisedStyle(
-                        context,
-                          const Color(0xff000000),
-                        FontWeight.w400,
-                        15.0),
-
-                    )),
-                TextButton(onPressed: (){
-                  Navigator.pop(context);
-                }, child:   const Text("Okay",
-                  style: TextStyle(color: Color(0xff0E74F4,),fontWeight: FontWeight.bold),)
-
-                ),
-              ],
-            )
-        ),
-      );
-    },
-  );
-}
-
-dialogBoxa(BuildContext context, msg) async {
-  // QuickAlert.show(
-  //   context: context,
-  //   type: QuickAlertType.success,
-  // );
-  //Alert(message: msg,shortDuration: false).show();
-}
-
-
-//
-// dialogBox(BuildContext context, msg) async {
-//   return showDialog(
-//     context: context,
-//     barrierDismissible: true, // user must tap button for close dialog!
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         backgroundColor: Colors.white,
-//         title: Text(
-//           msg+'.',
-//           textAlign: TextAlign.center,
-//           style: TextStyle(color: Colors.black, fontSize: 13),
-//         ),
-//         // content: const Text(
-//         //     'Are Sure Want to Exit?.'),
-//       );
-//     },
-//   );
-// }
-// dialogBoxHide(BuildContext context, msg) async {
-//   return showDialog(
-//     context: context,
-//     barrierDismissible: true, // user must tap button for close dialog!
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         backgroundColor: Colors.white,
-//         title: Text(
-//           msg+'.',
-//           textAlign: TextAlign.center,
-//           style: TextStyle(color: Colors.black, fontSize: 13),
-//         ),
-//         // content: const Text(
-//         //     'Are Sure Want to Exit?.'),
-//       );
-//     },
-//   );
-// }
-//
-
-//
-// dialogBoxHide(BuildContext context, String msg) async {
-//   showDialog(
-//     context: context,
-//     barrierDismissible: false, // user must tap button for close dialog!
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         backgroundColor: Colors.white,
-//         title: Text(
-//           msg + '.',
-//           textAlign: TextAlign.center,
-//           style: TextStyle(color: Colors.black, fontSize: 13),
-//         ),
-//       );
-//     },
-//   );
-//
-//   // Close the dialog after 2 seconds
-//   closeDialogAfterDelay(context);
-// }
-//
-// void closeDialogAfterDelay(BuildContext context) async {
-//   await Future.delayed(Duration(seconds: 2));
-//   if (Navigator.of(context, rootNavigator: true).canPop()) {
-//     Navigator.of(context, rootNavigator: true).pop();
-//   }
-// }
-
-
-
-// dialogBox(BuildContext context, msg) async {
-//   return showDialog(
-//     context: context,
-//     barrierDismissible: true, // user must tap button for close dialog!
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         backgroundColor: Colors.white,
-//         title: Text(
-//           msg+'.',
-//           textAlign: TextAlign.center,
-//           style: TextStyle(color: Colors.black, fontSize: 13),
-//         ),
-//         // content: const Text(
-//         //     'Are Sure Want to Exit?.'),
-//       );
-//     },
-//   );
-// }
 
 
 class CommonStyleTextField {
@@ -250,73 +75,13 @@ class CommonStyleTextField {
   }
 }
 
-
-
-
-
-
-
 String roundStringWith(String val) {
-
   var decimal = 2;
   double convertedTodDouble = double.parse(val);
   var number = convertedTodDouble.toStringAsFixed(decimal);
   return number;
 }
-class NoItemFound extends StatelessWidget {
-  const NoItemFound({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Center(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height / 2.5,
-          width: MediaQuery.of(context).size.width / 1.2,
-          child: const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'No Results Found',
-                style: TextStyle(fontSize: 13, color: Colors.black),
-              )
-            ],
-          ),
-        ));
-  }
-}
-
-class NoData extends StatelessWidget {
-  const NoData({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Center(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height / 2,
-          width: MediaQuery.of(context).size.width / 1.2,
-          child: const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              // IconButton(
-              //   splashColor: Colors.transparent,
-              //   highlightColor: Colors.transparent,
-              //   icon: Image.asset('DashboardButton/Empty.png'),
-              //   iconSize: 50,
-              //   onPressed: () {},
-              // ),
-              Text(
-                'No Data ',
-                style: TextStyle(fontSize: 10, color: Colors.black),
-              )
-            ],
-          ),
-        ));
-  }
-}
 
   customisedStyle(context,Colors,FontWeight,fontSize){
   return GoogleFonts.poppins(textStyle:TextStyle(fontWeight: FontWeight,color: Colors,fontSize: fontSize));

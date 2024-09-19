@@ -262,7 +262,9 @@ class POSController extends GetxController {
         "reason_id": cancelReasonId,
       };
 
+      print("url  $url");
       print("type  $type");
+      print("token  $accessToken");
       print(data);
       //encode Map to JSON
       var body = json.encode(data);
@@ -282,10 +284,7 @@ class POSController extends GetxController {
 
       if (status == 6000) {
         fetchAllData();
-
         /// print section commented
-
-        print("cancelReasonId  cancelReasonId cancelReasonId  $cancelReasonId");
 
         if (cancelReasonId != "") {
           if (printForCancelOrder) {
