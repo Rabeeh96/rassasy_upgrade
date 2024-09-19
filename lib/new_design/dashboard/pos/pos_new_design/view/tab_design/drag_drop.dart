@@ -25,7 +25,6 @@ class DragDrop extends StatefulWidget {
 
   DragDrop({
     super.key,
-
     required this.uID,
     required this.sectionType,
 
