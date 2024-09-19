@@ -70,9 +70,6 @@ class OrderController extends GetxController {
     {'Bold': FontWeight.bold},
   ];
 
-
-
-
   Map<FontWeight, int> fontWeightToInt = {
     FontWeight.normal: 400,
     FontWeight.bold: 700,
@@ -192,33 +189,25 @@ class OrderController extends GetxController {
       } else {
         returnValue = 280.0;
       }
-    }
-    else if (count == 3) {
+    } else if (count == 3) {
       if (isShowImage) {
         returnValue = 200.0 - 80.0;
       } else {
         returnValue = 200.0;
       }
-    }
-
-    else if (count == 4) {
+    } else if (count == 4) {
       if (isShowImage) {
         returnValue = 150.0 - 75.0;
       } else {
         returnValue = 150.0;
       }
-    }
-
-
-   else if (count == 5) {
+    } else if (count == 5) {
       if (isShowImage) {
         returnValue = 120.0 - 50.0;
       } else {
         returnValue = 120.0;
       }
     }
-
-
 
     return returnValue;
 
@@ -246,7 +235,6 @@ class OrderController extends GetxController {
     prefs.setDouble('group_font_size', groupFontSize).toString();
     prefs.setDouble('height_of_item', heightOfITem).toString();
     prefs.setDouble('widthOfItem', widthOfItem);
-
     prefs.setBool('showProductDescription', showProductDescription.value);
     prefs.setBool('showWegOrNoVeg', showWegOrNoVeg.value);
     prefs.setDouble('description_fontSize', descriptionFontSize).toString();
@@ -284,10 +272,11 @@ class OrderController extends GetxController {
     showProductDescription.value = prefs.getBool('showProductDescription') ?? true;
     showWegOrNoVeg.value = prefs.getBool('showWegOrNoVeg') ?? true;
     isShowImage.value = prefs.getBool('show_product_image') ?? true;
-    productFontWeight.value = intToFontWeight(prefs.getInt('product_weight')??400);
-    groupFontWeight.value = intToFontWeight(prefs.getInt('group_weight')??400);
-    descriptionFontWeight.value = intToFontWeight(prefs.getInt('description_weight')??400);
-    amountFontWeight.value = intToFontWeight(prefs.getInt('amount_weight')??400);
+    productFontWeight.value = intToFontWeight(prefs.getInt('product_weight') ?? 400);
+    groupFontWeight.value = intToFontWeight(prefs.getInt('group_weight') ?? 400);
+    descriptionFontWeight.value = intToFontWeight(prefs.getInt('description_weight') ?? 400);
+    amountFontWeight.value = intToFontWeight(prefs.getInt('amount_weight') ?? 400);
+    update();
   }
 
   // Method to update selected index
@@ -365,7 +354,7 @@ class OrderController extends GetxController {
   RxBool isInclusive = false.obs;
   RxBool unitPriceEdit = false.obs;
   RxList kartChange = [].obs;
-
+/// commented
   filterList(String query) {
     String query = searchListController.text.toLowerCase();
     if (query.isEmpty) {
@@ -915,7 +904,7 @@ class OrderController extends GetxController {
     orderItemList.insert(0, data);
 
     ///heree adding item to search
-    searchOrderItemList.value = orderItemList;
+  //  searchOrderItemList.value = orderItemList;
 
     update();
     totalAmount();
@@ -1210,15 +1199,24 @@ class OrderController extends GetxController {
   }
 
   deleteOrderItem({required int index}) {
+    pr("index  $index");
+    pr("orderItemList  $orderItemList");
+
     try {
       var dictionary = {
         "unq_id": orderItemList[index]["unq_id"],
       };
+      pr("dictionary  $dictionary");
+
       if (orderItemList[index]["detailID"] == 0) {
+        pr("it 0");
         deletedList.add(dictionary);
       }
       orderItemList.removeAt(index);
-      totalAmount();
+//      searchOrderItemList.removeAt(index);
+      pr("orderItemList  ${orderItemList.length}");
+      pr("orderItemList  $orderItemList");
+    totalAmount();
       update();
     } catch (e) {
       print("---------${e.toString()}");
@@ -1310,25 +1308,22 @@ class OrderController extends GetxController {
       await getOrderDetails(uID: uUID);
     }
 
-    if(synMethod.value){
+    if (synMethod.value) {
       await loadLocalData();
-    }
-    else{
+    } else {
       await getCategoryListDetail(sectionType);
     }
-
   }
 
-
-  loadLocalData( )async{
-    var savedData = await  loadSavedData("productGroupData");
+  loadLocalData() async {
+    var savedData = await loadSavedData("productGroupData");
     groupList.clear();
     for (Map user in savedData) {
       groupList.add(GroupListModelClass.fromJson(user));
     }
     print("..........2");
 
-    tokenNumber.value =  "100";
+    tokenNumber.value = "100";
     groupIsLoading.value = false;
     update();
     if (groupList.isNotEmpty) {
@@ -1467,7 +1462,6 @@ class OrderController extends GetxController {
     }
   }
 
-
   /// function for checking any item for 0 amount
   checkNonRatableItem() {
     bool returnVal = true;
@@ -1545,9 +1539,9 @@ class OrderController extends GetxController {
           }
 
           orderItemList.clear();
-          searchOrderItemList.clear();
+       //   searchOrderItemList.clear();
           orderItemList.value = responseJson["SalesOrderDetails"];
-          searchOrderItemList.value = responseJson["SalesOrderDetails"];
+     //     searchOrderItemList.value = responseJson["SalesOrderDetails"];
 
           update();
           totalAmount();
@@ -1692,8 +1686,7 @@ class OrderController extends GetxController {
       if (sectionType == "Edit") {
         url = '$baseUrl/posholds/edit/pos-sales-order/$orderID/';
       }
-      pr(
-          "--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $orderItemList");
+      pr("--------------------------printAfterOrder    --------------------------printAfterOrder   --------------------------   $orderItemList");
 
       Map data = {
         "Table": tableID,
@@ -1782,11 +1775,6 @@ class OrderController extends GetxController {
           var kot = prefs.getBool("KOT") ?? false;
           if (kot == true) {
             posController.printKOT(cancelList: cancelPrint, isUpdate: sectionType == "Edit" ? true : false, orderID: n["OrderID"], rePrint: false);
-
-            /// commented kot print
-            // PrintDataDetails.type = "SO";
-            // PrintDataDetails.id = id;
-            // printKOT(id, false, [], false);
           } else {}
         });
       } else if (status == 6001) {
@@ -2085,7 +2073,6 @@ class OrderController extends GetxController {
     groupList.insert(newIndex, item);
   }
 
-
   /// save local
   Future<void> fetchAndSaveProductGroupData() async {
     String baseUrl = BaseUrl.baseUrl;
@@ -2103,10 +2090,9 @@ class OrderController extends GetxController {
     print(url);
     Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID, "is_used_group": true};
 
-
     final Map<String, String> headers = {
       "Content-Type": "application/json",
-      'Authorization': 'Bearer $accessToken',// Replace with your token
+      'Authorization': 'Bearer $accessToken', // Replace with your token
     };
 
     try {
@@ -2119,7 +2105,6 @@ class OrderController extends GetxController {
 
       print(response.body);
       if (response.statusCode == 200) {
-
         // If the server returns an OK response, parse the JSON
         final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['data'];
         // Save data locally using shared_preferences
@@ -2134,7 +2119,8 @@ class OrderController extends GetxController {
       print('Error occurred while fetching data: $error');
     }
   }
- fetchAndSaveProductData(groupID) async {
+
+  fetchAndSaveProductData(groupID) async {
     String baseUrl = BaseUrl.baseUrl;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var companyID = prefs.getString('companyID') ?? "0";
@@ -2148,17 +2134,11 @@ class OrderController extends GetxController {
     var priceRounding = BaseUrl.priceRounding;
     final String url = '$baseUrl/posholds/pos-product-list/';
     print(url);
-    Map data = {
-      "CompanyID": companyID,
-      "BranchID": branchID,
-      "GroupID": groupID,
-      "type": "",
-      "PriceRounding": priceRounding
-    };
+    Map data = {"CompanyID": companyID, "BranchID": branchID, "GroupID": groupID, "type": "", "PriceRounding": priceRounding};
     print(data);
     final Map<String, String> headers = {
       "Content-Type": "application/json",
-      'Authorization': 'Bearer $accessToken',// Replace with your token
+      'Authorization': 'Bearer $accessToken', // Replace with your token
     };
 
     try {
@@ -2181,8 +2161,7 @@ class OrderController extends GetxController {
     }
   }
 
-  saveAllProduct(productList)async{
-
+  saveAllProduct(productList) async {
     // final List<dynamic> data = jsonDecode(response.body)['data'];
     //
     // // Save data locally using shared_preferences
@@ -2190,14 +2169,13 @@ class OrderController extends GetxController {
     // await prefs.setString('productGroupData', jsonEncode(data));
     //
 
-    var data = {"data":productList};
+    var data = {"data": productList};
     String allProductsJson = jsonEncode(data);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('productData', allProductsJson);
   }
 
-
-   loadSavedData(value) async {
+  loadSavedData(value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? allProductsJson = prefs.getString(value);
 
@@ -2232,7 +2210,7 @@ class OrderController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       pr("--/-*/-*-**-/-*/-/-*/-*/-*/-*/-*/");
-      var filteredProducts =await  filterProductsByGroupId(groupID);
+      var filteredProducts = await filterProductsByGroupId(groupID);
       user_name.value = prefs.getString('user_name')!;
       autoFocusField.value = prefs.getBool('autoFocusField') ?? false;
       var status = 6000;
@@ -2252,25 +2230,26 @@ class OrderController extends GetxController {
         // dialogBox(context, msg);
       }
       //DB Error
-
     } catch (e) {
       productIsLoading.value = false;
       pr("-----------------------${e.toString()}");
       // Handle error
     }
   }
-   filterProductsByGroupId(int groupId)async {
-     var savedData = await  loadSavedData("productData");
-     var productList = savedData["data"];
-     var data = productList.where((product) => product['ProductGroupID'] == groupId).toList();
-     return data;
+
+  filterProductsByGroupId(int groupId) async {
+    var savedData = await loadSavedData("productData");
+    var productList = savedData["data"];
+    var data = productList.where((product) => product['ProductGroupID'] == groupId).toList();
+    return data;
   }
+
   Future<void> getProductListDetailSearchLocal(searchKey) async {
     try {
       productIsLoading.value = true;
       String baseUrl = BaseUrl.baseUrl;
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var filteredProducts =await searchProductsByKeyword(searchKey);
+      var filteredProducts = await searchProductsByKeyword(searchKey);
       user_name.value = prefs.getString('user_name')!;
       autoFocusField.value = prefs.getBool('autoFocusField') ?? false;
       var status = 6000;
@@ -2290,7 +2269,6 @@ class OrderController extends GetxController {
         // dialogBox(context, msg);
       }
       //DB Error
-
     } catch (e) {
       productIsLoading.value = false;
       pr("-----------------------${e.toString()}");
@@ -2298,13 +2276,12 @@ class OrderController extends GetxController {
     }
   }
 
-  searchProductsByKeyword(String keyword)async {
+  searchProductsByKeyword(String keyword) async {
     // Ensure the list is not null and perform the search
-    var data = await  loadSavedData("productData");
+    var data = await loadSavedData("productData");
     var savedData = data["data"];
     if (savedData != null && savedData.isNotEmpty) {
-
-      try{
+      try {
         var searchResults = savedData.where((product) {
           final productName = (product['ProductName'] ?? '').toLowerCase();
           final description = (product['Description'] ?? '').toLowerCase();
@@ -2316,16 +2293,12 @@ class OrderController extends GetxController {
 
         pr("Search Results: $searchResults");
         return searchResults;
-      }
-      catch(e){
+      } catch (e) {
         pr("Search Results: ${e.toString()}");
       }
-
     } else {
       print("Group list is empty or null.");
       return []; // Return an empty list if the group list is null or empty
     }
   }
-
-
 }

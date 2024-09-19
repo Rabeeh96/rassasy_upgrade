@@ -1,15 +1,23 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_pro_barcode_scanner/flutter_pro_barcode_scanner.dart';
 class BarcodeScannerClass {
   static Future<String?> scanBarcode(BuildContext context) async {
     try {
-      String result = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666', // background color
-        'Cancel', // cancel button text
-        true, // show flash icon
-        ScanMode.BARCODE, // scan mode (you can change this to QR code if needed)
-      );
+
+      String result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const ScannerScreen()));
+      print(result);
+
+      // String result = await FlutterBarcodeScanner.scanBarcode(
+      //   '#ff6666', // background color
+      //   'Cancel', // cancel button text
+      //   true, // show flash icon
+      //   ScanMode.BARCODE, // scan mode (you can change this to QR code if needed)
+      // );
 
       if (result == '-1') {
         // User pressed the back button or canceled the scan

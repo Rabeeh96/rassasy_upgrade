@@ -17,6 +17,7 @@ import 'new_design/organization/list_organization.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+
 ///code commented here
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -48,11 +49,11 @@ import 'package:http/http.dart' as http;
 //   }
 // }
 
-
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'test/loc/View/group.dart';
-void main()async {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
     doWhenWindowReady(() {
@@ -64,18 +65,16 @@ void main()async {
     });
   }
 
-
   SharedPreferences.getInstance().then((prefs) {
-
-     // bool isTablet = true;
-      bool isTablet = prefs.getBool('isTablet')??isTabletDevice();
-     enableTabDesign=isTablet;
-     prefs.setBool('isTablet',isTablet); // Save isTablet value to SharedPreferences
-     print("main isTablet: $isTablet");
+    // bool isTablet = true;
+    bool isTablet = prefs.getBool('isTablet') ?? isTabletDevice();
+    enableTabDesign = isTablet;
+    prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
+    print("main isTablet: $isTablet");
 
     SystemChrome.setPreferredOrientations([
-       isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
-       isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
+      isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
+      isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
     ]).then((_) {
       runApp(MyApp(isTablet: isTablet));
     });
@@ -83,7 +82,6 @@ void main()async {
 }
 
 bool isTabletDevice() {
-
   /// Determine if the device is a tablet based on the screen width
   double screenWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
   print("--screenWidth  $screenWidth   ---------  defaultScreenWidth   $defaultScreenWidth");
@@ -92,14 +90,10 @@ bool isTabletDevice() {
   return screenWidth > defaultScreenWidth;
 }
 
-
-
 class MyApp extends StatelessWidget {
   final bool isTablet;
 
   MyApp({required this.isTablet});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -149,14 +143,13 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () {
-     navigateUser();
+      navigateUser();
     });
   }
 
@@ -176,71 +169,38 @@ class _MyHomePageState extends State<MyHomePage> {
     print(companySelected);
     if (status) {
       if (companySelected) {
-        await defaultData(context: context,);
+        await defaultData(
+          context: context,
+        );
         var expireDate = prefs.getString('expiryDate') ?? '';
         var companyName = prefs.getString('companyName') ?? '';
-
-
         var expire = isDateExpired(expireDate);
-
         if (expire == true) {
           prefs.setBool('companySelected', false);
           await dialogBox(context, "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
-/// commented
           if (isTablet) {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+            Get.off(OrganizationList());
           } else {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+            Get.off(MobOrganizationList());
           }
-
-         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
         } else {
-       //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => ProductGrpPage()));
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
-
-          /// pos user commented
-
-          // if(isPosUser){
-          //   if(selectPos){
-          //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => POSListItemsSection()));
-          //   }
-          //   else{
-          //     //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => RassassyScreen()));
-          //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => EnterPinNumber()));
-          //   }
-          //
-          // }
-          // else{
-          //   Navigator.pushReplacement(context, MaterialPageRoute(builder:(BuildContext context) => DashboardNew()));
-          // }
+          Get.off(const EnterPinNumber());
         }
       } else {
-
-
-        /// commented
-
         if (isTablet) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OrganizationList()));
+          Get.off(OrganizationList());
         } else {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MobOrganizationList()));
+          Get.off(MobOrganizationList());
         }
-
-        // Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => OrganizationList()));
       }
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPageNew()));
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
+      Get.off(LoginPageNew());
     }
   }
 
   Future defaultData({context}) async {
-
     final response;
     try {
-
       HttpOverrides.global = MyHttpOverrides();
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -268,11 +228,9 @@ class _MyHomePageState extends State<MyHomePage> {
       Map n = json.decode(response.body);
       log("res ${response.body}");
 
-
       var status = n["StatusCode"];
       var msg = n["message"];
-      if(status ==6000){
-
+      if (status == 6000) {
         var frmDate = n["financial_FromDate"].substring(0, 10);
         var toDate = n["financial_ToDate"].substring(0, 10);
         prefs.setString("financial_FromDate", frmDate);
@@ -281,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
         prefs.setString("CountryName", n["CountryName"]);
         prefs.setString("State", n["State"]);
         prefs.setString("CurrencySymbol", n["CurrencySymbol"]);
-        prefs.setInt("Cash_Account", n["Cash_Account"]??1);
+        prefs.setInt("Cash_Account", n["Cash_Account"] ?? 1);
         var settingsData = n['settingsData'];
         prefs.setBool("checkVat", settingsData["VAT"]);
         prefs.setBool("check_GST", settingsData["GST"]);
@@ -290,37 +248,34 @@ class _MyHomePageState extends State<MyHomePage> {
         prefs.setString("expiryDate", settingsData["ExpiryDate"]);
         prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
         prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
-        prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"]??false);
+        prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
         prefs.setInt("user_type", n["user_type"]);
-      }
-      else{
-        var errorMessage = n["error"]??n["error"]??"";
+      } else {
+        var errorMessage = n["error"] ?? n["error"] ?? "";
         dialogBox(context, errorMessage.toString());
       }
-
     } catch (e) {
-
       print(e.toString());
-
 
       dialogBox(context, e.toString());
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/svg/Logo.svg'),
-              Text(
-                appVersion,
-                style: customisedStyle(context, Colors.grey, FontWeight.w500, 19.0),
-              ),
-            ],
-          )),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset('assets/svg/Logo.svg'),
+          Text(
+            appVersion,
+            style: customisedStyle(context, Colors.grey, FontWeight.w500, 19.0),
+          ),
+        ],
+      )),
     );
   }
 }

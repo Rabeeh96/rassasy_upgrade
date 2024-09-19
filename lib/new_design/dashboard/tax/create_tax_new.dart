@@ -222,7 +222,7 @@ class _AddTaxState extends State<AddTax> {
                 height: MediaQuery.of(context).size.height / 1.2,
                 child: searchTaxList.isNotEmpty || controller.text.isNotEmpty
                     ? searchTaxList.isEmpty
-                        ? const NoItemFound()
+                        ? const Text("No Data")
                         : ListView.builder(
                             shrinkWrap: true,
                             itemCount: searchTaxList.length,
@@ -317,7 +317,7 @@ class _AddTaxState extends State<AddTax> {
                               );
                             })
                     : taxLists.isEmpty
-                        ? const NoData()
+                        ?    const Text("No Data")
                         : ListView.builder(
                             scrollDirection: Axis.vertical,
                             physics: const AlwaysScrollableScrollPhysics(),
