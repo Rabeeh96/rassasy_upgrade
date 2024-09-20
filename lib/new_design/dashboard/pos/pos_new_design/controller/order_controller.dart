@@ -371,8 +371,10 @@ class OrderController extends GetxController {
   }
 
   changeStatus(status) {
+
+    print("kart   chnagees ----- ${kartChange}");
     for (var i = 0; i < kartChange.length; i++) {
-      orderItemList[i]["Status"] = status;
+      orderItemList[kartChange[i]]["Status"] = status;
     }
     kartChange.clear();
     orderItemList.refresh();
@@ -1306,15 +1308,18 @@ class OrderController extends GetxController {
     isComplimentary.value = prefs.getBool("complimentary_bill") ?? false;
     quantityIncrement.value = prefs.getBool("qtyIncrement") ?? false;
 
-    if (sectionType == "Edit") {
-      await getOrderDetails(uID: uUID);
-    }
+
 
     if (synMethod.value) {
       await loadLocalData();
     } else {
       await getCategoryListDetail(sectionType);
     }
+
+    if (sectionType == "Edit") {
+      await getOrderDetails(uID: uUID);
+    }
+
   }
 
   loadLocalData() async {
@@ -1763,6 +1768,8 @@ class OrderController extends GetxController {
         stop();
         var id = n["OrderID"];
 
+
+        print("-------isPayment----isPayment-----------$isPayment");
         Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
 
         if (printAfterOrder) {

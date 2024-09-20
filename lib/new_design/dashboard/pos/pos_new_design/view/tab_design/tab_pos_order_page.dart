@@ -2273,7 +2273,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   TextButton(
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
                       onPressed: () {
-                        Get.back();
+                        orderController.detailPage.value = 'item_add';
+                        orderController.update();
                       },
                       child: Row(
                         children: [

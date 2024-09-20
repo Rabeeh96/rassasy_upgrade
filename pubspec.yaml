@@ -266,10 +266,18 @@ flutter:
     - assets/svg/convert.svg
     - assets/svg/Edit_Icon.svg
     - assets/png/EmptyCompany.png
+    - assets/png/print_bottom.png
     - assets/png/Edit_Icon_png.png
     - assets/svg/dine.svg
     - assets/svg/takeout_dining.svg
+    - assets/png/printer_bottom_icon.png
+    - assets/png/printer_icon_bottom_icon.png
     - assets/svg/smartphone.svg
+    - assets/svg/printer_icon_menu.svg
+    - assets/svg/cancel_bottom_menu.svg
+    - assets/svg/kot_bottom_menu.svg
+    - assets/svg/pay_bottom_menu.svg
+    - assets/svg/edit_bottom_menu.svg
     - assets/svg/car_img.svg
     - assets/svg/Vector.svg
     - assets/svg/online_img.svg
