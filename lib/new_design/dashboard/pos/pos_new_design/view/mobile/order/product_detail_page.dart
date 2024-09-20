@@ -39,6 +39,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     orderController.flavourList.clear();
     await orderController.getAllFlavours();
     orderController.productName.value = orderController.orderItemList[widget.index]["ProductName"];
+    orderController.productDescription.value = orderController.orderItemList[widget.index]["Description"];
     orderController.item_status.value = orderController.orderItemList[widget.index]["Status"];
     orderController.unitName.value = orderController.orderItemList[widget.index]["UnitName"];
     orderController.quantity.value = double.parse(orderController.orderItemList[widget.index]["Qty"].toString());

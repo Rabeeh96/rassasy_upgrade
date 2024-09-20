@@ -307,11 +307,12 @@ class _SearchItemsState extends State<SearchItems> {
                                   orderController.inclusiveUnitPriceAmountWR.value = orderController.searchProductList[index].defaultSalesPrice;
                                   orderController.vatPer.value = double.parse(orderController.searchProductList[index].vatsSalesTax);
                                   orderController.gstPer.value = double.parse(orderController.searchProductList[index].gSTSalesTax);
-
+                                  orderController.productDescription.value = orderController.searchProductList[index].description;
                                   orderController.priceListID.value = orderController.searchProductList[index].defaultUnitID;
                                   orderController.productName.value = orderController.searchProductList[index].productName;
                                   orderController.item_status.value = "pending";
                                   orderController.unitName.value = orderController.searchProductList[index].defaultUnitName;
+
 
                                   var taxDetails = orderController.searchProductList[index].taxDetails;
                                   if (taxDetails != "") {

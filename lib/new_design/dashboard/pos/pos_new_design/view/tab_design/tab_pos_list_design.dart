@@ -59,7 +59,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+      textScaler: const TextScaler.linear(1.0),
+    ),
+    child:  Scaffold(
       appBar: AppBar(
         centerTitle: false,
         leading: IconButton(
@@ -471,7 +476,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   void _handleMenuSelection(String value) {
@@ -588,15 +593,15 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   print("----salesMasterID--${posController.tableData[index].salesMasterID!}");
 
 
-                                  bottom();
-                                  // showCustomDialog(
-                                  //     context: context,
-                                  //     status: posController.tableData[index].status!,
-                                  //     salesOrderID: posController.tableData[index].salesOrderID!,
-                                  //     orderID: posController.tableData[index].id!,
-                                  //     salesMasterID: posController.tableData[index].salesMasterID!,
-                                  //     orderType: 'dine',
-                                  //     orderTypeID: 1);
+                                  //bottom();
+                                  showCustomDialog(
+                                      context: context,
+                                      status: posController.tableData[index].status!,
+                                      salesOrderID: posController.tableData[index].salesOrderID!,
+                                      orderID: posController.tableData[index].id!,
+                                      salesMasterID: posController.tableData[index].salesMasterID!,
+                                      orderType: 'dine',
+                                      orderTypeID: 1);
                                 }
                               },
                               child: Container(

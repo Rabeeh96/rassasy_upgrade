@@ -58,7 +58,12 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: const TextScaler.linear(1.0),
+        ),
+    child:  Scaffold(
       backgroundColor: const Color(0xffFDFDFD),
       appBar: AppBar(
         centerTitle: false,
@@ -447,6 +452,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
 
                                           orderController.priceListID.value = orderController.productList[index].defaultUnitID;
                                           orderController.productName.value = orderController.productList[index].productName;
+                                          orderController.productDescription.value = orderController.productList[index].description;
                                           orderController.item_status.value = "pending";
                                           orderController.unitName.value = orderController.productList[index].defaultUnitName;
 
@@ -619,7 +625,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               ),
             ),
             //here we need condition
-
+/// item details
             Flexible(
                 flex: 6,
                 child: SizedBox(
@@ -639,6 +645,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
           ],
         ),
       ),
+    )
     );
   }
 
@@ -648,6 +655,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
     orderController.flavourList.clear();
     await orderController.getAllFlavours();
     orderController.productName.value = orderController.orderItemList[orderController.indexDetail]["ProductName"];
+    orderController.productDescription.value = orderController.orderItemList[orderController.indexDetail]["Description"];
     orderController.item_status.value = orderController.orderItemList[orderController.indexDetail]["Status"];
     orderController.unitName.value = orderController.orderItemList[orderController.indexDetail]["UnitName"];
     orderController.quantity.value = double.parse(orderController.orderItemList[orderController.indexDetail]["Qty"].toString());
@@ -2034,7 +2042,9 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  /// image commented
                   Container(
+                    // color:Colors.red,
                     height: MediaQuery.of(context).size.height / 11,
                     width: MediaQuery.of(context).size.width / 17,
                     child: CircleAvatar(child: SvgPicture.asset("assets/svg/no_image.svg")),
@@ -2043,15 +2053,40 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0, top: 8),
                     child: Container(
+                      // color:Colors.red,
                       width: MediaQuery.of(context).size.width * 0.19,
-                      child: Text(
-                        orderController.productNameDetail,
-                        style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                      child: Column(
+                     //   mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            orderController.productNameDetail,
+                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          orderController.productDescription.value !=""?Text(
+                            orderController.productDescription.value,
+                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                            maxLines: 5,
+                            overflow: TextOverflow.ellipsis,
+                          ):Container(),
+                        ],
                       ),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 8.0, top: 8),
+                  //   child: Container(
+                  //     width: MediaQuery.of(context).size.width * 0.19,
+                  //     child: Text(
+                  //       orderController.productNameDetail,
+                  //       style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                  //       maxLines: 3,
+                  //       overflow: TextOverflow.ellipsis,
+                  //     ),
+                  //   ),
+                  // ),
                   SvgPicture.asset(
                     "assets/svg/veg_mob.svg",
                     //       color: widget.isColor == true ? const Color(0xff00775E) : const Color(0xffDF1515),
@@ -2258,7 +2293,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   TextButton(
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
                       onPressed: () {
-                        print("gdhsfjsdgfjdsf");
 
                         orderController.addItemToList(index: orderController.indexDetail);
                         orderController.detailPage.value = 'item_add';
@@ -2397,13 +2431,17 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                     ],
                                   ),
                                   orderController.orderItemList[index]["Description"] != ""
-                                      ? Padding(
-                                          padding: const EdgeInsets.only(left: 20.0, right: 5),
-                                          child: Text(
-                                            orderController.orderItemList[index]["Description"],
-                                            style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
+                                      ? ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                        maxWidth: 160, minWidth: 10),
+                                        child: Padding(
+                                            padding: const EdgeInsets.only(left: 10.0, right: 5),
+                                            child: Text(
+                                              orderController.orderItemList[index]["Description"],
+                                              style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 12.0),
+                                            ),
                                           ),
-                                        )
+                                      )
                                       : Container(),
                                   Obx(
                                     () => Padding(
