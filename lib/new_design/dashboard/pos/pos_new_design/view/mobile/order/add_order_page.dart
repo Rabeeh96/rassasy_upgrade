@@ -432,7 +432,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                                                   orderController.productName.value = orderController.productList[index].productName;
                                                                   orderController.item_status.value = "pending";
                                                                   orderController.unitName.value = orderController.productList[index].defaultUnitName;
-
+                                                                  orderController.productDescription.value = orderController.productList[index].description;
                                                                   var taxDetails = orderController.productList[index].taxDetails;
                                                                   if (taxDetails != "") {
                                                                     orderController.productTaxID.value = taxDetails["TaxID"];
@@ -560,6 +560,8 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                                                 orderController.productTaxID.value = taxDetails["TaxID"];
                                                                 orderController.productTaxName.value = taxDetails["TaxName"];
                                                               }
+
+                                                              orderController.productDescription.value = orderController.productList[index].description;
 
                                                               orderController.detailID.value = 1;
                                                               orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;

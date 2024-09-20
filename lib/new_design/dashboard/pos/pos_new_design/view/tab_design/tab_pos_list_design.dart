@@ -59,7 +59,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+      textScaler: const TextScaler.linear(1.0),
+    ),
+    child:  Scaffold(
       appBar: AppBar(
         centerTitle: false,
         leading: IconButton(
@@ -157,6 +162,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               alignment: Alignment.center,
                                               child: GestureDetector(
                                                 onTap: () async {
+
                                                   var result = await Get.to(TabPosOrderPage(
                                                     orderType: 3,
                                                     sectionType: "Create",
@@ -166,9 +172,42 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                     tableID: "",
                                                   ));
 
-                                                  posController.onlineOrders.clear();
-                                                  posController.fetchAllData();
-                                                  posController.update();
+                                                  if (result != null) {
+                                                    if (result[1]) {
+                                                      var resultPayment = await Get.to(TabPaymentSection(
+                                                        uID: result[2],
+                                                        tableID: '',
+                                                        orderType: 3,
+                                                        type: '',
+                                                      ));
+                                                      posController.onlineOrders.clear();
+                                                      posController.fetchAllData();
+                                                      posController.update();
+                                                    } else {
+                                                      posController.onlineOrders.clear();
+                                                      posController.fetchAllData();
+                                                      posController.update();
+                                                    }
+                                                  } else {
+                                                    posController.onlineOrders.clear();
+                                                    posController.fetchAllData();
+                                                    posController.update();
+                                                  }
+
+
+                                                  //
+                                                  // var result = await Get.to(TabPosOrderPage(
+                                                  //   orderType: 3,
+                                                  //   sectionType: "Create",
+                                                  //   uID: "",
+                                                  //   tableHead: "Order",
+                                                  //   cancelOrder: posController.cancelOrder,
+                                                  //   tableID: "",
+                                                  // ));
+                                                  //
+                                                  // posController.onlineOrders.clear();
+                                                  // posController.fetchAllData();
+                                                  // posController.update();
 
                                                   // Handle add orders or other actions
                                                 },
@@ -237,11 +276,28 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                     tableID: "",
                                                   ));
 
-                                                  posController.onlineOrders.clear();
-                                                  posController.fetchAllData();
-                                                  posController.update();
+                                                  if (result != null) {
+                                                    if (result[1]) {
+                                                      var resultPayment = await Get.to(TabPaymentSection(
+                                                        uID: result[2],
+                                                        tableID: '',
+                                                        orderType: 3,
+                                                        type: '',
+                                                      ));
+                                                      posController.onlineOrders.clear();
+                                                      posController.fetchAllData();
+                                                      posController.update();
+                                                    } else {
+                                                      posController.onlineOrders.clear();
+                                                      posController.fetchAllData();
+                                                      posController.update();
+                                                    }
+                                                  } else {
+                                                    posController.onlineOrders.clear();
+                                                    posController.fetchAllData();
+                                                    posController.update();
+                                                  }
 
-                                                  // Handle add orders or other actions
                                                 },
                                                 child: const Center(
                                                   child: Column(
@@ -286,6 +342,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                             child: GestureDetector(
                                                 onTap: () {
                                                   controller.selectItem(index);
+
 
                                                   showCustomDialog(
                                                       context: context,
@@ -471,7 +528,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   void _handleMenuSelection(String value) {
@@ -588,15 +645,15 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   print("----salesMasterID--${posController.tableData[index].salesMasterID!}");
 
 
-                                  bottom();
-                                  // showCustomDialog(
-                                  //     context: context,
-                                  //     status: posController.tableData[index].status!,
-                                  //     salesOrderID: posController.tableData[index].salesOrderID!,
-                                  //     orderID: posController.tableData[index].id!,
-                                  //     salesMasterID: posController.tableData[index].salesMasterID!,
-                                  //     orderType: 'dine',
-                                  //     orderTypeID: 1);
+
+                                  showCustomDialog(
+                                      context: context,
+                                      status: posController.tableData[index].status!,
+                                      salesOrderID: posController.tableData[index].salesOrderID!,
+                                      orderID: posController.tableData[index].id!,
+                                      salesMasterID: posController.tableData[index].salesMasterID!,
+                                      orderType: 'dine',
+                                      orderTypeID: 1);
                                 }
                               },
                               child: Container(
@@ -751,18 +808,65 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                     alignment: Alignment.center,
                                     child: GestureDetector(
                                       onTap: () async {
-                                        var result = await Get.to(TabPosOrderPage(
-                                          orderType: 2,
-                                          sectionType: "Create",
-                                          uID: "",
-                                          tableHead: "Order",
-                                          cancelOrder: posController.cancelOrder,
-                                          tableID: "",
-                                        ));
 
-                                        posController.takeAwayOrders.clear();
-                                        posController.fetchAllData();
-                                        posController.update();
+
+
+                                          var result = await Get.to(TabPosOrderPage(
+                                            orderType: 2,
+                                            sectionType: "Create",
+                                            uID: "",
+                                            tableHead: "Order",
+                                            cancelOrder: posController.cancelOrder,
+                                            tableID: "",
+                                          ));
+
+                                          if (result != null) {
+                                            if (result[1]) {
+                                              var resultPayment = await Get.to(TabPaymentSection(
+                                                uID: result[2],
+                                                tableID: '',
+                                                orderType: 2,
+                                                type: '',
+                                              ));
+                                              posController.takeAwayOrders.clear();
+                                              posController.fetchAllData();
+                                              posController.update();
+                                            } else {
+                                              posController.takeAwayOrders.clear();
+                                              posController.fetchAllData();
+                                              posController.update();
+                                            }
+                                          } else {
+                                            posController.takeAwayOrders.clear();
+                                            posController.fetchAllData();
+                                            posController.update();
+                                          }
+
+
+
+
+
+
+                                        // var result = await Get.to(TabPosOrderPage(
+                                        //   orderType: 2,
+                                        //   sectionType: "Create",
+                                        //   uID: "",
+                                        //   tableHead: "Order",
+                                        //   cancelOrder: posController.cancelOrder,
+                                        //   tableID: "",
+                                        // ));
+                                        //
+                                        // posController.takeAwayOrders.clear();
+                                        // posController.fetchAllData();
+                                        // posController.update();
+                                        //
+                                        //
+
+
+
+
+
+
                                       },
                                       child: InkWell(
                                         child: Center(
@@ -828,9 +932,29 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           tableID: "",
                                         ));
 
-                                        posController.takeAwayOrders.clear();
-                                        posController.fetchAllData();
-                                        posController.update();
+                                        if (result != null) {
+                                          if (result[1]) {
+                                            var resultPayment = await Get.to(TabPaymentSection(
+                                              uID: result[2],
+                                              tableID: '',
+                                              orderType: 2,
+                                              type: '',
+                                            ));
+                                            posController.takeAwayOrders.clear();
+                                            posController.fetchAllData();
+                                            posController.update();
+                                          } else {
+                                            posController.takeAwayOrders.clear();
+                                            posController.fetchAllData();
+                                            posController.update();
+                                          }
+                                        } else {
+                                          posController.takeAwayOrders.clear();
+                                          posController.fetchAllData();
+                                          posController.update();
+                                        }
+
+
                                       },
                                       child: InkWell(
                                         child: Center(
@@ -1024,6 +1148,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 alignment: Alignment.center,
                                 child: GestureDetector(
                                   onTap: () async {
+
+
                                     var result = await Get.to(TabPosOrderPage(
                                       orderType: 4,
                                       sectionType: "Create",
@@ -1033,9 +1159,41 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                       tableID: "",
                                     ));
 
-                                    posController.carOrders.clear();
-                                    posController.fetchAllData();
-                                    posController.update();
+                                    if (result != null) {
+                                      if (result[1]) {
+                                        var resultPayment = await Get.to(TabPaymentSection(
+                                          uID: result[2],
+                                          tableID: '',
+                                          orderType: 4,
+                                          type: '',
+                                        ));
+                                        posController.carOrders.clear();
+                                        posController.fetchAllData();
+                                        posController.update();
+                                      } else {
+                                        posController.carOrders.clear();
+                                        posController.fetchAllData();
+                                        posController.update();
+                                      }
+                                    } else {
+                                      posController.carOrders.clear();
+                                      posController.fetchAllData();
+                                      posController.update();
+                                    }
+
+
+                                    // var result = await Get.to(TabPosOrderPage(
+                                    //   orderType: 4,
+                                    //   sectionType: "Create",
+                                    //   uID: "",
+                                    //   tableHead: "Order",
+                                    //   cancelOrder: posController.cancelOrder,
+                                    //   tableID: "",
+                                    // ));
+                                    //
+                                    // posController.carOrders.clear();
+                                    // posController.fetchAllData();
+                                    // posController.update();
 
                                     // Handle add orders or other actions
                                   },
@@ -1095,6 +1253,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 alignment: Alignment.center,
                                 child: GestureDetector(
                                   onTap: () async {
+
+
                                     var result = await Get.to(TabPosOrderPage(
                                       orderType: 4,
                                       sectionType: "Create",
@@ -1104,9 +1264,28 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                       tableID: "",
                                     ));
 
-                                    posController.carOrders.clear();
-                                    posController.fetchAllData();
-                                    posController.update();
+                                    if (result != null) {
+                                      if (result[1]) {
+                                        var resultPayment = await Get.to(TabPaymentSection(
+                                          uID: result[2],
+                                          tableID: '',
+                                          orderType: 4,
+                                          type: '',
+                                        ));
+                                        posController.carOrders.clear();
+                                        posController.fetchAllData();
+                                        posController.update();
+                                      } else {
+                                        posController.carOrders.clear();
+                                        posController.fetchAllData();
+                                        posController.update();
+                                      }
+                                    } else {
+                                      posController.carOrders.clear();
+                                      posController.fetchAllData();
+                                      posController.update();
+                                    }
+
 
                                     // Handle add orders or other actions
                                   },
@@ -1406,7 +1585,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 const Color(
                                     0xFF1E1F4E),
                                 child: SvgPicture.asset(
-                                  './assets/bb.svg',
+                                  'assets/png/image5.png',
                                   width: 30,
                                 ),
                               ),
@@ -1428,7 +1607,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 const Color(
                                     0xFFFC3636),
                                 child: SvgPicture.asset(
-                                  './assets/close.svg',
+                                  'assets/png/image5.png',
                                   width: 30,
                                 ),
                               ),
@@ -1450,7 +1629,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 const Color(
                                     0xFF44B678),
                                 child: SvgPicture.asset(
-                                  './assets/dollar.svg',
+                                  'assets/png/image5.png',
                                   width: 30,
                                 ),
                               ),
@@ -1472,7 +1651,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 const Color(
                                     0xFFA561E8),
                                 child: SvgPicture.asset(
-                                  './assets/KOT.svg',
+                                  'assets/png/image5.png',
                                   width: 30,
                                 ),
                               ),
@@ -1494,7 +1673,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 const Color(
                                     0xFF17A2B8),
                                 child: SvgPicture.asset(
-                                  './assets/edit.svg',
+                                  'assets/png/image5.png',
                                   width: 30,
                                 ),
                               ),
@@ -1527,18 +1706,18 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       barrierDismissible: true,
       // barrierColor: Colors.transparent,
       barrierColor: Colors.grey.withOpacity(0.3),
-      transitionDuration: const Duration(milliseconds: 700),
+      transitionDuration: const Duration(milliseconds: 100),
       context: context,
       pageBuilder: (context, anim1, anim2) {
         return Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: const EdgeInsets.all(25.0),
             child: Container(
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * .4, // Optional: Limit width if needed
               ),
-              height: MediaQuery.of(context).size.height * .16,
+              height: MediaQuery.of(context).size.height * .15,
               decoration: BoxDecoration(
                 color: const Color(0xffffffff),
                 borderRadius: BorderRadius.circular(80),
@@ -1551,12 +1730,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                   children: <Widget>[
                     status == 'Ordered' || status == 'Paid'
                         ? SelectIcon(
-                            assetName: 'assets/png/image.png',
+                          color: Color(0xff1E1F4E),
+                            assetName: 'assets/svg/printer_icon_menu.svg',
                             text: 'Print',
                             type: 'print',
                             onPressed: () {
                               Get.back();
-
                               posController.printSection(
                                   context: context,
                                   id: status == 'Ordered' ? salesOrderID : salesMasterID,
@@ -1567,7 +1746,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         : Container(),
                     status == 'Ordered' && posController.kitchen_print_perm.value
                         ? SelectIcon(
-                            assetName: 'assets/png/image5.png',
+
+                      color: Color(0xffA561E8),
+                            assetName: 'assets/svg/kot_bottom_menu.svg',
                             text: 'KOT',
                             type: 'kot',
                             onPressed: () {
@@ -1593,7 +1774,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         : Container(),
                     status == 'Ordered'
                         ? SelectIcon(
-                            assetName: 'assets/png/image3.png',
+                      color: Color(0xff44B678),
+
+                            assetName: 'assets/svg/pay_bottom_menu.svg',
                             text: 'Pay',
                             type: 'pay',
                             onPressed: () async {
@@ -1620,7 +1803,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         : Container(),
                     status == 'Ordered' || status == 'Paid'
                         ? SelectIcon(
-                            assetName: 'assets/png/image4.png',
+                      color: Color(0xffFC3636),
+
+                            assetName: 'assets/svg/cancel_bottom_menu.svg',
                             text: status == 'Paid' ? 'Clear' : 'Cancel',
                             type: 'cancel',
                             onPressed: () async {
@@ -1686,7 +1871,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         : Container(),
                     status == 'Ordered'
                         ? SelectIcon(
-                            assetName: 'assets/png/image2.png',
+                      color: Color(0xff17A2B8),
+                            assetName: 'assets/svg/edit_bottom_menu.svg',
                             text: 'Edit',
                             type: 'edit',
                             onPressed: () async {
@@ -1889,10 +2075,12 @@ class IconWithText extends StatelessWidget {
 class SelectIcon extends StatelessWidget {
   final String assetName;
   final String text;
+  final Color color;
   final String type; // Type identifier
   final VoidCallback onPressed; // Callback for the press action
 
   SelectIcon({
+    required this.color,
     required this.assetName,
     required this.text,
     required this.type,
@@ -1914,20 +2102,36 @@ class SelectIcon extends StatelessWidget {
             onPressed(); // Execute the onPressed callback
           },
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                assetName,
-                fit: BoxFit.fitWidth,
-                height: MediaQuery.of(context).size.height * .12,
-                width: MediaQuery.of(context).size.width * .060,
-              ),
               Container(
+                width: 70,  // Adjust width as per your need
+                height: 70,  // Adjust height as per your need
+                decoration: BoxDecoration(
+                  color: color,  // Circle color
+                  shape: BoxShape.circle,  // Ensures the container is a circle
+                ),
+                child: SvgPicture.asset(
+                  assetName,
+                  fit: BoxFit.scaleDown, // Adjust BoxFit to your need, such as contain, cover, or fitWidth
+                ),
+              ),
+              // Container(
+              //   color: Colors.red,
+              //   child: Image.asset(
+              //     assetName,
+              //     fit: BoxFit.fitWidth,
+              //     height: MediaQuery.of(context).size.height * .12,
+              //     width: MediaQuery.of(context).size.width * .060,
+              //   ),
+              // ),
+              Container(
+             //   color: Colors.red,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
                   child: Text(
                     text,
-                    style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 11.0),
                   ),
                 ),
               ),

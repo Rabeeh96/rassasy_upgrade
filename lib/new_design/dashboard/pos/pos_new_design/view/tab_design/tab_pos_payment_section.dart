@@ -34,7 +34,11 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: const TextScaler.linear(1.0),
+        ),
+        child:  Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
@@ -137,35 +141,36 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                                                   
                                                     InkWell(
                                                       child: Padding(
-                                                        padding: const EdgeInsets.all(12.0),
+                                                        padding: const EdgeInsets.all(8.0),
                                                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                                           Text(
                                                             'ph_no'.tr,
                                                             style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 16.0),
                                                           ),
-                                                          // Padding(
-                                                          //   padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-                                                          //   child: Container(
-                                                          //     width: MediaQuery.of(context).size.width / 4,
-                                                          //     child: TextField(
-                                                          //       textCapitalization: TextCapitalization.words,
-                                                          //       controller: paymentController.customerPhoneSelection,
-                                                          //       style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                                                          //       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
-                                                          //       keyboardType: TextInputType.phone,
-                                                          //       decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'ph_no'.tr),
-                                                          //     ),
-                                                          //   ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 0),
+                                                            child: Container(
+                                                           //   color:Colors.red,
+                                                              width: MediaQuery.of(context).size.width / 8.5,
+                                                              child:  TextField(
+                                                                textCapitalization: TextCapitalization.words,
+                                                                controller: paymentController.customerPhoneSelection,
+                                                                style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                                                                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+                                                                keyboardType: TextInputType.phone,
+                                                                decoration: InputDecoration(
+                                                                  border: InputBorder.none, // Remove the border
+                                                                  hintText: '',             // Remove the hint text
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          // Text(
+                                                          //   paymentController.customerPhoneSelection.text ?? "",
+                                                          //   style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
                                                           // ),
-                                                          Text(
-                                                            paymentController.customerPhoneSelection.text ?? "",
-                                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                                          ),
 
-                                                          Text(
-                                                            "",
-                                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.0),
-                                                          ),
+
                                                           // const Icon(
                                                           //   Icons.arrow_forward_ios,
                                                           //   color: Colors.black,
@@ -1202,6 +1207,6 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
           ],
         ),
       ),
-    );
+    ));
   }
 }

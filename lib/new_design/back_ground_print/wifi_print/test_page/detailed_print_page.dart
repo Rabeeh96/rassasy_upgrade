@@ -1387,9 +1387,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
             codePage.add(supportedCodePages[ind].name);
           }
 
-
           /// cpmmented upi
-
           // var upiID = "8714152075@ybl";
           // var name = "Rabeeh";
           // var amount = "1";

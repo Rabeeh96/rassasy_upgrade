@@ -371,8 +371,10 @@ class OrderController extends GetxController {
   }
 
   changeStatus(status) {
+
+    print("kart   chnagees ----- ${kartChange}");
     for (var i = 0; i < kartChange.length; i++) {
-      orderItemList[i]["Status"] = status;
+      orderItemList[kartChange[i]]["Status"] = status;
     }
     kartChange.clear();
     orderItemList.refresh();
@@ -402,6 +404,7 @@ class OrderController extends GetxController {
   RxInt exciseTaxID = 0.obs;
   RxInt detailIdEdit = 0.obs;
   RxString exciseTaxName = "".obs;
+  RxString productDescription = "".obs;
   RxString BPValue = "".obs;
   RxString exciseTaxBefore = "".obs;
   RxBool isAmountTaxBefore = false.obs;
@@ -603,7 +606,7 @@ class OrderController extends GetxController {
       "is_inclusive": isInclusive.value,
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
       "TotalTaxRounded": "${totalTax.value}",
-      "Description": "",
+      "Description": productDescription.value,
       "ExciseTaxID": exciseTaxID.value,
       "ExciseTaxName": exciseTaxName.value,
       "BPValue": BPValue.value,
@@ -879,7 +882,7 @@ class OrderController extends GetxController {
       "netAmountRounded": roundStringWith(netAmount.value.toString()),
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
       "TotalTaxRounded": roundStringWith(totalTax.value.toString()),
-      "Description": "",
+      "Description": productDescription.value,
       "ExciseTaxID": exciseTaxID.value,
       "ExciseTaxName": exciseTaxName.value,
       "BPValue": BPValue.value,
@@ -1059,6 +1062,7 @@ class OrderController extends GetxController {
 
     Map data = {
       "ProductName": productName.value,
+      "Description": productDescription.value,
       "Status": item_status.value,
       "UnitName": unitName.value,
       "Qty": "${quantity.value}",
@@ -1304,15 +1308,18 @@ class OrderController extends GetxController {
     isComplimentary.value = prefs.getBool("complimentary_bill") ?? false;
     quantityIncrement.value = prefs.getBool("qtyIncrement") ?? false;
 
-    if (sectionType == "Edit") {
-      await getOrderDetails(uID: uUID);
-    }
+
 
     if (synMethod.value) {
       await loadLocalData();
     } else {
       await getCategoryListDetail(sectionType);
     }
+
+    if (sectionType == "Edit") {
+      await getOrderDetails(uID: uUID);
+    }
+
   }
 
   loadLocalData() async {
@@ -1321,8 +1328,6 @@ class OrderController extends GetxController {
     for (Map user in savedData) {
       groupList.add(GroupListModelClass.fromJson(user));
     }
-    print("..........2");
-
     tokenNumber.value = "100";
     groupIsLoading.value = false;
     update();
@@ -1763,6 +1768,8 @@ class OrderController extends GetxController {
         stop();
         var id = n["OrderID"];
 
+
+        print("-------isPayment----isPayment-----------$isPayment");
         Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
 
         if (printAfterOrder) {
