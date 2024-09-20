@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import '../model/product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
