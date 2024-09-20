@@ -305,7 +305,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
       printer.feed(1);
       var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
           BluetoothPrintThermalDetails.grandTotal, BluetoothPrintThermalDetails.totalTax);
-      printer.qrcode(qrCode, size: QRSize.Size5);
+      printer.qrcode(qrCode, size: QRSize.size5);
     }
 
     printer.emptyLines(1);

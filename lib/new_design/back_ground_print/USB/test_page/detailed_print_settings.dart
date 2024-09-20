@@ -13,7 +13,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 class TestPrintUSBDetailed extends StatefulWidget {
   const TestPrintUSBDetailed({super.key});
-
   @override
   State<TestPrintUSBDetailed> createState() => _TestPrintUSBState();
 }
@@ -33,7 +32,6 @@ class _TestPrintUSBState extends State<TestPrintUSBDetailed> {
     String defaultIp =  prefs.getString('defaultIP')??'';
     controllerName.text = defaultIp;
     _profile = CapabilityProfile.load();
-
 
   }
   TextEditingController code_page_controller = TextEditingController()..text = "CP864";

@@ -1292,7 +1292,7 @@ if(showCustomerName){
           isoDate,
           BluetoothPrintThermalDetails.grandTotal,
           BluetoothPrintThermalDetails.totalTax);
-      printer.qrcode(qrCode, size: QRSize.Size5);
+      printer.qrcode(qrCode, size: QRSize.size5);
     }
 
     printer.cut();

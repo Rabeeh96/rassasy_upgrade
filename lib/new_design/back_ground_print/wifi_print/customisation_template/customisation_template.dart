@@ -281,7 +281,7 @@ class WifiPrintClassTest {
 
       if (needQR) {
         printer.feed(1);
-        printer.qrcode(qrCode, size: QRSize.Size5);
+        printer.qrcode(qrCode, size: QRSize.size5);
       }
       printer.cut();
 
