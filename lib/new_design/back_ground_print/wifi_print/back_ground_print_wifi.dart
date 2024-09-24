@@ -792,21 +792,21 @@ if(showCustomerName){
           text: 'Name    ',
           width: 3,
           styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
+              height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
       PosColumn(
           textEncoded: customerEnc,
           width: 3,
           styles: const PosStyles(
               height: PosTextSize.size1,
               width: PosTextSize.size1,
-              align: PosAlign.right)),
+              align: PosAlign.right,bold: true)),
       PosColumn(
           textEncoded: customerNameEnc,
           width: 6,
           styles: const PosStyles(
               height: PosTextSize.size1,
               width: PosTextSize.size1,
-              align: PosAlign.right)),
+              align: PosAlign.right,bold: true)),
     ]);
   }
 
@@ -824,21 +824,21 @@ if(showCustomerName){
             text: 'Phone    ',
             width: 3,
             styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
+                height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
         PosColumn(
             textEncoded: phoneEnc,
             width: 3,
             styles: const PosStyles(
                 height: PosTextSize.size1,
                 width: PosTextSize.size1,
-                align: PosAlign.right)),
+                align: PosAlign.right,bold: true)),
         PosColumn(
             textEncoded: phoneNoEncoded,
             width: 6,
             styles: const PosStyles(
                 height: PosTextSize.size1,
                 width: PosTextSize.size1,
-                align: PosAlign.right)),
+                align: PosAlign.right,bold: true)),
       ]);
     }
   }
@@ -849,21 +849,21 @@ if(showCustomerName){
           text: 'Order type    ',
           width: 3,
           styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
+              height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
       PosColumn(
           textEncoded: typeEnc,
           width: 3,
           styles: const PosStyles(
               height: PosTextSize.size1,
               width: PosTextSize.size1,
-              align: PosAlign.right)),
+              align: PosAlign.right,bold: true)),
       PosColumn(
           text: orderType,
           width: 6,
           styles: const PosStyles(
               height: PosTextSize.size1,
               width: PosTextSize.size1,
-              align: PosAlign.right)),
+              align: PosAlign.right,bold: true)),
     ]);
 
     printer.setStyles(PosStyles(codeTable: defaultCodePage));
@@ -877,21 +877,21 @@ if(showCustomerName){
             text: 'Table Name   ',
             width: 3,
             styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
+                height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
         PosColumn(
             textEncoded: tableEnc,
             width: 3,
             styles: const PosStyles(
                 height: PosTextSize.size1,
                 width: PosTextSize.size1,
-                align: PosAlign.right)),
+                align: PosAlign.right,bold: true)),
         PosColumn(
             text: tableName,
             width: 6,
             styles: const PosStyles(
                 height: PosTextSize.size1,
                 width: PosTextSize.size1,
-                align: PosAlign.right)),
+                align: PosAlign.right,bold: true)),
       ]);
     }
     if (timeInPrint) {
@@ -3968,11 +3968,11 @@ if(showCustomerName){
     printer.setStyles(
         PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
-    var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
-    var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
+    var cancelNoteArabic = "البند الملغى";
+    var cancelNoteData = "CANCELLED ITEM";
 
-    var updateNoteArabic = "تم إجراء بعض التغييرات في";
-    var updateNote = "MADE SOME CHANGES IN";
+    var updateNoteArabic = "أمر التشغيل";
+    var updateNote = "RUNNING ORDER";
 
     Uint8List cancelNoteEnc = await CharsetConverter.encode(
         "ISO-8859-6", setString(cancelNoteArabic));
@@ -4030,7 +4030,7 @@ if(showCustomerName){
             PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
         printer.textEncoded(cancelNoteEnc,
             styles: const PosStyles(
-                height: PosTextSize.size1,
+                height: PosTextSize.size2,
                 width: PosTextSize.size1,
                 align: PosAlign.center,
                 fontType: PosFontType.fontA,
@@ -4040,20 +4040,22 @@ if(showCustomerName){
       if (isUpdate) {
         printer.text(updateNote,
             styles: const PosStyles(
-                height: PosTextSize.size2,
-                width: PosTextSize.size1,
+                height: PosTextSize.size3,
+                width: PosTextSize.size2,
                 align: PosAlign.center,
                 fontType: PosFontType.fontB,
                 bold: true));
         printer.setStyles(
             PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+
         printer.textEncoded(updateNoteEnc,
             styles: const PosStyles(
                 height: PosTextSize.size1,
-                width: PosTextSize.size1,
+                width: PosTextSize.size2,
                 align: PosAlign.center,
                 fontType: PosFontType.fontA,
                 bold: true));
+
       }
     }
 
