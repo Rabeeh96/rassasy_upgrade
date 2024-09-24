@@ -1782,7 +1782,10 @@ class OrderController extends GetxController {
           var kot = prefs.getBool("KOT") ?? false;
           if (kot == true) {
             posController.printKOT(cancelList: cancelPrint, isUpdate: sectionType == "Edit" ? true : false, orderID: n["OrderID"], rePrint: false);
-          } else {}
+          }
+          else {
+
+          }
         });
       } else if (status == 6001) {
         stop();

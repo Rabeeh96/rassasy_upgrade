@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
-String appVersion = "1.1.51";
+String appVersion = "1.1.53";
 double defaultScreenWidth=550;
 bool enableTabDesign = false;
 start(context) {
@@ -18,7 +18,6 @@ start(context) {
       )
   );
 }
-
 
 dialogBoxHide(BuildContext context, msg) async {
 }

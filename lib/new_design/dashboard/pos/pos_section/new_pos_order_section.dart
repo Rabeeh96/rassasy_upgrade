@@ -3635,6 +3635,11 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                       var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
 
+
+                      if(widget.sectionType == "Edit"){
+                        qtyIncrement = false;
+                      }
+
                       unitPriceAmountWR = productList[i].defaultSalesPrice;
                       inclusiveUnitPriceAmountWR = productList[i].defaultSalesPrice;
                       vatPer = double.parse(productList[i].vatsSalesTax);
