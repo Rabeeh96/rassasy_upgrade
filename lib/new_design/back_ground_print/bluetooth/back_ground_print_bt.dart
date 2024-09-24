@@ -1633,7 +1633,7 @@ bool isCancelled;
       printer += generator.feed(1);
       var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
           BluetoothPrintThermalDetails.grandTotal, BluetoothPrintThermalDetails.totalTax);
-      printer += generator.qrcode(qrCode, size: QRSize.Size5);
+      printer += generator.qrcode(qrCode, size: QRSize.size5);
     }
     // printer += generator.emptyLines(1);
     // printer += generator.text('Powered By Vikn Codes', styles: PosStyles(height: PosTextSize.size1, bold: true, width: PosTextSize.size1, align: PosAlign.center));

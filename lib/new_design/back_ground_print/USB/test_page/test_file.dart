@@ -322,7 +322,7 @@ class USBPrintClassTest {
 
     if (needQR) {
       bytes += generator.feed(1);
-      bytes += generator.qrcode(qrCode, size: QRSize.Size5);
+      bytes += generator.qrcode(qrCode, size: QRSize.size5);
     }
     bytes.addAll(generator.cut());
     //bytes += generator.text("text");

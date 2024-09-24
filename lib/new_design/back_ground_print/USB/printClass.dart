@@ -1265,7 +1265,7 @@ class USBPrintClass {
           isoDate,
           BluetoothPrintThermalDetails.grandTotal,
           BluetoothPrintThermalDetails.totalTax);
-      bytes += generator.qrcode(qrCode, size: QRSize.Size5);
+      bytes += generator.qrcode(qrCode, size: QRSize.size5);
     }
     // bytes +=generator.emptyLines(1);
     // bytes +=generator.text('Powered By Vikn Codes', styles: PosStyles(height: PosTextSize.size1, bold: true, width: PosTextSize.size1, align: PosAlign.center));
