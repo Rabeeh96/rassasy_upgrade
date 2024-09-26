@@ -1955,10 +1955,10 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                                     if (val) {
                                       if (ledgerID != id) {
-                                        createSaleInvoice(printAfterPayment, context);
+                                        createSaleInvoice(true, context);
                                       } else {
                                         if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
-                                          createSaleInvoice(printAfterPayment, context);
+                                          createSaleInvoice(true, context);
                                         } else {
                                           dialogBox(context, "You cant make credit sale");
                                         }
