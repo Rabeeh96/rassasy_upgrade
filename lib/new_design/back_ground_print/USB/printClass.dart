@@ -14,8 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:charset_converter/charset_converter.dart';
-import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart'
-as usb_esc_printer_windows;
+import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart' as usb_esc_printer_windows;
 
 import '../../dashboard/pos/pos_section/model/model_class.dart';
 
@@ -41,13 +40,7 @@ class USBPrintClass {
         final String url = '$baseUrl/posholds/view/pos-sale/invoice/$pk/';
         print(url);
         print(accessToken);
-        Map data = {
-          "CompanyID": companyID,
-          "BranchID": branchID,
-          "CreatedUserID": userID,
-          "PriceRounding": 2,
-          "Type": PrintDataDetails.type
-        };
+        Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID, "PriceRounding": 2, "Type": PrintDataDetails.type};
         print(data);
         //encode Map to JSON
         var body = json.encode(data);
@@ -69,116 +62,67 @@ class USBPrintClass {
         if (status == 6000) {
           stop();
 
-          print(
-              "============================================================1");
+          print("============================================================1");
           printDalesDetails.clear();
-          BluetoothPrintThermalDetails.voucherNumber =
-              responseJson["VoucherNo"].toString();
-          BluetoothPrintThermalDetails.customerName =
-              responseJson["CustomerName"] ?? 'Cash In Hand';
+          BluetoothPrintThermalDetails.voucherNumber = responseJson["VoucherNo"].toString();
+          BluetoothPrintThermalDetails.customerName = responseJson["CustomerName"] ?? 'Cash In Hand';
           BluetoothPrintThermalDetails.date = responseJson["Date"];
-          BluetoothPrintThermalDetails.netTotal =
-              responseJson["NetTotal_print"].toString();
-          BluetoothPrintThermalDetails.customerPhone =
-              responseJson["OrderPhone"] ?? "";
-          BluetoothPrintThermalDetails.grossAmount =
-              responseJson["GrossAmt_print"].toString();
-          BluetoothPrintThermalDetails.sGstAmount =
-              responseJson["SGSTAmount"].toString();
-          BluetoothPrintThermalDetails.cGstAmount =
-              responseJson["CGSTAmount"].toString();
-          BluetoothPrintThermalDetails.tokenNumber =
-              responseJson["TokenNumber"].toString();
-          BluetoothPrintThermalDetails.discount =
-              responseJson["TotalDiscount_print"].toString();
-          BluetoothPrintThermalDetails.grandTotal =
-              responseJson["GrandTotal_print"].toString();
+          BluetoothPrintThermalDetails.netTotal = responseJson["NetTotal_print"].toString();
+          BluetoothPrintThermalDetails.customerPhone = responseJson["OrderPhone"] ?? "";
+          BluetoothPrintThermalDetails.grossAmount = responseJson["GrossAmt_print"].toString();
+          BluetoothPrintThermalDetails.sGstAmount = responseJson["SGSTAmount"].toString();
+          BluetoothPrintThermalDetails.cGstAmount = responseJson["CGSTAmount"].toString();
+          BluetoothPrintThermalDetails.tokenNumber = responseJson["TokenNumber"].toString();
+          BluetoothPrintThermalDetails.discount = responseJson["TotalDiscount_print"].toString();
+          BluetoothPrintThermalDetails.grandTotal = responseJson["GrandTotal_print"].toString();
           BluetoothPrintThermalDetails.qrCodeImage = responseJson["qr_image"];
-          BluetoothPrintThermalDetails.customerTaxNumber =
-              responseJson["TaxNo"].toString();
-          print(
-              "============================================================4");
+          BluetoothPrintThermalDetails.customerTaxNumber = responseJson["TaxNo"].toString();
+          print("============================================================4");
 
-          BluetoothPrintThermalDetails.ledgerName =
-              responseJson["LedgerName"] ?? '';
-          BluetoothPrintThermalDetails.customerAddress =
-          responseJson["Address1"];
-          BluetoothPrintThermalDetails.customerAddress2 =
-          responseJson["Address2"];
-          BluetoothPrintThermalDetails.customerCrNumber =
-              responseJson["CustomerCRNo"] ?? "";
-          BluetoothPrintThermalDetails.cashReceived =
-              responseJson["CashReceived"].toString() ?? "0";
-          BluetoothPrintThermalDetails.bankReceived =
-              responseJson["BankAmount"].toString() ?? "0";
-          print(
-              "============================================================5");
+          BluetoothPrintThermalDetails.ledgerName = responseJson["LedgerName"] ?? '';
+          BluetoothPrintThermalDetails.customerAddress = responseJson["Address1"];
+          BluetoothPrintThermalDetails.customerAddress2 = responseJson["Address2"];
+          BluetoothPrintThermalDetails.customerCrNumber = responseJson["CustomerCRNo"] ?? "";
+          BluetoothPrintThermalDetails.cashReceived = responseJson["CashReceived"].toString() ?? "0";
+          BluetoothPrintThermalDetails.bankReceived = responseJson["BankAmount"].toString() ?? "0";
+          print("============================================================5");
 
-          BluetoothPrintThermalDetails.balance =
-              responseJson["Balance"].toString() ?? "";
-          BluetoothPrintThermalDetails.salesType =
-              responseJson["OrderType"] ?? "";
-          BluetoothPrintThermalDetails.salesDetails =
-          responseJson["SalesDetails"];
-          BluetoothPrintThermalDetails.totalVATAmount =
-          responseJson["VATAmount"];
-          BluetoothPrintThermalDetails.totalExciseAmount =
-              responseJson["ExciseTaxAmount"] ?? "0";
-          BluetoothPrintThermalDetails.totalTax =
-              responseJson["TotalTax_print"].toString();
+          BluetoothPrintThermalDetails.balance = responseJson["Balance"].toString() ?? "";
+          BluetoothPrintThermalDetails.salesType = responseJson["OrderType"] ?? "";
+          BluetoothPrintThermalDetails.salesDetails = responseJson["SalesDetails"];
+          BluetoothPrintThermalDetails.totalVATAmount = responseJson["VATAmount"];
+          BluetoothPrintThermalDetails.totalExciseAmount = responseJson["ExciseTaxAmount"] ?? "0";
+          BluetoothPrintThermalDetails.totalTax = responseJson["TotalTax_print"].toString();
           var companyDetails = responseJson["CompanyDetails"];
-          print(
-              "============================================================7");
+          print("============================================================7");
 
-          BluetoothPrintThermalDetails.companyName =
-              companyDetails["CompanyName"] ?? '';
-          BluetoothPrintThermalDetails.buildingNumber =
-              companyDetails["Address1"] ?? '';
-          BluetoothPrintThermalDetails.secondName =
-              companyDetails["CompanyNameSec"] ?? '';
-          BluetoothPrintThermalDetails.streetName =
-              companyDetails["Street"] ?? '';
-          BluetoothPrintThermalDetails.state =
-              companyDetails["StateName"] ?? '';
-          BluetoothPrintThermalDetails.postalCodeCompany =
-              companyDetails["PostalCode"] ?? '';
-          print(
-              "============================================================4");
+          BluetoothPrintThermalDetails.companyName = companyDetails["CompanyName"] ?? '';
+          BluetoothPrintThermalDetails.buildingNumber = companyDetails["Address1"] ?? '';
+          BluetoothPrintThermalDetails.secondName = companyDetails["CompanyNameSec"] ?? '';
+          BluetoothPrintThermalDetails.streetName = companyDetails["Street"] ?? '';
+          BluetoothPrintThermalDetails.state = companyDetails["StateName"] ?? '';
+          BluetoothPrintThermalDetails.postalCodeCompany = companyDetails["PostalCode"] ?? '';
+          print("============================================================4");
 
-          BluetoothPrintThermalDetails.phoneCompany =
-              companyDetails["Phone"] ?? '';
-          BluetoothPrintThermalDetails.mobileCompany =
-              companyDetails["Mobile"] ?? '';
-          BluetoothPrintThermalDetails.vatNumberCompany =
-              companyDetails["VATNumber"] ?? '';
-          BluetoothPrintThermalDetails.companyGstNumber =
-              companyDetails["GSTNumber"] ?? '';
-          BluetoothPrintThermalDetails.cRNumberCompany =
-              companyDetails["CRNumber"] ?? '';
+          BluetoothPrintThermalDetails.phoneCompany = companyDetails["Phone"] ?? '';
+          BluetoothPrintThermalDetails.mobileCompany = companyDetails["Mobile"] ?? '';
+          BluetoothPrintThermalDetails.vatNumberCompany = companyDetails["VATNumber"] ?? '';
+          BluetoothPrintThermalDetails.companyGstNumber = companyDetails["GSTNumber"] ?? '';
+          BluetoothPrintThermalDetails.cRNumberCompany = companyDetails["CRNumber"] ?? '';
           // BluetoothPrintThermalDetails.descriptionCompany= companyDetails["Description"]?? '';
-          BluetoothPrintThermalDetails.countryNameCompany =
-              companyDetails["CountryName"] ?? '';
-          print(
-              "============================================================4");
+          BluetoothPrintThermalDetails.countryNameCompany = companyDetails["CountryName"] ?? '';
+          print("============================================================4");
 
-          BluetoothPrintThermalDetails.stateNameCompany =
-              companyDetails["StateName"] ?? '';
-          BluetoothPrintThermalDetails.companyLogoCompany =
-              companyDetails["CompanyLogo"] ?? '';
-          BluetoothPrintThermalDetails.countyCodeCompany =
-              companyDetails["CountryCode"] ?? '';
-          BluetoothPrintThermalDetails.buildingNumberCompany =
-              companyDetails["Address1"] ?? '';
-          print(
-              "============================================================4");
+          BluetoothPrintThermalDetails.stateNameCompany = companyDetails["StateName"] ?? '';
+          BluetoothPrintThermalDetails.companyLogoCompany = companyDetails["CompanyLogo"] ?? '';
+          BluetoothPrintThermalDetails.countyCodeCompany = companyDetails["CountryCode"] ?? '';
+          BluetoothPrintThermalDetails.buildingNumberCompany = companyDetails["Address1"] ?? '';
+          print("============================================================4");
 
-          BluetoothPrintThermalDetails.tableName =
-              responseJson["TableName"] ?? '';
-          BluetoothPrintThermalDetails.time =
-              responseJson["CreatedDate"] ?? "${DateTime.now()}";
+          BluetoothPrintThermalDetails.tableName = responseJson["TableName"] ?? '';
+          BluetoothPrintThermalDetails.time = responseJson["CreatedDate"] ?? "${DateTime.now()}";
 
-          print(
-              "============================================================4");
+          print("============================================================4");
 
           BluetoothPrintThermalDetails.currency = currency;
           print("-------------  everything is fine-------------  ");
@@ -220,8 +164,7 @@ class USBPrintClass {
     var showSalesMan = prefs.getBool("isSalesmanDisplay") ?? false;
     var showGrossAmount = prefs.getBool("isGrossAmountDisplay") ?? false;
     print("hideSalesMan:   ...$showSalesMan");
-    print(
-        "-----------------------------OpenDrawer-------------------------------$printerIp--------------$OpenDrawer");
+    print("-----------------------------OpenDrawer-------------------------------$printerIp--------------$OpenDrawer");
 
     // TODO Don't forget to choose printer's paper size
     const PaperSize paper = PaperSize.mm80;
@@ -245,24 +188,16 @@ class USBPrintClass {
           timeInPrint,
           hideTaxDetails,
           defaultCodePage,
-          flavourInOrderPrint,showDiscountInPrint,showCustomerName,
+          flavourInOrderPrint,
+          showDiscountInPrint,
+          showCustomerName,
           showCustomerPhone,
-          showSalesMan,showGrossAmount);
+          showSalesMan,
+          showGrossAmount);
     } else if (temp == 'template3') {
       ///
-      await invoicePrintTemplate3(
-          printerIp,
-          profile,
-          hilightTokenNumber,
-          paymentDetailsInPrint,
-          headerAlignment,
-          salesMan,
-          OpenDrawer,
-          timeInPrint,
-          hideTaxDetails,
-          flavourInOrderPrint,showDiscountInPrint,showCustomerName,
-          showCustomerPhone,
-          showSalesMan,showGrossAmount);
+      await invoicePrintTemplate3(printerIp, profile, hilightTokenNumber, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint,
+          hideTaxDetails, flavourInOrderPrint, showDiscountInPrint, showCustomerName, showCustomerPhone, showSalesMan, showGrossAmount);
     } else {}
   }
 
@@ -302,7 +237,7 @@ class USBPrintClass {
     final http.Response response = await http.get(Uri.parse(imageUrl));
     return response.bodyBytes;
   }
-
+  /// template 4
   Future<void> invoicePrintTemplate4(
       defaultIP,
       profile,
@@ -314,9 +249,12 @@ class USBPrintClass {
       timeInPrint,
       hideTaxDetails,
       defaultCodePage,
-      flavourInOrderPrint,showDiscountInPrint,showCustomerName,
+      flavourInOrderPrint,
+      showDiscountInPrint,
+      showCustomerName,
       showCustomerPhone,
-      showSalesMan,showGrossAmount) async {
+      showSalesMan,
+      showGrossAmount) async {
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, profile);
     List<ProductDetailsModel> tableDataDetailsPrint = [];
@@ -362,10 +300,8 @@ class USBPrintClass {
 
     var voucherNumber = BluetoothPrintThermalDetails.voucherNumber;
     var customerName = BluetoothPrintThermalDetails.ledgerName;
-    print(
-        "________________LedgerName   ${BluetoothPrintThermalDetails.ledgerName}");
-    print(
-        "________________customerName     ${BluetoothPrintThermalDetails.customerName}");
+    print("________________LedgerName   ${BluetoothPrintThermalDetails.ledgerName}");
+    print("________________customerName     ${BluetoothPrintThermalDetails.customerName}");
 
     if (BluetoothPrintThermalDetails.ledgerName == "Cash In Hand") {
       customerName = BluetoothPrintThermalDetails.customerName;
@@ -377,10 +313,8 @@ class USBPrintClass {
     var discount = roundStringWith(BluetoothPrintThermalDetails.discount);
     var totalTax = roundStringWith(BluetoothPrintThermalDetails.totalTax);
     var grandTotal = roundStringWith(BluetoothPrintThermalDetails.grandTotal);
-    var vatAmountTotal =
-    roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
-    var exciseAmountTotal =
-    roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
+    var vatAmountTotal = roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
+    var exciseAmountTotal = roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
     bool showExcise = double.parse(exciseAmountTotal) > 0.0 ? true : false;
     var companyLogo = BluetoothPrintThermalDetails.companyLogoCompany;
 
@@ -392,8 +326,7 @@ class USBPrintClass {
     var orderType = BluetoothPrintThermalDetails.salesType;
     var tableName = BluetoothPrintThermalDetails.tableName;
 
-    bytes += generator.setStyles(
-        PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+    bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     if (PrintDataDetails.type == "SI") {
       if (companyLogo != "") {
@@ -406,483 +339,266 @@ class USBPrintClass {
     }
 
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
-    Uint8List companyNameEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString(companyName));
+    Uint8List companyNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyName));
 
-    Uint8List companyTaxEnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString('ضريبه  ' + companyTax));
-    Uint8List companyCREnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString('س. ت  ' + companyCrNumber));
-    Uint8List companyPhoneEnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString('جوال ' + companyPhone));
-    Uint8List salesManDetailsEnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString('رجل المبيعات ' + salesMan));
+    Uint8List companyTaxEnc = await CharsetConverter.encode("ISO-8859-6", setString('ضريبه  ' + companyTax));
+    Uint8List companyCREnc = await CharsetConverter.encode("ISO-8859-6", setString('س. ت  ' + companyCrNumber));
+    Uint8List companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
+    Uint8List salesManDetailsEnc = await CharsetConverter.encode("ISO-8859-6", setString('رجل المبيعات ' + salesMan));
 
     if (headerAlignment) {
-      companyPhoneEnc =
-      await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
+      companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
     }
 
-    Uint8List invoiceTypeEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
-    Uint8List invoiceTypeArabicEnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString(invoiceTypeArabic));
+    Uint8List invoiceTypeEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    Uint8List invoiceTypeArabicEnc = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
 
-    Uint8List ga = await CharsetConverter.encode(
-        "ISO-8859-6", setString('المبلغ الإجمالي'));
-    Uint8List tt =
-    await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
-    Uint8List exciseTax = await CharsetConverter.encode(
-        "ISO-8859-6", setString('مبلغ الضريبة الانتقائية'));
-    Uint8List vatTax = await CharsetConverter.encode(
-        "ISO-8859-6", setString('ضريبة القيمة المضافة'));
-    Uint8List dis =
-    await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
-    Uint8List gt = await CharsetConverter.encode(
-        "ISO-8859-6", setString('المبلغ الإجمالي'));
+    Uint8List ga = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
+    Uint8List tt = await CharsetConverter.encode("ISO-8859-6", setString('مجموع الضريبة'));
+    Uint8List exciseTax = await CharsetConverter.encode("ISO-8859-6", setString('مبلغ الضريبة الانتقائية'));
+    Uint8List vatTax = await CharsetConverter.encode("ISO-8859-6", setString('ضريبة القيمة المضافة'));
+    Uint8List dis = await CharsetConverter.encode("ISO-8859-6", setString('خصم'));
+    Uint8List gt = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ الإجمالي'));
 
-    Uint8List bl =
-    await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
-    Uint8List cr = await CharsetConverter.encode(
-        "ISO-8859-6", setString('المبلغ المستلم'));
-    Uint8List br =
-    await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
+    Uint8List bl = await CharsetConverter.encode("ISO-8859-6", setString('الرصيد'));
+    Uint8List cr = await CharsetConverter.encode("ISO-8859-6", setString('المبلغ المستلم'));
+    Uint8List br = await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
 
     if (headerAlignment) {
-      bytes +=
-          generator.text('', styles: const PosStyles(align: PosAlign.left));
+      bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
       if (companyName != "") {
         bytes += generator.textEncoded(companyNameEnc,
             styles: const PosStyles(
-                height: PosTextSize.size2,
-                width: PosTextSize.size1,
-                fontType: PosFontType.fontA,
-                bold: true,
-                align: PosAlign.center));
+                height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
       if (companySecondName != "") {
-        Uint8List companySecondNameEncode = await CharsetConverter.encode(
-            "ISO-8859-6", setString(companySecondName));
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
 
-        bytes +=
-            generator.text('', styles: const PosStyles(align: PosAlign.left));
+        bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
         bytes += generator.textEncoded(companySecondNameEncode,
             styles: const PosStyles(
-                height: PosTextSize.size2,
-                width: PosTextSize.size1,
-                fontType: PosFontType.fontA,
-                bold: true,
-                align: PosAlign.center));
+                height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
 
       if (buildingDetails != "") {
-        Uint8List buildingDetailsEncode = await CharsetConverter.encode(
-            "ISO-8859-6", setString(buildingDetails));
+        Uint8List buildingDetailsEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
         bytes += generator.row([
-          PosColumn(
-              text: 'Building',
-              width: 2,
-              styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Building', width: 2, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(text: '', width: 1),
           PosColumn(
               textEncoded: buildingDetailsEncode,
               width: 9,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 
       if (streetName != "") {
-        Uint8List streetNameEncode =
-        await CharsetConverter.encode("ISO-8859-6", setString(streetName));
+        Uint8List streetNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
         bytes += generator.row([
-          PosColumn(
-              text: 'Street ',
-              width: 2,
-              styles: const PosStyles(align: PosAlign.left)),
-          PosColumn(
-              text: '',
-              width: 1,
-              styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Street ', width: 2, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(
               textEncoded: streetNameEncode,
               width: 9,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 
       if (companyTax != "") {
         bytes += generator.row([
-          PosColumn(
-              text: 'Vat Number',
-              width: 2,
-              styles: const PosStyles(align: PosAlign.left)),
-          PosColumn(
-              text: '',
-              width: 1,
-              styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Vat Number', width: 2, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(
               textEncoded: companyTaxEnc,
               width: 9,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 
       if (companyPhone != "") {
         bytes += generator.row([
-          PosColumn(
-              text: 'Phone',
-              width: 2,
-              styles: const PosStyles(align: PosAlign.left)),
-          PosColumn(
-              text: '',
-              width: 1,
-              styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Phone', width: 2, styles: const PosStyles(align: PosAlign.left)),
+          PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
           PosColumn(
               textEncoded: companyPhoneEnc,
               width: 9,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
 
         ///  bytes +=generator.textEncoded(companyPhoneEnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
       }
 
-     if(showSalesMan){
-       if (salesMan != "") {
-         bytes += generator.row([
-           PosColumn(
-               text: 'Sales man',
-               width: 2,
-               styles: const PosStyles(align: PosAlign.left)),
-           PosColumn(
-               text: '',
-               width: 1,
-               styles: const PosStyles(align: PosAlign.left)),
-           PosColumn(
-               textEncoded: salesManDetailsEnc,
-               width: 9,
-               styles: const PosStyles(
-                   height: PosTextSize.size1,
-                   width: PosTextSize.size1,
-                   align: PosAlign.right)),
-         ]);
-         //  bytes +=generator.textEncoded(companyPhoneEnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
-       }
-     }
+      if (showSalesMan) {
+        if (salesMan != "") {
+          bytes += generator.row([
+            PosColumn(text: 'Sales man', width: 2, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(
+                textEncoded: salesManDetailsEnc,
+                width: 9,
+                styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          ]);
+          //  bytes +=generator.textEncoded(companyPhoneEnc, styles: PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
+        }
+      }
     } else {
       if (companyName != "") {
         bytes += generator.textEncoded(companyNameEnc,
             styles: const PosStyles(
-                height: PosTextSize.size2,
-                width: PosTextSize.size1,
-                fontType: PosFontType.fontA,
-                bold: true,
-                align: PosAlign.center));
+                height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
 
       if (companySecondName != "") {
-        Uint8List companySecondNameEncode = await CharsetConverter.encode(
-            "ISO-8859-6", setString(companySecondName));
+        Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
 
         bytes += generator.textEncoded(companySecondNameEncode,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (buildingDetails != "") {
-        Uint8List secondAddress1Encode = await CharsetConverter.encode(
-            "ISO-8859-6", setString(buildingDetails));
+        Uint8List secondAddress1Encode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
         bytes += generator.textEncoded(secondAddress1Encode,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (streetName != "") {
-        Uint8List streetEncode =
-        await CharsetConverter.encode("ISO-8859-6", setString(streetName));
+        Uint8List streetEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
-        bytes += generator.textEncoded(streetEncode,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+        bytes +=
+            generator.textEncoded(streetEncode, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (companyTax != "") {
         bytes += generator.textEncoded(companyTaxEnc,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
       if (companyCrNumber != "") {
-        bytes += generator.textEncoded(companyCREnc,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+        bytes +=
+            generator.textEncoded(companyCREnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (companyPhone != "") {
         bytes += generator.textEncoded(companyPhoneEnc,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
-     if(showSalesMan){
-       if (salesMan != "") {
-         bytes += generator.textEncoded(salesManDetailsEnc,
-             styles: const PosStyles(
-                 height: PosTextSize.size1,
-                 width: PosTextSize.size1,
-                 align: PosAlign.center));
-       }
-     }
+      if (showSalesMan) {
+        if (salesMan != "") {
+          bytes += generator.textEncoded(salesManDetailsEnc,
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
+        }
+      }
     }
 
     bytes += generator.emptyLines(1);
 
-    bytes += generator.textEncoded(invoiceTypeEnc,
-        styles: const PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size2,
-            align: PosAlign.center));
+    bytes +=
+        generator.textEncoded(invoiceTypeEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size2, align: PosAlign.center));
     bytes += generator.textEncoded(invoiceTypeArabicEnc,
-        styles: const PosStyles(
-            bold: true,
-            height: PosTextSize.size1,
-            width: PosTextSize.size2,
-            align: PosAlign.center));
+        styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size2, align: PosAlign.center));
 
-    var isoDate =
-    DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
-    Uint8List tokenEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
-    Uint8List voucherNoEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('رقم الفاتورة'));
-    Uint8List dateEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('تاريخ'));
-    Uint8List customerEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('اسم'));
-    Uint8List phoneEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
-    Uint8List typeEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
-    Uint8List tableEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
+    var isoDate = DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
+    Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
+    Uint8List voucherNoEnc = await CharsetConverter.encode("ISO-8859-6", setString('رقم الفاتورة'));
+    Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString('تاريخ'));
+    Uint8List customerEnc = await CharsetConverter.encode("ISO-8859-6", setString('اسم'));
+    Uint8List phoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
+    Uint8List typeEnc = await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
+    Uint8List tableEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
 
     if (tokenVal) {
       bytes += generator.hr();
       bytes += generator.text('Token No ',
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              bold: true,
-              align: PosAlign.center));
-      bytes += generator.text(token,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size2,
-              bold: true,
-              align: PosAlign.center));
+          styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
+      bytes +=
+          generator.text(token, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
       bytes += generator.textEncoded(tokenEnc,
-          styles: const PosStyles(
-              bold: true,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.center));
+          styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       bytes += generator.hr();
     } else {
       bytes += generator.row([
+        PosColumn(text: 'Token No ', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
         PosColumn(
-            text: 'Token No ',
-            width: 3,
-            styles: const PosStyles(fontType: PosFontType.fontB)),
-        PosColumn(
-            textEncoded: tokenEnc,
-            width: 3,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
-        PosColumn(
-            text: token,
-            width: 6,
-            styles: const PosStyles(align: PosAlign.right)),
+            textEncoded: tokenEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: token, width: 6, styles: const PosStyles(align: PosAlign.right)),
       ]);
     }
 
     bytes += generator.row([
-      PosColumn(
-          text: 'Voucher No  ',
-          width: 3,
-          styles: const PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(text: 'Voucher No  ', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
       PosColumn(
           textEncoded: voucherNoEnc,
           width: 4,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
-      PosColumn(
-          text: voucherNumber,
-          width: 5,
-          styles: const PosStyles(align: PosAlign.right)),
+          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: voucherNumber, width: 5, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
     bytes += generator.row([
-      PosColumn(
-          text: 'Date  ',
-          width: 3,
-          styles: const PosStyles(fontType: PosFontType.fontB)),
+      PosColumn(text: 'Date  ', width: 3, styles: const PosStyles(fontType: PosFontType.fontB)),
       PosColumn(
           textEncoded: dateEnc,
           width: 3,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
-      PosColumn(
-          text: date, width: 6, styles: const PosStyles(align: PosAlign.right)),
+          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: date, width: 6, styles: const PosStyles(align: PosAlign.right)),
     ]);
 
-    if(showCustomerName){
+    if (showCustomerName) {
       if (customerName != "") {
-        Uint8List customerNameEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString(customerName));
+        Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName));
 
         bytes += generator.row([
-          PosColumn(
-              text: 'Name    ',
-              width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, width: PosTextSize.size1)),
+          PosColumn(text: 'Name    ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
           PosColumn(
               textEncoded: customerEnc,
               width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           PosColumn(
               textEncoded: customerNameEnc,
               width: 6,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
     }
-    if(showCustomerPhone){
+    if (showCustomerPhone) {
       if (customerPhone != "") {
-        Uint8List phoneNoEncoded =
-        await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
-
+        Uint8List phoneNoEncoded = await CharsetConverter.encode("ISO-8859-6", setString(customerPhone));
         bytes += generator.row([
+          PosColumn(text: 'Phone', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
           PosColumn(
-              text: 'Phone    ',
-              width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, width: PosTextSize.size1)),
-          PosColumn(
-              textEncoded: phoneEnc,
-              width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              textEncoded: phoneEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           PosColumn(
               textEncoded: phoneNoEncoded,
               width: 6,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
     }
 
     bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage));
     bytes += generator.row([
-      PosColumn(
-          text: 'Order type    ',
-          width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          textEncoded: typeEnc,
-          width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
-      PosColumn(
-          text: orderType,
-          width: 6,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
+      PosColumn(text: 'Order type', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(textEncoded: typeEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: orderType, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
     bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage));
 
     if (tableName != "") {
       bytes += generator.row([
+        PosColumn(text: 'Table Name   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
-            text: 'Table Name   ',
-            width: 3,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            textEncoded: tableEnc,
-            width: 3,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
-        PosColumn(
-            text: tableName,
-            width: 6,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+            textEncoded: tableEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: tableName, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     }
     if (timeInPrint) {
       var time = BluetoothPrintThermalDetails.time;
 
       String timeInvoice = convertToSaudiArabiaTime(time, countyCodeCompany);
-      Uint8List timeEnc =
-      await CharsetConverter.encode("ISO-8859-6", setString('وقت'));
+      Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('وقت'));
 
       bytes += generator.row([
-        PosColumn(
-            text: 'Time   ',
-            width: 3,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: 'Time   ', width: 3, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         // PosColumn(
         //     textEncoded: timeEnc,
         //     width: 3,
@@ -890,27 +606,16 @@ class USBPrintClass {
         //         height: PosTextSize.size1,
         //         width: PosTextSize.size1,
         //         align: PosAlign.right)),
-        PosColumn(
-            text: timeInvoice,
-            width: 8,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+        PosColumn(text: timeInvoice, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     }
     bytes += generator.hr();
 
-    Uint8List slNoEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
-    Uint8List productNameEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString("أغراض"));
-    Uint8List qtyEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString(" الكمية "));
-    Uint8List rateEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
-    Uint8List netEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString("المجموع"));
+    Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
+    Uint8List productNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("أغراض"));
+    Uint8List qtyEnc = await CharsetConverter.encode("ISO-8859-6", setString(" الكمية "));
+    Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
+    Uint8List netEnc = await CharsetConverter.encode("ISO-8859-6", setString("المجموع"));
 
     bytes += generator.row([
       PosColumn(
@@ -919,26 +624,10 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: 'Item Name',
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(
-          text: 'Qty',
-          width: 1,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(
-          text: 'Rate',
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(
-          text: 'Net',
-          width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Item Name', width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(text: 'Qty', width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(text: 'Rate', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Net', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
     bytes += generator.row([
@@ -949,26 +638,10 @@ class USBPrintClass {
             height: PosTextSize.size1,
             fontType: PosFontType.fontA,
           )),
-      PosColumn(
-          textEncoded: productNameEnc,
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(
-          textEncoded: qtyEnc,
-          width: 1,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.center)),
-      PosColumn(
-          textEncoded: rateEnc,
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
-      PosColumn(
-          textEncoded: netEnc,
-          width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(textEncoded: productNameEnc, width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(textEncoded: qtyEnc, width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+      PosColumn(textEncoded: rateEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(textEncoded: netEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
     bytes += generator.hr();
@@ -976,8 +649,7 @@ class USBPrintClass {
     for (var i = 0; i < tableDataDetailsPrint.length; i++) {
       var slNo = i + 1;
 
-      Uint8List productName = await CharsetConverter.encode(
-          "ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
 
       bytes += generator.row([
         PosColumn(
@@ -986,43 +658,27 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            textEncoded: productName,
-            width: 5,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            text: tableDataDetailsPrint[i].qty,
-            width: 1,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                align: PosAlign.center,
-                bold: tokenVal)),
+        PosColumn(textEncoded: productName, width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: tableDataDetailsPrint[i].qty, width: 1, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center, bold: tokenVal)),
         PosColumn(
             text: roundStringWith(tableDataDetailsPrint[i].unitPrice),
             width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+            styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: roundStringWith(tableDataDetailsPrint[i].netAmount),
             width: 3,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+            styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       String productDescription = tableDataDetailsPrint[i].productDescription;
 
       if (productDescription != "") {
-        Uint8List description = await CharsetConverter.encode("ISO-8859-6",
-            setString(tableDataDetailsPrint[i].productDescription));
+        Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
         bytes += generator.row([
           PosColumn(
               textEncoded: description,
               width: 7,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           PosColumn(
               text: '',
               width: 5,
@@ -1037,16 +693,12 @@ class USBPrintClass {
       if (PrintDataDetails.type == "SO") {
         if (flavourInOrderPrint) {
           if (flavour != "") {
-            Uint8List flavourNameEnc = await CharsetConverter.encode(
-                "ISO-8859-6", setString(tableDataDetailsPrint[i].flavourName));
+            Uint8List flavourNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].flavourName));
             bytes += generator.row([
               PosColumn(
                   textEncoded: flavourNameEnc,
                   width: 7,
-                  styles: const PosStyles(
-                      height: PosTextSize.size1,
-                      width: PosTextSize.size1,
-                      align: PosAlign.left)),
+                  styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
               PosColumn(
                   text: '',
                   width: 5,
@@ -1061,108 +713,56 @@ class USBPrintClass {
       bytes += generator.hr();
     }
     bytes += generator.emptyLines(1);
-    if(showGrossAmount)
-   {
-     bytes += generator.row([
-       PosColumn(
-           text: 'Gross Amount',
-           width: 4,
-           styles: const PosStyles(fontType: PosFontType.fontB)),
-       PosColumn(
-           textEncoded: ga,
-           width: 4,
-           styles: const PosStyles(
-               fontType: PosFontType.fontA,
-               height: PosTextSize.size1,
-               width: PosTextSize.size1,
-               align: PosAlign.right)),
-       PosColumn(
-           text: roundStringWith(grossAmount),
-           width: 4,
-           styles: const PosStyles(align: PosAlign.right)),
-     ]);
-   }
+    if (showGrossAmount) {
+      bytes += generator.row([
+        PosColumn(text: 'Gross Amount', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+        PosColumn(
+            textEncoded: ga,
+            width: 4,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: roundStringWith(grossAmount), width: 4, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
 
     if (hideTaxDetails) {
       if (showExcise) {
         bytes += generator.row([
-          PosColumn(
-              text: 'Total Excise Tax',
-              width: 4,
-              styles: const PosStyles(fontType: PosFontType.fontB)),
+          PosColumn(text: 'Total Excise Tax', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: exciseTax,
               width: 4,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
-          PosColumn(
-              text: roundStringWith(exciseAmountTotal),
-              width: 4,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          PosColumn(text: roundStringWith(exciseAmountTotal), width: 4, styles: const PosStyles(align: PosAlign.right)),
         ]);
         bytes += generator.row([
-          PosColumn(
-              text: 'Total VAT',
-              width: 4,
-              styles: const PosStyles(fontType: PosFontType.fontB)),
+          PosColumn(text: 'Total VAT', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: vatTax,
               width: 4,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
-          PosColumn(
-              text: roundStringWith(vatAmountTotal),
-              width: 4,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+          PosColumn(text: roundStringWith(vatAmountTotal), width: 4, styles: const PosStyles(align: PosAlign.right)),
         ]);
       }
 
       bytes += generator.row([
-        PosColumn(
-            text: 'Total Tax',
-            width: 4,
-            styles: const PosStyles(fontType: PosFontType.fontB)),
+        PosColumn(text: 'Total Tax', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
         PosColumn(
             textEncoded: tt,
             width: 4,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
-        PosColumn(
-            text: roundStringWith(totalTax),
-            width: 4,
-            styles: const PosStyles(align: PosAlign.right)),
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: roundStringWith(totalTax), width: 4, styles: const PosStyles(align: PosAlign.right)),
       ]);
     }
-    if(showDiscountInPrint)
-   {
-     bytes += generator.row([
-       PosColumn(
-           text: 'Discount',
-           width: 4,
-           styles: const PosStyles(fontType: PosFontType.fontB)),
-       PosColumn(
-           textEncoded: dis,
-           width: 4,
-           styles: const PosStyles(
-               fontType: PosFontType.fontA,
-               height: PosTextSize.size1,
-               width: PosTextSize.size1,
-               align: PosAlign.right)),
-       PosColumn(
-           text: roundStringWith(discount),
-           width: 4,
-           styles: const PosStyles(align: PosAlign.right)),
-     ]);
-   }
+    if (showDiscountInPrint) {
+      bytes += generator.row([
+        PosColumn(text: 'Discount', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+        PosColumn(
+            textEncoded: dis,
+            width: 4,
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: roundStringWith(discount), width: 4, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
     // bytes +=generator.setStyles(PosStyles.defaults());
 
     bytes += generator.hr();
@@ -1178,12 +778,8 @@ class USBPrintClass {
       PosColumn(
           textEncoded: gt,
           width: 3,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right,
-              bold: true)),
+          styles:
+              const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
       PosColumn(
           text: "$countyCodeCompany ${roundStringWith(grandTotal)}",
           width: 6,
@@ -1199,72 +795,38 @@ class USBPrintClass {
     if (PrintDataDetails.type == "SI") {
       if (paymentDetailsInPrint) {
         bytes += generator.row([
-          PosColumn(
-              text: 'Cash receipt',
-              width: 4,
-              styles: const PosStyles(fontType: PosFontType.fontB)),
+          PosColumn(text: 'Cash receipt', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: cr,
               width: 5,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: roundStringWith(cashReceived),
-              width: 3,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: roundStringWith(cashReceived), width: 3, styles: const PosStyles(align: PosAlign.right)),
         ]);
 
         bytes += generator.row([
-          PosColumn(
-              text: 'Bank receipt',
-              width: 4,
-              styles: const PosStyles(fontType: PosFontType.fontB)),
+          PosColumn(text: 'Bank receipt', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: br,
               width: 5,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: roundStringWith(bankReceived),
-              width: 3,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: roundStringWith(bankReceived), width: 3, styles: const PosStyles(align: PosAlign.right)),
         ]);
 
         bytes += generator.row([
-          PosColumn(
-              text: 'Balance',
-              width: 4,
-              styles: const PosStyles(fontType: PosFontType.fontB)),
+          PosColumn(text: 'Balance', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: bl,
               width: 5,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: roundStringWith(balance),
-              width: 3,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: roundStringWith(balance), width: 3, styles: const PosStyles(align: PosAlign.right)),
         ]);
       }
     }
 
     if (qrCodeAvailable) {
       bytes += generator.feed(1);
-      var qrCode = await b64Qrcode(
-          BluetoothPrintThermalDetails.companyName,
-          BluetoothPrintThermalDetails.vatNumberCompany,
-          isoDate,
-          BluetoothPrintThermalDetails.grandTotal,
-          BluetoothPrintThermalDetails.totalTax);
+      var qrCode = await b64Qrcode(BluetoothPrintThermalDetails.companyName, BluetoothPrintThermalDetails.vatNumberCompany, isoDate,
+          BluetoothPrintThermalDetails.grandTotal, BluetoothPrintThermalDetails.totalTax);
       bytes += generator.qrcode(qrCode, size: QRSize.size5);
     }
     // bytes +=generator.emptyLines(1);
@@ -1277,31 +839,18 @@ class USBPrintClass {
       }
     }
 
-    final res =
-    await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
     String msg = "";
 
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
-      msg =
-      "Failed to generate a print please make sure to use the correct printer name";
+      msg = "Failed to generate a print please make sure to use the correct printer name";
     }
   }
-
-  Future<void> invoicePrintTemplate3(
-      defaultIP,
-      profile,
-      tokenVal,
-      paymentDetailsInPrint,
-      headerAlignment,
-      salesMan,
-      OpenDrawer,
-      timeInPrint,
-      hideTaxDetails,
-      flavourInOrderPrint,showDiscountInPrint,showCustomerName,
-  showCustomerPhone,
-  showSalesMan,showGrossAmount) async {
+/// template 3
+  Future<void> invoicePrintTemplate3(defaultIP, profile, tokenVal, paymentDetailsInPrint, headerAlignment, salesMan, OpenDrawer, timeInPrint,
+      hideTaxDetails, flavourInOrderPrint, showDiscountInPrint, showCustomerName, showCustomerPhone, showSalesMan, showGrossAmount) async {
     try {
       List<int> bytes = [];
       print("-------------------------------------------- Start ");
@@ -1353,17 +902,14 @@ class USBPrintClass {
 
       var date = BluetoothPrintThermalDetails.date;
       var customerPhone = BluetoothPrintThermalDetails.customerPhone;
-      var grossAmount =
-      roundStringWith(BluetoothPrintThermalDetails.grossAmount);
+      var grossAmount = roundStringWith(BluetoothPrintThermalDetails.grossAmount);
       var discount = roundStringWith(BluetoothPrintThermalDetails.discount);
       var totalTax = roundStringWith(BluetoothPrintThermalDetails.totalTax);
       var sGstAmount = roundStringWith(BluetoothPrintThermalDetails.sGstAmount);
       var cGstAmount = roundStringWith(BluetoothPrintThermalDetails.cGstAmount);
       var grandTotal = roundStringWith(BluetoothPrintThermalDetails.grandTotal);
-      var vatAmountTotal =
-      roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
-      var exciseAmountTotal =
-      roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
+      var vatAmountTotal = roundStringWith(BluetoothPrintThermalDetails.totalVATAmount);
+      var exciseAmountTotal = roundStringWith(BluetoothPrintThermalDetails.totalExciseAmount);
       bool showExcise = double.parse(exciseAmountTotal) > 0.0 ? true : false;
       var companyLogo = BluetoothPrintThermalDetails.companyLogoCompany;
       var token = BluetoothPrintThermalDetails.tokenNumber;
@@ -1377,8 +923,7 @@ class USBPrintClass {
       //
       /// image print commented
 
-      bytes += generator.setStyles(
-          const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+      bytes += generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
       if (PrintDataDetails.type == "SI") {
         if (companyLogo != "") {
           final Uint8List imageData = await _fetchImageData(companyLogo);
@@ -1389,128 +934,65 @@ class USBPrintClass {
         }
       }
 
-      bytes +=
-          generator.text('', styles: const PosStyles(align: PosAlign.left));
+      bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
 
       if (headerAlignment) {
-        bytes +=
-            generator.text('', styles: const PosStyles(align: PosAlign.left));
+        bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
         if (companyName != "") {
           bytes += generator.text(companyName,
               styles: const PosStyles(
-                  height: PosTextSize.size2,
-                  width: PosTextSize.size1,
-                  fontType: PosFontType.fontA,
-                  bold: true,
-                  align: PosAlign.center));
+                  height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
         }
         if (companySecondName != "") {
-          bytes +=
-              generator.text('', styles: const PosStyles(align: PosAlign.left));
+          bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
           bytes += generator.text(companySecondName,
               styles: const PosStyles(
-                  height: PosTextSize.size2,
-                  width: PosTextSize.size1,
-                  fontType: PosFontType.fontA,
-                  bold: true,
-                  align: PosAlign.center));
+                  height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
         }
 
         if (buildingDetails != "") {
           bytes += generator.row([
-            PosColumn(
-                text: 'Building',
-                width: 2,
-                styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: 'Building', width: 2, styles: const PosStyles(align: PosAlign.left)),
             PosColumn(text: '', width: 1),
             PosColumn(
-                text: buildingDetails,
-                width: 9,
-                styles: const PosStyles(
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.right)),
+                text: buildingDetails, width: 9, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           ]);
         }
 
         if (streetName != "") {
           bytes += generator.row([
+            PosColumn(text: 'Street', width: 3, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
             PosColumn(
-                text: 'Street',
-                width: 3,
-                styles: const PosStyles(align: PosAlign.left)),
-            PosColumn(
-                text: '',
-                width: 1,
-                styles: const PosStyles(align: PosAlign.left)),
-            PosColumn(
-                text: streetName,
-                width: 8,
-                styles: const PosStyles(
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.right)),
+                text: streetName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           ]);
         }
 
         if (companyTax != "") {
           bytes += generator.row([
+            PosColumn(text: 'GST No  ', width: 2, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
             PosColumn(
-                text: 'GST No  ',
-                width: 2,
-                styles: const PosStyles(align: PosAlign.left)),
-            PosColumn(
-                text: '',
-                width: 1,
-                styles: const PosStyles(align: PosAlign.left)),
-            PosColumn(
-                text: companyTax,
-                width: 9,
-                styles: const PosStyles(
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.right)),
+                text: companyTax, width: 9, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           ]);
         }
 
         if (companyPhone != "") {
           bytes += generator.row([
+            PosColumn(text: 'Phone', width: 2, styles: const PosStyles(align: PosAlign.left)),
+            PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
             PosColumn(
-                text: 'Phone',
-                width: 2,
-                styles: const PosStyles(align: PosAlign.left)),
-            PosColumn(
-                text: '',
-                width: 1,
-                styles: const PosStyles(align: PosAlign.left)),
-            PosColumn(
-                text: companyPhone,
-                width: 9,
-                styles: const PosStyles(
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.right)),
+                text: companyPhone, width: 9, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
           ]);
         }
 
         if (showSalesMan) {
           if (salesMan != "") {
             bytes += generator.row([
+              PosColumn(text: 'Sales man', width: 4, styles: const PosStyles(align: PosAlign.left)),
+              PosColumn(text: '', width: 1, styles: const PosStyles(align: PosAlign.left)),
               PosColumn(
-                  text: 'Sales man',
-                  width: 4,
-                  styles: const PosStyles(align: PosAlign.left)),
-              PosColumn(
-                  text: '',
-                  width: 1,
-                  styles: const PosStyles(align: PosAlign.left)),
-              PosColumn(
-                  text: salesMan,
-                  width: 7,
-                  styles: const PosStyles(
-                      height: PosTextSize.size1,
-                      width: PosTextSize.size1,
-                      align: PosAlign.right)),
+                  text: salesMan, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
             ]);
           }
         }
@@ -1518,84 +1000,44 @@ class USBPrintClass {
         if (companyName != "") {
           bytes += generator.text(companyName,
               styles: const PosStyles(
-                  height: PosTextSize.size2,
-                  width: PosTextSize.size1,
-                  fontType: PosFontType.fontA,
-                  bold: true,
-                  align: PosAlign.center));
+                  height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
         }
 
         if (companySecondName != "") {
-          bytes += generator.text(companySecondName,
-              styles: const PosStyles(
-                  height: PosTextSize.size2,
-                  width: PosTextSize.size1,
-                  align: PosAlign.center));
+          bytes +=
+              generator.text(companySecondName, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
         }
 
         if (buildingDetails != "") {
-          bytes += generator.text(buildingDetails,
-              styles: const PosStyles(
-                  height: PosTextSize.size2,
-                  width: PosTextSize.size1,
-                  align: PosAlign.center));
+          bytes +=
+              generator.text(buildingDetails, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
         }
 
         if (streetName != "") {
-          bytes += generator.text(streetName,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.center));
+          bytes += generator.text(streetName, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
         }
         if (companyTax != "") {
           bytes += generator.text("GST NO:$companyTax",
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.center));
+              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
         }
         if (companyPhone != "") {
-          bytes += generator.text(companyPhone,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.center));
+          bytes += generator.text(companyPhone, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
         }
       }
 
-      bytes +=
-          generator.text('', styles: const PosStyles(align: PosAlign.left));
-      bytes += generator.text(invoiceType,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.center));
+      bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
+      bytes += generator.text(invoiceType, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
 
       if (tokenVal) {
         bytes += generator.hr();
         bytes += generator.text('Token No ',
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true,
-                align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
+        bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
         bytes +=
-            generator.text('', styles: const PosStyles(align: PosAlign.left));
-        bytes += generator.text(token,
-            styles: const PosStyles(
-                height: PosTextSize.size2,
-                width: PosTextSize.size2,
-                bold: true,
-                align: PosAlign.center));
-        bytes +=
-            generator.text('', styles: const PosStyles(align: PosAlign.left));
+            generator.text(token, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
+        bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
         bytes += generator.text("Token Number",
-            styles: const PosStyles(
-                bold: true,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+            styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
         bytes += generator.hr();
       } else {
         bytes += generator.row([
@@ -1741,19 +1183,8 @@ class USBPrintClass {
         String timeInvoice = convertToSaudiArabiaTime(time, countyCodeCompany);
 
         bytes += generator.row([
-          PosColumn(
-              text: 'Time',
-              width: 4,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, width: PosTextSize.size1)),
-
-          PosColumn(
-              text: timeInvoice,
-              width: 8,
-              styles: const PosStyles(
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.right)),
+          PosColumn(text: 'Time', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+          PosColumn(text: timeInvoice, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 
@@ -1790,26 +1221,10 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: 'Item Name',
-            width: 5,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.center)),
-        PosColumn(
-            text: 'Qty',
-            width: 1,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.center)),
-        PosColumn(
-            text: 'Rate',
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
-        PosColumn(
-            text: 'Net',
-            width: 3,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: 'Item Name', width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Qty', width: 1, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Rate', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: 'Net', width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       bytes += generator.hr();
@@ -1825,27 +1240,19 @@ class USBPrintClass {
                 height: PosTextSize.size1,
               )),
           PosColumn(
-              text: tableDataDetailsPrint[i].productName,
-              width: 5,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, width: PosTextSize.size1)),
+              text: tableDataDetailsPrint[i].productName, width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
           PosColumn(
               text: roundStringWith(tableDataDetailsPrint[i].qty),
               width: 1,
-              styles: PosStyles(
-                  height: PosTextSize.size1,
-                  align: PosAlign.center,
-                  bold: tokenVal)),
+              styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center, bold: tokenVal)),
           PosColumn(
               text: roundStringWith(tableDataDetailsPrint[i].unitPrice),
               width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
           PosColumn(
               text: roundStringWith(tableDataDetailsPrint[i].netAmount),
               width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         ]);
 
         if (tableDataDetailsPrint[i].productDescription != "") {
@@ -1859,10 +1266,7 @@ class USBPrintClass {
             PosColumn(
                 text: tableDataDetailsPrint[i].productDescription,
                 width: 11,
-                styles: const PosStyles(
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.left)),
+                styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
           ]);
         }
 
@@ -1873,12 +1277,7 @@ class USBPrintClass {
             if (flavour != "") {
               bytes += generator.row([
                 PosColumn(
-                    text: flavour,
-                    width: 7,
-                    styles: const PosStyles(
-                        height: PosTextSize.size1,
-                        width: PosTextSize.size1,
-                        align: PosAlign.left)),
+                    text: flavour, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
                 PosColumn(
                     text: '',
                     width: 5,
@@ -1893,99 +1292,57 @@ class USBPrintClass {
         bytes += generator.hr();
       }
       bytes += generator.emptyLines(1);
-      if (showGrossAmount){
+      if (showGrossAmount) {
         bytes += generator.row([
           PosColumn(
               text: "Gross Amount",
               width: 5,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: roundStringWith(grossAmount),
-              width: 7,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: roundStringWith(grossAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
         ]);
-    }
+      }
       if (hideTaxDetails) {
         bytes += generator.row([
           PosColumn(
               text: "SGST ",
               width: 5,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: roundStringWith(sGstAmount),
-              width: 7,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: roundStringWith(sGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
         ]);
 
         bytes += generator.row([
           PosColumn(
               text: "CGST",
               width: 5,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: roundStringWith(cGstAmount),
-              width: 7,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: roundStringWith(cGstAmount), width: 7, styles: const PosStyles(align: PosAlign.right)),
         ]);
 
         bytes += generator.row([
           PosColumn(
               text: " ",
               width: 8,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: "---------",
-              width: 4,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: "---------", width: 4, styles: const PosStyles(align: PosAlign.right)),
         ]);
 
         bytes += generator.row([
           PosColumn(
               text: "Total Tax",
               width: 5,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: roundStringWith(totalTax),
-              width: 7,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: roundStringWith(totalTax), width: 7, styles: const PosStyles(align: PosAlign.right)),
         ]);
       }
-      if (showDiscountInPrint){
+      if (showDiscountInPrint) {
         bytes += generator.row([
           PosColumn(
               text: "Discount",
               width: 5,
-              styles: const PosStyles(
-                  fontType: PosFontType.fontA,
-                  height: PosTextSize.size1,
-                  width: PosTextSize.size1,
-                  align: PosAlign.left)),
-          PosColumn(
-              text: roundStringWith(discount),
-              width: 7,
-              styles: const PosStyles(align: PosAlign.right)),
+              styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+          PosColumn(text: roundStringWith(discount), width: 7, styles: const PosStyles(align: PosAlign.right)),
         ]);
-    }
+      }
       bytes += generator.hr();
       bytes += generator.row([
         PosColumn(
@@ -2016,45 +1373,24 @@ class USBPrintClass {
             PosColumn(
                 text: "Cash receipt",
                 width: 5,
-                styles: const PosStyles(
-                    fontType: PosFontType.fontA,
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.left)),
-            PosColumn(
-                text: roundStringWith(cashReceived),
-                width: 7,
-                styles: const PosStyles(align: PosAlign.right)),
+                styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+            PosColumn(text: roundStringWith(cashReceived), width: 7, styles: const PosStyles(align: PosAlign.right)),
           ]);
 
           bytes += generator.row([
             PosColumn(
                 text: "Bank receipt",
                 width: 5,
-                styles: const PosStyles(
-                    fontType: PosFontType.fontA,
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.left)),
-            PosColumn(
-                text: roundStringWith(bankReceived),
-                width: 7,
-                styles: const PosStyles(align: PosAlign.right)),
+                styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+            PosColumn(text: roundStringWith(bankReceived), width: 7, styles: const PosStyles(align: PosAlign.right)),
           ]);
 
           bytes += generator.row([
             PosColumn(
                 text: "Balance",
                 width: 5,
-                styles: const PosStyles(
-                    fontType: PosFontType.fontA,
-                    height: PosTextSize.size1,
-                    width: PosTextSize.size1,
-                    align: PosAlign.left)),
-            PosColumn(
-                text: roundStringWith(balance),
-                width: 7,
-                styles: const PosStyles(align: PosAlign.right)),
+                styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.left)),
+            PosColumn(text: roundStringWith(balance), width: 7, styles: const PosStyles(align: PosAlign.right)),
           ]);
           bytes += generator.hr();
         }
@@ -2068,16 +1404,14 @@ class USBPrintClass {
       }
 
       print("-------------------------------------------- Start $bytes");
-      final res =
-      await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
+      final res = await usb_esc_printer_windows.sendPrintRequest(bytes, defaultIP);
       print(res);
       String msg = "";
 
       if (res == "success") {
         msg = "Printed Successfully";
       } else {
-        msg =
-        "Failed to generate a print please make sure to use the correct printer name";
+        msg = "Failed to generate a print please make sure to use the correct printer name";
       }
     } catch (e) {
       print("error in ${e.toString()}");
@@ -2140,10 +1474,8 @@ class USBPrintClass {
           for (var i = 0; i < printListData.length; i++) {
             try {
               dataPrint.clear();
-              await kotPrintConnect(printListData[i].ip, i,
-                  printListData[i].items, false, isUpdate);
-              await Future.delayed(
-                  const Duration(seconds: 1)); // Add a delay between print jobs
+              await kotPrintConnect(printListData[i].ip, i, printListData[i].items, false, isUpdate);
+              await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
             } catch (e) {
               print('log ${e.toString()}');
               print(e.toString());
@@ -2154,10 +1486,8 @@ class USBPrintClass {
           for (var i = 0; i < cancelOrder.length; i++) {
             try {
               dataPrint.clear();
-              await kotPrintConnect(printListDataCancel[i].ip, i,
-                  printListDataCancel[i].items, true, false);
-              await Future.delayed(
-                  const Duration(seconds: 1)); // Add a delay between print jobs
+              await kotPrintConnect(printListDataCancel[i].ip, i, printListDataCancel[i].items, true, false);
+              await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
             } catch (e) {
               print('log ${e.toString()}');
               print(e.toString());
@@ -2177,9 +1507,8 @@ class USBPrintClass {
       } catch (e) {}
     }
   }
-
-  Future<void> kotPrintConnect(
-      String printerIp, id, items, bool isCancelNote, isUpdate) async {
+// kot action
+  Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var temp = prefs.getString("template") ?? "template4";
@@ -2195,8 +1524,7 @@ class USBPrintClass {
       if (temp == 'template4') {
         await kotPrint(printerIp, profile, id, items, isCancelNote, isUpdate);
       } else if (temp == 'template3') {
-        await kotPrintGst(
-            printerIp, profile, id, items, isCancelNote, isUpdate);
+        await kotPrintGst(printerIp, profile, id, items, isCancelNote, isUpdate);
       } else {}
     } catch (e) {
       print('------------------------------${e.toString()}');
@@ -2204,8 +1532,7 @@ class USBPrintClass {
   }
 
   /// Direct text method
-  Future<void> kotPrint(
-      printerAddress, profile, id, items, bool isCancelNote, isUpdate) async {
+  Future<void> kotPrint(printerAddress, profile, id, items, bool isCancelNote, isUpdate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userName = prefs.getString('user_name') ?? "";
     bool showUsernameKot = prefs.getBool('show_username_kot') ?? false;
@@ -2234,8 +1561,7 @@ class USBPrintClass {
     var orderType = dataPrint[0].orderTypeI ?? "";
 
     bytes += generator.setStyles(const PosStyles.defaults());
-    bytes += generator.setStyles(
-        PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+    bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
@@ -2243,99 +1569,55 @@ class USBPrintClass {
     var updateNoteArabic = "تم إجراء بعض التغييرات في";
     var updateNote = "MADE SOME CHANGES IN";
 
-    Uint8List cancelNoteEnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString(cancelNoteArabic));
-    Uint8List updateNoteEnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString(updateNoteArabic));
+    Uint8List cancelNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(cancelNoteArabic));
+    Uint8List updateNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(updateNoteArabic));
 
     var invoiceType = "KOT";
     var invoiceTypeArabic = "طباعة المطب";
 
-    Uint8List typeEng =
-    await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
-    Uint8List typeArabic = await CharsetConverter.encode(
-        "ISO-8859-6", setString(invoiceTypeArabic));
+    Uint8List typeEng = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
 
     bytes += generator.textEncoded(typeEng,
-        styles: const PosStyles(
-            height: PosTextSize.size3,
-            width: PosTextSize.size5,
-            align: PosAlign.center,
-            fontType: PosFontType.fontB,
-            bold: true));
-    bytes += generator
-        .setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        styles:
+            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     bytes += generator.textEncoded(typeArabic,
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center,
-            fontType: PosFontType.fontA,
-            bold: true));
+        styles:
+            const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (isCancelNote) {
       bytes += generator.text(cancelNoteData,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontB,
-              bold: true));
-      bytes += generator.setStyles(
-          PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+          styles:
+              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+      bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       bytes += generator.textEncoded(cancelNoteEnc,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontA,
-              bold: true));
+          styles:
+              const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     }
     print("-----3");
     if (isUpdate) {
       bytes += generator.text(updateNote,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontB,
-              bold: true));
-      bytes += generator.setStyles(
-          PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+          styles:
+              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+      bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       bytes += generator.textEncoded(updateNoteEnc,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontA,
-              bold: true));
+          styles:
+              const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     }
 
-    Uint8List tokenEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
+    Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     bytes += generator.hr();
-    bytes += generator.text('Token No',
-        styles: const PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            bold: true,
-            align: PosAlign.center));
+    bytes +=
+        generator.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text(tokenNumber,
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size2,
-            bold: true,
-            align: PosAlign.center));
+    bytes +=
+        generator.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
     bytes += generator.textEncoded(tokenEnc,
-        styles: const PosStyles(
-            bold: true,
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+        styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     bytes += generator.hr();
     print("-----4");
 
@@ -2344,75 +1626,35 @@ class USBPrintClass {
         PosColumn(
             text: 'User name     :',
             width: 4,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
-            text: userName,
-            width: 8,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
     if (showDateTimeKot) {
       bytes += generator.row([
         PosColumn(
-            text: 'Time    :',
-            width: 4,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
             text: convertDateAndTime(currentTime),
             width: 8,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
     bytes += generator.row([
-      PosColumn(
-          text: 'Kitchen name :',
-          width: 4,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: kitchenName,
-          width: 8,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Kitchen name :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: kitchenName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     bytes += generator.row([
-      PosColumn(
-          text: 'Order type       :',
-          width: 4,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: orderType,
-          width: 8,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Order type       :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: orderType, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     if (orderType == "Dining") {
       bytes += generator.row([
-        PosColumn(
-            text: 'Table Name       :',
-            width: 4,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            text: tableName,
-            width: 8,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: 'Table Name       :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: tableName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
     print("-----5");
@@ -2432,11 +1674,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: 'Qty',
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.hr();
     print("-----5.5");
@@ -2445,8 +1683,7 @@ class USBPrintClass {
       print("-----5.6");
       var productDescription = dataPrint[i].productDescription;
 
-      Uint8List productName = await CharsetConverter.encode(
-          "ISO-8859-6", setString(dataPrint[i].productName));
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
 
       print("-----5.7");
       bytes += generator.row([
@@ -2456,37 +1693,19 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            textEncoded: productName,
-            width: 8,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            text: dataPrint[i].qty,
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(textEncoded: productName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: dataPrint[i].qty, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       if (productDescription != "") {
-        Uint8List productDescriptionEnc = await CharsetConverter.encode(
-            "ISO-8859-6", setString(productDescription));
+        Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription));
         bytes += generator.textEncoded(productDescriptionEnc,
-            styles: const PosStyles(
-
-                height: PosTextSize.size1,
-                width: PosTextSize.size2,
-                align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size2, align: PosAlign.center));
       }
 
       if (dataPrint[i].flavour != "") {
-        Uint8List flavour = await CharsetConverter.encode(
-            "ISO-8859-6", setString(dataPrint[i].flavour));
-        bytes += generator.textEncoded(flavour,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+        Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].flavour));
+        bytes += generator.textEncoded(flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
       bytes += generator.hr();
     }
@@ -2496,39 +1715,28 @@ class USBPrintClass {
       PosColumn(
           text: 'Total quantity',
           width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              fontType: PosFontType.fontB,
-              bold: true)),
+          styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true)),
       PosColumn(text: '', width: 7),
       PosColumn(
           text: roundStringWith(totalQty),
           width: 2,
-          styles: (const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              fontType: PosFontType.fontB,
-              bold: true,
-              align: PosAlign.right))),
+          styles:
+              (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     bytes += generator.cut();
-    bytes +=generator.beep(duration: PosBeepDuration.beep300ms);
+    bytes += generator.beep(duration: PosBeepDuration.beep300ms);
     print("-----8   $printerAddress");
-    final res =
-    await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
-      msg =
-      "Failed to generate a print please make sure to use the correct printer name";
+      msg = "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
   /// Direct text method for Gst company
-  Future<void> kotPrintGst(
-      printerAddress, profile, id, items, bool isCancelNote, isUpdate) async {
+  Future<void> kotPrintGst(printerAddress, profile, id, items, bool isCancelNote, isUpdate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var userName = prefs.getString('user_name') ?? "";
@@ -2554,48 +1762,28 @@ class USBPrintClass {
     var updateNote = "MADE SOME CHANGES IN";
     var invoiceType = "KOT";
     bytes += generator.text(invoiceType,
-        styles: const PosStyles(
-            height: PosTextSize.size3,
-            width: PosTextSize.size5,
-            align: PosAlign.center,
-            fontType: PosFontType.fontB,
-            bold: true));
+        styles:
+            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (isCancelNote) {
       bytes += generator.text(cancelNoteData,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontB,
-              bold: true));
+          styles:
+              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
 
     if (isUpdate) {
       bytes += generator.text(updateNote,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontB,
-              bold: true));
+          styles:
+              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
     }
 
     bytes += generator.hr();
-    bytes += generator.text('Token No',
-        styles: const PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            bold: true,
-            align: PosAlign.center));
+    bytes +=
+        generator.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text(tokenNumber,
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size2,
-            bold: true,
-            align: PosAlign.center));
+    bytes +=
+        generator.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
     bytes += generator.hr();
 
@@ -2604,35 +1792,19 @@ class USBPrintClass {
         PosColumn(
             text: 'User name     :',
             width: 4,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
-            text: userName,
-            width: 8,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
     if (showDateTimeKot) {
       bytes += generator.row([
         PosColumn(
-            text: 'Time    :',
-            width: 4,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
             text: convertDateAndTime(currentTime),
             width: 8,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
 
@@ -2640,34 +1812,17 @@ class USBPrintClass {
       PosColumn(
           text: 'Kitchen name     :',
           width: 4,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1)),
+          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       PosColumn(
-          text: kitchenName,
-          width: 8,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1)),
+          text: kitchenName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     bytes += generator.row([
       PosColumn(
           text: 'Order type       :',
           width: 4,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1)),
-      PosColumn(
-          text: orderType,
-          width: 8,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1)),
+          styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: orderType, width: 8, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     if (orderType == "Dining") {
@@ -2675,22 +1830,12 @@ class USBPrintClass {
         PosColumn(
             text: 'Table Name       :',
             width: 4,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
-            text: tableName,
-            width: 8,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            text: tableName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
 
-    // bytes +=generator.setStyles(const PosStyles.defaults());
-    // bytes +=generator.setStyles(const PosStyles(codeTable: 'CP864'));
     bytes += generator.hr();
     bytes += generator.row([
       PosColumn(
@@ -2705,11 +1850,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: 'Qty',
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.hr();
 
@@ -2725,16 +1866,8 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: dataPrint[i].productName,
-            width: 8,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            text: roundStringWith(dataPrint[i].qty),
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: dataPrint[i].productName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: roundStringWith(dataPrint[i].qty), width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       if (productDescription != "") {
@@ -2745,20 +1878,13 @@ class USBPrintClass {
               styles: const PosStyles(
                 height: PosTextSize.size1,
               )),
-          PosColumn(
-              text: productDescription,
-              width: 10,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, width: PosTextSize.size1)),
+          PosColumn(text: productDescription, width: 10, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         ]);
       }
 
       if (dataPrint[i].flavour != "") {
         bytes += generator.text(dataPrint[i].flavour,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
       bytes += generator.hr();
     }
@@ -2767,37 +1893,26 @@ class USBPrintClass {
       PosColumn(
           text: 'Total quantity',
           width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              fontType: PosFontType.fontB,
-              bold: true)),
+          styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true)),
       PosColumn(text: '', width: 7),
       PosColumn(
           text: roundStringWith(totalQty),
           width: 2,
-          styles: (const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              fontType: PosFontType.fontB,
-              bold: true,
-              align: PosAlign.right))),
+          styles:
+              (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     bytes += generator.cut();
-    final res =
-    await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
-      msg =
-      "Failed to generate a print please make sure to use the correct printer name";
+      msg = "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
   /// Image method
-  Future<void> kotPrintImage(
-      printerAddress, profile, id, items, bool isCancelNote, isUpdate) async {
+  Future<void> kotPrintImage(printerAddress, profile, id, items, bool isCancelNote, isUpdate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var userName = prefs.getString('user_name') ?? "";
@@ -2827,8 +1942,7 @@ class USBPrintClass {
     var orderType = dataPrint[0].orderTypeI ?? "";
 
     bytes += generator.setStyles(const PosStyles.defaults());
-    bytes += generator.setStyles(
-        PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
+    bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.center));
 
     var cancelNoteArabic = "تم إلغاء هذا العنصر من قبل العميل.";
     var cancelNoteData = "THIS ITEM WAS CANCELLED BY THE CUSTOMER.";
@@ -2836,99 +1950,55 @@ class USBPrintClass {
     var updateNoteArabic = "تم إجراء بعض التغييرات في";
     var updateNote = "MADE SOME CHANGES IN";
 
-    Uint8List cancelNoteEnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString(cancelNoteArabic));
-    Uint8List updateNoteEnc = await CharsetConverter.encode(
-        "ISO-8859-6", setString(updateNoteArabic));
+    Uint8List cancelNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(cancelNoteArabic));
+    Uint8List updateNoteEnc = await CharsetConverter.encode("ISO-8859-6", setString(updateNoteArabic));
 
     var invoiceType = "KOT";
     var invoiceTypeArabic = "(طباعة المطب";
 
-    Uint8List typeEng =
-    await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
-    Uint8List typeArabic = await CharsetConverter.encode(
-        "ISO-8859-6", setString(invoiceTypeArabic));
+    Uint8List typeEng = await CharsetConverter.encode("ISO-8859-6", setString(invoiceType));
+    Uint8List typeArabic = await CharsetConverter.encode("ISO-8859-6", setString(invoiceTypeArabic));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
 
     bytes += generator.textEncoded(typeEng,
-        styles: const PosStyles(
-            height: PosTextSize.size3,
-            width: PosTextSize.size5,
-            align: PosAlign.center,
-            fontType: PosFontType.fontB,
-            bold: true));
-    bytes += generator
-        .setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+        styles:
+            const PosStyles(height: PosTextSize.size3, width: PosTextSize.size5, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+    bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
     bytes += generator.textEncoded(typeArabic,
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center,
-            fontType: PosFontType.fontA,
-            bold: true));
+        styles:
+            const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
 
     if (isCancelNote) {
       bytes += generator.text(cancelNoteData,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontB,
-              bold: true));
-      bytes += generator.setStyles(
-          PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+          styles:
+              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+      bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       bytes += generator.textEncoded(cancelNoteEnc,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontA,
-              bold: true));
+          styles:
+              const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     }
     print("-----3");
     if (isUpdate) {
       bytes += generator.text(updateNote,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontB,
-              bold: true));
-      bytes += generator.setStyles(
-          PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
+          styles:
+              const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontB, bold: true));
+      bytes += generator.setStyles(PosStyles(codeTable: defaultCodePage, align: PosAlign.left));
       bytes += generator.textEncoded(updateNoteEnc,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.center,
-              fontType: PosFontType.fontA,
-              bold: true));
+          styles:
+              const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
     }
 
-    Uint8List tokenEnc =
-    await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
+    Uint8List tokenEnc = await CharsetConverter.encode("ISO-8859-6", setString('رمز'));
     bytes += generator.hr();
-    bytes += generator.text('Token No',
-        styles: const PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            bold: true,
-            align: PosAlign.center));
+    bytes +=
+        generator.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text(tokenNumber,
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size2,
-            bold: true,
-            align: PosAlign.center));
+    bytes +=
+        generator.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
     bytes += generator.text('', styles: const PosStyles(align: PosAlign.left));
     bytes += generator.textEncoded(tokenEnc,
-        styles: const PosStyles(
-            bold: true,
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+        styles: const PosStyles(bold: true, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
     bytes += generator.hr();
     print("-----4");
 
@@ -2937,75 +2007,35 @@ class USBPrintClass {
         PosColumn(
             text: 'User name     :',
             width: 4,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
-            text: userName,
-            width: 8,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            text: userName, width: 8, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
     if (showDateTimeKot) {
       bytes += generator.row([
         PosColumn(
-            text: 'Time    :',
-            width: 4,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            text: 'Time    :', width: 4, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(
             text: convertDateAndTime(currentTime),
             width: 8,
-            styles: const PosStyles(
-                fontType: PosFontType.fontA,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1)),
+            styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
     bytes += generator.row([
-      PosColumn(
-          text: 'Kitchen name :',
-          width: 4,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: kitchenName,
-          width: 8,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Kitchen name :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: kitchenName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     bytes += generator.row([
-      PosColumn(
-          text: 'Order type       :',
-          width: 4,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
-      PosColumn(
-          text: orderType,
-          width: 8,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: 'Order type       :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: orderType, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     if (orderType == "Dining") {
       bytes += generator.row([
-        PosColumn(
-            text: 'Table Name       :',
-            width: 4,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            text: tableName,
-            width: 8,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: 'Table Name       :', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: tableName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
       ]);
     }
     print("-----5");
@@ -3025,11 +2055,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: 'Qty',
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: 'Qty', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.hr();
     print("-----5.5");
@@ -3038,8 +2064,7 @@ class USBPrintClass {
       print("-----5.6");
       var productDescription = dataPrint[i].productDescription;
 
-      Uint8List productName = await CharsetConverter.encode(
-          "ISO-8859-6", setString(dataPrint[i].productName));
+      Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].productName));
 
       print("-----5.7");
       bytes += generator.row([
@@ -3049,36 +2074,19 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            textEncoded: productName,
-            width: 8,
-            styles: const PosStyles(
-                height: PosTextSize.size1, width: PosTextSize.size1)),
-        PosColumn(
-            text: dataPrint[i].qty,
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(textEncoded: productName, width: 8, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
+        PosColumn(text: dataPrint[i].qty, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       if (productDescription != "") {
-        Uint8List productDescriptionEnc = await CharsetConverter.encode(
-            "ISO-8859-6", setString(productDescription));
+        Uint8List productDescriptionEnc = await CharsetConverter.encode("ISO-8859-6", setString(productDescription));
         bytes += generator.textEncoded(productDescriptionEnc,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (dataPrint[i].flavour != "") {
-        Uint8List flavour = await CharsetConverter.encode(
-            "ISO-8859-6", setString(dataPrint[i].flavour));
-        bytes += generator.textEncoded(flavour,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.center));
+        Uint8List flavour = await CharsetConverter.encode("ISO-8859-6", setString(dataPrint[i].flavour));
+        bytes += generator.textEncoded(flavour, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
       bytes += generator.hr();
     }
@@ -3088,37 +2096,26 @@ class USBPrintClass {
       PosColumn(
           text: 'Total quantity',
           width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              fontType: PosFontType.fontB,
-              bold: true)),
+          styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true)),
       PosColumn(text: '', width: 7),
       PosColumn(
           text: roundStringWith(totalQty),
           width: 2,
-          styles: (const PosStyles(
-              height: PosTextSize.size2,
-              width: PosTextSize.size1,
-              fontType: PosFontType.fontB,
-              bold: true,
-              align: PosAlign.right))),
+          styles:
+              (const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontB, bold: true, align: PosAlign.right))),
     ]);
     bytes += generator.cut();
     print("-----8   $printerAddress");
-    final res =
-    await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
-      msg =
-      "Failed to generate a print please make sure to use the correct printer name";
+      msg = "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
-  Future<void> printDailyReport(
-      printerAddress, profile, id, items, bool isCancelNote, isUpdate) async {
+  Future<void> printDailyReport(printerAddress, profile, id, items, bool isCancelNote, isUpdate) async {
     List<int> bytes = [];
     final generator = Generator(PaperSize.mm80, profile);
 
@@ -3145,14 +2142,9 @@ class USBPrintClass {
     var totalBankAmount = "3500";
     var totalBankCredit = "500";
 
-    bytes += generator
-        .setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+    bytes += generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
 
-    bytes += generator.text(invoiceType,
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    bytes += generator.text(invoiceType, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
     bytes += generator.hr();
     bytes += generator.emptyLines(1);
     bytes += generator.row([
@@ -3168,11 +2160,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: userName,
-          width: 7,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: userName, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     bytes += generator.row([
@@ -3188,21 +2176,13 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: fromTime,
-          width: 7,
-          styles: const PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1)),
+      PosColumn(text: fromTime, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
     ]);
 
     bytes += generator.hr();
     bytes += generator.emptyLines(2);
 
-    bytes += generator.text("Sales Order",
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    bytes += generator.text("Sales Order", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
     bytes += generator.emptyLines(1);
     bytes += generator.row([
       PosColumn(
@@ -3211,18 +2191,11 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: "",
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(
           text: roundStringWith(grossAmount),
           width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
+          styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3237,11 +2210,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(discount),
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(discount), width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3256,20 +2225,12 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(totalTax),
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(totalTax), width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
     bytes += generator.hr();
     bytes += generator.emptyLines(2);
-    bytes += generator.text("Order Details",
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    bytes += generator.text("Order Details", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
     bytes += generator.emptyLines(1);
 
     bytes += generator.row([
@@ -3279,22 +2240,14 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(noOfOrders),
-          width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(noOfOrders), width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(
           text: "Amount",
           width: 2,
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(ordersAmount),
-          width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(ordersAmount), width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3303,32 +2256,20 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(noOfCanceled),
-          width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(noOfCanceled), width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(
           text: "Amount",
           width: 2,
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(canceledAmount),
-          width: 3,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(canceledAmount), width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
     bytes += generator.hr(ch: "=");
     bytes += generator.emptyLines(2);
 
-    bytes += generator.text("Effective sale",
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    bytes += generator.text("Effective sale", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
     bytes += generator.emptyLines(1);
     bytes += generator.row([
       PosColumn(
@@ -3337,18 +2278,11 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: "",
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(
           text: roundStringWith(grossAmountSale),
           width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
+          styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3363,11 +2297,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(discountSale),
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(discountSale), width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3382,11 +2312,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(totalTaxSale),
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(totalTaxSale), width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3401,20 +2327,12 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(grandTotalSale),
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(grandTotalSale), width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
     bytes += generator.hr(ch: "=");
     bytes += generator.emptyLines(2);
-    bytes += generator.text("Sale by type",
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    bytes += generator.text("Sale by type", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
     bytes += generator.emptyLines(1);
     bytes += generator.hr();
     bytes += generator.row([
@@ -3431,11 +2349,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: "Amount",
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, bold: true, align: PosAlign.right)),
+      PosColumn(text: "Amount", width: 5, styles: const PosStyles(height: PosTextSize.size1, bold: true, align: PosAlign.right)),
     ]);
     bytes += generator.hr();
     bytes += generator.row([
@@ -3451,11 +2365,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(diningAmount),
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(diningAmount), width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
     bytes += generator.row([
@@ -3471,11 +2381,7 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(takeAwayAmount),
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(takeAwayAmount), width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3490,19 +2396,11 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: roundStringWith(carAmount),
-          width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: roundStringWith(carAmount), width: 5, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.hr(ch: "=");
     bytes += generator.emptyLines(2);
-    bytes += generator.text("Total revenue",
-        styles: const PosStyles(
-            height: PosTextSize.size2,
-            width: PosTextSize.size1,
-            align: PosAlign.center));
+    bytes += generator.text("Total revenue", styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center));
     bytes += generator.emptyLines(1);
     bytes += generator.row([
       PosColumn(
@@ -3511,18 +2409,11 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: "",
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(
           text: roundStringWith(totalCashAmount),
           width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
+          styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3531,18 +2422,11 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: "",
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(
           text: roundStringWith(totalBankAmount),
           width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
+          styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
     ]);
     bytes += generator.row([
       PosColumn(
@@ -3551,29 +2435,20 @@ class USBPrintClass {
           styles: const PosStyles(
             height: PosTextSize.size1,
           )),
-      PosColumn(
-          text: "",
-          width: 2,
-          styles: const PosStyles(
-              height: PosTextSize.size1, align: PosAlign.right)),
+      PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       PosColumn(
           text: roundStringWith(totalBankCredit),
           width: 5,
-          styles: const PosStyles(
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              align: PosAlign.right)),
+          styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
     ]);
 
     bytes += generator.cut();
-    final res =
-    await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, printerAddress);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
-      msg =
-      "Failed to generate a print please make sure to use the correct printer name";
+      msg = "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
@@ -3597,14 +2472,8 @@ class USBPrintClass {
       profile = await CapabilityProfile.load(name: capabilities);
     }
     final generator = Generator(PaperSize.mm80, profile);
-    bytes += generator
-        .setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
-    bytes += generator.text(date,
-        styles: const PosStyles(
-            height: PosTextSize.size1,
-            width: PosTextSize.size1,
-            align: PosAlign.center,
-            bold: true));
+    bytes += generator.setStyles(const PosStyles(codeTable: 'CP864', align: PosAlign.center));
+    bytes += generator.text(date, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center, bold: true));
     if (invoiceType == "Sales report" ||
         invoiceType == "Dining report" ||
         invoiceType == "TakeAway report" ||
@@ -3624,37 +2493,19 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: 'Voucher No',
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.center)),
-        PosColumn(
-            text: 'Ledger Name',
-            width: 4,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.center)),
-        PosColumn(
-            text: 'Amount',
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: 'Voucher No', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Ledger Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Amount', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
       bytes += generator.hr();
-      print(
-          "------------------template   ------------------template   $template");
+      print("------------------template   ------------------template   $template");
       if (template == 'template4') {
-        Uint8List slNoEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
-        Uint8List dateEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
-        Uint8List voucherNoEnc = await CharsetConverter.encode(
-            "ISO-8859-6", setString("رقم القسيمة"));
+        Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
+        Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
+        Uint8List voucherNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم القسيمة"));
 
-        Uint8List ledgerNameEnc = await CharsetConverter.encode(
-            "ISO-8859-6", setString("اسم دفتر الأستاذ"));
-        Uint8List rateEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
+        Uint8List ledgerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("اسم دفتر الأستاذ"));
+        Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("معدل"));
 
         bytes += generator.row([
           PosColumn(
@@ -3663,26 +2514,10 @@ class USBPrintClass {
               styles: const PosStyles(
                 height: PosTextSize.size1,
               )),
-          PosColumn(
-              textEncoded: dateEnc,
-              width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: voucherNoEnc,
-              width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: ledgerNameEnc,
-              width: 4,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: rateEnc,
-              width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.right)),
+          PosColumn(textEncoded: dateEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: voucherNoEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: ledgerNameEnc, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: rateEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         ]);
 
         bytes += generator.hr();
@@ -3691,8 +2526,7 @@ class USBPrintClass {
       print("----------------------------------$details");
 
       for (var i = 0; i < details.length; i++) {
-        Uint8List ledgerName = await CharsetConverter.encode(
-            "ISO-8859-6", setString(details[i]["CustomerName"]));
+        Uint8List ledgerName = await CharsetConverter.encode("ISO-8859-6", setString(details[i]["CustomerName"]));
         bytes += generator.row([
           PosColumn(
               text: (i + 1).toString(),
@@ -3700,26 +2534,13 @@ class USBPrintClass {
               styles: const PosStyles(
                 height: PosTextSize.size1,
               )),
-          PosColumn(
-              text: details[i]["Date"],
-              width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              text: details[i]["VoucherNo"],
-              width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: ledgerName,
-              width: 4,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(text: details[i]["Date"], width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(text: details[i]["VoucherNo"], width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: ledgerName, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
           PosColumn(
               text: roundStringWith(details[i]["GrandTotal"].toString()),
               width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 
@@ -3731,18 +2552,11 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: "",
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: roundStringWith(totalCash),
             width: 5,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       bytes += generator.row([
@@ -3752,18 +2566,11 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: "",
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: roundStringWith(totalBank),
             width: 5,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       bytes += generator.row([
@@ -3773,18 +2580,11 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: "",
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: roundStringWith(totalCredit),
             width: 5,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       bytes += generator.row([
@@ -3794,18 +2594,11 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: "",
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: roundStringWith(totalGrand),
             width: 5,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     } else {
       bytes += generator.hr();
@@ -3822,37 +2615,19 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: 'Voucher No',
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.center)),
-        PosColumn(
-            text: 'Ledger Name',
-            width: 4,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.center)),
-        PosColumn(
-            text: 'Amount',
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: 'Voucher No', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Ledger Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+        PosColumn(text: 'Amount', width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
       ]);
       bytes += generator.hr();
-      print(
-          "------------------template   ------------------template   $template");
+      print("------------------template   ------------------template   $template");
       if (template == 'template4') {
-        Uint8List slNoEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
-        Uint8List dateEnc =
-        await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
-        Uint8List unitName =
-        await CharsetConverter.encode("ISO-8859-6", setString("وحدة"));
+        Uint8List slNoEnc = await CharsetConverter.encode("ISO-8859-6", setString("رقم"));
+        Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString("تاريخ"));
+        Uint8List unitName = await CharsetConverter.encode("ISO-8859-6", setString("وحدة"));
 
-        Uint8List productNameEnc = await CharsetConverter.encode(
-            "ISO-8859-6", setString("اسم المنتج"));
-        Uint8List rateEnc = await CharsetConverter.encode(
-            "ISO-8859-6", setString("عدد السلعة المباعة"));
+        Uint8List productNameEnc = await CharsetConverter.encode("ISO-8859-6", setString("اسم المنتج"));
+        Uint8List rateEnc = await CharsetConverter.encode("ISO-8859-6", setString("عدد السلعة المباعة"));
 
         bytes += generator.row([
           PosColumn(
@@ -3861,26 +2636,10 @@ class USBPrintClass {
               styles: const PosStyles(
                 height: PosTextSize.size1,
               )),
-          PosColumn(
-              textEncoded: dateEnc,
-              width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: unitName,
-              width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: productNameEnc,
-              width: 4,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: rateEnc,
-              width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.right)),
+          PosColumn(textEncoded: dateEnc, width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: unitName, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: productNameEnc, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: rateEnc, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         ]);
 
         bytes += generator.hr();
@@ -3889,10 +2648,8 @@ class USBPrintClass {
       print("----------------------------------$details");
 
       for (var i = 0; i < details.length; i++) {
-        Uint8List productName = await CharsetConverter.encode(
-            "ISO-8859-6", setString(details[i]["ProductName"]));
-        Uint8List unitName = await CharsetConverter.encode(
-            "ISO-8859-6", setString(details[i]["UnitName"]));
+        Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(details[i]["ProductName"]));
+        Uint8List unitName = await CharsetConverter.encode("ISO-8859-6", setString(details[i]["UnitName"]));
         bytes += generator.row([
           PosColumn(
               text: (i + 1).toString(),
@@ -3900,26 +2657,13 @@ class USBPrintClass {
               styles: const PosStyles(
                 height: PosTextSize.size1,
               )),
-          PosColumn(
-              text: details[i]["date"],
-              width: 3,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: unitName,
-              width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
-          PosColumn(
-              textEncoded: productName,
-              width: 4,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(text: details[i]["date"], width: 3, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: unitName, width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
+          PosColumn(textEncoded: productName, width: 4, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.center)),
           PosColumn(
               text: roundStringWith(details[i]["noOfSold"].toString()),
               width: 2,
-              styles: const PosStyles(
-                  height: PosTextSize.size1, align: PosAlign.right)),
+              styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         ]);
       }
 
@@ -3931,18 +2675,11 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: "",
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: roundStringWith(totalCash),
             width: 5,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
 
       bytes += generator.row([
@@ -3952,32 +2689,23 @@ class USBPrintClass {
             styles: const PosStyles(
               height: PosTextSize.size1,
             )),
-        PosColumn(
-            text: "",
-            width: 2,
-            styles: const PosStyles(
-                height: PosTextSize.size1, align: PosAlign.right)),
+        PosColumn(text: "", width: 2, styles: const PosStyles(height: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(
             text: roundStringWith(totalGrand),
             width: 5,
-            styles: const PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                align: PosAlign.right)),
+            styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
       ]);
     }
 
     bytes += generator.hr(ch: "=");
 
     bytes += generator.cut();
-    final res =
-    await usb_esc_printer_windows.sendPrintRequest(bytes, printerIP);
+    final res = await usb_esc_printer_windows.sendPrintRequest(bytes, printerIP);
     String msg = "";
     if (res == "success") {
       msg = "Printed Successfully";
     } else {
-      msg =
-      "Failed to generate a print please make sure to use the correct printer name";
+      msg = "Failed to generate a print please make sure to use the correct printer name";
     }
   }
 
@@ -4162,13 +2890,7 @@ class USBPrintClass {
 }
 
 class ProductDetailsModel {
-  final String unitName,
-      qty,
-      netAmount,
-      flavourName,
-      productName,
-      unitPrice,
-      productDescription;
+  final String unitName, qty, netAmount, flavourName, productName, unitPrice, productDescription;
 
   ProductDetailsModel({
     required this.unitName,

@@ -239,7 +239,7 @@ pr("----------------------------------------------------------------------------
         );
 
       case 6 :
-      Get.to(TabPosListDesign());
+    //  Get.to(TabPosListDesign());
       break;
     }
   }
@@ -515,23 +515,23 @@ pr("----------------------------------------------------------------------------
                                   ],
                                 )),
                             const PopupMenuDivider(),
-                            PopupMenuItem<int>(
-                                value: 6,
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.dashboard,
-                                      color: Colors.red,
-                                    ),
-                                    const SizedBox(
-                                      width: 7,
-                                    ),
-                                    Text(
-                                      'New POS (Beta Version)',
-                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
-                                    )
-                                  ],
-                                )),
+                            // PopupMenuItem<int>(
+                            //     value: 6,
+                            //     child: Row(
+                            //       children: [
+                            //         const Icon(
+                            //           Icons.dashboard,
+                            //           color: Colors.red,
+                            //         ),
+                            //         const SizedBox(
+                            //           width: 7,
+                            //         ),
+                            //         Text(
+                            //           'New POS (Beta Version)',
+                            //           style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                            //         )
+                            //       ],
+                            //     )),
                           ],
                           icon: const Icon(
                             Icons.more_vert,
