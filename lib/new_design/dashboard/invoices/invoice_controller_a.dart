@@ -316,7 +316,8 @@ class InvoiceControllerA extends GetxController{
 
 
   // Method to make the API call with an authentication token
-  void createSalesReturn() async {
+  void createSalesReturn(BuildContext context) async {
+  start(context);
      String apiUrl = '${BaseUrl.baseUrlV11}/salesReturns/sales-return-rassasy/';
      SharedPreferences prefs = await SharedPreferences.getInstance();
      int userID = prefs.getInt('user_id') ?? 0;
@@ -344,17 +345,23 @@ class InvoiceControllerA extends GetxController{
 
       // Check for successful response
       if (response.statusCode == 200) {
+        stop();
         final responseBody = jsonDecode(response.body);
         if (responseBody['StatusCode'] == 6000) {
           print('Success: ${responseBody['message']}');
+
           Get.back();
+
         } else {
+          stop();
           print('Error: ${responseBody['message']}');
         }
       } else {
+        stop();
         print('Failed to connect to the API');
       }
     } catch (e) {
+      stop();
       print('Exception: $e');
     }
   }

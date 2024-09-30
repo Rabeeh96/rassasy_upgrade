@@ -74,7 +74,7 @@ var imageData;
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Scaffold(
         appBar: isTablet
             ? AppBar(
@@ -161,7 +161,7 @@ var imageData;
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = screenWidth > defaultScreenWidth;
+
     return Builder(
       builder: (BuildContext context) {
         return ListView(

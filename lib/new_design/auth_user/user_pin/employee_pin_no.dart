@@ -111,7 +111,8 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
       bool isTablet = enableTabDesign;
-  //     bool isTablet = screenWidth > defaultScreenWidth;
+      print("-------$isTablet");
+
     return Scaffold(
 
         body: Container(
@@ -278,7 +279,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
               pr("-------------------------------------------------------------------------------------------33333");
               prefs.setBool('Only POS Access', true) ?? '';
               bool isTablet = enableTabDesign;
-                // bool isTablet = screenWidth > defaultScreenWidth;
+
               if(isTablet){
                 pr("-------------------------------------------------------------------------------------------44444");
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => POSListItemsSection()),);
@@ -413,7 +414,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Container(
       // color: Colors.red,
       alignment: Alignment.center,
@@ -468,7 +469,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Container(
       height: isTablet ? screenHeight / 9 : screenHeight / 9,
       width: isTablet ? screenWidth / 3.5 : screenWidth / 1.2,
@@ -555,7 +556,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
 
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Container(
       //  color: Colors.yellow,
       height: isTablet ? screenHeight / 9 : screenHeight / 9,
@@ -646,8 +647,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Container(
       // color: Colors.purple,
       height: isTablet ? screenHeight / 9 : screenHeight / 9,
@@ -737,7 +737,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Container(
       // color: Colors.amber,
       height: isTablet ? screenHeight / 9 : screenHeight / 9,

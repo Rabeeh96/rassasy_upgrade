@@ -169,7 +169,7 @@ class _select_code_pageState extends State<select_code_page> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Scaffold(
       appBar: isTablet?AppBar(
         leading: IconButton(

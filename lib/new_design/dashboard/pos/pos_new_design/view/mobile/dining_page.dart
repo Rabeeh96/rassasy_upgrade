@@ -324,6 +324,8 @@ class _DiningPageState extends State<DiningPage> {
                                               var resultPayment = await Get.to(MobilePaymentPage(
                                                 uID: diningController.tableData[index].salesOrderID!,
                                                 tableID: diningController.tableData[index].id!,
+                                                responseData: "",
+                                                isData: false,
                                                 orderType: 0,
                                               ));
 
@@ -388,6 +390,8 @@ class _DiningPageState extends State<DiningPage> {
                                             uID: result[2],
                                             tableID: diningController.tableData[index].id!,
                                             orderType: 0,
+                                            responseData: "",
+                                            isData: false,
                                           ));
                                           diningController.tableData.clear();
                                           diningController.fetchAllData();
@@ -416,6 +420,8 @@ class _DiningPageState extends State<DiningPage> {
                                             uID: result[2],
                                             tableID: diningController.tableData[index].id!,
                                             orderType: 1,
+                                            responseData: "",
+                                            isData: false,
                                           ));
 
                                           diningController.tableData.clear();

@@ -1514,7 +1514,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Scaffold(
         appBar: isTablet
             ? AppBar(
@@ -1906,7 +1906,7 @@ class _PrintSettingsDetailedState extends State<PrintSettingsDetailed> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = screenWidth > defaultScreenWidth;
+
     return Builder(
       builder: (BuildContext context) {
         return ListView(
