@@ -179,6 +179,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                         tableID: '',
                                                         orderType: 3,
                                                         type: '',
+                                                        isData: false,
+                                                        responseData: '',
                                                       ));
                                                       posController.onlineOrders.clear();
                                                       posController.fetchAllData();
@@ -283,6 +285,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                         tableID: '',
                                                         orderType: 3,
                                                         type: '',
+                                                        isData: false,
+                                                        responseData: '',
                                                       ));
                                                       posController.onlineOrders.clear();
                                                       posController.fetchAllData();
@@ -622,6 +626,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                         tableID: posController.tableData[index].id!,
                                         orderType: 0,
                                         type: 'dine',
+                                        isData: false,
+                                        responseData: '',
                                       ));
                                       posController.tableData.clear();
                                       posController.fetchAllData();
@@ -795,15 +801,14 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 width: MediaQuery.of(context).size.width * .22,
                                 child: DottedBorder(
                                   color: const Color(0xffC2C8D0),
-                                  // Border color
+
                                   strokeWidth: 2,
-                                  // Border width
+
                                   dashPattern: [8, 4],
-                                  // Length of the dash and the space between dashes
+
                                   borderType: BorderType.RRect,
-                                  // Shape of the border, can also be BorderType.Circle
+
                                   radius: const Radius.circular(12),
-                                  // Radius for rounded corners
                                   child: Container(
                                     alignment: Alignment.center,
                                     child: GestureDetector(
@@ -827,6 +832,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                 tableID: '',
                                                 orderType: 2,
                                                 type: '',
+                                                isData: false,
+                                                responseData: '',
                                               ));
                                               posController.takeAwayOrders.clear();
                                               posController.fetchAllData();
@@ -933,12 +940,18 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                         ));
 
                                         if (result != null) {
+                                          pr("--result----$result---");
+                                          pr("-*----------------------------------------------------------");
+                                          pr("--result----${result[5]}---");
+                                          pr("-*----------------------------------------------------------");
                                           if (result[1]) {
                                             var resultPayment = await Get.to(TabPaymentSection(
                                               uID: result[2],
                                               tableID: '',
                                               orderType: 2,
                                               type: '',
+                                              isData: true,
+                                              responseData: result[5],
                                             ));
                                             posController.takeAwayOrders.clear();
                                             posController.fetchAllData();
@@ -1166,6 +1179,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           tableID: '',
                                           orderType: 4,
                                           type: '',
+                                          isData: false,
+                                          responseData: '',
                                         ));
                                         posController.carOrders.clear();
                                         posController.fetchAllData();
@@ -1271,6 +1286,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           tableID: '',
                                           orderType: 4,
                                           type: '',
+                                          isData: false,
+                                          responseData: '',
                                         ));
                                         posController.carOrders.clear();
                                         posController.fetchAllData();
@@ -1787,6 +1804,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   orderType: orderTypeID,
                                   tableID: orderID,
                                   type: orderType,
+                                  isData: false,
+                                  responseData: '',
                                 ));
 
                                 posController.tableData.clear();
@@ -1897,6 +1916,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           tableID: orderID,
                                           orderType: 1,
                                           type: '',
+                                          isData: false,
+                                          responseData: '',
                                         ));
 
                                         posController.tableData.clear();
@@ -1931,6 +1952,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           tableID: salesOrderID,
                                           orderType: 4,
                                           type: '',
+                                          isData: false,
+                                          responseData: '',
                                         ));
                                       } else {
                                         posController.carOrders.clear();
@@ -1961,6 +1984,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           tableID: salesOrderID,
                                           orderType: 2,
                                           type: '',
+                                          isData: false,
+                                          responseData: '',
                                         ));
                                       } else {
                                         posController.takeAwayOrders.clear();
@@ -1991,6 +2016,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           tableID: salesOrderID,
                                           orderType: 3,
                                           type: '',
+                                          isData: false,
+                                          responseData: '',
                                         ));
                                       } else {
                                         posController.onlineOrders.clear();

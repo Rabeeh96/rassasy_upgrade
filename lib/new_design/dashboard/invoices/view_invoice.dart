@@ -404,16 +404,20 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                     // display each item of the product list
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
-                                          onTap: () {
-                                            print("......a.....s......s.....a........");
-                                            print(invoiceList[index].salesMasterID);
-                                            print(invoiceList[index].saleOrderID);
-                                            print(invoiceList[index].salesData);
-                                            Get.to(InvoiceDetailPage(
+                                          onTap: ()async {
+
+                                          var result=await  Get.to(InvoiceDetailPage(
                                               MasterUID:invoiceList[index].salesMasterID,
                                               detailID:invoiceList[index].saleOrderID,
                                               masterType: 'SI',
                                             ));
+
+                                          if(result !=null){
+                                            pageNumber=1;
+                                            invoiceList.clear();
+                                            viewList();
+                                          }
+
                                           },
                                           child: Card(
                                             elevation: 0,

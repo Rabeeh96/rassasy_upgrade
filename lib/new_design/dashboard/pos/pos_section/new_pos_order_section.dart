@@ -2997,7 +2997,7 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                         });
                       },
                       child: Icon(Icons.settings,color: Colors.blue,))
-
+,
                   ///loyalty customer add
                   // GestureDetector(
                   //   onTap: () {
@@ -3022,6 +3022,9 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                   //     ),
                   //   ),
                   // ),
+
+
+
                 ],
               ),
 

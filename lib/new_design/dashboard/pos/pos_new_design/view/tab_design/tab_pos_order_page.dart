@@ -641,7 +641,10 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                         default:
                           return itemAddWidget();
                       }
-                    }))),
+                    }))
+
+
+            ),
           ],
         ),
       ),
@@ -2012,7 +2015,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
   }
 
   Widget productDetailPage() {
-    return Column(
+    return ListView(
+      physics: NeverScrollableScrollPhysics(),
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -2043,17 +2047,17 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   /// image commented
-                  Container(
-                    // color:Colors.red,
-                    height: MediaQuery.of(context).size.height / 11,
-                    width: MediaQuery.of(context).size.width / 17,
-                    child: CircleAvatar(child: SvgPicture.asset("assets/svg/no_image.svg")),
-                  ),
+                  // Container(
+                  //   // color:Colors.red,
+                  //   height: MediaQuery.of(context).size.height / 11,
+                  //   width: MediaQuery.of(context).size.width / 17,
+                  //   child: CircleAvatar(child: SvgPicture.asset("assets/svg/no_image.svg")),
+                  // ),
 
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0, top: 8),
                     child: Container(
-                      // color:Colors.red,
+
                       width: MediaQuery.of(context).size.width * 0.19,
                       child: Column(
                      //   mainAxisAlignment: MainAxisAlignment.start,
@@ -2065,32 +2069,23 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                           ),
+
                           orderController.productDescription.value !=""?Text(
                             orderController.productDescription.value,
-                            style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                            maxLines: 5,
+                            style: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ):Container(),
                         ],
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(right: 8.0, top: 8),
-                  //   child: Container(
-                  //     width: MediaQuery.of(context).size.width * 0.19,
-                  //     child: Text(
-                  //       orderController.productNameDetail,
-                  //       style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                  //       maxLines: 3,
-                  //       overflow: TextOverflow.ellipsis,
-                  //     ),
-                  //   ),
-                  // ),
+
                   SvgPicture.asset(
                     "assets/svg/veg_mob.svg",
                     //       color: widget.isColor == true ? const Color(0xff00775E) : const Color(0xffDF1515),
                   ),
+
                   // Check if the current index is the selected index and the additem is true
                 ],
               ),
@@ -2195,7 +2190,22 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
             ],
           ),
         ),
-
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 10),
+          child: Container(
+            height: MediaQuery.of(context).size.height / 19,
+           // width: MediaQuery.of(context).size.width / 10,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              // border: Border.all(color: Color(0xffE7E7E7))
+            ),
+            child: TextField(
+              controller: orderController.productNoteController,
+              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+              decoration: TextFieldDecoration.defaultTextField(hintTextStr: "Description"),
+            ),
+          ),
+        ),
         /// flavour commented on last
 
         const SizedBox(
@@ -2205,21 +2215,35 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
             ? Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Select a Flavour",
                       style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                     ),
+                    orderController.flavourID.value !=""? GestureDetector(
+                      onTap: (){
+                        orderController.flavourID.value = "";
+                        orderController.update();
+                      },
+                      child: const Icon(
+                        Icons.cancel,
+                        color: Colors.blueGrey,
+                      ),
+                    ):Container(),
+
                   ],
                 ),
               )
             : Container()),
         Obx(() => orderController.flavourList.isNotEmpty ? dividerStyle() : Container()),
         Obx(() => orderController.flavourList.isNotEmpty
-            ? Expanded(
+            ? ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 280, minHeight: 280),
                 child: ListView.separated(
+                 // physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                     separatorBuilder: (context, index) => dividerStyle(),
                     itemCount: orderController.flavourList.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -2256,64 +2280,66 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                         ),
                       );
                     }))
-            : Container()),
+            : Container(height: 280,)),
+
         Container(
           decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: Color(0xFFE8E8E8))),
-          ),
-          height: MediaQuery.of(context).size.height * .11,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
-                      onPressed: () {
-                        orderController.detailPage.value = 'item_add';
-                        orderController.update();
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset("assets/svg/close-circle.svg"),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 12.0, right: 12),
-                            child: Text(
-                              'cancel'.tr,
-                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 13.0),
-                            ),
-                          ),
-                        ],
-                      )),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  TextButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
-                      onPressed: () {
+            border: Border(top: BorderSide(
+              //  color: Colors.red
+                 color: Color(0xFFE8E8E8)
 
-                        orderController.addItemToList(index: orderController.indexDetail);
-                        orderController.detailPage.value = 'item_add';
-                        orderController.update();
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset('assets/svg/save_mob.svg'),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0, right: 8),
-                            child: Text(
-                              'Save'.tr,
-                              style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
-                            ),
-                          )
-                        ],
-                      )),
-                ],
-              )
-            ],
+            )),
+          ),
+        //  height: 50,
+         height: MediaQuery.of(context).size.height * .11,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
+                    onPressed: () {
+                      orderController.detailPage.value = 'item_add';
+                      orderController.update();
+                    },
+                    child: Row(
+                      children: [
+                        SvgPicture.asset("assets/svg/close-circle.svg"),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0, right: 12),
+                          child: Text(
+                            'cancel'.tr,
+                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 13.0),
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(
+                  width: 10,
+                ),
+                TextButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                    onPressed: () {
+
+                      orderController.addItemToList(index: orderController.indexDetail);
+                      orderController.detailPage.value = 'item_add';
+                      orderController.update();
+                    },
+                    child: Row(
+                      children: [
+                        SvgPicture.asset('assets/svg/save_mob.svg'),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8),
+                          child: Text(
+                            'Save'.tr,
+                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
+                          ),
+                        )
+                      ],
+                    )),
+              ],
+            ),
           ),
         )
         // DividerStyle()
@@ -2381,7 +2407,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     loadData();
                     orderController.productNameDetail = orderController.orderItemList[index]["ProductName"];
                     orderController.indexDetail = index;
-                    print("...................888888888888888...............................");
+
                   },
                   child: InkWell(
                     child: Padding(
@@ -2754,7 +2780,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
       ],
     );
   }
-
   void addDetails() {
     Get.bottomSheet(
       isDismissible: true,

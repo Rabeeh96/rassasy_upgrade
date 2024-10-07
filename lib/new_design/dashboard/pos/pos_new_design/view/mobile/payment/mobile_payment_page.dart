@@ -12,10 +12,11 @@ import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/detail_
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MobilePaymentPage extends StatefulWidget {
-  final String uID, tableID;
+  final String uID, tableID,responseData;
+  final bool isData;
   final int orderType;
 
-  const MobilePaymentPage({super.key, required this.uID, required this.tableID, required this.orderType});
+  const MobilePaymentPage({super.key, required this.responseData, required this.isData, required this.uID, required this.tableID, required this.orderType});
 
   @override
   State<MobilePaymentPage> createState() => _MobilePaymentPageState();
@@ -28,7 +29,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    paymentController.getOrderDetails(uID: widget.uID);
+    paymentController.getOrderDetails(uID: widget.uID,isData: widget.isData,responseData: widget.uID);
   }
 
 

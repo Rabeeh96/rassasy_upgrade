@@ -13,10 +13,12 @@ import '../detail_page/customer_detail.dart';
 import '../detail_page/platform.dart';
 
 class TabPaymentSection extends StatefulWidget {
-  final String uID, tableID, type;
+  final String uID, tableID, type,responseData;
   final int orderType;
+  final bool isData;
 
-  const TabPaymentSection({super.key, required this.uID, required this.type, required this.tableID, required this.orderType});
+
+  const TabPaymentSection({super.key, required this.uID, required this.type, required this.tableID, required this.responseData,required this.isData, required this.orderType});
 
   @override
   State<TabPaymentSection> createState() => _TabPaymentSectionState();
@@ -29,7 +31,7 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    paymentController.getOrderDetails(uID: widget.uID);
+    paymentController.getOrderDetails(uID: widget.uID,isData: widget.isData,responseData: widget.responseData);
   }
 
   @override
@@ -82,7 +84,7 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                     //     ),
                     //   ],
                     // ),
-              
+
                     SingleChildScrollView(
                         child: Obx(() => paymentController.detailLoading.value
                             ? Container(height: 500, child: const Center(child: CircularProgressIndicator()))
@@ -94,7 +96,7 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                                       width: MediaQuery.of(context).size.width * .32,
                                       child: ListView(
                                         children: [
-                                          
+
 
                                           Obx(
                                             () => Padding(
@@ -138,7 +140,7 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                                                           ),
                                                         )),
                                                     dividerStyle(),
-                                                  
+
                                                     InkWell(
                                                       child: Padding(
                                                         padding: const EdgeInsets.all(8.0),
@@ -716,20 +718,12 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                           : Expanded(
                           child: Obx(() => ListView.builder(
                             padding: const EdgeInsets.all(10.0),
-                            // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            //   crossAxisCount: 1,
-                            //   mainAxisSpacing: 20.0,
-                            //   //  mainAxisExtent: 150,
-                            //   childAspectRatio: 5,
-                            //   crossAxisSpacing: 32,
-                            // ),
-                            //separatorBuilder: (context, index) => dividerStyle(),
+
                             itemCount: paymentController.saleOrderDetail.length,
                             itemBuilder: (context, index) {
                               return Card(
 
-                                //decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), border: Border.all(color: Color(0xffE8E8E8))),
-                                child: Padding(
+                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 10.0, right: 15, top: 8, bottom: 8),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,

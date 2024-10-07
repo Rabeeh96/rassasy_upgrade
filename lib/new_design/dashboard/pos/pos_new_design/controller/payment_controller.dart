@@ -50,49 +50,69 @@ class POSPaymentController extends GetxController {
 var saleOrderDetail=[].obs;
 
   var detailLoading = false.obs;
-  Future<Null> getOrderDetails({required String uID}) async {
+
+  Future<Null> getOrderDetails({required String uID,required bool isData,required String responseData}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
     } else {
       try {
+
+
+        pr("isData  $isData");
+        pr("responseData  $responseData");
+
+
+
         detailLoading.value = true;
-        print("_________________________________________________________________its called");
+        var status;
+        var message;
+        var responseJson;
+        if(isData){
+            status =6000;
+            message="";
+            responseJson=responseData;
+        }
+        else{
+          print("_________________________________________________________________its called");
 
-        String baseUrl = BaseUrl.baseUrl;
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        var userID = prefs.getInt('user_id') ?? 0;
-        var accessToken = prefs.getString('access') ?? '';
-        var companyID = prefs.getString('companyID') ?? 0;
-        var branchID = prefs.getInt('branchID') ?? 1;
-        currency.value = prefs.getString('CurrencySymbol') ?? "";
-        final String url = '$baseUrl/posholds/view-pos/salesOrder/$uID/';
+          String baseUrl = BaseUrl.baseUrl;
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var userID = prefs.getInt('user_id') ?? 0;
+          var accessToken = prefs.getString('access') ?? '';
+          var companyID = prefs.getString('companyID') ?? 0;
+          var branchID = prefs.getInt('branchID') ?? 1;
+          currency.value = prefs.getString('CurrencySymbol') ?? "";
+          final String url = '$baseUrl/posholds/view-pos/salesOrder/$uID/';
 
-        Map data = {"BranchID": branchID, "CompanyID": companyID, "CreatedUserID": userID, "PriceRounding": 2};
-        print(url);
-        print(data);
-        print(accessToken);
-        var body = json.encode(data);
 
-        var response = await http.post(Uri.parse(url),
-            headers: {
-              "Content-Type": "application/json",
-              'Authorization': 'Bearer $accessToken',
-            },
-            body: body);
+          Map data = {"BranchID": branchID, "CompanyID": companyID, "CreatedUserID": userID, "PriceRounding": 2};
+          print(url);
+          print(data);
+          print(accessToken);
+          var body = json.encode(data);
 
-        Map n = json.decode(utf8.decode(response.bodyBytes));
-        log("----${response.body}");
-        var status = n["StatusCode"];
-        var message = n["message"] ?? "";
-        var responseJson = n["data"];
+          var response = await http.post(Uri.parse(url),
+              headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer $accessToken',
+              },
+              body: body);
+
+          Map n = json.decode(utf8.decode(response.bodyBytes));
+            status = n["StatusCode"];
+            message = n["message"] ?? "";
+            responseJson = n["data"];
+        }
+
+
 
         if (status == 6000) {
-
+          pr("----------------------------------------------------------");
+          log("responseJson${responseJson}");
           cashReceivedController.text = "0.00";
           bankReceivedController.text = "0.00";
           discountPerController.text = "0.00";
           discountAmountController.text = "0.00";
-
           grandTotalAmount.value = responseJson["GrandTotal"].toString();
           totalTaxMP.value = responseJson["TotalTax"].toString();
           vatAmountTotalP.value = double.parse(responseJson["VATAmount"].toString());
@@ -180,7 +200,7 @@ var saleOrderDetail=[].obs;
     } else {
       disCount.value = double.parse(discountAmountController.text);
     }
-    print(disCount);
+
     if (cashReceivedController.text == "") {
       cashReceived.value = 0.0;
     } else {
@@ -198,7 +218,7 @@ var saleOrderDetail=[].obs;
     billDiscPercent.value = (disCount * 100 / double.parse(grandTotalAmount.value));
     balance.value = (net - disCount.value) - (cashReceived.value + bankReceived.value);
     update();
-    //  balanceCalculation();
+
   }
   final POSController posController = Get.put(POSController());
   Future<Null> createSaleInvoice(

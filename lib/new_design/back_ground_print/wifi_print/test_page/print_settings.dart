@@ -114,11 +114,13 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
         ..onError((dynamic e) {});
     }
   }
+
   String centerText(String text, int totalWidth) {
     int textLength = text.length;
     int spaces = (totalWidth - textLength) ~/ 2;
     return ' ' * spaces + text;
   }
+
   Future<void> testPrintOneByOne(capability, isArabic) async {
     int retryCount = 0;
     bool isConnected = false;
@@ -139,10 +141,13 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
         final res = await printer.connect(printerIp, port: port, timeout: Duration(seconds: timeoutDuration));
         if (res == PosPrintResult.success) {
           isConnected = true;
+          var testData = "/";
+
+
 
           if (isArabic) {
             for (var ind = 0; ind < supportedCodePages.length; ind++) {
-              var testData = "${supportedCodePages[ind].name} السلام عليكم $capability ";
+              var testData = "${supportedCodePages[ind].name} / السلام عليكم $capability ";
               printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.right));
               printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.left));
               printer.setStyles(PosStyles(codeTable: supportedCodePages[ind].name, align: PosAlign.left));
@@ -152,43 +157,41 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
             /// cpmmented upi
 
-  //           String companySecondName = "Your Company Name5565685689469846584968469861111545554";
-  //           int totalWidth = 48; // Adjust based on your paper size and font
-  //
-  //           printer.text(centerText(companySecondName, totalWidth), styles: PosStyles(
-  //             height: PosTextSize.size2,
-  //             width: PosTextSize.size1,
-  //             fontType: PosFontType.fontA,
-  //             bold: true,
-  //             align: PosAlign.center, // Align left since we manually centered the text
-  //           ));
-  //
-  //           // Another example line
-  //           String anotherLine = "Another centered line";
-  //           printer..text(centerText(anotherLine, totalWidth), styles: PosStyles(
-  //             height: PosTextSize.size1,
-  //             width: PosTextSize.size1,
-  //             fontType: PosFontType.fontA,
-  //             bold: false,
-  //             align: PosAlign.center, // Align left since we manually centered the text
-  //           ));
-  //
-  // printer..text(centerText("anotherLine", totalWidth), styles: PosStyles(
-  //             height: PosTextSize.size1,
-  //             width: PosTextSize.size1,
-  //             fontType: PosFontType.fontA,
-  //             bold: false,
-  //             align: PosAlign.center, // Align left since we manually centered the text
-  //           ));
-
-
+            //           String companySecondName = "Your Company Name5565685689469846584968469861111545554";
+            //           int totalWidth = 48; // Adjust based on your paper size and font
+            //
+            //           printer.text(centerText(companySecondName, totalWidth), styles: PosStyles(
+            //             height: PosTextSize.size2,
+            //             width: PosTextSize.size1,
+            //             fontType: PosFontType.fontA,
+            //             bold: true,
+            //             align: PosAlign.center, // Align left since we manually centered the text
+            //           ));
+            //
+            //           // Another example line
+            //           String anotherLine = "Another centered line";
+            //           printer..text(centerText(anotherLine, totalWidth), styles: PosStyles(
+            //             height: PosTextSize.size1,
+            //             width: PosTextSize.size1,
+            //             fontType: PosFontType.fontA,
+            //             bold: false,
+            //             align: PosAlign.center, // Align left since we manually centered the text
+            //           ));
+            //
+            // printer..text(centerText("anotherLine", totalWidth), styles: PosStyles(
+            //             height: PosTextSize.size1,
+            //             width: PosTextSize.size1,
+            //             fontType: PosFontType.fontA,
+            //             bold: false,
+            //             align: PosAlign.center, // Align left since we manually centered the text
+            //           ));
 
             // var upiID = "8714152075@ybl";
             // var name = "Rabeeh";
             // var amount = "1";
             // printer.qrcode("upi://pay?pa=$upiID&pn=$name&am=$amount&cu=INR",size:QRSize.Size8);
           } else {
-            printer.text("Successfully printed test print");
+            //   printer.text("Successfully printed test print");
           }
 
           printer.cut();
@@ -212,7 +215,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       print('Failed to connect to printer after $maxRetries attempts.');
     }
   }
-
 
   connectionTest(printerIp) async {
     const PaperSize paper = PaperSize.mm80;
@@ -259,7 +261,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = screenWidth > defaultScreenWidth;
+    bool isTablet = enableTabDesign;
     return Scaffold(
       appBar: isTablet
           ? AppBar(
@@ -314,12 +316,11 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
               ),
             ),
       body: isTablet ? tabPrintPage() : mobilePrintPage(),
+
       /// commented
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () async {
-
-
           // InvoiceDesignWidget invoiceWidget = InvoiceDesignWidget();
           // await invoiceWidget.createInvoice();
           //
@@ -362,12 +363,11 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     );
   }
 
-
   Future<Uint8List> bitmapToBytes(ui.Image bitmap, bool gradient) async {
     bool isSizeEdit = false;
     int bitmapWidth = bitmap.width,
         bitmapHeight = bitmap.height,
-        maxWidth = bitmapWidth,  // Increase the maximum width if necessary
+        maxWidth = bitmapWidth, // Increase the maximum width if necessary
         maxHeight = bitmapHeight; // Increase the maximum height if necessary
 
     if (bitmapWidth > maxWidth) {
@@ -387,6 +387,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
     return bitmapToBytesEscPos(bitmap, gradient);
   }
+
   Future<ui.Image> resizeBitmap(ui.Image bitmap, int targetWidth, int targetHeight) async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
@@ -413,7 +414,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     return byteData!.buffer.asUint8List();
   }
 
-    getCanvasImage(String str) async {
+  getCanvasImage(String str) async {
     var builder = ParagraphBuilder(ParagraphStyle(fontStyle: FontStyle.normal));
     builder.addText(str);
     Paragraph paragraph = builder.build();
@@ -432,31 +433,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     print(data.runtimeType);
     print(uint8list);
     return uint8list;
-  }
-
-
-  bool isArabics(String text) {
-    if (text.isEmpty) return false;
-
-    String arabicText = text.trim().replaceAll(" ", "");
-    for (int i = 0; i < arabicText.length; i++) {
-      int c = arabicText.codeUnitAt(i);
-      if (!(c >= 0x0600 && c <= 0x06FF) && !(c >= 0xFE70 && c <= 0xFEFF)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  String reverseArabics(String input) {
-    String reversedArabic = '';
-    for (int i = 0; i < input.length; i++) {
-      String char = input[i];
-      if (isArabic(char)) {
-        reversedArabic = char + reversedArabic; // Append character in reverse order
-      }
-    }
-    return reversedArabic;
   }
 
   Future<Uint8List> _generateImageFromString(
@@ -1514,7 +1490,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     double screenHeight = screenSize.height;
-    bool isTablet = screenWidth > defaultScreenWidth;
+
     return Builder(
       builder: (BuildContext context) {
         return ListView(
@@ -1665,10 +1641,13 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     try {
       var listSplit = [];
       var beforeSplit = [];
-
+      print("1 ---$tex");
       if (Check(tex)) {
+        print("2 ---");
         beforeSplit = set(tex);
+        print("3 ---");
         listSplit = beforeSplit.reversed.toList();
+        print("4--- $listSplit");
       } else {
         listSplit = set(tex);
       }
@@ -1676,16 +1655,19 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
         if (listSplit[i] == null)
           value += "";
         else if (isArabic(listSplit[i])) {
+          print("*isArabic${listSplit[i]} ---");
           if (value == "")
             value += listSplit[i];
           else
             value += "" + listSplit[i];
         } else if (isN(listSplit[i])) {
+          print("*isN(listSplit[i])");
           if (value == "")
             value += listSplit[i].toString().split('').reversed.join();
           else
             value += "" + listSplit[i].toString().split('').reversed.join();
         } else {
+          print("************value $value");
           if (value == "")
             value += listSplit[i].toString().split('').reversed.join();
           else
@@ -1717,8 +1699,6 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
       List<String> splitA = str.split('');
       test = returnBlankSpace(splitA.length);
 
-      // test.length = splitA.length;
-
       if (str.contains('')) {
         for (int i = 0; i < splitA.length; i++) {
           test[i] = splitA[splitA.length - 1 - i];
@@ -1733,6 +1713,7 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
 
       for (int i = 0; i < splitA.length; i++) {
         if (isArabic(splitA[i])) {
+          print("isAr  ");
           if (ar) {
             if (listData[index] == null)
               listData[index] = splitA[i];
@@ -1769,9 +1750,15 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
             listData[index] = splitA[i];
           }
           ar = false;
+        } else {
+          if (listData[index] == null)
+            listData[index] = splitA[i];
+          else
+            listData[index] += "" + splitA[i];
+          ar = false;
         }
       }
-
+      print("set listData error ${listData}");
       return listData;
     } catch (e) {
       print("set function error ${e.toString()}");
@@ -1816,6 +1803,14 @@ class _PrintSettingsPageState extends State<PrintSettingsPage> {
     var val = false;
     val = double.tryParse(value) != null;
     return val;
+  }
+
+  bool isSpecialCharacter(String character) {
+    // Regular expression to check for special characters
+    final RegExp specialCharRegExp = RegExp(r'[^a-zA-Z0-9]');
+
+    // Check if the character matches the regular expression
+    return specialCharRegExp.hasMatch(character);
   }
 
   getBytes(int id, value) {

@@ -48,6 +48,7 @@ class OrderController extends GetxController {
   TextEditingController amountFontSizeController = TextEditingController();
 
   TextEditingController productNameFontSizeController = TextEditingController();
+  TextEditingController productNoteController = TextEditingController();
 
   TextEditingController groupNameFontSizeController = TextEditingController();
 
@@ -619,7 +620,9 @@ class OrderController extends GetxController {
       "unitPriceRounded": roundStringWith(unitPriceAmount.value),
       "quantityRounded": roundStringWith(quantity.value.toString()),
       "netAmountRounded": roundStringWith(netAmount.value.toString()),
+      "item_description": productNoteController.text??'',
       "AddlDiscPerc": "0",
+      "item": "0",
       "AddlDiscAmt": "0",
       "TAX1Perc": "0",
       "TAX1Amount": "0",
@@ -1763,14 +1766,28 @@ class OrderController extends GetxController {
       var status = n["StatusCode"];
       var responseJson = n["data"];
       List cancelPrint = n["final_data"] ?? [];
-      print(responseJson);
+
       if (status == 6000) {
         stop();
         var id = n["OrderID"];
 
 
+        var response = {
+            "GrandTotal":"${totalNetP.value}",
+            "TotalTax": "${totalTaxMP.value}",
+            "VATAmount":  "${vatAmountTotalP.value}",
+            "ExciseTaxAmount": "${exciseAmountTotalP.value}",
+            "TotalGrossAmt":  "${totalGrossP.value}",
+            "NetTotal": "${totalNetP.value}",
+            "LedgerID": ledgerID.value,
+            "CustomerName": customerName,
+            "Phone": phoneNumber,
+            "SalesOrderDetails": orderItemList
+        };
+
+
         print("-------isPayment----isPayment-----------$isPayment");
-        Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead]);
+        Navigator.pop(context, [orderType, isPayment, id, tableID, tableHead,response.toString()]);
 
         if (printAfterOrder) {
           /// printing section
@@ -1787,6 +1804,9 @@ class OrderController extends GetxController {
 
           }
         });
+
+
+
       } else if (status == 6001) {
         stop();
         var errorMessage = n["message"] ?? "";
