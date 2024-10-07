@@ -239,7 +239,7 @@ pr("----------------------------------------------------------------------------
         );
 
       case 6 :
-     Get.to(TabPosListDesign());
+    // Get.to(TabPosListDesign());
       break;
     }
   }
@@ -514,24 +514,24 @@ pr("----------------------------------------------------------------------------
                                     )
                                   ],
                                 )),
-                            const PopupMenuDivider(),
-                            PopupMenuItem<int>(
-                                value: 6,
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.dashboard,
-                                      color: Colors.red,
-                                    ),
-                                    const SizedBox(
-                                      width: 7,
-                                    ),
-                                    Text(
-                                      'New POS (Beta Version)',
-                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
-                                    )
-                                  ],
-                                )),
+                            // const PopupMenuDivider(),
+                            // PopupMenuItem<int>(
+                            //     value: 6,
+                            //     child: Row(
+                            //       children: [
+                            //         const Icon(
+                            //           Icons.dashboard,
+                            //           color: Colors.red,
+                            //         ),
+                            //         const SizedBox(
+                            //           width: 7,
+                            //         ),
+                            //         Text(
+                            //           'New POS (Beta Version)',
+                            //           style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                            //         )
+                            //       ],
+                            //     )),
                           ],
                           icon: const Icon(
                             Icons.more_vert,
@@ -1104,66 +1104,66 @@ pr("----------------------------------------------------------------------------
                         ),
 
                         /// daily report commented
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
-
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (BuildContext context) =>
-                                //             const DragableList()));
-
-                                // var invoices = await checkingPerm('Invoices'.tr);
-                                //
-                                // if (invoices == true) {
-                                //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
-                                //
-                                // } else {
-                                //   dialogBoxPermissionDenied(context);
-                                // }
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffEEEEEE),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                                height: isTablet
-                                    ? screenHeight / 12
-                                    : screenHeight / 15,
-                                width: isTablet
-                                    ? screenWidth / 17
-                                    : screenWidth / 6,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          20,
-                                      width: MediaQuery.of(context).size.width /
-                                          20,
-                                      child: SvgPicture.asset(
-                                          'assets/svg/report.svg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                              ),
-                              child: Text(
-                                'Daily Report'.tr,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
+                        // Column(
+                        //   children: [
+                        //     GestureDetector(
+                        //       onTap: () async {
+                        //         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DailyReport()));
+                        //
+                        //         // Navigator.push(
+                        //         //     context,
+                        //         //     MaterialPageRoute(
+                        //         //         builder: (BuildContext context) =>
+                        //         //             const DragableList()));
+                        //
+                        //         // var invoices = await checkingPerm('Invoices'.tr);
+                        //         //
+                        //         // if (invoices == true) {
+                        //         //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                        //         //
+                        //         // } else {
+                        //         //   dialogBoxPermissionDenied(context);
+                        //         // }
+                        //       },
+                        //       child: Container(
+                        //         decoration: const BoxDecoration(
+                        //             color: Color(0xffEEEEEE),
+                        //             borderRadius:
+                        //             BorderRadius.all(Radius.circular(20))),
+                        //         height: isTablet
+                        //             ? screenHeight / 12
+                        //             : screenHeight / 15,
+                        //         width: isTablet
+                        //             ? screenWidth / 17
+                        //             : screenWidth / 6,
+                        //         child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           crossAxisAlignment: CrossAxisAlignment.center,
+                        //           children: [
+                        //             Container(
+                        //               height:
+                        //               MediaQuery.of(context).size.height /
+                        //                   20,
+                        //               width: MediaQuery.of(context).size.width /
+                        //                   20,
+                        //               child: SvgPicture.asset(
+                        //                   'assets/svg/report.svg'),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Padding(
+                        //       padding: const EdgeInsets.only(
+                        //         top: 12,
+                        //       ),
+                        //       child: Text(
+                        //         'Daily Report'.tr,
+                        //         style: const TextStyle(fontSize: 12),
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
 
 
 

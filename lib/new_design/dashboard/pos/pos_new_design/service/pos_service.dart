@@ -17,18 +17,14 @@ class TableService {
         'Authorization': 'Bearer $token',
       },
 
-
       body: jsonEncode({
         "CompanyID": companyID,
         "type": "user",
         "BranchID":branchID,
         "paid": "true",
       }),
-
     );
 
-
-    pr(response);
     if (response.statusCode == 200) {
       final parsed = jsonDecode(response.body);
       return parsed;

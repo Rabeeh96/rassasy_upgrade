@@ -170,6 +170,7 @@ class AppBlocs {
     var showCustomerPhone = prefs.getBool("isCustomerPhoneDisplay") ?? false;
     var showSalesMan = prefs.getBool("isSalesmanDisplay") ?? false;
     var showGrossAmount = prefs.getBool("isGrossAmountDisplay") ?? false;
+    var lineAfterItem = prefs.getBool("LineAfterItem") ?? false;
     var flavourInOrderPrint = prefs.getBool("flavour_in_order_print") ?? false;
     String copies = prefs.getString("number_of_print") ?? '1';
 
@@ -213,7 +214,8 @@ class AppBlocs {
               showCustomerName,
               showCustomerPhone,
               showSalesMan,
-              showGrossAmount);
+              showGrossAmount,
+              lineAfterItem);
         }
       } else if (temp == 'template3') {
         for (var i = 0; i < numberOfCopies; i++) {
@@ -269,7 +271,8 @@ class AppBlocs {
       showCustomerName,
       showCustomerPhone,
       showSalesMan,
-      showGrossAmount) async {
+      showGrossAmount,
+      lineAfterItem) async {
     List<ProductDetailsModel> tableDataDetailsPrint = [];
 
     var salesDetails = BluetoothPrintThermalDetails.salesDetails;
@@ -368,7 +371,7 @@ class AppBlocs {
 
     if (headerAlignment) {
       if (companyPhone != "") {
-        companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString(companyPhone));
+        companyPhoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('جوال ' + companyPhone));
       }
     }
 
@@ -387,12 +390,14 @@ class AppBlocs {
     Uint8List br = await CharsetConverter.encode("ISO-8859-6", setString('اتلقى البنك'));
 
     if (headerAlignment) {
+      printer.setStyles(PosStyles(codeTable: defaultCodePage));
       if (companyName != "") {
         printer.textEncoded(companyNameEnc,
             styles: const PosStyles(
                 height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
       if (companySecondName != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
         printer.textEncoded(companySecondNameEncode,
             styles: const PosStyles(
@@ -402,10 +407,11 @@ class AppBlocs {
       }
 
       if (buildingDetails != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         Uint8List buildingAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
 
         printer.row([
-          PosColumn(text: 'Building', width: 4, styles: const PosStyles(align: PosAlign.left, bold: true)),
+          PosColumn(text: 'BUILDING', width: 4, styles: const PosStyles(align: PosAlign.left, bold: true)),
           PosColumn(textEncoded: buildingAddressEncode, width: 8, styles: const PosStyles(height: PosTextSize.size1,  bold: true, width: PosTextSize.size1, align: PosAlign.right)),
         ]);
 
@@ -413,10 +419,11 @@ class AppBlocs {
       }
 
       if (streetName != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         Uint8List streetNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
         printer.row([
-          PosColumn(text: 'Street', width: 4, styles: const PosStyles(align: PosAlign.left, bold: true)),
+          PosColumn(text: 'STREET', width: 4, styles: const PosStyles(align: PosAlign.left, bold: true)),
           PosColumn(
               textEncoded: streetNameEncode,
               width: 8,
@@ -427,8 +434,9 @@ class AppBlocs {
       }
 
       if (companyTax != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         printer.row([
-          PosColumn(text: 'Vat NO', width: 4, styles: const PosStyles(align: PosAlign.left, bold: true)),
+          PosColumn(text: 'VAT NO', width: 4, styles: const PosStyles(align: PosAlign.left, bold: true)),
           PosColumn(
               textEncoded: companyTaxEnc,
               width: 8,
@@ -439,7 +447,7 @@ class AppBlocs {
 
       if (companyPhone != "") {
         printer.row([
-          PosColumn(text: 'Phone', width: 3, styles: const PosStyles(align: PosAlign.left, bold: true)),
+          PosColumn(text: 'PHONE', width: 3, styles: const PosStyles(align: PosAlign.left, bold: true)),
           PosColumn(
               textEncoded: companyPhoneEnc,
               width: 9,
@@ -468,12 +476,14 @@ class AppBlocs {
     }
     else {
       if (companyName != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         printer.textEncoded(companyNameEnc,
             styles: const PosStyles(
                 height: PosTextSize.size2, width: PosTextSize.size1, fontType: PosFontType.fontA, bold: true, align: PosAlign.center));
       }
 
       if (companySecondName != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         Uint8List companySecondNameEncode = await CharsetConverter.encode("ISO-8859-6", setString(companySecondName));
 
         printer.textEncoded(companySecondNameEncode,
@@ -481,6 +491,7 @@ class AppBlocs {
       }
 
       if (buildingDetails != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         Uint8List buildingDetailsEncode = await CharsetConverter.encode("ISO-8859-6", setString(buildingDetails));
 
         printer.textEncoded(buildingDetailsEncode,
@@ -488,6 +499,7 @@ class AppBlocs {
       }
 
       if (streetName != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         Uint8List secondAddressEncode = await CharsetConverter.encode("ISO-8859-6", setString(streetName));
 
         printer.textEncoded(secondAddressEncode,
@@ -495,19 +507,23 @@ class AppBlocs {
       }
 
       if (companyTax != "") {
-        printer.textEncoded(companyTaxEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
+        printer.textEncoded(companyTaxEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.center));
       }
 
       if (companyCrNumber != "") {
-        printer.textEncoded(companyCREnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1));
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
+        printer.textEncoded(companyCREnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,align: PosAlign.center));
       }
 
       if (companyPhone != "") {
+        printer.setStyles(PosStyles(codeTable: defaultCodePage));
         printer.textEncoded(companyPhoneEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
       }
 
       if (showSalesMan) {
         if (salesMan != "") {
+          printer.setStyles(PosStyles(codeTable: defaultCodePage));
           printer.textEncoded(salesManDetailsEnc,
               styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center));
         }
@@ -516,6 +532,7 @@ class AppBlocs {
 
 
     printer.textEncoded(invoiceTypeEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size2, align: PosAlign.center,bold:true));
+    printer.setStyles(PosStyles(codeTable: defaultCodePage));
     printer.textEncoded(invoiceTypeArabicEnc, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.center,bold:true));
 
     var isoDate = DateTime.parse(BluetoothPrintThermalDetails.date).toIso8601String();
@@ -524,7 +541,7 @@ class AppBlocs {
     Uint8List dateEnc = await CharsetConverter.encode("ISO-8859-6", setString('تاريخ'));
     Uint8List customerEnc = await CharsetConverter.encode("ISO-8859-6", setString('اسم'));
     Uint8List typeEnc = await CharsetConverter.encode("ISO-8859-6", setString('يكتب'));
-    // printer.setStyles(PosStyles.defaults());
+
     printer.text('', styles: const PosStyles(align: PosAlign.left));
 
 
@@ -532,7 +549,7 @@ class AppBlocs {
     if (tableName != "") {
       Uint8List tableEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
       printer.row([
-        PosColumn(text: 'Table Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+        PosColumn(text: 'TABLE NAME', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
         PosColumn(
             textEncoded: tableEnc,
             width: 4,
@@ -549,7 +566,7 @@ class AppBlocs {
         Uint8List userEnc = await CharsetConverter.encode("ISO-8859-6", setString('مستخدم'));
         Uint8List userNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(salesMan));
         printer.row([
-          PosColumn(text: 'User Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+          PosColumn(text: 'USER NAME', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
           PosColumn(
               textEncoded: userEnc,
               width: 4,
@@ -582,7 +599,7 @@ class AppBlocs {
     }
     if (tokenVal) {
       printer.hr();
-      printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
+      printer.text('TOKEN NO', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
       printer.text('', styles: const PosStyles(align: PosAlign.left));
       printer.text(token, styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size2, bold: true, align: PosAlign.center));
       printer.text('', styles: const PosStyles(align: PosAlign.left));
@@ -590,14 +607,14 @@ class AppBlocs {
       printer.hr();
     } else {
       printer.row([
-        PosColumn(text: 'Token No', width: 4, styles: const PosStyles(bold: true)),
+        PosColumn(text: 'TOKEN NO', width: 4, styles: const PosStyles(bold: true)),
         PosColumn(textEncoded: tokenEnc, width: 4, styles: const PosStyles(height: PosTextSize.size1,bold: true, width: PosTextSize.size1, align: PosAlign.right)),
         PosColumn(text: token, width: 4, styles: const PosStyles(align: PosAlign.right,bold: true,)),
       ]);
     }
 
     printer.row([
-      PosColumn(text: 'Voucher No', width: 4, styles: const PosStyles(bold: true)),
+      PosColumn(text: 'VOUCHER NO', width: 4, styles: const PosStyles(bold: true)),
       PosColumn(
           textEncoded: voucherNoEnc,
           width: 4,
@@ -606,7 +623,7 @@ class AppBlocs {
     ]);
 
     printer.row([
-      PosColumn(text: 'Date', width: 4, styles: const PosStyles(bold: true)),
+      PosColumn(text: 'DATE', width: 4, styles: const PosStyles(bold: true)),
       PosColumn(
           textEncoded: dateEnc,
           width: 4,
@@ -616,7 +633,7 @@ class AppBlocs {
 
     printer.setStyles(PosStyles(codeTable: defaultCodePage));
     printer.row([
-      PosColumn(text: 'Order type', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+      PosColumn(text: 'ORDER TYPE', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
       PosColumn(
           textEncoded: typeEnc,
           width: 4,
@@ -637,7 +654,7 @@ class AppBlocs {
         Uint8List customerNameEnc = await CharsetConverter.encode("ISO-8859-6", setString(customerName));
 
         printer.row([
-          PosColumn(text: 'Name', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+          PosColumn(text: 'NAME', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
           PosColumn(
               textEncoded: customerEnc,
               width: 4,
@@ -656,7 +673,7 @@ class AppBlocs {
         Uint8List phoneEnc = await CharsetConverter.encode("ISO-8859-6", setString('هاتف'));
 
         printer.row([
-          PosColumn(text: 'Phone', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+          PosColumn(text: 'PHONE', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
           PosColumn(
               textEncoded: phoneEnc,
               width: 4,
@@ -680,7 +697,7 @@ class AppBlocs {
       Uint8List timeEnc = await CharsetConverter.encode("ISO-8859-6", setString('طاولة'));
 
       printer.row([
-        PosColumn(text: 'Time', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
+        PosColumn(text: 'TIME', width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
         PosColumn(
             textEncoded: timeEnc, width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right,bold: true)),
         PosColumn(text: timeInvoice, width: 4, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right,bold: true)),
@@ -733,12 +750,7 @@ class AppBlocs {
       var slNo = i + 1;
       Uint8List productName = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productName));
       printer.row([
-        // PosColumn(
-        //     text: "$slNo",
-        //     width: 1,
-        //     styles: const PosStyles(
-        //       height: PosTextSize.size1,
-        //     )),
+
         PosColumn(textEncoded: productName, width: 6, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1)),
         PosColumn(text: tableDataDetailsPrint[i].qty, width: 1, styles: PosStyles(height: PosTextSize.size1, align: PosAlign.center, bold: tokenVal)),
         PosColumn(
@@ -753,19 +765,22 @@ class AppBlocs {
 
       var description = tableDataDetailsPrint[i].productDescription ?? '';
       if (description != "") {
+
         Uint8List description = await CharsetConverter.encode("ISO-8859-6", setString(tableDataDetailsPrint[i].productDescription));
-        printer.row([
-          PosColumn(
-              textEncoded: description,
-              width: 7,
-              styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
-          PosColumn(
-              text: '',
-              width: 5,
-              styles: const PosStyles(
-                height: PosTextSize.size1,
-              ))
-        ]);
+        printer.textEncoded(description,styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right));
+
+        // printer.row([
+        //   PosColumn(
+        //       textEncoded: description,
+        //       width: 10,
+        //       styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right)),
+        //   PosColumn(
+        //       text: '',
+        //       width: 2,
+        //       styles: const PosStyles(
+        //         height: PosTextSize.size1,
+        //       ))
+        //]);
       }
 
       var flavour = tableDataDetailsPrint[i].flavourName ?? '';
@@ -789,6 +804,15 @@ class AppBlocs {
           }
         }
       }
+
+
+      print("----------$i    ${tableDataDetailsPrint.length}");
+      if(lineAfterItem){
+        if(i !=tableDataDetailsPrint.length-1){
+          printer.hr();
+        }
+      }
+
     }
 
     if(showGrossAmount ==true ||taxDetails==true || showDiscountPrint==true){
@@ -796,7 +820,7 @@ class AppBlocs {
     }
     if (showGrossAmount) {
       printer.row([
-        PosColumn(text: 'Gross Amount', width: 4, styles: const PosStyles( bold: true)),
+        PosColumn(text: 'GROSS AMOUNT', width: 4, styles: const PosStyles( bold: true)),
         PosColumn(
             textEncoded: ga,
             width: 4,
@@ -807,7 +831,7 @@ class AppBlocs {
     if (taxDetails) {
       if (showExcise) {
         printer.row([
-          PosColumn(text: 'Total Excise Tax', width: 4, styles: const PosStyles(  bold: true)),
+          PosColumn(text: 'TOTAL EXCISE TAX', width: 4, styles: const PosStyles(  bold: true)),
           PosColumn(
               textEncoded: exciseTax,
               width: 4,
@@ -815,7 +839,7 @@ class AppBlocs {
           PosColumn(text: roundStringWith(exciseAmountTotal), width: 4, styles: const PosStyles(align: PosAlign.right, bold: true)),
         ]);
         printer.row([
-          PosColumn(text: 'Total VAT', width: 4, styles: const PosStyles( bold: true)),
+          PosColumn(text: 'TOTAL VAT', width: 4, styles: const PosStyles( bold: true)),
           PosColumn(
               textEncoded: vatTax,
               width: 4,
@@ -825,7 +849,7 @@ class AppBlocs {
       }
 
       printer.row([
-        PosColumn(text: 'Total Tax', width: 4, styles: const PosStyles(bold: true)),
+        PosColumn(text: 'TOTAL TAX', width: 4, styles: const PosStyles(bold: true)),
         PosColumn(
             textEncoded: tt,
             width: 4,
@@ -836,7 +860,7 @@ class AppBlocs {
 
     if (showDiscountPrint) {
       printer.row([
-        PosColumn(text: 'Discount', width: 4, styles: const PosStyles(  bold: true)),
+        PosColumn(text: 'DISCOUNT', width: 4, styles: const PosStyles(  bold: true)),
         PosColumn(
             textEncoded: dis,
             width: 4,
@@ -851,23 +875,23 @@ class AppBlocs {
     printer.hr();
     printer.row([
       PosColumn(
-          text: 'Grand Total',
+          text: 'GRAND TOTAL',
           width: 4,
           styles: const PosStyles(
             bold: true,
-            fontType: PosFontType.fontB,
+
             height: PosTextSize.size2,
           )),
       PosColumn(
           textEncoded: gt,
           width: 4,
           styles:
-              const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
+              const PosStyles( height: PosTextSize.size1, width: PosTextSize.size1, align: PosAlign.right, bold: true)),
       PosColumn(
           text: countyCodeCompany + " " + roundStringWith(grandTotal),
           width: 4,
           styles: const PosStyles(
-            fontType: PosFontType.fontB,
+
             bold: true,
             align: PosAlign.right,
             height: PosTextSize.size2,
@@ -878,7 +902,7 @@ class AppBlocs {
     if (PrintDataDetails.type == "SI") {
       if (paymentDetailsInPrint) {
         printer.row([
-          PosColumn(text: 'Cash receipt', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+          PosColumn(text: 'CASH RECEIPT', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: cr,
               width: 5,
@@ -887,7 +911,7 @@ class AppBlocs {
         ]);
 
         printer.row([
-          PosColumn(text: 'Bank receipt', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+          PosColumn(text: 'BANK RECEIPT', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: br,
               width: 5,
@@ -896,7 +920,7 @@ class AppBlocs {
         ]);
 
         printer.row([
-          PosColumn(text: 'Balance', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
+          PosColumn(text: 'BALANCE', width: 4, styles: const PosStyles(fontType: PosFontType.fontB)),
           PosColumn(
               textEncoded: bl,
               width: 5,
@@ -3262,7 +3286,7 @@ class AppBlocs {
     printer.hr();
 
     if (hilightTokenNumber) {
-      printer.text('Token No', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
+      printer.text('TOKEN NO', styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true, align: PosAlign.center));
       printer.text('', styles: const PosStyles(align: PosAlign.left));
       printer.text(tokenNumber, styles: const PosStyles(height: PosTextSize.size4, width: PosTextSize.size5, bold: false, align: PosAlign.center));
 
@@ -3274,7 +3298,7 @@ class AppBlocs {
     if (orderType == "Dining") {
       printer.row([
         PosColumn(
-            text: 'Table Name:',
+            text: 'TABLE NAME:',
             width: 5,
             styles: const PosStyles(
                 height: PosTextSize.size1, width: PosTextSize.size1,
@@ -3293,7 +3317,7 @@ class AppBlocs {
     if (showUsernameKot) {
       printer.row([
         PosColumn(
-            text: 'User name:',
+            text: 'USER NAME:',
             width: 5,
             styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
         PosColumn(
@@ -3302,7 +3326,7 @@ class AppBlocs {
     }
     if (showDateTimeKot) {
       printer.row([
-        PosColumn(text: 'Time:', width: 5, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
+        PosColumn(text: 'TIME:', width: 5, styles: const PosStyles(fontType: PosFontType.fontA, height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
         PosColumn(
             text: convertDateAndTime(currentTime),
             width: 7,
@@ -3310,18 +3334,18 @@ class AppBlocs {
       ]);
     }
     printer.row([
-      PosColumn(text: 'Kitchen name:', width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
+      PosColumn(text: 'KITCHEN NAME:', width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
       PosColumn(text: kitchenName, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
     ]);
 
     printer.row([
-      PosColumn(text: 'Order type:', width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
+      PosColumn(text: 'ORDER TYPE:', width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
       PosColumn(text: orderType, width: 7, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1,bold: true)),
     ]);
 
     if (hilightTokenNumber == false) {
       printer.row([
-        PosColumn(text: 'Token No:', width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+        PosColumn(text: 'TOKEN NO:', width: 5, styles: const PosStyles(height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
         PosColumn(
             text: tokenNumber,
             width: 7,
@@ -3381,7 +3405,7 @@ class AppBlocs {
     printer.hr();
     printer.row([
       PosColumn(
-          text: 'Total quantity',
+          text: 'TOTAL QUANTITY',
           width: 8,
           styles: const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, bold: true)),
 

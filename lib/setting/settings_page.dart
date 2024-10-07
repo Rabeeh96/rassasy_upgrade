@@ -6,6 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -121,6 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool kotForCanceledOrder = false;
   bool flavourInOrderPrint = false;
   bool reverseArabicOption = false;
+  bool lineAfterItem = false;
   bool isDiscountInPrint = false;
   bool isCustomerNameDisplay = false;
   bool isCustomerPhoneDisplay = false;
@@ -252,9 +254,6 @@ class _SettingsPageState extends State<SettingsPage> {
   String userId = "235534";
   String roleId = "235534";
 
-
-
-
   /// default print
   funcDefaultPrint() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -267,12 +266,9 @@ class _SettingsPageState extends State<SettingsPage> {
         templateIndex = 2;
       } else if (templateBT == "template3") {
         templateIndex = 3;
-      }
-      else if (templateBT == "template4") {
+      } else if (templateBT == "template4") {
         templateIndex = 4;
-      }
-
-      else {
+      } else {
         templateIndex = 5;
       }
 
@@ -308,6 +304,7 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(key, value);
   }
+
   void switchStatusString(key, value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
@@ -343,25 +340,23 @@ class _SettingsPageState extends State<SettingsPage> {
       kotForCanceledOrder = prefs.getBool('kot_for_cancel_order') ?? false;
       flavourInOrderPrint = prefs.getBool('flavour_in_order_print') ?? false;
       reverseArabicOption = prefs.getBool('reverseArabicOption') ?? false;
-      isDiscountInPrint=prefs.getBool('isDiscountInPrint') ?? false;
-      isCustomerNameDisplay=prefs.getBool('isCustomerNameDisplay') ?? false;
-      isCustomerPhoneDisplay=prefs.getBool('isCustomerPhoneDisplay') ?? false;
-      isSalesmanDisplay=prefs.getBool('isSalesmanDisplay') ?? false;
-      isGrossAmountDisplay=prefs.getBool('isGrossAmountDisplay') ?? false;
+      lineAfterItem = prefs.getBool('LineAfterItem') ?? false;
+      isDiscountInPrint = prefs.getBool('isDiscountInPrint') ?? false;
+      isCustomerNameDisplay = prefs.getBool('isCustomerNameDisplay') ?? false;
+      isCustomerPhoneDisplay = prefs.getBool('isCustomerPhoneDisplay') ?? false;
+      isSalesmanDisplay = prefs.getBool('isSalesmanDisplay') ?? false;
+      isGrossAmountDisplay = prefs.getBool('isGrossAmountDisplay') ?? false;
       printType = prefs.getString('PrintType') ?? "Wifi";
-      _selectedOption= prefs.getString('PrintType') ?? "Wifi";
+      _selectedOption = prefs.getString('PrintType') ?? "Wifi";
 
       hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
       paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
       headerAlignment = prefs.getBool("headerAlignment") ?? false;
-      termsAndConditionController.text =prefs.getString('printTermsAndCondition') ?? "";
+      termsAndConditionController.text = prefs.getString('printTermsAndCondition') ?? "";
 
-      if(printType =="Wifi"){
+      if (printType == "Wifi") {
         print_type_value = true;
-
-
-      }
-      else{
+      } else {
         print_type_value = false;
       }
       capabilitiesController.text = prefs.getString('default_capabilities') ?? "";
@@ -375,16 +370,16 @@ class _SettingsPageState extends State<SettingsPage> {
       saleInvoiceDetail = prefs.getString("item_section_sale_invoice") ?? "Product Name";
       isComplimentaryBill = prefs.getBool("complimentary_bill") ?? false;
 
-      show_date_time_kot = prefs.getBool("show_date_time_kot")??false;
-      show_username_kot = prefs.getBool("show_username_kot")??false;
-      hideTaxDetails = prefs.getBool("hideTaxDetails")??false;
-      extraDetailsInKOT = prefs.getBool("extraDetailsInKOT")??false;
-      autoFocusSearch = prefs.getBool("autoFocusSearch")??false;
-      synMethod = prefs.getBool("synMethod")??false;
-      isTabDesign = prefs.getBool("isTablet")??false;
-
+      show_date_time_kot = prefs.getBool("show_date_time_kot") ?? false;
+      show_username_kot = prefs.getBool("show_username_kot") ?? false;
+      hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;
+      extraDetailsInKOT = prefs.getBool("extraDetailsInKOT") ?? false;
+      autoFocusSearch = prefs.getBool("autoFocusSearch") ?? false;
+      synMethod = prefs.getBool("synMethod") ?? false;
+      isTabDesign = prefs.getBool("isTablet") ?? false;
     });
   }
+
   ////
 
   Future<Null> updateList(String apiKeyValue, apiData, sharedPreferenceKey) async {
@@ -403,7 +398,7 @@ class _SettingsPageState extends State<SettingsPage> {
         final String url = '$baseUrl/posholds/pos-hold-settings/';
         print("$url");
 
-        Map data = {"CompanyID": companyID, "key": apiKeyValue, "value": apiData, "action": 1,"BranchID":branchID};
+        Map data = {"CompanyID": companyID, "key": apiKeyValue, "value": apiData, "action": 1, "BranchID": branchID};
         print(data);
 
         var body = json.encode(data);
@@ -419,27 +414,23 @@ class _SettingsPageState extends State<SettingsPage> {
         var status = n["StatusCode"];
 
         if (status == 6000) {
-
           if (apiKeyValue != "InitialTokenNo") {
             dialogBox(context, "Updated successfully");
           }
           if (apiKeyValue == "InitialTokenNo") {
-            initialTokenNoController.text =apiData;
+            initialTokenNoController.text = apiData;
           }
 
           stop();
           setState(() {});
-          if (apiKeyValue == "TokenResetTime"||apiKeyValue == "InitialTokenNo"||apiKeyValue == "CompensationHour") {
-            if(apiKeyValue == "CompensationHour"){
-              switchStatusString("CompensationHour",apiData.toString());
+          if (apiKeyValue == "TokenResetTime" || apiKeyValue == "InitialTokenNo" || apiKeyValue == "CompensationHour") {
+            if (apiKeyValue == "CompensationHour") {
+              switchStatusString("CompensationHour", apiData.toString());
             }
-          }
-          else {
+          } else {
             switchStatus(sharedPreferenceKey, apiData);
           }
-
-        }
-        else if (status == 6001) {
+        } else if (status == 6001) {
           stop();
           dialogBox(context, "Something went wrong");
         } else {
@@ -466,7 +457,7 @@ class _SettingsPageState extends State<SettingsPage> {
         final String url = '$baseUrl/posholds/pos-hold-settings/';
         print("$url");
 
-        Map data = {"CompanyID": companyID, "action": 0, "key": "", "value": "","BranchID":branchID};
+        Map data = {"CompanyID": companyID, "action": 0, "key": "", "value": "", "BranchID": branchID};
 
         ///date not
         print(data);
@@ -490,7 +481,6 @@ class _SettingsPageState extends State<SettingsPage> {
             // paymentMethod = responseJson["IsPayAfterSave"];
             quantityIncrement = responseJson["IsQuantityIncrement"];
             prefs.setBool("qtyIncrement", quantityIncrement);
-
 
             showInvoice = responseJson["IsShowInvoice"];
             prefs.setBool("AutoClear", showInvoice);
@@ -560,10 +550,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Navigator.pop(context);
                   },
                 ),
-                title:   Text(
-                  'Settings'.tr,
-                    style: customisedStyle(context, Colors.black, FontWeight.w600, 22.0)
-                ),
+                title: Text('Settings'.tr, style: customisedStyle(context, Colors.black, FontWeight.w600, 22.0)),
                 backgroundColor: Colors.grey[300],
                 actions: <Widget>[
                   // IconButton(
@@ -590,7 +577,7 @@ class _SettingsPageState extends State<SettingsPage> {
     } else if (index == 2) {
       return printerSettingScreen();
     } else if (index == 3) {
-      return kotPrint?kitchenSettingScreen():Container();
+      return kotPrint ? kitchenSettingScreen() : Container();
     } else if (index == 4) {
       return printerDefault();
     } else if (index == 5) {
@@ -631,7 +618,7 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-                Text('KOT_log'.tr,
+              Text('KOT_log'.tr,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
@@ -735,7 +722,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         const Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children:  [
+                          children: [
                             Text(
                               "03/05/2023, 9:39 AM",
                               style: TextStyle(color: Color(0xff3B3B3B), fontSize: 12),
@@ -749,7 +736,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         const Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children:  [
+                          children: [
                             Text(
                               "Order No",
                               style: TextStyle(color: Color(0xff9A9A9A), fontSize: 12),
@@ -796,7 +783,7 @@ class _SettingsPageState extends State<SettingsPage> {
         SizedBox(
           height: MediaQuery.of(context).size.height / 16, //height of button
           width: MediaQuery.of(context).size.width / 1,
-          child:   Text('user_role'.tr,
+          child: Text('user_role'.tr,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
@@ -813,8 +800,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     width: MediaQuery.of(context).size.width / 3,
                     child: ListView(
                       children: [
-                          Text(
-                         'name'.tr,
+                        Text(
+                          'name'.tr,
                           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
@@ -826,7 +813,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             keyboardType: TextInputType.text,
                             textCapitalization: TextCapitalization.words,
                             controller: roleNameController,
-                            decoration:   InputDecoration(
+                            decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(13),
                               hintText: 'role_name'.tr,
                               hintStyle: const TextStyle(color: Colors.grey),
@@ -840,7 +827,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         const SizedBox(
                           height: 8,
                         ),
-                          Text(
+                        Text(
                           'Role'.tr,
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                         ),
@@ -849,7 +836,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                               Text(
+                              Text(
                                 'Dining'.tr,
                                 style: const TextStyle(fontWeight: FontWeight.w400),
                               ),
@@ -880,7 +867,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                                Text('Take_awy'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
+                              Text('Take_awy'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
                               SizedBox(
                                   child: FlutterSwitch(
                                 width: 40.0,
@@ -908,7 +895,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                                Text('Online'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
+                              Text('Online'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
                               SizedBox(
                                   child: FlutterSwitch(
                                 width: 40.0,
@@ -936,7 +923,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                                Text('Car'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
+                              Text('Car'.tr, style: const TextStyle(fontWeight: FontWeight.w400)),
                               SizedBox(
                                   child: FlutterSwitch(
                                 width: 40.0,
@@ -976,7 +963,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     itemBuilder: (context, index) {
                       return Card(
                         elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
                         color: const Color(0xffF3F3F3),
                         child: ListTile(
                           title: Text(
@@ -1047,28 +1035,33 @@ class _SettingsPageState extends State<SettingsPage> {
       ],
     );
   }
- bool  print_type_value = true;
+
+  bool print_type_value = true;
+
   Widget defaultPrinterNew() {
     return Container(
-      // height: MediaQuery.of(context).size.height / 12,
+        // height: MediaQuery.of(context).size.height / 12,
         width: MediaQuery.of(context).size.width / 1.1,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
-          border: Border.all(color:Colors.transparent),
+          border: Border.all(color: Colors.transparent),
         ),
         child: Padding(
-          padding:
-          const EdgeInsets.only(left: 13, bottom: 0, top: 0, right: 13),
+          padding: const EdgeInsets.only(left: 13, bottom: 0, top: 0, right: 13),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-
             children: [
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(print_type_value?'wifi_printer'.tr:'usbPrinter'.tr,style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
+                  Text(
+                    print_type_value ? 'wifi_printer'.tr : 'usbPrinter'.tr,
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                  ),
                   FlutterSwitch(
                     width: 50.0,
                     height: 25.0,
@@ -1083,14 +1076,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     onToggle: (val) async {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       setState(() {
-                          print_type_value = val;
-                          if (val == true) {
+                        print_type_value = val;
+                        if (val == true) {
                           prefs.setString("PrintType", "Wifi");
                         } else {
                           defaultSalesInvoiceController.clear();
                           defaultSalesOrderController.clear();
                           prefs.setString("PrintType", "USB");
-/// bluetooth commented
+
+                          /// bluetooth commented
                           // prefs.setString("PrintType", "BT");
                         }
                       });
@@ -1098,40 +1092,41 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ],
               ),
-
             ],
           ),
-        )
-    );
+        ));
   }
+
   String _selectedOption = "Wifi";
 
   Widget dropDown() {
     return Container(
-      // height: MediaQuery.of(context).size.height / 12,
+        // height: MediaQuery.of(context).size.height / 12,
         width: MediaQuery.of(context).size.width / 1.1,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
-          border: Border.all(color:Colors.transparent),
+          border: Border.all(color: Colors.transparent),
         ),
         child: Padding(
-          padding:
-          const EdgeInsets.only(left: 13, bottom: 0, top: 0, right: 13),
+          padding: const EdgeInsets.only(left: 13, bottom: 0, top: 0, right: 13),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-
             children: [
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("select_printer_type".tr,style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),),
+                  Text(
+                    "select_printer_type".tr,
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                  ),
                   DropdownButton<String>(
                     hint: const Text('Select an option'),
                     value: _selectedOption,
-                    onChanged: (String? newValue) async{
-
+                    onChanged: (String? newValue) async {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       setState(() {
                         _selectedOption = newValue!;
@@ -1145,70 +1140,62 @@ class _SettingsPageState extends State<SettingsPage> {
                         templateViewColor(templateIndex);
                         setTemplate(templateIndex);
 
-
-                      //   if (newValue == "Wifi") {
-                      //     defaultSalesInvoiceController.clear();
-                      //     defaultSalesOrderController.clear();
-                      //     prefs.setString("PrintType", "Wifi");
-                      //   }
-                      //
-                      //  else if (newValue == "USB") {
-                      //     defaultSalesInvoiceController.clear();
-                      //     defaultSalesOrderController.clear();
-                      //     prefs.setString("PrintType", "USB");
-                      //   }
-                      //
-                      //   else {
-                      //     defaultSalesInvoiceController.clear();
-                      //     defaultSalesOrderController.clear();
-                      //     prefs.setString("PrintType", "BT");
-                      //     /// bluetooth commented
-                      //     // prefs.setString("PrintType", "BT");
-                      //
-                      // }
-                      //
+                        //   if (newValue == "Wifi") {
+                        //     defaultSalesInvoiceController.clear();
+                        //     defaultSalesOrderController.clear();
+                        //     prefs.setString("PrintType", "Wifi");
+                        //   }
+                        //
+                        //  else if (newValue == "USB") {
+                        //     defaultSalesInvoiceController.clear();
+                        //     defaultSalesOrderController.clear();
+                        //     prefs.setString("PrintType", "USB");
+                        //   }
+                        //
+                        //   else {
+                        //     defaultSalesInvoiceController.clear();
+                        //     defaultSalesOrderController.clear();
+                        //     prefs.setString("PrintType", "BT");
+                        //     /// bluetooth commented
+                        //     // prefs.setString("PrintType", "BT");
+                        //
+                        // }
+                        //
                       });
                     },
-                    items: <String>['Wifi','USB','BT']
-                        .map<DropdownMenuItem<String>>((String value) {
+                    items: <String>['Wifi', 'USB', 'BT'].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(value,style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0)),
+                          child: Text(value, style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0)),
                         ),
                       );
                     }).toList(),
                   ),
                 ],
               ),
-
             ],
           ),
-        )
-    );
+        ));
   }
-
-
 
   Widget printerScreen() {
     return Container(
       child: Column(
         children: [
-
           // Padding(
           //   padding: const EdgeInsets.only(top: 10.0,bottom: 15),
           //   child: defaultPrinterNew(),
           // ),
 
           Padding(
-            padding: const EdgeInsets.only(top: 10.0,bottom: 15),
+            padding: const EdgeInsets.only(top: 10.0, bottom: 15),
             child: dropDown(),
           ),
 
           /// commented template selection
-        //  print_type_value ==true  ?
+          //  print_type_value ==true  ?
 
           Card(
             shape: RoundedRectangleBorder(
@@ -1289,30 +1276,31 @@ class _SettingsPageState extends State<SettingsPage> {
                       //   width: 20,
                       // ),
 
-                      _selectedOption !='BT'?
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            templateIndex = 3;
-                            templateViewColor(templateIndex);
-                            setTemplate(3);
-                            //templateViewColor=
-                          });
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 12,
-                          width: MediaQuery.of(context).size.width / 18,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: template3Color,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "1",
-                            style: customisedStyle(context, template3Text, FontWeight.w700, 22.0),
-                          ),
-                        ),
-                      ):Container(),
+                      _selectedOption != 'BT'
+                          ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  templateIndex = 3;
+                                  templateViewColor(templateIndex);
+                                  setTemplate(3);
+                                  //templateViewColor=
+                                });
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 18,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  color: template3Color,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "1",
+                                  style: customisedStyle(context, template3Text, FontWeight.w700, 22.0),
+                                ),
+                              ),
+                            )
+                          : Container(),
                       const SizedBox(
                         width: 20,
                       ),
@@ -1342,37 +1330,38 @@ class _SettingsPageState extends State<SettingsPage> {
                       const SizedBox(
                         width: 20,
                       ),
-                      _selectedOption =='USB' || _selectedOption =='Wifi'?
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            templateIndex = 5;
-                            templateViewColor(templateIndex);
-                            setTemplate(5);
-                            //templateViewColor=
-                          });
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 12,
-                          width: MediaQuery.of(context).size.width / 18,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: template5Color,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "3",
-                            style: customisedStyle(context, template5Text, FontWeight.w700, 22.0),
-                          ),
-                        ),
-                      ):Container(),
+                      _selectedOption == 'USB' || _selectedOption == 'Wifi'
+                          ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  templateIndex = 5;
+                                  templateViewColor(templateIndex);
+                                  setTemplate(5);
+                                  //templateViewColor=
+                                });
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.height / 12,
+                                width: MediaQuery.of(context).size.width / 18,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  color: template5Color,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "3",
+                                  style: customisedStyle(context, template5Text, FontWeight.w700, 22.0),
+                                ),
+                              ),
+                            )
+                          : Container(),
                     ],
                   )
                 ],
               ),
             ),
           ),
-         //     :Container(),
+          //     :Container(),
           Card(
             child: Container(
               decoration: BoxDecoration(
@@ -1400,12 +1389,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           color: Colors.black,
                         ),
                         contentPadding: const EdgeInsets.all(13),
-                        hintText:'sales_invoice'.tr,
+                        hintText: 'sales_invoice'.tr,
                         hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         labelText: "Sales  invoice",
                         labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
-                        focusedBorder:
-                            const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                        focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                         isDense: true,
                         border: const OutlineInputBorder(),
                       ),
@@ -1434,8 +1423,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         labelText: 'sale_order'.tr,
                         labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
-                        focusedBorder:
-                            const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                        focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                         isDense: true,
                         border: const OutlineInputBorder(),
                       ),
@@ -1464,16 +1453,17 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-
               ),
               padding: const EdgeInsets.all(6),
-
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 5,
-                    child: Text('select_capability'.tr,style:  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),),
+                    child: Text(
+                      'select_capability'.tr,
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                    ),
                   ),
                   const SizedBox(
                     width: 25,
@@ -1482,14 +1472,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     width: MediaQuery.of(context).size.width / 5,
                     child: TextField(
                       readOnly: true,
-                      onTap: () async{
+                      onTap: () async {
                         var result = await Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => SelectCapabilities()),
                         );
                         if (result != null) {
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          prefs.setString('default_capabilities',result) ?? '';
+                          prefs.setString('default_capabilities', result) ?? '';
                           capabilitiesController.text = result;
                         }
                       },
@@ -1505,14 +1495,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         labelText: 'select_capability'.tr,
                         labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
-                        focusedBorder:
-                        const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                        focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                         isDense: true,
                         border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -1522,16 +1511,17 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
-
               ),
               padding: const EdgeInsets.all(6),
-
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 5,
-                    child: Text('select_code_page'.tr,style:  customisedStyle(context, Colors.black, FontWeight.w400, 14.0),),
+                    child: Text(
+                      'select_code_page'.tr,
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                    ),
                   ),
                   const SizedBox(
                     width: 25,
@@ -1540,14 +1530,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     width: MediaQuery.of(context).size.width / 5,
                     child: TextField(
                       readOnly: true,
-                      onTap: () async{
+                      onTap: () async {
                         var result = await Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => select_code_page()),
                         );
                         if (result != null) {
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          prefs.setString('default_code_page',result) ?? '';
+                          prefs.setString('default_code_page', result) ?? '';
                           codePageController.text = result;
                         }
                       },
@@ -1563,26 +1553,23 @@ class _SettingsPageState extends State<SettingsPage> {
                         hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                         labelText: 'select_code_page'.tr,
                         labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
-                        focusedBorder:
-                        const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                        focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                         isDense: true,
                         border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
           ),
-
 
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'highlight_tkn_no'.tr,
@@ -1604,16 +1591,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         hilightTokenNumber = val;
                       });
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('hilightTokenNumber', val);
-
-
-
                     },
                   ),
                 ),
@@ -1626,7 +1610,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'payment_detail'.tr,
@@ -1648,7 +1631,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         paymentDetailsInPrint = val;
                       });
@@ -1672,10 +1655,9 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
-               'com_detail_align'.tr,
+                'com_detail_align'.tr,
                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
               ),
               trailing: SizedBox(
@@ -1694,14 +1676,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         headerAlignment = val;
                       });
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('headerAlignment', val);
-
 
                       // setState(() {
                       //   printAfterPayment = val;
@@ -1766,7 +1747,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'time_in_invoice'.tr,
@@ -1788,14 +1768,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         time_in_invoice = val;
                       });
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('time_in_invoice', val);
-
 
                       // setState(() {
                       //   printAfterPayment = val;
@@ -1814,7 +1793,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'show_date_kot'.tr,
@@ -1836,14 +1814,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         show_date_time_kot = val;
                       });
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('show_date_time_kot', val);
-
 
                       // setState(() {
                       //   printAfterPayment = val;
@@ -1861,7 +1838,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'show_user_kot'.tr,
@@ -1883,14 +1859,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         show_username_kot = val;
                       });
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('show_username_kot', val);
-
 
                       // setState(() {
                       //   printAfterPayment = val;
@@ -1908,7 +1883,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'hide_tax_details'.tr,
@@ -1930,14 +1904,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         hideTaxDetails = val;
                       });
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('hideTaxDetails', val);
-
 
                       // setState(() {
                       //   printAfterPayment = val;
@@ -1955,7 +1928,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'extraDetailsInKOT'.tr,
@@ -1977,14 +1949,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         extraDetailsInKOT = val;
                       });
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('extraDetailsInKOT', val);
-
 
                       // setState(() {
                       //   printAfterPayment = val;
@@ -1997,52 +1968,46 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {},
             ),
           ),
-          printType==
-          "Wifi" ? Card(
-
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
-              borderRadius: BorderRadius.circular(2),
-            ),
-            color: Colors.grey[100],
-            child: ListTile(
-              title: Text(
-                'No_of_copies'.tr,
-                style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
-              ),
-              trailing: DropdownButton<String>(
-                value: numberOfCopies,
-                underline: Container(),
-                items: numberOfCopiesList.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value + "  Copies ",
-                      style: customisedStyle(context, const Color(0xffF25F29),
-                          FontWeight.normal, 15.0),
+          printType == "Wifi"
+              ? Card(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  color: Colors.grey[100],
+                  child: ListTile(
+                    title: Text(
+                      'No_of_copies'.tr,
+                      style: customisedStyle(context, Colors.black, FontWeight.normal, 15.0),
                     ),
-                  );
-                }).toList(),
-                onChanged: (newValue)async {
-                  numberOfCopies = newValue!;
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.setString('number_of_print', newValue);
-                  setState(() {
-
-                  });
-                },
-              ),
-              onTap: () {
-
-              },
-            ),
-          ):Container(),
+                    trailing: DropdownButton<String>(
+                      value: numberOfCopies,
+                      underline: Container(),
+                      items: numberOfCopiesList.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value + "  Copies ",
+                            style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 15.0),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) async {
+                        numberOfCopies = newValue!;
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.setString('number_of_print', newValue);
+                        setState(() {});
+                      },
+                    ),
+                    onTap: () {},
+                  ),
+                )
+              : Container(),
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'Print For Cancelled Order'.tr,
@@ -2064,14 +2029,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         printForCancellOrder = val;
                       });
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('print_for_cancel_order', val);
-
 
                       // setState(() {
                       //   printAfterPayment = val;
@@ -2089,7 +2053,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'kot For Cancelled Order'.tr,
@@ -2111,7 +2074,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         kotForCanceledOrder = val;
                       });
@@ -2130,7 +2093,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'flavour_in_order_print'.tr,
@@ -2152,15 +2114,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         flavourInOrderPrint = val;
                       });
 
-
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('flavour_in_order_print', val);
-
                     },
                   ),
                 ),
@@ -2173,7 +2133,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'reverseArabicOption'.tr,
@@ -2195,15 +2154,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         reverseArabicOption = val;
                       });
 
-
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('reverseArabicOption', val);
-
                     },
                   ),
                 ),
@@ -2211,12 +2168,55 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {},
             ),
           ),
+
+          printType == "Wifi"
+              ? Card(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      'lineAfteritem'.tr,
+                      style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                    ),
+                    trailing: SizedBox(
+                      width: 50,
+                      child: Center(
+                        child: FlutterSwitch(
+                          width: 40.0,
+                          height: 20.0,
+                          valueFontSize: 30.0,
+                          toggleSize: 15.0,
+                          value: lineAfterItem,
+                          borderRadius: 20.0,
+                          padding: 1.0,
+                          activeColor: Colors.green,
+                          activeTextColor: Colors.green,
+                          inactiveTextColor: Colors.white,
+                          inactiveColor: Colors.grey,
+                          // showOnOff: true,
+                          onToggle: (val) async {
+                            setState(() {
+                              lineAfterItem = val;
+                            });
+
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.setBool('LineAfterItem', val);
+                          },
+                        ),
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                )
+              : Container(),
+
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'Discount in Print',
@@ -2230,8 +2230,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 20.0,
                     valueFontSize: 30.0,
                     toggleSize: 15.0,
-                    value: isDiscountInPrint
-                 ,
+                    value: isDiscountInPrint,
                     borderRadius: 20.0,
                     padding: 1.0,
                     activeColor: Colors.green,
@@ -2239,15 +2238,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         isDiscountInPrint = val;
                       });
 
-
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('isDiscountInPrint', val);
-
                     },
                   ),
                 ),
@@ -2261,7 +2258,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'Sales Man',
@@ -2283,15 +2279,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         isSalesmanDisplay = val;
                       });
 
-
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('isSalesmanDisplay', val);
-
                     },
                   ),
                 ),
@@ -2304,7 +2298,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'Customer Name',
@@ -2318,8 +2311,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 20.0,
                     valueFontSize: 30.0,
                     toggleSize: 15.0,
-                    value:    isCustomerNameDisplay
-                    ,
+                    value: isCustomerNameDisplay,
                     borderRadius: 20.0,
                     padding: 1.0,
                     activeColor: Colors.green,
@@ -2327,15 +2319,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         isCustomerNameDisplay = val;
                       });
 
-
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('isCustomerNameDisplay', val);
-
                     },
                   ),
                 ),
@@ -2348,7 +2338,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'Customer Phone',
@@ -2362,8 +2351,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 20.0,
                     valueFontSize: 30.0,
                     toggleSize: 15.0,
-                    value:    isCustomerPhoneDisplay
-                    ,
+                    value: isCustomerPhoneDisplay,
                     borderRadius: 20.0,
                     padding: 1.0,
                     activeColor: Colors.green,
@@ -2371,15 +2359,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         isCustomerPhoneDisplay = val;
                       });
 
-
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('isCustomerPhoneDisplay', val);
-
                     },
                   ),
                 ),
@@ -2392,7 +2378,6 @@ class _SettingsPageState extends State<SettingsPage> {
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: ListTile(
               title: Text(
                 'Gross Amount',
@@ -2406,8 +2391,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 20.0,
                     valueFontSize: 30.0,
                     toggleSize: 15.0,
-                    value:    isGrossAmountDisplay
-                    ,
+                    value: isGrossAmountDisplay,
                     borderRadius: 20.0,
                     padding: 1.0,
                     activeColor: Colors.green,
@@ -2415,15 +2399,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     inactiveTextColor: Colors.white,
                     inactiveColor: Colors.grey,
                     // showOnOff: true,
-                    onToggle: (val)async {
+                    onToggle: (val) async {
                       setState(() {
                         isGrossAmountDisplay = val;
                       });
 
-
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool('isGrossAmountDisplay', val);
-
                     },
                   ),
                 ),
@@ -2432,33 +2414,28 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
 
-
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
-
             child: SizedBox(
               //    width: MediaQuery.of(context).size.width / 5,
               child: TextField(
-                onChanged: (text)async{
-
+                onChanged: (text) async {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.setString('printTermsAndCondition', text);
-
                 },
                 style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                 controller: termsAndConditionController,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(13),
                   hintText: 'terms_condition'.tr,
-
                   hintStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                   labelText: 'terms_condition'.tr,
                   labelStyle: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
                   focusedBorder:
-                  const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                      const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                   isDense: true,
                   border: const OutlineInputBorder(),
                 ),
@@ -2466,8 +2443,9 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
 
-          const SizedBox(height: 50,)
-
+          const SizedBox(
+            height: 50,
+          )
         ],
       ),
     );
@@ -2544,36 +2522,33 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
 
-
-
-
-
-      kotPrint?   Card(
-        color: setting3,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
-          borderRadius: BorderRadius.circular(2),
-        ),
-        child: ListTile(
-          onTap: () {
-            setState(() {
-              createWaiterBool = false;
-              index = 3;
-              test(index);
-              Future.delayed(Duration.zero, () {
-                getKitchenListApi();
-                listAllPrinter();
-              });
-            });
-          },
-          leading: IconButton(onPressed: () {}, icon: SvgPicture.asset('assets/svg/kitchenseting.svg')),
-          title: Text(
-            'kit_set'.tr,
-            style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
-          ),
-        ),
-      ):Container(),
-
+      kotPrint
+          ? Card(
+              color: setting3,
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              child: ListTile(
+                onTap: () {
+                  setState(() {
+                    createWaiterBool = false;
+                    index = 3;
+                    test(index);
+                    Future.delayed(Duration.zero, () {
+                      getKitchenListApi();
+                      listAllPrinter();
+                    });
+                  });
+                },
+                leading: IconButton(onPressed: () {}, icon: SvgPicture.asset('assets/svg/kitchenseting.svg')),
+                title: Text(
+                  'kit_set'.tr,
+                  style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
+                ),
+              ),
+            )
+          : Container(),
 
       /// table list option
       // Card(
@@ -2593,7 +2568,6 @@ class _SettingsPageState extends State<SettingsPage> {
       //     ),
       //   ),
       // ),
-
 
       ///commented organisation
       // Card(
@@ -2619,7 +2593,7 @@ class _SettingsPageState extends State<SettingsPage> {
       //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
       //   ),
       // ),
-/// user section commented
+      /// user section commented
       // userType == 1
       //     ? Card(
       //         color: setting5,
@@ -2834,7 +2808,7 @@ class _SettingsPageState extends State<SettingsPage> {
       //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
       //   ),
       // ),
-/// kot log
+      /// kot log
       // Card(
       //   color: setting16,
       //   shape: RoundedRectangleBorder(
@@ -3159,7 +3133,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
-                  width: 50 ,
+                  width: 50,
                   child: Center(
                     child: FlutterSwitch(
                       width: 40.0,
@@ -3173,16 +3147,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       activeTextColor: Colors.green,
                       inactiveTextColor: Colors.white,
                       inactiveColor: Colors.grey,
-                      onToggle: (val) async{
-
+                      onToggle: (val) async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                        if(val){
+                        if (val) {
                           prefs.setBool('autoFocusField', true);
-                        }
-                        else{
+                        } else {
                           prefs.setBool('autoFocusField', false);
-
                         }
 
                         setState(() {
@@ -3221,15 +3192,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       activeTextColor: Colors.green,
                       inactiveTextColor: Colors.white,
                       inactiveColor: Colors.grey,
-                      onToggle: (val) async{
-
+                      onToggle: (val) async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         Locale? currentLocale = Get.locale;
-                        if(currentLocale.toString() =="ar"){
+                        if (currentLocale.toString() == "ar") {
                           prefs.setBool('isArabic', false);
                           Get.updateLocale(const Locale('en', 'US'));
-                        }
-                        else{
+                        } else {
                           prefs.setBool('isArabic', true);
                           Get.updateLocale(const Locale('ar'));
                         }
@@ -3237,7 +3206,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           isArabic = val;
                         });
-
                       },
                     ),
                   ),
@@ -3264,14 +3232,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       height: 20.0,
                       valueFontSize: 30.0,
                       toggleSize: 15.0,
-                      value:OpenDrawer ,
+                      value: OpenDrawer,
                       borderRadius: 20.0,
                       padding: 1.0,
                       activeColor: Colors.green,
                       activeTextColor: Colors.green,
                       inactiveTextColor: Colors.white,
                       inactiveColor: Colors.grey,
-                      onToggle: (val) async{
+                      onToggle: (val) async {
                         setState(() {
                           OpenDrawer = val;
                           switchStatus("OpenDrawer", OpenDrawer);
@@ -3368,43 +3336,41 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               color: Colors.grey[100],
               child: ListTile(
-                  onTap: null,
-                  title: Text(
-                   'show_inv'.tr,
-                    style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                  ),
-                  trailing: SizedBox(
-                    width: 50,
-                    child: Center(
-                      child: FlutterSwitch(
-                        width: 40.0,
-                        height: 20.0,
-                        valueFontSize: 30.0,
-                        toggleSize: 15.0,
-                        value: showInvoice,
-                        borderRadius: 20.0,
-                        padding: 1.0,
-                        activeColor: Colors.green,
-                        activeTextColor: Colors.green,
-                        inactiveTextColor: Colors.white,
-                        inactiveColor: Colors.grey,
+                onTap: null,
+                title: Text(
+                  'show_inv'.tr,
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: showInvoice,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
 
-                        // showOnOff: true,
-                        onToggle: (val) {
-                          showInvoice = val;
-                          updateList("IsShowInvoice", val, "AutoClear");
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        showInvoice = val;
+                        updateList("IsShowInvoice", val, "AutoClear");
 
-                          // setState(() {
-                          //   showInvoice = val;
-                          //   switchStatus("AutoClear", showInvoice);
-                          // });
-
-                        },
-                      ),
+                        // setState(() {
+                        //   showInvoice = val;
+                        //   switchStatus("AutoClear", showInvoice);
+                        // });
+                      },
                     ),
                   ),
-
-                  ),
+                ),
+              ),
             ),
             Card(
               shape: RoundedRectangleBorder(
@@ -3413,37 +3379,37 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               color: Colors.grey[100],
               child: ListTile(
-                  title: Text(
-                    'clear_table'.tr,
-                    style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
-                  ),
-                  trailing: SizedBox(
-                    width: 50,
-                    child: Center(
-                      child: FlutterSwitch(
-                        width: 40.0,
-                        height: 20.0,
-                        valueFontSize: 30.0,
-                        toggleSize: 15.0,
-                        value: clearTable,
-                        borderRadius: 20.0,
-                        padding: 1.0,
-                        activeColor: Colors.green,
-                        activeTextColor: Colors.green,
-                        inactiveTextColor: Colors.white,
-                        inactiveColor: Colors.grey,
-                        onToggle: (val) {
-                          clearTable = val;
-                          updateList("IsClearTableAfterPayment", val, "tableClearAfterPayment");
+                title: Text(
+                  'clear_table'.tr,
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: clearTable,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      onToggle: (val) {
+                        clearTable = val;
+                        updateList("IsClearTableAfterPayment", val, "tableClearAfterPayment");
 
-                          // setState(() {
-                          //   clearTable = val;
-                          //   switchStatus("tableClearAfterPayment", clearTable);
-                          // });
-                        },
-                      ),
+                        // setState(() {
+                        //   clearTable = val;
+                        //   switchStatus("tableClearAfterPayment", clearTable);
+                        // });
+                      },
                     ),
                   ),
+                ),
                 onTap: null,
               ),
             ),
@@ -3601,7 +3567,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-
               ),
             ),
 
@@ -3647,7 +3612,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-
               ),
             ),
             Card(
@@ -3692,7 +3656,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-
               ),
             ),
 
@@ -4089,11 +4052,6 @@ class _SettingsPageState extends State<SettingsPage> {
             //   ),
             // ),
 
-
-
-
-
-
             ///Initial Token No
             Card(
               shape: RoundedRectangleBorder(
@@ -4142,8 +4100,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
                         updateList("InitialTokenNo", val, "");
                       },
-                      style: customisedStyle(context, const Color(0xffF25F29),
-                          FontWeight.normal, 15.0),
+                      style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 15.0),
                       // style: const TextStyle(color: Colors.black, decoration: TextDecoration.underline),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
@@ -4181,20 +4138,17 @@ class _SettingsPageState extends State<SettingsPage> {
                       value: value,
                       child: Text(
                         value + " Hour ",
-                        style: customisedStyle(context, const Color(0xffF25F29),
-                            FontWeight.normal, 15.0),
+                        style: customisedStyle(context, const Color(0xffF25F29), FontWeight.normal, 15.0),
                       ),
                     );
                   }).toList(),
                   onChanged: (newValue) {
                     compensationHour = newValue!;
                     print("object   $newValue");
-              updateList("CompensationHour", newValue, "");
+                    updateList("CompensationHour", newValue, "");
                   },
                 ),
-                onTap: () {
-
-                },
+                onTap: () {},
               ),
             ),
 
@@ -4252,8 +4206,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: null,
                 title: Text(
                   'KotafterPayment'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w400, 15.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
                   width: 50,
@@ -4275,8 +4228,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           kotafterPayment = val;
                           switchStatus("KotafterPayment", kotafterPayment);
-
-
                         });
                       },
                     ),
@@ -4295,8 +4246,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: null,
                 title: Text(
                   'highlightsProductDetails'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w400, 15.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
                   width: 50,
@@ -4317,8 +4267,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onToggle: (val) {
                         setState(() {
                           highlightsProductDetails = val;
-                          switchStatus(
-                              "highlightsProductDetails", highlightsProductDetails);
+                          switchStatus("highlightsProductDetails", highlightsProductDetails);
                         });
                       },
                     ),
@@ -4336,8 +4285,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: null,
                 title: Text(
                   'complimentary_bill'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w400, 15.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
                   width: 50,
@@ -4358,8 +4306,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onToggle: (val) {
                         setState(() {
                           isComplimentaryBill = val;
-                          switchStatus(
-                              "complimentary_bill", isComplimentaryBill);
+                          switchStatus("complimentary_bill", isComplimentaryBill);
                         });
                       },
                     ),
@@ -4377,8 +4324,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: null,
                 title: Text(
                   'autofocus_field'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w400, 15.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
                   width: 50,
@@ -4418,8 +4364,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: null,
                 title: Text(
                   'sync_method'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w400, 15.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
                   width: 50,
@@ -4438,7 +4383,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       inactiveColor: Colors.grey,
                       // showOnOff: true,
                       onToggle: (val) {
-
                         setState(() {
                           synMethod = val;
                           switchStatus("synMethod", synMethod);
@@ -4450,7 +4394,6 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
 
-
             Card(
               shape: RoundedRectangleBorder(
                 side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
@@ -4461,8 +4404,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: null,
                 title: Text(
                   'is_tab_design'.tr,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w400, 15.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
                 ),
                 trailing: SizedBox(
                   width: 50,
@@ -4481,13 +4423,17 @@ class _SettingsPageState extends State<SettingsPage> {
                       inactiveColor: Colors.grey,
                       // showOnOff: true,
                       onToggle: (val) {
-
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Confirm Design Switch',style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),),
-                              content: Text('Are you sure you want to confirm? The app design may be changed to ${isTabDesign?'Mobile app design':'Tablet app design'}  Please be careful.',style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                              title: Text(
+                                'Confirm Design Switch',
+                                style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                              ),
+                              content: Text(
+                                  'Are you sure you want to confirm? The app design may be changed to ${isTabDesign ? 'Mobile app design' : 'Tablet app design'}  Please be careful.',
+                                  style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
                               actions: <Widget>[
                                 TextButton(
                                   child: Text('Cancel'),
@@ -4498,13 +4444,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                 TextButton(
                                   child: Text('OK'),
                                   onPressed: () {
-
-
-
                                     Navigator.of(context).pop(true);
                                     setState(() {
-
-
                                       isTabDesign = val;
                                       enableTabDesign = val;
                                       switchStatus("isTablet", isTabDesign);
@@ -4513,7 +4454,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(builder: (context) => const EnterPinNumber()),
                                     );
-
                                   },
                                 ),
                               ],
@@ -4542,6 +4482,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+
             /// commented
             // Padding(
             //   padding: const EdgeInsets.only(bottom: 10.0, top: 10),
@@ -4683,26 +4624,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   String compensationHour = '1';
   String numberOfCopies = '1';
-  List<String> numberOfCopiesList = ['1','2','3'];
-  List<String> dropdownValues = ['0','1','2','3','4','5','6','7'];
+  List<String> numberOfCopiesList = ['1', '2', '3'];
+  List<String> dropdownValues = ['0', '1', '2', '3', '4', '5', '6', '7'];
   String kotDetail = 'Product Name';
-  List<String> kotDetailsValues = [
-    'Product Name',
-    'Product Description',
-    'Description'
-  ];
+  List<String> kotDetailsValues = ['Product Name', 'Product Description', 'Description'];
   String saleDetail = 'Product Name';
-  List<String> saleDetailsValues = [
-    'Product Name',
-    'Product Description',
-    'Description'
-  ];
+  List<String> saleDetailsValues = ['Product Name', 'Product Description', 'Description'];
   String saleInvoiceDetail = 'Product Name';
-  List<String> saleInvoiceDetailsValues = [
-    'Product Name',
-    'Product Description',
-    'Description'
-  ];
+  List<String> saleInvoiceDetailsValues = ['Product Name', 'Product Description', 'Description'];
 
   navigateToPrinter() async {
     var result = await Navigator.push(
@@ -4869,13 +4798,14 @@ class _SettingsPageState extends State<SettingsPage> {
       SizedBox(
         height: MediaQuery.of(context).size.height / 16, //height of button
         width: MediaQuery.of(context).size.width / 1,
-        child:   Text('add_print'.tr,
-            style: customisedStyle(context, Colors.black, FontWeight.w600, 20.0),
-            // style: TextStyle(
-            //   fontWeight: FontWeight.w600,
-            //   color: Colors.black,
-            //   fontSize: 20,
-            // )
+        child: Text(
+          'add_print'.tr,
+          style: customisedStyle(context, Colors.black, FontWeight.w600, 20.0),
+          // style: TextStyle(
+          //   fontWeight: FontWeight.w600,
+          //   color: Colors.black,
+          //   fontSize: 20,
+          // )
         ),
       ),
       SizedBox(
@@ -4889,10 +4819,9 @@ class _SettingsPageState extends State<SettingsPage> {
             children: [
               Container(
                 alignment: Alignment.centerLeft,
-                child:   Text(
+                child: Text(
                   'print_name'.tr,
                   style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-
                   textAlign: TextAlign.start,
                 ),
               ),
@@ -4923,8 +4852,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child:  Text(
-                    printType == "Wifi"? 'Ip Address':'Printer address',
+                  child: Text(
+                    printType == "Wifi" ? 'Ip Address' : 'Printer address',
                     style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                     textAlign: TextAlign.start,
                   ),
@@ -4933,141 +4862,141 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 6,
               ),
-             printType == "Wifi" ?
-             Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 8,
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                      textCapitalization: TextCapitalization.words,
-                      focusNode: ipAddress1,
-                      controller: ipAddressController1,
-                      onEditingComplete: () {
-                        FocusScope.of(context).requestFocus(ipAddress2);
-                      },
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(13),
-                        focusedBorder:
-                            OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 28,
-                    height: MediaQuery.of(context).size.height / 16,
-                    alignment: Alignment.center,
-                    child: const Text(
-                      '.',
-                      style: TextStyle(fontSize: 40),
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 8,
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      textCapitalization: TextCapitalization.words,
-                      focusNode: ipAddress2,
-                      controller: ipAddressController2,
-                      onEditingComplete: () {
-                        FocusScope.of(context).requestFocus(ipAddress3);
-                      },
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(13),
-                        focusedBorder:
-                            OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width / 28,
-                    height: MediaQuery.of(context).size.height / 16,
-                    child: const Text(
-                      '.',
-                      style: TextStyle(fontSize: 40),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 8,
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      textCapitalization: TextCapitalization.words,
-                      focusNode: ipAddress3,
-                      controller: ipAddressController3,
-                      onEditingComplete: () {
-                        FocusScope.of(context).requestFocus(ipAddress4);
-                      },
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(13),
-                        focusedBorder:
-                            OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width / 28,
-                    height: MediaQuery.of(context).size.height / 16,
-                    child: const Text(
-                      '.',
-                      style: TextStyle(
-                        fontSize: 40,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(
+              printType == "Wifi"
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 8,
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                            textCapitalization: TextCapitalization.words,
+                            focusNode: ipAddress1,
+                            controller: ipAddressController1,
+                            onEditingComplete: () {
+                              FocusScope.of(context).requestFocus(ipAddress2);
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(13),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 28,
+                          height: MediaQuery.of(context).size.height / 16,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            '.',
+                            style: TextStyle(fontSize: 40),
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 8,
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            textCapitalization: TextCapitalization.words,
+                            focusNode: ipAddress2,
+                            controller: ipAddressController2,
+                            onEditingComplete: () {
+                              FocusScope.of(context).requestFocus(ipAddress3);
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(13),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width / 28,
+                          height: MediaQuery.of(context).size.height / 16,
+                          child: const Text(
+                            '.',
+                            style: TextStyle(fontSize: 40),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 8,
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            textCapitalization: TextCapitalization.words,
+                            focusNode: ipAddress3,
+                            controller: ipAddressController3,
+                            onEditingComplete: () {
+                              FocusScope.of(context).requestFocus(ipAddress4);
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(13),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width / 28,
+                          height: MediaQuery.of(context).size.height / 16,
+                          child: const Text(
+                            '.',
+                            style: TextStyle(
+                              fontSize: 40,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 8,
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                              focusNode: ipAddress4,
+                              controller: ipAddressController4,
+                              onEditingComplete: () {
+                                FocusScope.of(context).requestFocus(saveIcon);
+                              },
+                              decoration: const InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                                contentPadding: EdgeInsets.all(13),
+                                border: OutlineInputBorder(),
+                              ),
+                            ))
+                      ],
+                    )
+                  : SizedBox(
                       width: MediaQuery.of(context).size.width / 8,
                       child: TextFormField(
                         textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                        focusNode: ipAddress4,
-                        controller: ipAddressController4,
+                        //  keyboardType: TextInputType.number,
+                        // inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                        textCapitalization: TextCapitalization.words,
+                        focusNode: bluetoothAddress1,
+                        controller: bluetoothAddressController,
                         onEditingComplete: () {
-                          FocusScope.of(context).requestFocus(saveIcon);
+                          FocusScope.of(context).requestFocus(ipAddress2);
                         },
                         decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(13),
                           focusedBorder:
                               OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
-                          contentPadding: EdgeInsets.all(13),
                           border: OutlineInputBorder(),
                         ),
-                      ))
-                ],
-              ):
-             SizedBox(
-               width: MediaQuery.of(context).size.width / 8,
-               child: TextFormField(
-                 textAlign: TextAlign.center,
-               //  keyboardType: TextInputType.number,
-                // inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                 textCapitalization: TextCapitalization.words,
-                 focusNode: bluetoothAddress1,
-                 controller: bluetoothAddressController,
-                 onEditingComplete: () {
-                   FocusScope.of(context).requestFocus(ipAddress2);
-                 },
-                 decoration: const InputDecoration(
-                   contentPadding: EdgeInsets.all(13),
-                   focusedBorder:
-                   OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
-                   border: OutlineInputBorder(),
-                 ),
-               ),
-             ),
+                      ),
+                    ),
             ],
           ),
         ),
@@ -5101,8 +5030,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
             child: IconButton(
               onPressed: () {
-
-                if(printType =="Wifi"){
+                if (printType == "Wifi") {
                   if (printerNameController.text.trim() == '' ||
                       ipAddressController1.text == '' ||
                       ipAddressController2.text == '' ||
@@ -5110,27 +5038,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       ipAddressController4.text == '') {
                     dialogBox(context, "Please fill mandatory field");
                   } else {
-                     createPrinterApi("Wifi");
+                    createPrinterApi("Wifi");
                   }
-                }
-
-
-
-                else if(printType =="BT"){
+                } else if (printType == "BT") {
                   if (printerNameController.text.trim() == '' || bluetoothAddressController.text == '') {
-                     dialogBox(context,"Please fill mandatory field");
+                    dialogBox(context, "Please fill mandatory field");
                   } else {
                     createPrinterApi("BT");
                   }
-                }
-                else{
+                } else {
                   if (printerNameController.text.trim() == '' || bluetoothAddressController.text == '') {
-                    dialogBox(context,"Please fill mandatory field");
+                    dialogBox(context, "Please fill mandatory field");
                   } else {
                     createPrinterApi("USB");
                   }
                 }
-
               },
               icon: SvgPicture.asset(
                 'assets/svg/add.svg',
@@ -5242,8 +5164,10 @@ class _SettingsPageState extends State<SettingsPage> {
       SizedBox(
         height: MediaQuery.of(context).size.height / 16, //height of button
         width: MediaQuery.of(context).size.width / 1,
-        child:   Text('Add Kitchen',
-            style: customisedStyle(context, Colors.black, FontWeight.w600, 20.0),),
+        child: Text(
+          'Add Kitchen',
+          style: customisedStyle(context, Colors.black, FontWeight.w600, 20.0),
+        ),
       ),
       SizedBox(
         height: MediaQuery.of(context).size.height / 1.40, //height of button
@@ -5255,9 +5179,9 @@ class _SettingsPageState extends State<SettingsPage> {
               width: MediaQuery.of(context).size.width / 1.1,
               child: ListView(
                 children: [
-                    Text(
-                   'name'.tr,
-                      style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                  Text(
+                    'name'.tr,
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(
@@ -5288,10 +5212,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 15,
                   ),
 
-                   Text(
-                   'description'.tr,
-                     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                     textAlign: TextAlign.start,
+                  Text(
+                    'description'.tr,
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                    textAlign: TextAlign.start,
                   ),
                   const SizedBox(
                     height: 15,
@@ -5337,7 +5261,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       Container(
-                      //  height: MediaQuery.of(context).size.height / 25,
+                        //  height: MediaQuery.of(context).size.height / 25,
                         width: 100,
                         child: FlutterSwitch(
                           width: 40.0,
@@ -5513,8 +5437,6 @@ class _SettingsPageState extends State<SettingsPage> {
     return null;
   }
 
-
-
   ///printer Template
   Widget printerDefault() {
     return Container(
@@ -5539,11 +5461,12 @@ class _SettingsPageState extends State<SettingsPage> {
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
               // controller: roleNameController,
-              decoration:   InputDecoration(
+              decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(13),
-                hintText:'sales_invoice'.tr,
+                hintText: 'sales_invoice'.tr,
                 hintStyle: const TextStyle(color: Colors.grey),
-                focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                focusedBorder:
+                    const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                 isDense: true,
                 border: const OutlineInputBorder(),
               ),
@@ -5558,11 +5481,12 @@ class _SettingsPageState extends State<SettingsPage> {
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
               // controller: roleNameController,
-              decoration:   InputDecoration(
+              decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(13),
                 hintText: 'sale_order'.tr,
                 hintStyle: const TextStyle(color: Colors.grey),
-                focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
+                focusedBorder:
+                    const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5.0)), borderSide: BorderSide(color: Colors.grey)),
                 isDense: true,
                 border: const OutlineInputBorder(),
               ),
@@ -5576,9 +5500,6 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-
-
-
 
   templateViewColor(int templateIndex) async {
     if (templateIndex == 1) {
@@ -5619,8 +5540,7 @@ class _SettingsPageState extends State<SettingsPage> {
       template1Text = const Color(0xffC8C8C8);
       template2Text = const Color(0xffC8C8C8);
       template3Text = const Color(0xffffffff);
-    }
- else if (templateIndex == 4) {
+    } else if (templateIndex == 4) {
       template1Color = const Color(0xffFFFFFF);
       template2Color = const Color(0xffFFFFFF);
       template3Color = const Color(0xffFFFFFF);
@@ -5632,9 +5552,7 @@ class _SettingsPageState extends State<SettingsPage> {
       template2Text = const Color(0xffC8C8C8);
       template3Text = const Color(0xffC8C8C8);
       template4Text = const Color(0xffffffff);
-    }
-
-    else {
+    } else {
       template1Color = const Color(0xffFFFFFF);
       template2Color = const Color(0xffFFFFFF);
       template3Color = const Color(0xffFFFFFF);
@@ -5680,7 +5598,8 @@ class _SettingsPageState extends State<SettingsPage> {
             height: MediaQuery.of(context).size.height / 16, //height of button
             width: MediaQuery.of(context).size.width / 1,
 
-            child:   Text('Users'.tr,
+            child: Text(
+              'Users'.tr,
               style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
             ),
           ),
@@ -5716,7 +5635,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               onPressed: () {},
                               icon: SvgPicture.asset('assets/svg/user.svg'),
                             ),
-                            title: Text(usersList[index].userName, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),),
+                            title: Text(
+                              usersList[index].userName,
+                              style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                            ),
                             trailing: IconButton(
                               onPressed: () {},
                               icon: SvgPicture.asset('assets/svg/arrow.svg'),
@@ -5757,7 +5679,7 @@ class _SettingsPageState extends State<SettingsPage> {
           height: MediaQuery.of(context).size.height / 16, //height of button
           width: MediaQuery.of(context).size.width / 1,
 
-          child:   Text('Users'.tr,
+          child: Text('Users'.tr,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
@@ -5771,8 +5693,8 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                Text(
-               'name'.tr,
+              Text(
+                'name'.tr,
                 style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                 textAlign: TextAlign.start,
               ),
@@ -5783,7 +5705,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: TextFormField(
                   readOnly: true,
                   style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-
                   onTap: () async {
                     var result = await Navigator.push(
                       context,
@@ -5793,15 +5714,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     print(result);
 
                     if (result != null) {
-
-                        userNameController.text = result;
-
+                      userNameController.text = result;
                     }
                   },
-
                   focusNode: usersName,
                   controller: userNameController,
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'select_employee'.tr,
                     hintStyle: customisedStyle(context, Colors.grey, FontWeight.w500, 14.0),
                     contentPadding: const EdgeInsets.all(13),
@@ -5830,14 +5748,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 3.6,
-                      child:   Text(
+                      child: Text(
                         'PIN',
                         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       ),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 3.6,
-                      child:   Text(
+                      child: Text(
                         'Role'.tr,
                         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       ),
@@ -5888,7 +5806,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                 generatePinNumber();
                               }
                             },
-                            child:   Text('Generate'.tr,style: customisedStyle(context, Colors.white, FontWeight.w500, 14.0),),
+                            child: Text(
+                              'Generate'.tr,
+                              style: customisedStyle(context, Colors.white, FontWeight.w500, 14.0),
+                            ),
                           ),
                         ),
                       ],
@@ -5917,9 +5838,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               print(result);
 
                               if (result != null) {
-
-                                  userRoleController.text = result;
-
+                                userRoleController.text = result;
                               }
                             },
                             readOnly: true,
@@ -5951,7 +5870,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                 roleList = true;
                               });
                             },
-                            child:   Text('New'.tr,style: customisedStyle(context, Colors.white, FontWeight.w500, 14.0),),
+                            child: Text(
+                              'New'.tr,
+                              style: customisedStyle(context, Colors.white, FontWeight.w500, 14.0),
+                            ),
                           ),
                         ),
                       ],
@@ -6016,7 +5938,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       width: MediaQuery.of(context).size.width / 3,
                       child: ListView(
                         children: [
-                            Text(
+                          Text(
                             'Role'.tr,
                             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                           ),
@@ -6029,7 +5951,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               keyboardType: TextInputType.text,
                               textCapitalization: TextCapitalization.words,
                               controller: roleNameController,
-                              decoration:   InputDecoration(
+                              decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(13),
                                 hintText: 'role_name'.tr,
                                 hintStyle: const TextStyle(color: Colors.grey),
@@ -6045,7 +5967,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                 Text(
+                                Text(
                                   'Dining'.tr,
                                   style: const TextStyle(fontWeight: FontWeight.w300),
                                 ),
@@ -6076,7 +5998,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  Text('Take_awy'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
+                                Text('Take_awy'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
                                 SizedBox(
                                     child: FlutterSwitch(
                                   width: 40.0,
@@ -6104,7 +6026,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  Text('Online'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
+                                Text('Online'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
                                 SizedBox(
                                     child: FlutterSwitch(
                                   width: 40.0,
@@ -6132,7 +6054,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  Text('Car'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
+                                Text('Car'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
                                 SizedBox(
                                     child: FlutterSwitch(
                                   width: 40.0,
@@ -6160,7 +6082,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  Text('Kitchen'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
+                                Text('Kitchen'.tr, style: const TextStyle(fontWeight: FontWeight.w300)),
                                 SizedBox(
                                     child: FlutterSwitch(
                                   width: 40.0,
@@ -6205,7 +6127,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       });
                                     }
                                   },
-                                  child:   Text('Add'.tr),
+                                  child: Text('Add'.tr),
                                 )
                               ],
                             ),
@@ -6278,7 +6200,7 @@ class _SettingsPageState extends State<SettingsPage> {
             height: MediaQuery.of(context).size.height / 16, //height of button
             width: MediaQuery.of(context).size.width / 1,
 
-            child:   Text('delivery_man'.tr,
+            child: Text('delivery_man'.tr,
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
@@ -6306,7 +6228,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: TextField(
                             onTap: () {},
                             controller: staffNameController,
-                            decoration:   InputDecoration(
+                            decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(6),
                               focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xff858585), width: .5)),
                               enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xff858585), width: .5)),
@@ -6331,7 +6253,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       itemBuilder: (context, index) {
                         return Card(
                           elevation: 0,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
                           color: const Color(0xffF3F3F3),
                           child: ListTile(
                             title: Text(
@@ -6580,7 +6503,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     itemBuilder: (context, index) {
                       return Card(
                         elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3), side: const BorderSide(width: 1, color: Color(0xffDFDFDF))),
                         color: const Color(0xffF3F3F3),
                         child: ListTile(
                           onLongPress: () async {
@@ -6656,8 +6580,8 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                Text(
-               'name'.tr,
+              Text(
+                'name'.tr,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -6741,8 +6665,7 @@ class _SettingsPageState extends State<SettingsPage> {
           height: MediaQuery.of(context).size.height / 16, //height of button
           width: MediaQuery.of(context).size.width / 1,
 
-          child:   Text('contact_us'.tr,
-              style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0)),
+          child: Text('contact_us'.tr, style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0)),
         ),
         Container(
             height: MediaQuery.of(context).size.height / 1.40, //height of button
@@ -6774,17 +6697,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'INDIA',style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)
-                        ),
-                        Text(
-                          india,style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)
-                        )
+                        Text('INDIA', style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
+                        Text(india, style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0))
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
                   onTap: () {
                     copyPhone();
@@ -6794,21 +6715,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     width: MediaQuery.of(context).size.width / 6,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //    crossAxisAlignment: CrossAxisAlignment.center,
+                      //    crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'KSA ',style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)
-                        ),
+                        Text('KSA ', style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              ksa,style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)
-                            ),
-                            Text(
-                              ksa1,style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)
-                            ),
+                            Text(ksa, style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)),
+                            Text(ksa1, style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)),
                           ],
                         )
                       ],
@@ -6825,12 +6740,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'Email'.tr,style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)
-                      ),
-                      Text(
-                        'info@vikncodes.com',style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)
-                      )
+                      Text('Email'.tr, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
+                      Text('info@vikncodes.com', style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0))
                     ],
                   ),
                 ),
@@ -6838,26 +6749,21 @@ class _SettingsPageState extends State<SettingsPage> {
                   alignment: Alignment.center,
                   // height: MediaQuery.of(context).size.height / 30, //height of button
                   width: MediaQuery.of(context).size.width / 1.5,
-                  child: Text(
-                    'www.viknbooks.com',style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)
-                  ),
+                  child: Text('www.viknbooks.com', style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0)),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 Container(
                     alignment: Alignment.center,
-                  //  height: MediaQuery.of(context).size.height / 24, //height of button
+                    //  height: MediaQuery.of(context).size.height / 24, //height of button
                     //width: MediaQuery.of(context).size.width / 1.3,
                     child: TextButton(
                       onPressed: () {
                         // _copyToClipboard();
                         //  print(num);
                       },
-                      child: Text(
-                        'Tap Here For Copy',
-                          style: customisedStyle(context, Colors.white, FontWeight.w600, 15.0)
-                      ),
+                      child: Text('Tap Here For Copy', style: customisedStyle(context, Colors.white, FontWeight.w600, 15.0)),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(const Color(0xffF25F29)),
                       ),
@@ -6875,8 +6781,10 @@ class _SettingsPageState extends State<SettingsPage> {
         SizedBox(
           height: MediaQuery.of(context).size.height / 16, //height of button
           width: MediaQuery.of(context).size.width / 1,
-          child:   Text('Privacy Policies',
-            style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),),
+          child: Text(
+            'Privacy Policies',
+            style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          ),
         ),
         SizedBox(
             height: MediaQuery.of(context).size.height / 1.40, //height of button
@@ -6894,7 +6802,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: <TextSpan>[
                     TextSpan(
                       text: "What user data we collect\n",
-                        style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
                     )
                   ],
                 ),
@@ -6909,7 +6817,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
 """,
                 textAlign: TextAlign.justify,
-                  style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
               ),
 
               Text.rich(
@@ -7144,8 +7052,10 @@ At some point, you might wish to restrict the use and collection of your persona
         SizedBox(
           height: MediaQuery.of(context).size.height / 16, //height of button
           width: MediaQuery.of(context).size.width / 1,
-          child:   Text('Terms And Conditions',
-            style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),),
+          child: Text(
+            'Terms And Conditions',
+            style: customisedStyle(context, Colors.black, FontWeight.w500, 20.0),
+          ),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height / 1.40, //height of button
@@ -7318,7 +7228,6 @@ At some point, you might wish to restrict the use and collection of your persona
     return ListView(
       shrinkWrap: true,
       children: <Widget>[
-
         Container(
             height: MediaQuery.of(context).size.height / 1.40, //height of button
             width: MediaQuery.of(context).size.width / 1.1,
@@ -7349,7 +7258,10 @@ At some point, you might wish to restrict the use and collection of your persona
                         'INDIA:',
                         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       ),
-                      Text('+91 905775 00400',style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),),
+                      Text(
+                        '+91 905775 00400',
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                      ),
                     ],
                   ),
                 ),
@@ -7364,7 +7276,10 @@ At some point, you might wish to restrict the use and collection of your persona
                         'KSA:',
                         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       ),
-                      Text('+966 533133 4959', style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),),
+                      Text(
+                        '+966 533133 4959',
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                      ),
                     ],
                   ),
                 ),
@@ -7382,7 +7297,10 @@ At some point, you might wish to restrict the use and collection of your persona
                         'Email:',
                         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       ),
-                      Text('info@vikncodes.com', style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),),
+                      Text(
+                        'info@vikncodes.com',
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                      ),
                     ],
                   ),
                 ),
@@ -7409,7 +7327,10 @@ At some point, you might wish to restrict the use and collection of your persona
                         'Current App Version:',
                         style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                       ),
-                      Text(appVersion, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),)
+                      Text(
+                        appVersion,
+                        style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                      )
                     ],
                   ),
                 ),
@@ -7507,7 +7428,7 @@ At some point, you might wish to restrict the use and collection of your persona
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
 
@@ -7559,16 +7480,14 @@ At some point, you might wish to restrict the use and collection of your persona
   Future<Null> createKitchenApi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-
-        stop();
-
+      stop();
     } else {
       try {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var categoryID = 1;
         var accessToken = prefs.getString('access') ?? '';
 
@@ -7601,7 +7520,6 @@ At some point, you might wish to restrict the use and collection of your persona
         Map n = json.decode(utf8.decode(response.bodyBytes));
         var status = n["StatusCode"];
 
-
         if (status == 6000) {
           setState(() {
             _selectedIndex = 1000;
@@ -7620,19 +7538,16 @@ At some point, you might wish to restrict the use and collection of your persona
           });
         } else if (status == 6001) {
           stop();
-          var message = n["message"]??'';
+          var message = n["message"] ?? '';
           dialogBox(context, message);
         } else {
           stop();
-          var message = n["message"]??'';
+          var message = n["message"] ?? '';
           dialogBox(context, message);
-
         }
       } catch (e) {
-
-          dialogBox(context, "Some thing went wrong");
-          stop();
-
+        dialogBox(context, "Some thing went wrong");
+        stop();
       }
     }
   }
@@ -7725,7 +7640,7 @@ At some point, you might wish to restrict the use and collection of your persona
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var categoryID = 1;
         var accessToken = prefs.getString('access') ?? '';
 
@@ -7786,9 +7701,9 @@ At some point, you might wish to restrict the use and collection of your persona
         barrierDismissible: false,
         builder: (BuildContext context) {
           return Padding(
-            padding:   const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: AlertDialog(
-              title:   Padding(
+              title: Padding(
                 padding: const EdgeInsets.all(0.5),
                 child: Text(
                   'msg4'.tr,
@@ -7822,7 +7737,7 @@ At some point, you might wish to restrict the use and collection of your persona
                     onPressed: () => {
                           Navigator.pop(context),
                         },
-                    child:  Text(
+                    child: Text(
                       'cancel'.tr,
                       style: const TextStyle(color: Colors.black),
                     )),
@@ -7847,7 +7762,7 @@ At some point, you might wish to restrict the use and collection of your persona
         var userID = prefs.getInt("user_id");
         var kitchenID = id;
 
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var categoryID = 1;
         String baseUrl = BaseUrl.baseUrl;
         final String url = "$baseUrl/posholds/pos-kitchen/";
@@ -7957,7 +7872,7 @@ At some point, you might wish to restrict the use and collection of your persona
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
 
@@ -8004,33 +7919,29 @@ At some point, you might wish to restrict the use and collection of your persona
           stop();
         } else {}
       } catch (e) {
-
-          dialogBox(context, "Some thing went wrong");
-          stop();
-
+        dialogBox(context, "Some thing went wrong");
+        stop();
       }
     }
   }
 
   ///create printer
-  Future<Null> createPrinterApi(type,) async {
+  Future<Null> createPrinterApi(
+    type,
+  ) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-
-        stop();
-
+      stop();
     } else {
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var ipAddress = "";
-        if(type =="Wifi"){
-           ipAddress = ipAddressController1.text + '.' + ipAddressController2.text + '.' + ipAddressController3.text + '.' + ipAddressController4.text;
-
-        }
-        else{
+        if (type == "Wifi") {
+          ipAddress = ipAddressController1.text + '.' + ipAddressController2.text + '.' + ipAddressController3.text + '.' + ipAddressController4.text;
+        } else {
           ipAddress = bluetoothAddressController.text;
         }
         var accessToken = prefs.getString('access') ?? '';
@@ -8104,7 +8015,7 @@ At some point, you might wish to restrict the use and collection of your persona
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         String baseUrl = BaseUrl.baseUrl;
@@ -8169,7 +8080,7 @@ At some point, you might wish to restrict the use and collection of your persona
 
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
 
         var accessToken = prefs.getString('access') ?? '';
         final String url = '$baseUrl/posholds/generate-pos-pin/';
@@ -8227,7 +8138,7 @@ At some point, you might wish to restrict the use and collection of your persona
 
         var companyID = prefs.getString('companyID') ?? '';
         var userID = prefs.getInt("user_id");
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var user_id = SettingsData.employeeID;
         var roleId = SettingsData.role_id;
         var pinNum = pinGenerateController.text;
@@ -8293,7 +8204,7 @@ At some point, you might wish to restrict the use and collection of your persona
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? "0";
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         String baseUrl = BaseUrl.baseUrl;
         final String url = '$baseUrl/posholds/list/pos-users/';
 
@@ -8354,7 +8265,7 @@ At some point, you might wish to restrict the use and collection of your persona
           return Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: AlertDialog(
-              title:   Padding(
+              title: Padding(
                 padding: const EdgeInsets.all(0.5),
                 child: Text(
                   'msg4'.tr,
@@ -8377,7 +8288,7 @@ At some point, you might wish to restrict the use and collection of your persona
                     onPressed: () => {
                           Navigator.of(context).pop(),
                         },
-                    child:  Text(
+                    child: Text(
                       'cancel'.tr,
                       style: const TextStyle(color: Colors.black),
                     )),
@@ -8456,7 +8367,7 @@ At some point, you might wish to restrict the use and collection of your persona
         HttpOverrides.global = MyHttpOverrides();
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? '';
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
         var userUId = SettingsData.employeeID;
         var roleId = SettingsData.role_id;
@@ -8766,8 +8677,6 @@ class PrinterListModel {
     );
   }
 }
-
-
 
 ///users
 class SettingsData {
