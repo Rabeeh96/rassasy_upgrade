@@ -286,6 +286,8 @@ class _TakeAwayState extends State<TakeAway> {
                                                 uID: takeAwayController
                                                     .takeAwayOrders[index]
                                                     .salesOrderID!,
+                                                    responseData: "",
+                                                    isData: false,
                                                 tableID: "",
                                                 orderType: 2,
                                               ));
@@ -367,6 +369,8 @@ class _TakeAwayState extends State<TakeAway> {
                                                   .takeAwayOrders[index]
                                                   .salesOrderID!,
                                               orderType: 2,
+                                              responseData: "",
+                                              isData: false,
                                             ));
                                           } else {
                                             takeAwayController.takeAwayOrders
@@ -573,6 +577,8 @@ class _TakeAwayState extends State<TakeAway> {
                       var resultPayment = await Get.to(MobilePaymentPage(
                         uID: result[2],
                         tableID: "",
+                        responseData: "",
+                        isData: false,
                         orderType: 2,
                       ));
                       takeAwayController.takeAwayOrders.clear();

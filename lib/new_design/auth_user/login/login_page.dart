@@ -62,7 +62,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
    bool isTablet = enableTabDesign;
-  //  bool isTablet = screenWidth > defaultScreenWidth;
+
 
     return Scaffold(
       appBar: isTablet
@@ -165,7 +165,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > defaultScreenWidth;
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -384,7 +384,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
 
     /// chaged
     //bool isTablet = true;
-    bool isTablet = screenWidth > defaultScreenWidth;
+
     return Padding(
       padding: const EdgeInsets.only(left: 40.0, right: 40),
       child: Column(

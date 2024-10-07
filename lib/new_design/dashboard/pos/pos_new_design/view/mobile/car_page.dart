@@ -213,6 +213,8 @@ class _TakeAwayState extends State<CarPage> {
                                   uID: carController.carOrders[index].salesOrderID!,
                                   tableID: "",
                                   orderType: 4,
+                                  responseData: "",
+                                  isData: false,
                                 ));
 
                                 carController.carOrders.clear();
@@ -259,6 +261,8 @@ class _TakeAwayState extends State<CarPage> {
                                       uID: result[2],
                                       tableID: carController.carOrders[index].salesOrderID!,
                                       orderType: 4,
+                                      responseData: "",
+                                      isData: false,
                                     ));
                                   }
                                   else{
@@ -390,6 +394,8 @@ class _TakeAwayState extends State<CarPage> {
                         uID: result[2],
                         tableID: "",
                         orderType: 4,
+                        responseData: "",
+                        isData: false,
                       ));
                       carController.carOrders.clear();
                       carController.fetchAllData();

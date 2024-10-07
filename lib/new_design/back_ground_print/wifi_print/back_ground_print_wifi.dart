@@ -791,6 +791,9 @@ class AppBlocs {
       }
     }
 
+    if(showGrossAmount ==true ||taxDetails==true || showDiscountPrint==true){
+      printer.hr();
+    }
     if (showGrossAmount) {
       printer.row([
         PosColumn(text: 'Gross Amount', width: 4, styles: const PosStyles( bold: true)),
@@ -842,6 +845,8 @@ class AppBlocs {
       ]);
     }
     // printer.setStyles(PosStyles.defaults());
+
+
 
     printer.hr();
     printer.row([
@@ -2970,6 +2975,8 @@ class AppBlocs {
             printListDataCancel.add(PrintDetails.fromJson(user));
           }
 
+
+
           for (var i = 0; i < printListData.length; i++) {
             try {
               print('------------------ index $i');
@@ -2986,7 +2993,10 @@ class AppBlocs {
           print("------------------------cancelOrder-----$cancelOrder---------cancelOrder---------------");
           for (var index = 0; index < cancelOrder.length; index++) {
             try {
-              print('------------------ index $index');
+
+              print('------------------ cancelOrder before $cancelOrder');
+              cancelOrder =await mergeKitchen(cancelOrder);
+              print('------------------ cancelOrder after $cancelOrder');
               dataPrint.clear();
               await kotPrintConnect(printListDataCancel[index].ip, index, printListDataCancel[index].items, true, false, false);
               await Future.delayed(const Duration(seconds: 1)); // Add a delay between print jobs
@@ -3012,6 +3022,30 @@ class AppBlocs {
     }
   }
 
+
+  mergeKitchen(data){
+
+    final Map<String, Map<String, dynamic>> mergedData = {};
+    for (var entry in data) {
+      String ipAddress = entry["IPAddress"].toString();
+      if (mergedData.containsKey(ipAddress)) {
+        // If kitchen already exists, merge the items
+        mergedData[ipAddress]!["Items"].addAll(entry["Items"]);
+      } else {
+        // Otherwise, add the kitchen to the map
+        mergedData[ipAddress] = Map.from(entry);
+      }
+    }
+
+
+    // Convert the map back to a list
+    final mergedList = mergedData.values.toList();
+    return mergeKitchen ;
+    // Output the merged result
+    print(jsonEncode(mergedList));
+  }
+
+
   Future<void> kotPrintConnect(String printerIp, id, items, bool isCancelNote, isUpdate, isCancelled) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -3023,7 +3057,8 @@ class AppBlocs {
       var profile;
       if (capabilities == "default") {
         profile = await CapabilityProfile.load();
-      } else {
+      }
+      else {
         profile = await CapabilityProfile.load(name: capabilities);
       }
       const PaperSize paper = PaperSize.mm80;
@@ -3198,7 +3233,7 @@ class AppBlocs {
     printer.textEncoded(typeArabic,
         styles:
             const PosStyles(height: PosTextSize.size2, width: PosTextSize.size1, align: PosAlign.center, fontType: PosFontType.fontA, bold: true));
-    printer.text('', styles: const PosStyles(align: PosAlign.left));
+
     if (extraDetailsInKOT) {
       if (isCancelNote) {
         printer.text(cancelNoteData,
@@ -3342,7 +3377,8 @@ class AppBlocs {
       }
   //    printer.hr();
     }
-    printer.feed(1);
+
+    printer.hr();
     printer.row([
       PosColumn(
           text: 'Total quantity',
@@ -3761,6 +3797,13 @@ class AppBlocs {
             index++;
             listData[index] = splitA[i];
           }
+          ar = false;
+        }
+        else {
+          if (listData[index] == null)
+            listData[index] = splitA[i];
+          else
+            listData[index] += "" + splitA[i];
           ar = false;
         }
       }
