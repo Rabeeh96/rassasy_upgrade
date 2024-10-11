@@ -81,6 +81,13 @@ String roundStringWith(String val) {
   return number;
 }
 
+String roundStringWith1(String val) {
+
+  double convertedTodDouble = double.parse(val);
+  var number = convertedTodDouble.toStringAsFixed(0);
+  return number;
+}
+
 
   customisedStyle(context,Colors,FontWeight,fontSize){
   return GoogleFonts.poppins(textStyle:TextStyle(fontWeight: FontWeight,color: Colors,fontSize: fontSize));
