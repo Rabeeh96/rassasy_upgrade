@@ -136,17 +136,17 @@ String baseURlApi='';
 class BaseUrl{
 /// server details
 
-   static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
-   static String baseUrl = "$baseURlApi/api/v10";
-   static String baseUrlV11 = "$baseURlApi/api/v11";
-   static String imageURL = '$baseURlApi/media/';
+   // static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
+   // static String baseUrl = "$baseURlApi/api/v10";
+   // static String baseUrlV11 = "$baseURlApi/api/v11";
+   // static String imageURL = '$baseURlApi/media/';
 
 ///
    //
-  // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
-  // static String baseUrl = "$baseURlApi/api/v10";
-  // static String baseUrlV11 = "$baseURlApi/api/v11";
-  // static String imageURL = '$baseURlApi/media/';
+  static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
+  static String baseUrl = "$baseURlApi/api/v10";
+  static String baseUrlV11 = "$baseURlApi/api/v11";
+  static String imageURL = '$baseURlApi/media/';
 
  // local
  // http://192.168.1.52:8002/

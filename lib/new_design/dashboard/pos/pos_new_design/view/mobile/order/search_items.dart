@@ -7,6 +7,8 @@ import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/controller/o
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/controller/search_controlletr.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class SearchItems extends StatefulWidget {
+  const SearchItems({super.key});
+
   @override
   State<SearchItems> createState() => _SearchItemsState();
 }
@@ -180,7 +182,7 @@ class _SearchItemsState extends State<SearchItems> {
                               Padding(
                                 padding:
                                     const EdgeInsets.only(right: 8.0, top: 8),
-                                child: Container(
+                                child: SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.5,
                                   child: Text(
@@ -195,7 +197,7 @@ class _SearchItemsState extends State<SearchItems> {
                               orderController.searchProductList[index].description !="" ?Padding(
                                 padding:
                                     const EdgeInsets.only(right: 2.0, top: 2),
-                                child: Container(
+                                child: SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.5,
                                   child: Text(
@@ -244,7 +246,7 @@ class _SearchItemsState extends State<SearchItems> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(top: 10.0),
-                              child: Container(
+                              child: SizedBox(
 
                                 height: MediaQuery.of(context).size.height / 7,
                                 width: MediaQuery.of(context).size.width / 4,

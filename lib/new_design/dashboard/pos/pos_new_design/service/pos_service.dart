@@ -1,28 +1,26 @@
 import 'dart:convert';
+import 'dart:developer';
+
 import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class TableService {
-  Future<Map<String, dynamic>> fetchAllData(String token) async {
+  Future<List<dynamic>> fetchAllData(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userID = prefs.getInt('user_id') ?? 0;
     var accessToken = prefs.getString('access') ?? '';
     var companyID = prefs.getString('companyID') ?? 0;
     var branchID = prefs.getInt('branchID') ?? 1;
     String baseUrl = BaseUrl.baseUrl;
-    final response = await http.post(
-      Uri.parse('$baseUrl/posholds/pos-table-list/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
+    print("$baseUrl/posholds/tables/?CompanyID=$companyID&BranchID=$branchID");
+    print("token $token");
+    final response = await http.get(
+      Uri.parse(
+          '$baseUrl/posholds/tables/?CompanyID=$companyID&BranchID=$branchID'),
+      headers: {
         'Authorization': 'Bearer $token',
       },
-
-      body: jsonEncode({
-        "CompanyID": companyID,
-        "type": "user",
-        "BranchID":branchID,
-        "paid": "true",
-      }),
     );
 
     if (response.statusCode == 200) {
@@ -32,4 +30,95 @@ class TableService {
       throw Exception('Failed to load table data');
     }
   }
+
+  Future<List<dynamic>> mergeData(List combineDatas) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // var userID = prefs.getInt('user_id') ?? 0;
+    var accessToken = prefs.getString('access') ?? '';
+    var companyID = prefs.getString('companyID') ?? 0;
+    var branchID = prefs.getInt('branchID') ?? 1;
+    String baseUrl = BaseUrl.baseUrl;
+    String url = '$baseUrl/posholds/tables/${combineDatas[0]}/merge/';
+    var tableId = await combineDatas[0];
+    // log("tableId.toString()");
+    log(tableId.toString());
+    combineDatas.removeAt(0);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode({
+        "CompanyID": companyID,
+        "BranchID": branchID,
+        "table_ids": combineDatas,
+      }),
+    );
+    pr(response);
+
+    if (response.statusCode == 200) {
+      final fetchmerge = jsonDecode(response.body);
+      log("Merge Successfull");
+
+      return fetchmerge.values.toList();
+    } else {
+      throw Exception('Failed to load table data');
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchTOC(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var companyID = prefs.getString('companyID') ?? '';
+    var branchID = prefs.getInt('branchID') ?? 1;
+    String baseUrl = BaseUrl.baseUrlV11;
+    final response = await http.post(
+      Uri.parse('$baseUrl/posholds/pos-order-online-list/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        "CompanyID": companyID,
+        "BranchID": branchID,
+      }),
+    );
+    // pr(response.body);
+    if (response.statusCode == 200) {
+      final parsed = jsonDecode(response.body) as Map<String, dynamic>;
+      return parsed;
+    } else {
+      throw Exception('Failed to load table data: ${response.statusCode}');
+    }
+  }
+
+  // Future<Map<String, dynamic>> fetchAllData(String token) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var userID = prefs.getInt('user_id') ?? 0;
+  //   var accessToken = prefs.getString('access') ?? '';
+  //   var companyID = prefs.getString('companyID') ?? 0;
+  //   var branchID = prefs.getInt('branchID') ?? 1;
+  //   String baseUrl = BaseUrl.baseUrl;
+  //   final response = await http.post(
+  //     Uri.parse('$baseUrl/posholds/pos-table-list/'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer $token',
+  //     },
+  //     body: jsonEncode({
+  //       "CompanyID": companyID,
+  //       "type": "user",
+  //       "BranchID": branchID,
+  //       "paid": "true",
+  //     }),
+  //   );
+
+  //   pr(response);
+  //   if (response.statusCode == 200) {
+  //     final parsed = jsonDecode(response.body);
+  //     return parsed;
+  //   } else {
+  //     throw Exception('Failed to load table data');
+  //   }
+  // }
 }

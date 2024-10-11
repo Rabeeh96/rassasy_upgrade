@@ -5,6 +5,8 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/controller/order_controller.dart';
 
 class SelectDeliveryMan extends StatefulWidget {
+  const SelectDeliveryMan({super.key});
+
   @override
   State<SelectDeliveryMan> createState() => _SelectDeliveryManState();
 }
@@ -39,7 +41,7 @@ class _SelectDeliveryManState extends State<SelectDeliveryMan> {
           children: [
             Text(
               'delivery_man'.tr,
-              style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+              style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -87,7 +89,7 @@ class _SelectDeliveryManState extends State<SelectDeliveryMan> {
                                           padding: const EdgeInsets.only(right: 8.0),
                                           child: Text(
                                             controller.users[index].userName,
-                                            style: customisedStyle(context, Color(0xff878787), FontWeight.normal, 13.0),
+                                            style: customisedStyle(context, const Color(0xff878787), FontWeight.normal, 13.0),
                                           ),
                                         ),
                                       ],

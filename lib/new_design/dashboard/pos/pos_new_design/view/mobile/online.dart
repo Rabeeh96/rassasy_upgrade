@@ -11,7 +11,7 @@ class OnlinePage extends StatefulWidget {
   final String title;
   final List<dynamic> data;
 
-  const OnlinePage({Key? key, required this.title, required this.data}) : super(key: key);
+  const OnlinePage({super.key, required this.title, required this.data});
 
   @override
   State<OnlinePage> createState() => _OnlinePageState();
@@ -25,15 +25,15 @@ class _OnlinePageState extends State<OnlinePage> {
 
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
-      return Color(0xffEFEFEF); // Set your desired color for pending status
+      return const Color(0xffEFEFEF); // Set your desired color for pending status
     } else if (status == 'Ordered') {
-      return Color(0xff03C1C1); // Set your desired color for completed status
+      return const Color(0xff03C1C1); // Set your desired color for completed status
     } else if (status == 'Paid') {
-      return Color(0xff10C103); // Set your desired color for cancelled status
+      return const Color(0xff10C103); // Set your desired color for cancelled status
     } else if (status == 'Billed') {
-      return Color(0xff034FC1); // Set your desired color for cancelled status
+      return const Color(0xff034FC1); // Set your desired color for cancelled status
     } else {
-      return Color(0xffEFEFEF); // Default color if status is not recognized
+      return const Color(0xffEFEFEF); // Default color if status is not recognized
     }
   }
 @override
@@ -51,7 +51,7 @@ class _OnlinePageState extends State<OnlinePage> {
           titleSpacing: 0,
           title: Text(
             'Online'.tr,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
           ),
           actions: [
@@ -59,7 +59,7 @@ class _OnlinePageState extends State<OnlinePage> {
               child: Text(
                 'Manager'.tr,
                 style: customisedStyle(
-                    context, Color(0xffF25F29), FontWeight.w400, 13.0),
+                    context, const Color(0xffF25F29), FontWeight.w400, 13.0),
               ),
             ),
             IconButton(
@@ -234,7 +234,7 @@ class _OnlinePageState extends State<OnlinePage> {
                                                                 32,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: Color(
+                                                              color: const Color(
                                                                   0xffEFEFEF),
                                                               borderRadius:
                                                                   BorderRadius
@@ -253,7 +253,7 @@ class _OnlinePageState extends State<OnlinePage> {
                                                                 child: Text(
                                                                   POSController
                                                                       .carItems[1],
-                                                                  style: TextStyle(
+                                                                  style: const TextStyle(
                                                                       fontSize:
                                                                           11,
                                                                       color: Colors
@@ -280,7 +280,7 @@ class _OnlinePageState extends State<OnlinePage> {
                                                           .customerName!,
                                                       style: customisedStyle(
                                                           context,
-                                                          Color(0xffA0A0A0),
+                                                          const Color(0xffA0A0A0),
                                                           FontWeight.w400,
                                                           13.0),
                                                     ),
@@ -404,7 +404,7 @@ class _OnlinePageState extends State<OnlinePage> {
             ),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width / 4,
                 child: TextField(
                   textCapitalization: TextCapitalization.words,
@@ -425,18 +425,18 @@ class _OnlinePageState extends State<OnlinePage> {
             Padding(
               padding: const EdgeInsets.only(
                   left: 16.0, right: 16, bottom: 16, top: 5),
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height / 17,
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                             8.0), // Adjust the radius as needed
                       ),
                     ),
                     backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffF25F29)),
+                        WidgetStateProperty.all(const Color(0xffF25F29)),
                   ),
                   onPressed: () {
                     // Do something with the text
@@ -467,11 +467,11 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
       return AlertDialog(
         title: Text(
           'msg6'.tr,
-          style: TextStyle(color: Colors.black, fontSize: 13),
+          style: const TextStyle(color: Colors.black, fontSize: 13),
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
+            child: Text('Yes'.tr, style: const TextStyle(color: Colors.red)),
             onPressed: () async {
               // SharedPreferences prefs = await SharedPreferences.getInstance();
               // prefs.setBool('isLoggedIn', false);
@@ -484,7 +484,7 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
             },
           ),
           TextButton(
-            child: Text('No', style: TextStyle(color: Colors.black)),
+            child: const Text('No', style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.of(context).pop(ConfirmAction.cancel);
             },

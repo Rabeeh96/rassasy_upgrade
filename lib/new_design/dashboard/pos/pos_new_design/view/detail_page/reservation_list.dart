@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'select_table.dart';
 
 class ReservationPage extends StatefulWidget {
-  ReservationPage({super.key});
+  const ReservationPage({super.key});
 
   @override
   State<ReservationPage> createState() => _ReservationPageState();
@@ -84,7 +84,7 @@ class _ReservationPageState extends State<ReservationPage> {
                   context,
                   "Reserve",
                   Colors.white,
-                  Color(0xffF25F29),
+                  const Color(0xffF25F29),
                       () {
                     if (reservationCustomerNameController.text.isEmpty) {
                       popAlertWithColor(
@@ -130,7 +130,7 @@ class _ReservationPageState extends State<ReservationPage> {
         bool readOnly = false,
         VoidCallback? onTap,
       }) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height / 20,
       child: TextField(
         style: customisedStyle(context, Colors.grey, FontWeight.w400, 14.0),
@@ -556,13 +556,13 @@ class _ReservationPageState extends State<ReservationPage> {
            padding: const EdgeInsets.only(right: 15.0),
            child: IconButton(onPressed: (){
              showPopup(context);
-           }, icon: Icon(Icons.add,color: Colors.blue,)),
+           }, icon: const Icon(Icons.add,color: Colors.blue,)),
          )
         ],
       ),
       body: Column(children: [
        dividerStyle(),
-        SizedBox(height: 15,),
+        const SizedBox(height: 15,),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -572,7 +572,7 @@ class _ReservationPageState extends State<ReservationPage> {
                   return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
-                        backgroundColor: Color(0xffFFF6F2),
+                        backgroundColor: const Color(0xffFFF6F2),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
                         minimumSize: const Size(150, 40),
                       ),
@@ -595,7 +595,7 @@ class _ReservationPageState extends State<ReservationPage> {
                         ],
                       ));
                 }),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             ValueListenableBuilder(
@@ -604,7 +604,7 @@ class _ReservationPageState extends State<ReservationPage> {
                   return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0.0,
-                        backgroundColor: Color(0xffFFF6F2),
+                        backgroundColor: const Color(0xffFFF6F2),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
                         minimumSize: const Size(150, 40),
                       ),
@@ -670,7 +670,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                   //onPressed: doNothing,
                                   backgroundColor: const Color(0xFFDF1515),
                                   foregroundColor: Colors.white,
-                                  child: Icon(Icons.clear),
+                                  child: const Icon(Icons.clear),
                                 ),
                               ],
                             ),
@@ -700,7 +700,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                                 padding: const EdgeInsets.only(right: 8.0),
                                                 child: Text(
                                                   reservationController.reservations[index].tableName!,
-                                                  style: customisedStyle(context, Color(0xff00775E), FontWeight.w400, 15.0),
+                                                  style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 15.0),
                                                 ),
                                               ),
                                             ],
@@ -710,11 +710,11 @@ class _ReservationPageState extends State<ReservationPage> {
                                             children: [
                                               Text(
                                                 reservationController.reservations[index].date!,
-                                                style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 13.0),
+                                                style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
                                               ),
                                               Text(
                                                 "${reservationController.reservations[index].fromTime!} - ${reservationController.reservations[index].toTime!}",
-                                                style: customisedStyle(context, Color(0xffAEAEAE), FontWeight.w500, 15.0),
+                                                style: customisedStyle(context, const Color(0xffAEAEAE), FontWeight.w500, 15.0),
                                               ),
                                             ],
                                           )

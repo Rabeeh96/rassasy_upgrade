@@ -870,27 +870,22 @@ pr("----------------------------------------------------------------------------
                                 ),
                               ),
                               onTap: () async {
-                                var dinePerm = await checkingPerm("Diningview");
-                                var takeAwayPerm = await checkingPerm("Take awayview");
-                                var carPerm = await checkingPerm("Carview");
 
-                                if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
-                                  isTablet
-                                      ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()))
-                                      : Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
 
+                                Get.to(const TabPosListDesign());
+
+                                // var dinePerm = await checkingPerm("Diningview");
+                                // var takeAwayPerm = await checkingPerm("Take awayview");
+                                // var carPerm = await checkingPerm("Carview");
                                 //
-                                // if(waiterController.text ==""){
-                                // //  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSPage()));
-                                //  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
+                                // if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
+                                //   isTablet
+                                //       ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()))
+                                //       : Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
                                 // }
-                                // else{
-                                //  popupAlert("Confirm ${waiterController.text} is ready to use",1);
-                                // }
-                                //
+
                               },
                             ),
                             Padding(

@@ -164,7 +164,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     //   ),
                     // ),
 
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height / 11,
                       width: MediaQuery.of(context).size.width / 5,
                       child: ClipRRect(
@@ -191,7 +191,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0, top: 8),
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(
                           orderController.orderItemList[widget.index]["ProductName"],
@@ -386,7 +386,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
+                    style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffDF1515))),
                     onPressed: () {
                       Get.back();
                     },
@@ -406,7 +406,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   width: 10,
                 ),
                 TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                    style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff10C103))),
                     onPressed: () {
                       orderController.addItemToList(index: widget.index);
                       Get.back();
