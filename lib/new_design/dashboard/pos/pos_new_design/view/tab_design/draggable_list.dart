@@ -7,6 +7,8 @@ import '../../../../../../global/global.dart';
 import '../../controller/draggable_controller.dart';
 
 class DragTableList extends StatefulWidget {
+  const DragTableList({super.key});
+
   @override
   State<DragTableList> createState() => _DragTableListState();
 }
@@ -43,7 +45,7 @@ class _DragTableListState extends State<DragTableList> {
           "Table Setting",
           style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
         ),
-        actions: [],
+        actions: const [],
       ),
       body: Obx(() {
         final generatedChildren = List.generate(
@@ -137,7 +139,7 @@ class _DragTableListState extends State<DragTableList> {
                     tableDetailList.add(dragList);
 
 
-             print("Table reorder:  ${tableDetailList}");
+             print("Table reorder:  $tableDetailList");
             // print("Table :  ${tableListController.tableList[i]}");
 
 

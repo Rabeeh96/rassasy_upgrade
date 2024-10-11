@@ -19,7 +19,7 @@ class CarPage extends StatefulWidget {
   final String title;
   final List<dynamic> data;
 
-  const CarPage({Key? key, required this.title, required this.data}) : super(key: key);
+  const CarPage({super.key, required this.title, required this.data});
 
   @override
   State<CarPage> createState() => _TakeAwayState();
@@ -86,7 +86,7 @@ class _TakeAwayState extends State<CarPage> {
                 : SlidableAutoCloseBehavior(
                 closeWhenOpened: true,
                 child: RefreshIndicator(
-                  color: Color(0xffffab00),
+                  color: const Color(0xffffab00),
                   onRefresh: () async {
                     carController.tableData.clear();
                     carController.fetchAllData();
@@ -376,7 +376,7 @@ class _TakeAwayState extends State<CarPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffFFF6F2))),
+                style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () async{
                   var result = await Get.to(OrderCreateView(
                     orderType: 4,

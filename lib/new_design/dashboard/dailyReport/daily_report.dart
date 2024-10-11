@@ -38,8 +38,7 @@ class DailyReportSection extends State<DailyReport> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
         String baseUrl = BaseUrl.baseUrlV11;
-
-        var userID = prefs.getInt('user_id') ?? 0;
+        var employeeID = prefs.getInt('employee_ID') ?? 1;
         var accessToken = prefs.getString('access') ?? '';
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
@@ -50,10 +49,13 @@ class DailyReportSection extends State<DailyReport> {
         // }
         final url = '$baseUrl/posholds/daily-report/';
         Map data = {
+          "UserID": employeeID,
           "CompanyID": companyID,
           "BranchID": branchID,
-          "FromDate": apiDateFormat.format(fromDateNotifier.value),
-          "ToDate": apiDateFormat.format(toDateNotifier.value),
+         // "FromDate": "2024-10-04",
+           "FromDate": apiDateFormat.format(fromDateNotifier.value),
+          //"ToDate":"2024-10-08",
+          // "ToDate": apiDateFormat.format(toDateNotifier.value),
           "FromTime": timeFormatApiFormat.format(fromDateNotifier.value),
           "ToTime": timeFormatApiFormat.format(toDateNotifier.value),
         };
@@ -84,13 +86,16 @@ class DailyReportSection extends State<DailyReport> {
           Map<String, dynamic> effectiveSale = n["effective_sale"];
           Map<String, dynamic> totalRevenue = n["total_revenue"];
 
+          print(salesOrder);
           print(orderDetails);
+          print(saleByType);
+          print(effectiveSale);
+          print(totalRevenue);
 
           stop();
           printDetail(
             userName: userName,
-            fromTime: "",
-              effectiveSale: effectiveSale,
+            fromTime: "", effectiveSale: effectiveSale,
             orderDetails: orderDetails,
             saleByType: saleByType,
             salesOrder: salesOrder,

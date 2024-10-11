@@ -143,6 +143,7 @@ pr("----------------------------------------------------------------------------
             prefs.setString("CurrencySymbol", n["CurrencySymbol"]);
             var settingsData = n['settingsData'];
             prefs.setBool("checkVat", settingsData["VAT"]);
+            prefs.setBool("checkVat", settingsData["VAT"]);
             prefs.setBool("check_GST", settingsData["GST"]);
             prefs.setInt("Cash_Account", n["Cash_Account"] ?? 1);
             prefs.setString("QtyDecimalPoint", settingsData["QtyDecimalPoint"]);
@@ -239,7 +240,7 @@ pr("----------------------------------------------------------------------------
         );
 
       case 6 :
-     Get.to(TabPosListDesign());
+    // Get.to(TabPosListDesign());
       break;
     }
   }
@@ -514,24 +515,24 @@ pr("----------------------------------------------------------------------------
                                     )
                                   ],
                                 )),
-                            const PopupMenuDivider(),
-                            PopupMenuItem<int>(
-                                value: 6,
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.dashboard,
-                                      color: Colors.red,
-                                    ),
-                                    const SizedBox(
-                                      width: 7,
-                                    ),
-                                    Text(
-                                      'New POS (Beta Version)',
-                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
-                                    )
-                                  ],
-                                )),
+                            // const PopupMenuDivider(),
+                            // PopupMenuItem<int>(
+                            //     value: 6,
+                            //     child: Row(
+                            //       children: [
+                            //         const Icon(
+                            //           Icons.dashboard,
+                            //           color: Colors.red,
+                            //         ),
+                            //         const SizedBox(
+                            //           width: 7,
+                            //         ),
+                            //         Text(
+                            //           'New POS (Beta Version)',
+                            //           style: customisedStyle(context, Colors.black, FontWeight.normal, 14.0),
+                            //         )
+                            //       ],
+                            //     )),
                           ],
                           icon: const Icon(
                             Icons.more_vert,
@@ -869,27 +870,22 @@ pr("----------------------------------------------------------------------------
                                 ),
                               ),
                               onTap: () async {
-                                var dinePerm = await checkingPerm("Diningview");
-                                var takeAwayPerm = await checkingPerm("Take awayview");
-                                var carPerm = await checkingPerm("Carview");
 
-                                if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
-                                  isTablet
-                                      ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()))
-                                      : Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
-                                } else {
-                                  dialogBoxPermissionDenied(context);
-                                }
 
+                                Get.to(const TabPosListDesign());
+
+                                // var dinePerm = await checkingPerm("Diningview");
+                                // var takeAwayPerm = await checkingPerm("Take awayview");
+                                // var carPerm = await checkingPerm("Carview");
                                 //
-                                // if(waiterController.text ==""){
-                                // //  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSPage()));
-                                //  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
+                                // if (dinePerm == true || takeAwayPerm == true || carPerm == true) {
+                                //   isTablet
+                                //       ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()))
+                                //       : Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const POSListItemsSection()));
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
                                 // }
-                                // else{
-                                //  popupAlert("Confirm ${waiterController.text} is ready to use",1);
-                                // }
-                                //
+
                               },
                             ),
                             Padding(

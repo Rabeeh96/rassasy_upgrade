@@ -5,6 +5,8 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/controller/order_controller.dart';
 
 class SelectProductGroup extends StatefulWidget {
+  const SelectProductGroup({super.key});
+
   @override
   State<SelectProductGroup> createState() => _SelectProductGroupState();
 }
@@ -38,7 +40,7 @@ class _SelectProductGroupState extends State<SelectProductGroup> {
           children: [
             Text(
               'product_group'.tr,
-              style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+              style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],
         ),

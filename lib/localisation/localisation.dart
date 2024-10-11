@@ -377,6 +377,8 @@ class LocaleChange extends Translations {
           'kot For Cancelled Order': 'Kot For Cancelled Order',
           'is_tab_design': 'Tab Design',
           'sync_method': 'Sync Method',
+          'lineAfteritem': 'Line after item',
+
 
         },
 
@@ -385,6 +387,7 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'lineAfteritem': 'سطر بعد البند',
           'sync_method': 'طريقة المزامنة',
           'is_tab_design': 'تصميم علامة التبويب',
           'kot For Cancelled Order': 'كوت للطلب الملغى',

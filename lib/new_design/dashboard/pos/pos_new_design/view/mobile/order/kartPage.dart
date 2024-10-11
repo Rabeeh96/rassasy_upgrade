@@ -189,7 +189,7 @@ class _KartPageState extends State<KartPage> {
                                                 .checkValueInList(index) ==
                                             true
                                         ? const Color(0xffF25F29)
-                                        : const Color(0xffFDDDDDD)),
+                                        : const Color(0xfffdddddd)),
                                 onPressed: () {
                                   var result =
                                       orderController.checkValueInList(index);
@@ -220,7 +220,7 @@ class _KartPageState extends State<KartPage> {
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             right: 10.0, top: 0, left: 10),
-                                        child: Container(
+                                        child: SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
@@ -274,7 +274,7 @@ class _KartPageState extends State<KartPage> {
                                                   padding:
                                                       const EdgeInsets.only(
                                                           left: 5.0),
-                                                  child: Container(
+                                                  child: SizedBox(
                                                     width:
                                                         MediaQuery.of(context)
                                                                 .size
@@ -460,7 +460,7 @@ class _KartPageState extends State<KartPage> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: MediaQuery.of(context).size.height / 4.5,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -474,7 +474,7 @@ class _KartPageState extends State<KartPage> {
                 TextButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(const Color(0xffEEF5FF))),
+                          WidgetStateProperty.all(const Color(0xffEEF5FF))),
                   onPressed: () {
                     orderController.changeStatus("take_away");
                     orderController.update();
@@ -494,7 +494,7 @@ class _KartPageState extends State<KartPage> {
                 TextButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(const Color(0xffF0F0F0))),
+                            WidgetStateProperty.all(const Color(0xffF0F0F0))),
                     onPressed: () {
                       orderController.changeStatus("delivered");
                       orderController.update();
@@ -513,7 +513,7 @@ class _KartPageState extends State<KartPage> {
                 TextButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(const Color(0xffFFF6F2))),
+                            WidgetStateProperty.all(const Color(0xffFFF6F2))),
                     onPressed: () {
                       Get.back();
                     },
@@ -587,7 +587,7 @@ class _KartPageState extends State<KartPage> {
                 children: [
                   TextButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                               const Color(0xffDF1515))),
                       onPressed: () {
                         Get.back();
@@ -613,7 +613,7 @@ class _KartPageState extends State<KartPage> {
                   ),
                   TextButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                               const Color(0xff10C103))),
                       onPressed: () async {
                         if (widget.orderType == 1) {
@@ -623,6 +623,7 @@ class _KartPageState extends State<KartPage> {
                                 tableHead: widget.tableHead,
                                 orderType: widget.orderType,
                                 context: context,
+                                splitID: "",
                                 orderID: widget.uID,
                                 isPayment: false,
                                 sectionType: widget.sectionType,
@@ -636,6 +637,7 @@ class _KartPageState extends State<KartPage> {
                                 tableID: widget.tableID,
                                 tableHead: widget.tableHead,
                                 orderType: widget.orderType,
+                                splitID: "",
                                 context: context,
                                 orderID: widget.uID,
                                 isPayment: false,
@@ -649,6 +651,7 @@ class _KartPageState extends State<KartPage> {
                             orderController.createMethod(
                                 tableID: widget.tableID,
                                 tableHead: widget.tableHead,
+                                splitID: "",
                                 orderType: widget.orderType,
                                 context: context,
                                 orderID: widget.uID,
@@ -681,7 +684,7 @@ class _KartPageState extends State<KartPage> {
                   ),
                   TextButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                               const Color(0xff00775E))),
                       onPressed: () {
                         if (widget.orderType == 1 ||
@@ -690,6 +693,7 @@ class _KartPageState extends State<KartPage> {
                           if (posController.pay_perm.value) {
                             orderController.createMethod(
                                 tableID: widget.tableID,
+                                splitID: "",
                                 tableHead: widget.tableHead,
                                 orderID: widget.uID,
                                 orderType: widget.orderType,
@@ -770,7 +774,7 @@ class _KartPageState extends State<KartPage> {
               Padding(
                 padding: const EdgeInsets.only(
                     left: 16, right: 16, top: 15, bottom: 15),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -827,7 +831,7 @@ class _KartPageState extends State<KartPage> {
               Padding(
                 padding: const EdgeInsets.only(
                     left: 16, right: 16, top: 15, bottom: 15),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -886,18 +890,18 @@ class _KartPageState extends State<KartPage> {
               Padding(
                 padding: const EdgeInsets.only(
                     left: 16.0, right: 16, bottom: 16, top: 5),
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height / 17,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                               8.0), // Adjust the radius as needed
                         ),
                       ),
                       backgroundColor:
-                          MaterialStateProperty.all(const Color(0xffF25F29)),
+                          WidgetStateProperty.all(const Color(0xffF25F29)),
                     ),
                     onPressed: () {
                       // Do something with the text

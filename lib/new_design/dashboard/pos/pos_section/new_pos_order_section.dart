@@ -1952,7 +1952,6 @@ class _POSOrderSectionState extends State<POSOrderSection> {
 
                                   if (double.parse(grandTotalAmount) > 0) {
                                     bool val = await checkNonRatableItem();
-
                                     if (val) {
                                       if (ledgerID != id) {
                                         createSaleInvoice(true, context);
@@ -1967,14 +1966,17 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                       dialogBox(context, "Price must be greater than 0");
                                     }
                                   } else {
-                                    dialogBox(context, "This Invoice can't save.Please check Grand Total");
+
+                                    if(isComplimentory){
+                                      createSaleInvoice(true, context);
+                                    }
+                                    else{
+                                      dialogBox(context, "This Invoice can't save.Please check Grand Total");
+                                    }
+
                                   }
 
-                                  // if ((cashReceived + bankReceived) >= double.parse(grandTotalAmount)) {
-                                  //   createSaleInvoice(true, context);
-                                  // } else {
-                                  //   dialogBox(context, "You cant make credit sale");
-                                  // }
+
                                 },
                                 child: Text('print_save'.tr, style: customisedStyle(context, Colors.white, FontWeight.w500, 12.00))),
                           )
@@ -2016,7 +2018,13 @@ class _POSOrderSectionState extends State<POSOrderSection> {
                                 dialogBox(context, "Price must be greater than 0");
                               }
                             } else {
-                              dialogBox(context, "This Invoice can't save.Please check Grand Total");
+
+                              if(isComplimentory){
+                                createSaleInvoice(printAfterPayment, context);
+                              }
+                              else{
+                                dialogBox(context, "This Invoice can't save.Please check Grand Total");
+                              }
                             }
 
                             // if (ledgerID != id) {

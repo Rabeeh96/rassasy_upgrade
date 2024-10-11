@@ -11,7 +11,7 @@ import '../../controller/pos_controller.dart';
 class POSMobilePage extends StatelessWidget {
   final POSController landingPageController;
 
-  POSMobilePage() : landingPageController = Get.put(POSController(defaultIndex: 0));
+  POSMobilePage({super.key}) : landingPageController = Get.put(POSController(defaultIndex: 0));
   final TextStyle unselectedLabelStyle = TextStyle(color: Colors.white.withOpacity(0.5), fontWeight: FontWeight.w500, fontSize: 12);
 
   final TextStyle selectedLabelStyle = const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12);
