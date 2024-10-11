@@ -97,6 +97,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
               );
             }),
             actions: [
+              TextButton(
+                  onPressed: () =>
+                      createTableSplit(context, screenSize, posController),
+                  child: const Text("Create Table")),
               // TextButton(
               //     onPressed: () {
               //       _dialogBuilderQRDownload(context, screenSize, posController);
