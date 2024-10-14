@@ -373,7 +373,9 @@ class POSController extends GetxController {
       required String type,
       required String tableID,
       required String cancelReasonId,
-      required String orderID}) async {
+      required String orderID,
+      required String splitUID
+      }) async {
     try {
       isLoading(true);
 
@@ -402,8 +404,8 @@ class POSController extends GetxController {
         "CompanyID": companyID,
         "BranchID": branchID,
         "Type": type,
-        "unqid":
-            type == "Dining&Cancel" || type == "Dining" ? tableID : orderID,
+        "split_table_id":splitUID,
+        "unqid": type == "Dining&Cancel" || type == "Dining" ? tableID : orderID,
         "reason_id": cancelReasonId,
       };
 

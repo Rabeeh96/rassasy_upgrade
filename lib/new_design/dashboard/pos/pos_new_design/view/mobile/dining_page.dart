@@ -289,12 +289,12 @@ class _DiningPageState extends State<DiningPage> {
                                                 type: "Dining&Cancel",
                                                 tableID: diningController.tableData[index].id!,
                                                 cancelReasonId: result[1],
-                                                orderID: diningController.tableData[index].salesOrderID!);
+                                                orderID: diningController.tableData[index].salesOrderID!,splitUID: "");
                                           }
                                         } else {
                                           diningController.cancelOrderApi(
                                               context:context,
-                                              type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: diningController.tableData[index].salesOrderID!);
+                                              type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: diningController.tableData[index].salesOrderID!,splitUID: "");
                                         }
                                       },
                                       backgroundColor: const Color(0xFFFC3636),

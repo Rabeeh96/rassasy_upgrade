@@ -34,20 +34,15 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
-      return const Color(
-          0xff6C757D); // Set your desired color for pending status
+      return const Color(0xff6C757D); // Set your desired color for pending status
     } else if (status == 'Ordered') {
-      return const Color(
-          0xff03C1C1); // Set your desired color for completed status
+      return const Color(0xff03C1C1); // Set your desired color for completed status
     } else if (status == 'Paid') {
-      return const Color(
-          0xff2B952E); // Set your desired color for cancelled status
+      return const Color(0xff2B952E); // Set your desired color for cancelled status
     } else if (status == 'Billed') {
-      return const Color(
-          0xff034FC1); // Set your desired color for cancelled status
+      return const Color(0xff034FC1); // Set your desired color for cancelled status
     } else {
-      return const Color(
-          0xffEFEFEF); // Default color if status is not recognized
+      return const Color(0xffEFEFEF); // Default color if status is not recognized
     }
   }
 
@@ -92,18 +87,17 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
             titleSpacing: 0,
             title: Obx(() {
               return Text(
-                posController.selectedType.value == "dine"
-                    ? "Choose a Table"
-                    : "Create Order",
-                style: customisedStyle(
-                    context, Colors.black, FontWeight.w500, 18.0),
+                posController.selectedType.value == "dine" ? "Choose a Table" : "Create Order",
+                style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
               );
             }),
             actions: [
-              TextButton(
-                  onPressed: () =>
-                      createTableSplit(context, screenSize, posController),
-                  child: const Text("Create Table")),
+              Obx(() {
+                return posController.selectedType.value == "dine"
+                    ? TextButton(onPressed: () => createTableSplit(context, screenSize, posController), child: const Text("Create Table"))
+                    : Container();
+              }),
+
               // TextButton(
               //     onPressed: () {
               //       _dialogBuilderQRDownload(context, screenSize, posController);
@@ -121,18 +115,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         onPressed: () {
                           // pr("controller.selectList");
                           if (posController.selectList.length > 1) {
-                            for (int i = 0;
-                                i < posController.selectList.length;
-                                i++) {
-                              final id = posController
-                                  .tablemergeData[posController.selectList[i]]
-                                  .id;
-                              final name = posController
-                                  .tablemergeData[posController.selectList[i]]
-                                  .tableName;
+                            for (int i = 0; i < posController.selectList.length; i++) {
+                              final id = posController.tablemergeData[posController.selectList[i]].id;
+                              final name = posController.tablemergeData[posController.selectList[i]].tableName;
                               pr(id);
                               posController.combineDatas.add(id);
-
                               // combineMessage = "$combineMessage & $name";
                               if (i == 0) {
                                 combineMessage = name!;
@@ -142,8 +129,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               log(combineMessage.toString());
                             }
 
-                            _dialogCombine(context, screenSize, posController,
-                                posController.combineDatas, combineMessage);
+                            _dialogCombine(context, screenSize, posController, posController.combineDatas, combineMessage);
                           } else {
                             Get.snackbar(
                               'Alert',
@@ -199,8 +185,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
             ],
           ),
           body: Container(
-            decoration: const BoxDecoration(
-                border: Border(top: BorderSide(color: Color(0xffE9E9E9)))),
+            decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xffE9E9E9)))),
             child: Row(
               children: [
                 Flexible(
@@ -229,8 +214,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                   child: Container(
                     alignment: Alignment.center,
                     decoration: const BoxDecoration(
-                      border: Border(
-                          left: BorderSide(color: Color(0xffE9E9E9), width: 1)),
+                      border: Border(left: BorderSide(color: Color(0xffE9E9E9), width: 1)),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -290,8 +274,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
         child: Container(
           margin: const EdgeInsets.only(left: 25, right: 25),
 
-          height: MediaQuery.of(context).size.height *
-              .77, // Specify your desired height here
+          height: MediaQuery.of(context).size.height * .77, // Specify your desired height here
           child: Obx(() => posController.isLoading.value
               ? const Center(
                   child: CircularProgressIndicator(
@@ -327,8 +310,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                   if (result != null) {
                                     if (result[1]) {
-                                      var resultPayment =
-                                          await Get.to(TabPaymentSection(
+                                      var resultPayment = await Get.to(TabPaymentSection(
                                         uID: result[2],
                                         tableID: '',
                                         splitID: "",
@@ -354,8 +336,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 child: const Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Icon(
                                         Icons.add_circle_outlined,
@@ -388,8 +369,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                       ],
                     )
                   : GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4,
                         mainAxisSpacing: 15,
                         crossAxisSpacing: 10,
@@ -423,8 +403,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                   if (result != null) {
                                     if (result[1]) {
-                                      var resultPayment =
-                                          await Get.to(TabPaymentSection(
+                                      var resultPayment = await Get.to(TabPaymentSection(
                                         uID: result[2],
                                         tableID: '',
                                         splitID: "",
@@ -450,8 +429,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 child: const Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Icon(
                                         Icons.add_circle_outlined,
@@ -488,34 +466,24 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               posController.onlineSelectItem(index);
                               showCustomDialog(
                                   context: context,
-                                  status:
-                                      posController.onlineOrders[index].status!,
-                                  salesOrderID: posController
-                                      .onlineOrders[index].salesOrderID!,
+                                  status: posController.onlineOrders[index].status!,
+                                  salesOrderID: posController.onlineOrders[index].salesOrderID!,
                                   orderID: '',
-                                  salesMasterID: posController
-                                      .onlineOrders[index].salesID!,
+                                  salesMasterID: posController.onlineOrders[index].salesID!,
                                   orderType: 'online',
                                   orderTypeID: 3,
                                   index: index);
                             },
                             child: Obx(
                               () => Opacity(
-                                opacity: posController
-                                            .onlineselectedIndex.value ==
-                                        index
+                                opacity: posController.onlineselectedIndex.value == index
                                     ? 1
-                                    : posController.onlineselectedIndex.value ==
-                                            1000
+                                    : posController.onlineselectedIndex.value == 1000
                                         ? 1
                                         : 0.30,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: posController
-                                                .onlineselectedIndex.value ==
-                                            index
-                                        ? Colors.white
-                                        : Colors.white.withOpacity(0.5),
+                                    color: posController.onlineselectedIndex.value == index ? Colors.white : Colors.white.withOpacity(0.5),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: ClipRRect(
@@ -524,21 +492,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                         decoration: BoxDecoration(
                                           border: Border(
                                             left: BorderSide(
-                                              color: _getBackgroundColor(
-                                                  posController
-                                                      .onlineOrders[index]
-                                                      .status),
+                                              color: _getBackgroundColor(posController.onlineOrders[index].status),
                                               width: 3,
                                             ),
-                                            right: const BorderSide(
-                                                color: Color(0xffE9E9E9),
-                                                width: 1),
-                                            bottom: const BorderSide(
-                                                color: Color(0xffE9E9E9),
-                                                width: 1),
-                                            top: const BorderSide(
-                                                color: Color(0xffE9E9E9),
-                                                width: 1),
+                                            right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                            bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                            top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                           ),
                                         ),
                                         child: GridTile(
@@ -546,29 +505,19 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                             padding: const EdgeInsets.all(10.0),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                  color: (_getBackgroundColor(
-                                                      posController
-                                                          .onlineOrders[index]
-                                                          .status))),
+                                                  borderRadius: BorderRadius.circular(4),
+                                                  color: (_getBackgroundColor(posController.onlineOrders[index].status))),
                                               child: Center(
                                                 child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
+                                                  padding: const EdgeInsets.all(8.0),
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
                                                       Text(
-                                                        posController
-                                                            .onlineOrders[index]
-                                                            .status!,
+                                                        posController.onlineOrders[index].status!,
                                                         style: const TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                          fontWeight: FontWeight.w500,
                                                           fontSize: 14.0,
                                                         ),
                                                       ),
@@ -581,53 +530,28 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           header: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 8.0),
+                                                  padding: const EdgeInsets.only(right: 8.0),
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
                                                       Text(
                                                         "Online Order ${index + 1}",
-                                                        style: customisedStyle(
-                                                            context,
-                                                            Colors.black,
-                                                            FontWeight.w400,
-                                                            14.0),
+                                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                                       ),
                                                       Text(
-                                                        posController
-                                                            .returnOrderTime(
-                                                                posController
-                                                                    .onlineOrders[
-                                                                        index]
-                                                                    .orderTime!,
-                                                                posController
-                                                                    .onlineOrders[
-                                                                        index]
-                                                                    .status!),
-                                                        style: customisedStyle(
-                                                            context,
-                                                            const Color(
-                                                                0xff757575),
-                                                            FontWeight.w400,
-                                                            10.0),
+                                                        posController.returnOrderTime(
+                                                            posController.onlineOrders[index].orderTime!, posController.onlineOrders[index].status!),
+                                                        style: customisedStyle(context, const Color(0xff757575), FontWeight.w400, 10.0),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Text(
-                                                  posController
-                                                      .onlineOrders[index]
-                                                      .customerName!,
+                                                  posController.onlineOrders[index].customerName!,
                                                   style: customisedStyle(
                                                     context,
                                                     const Color(0xff828282),
@@ -641,43 +565,28 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Row(
                                                   children: [
                                                     const Text(
                                                       "Token: ",
                                                       style: TextStyle(
-                                                        color:
-                                                            Color(0xff757575),
-                                                        fontWeight:
-                                                            FontWeight.w400,
+                                                        color: Color(0xff757575),
+                                                        fontWeight: FontWeight.w400,
                                                         fontSize: 10.0,
                                                       ),
                                                     ),
                                                     Text(
-                                                      posController
-                                                          .onlineOrders[index]
-                                                          .tokenNumber!,
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w400,
-                                                          14.0),
+                                                      posController.onlineOrders[index].tokenNumber!,
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                                     ),
                                                   ],
                                                 ),
                                                 Text(
                                                   "${posController.currency} ${roundStringWith(posController.onlineOrders[index].salesOrderGrandTotal!)}",
-                                                  style: customisedStyle(
-                                                      context,
-                                                      Colors.black,
-                                                      FontWeight.w500,
-                                                      15.0),
+                                                  style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                                 )
                                               ],
                                             ),
@@ -712,8 +621,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     }
   }
 
-  Future<void> createTableSplit(
-      BuildContext context, Size screenSize, POSController controller) {
+  Future<void> createTableSplit(BuildContext context, Size screenSize, POSController controller) {
     final formKey = GlobalKey<FormState>();
     return showDialog<void>(
       context: context,
@@ -728,17 +636,13 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16.0, right: 16.0, top: 16.0),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
                           "Create Table",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         IconButton(
                             onPressed: () {
@@ -772,35 +676,22 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               children: [
                                 const Text(
                                   "Create Table",
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500),
+                                  style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(height: screenSize.height * 0.01),
                                 SizedBox(
                                   width: screenSize.width / 5,
                                   child: TextFormField(
-                                    controller:
-                                        posController.tablenameController,
+                                    controller: posController.tablenameController,
                                     decoration: const InputDecoration(
                                       hintText: 'Enter Table Name',
-                                      hintStyle: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 12,
-                                          color: Color(0xFF5B5B5B)),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xFFD9D9D9))),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xFFD9D9D9))),
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xFFD9D9D9))),
+                                      hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Color(0xFF5B5B5B)),
+                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xFFD9D9D9))),
+                                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xFFD9D9D9))),
+                                      border: OutlineInputBorder(borderSide: BorderSide(color: Color(0xFFD9D9D9))),
                                     ),
                                     validator: (value) {
-                                      if (value == null ||
-                                          value.trim().isEmpty) {
+                                      if (value == null || value.trim().isEmpty) {
                                         return 'Please enter table name';
                                       }
                                       return null;
@@ -831,8 +722,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   ),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Center(
@@ -840,8 +730,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                         width: screenSize.width * 0.04,
                                         child: TextFormField(
                                           cursorColor: Colors.black,
-                                          controller: posController
-                                              .splitcountcontroller,
+                                          controller: posController.splitcountcontroller,
                                           maxLength: 1,
                                           textAlign: TextAlign.center,
                                           decoration: const InputDecoration(
@@ -850,100 +739,54 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           ),
                                           keyboardType: TextInputType.number,
                                           inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r'[0-9]')),
+                                            FilteringTextInputFormatter.digitsOnly,
+                                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                             LengthLimitingTextInputFormatter(1),
+                                            FilteringTextInputFormatter.deny(RegExp(r'1')),
                                           ],
                                         ),
                                       ),
                                     ),
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         GestureDetector(
                                             onTap: () {
-                                              if (posController
-                                                      .splitcountcontroller
-                                                      .text
-                                                      .isNotEmpty &&
-                                                  int.parse(posController
-                                                          .splitcountcontroller
-                                                          .text) <
-                                                      9) {
-                                                if (posController
-                                                        .splitcountcontroller
-                                                        .text ==
-                                                    "0") {
+                                              if (posController.splitcountcontroller.text.isNotEmpty &&
+                                                  int.parse(posController.splitcountcontroller.text) < 9) {
+                                                if (posController.splitcountcontroller.text == "0") {
                                                   setState(() {
-                                                    posController
-                                                        .splitcountcontroller
-                                                        .text = (int.parse(
-                                                                posController
-                                                                    .splitcountcontroller
-                                                                    .text) +
-                                                            2)
-                                                        .toString();
+                                                    posController.splitcountcontroller.text =
+                                                        (int.parse(posController.splitcountcontroller.text) + 2).toString();
                                                   });
                                                 } else {
                                                   setState(() {
-                                                    posController
-                                                        .splitcountcontroller
-                                                        .text = (int.parse(
-                                                                posController
-                                                                    .splitcountcontroller
-                                                                    .text) +
-                                                            1)
-                                                        .toString();
+                                                    posController.splitcountcontroller.text =
+                                                        (int.parse(posController.splitcountcontroller.text) + 1).toString();
                                                   });
                                                 }
                                               }
                                             },
-                                            child: const Icon(
-                                                Icons.keyboard_arrow_up)),
+                                            child: const Icon(Icons.keyboard_arrow_up)),
                                         GestureDetector(
                                             onTap: () {
-                                              if (posController
-                                                      .splitcountcontroller
-                                                      .text
-                                                      .isNotEmpty &&
-                                                  int.parse(posController
-                                                          .splitcountcontroller
-                                                          .text) >
-                                                      0) {
-                                                if (posController
-                                                        .splitcountcontroller
-                                                        .text ==
-                                                    "2") {
+                                              if (posController.splitcountcontroller.text.isNotEmpty &&
+                                                  int.parse(posController.splitcountcontroller.text) > 0) {
+                                                if (posController.splitcountcontroller.text == "2") {
                                                   setState(() {
-                                                    posController
-                                                        .splitcountcontroller
-                                                        .text = (int.parse(
-                                                                posController
-                                                                    .splitcountcontroller
-                                                                    .text) -
-                                                            2)
-                                                        .toString();
+                                                    posController.splitcountcontroller.text =
+                                                        (int.parse(posController.splitcountcontroller.text) - 2).toString();
                                                   });
                                                 } else {
                                                   setState(() {
-                                                    posController
-                                                        .splitcountcontroller
-                                                        .text = (int.parse(
-                                                                posController
-                                                                    .splitcountcontroller
-                                                                    .text) -
-                                                            1)
-                                                        .toString();
+                                                    posController.splitcountcontroller.text =
+                                                        (int.parse(posController.splitcountcontroller.text) - 1).toString();
                                                   });
                                                 }
                                               }
                                             },
-                                            child: const Icon(
-                                                Icons.keyboard_arrow_down)),
+                                            child: const Icon(Icons.keyboard_arrow_down)),
                                       ],
                                     ),
                                   ],
@@ -958,9 +801,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFF25F29),
                           minimumSize: const Size(400, 50),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
+                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
                         ),
                         child: const Text(
                           "Save",
@@ -968,26 +809,14 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         ),
                         onPressed: () async {
                           if (formKey.currentState!.validate() &&
-                              (posController
-                                      .splitcountcontroller.text.isEmpty ||
-                                  (int.parse(posController
-                                              .splitcountcontroller.text) ==
-                                          0 ||
-                                      (int.parse(posController
-                                                  .splitcountcontroller.text) >
-                                              1 &&
-                                          int.parse(posController
-                                                  .splitcountcontroller.text) <=
-                                              9)))) {
+                              (posController.splitcountcontroller.text.isEmpty ||
+                                  (int.parse(posController.splitcountcontroller.text) == 0 ||
+                                      (int.parse(posController.splitcountcontroller.text) > 1 &&
+                                          int.parse(posController.splitcountcontroller.text) <= 9)))) {
                             log("Success");
-                            await posController
-                                .createTableSplit(posController.combineDatas);
+                            await posController.createTableSplit(posController.combineDatas);
                           } else {
-                            if (posController
-                                    .splitcountcontroller.text.isNotEmpty &&
-                                int.parse(posController
-                                        .splitcountcontroller.text) ==
-                                    1) {
+                            if (posController.splitcountcontroller.text.isNotEmpty && int.parse(posController.splitcountcontroller.text) == 1) {
                               dialogBox(context, 'Split count cannot be 1');
                             } else {
                               dialogBox(context, 'Please enter valid Input');
@@ -1450,8 +1279,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   //   );
   // }
 
-  Future<void> _dialogCombine(BuildContext context, Size screenSize,
-      POSController controller, combineDatas, combineMessage) {
+  Future<void> _dialogCombine(BuildContext context, Size screenSize, POSController controller, combineDatas, combineMessage) {
     final formKey = GlobalKey<FormState>();
     return showDialog<void>(
       context: context,
@@ -1483,8 +1311,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         children: [
                           Text(
                             "$combineMessage has orders",
-                            style: customisedStyle(context,
-                                const Color(0xFF292D32), FontWeight.w500, 18.0),
+                            style: customisedStyle(context, const Color(0xFF292D32), FontWeight.w500, 18.0),
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: screenSize.height * 0.01),
@@ -1505,9 +1332,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFF25F29),
                           minimumSize: const Size(400, 50),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
+                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
                         ),
                         child: const Text(
                           "Confirm",
@@ -1519,8 +1344,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                             Navigator.of(context).pop(); //!
 
-                            await _dialogCombineSuccess(
-                                context, screenSize, combineMessage);
+                            await _dialogCombineSuccess(context, screenSize, combineMessage);
                             // controller.tablenameController.clear();
                             // controller.tablesplitController.clear();
                             posController.update();
@@ -1543,8 +1367,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         ),
                         child: Text(
                           "Cancel",
-                          style: customisedStyle(context,
-                              const Color(0xFF292D32), FontWeight.w400, 14.0),
+                          style: customisedStyle(context, const Color(0xFF292D32), FontWeight.w400, 14.0),
                         ),
                       ),
                     ],
@@ -1563,8 +1386,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     );
   }
 
-  Future<void> _dialogCombineSuccess(
-      BuildContext context, Size screenSize, combineMessage) {
+  Future<void> _dialogCombineSuccess(BuildContext context, Size screenSize, combineMessage) {
     final formKey = GlobalKey<FormState>();
     return showDialog<void>(
       context: context,
@@ -1599,8 +1421,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                       children: [
                         Text(
                           "Table Combined",
-                          style: customisedStyle(context,
-                              const Color(0xFF292D32), FontWeight.w500, 18.0),
+                          style: customisedStyle(context, const Color(0xFF292D32), FontWeight.w500, 18.0),
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: screenSize.height * 0.01),
@@ -1621,8 +1442,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFF25F29),
                         minimumSize: const Size(400, 50),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
                       ),
                       child: const Text(
                         "Done",
@@ -1773,8 +1593,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
         SliverToBoxAdapter(
           child: Container(
             margin: const EdgeInsets.only(left: 25, right: 25, top: 20),
-            height: MediaQuery.of(context).size.height *
-                .9, // Specify your desired height here
+            height: MediaQuery.of(context).size.height * .9, // Specify your desired height here
             child: Obx(() => posController.isLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(
@@ -1784,12 +1603,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                     ? Center(
                         child: Text(
                         "No recent orders",
-                        style: customisedStyle(
-                            context, Colors.black, FontWeight.w400, 18.0),
+                        style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
                       ))
                     : GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
                           mainAxisSpacing: 15,
                           crossAxisSpacing: 20,
@@ -1804,16 +1621,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           // posController.selectedIndex.value = index;
                           return GestureDetector(
                               onLongPress: () {
-                                if (posController.tablemergeData[index]
-                                        .splitData!.length >=
-                                    2) {
+                                if (posController.tablemergeData[index].splitData!.length >= 2) {
                                 } else {
                                   setState(() {
-                                    posController
-                                                .tablemergeData[index].status ==
-                                            "Ordered"
-                                        ? posController.isCombine.value =
-                                            !posController.isCombine.value
+                                    posController.tablemergeData[index].status == "Ordered"
+                                        ? posController.isCombine.value = !posController.isCombine.value
                                         : '';
                                   });
                                 }
@@ -1821,14 +1633,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               //!
                               onTap: () async {
                                 if (posController.isCombine.value) {
-                                  dialogBox(
-                                      context, 'Cancel Combine for proceed');
+                                  dialogBox(context, 'Cancel Combine for proceed');
                                 } else {
-                                  if (posController.tablemergeData[index]
-                                      .splitData!.isEmpty) {
-                                    if (posController
-                                            .tablemergeData[index].status ==
-                                        'Vacant') {
+                                  if (posController.tablemergeData[index].splitData!.isEmpty) {
+                                    if (posController.tablemergeData[index].status == 'Vacant') {
                                       var result = await Get.to(TabPosOrderPage(
                                         orderType: 1,
                                         sectionType: "Create",
@@ -1836,18 +1644,15 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                         splitID: "",
                                         tableHead: "Order",
                                         cancelOrder: posController.cancelOrder,
-                                        tableID: posController
-                                            .tablemergeData[index].id!,
+                                        tableID: posController.tablemergeData[index].id!,
                                       )); // Pass the value to POS Order Page
 
                                       if (result != null) {
                                         if (result[1]) {
-                                          var resultPayment =
-                                              await Get.to(TabPaymentSection(
+                                          var resultPayment = await Get.to(TabPaymentSection(
                                             uID: result[2],
                                             splitID: "",
-                                            tableID: posController
-                                                .tablemergeData[index].id!,
+                                            tableID: posController.tablemergeData[index].id!,
                                             orderType: 0,
                                             type: 'dine',
                                             isData: false,
@@ -1873,16 +1678,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                         ///1000005
                                         showCustomDialog(
                                           context: context,
-                                          status: posController
-                                              .tablemergeData[index].status!,
-                                          salesOrderID: posController
-                                              .tablemergeData[index]
-                                              .salesOrderID!,
-                                          orderID: posController
-                                              .tablemergeData[index].id!,
-                                          salesMasterID: posController
-                                              .tablemergeData[index]
-                                              .salesMasterID!,
+                                          status: posController.tablemergeData[index].status!,
+                                          salesOrderID: posController.tablemergeData[index].salesOrderID!,
+                                          orderID: posController.tablemergeData[index].id!,
+                                          salesMasterID: posController.tablemergeData[index].salesMasterID!,
                                           orderType: 'dine',
                                           orderTypeID: 1,
                                           index: index,
@@ -1892,104 +1691,66 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                         // log("CheckedData");
                                         // log(checkeddata.toString());
 
-                                        if (!posController.selectList
-                                            .contains(index)) {
-                                          posController.selectList
-                                              .add(checkeddata);
+                                        if (!posController.selectList.contains(index)) {
+                                          posController.selectList.add(checkeddata);
                                         } else {
-                                          posController.selectList
-                                              .remove(checkeddata);
+                                          posController.selectList.remove(checkeddata);
                                         }
 
                                         // print(controller.selectList);
                                       }
                                     }
                                   } else {
-                                    posController.selectedsplitIndex.value =
-                                        1000;
+                                    posController.selectedsplitIndex.value = 1000;
                                     posController.update();
-                                    Size screenSize =
-                                        MediaQuery.of(context).size;
-                                    _dialogBuilderTableSplit(
-                                        context,
-                                        screenSize,
-                                        posController
-                                            .tablemergeData[index].splitData!,
-                                        index);
+                                    Size screenSize = MediaQuery.of(context).size;
+                                    _dialogBuilderTableSplit(context, screenSize, posController.tablemergeData[index].splitData!, index);
                                   }
                                 }
                               },
                               child: Obx(
                                 () => Opacity(
-                                  opacity:
-                                      posController.selectedIndex.value == index
+                                  opacity: posController.selectedIndex.value == index
+                                      ? 1
+                                      : posController.selectedIndex.value == 1000
                                           ? 1
-                                          : posController.selectedIndex.value ==
-                                                  1000
-                                              ? 1
-                                              : 0.30,
+                                          : 0.30,
                                   child: Container(
                                       decoration: BoxDecoration(
-                                        color: posController
-                                                    .selectedIndex.value ==
-                                                index
-                                            ? Colors
-                                                .white // Highlight selected item
+                                        color: posController.selectedIndex.value == index
+                                            ? Colors.white // Highlight selected item
                                             : Colors.white.withOpacity(0.5),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(8),
                                           child: Container(
                                             decoration: BoxDecoration(
                                               border: Border(
                                                 left: BorderSide(
-                                                  color: _getBackgroundColor(
-                                                      posController
-                                                          .tablemergeData[index]
-                                                          .status),
+                                                  color: _getBackgroundColor(posController.tablemergeData[index].status),
                                                   width: 4,
                                                 ),
-                                                right: const BorderSide(
-                                                    color: Color(0xffE9E9E9),
-                                                    width: 1),
-                                                bottom: const BorderSide(
-                                                    color: Color(0xffE9E9E9),
-                                                    width: 1),
-                                                top: const BorderSide(
-                                                    color: Color(0xffE9E9E9),
-                                                    width: 1),
+                                                right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                               ),
                                             ),
                                             child: GridTile(
                                               footer: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
+                                                padding: const EdgeInsets.all(10.0),
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      color: (_getBackgroundColor(
-                                                          posController
-                                                              .tablemergeData[
-                                                                  index]
-                                                              .status))),
+                                                      borderRadius: BorderRadius.circular(4),
+                                                      color: (_getBackgroundColor(posController.tablemergeData[index].status))),
                                                   child: Center(
                                                     child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
+                                                      padding: const EdgeInsets.all(8.0),
                                                       child: Text(
-                                                        posController
-                                                            .tablemergeData[
-                                                                index]
-                                                            .status!,
+                                                        posController.tablemergeData[index].status!,
                                                         style: const TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                          fontWeight: FontWeight.w500,
                                                           fontSize: 14.0,
                                                         ),
                                                       ),
@@ -1998,89 +1759,46 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                 ),
                                               ),
                                               header: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
+                                                padding: const EdgeInsets.all(8.0),
                                                 child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Expanded(
                                                           child: Text(
-                                                            posController
-                                                                    .tablemergeData[
-                                                                        index]
-                                                                    .tableName ??
-                                                                '',
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                            posController.tablemergeData[index].tableName ?? '',
+                                                            style: const TextStyle(
+                                                              color: Colors.black,
+                                                              fontWeight: FontWeight.w500,
                                                               fontSize: 16.0,
                                                             ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                            overflow: TextOverflow.ellipsis,
                                                             maxLines: 1,
                                                           ),
                                                         ),
                                                         Obx(
-                                                          () => posController
-                                                                      .isCombine
-                                                                      .value &&
-                                                                  posController
-                                                                          .tablemergeData[
-                                                                              index]
-                                                                          .status ==
-                                                                      "Ordered"
-                                                              ? Checkbox(
-                                                                  side: const BorderSide(
-                                                                      width:
-                                                                          1.0,
-                                                                      color: Colors
-                                                                          .grey),
-                                                                  activeColor:
-                                                                      const Color(
-                                                                          0xFF03C1C1),
-                                                                  checkColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  fillColor: WidgetStateProperty.all(
-                                                                      const Color(
-                                                                          0xFF03C1C1)),
-                                                                  value: posController
-                                                                      .selectList
-                                                                      .contains(
-                                                                          index),
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    posController
-                                                                        .checkedbtn(
-                                                                            index);
-                                                                    log(index
-                                                                        .toString());
-                                                                  },
-                                                                )
-                                                              :
-                                                              // Image.asset(
-                                                              //     'assets/png/editcombine.png')
-                                                              //  SvgPicture.asset(
-                                                              //     'assets/svg/editcombine.svg')
-                                                              IconButton(
-                                                                  onPressed:
-                                                                      () {},
-                                                                  icon: const Icon(
-                                                                      Icons
-                                                                          .edit_outlined)),
+                                                          () =>
+                                                              posController.isCombine.value && posController.tablemergeData[index].status == "Ordered"
+                                                                  ? Checkbox(
+                                                                      side: const BorderSide(width: 1.0, color: Colors.grey),
+                                                                      activeColor: const Color(0xFF03C1C1),
+                                                                      checkColor: Colors.white,
+                                                                      fillColor: WidgetStateProperty.all(const Color(0xFF03C1C1)),
+                                                                      value: posController.selectList.contains(index),
+                                                                      onChanged: (value) {
+                                                                        posController.checkedbtn(index);
+                                                                        log(index.toString());
+                                                                      },
+                                                                    )
+                                                                  :
+                                                                  // Image.asset(
+                                                                  //     'assets/png/editcombine.png')
+                                                                  //  SvgPicture.asset(
+                                                                  //     'assets/svg/editcombine.svg')
+                                                                  IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
                                                         )
                                                       ],
                                                     ),
@@ -2088,70 +1806,31 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                 ),
                                               ),
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
+                                                padding: const EdgeInsets.all(8.0),
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    posController.returnOrderTime(
-                                                                posController
-                                                                    .tablemergeData[
-                                                                        index]
-                                                                    .orderTime!,
-                                                                posController
-                                                                    .tablemergeData[
-                                                                        index]
-                                                                    .status!) !=
+                                                    posController.returnOrderTime(posController.tablemergeData[index].orderTime!,
+                                                                posController.tablemergeData[index].status!) !=
                                                             ""
                                                         ? Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               Text(
-                                                                posController.returnOrderTime(
-                                                                    posController
-                                                                        .tablemergeData[
-                                                                            index]
-                                                                        .orderTime!,
-                                                                    posController
-                                                                        .tablemergeData[
-                                                                            index]
-                                                                        .status!),
-                                                                style: customisedStyle(
-                                                                    context,
-                                                                    const Color(
-                                                                        0xff828282),
-                                                                    FontWeight
-                                                                        .w400,
-                                                                    12.0),
+                                                                posController.returnOrderTime(posController.tablemergeData[index].orderTime!,
+                                                                    posController.tablemergeData[index].status!),
+                                                                style: customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
                                                               ),
                                                             ],
                                                           )
                                                         : Container(),
-                                                    posController
-                                                                .tablemergeData[
-                                                                    index]
-                                                                .status ==
-                                                            "Vacant"
+                                                    posController.tablemergeData[index].status == "Vacant"
                                                         ? const Text("")
                                                         : Text(
                                                             "${posController.currency} ${roundStringWith(posController.tablemergeData[index].status != "Vacant" ? posController.tablemergeData[index].status != "Paid" ? posController.tablemergeData[index].salesOrderGrandTotal.toString() : posController.tablemergeData[index].salesGrandTotal.toString() : '0')}",
-                                                            style:
-                                                                customisedStyle(
-                                                                    context,
-                                                                    Colors
-                                                                        .black,
-                                                                    FontWeight
-                                                                        .w500,
-                                                                    15.0),
+                                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                                           )
                                                   ],
                                                 ),
@@ -2168,9 +1847,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     );
   }
 
-  ///100002
-  Future<void> _dialogBuilderTableSplit(
-      BuildContext context, Size screenSize, listsplit, indexOfSelectedTable) {
+  ///100002 split details
+  Future<void> _dialogBuilderTableSplit(BuildContext context, Size screenSize, listsplit, indexOfSelectedTable) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -2181,8 +1859,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
               child: AlertDialog(
                 titlePadding: EdgeInsets.zero,
                 title: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -2191,16 +1868,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         children: [
                           const Text(
                             "Table Split",
-                            style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Row(
                             children: [
-                              listsplit[posController.selectedCombinedIndex
-                                          .value]["Status"] ==
-                                      'Vacant'
+                              posController.tablemergeData[indexOfSelectedTable].status == 'Vacant'
                                   ? ElevatedButton(
                                       onPressed: () {
                                         showDialog(
@@ -2237,24 +1909,16 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       uID: "",
                                                       splitID: "",
                                                       tableHead: "Order",
-                                                      cancelOrder: posController
-                                                          .cancelOrder,
-                                                      tableID: posController
-                                                          .tablemergeData[
-                                                              posController
-                                                                  .selectedCombinedIndex
-                                                                  .value]
-                                                          .id!,
+                                                      cancelOrder: posController.cancelOrder,
+                                                      tableID: posController.tablemergeData[posController.selectedCombinedIndex.value].id!,
                                                     ));
-                                                    Navigator.of(context)
-                                                        .pop(true);
+                                                    Navigator.of(context).pop(true);
                                                   },
                                                 ),
                                                 TextButton(
                                                   child: const Text('No'),
                                                   onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(false);
+                                                    Navigator.of(context).pop(false);
                                                   },
                                                 ),
                                               ],
@@ -2263,8 +1927,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                         );
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFF0E8FF),
+                                        backgroundColor: const Color(0xFFF0E8FF),
                                         minimumSize: const Size(80, 40),
                                       ),
                                       child: Row(
@@ -2273,11 +1936,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           //     'assets/svg/combineicon.svg'),
                                           Text(
                                             "All Combine",
-                                            style: customisedStyle(
-                                                context,
-                                                const Color(0xFF6F42C1),
-                                                FontWeight.w400,
-                                                14.0),
+                                            style: customisedStyle(context, const Color(0xFF6F42C1), FontWeight.w400, 14.0),
                                           )
                                         ],
                                       ),
@@ -2316,8 +1975,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   height: constraints.maxHeight * 0.65,
                                   width: constraints.maxWidth * 0.6,
                                   child: GridView.builder(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3,
                                       mainAxisSpacing: 10,
                                       crossAxisSpacing: 20,
@@ -2331,135 +1989,77 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           child: GestureDetector(
                                             onLongPress: () {
                                               setState(() {
-                                                listsplit[index]["Status"] ==
-                                                        "Vacant"
-                                                    ? posController
-                                                            .isCombine.value =
-                                                        !posController
-                                                            .isCombine.value
+                                                listsplit[index]["Status"] == "Vacant"
+                                                    ? posController.isCombine.value = !posController.isCombine.value
                                                     : '';
                                               });
                                             },
                                             onTap: () async {
-                                              if (listsplit[index]["Status"] ==
-                                                  'Vacant') {
+                                              if (listsplit[index]["Status"] == 'Vacant') {
                                                 Get.back();
 
-                                                var result = await Get.to(
-                                                    TabPosOrderPage(
+                                                var result = await Get.to(TabPosOrderPage(
                                                   orderType: 1,
                                                   sectionType: "Create",
                                                   uID: "",
                                                   tableHead: "Order",
-                                                  splitID: listsplit[index]
-                                                      ["id"]!,
-                                                  cancelOrder:
-                                                      posController.cancelOrder,
-                                                  tableID: posController
-                                                      .tablemergeData[
-                                                          indexOfSelectedTable]
-                                                      .id!,
+                                                  splitID: listsplit[index]["id"]!,
+                                                  cancelOrder: posController.cancelOrder,
+                                                  tableID: posController.tablemergeData[indexOfSelectedTable].id!,
                                                 )); // Pass the value to POS Order Page
                                                 // posController.selectedsplitIndex
                                                 //     .value = 1000;
+                                                posController.tablemergeData.clear();
+                                                posController.fetchAllData();
                                                 posController.update();
                                               } else {
-                                                posController
-                                                    .selectsplitItem(index);
+                                                posController.selectsplitItem(index);
                                               }
                                             },
                                             child: Obx(
                                               () => Opacity(
-                                                opacity: posController
-                                                            .selectedsplitIndex
-                                                            .value ==
-                                                        index
+                                                opacity: posController.selectedsplitIndex.value == index
                                                     ? 1
-                                                    : posController
-                                                                .selectedsplitIndex
-                                                                .value ==
-                                                            1000
+                                                    : posController.selectedsplitIndex.value == 1000
                                                         ? 1
                                                         : 0.30,
                                                 child: Container(
                                                     decoration: BoxDecoration(
-                                                      color: posController
-                                                                  .selectedsplitIndex
-                                                                  .value ==
-                                                              index
-                                                          ? Colors
-                                                              .white // Highlight selected item
+                                                      color: posController.selectedsplitIndex.value == index
+                                                          ? Colors.white // Highlight selected item
                                                           : Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
+                                                      borderRadius: BorderRadius.circular(8),
                                                     ),
                                                     child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
+                                                        borderRadius: BorderRadius.circular(8),
                                                         child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
+                                                          decoration: BoxDecoration(
                                                             border: Border(
                                                               left: BorderSide(
-                                                                color: _getBackgroundColor(
-                                                                    listsplit[
-                                                                            index]
-                                                                        [
-                                                                        "Status"]),
+                                                                color: _getBackgroundColor(listsplit[index]["Status"]),
                                                                 width: 4,
                                                               ),
-                                                              right: const BorderSide(
-                                                                  color: Color(
-                                                                      0xffE9E9E9),
-                                                                  width: 1),
-                                                              bottom: const BorderSide(
-                                                                  color: Color(
-                                                                      0xffE9E9E9),
-                                                                  width: 1),
-                                                              top: const BorderSide(
-                                                                  color: Color(
-                                                                      0xffE9E9E9),
-                                                                  width: 1),
+                                                              right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                              bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                              top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                                             ),
                                                           ),
                                                           child: GridTile(
                                                             footer: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(
-                                                                      10.0),
+                                                              padding: const EdgeInsets.all(10.0),
                                                               child: Container(
                                                                 decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                4),
-                                                                    color: (_getBackgroundColor(
-                                                                        listsplit[index]
-                                                                            [
-                                                                            "Status"]))),
+                                                                    borderRadius: BorderRadius.circular(4),
+                                                                    color: (_getBackgroundColor(listsplit[index]["Status"]))),
                                                                 child: Center(
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            8.0),
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.all(8.0),
                                                                     child: Text(
-                                                                      listsplit[
-                                                                              index]
-                                                                          [
-                                                                          "Status"],
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        fontSize:
-                                                                            14.0,
+                                                                      listsplit[index]["Status"],
+                                                                      style: const TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.w500,
+                                                                        fontSize: 14.0,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -2467,45 +2067,29 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                               ),
                                                             ),
                                                             header: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
+                                                              padding: const EdgeInsets.all(8.0),
                                                               child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
                                                                       Expanded(
-                                                                        child:
-                                                                            Text(
+                                                                        child: Text(
                                                                           '${listsplit[index]["TableName"]} ',
                                                                           // '${listsplit[index]["TableName"]} (${index + 1})',
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                            fontSize:
-                                                                                16.0,
+                                                                          style: const TextStyle(
+                                                                            color: Colors.black,
+                                                                            fontWeight: FontWeight.w500,
+                                                                            fontSize: 16.0,
                                                                           ),
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                          maxLines:
-                                                                              1,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          maxLines: 1,
                                                                         ),
                                                                       ),
                                                                       Obx(
-                                                                        () => posController.isCombine.value &&
-                                                                                listsplit[index]["Status"] == "Vacant"
+                                                                        () => posController.isCombine.value && listsplit[index]["Status"] == "Vacant"
                                                                             ? Checkbox(
                                                                                 side: const BorderSide(width: 1.0, color: Colors.grey),
                                                                                 activeColor: const Color(0xFF03C1C1),
@@ -2522,18 +2106,17 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                                     ],
                                                                   ),
                                                                   posController.returnOrderTime(
-                                                                              listsplit[index]["OrderTime"].toString(),
-                                                                              listsplit[index]["Status"]) !=
+                                                                              listsplit[index]["OrderTime"].toString(), listsplit[index]["Status"]) !=
                                                                           ""
                                                                       ? Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
+                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                                           children: [
                                                                             Text(
-                                                                              posController.returnOrderTime(listsplit[index]["orderTime"] ?? '', listsplit[index]["orderTime"] ?? ''),
-                                                                              style: customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
+                                                                              posController.returnOrderTime(listsplit[index]["orderTime"] ?? '',
+                                                                                  listsplit[index]["orderTime"] ?? ''),
+                                                                              style: customisedStyle(
+                                                                                  context, const Color(0xff828282), FontWeight.w400, 12.0),
                                                                             ),
                                                                           ],
                                                                         )
@@ -2542,48 +2125,26 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                               ),
                                                             ),
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
+                                                              padding: const EdgeInsets.all(8.0),
                                                               child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                crossAxisAlignment: CrossAxisAlignment.center,
                                                                 children: [
-                                                                  listsplit[index]
-                                                                              [
-                                                                              "Status"] ==
-                                                                          "Vacant"
-                                                                      ? const Text(
-                                                                          "")
+                                                                  listsplit[index]["Status"] == "Vacant"
+                                                                      ? const Text("")
                                                                       : const Text(
                                                                           "To be paid:",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Color(0xff757575),
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                            fontSize:
-                                                                                10.0,
+                                                                          style: TextStyle(
+                                                                            color: Color(0xff757575),
+                                                                            fontWeight: FontWeight.w400,
+                                                                            fontSize: 10.0,
                                                                           ),
                                                                         ),
-                                                                  listsplit[index]
-                                                                              [
-                                                                              "Status"] ==
-                                                                          "Vacant"
-                                                                      ? const Text(
-                                                                          "")
+                                                                  listsplit[index]["Status"] == "Vacant"
+                                                                      ? const Text("")
                                                                       : Text(
                                                                           "${posController.currency} ${roundStringWith(listsplit[index]["Status"] != "Vacant" ? listsplit[index]["Status"] != "Paid" ? listsplit[index]["SalesOrderGrandTotal"].toString() : listsplit[index]["SalesGrandTotal"].toString() : '0')}",
-                                                                          style: customisedStyle(
-                                                                              context,
-                                                                              Colors.black,
-                                                                              FontWeight.w500,
-                                                                              15.0),
+                                                                          style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                                                         )
                                                                 ],
                                                               ),
@@ -2603,65 +2164,40 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             Row(
                               children: [
                                 Obx(
-                                  () => posController
-                                              .selectedsplitIndex.value !=
-                                          1000
+                                  () => posController.selectedsplitIndex.value != 1000
                                       ? Container(
                                           height: constraints.maxHeight * 0.65,
                                           width: constraints.maxWidth * 0.07,
 
                                           // color: Colors.blue.shade300,
-                                          decoration: const BoxDecoration(
-                                              border: Border(
-                                                  left: BorderSide(
-                                                      color:
-                                                          Color(0xFFE0E0E0)))),
+                                          decoration: const BoxDecoration(border: Border(left: BorderSide(color: Color(0xFFE0E0E0)))),
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               GestureDetector(
                                                 onTap: () async {
                                                   Get.back();
                                                   await posController.printSection(
                                                       context: context,
-                                                      id: listsplit[posController.selectedsplitIndex.value]
-                                                                  ["Status"] ==
-                                                              'Ordered'
-                                                          ? listsplit[posController
-                                                                  .selectedsplitIndex
-                                                                  .value]
-                                                              ["SalesOrderID"]
-                                                          : listsplit[posController
-                                                                  .selectedsplitIndex
-                                                                  .value]
-                                                              ["SalesMasterID"],
+                                                      id: listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
+                                                          ? listsplit[posController.selectedsplitIndex.value]["SalesOrderID"]
+                                                          : listsplit[posController.selectedsplitIndex.value]["SalesMasterID"],
                                                       isCancelled: false,
                                                       voucherType:
-                                                          listsplit[posController.selectedsplitIndex.value]
-                                                                      ["Status"] ==
-                                                                  'Ordered'
-                                                              ? "SO"
-                                                              : "SI");
+                                                          listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered' ? "SO" : "SI");
 
-                                                  posController
-                                                      .selectedsplitIndex
-                                                      .value = 1000;
+                                                  posController.selectedsplitIndex.value = 1000;
                                                   posController.update();
                                                 },
                                                 child: Column(
                                                   children: [
                                                     Material(
                                                       elevation: 5,
-                                                      shape:
-                                                          const CircleBorder(),
+                                                      shape: const CircleBorder(),
                                                       child: CircleAvatar(
                                                         radius: 30,
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFF1E1F4E),
+                                                        backgroundColor: const Color(0xFF1E1F4E),
                                                         child: SvgPicture.asset(
                                                           'assets/svg/printer_icon_menu.svg',
                                                           width: 50,
@@ -2670,11 +2206,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                     ),
                                                     Text(
                                                       "Print",
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w500,
-                                                          10.0),
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                     ),
                                                   ],
                                                 ),
@@ -2682,60 +2214,40 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               GestureDetector(
                                                 onTap: () async {
                                                   Get.back();
-                                                  if (listsplit[posController
-                                                          .selectedsplitIndex
-                                                          .value]["Status"] ==
-                                                      'Ordered') {
-                                                    var result = await Get.to(
-                                                        const CancelOrderList());
+                                                  if (listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered') {
+                                                    var result = await Get.to(const CancelOrderList());
                                                     if (result != null) {
-                                                      posController.cancelOrderApi(
+                                                      await posController.cancelOrderApi(
                                                           context: context,
                                                           type: "Dining&Cancel",
-                                                          tableID: listsplit[
-                                                              posController
-                                                                  .selectedsplitIndex
-                                                                  .value]["id"],
-                                                          cancelReasonId:
-                                                              result[1],
-                                                          orderID: listsplit[
-                                                                  posController
-                                                                      .selectedsplitIndex
-                                                                      .value]
-                                                              ["SalesOrderID"]);
+                                                          tableID: posController.tablemergeData[indexOfSelectedTable].id!,
+                                                          cancelReasonId: result[1],
+                                                          orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
+                                                          splitUID: listsplit[posController.selectedsplitIndex.value]["id"]);
                                                     }
                                                   } else {
-                                                    posController.cancelOrderApi(
+                                                    await posController.cancelOrderApi(
                                                         context: context,
                                                         type: "Dining",
-                                                        tableID: listsplit[
-                                                            posController
-                                                                .selectedsplitIndex
-                                                                .value]["id"],
+                                                        tableID: posController.tablemergeData[indexOfSelectedTable].id!,
                                                         cancelReasonId: "",
-                                                        orderID: listsplit[
-                                                                posController
-                                                                    .selectedsplitIndex
-                                                                    .value]
-                                                            ["SalesOrderID"]);
-                                                  }
-                                                  posController
-                                                      .selectedsplitIndex
-                                                      .value = 1000;
+                                                        orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
+                                                        splitUID: listsplit[posController.selectedsplitIndex.value]["id"]);
 
-                                                  print("cancel split");
+                                                    posController.tablemergeData.clear();
+                                                    posController.fetchAllData();
+                                                    posController.update();
+                                                  }
+                                                  posController.selectedsplitIndex.value = 1000;
                                                 },
                                                 child: Column(
                                                   children: [
                                                     Material(
                                                       elevation: 5,
-                                                      shape:
-                                                          const CircleBorder(),
+                                                      shape: const CircleBorder(),
                                                       child: CircleAvatar(
                                                         radius: 30,
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFFFC3636),
+                                                        backgroundColor: const Color(0xFFFC3636),
                                                         child: SvgPicture.asset(
                                                           'assets/svg/cancel_bottom_menu.svg',
                                                           width: 50,
@@ -2743,92 +2255,45 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "Cancel Order",
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w500,
-                                                          10.0),
+                                                      listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
+                                                          ? "Cancel Order"
+                                                          : "Clear",
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                   ],
                                                 ),
                                               ),
                                               GestureDetector(
                                                 onTap: () async {
-                                                  // showCustomDialog(
-                                                  //   context: context,
-                                                  //   status: posController.tablemergeData[index].status!,
-                                                  //   salesOrderID: posController.tablemergeData[index].salesOrderID!,
-                                                  //   orderID: posController.tablemergeData[index].id!,
-                                                  //   salesMasterID: posController.tablemergeData[index].salesMasterID!,
-                                                  //   orderType: 'dine',
-                                                  //   orderTypeID: 1,
-                                                  //   index: index,
-                                                  // );
-
-                                                  // Get.back();
-                                                  // var result = await Get.to(TabPaymentSection(
-                                                  //   uID: salesOrderID,
-                                                  //   orderType: orderTypeID,
-                                                  //   tableID: orderID,
-                                                  //   type: orderType,
-                                                  //   isData: false,
-                                                  //   responseData: '',
-                                                  // ));
-
-                                                  Get.back();
-
-                                                  if (posController
-                                                      .pay_perm.value) {
+                                                  if (posController.pay_perm.value) {
                                                     Get.back();
-                                                    var result = await Get.to(
-                                                        TabPaymentSection(
-                                                      splitID: listsplit[
-                                                          posController
-                                                              .selectedsplitIndex
-                                                              .value]["id"],
-                                                      uID: listsplit[posController
-                                                              .selectedsplitIndex
-                                                              .value]
-                                                          ["SalesOrderID"],
+                                                    var result = await Get.to(TabPaymentSection(
+                                                      splitID: listsplit[posController.selectedsplitIndex.value]["id"],
+                                                      uID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
                                                       orderType: 1,
-                                                      tableID: listsplit[
-                                                          posController
-                                                              .selectedsplitIndex
-                                                              .value]["Table"],
+                                                      tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
                                                       type: "dine",
                                                       isData: false,
                                                       responseData: '',
                                                     ));
 
-                                                    posController.tablemergeData
-                                                        .clear();
-                                                    posController
-                                                        .fetchAllData();
+                                                    posController.tablemergeData.clear();
+                                                    posController.fetchAllData();
                                                     posController.update();
                                                   } else {
-                                                    dialogBoxPermissionDenied(
-                                                        context);
+                                                    dialogBoxPermissionDenied(context);
                                                   }
-                                                  posController
-                                                      .selectedsplitIndex
-                                                      .value = 1000;
+                                                  posController.selectedsplitIndex.value = 1000;
                                                 },
                                                 child: Column(
                                                   children: [
                                                     Material(
                                                       elevation: 5,
-                                                      shape:
-                                                          const CircleBorder(),
+                                                      shape: const CircleBorder(),
                                                       child: CircleAvatar(
                                                         radius: 30,
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFF44B678),
+                                                        backgroundColor: const Color(0xFF44B678),
                                                         child: SvgPicture.asset(
                                                           'assets/svg/pay_bottom_menu.svg',
                                                           width: 50,
@@ -2837,16 +2302,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                     ),
                                                     Text(
                                                       "Pay",
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w500,
-                                                          10.0),
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                   ],
                                                 ),
                                               ),
@@ -2855,16 +2313,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   posController.printKOT(
                                                       cancelList: [],
                                                       isUpdate: false,
-                                                      orderID: listsplit[
-                                                              posController
-                                                                  .selectedsplitIndex
-                                                                  .value]
-                                                          ["SalesOrderID"],
+                                                      orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
                                                       rePrint: true);
 
-                                                  posController
-                                                      .selectedsplitIndex
-                                                      .value = 1000;
+                                                  posController.selectedsplitIndex.value = 1000;
                                                   posController.update();
                                                   Get.back();
                                                 },
@@ -2872,13 +2324,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   children: [
                                                     Material(
                                                       elevation: 5,
-                                                      shape:
-                                                          const CircleBorder(),
+                                                      shape: const CircleBorder(),
                                                       child: CircleAvatar(
                                                         radius: 30,
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFF17A2B8),
+                                                        backgroundColor: const Color(0xFF17A2B8),
                                                         child: SvgPicture.asset(
                                                           'assets/svg/kot_bottom_menu.svg',
                                                           width: 50,
@@ -2887,34 +2336,60 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                     ),
                                                     Text(
                                                       "Kot",
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w500,
-                                                          10.0),
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                   ],
                                                 ),
                                               ),
                                               GestureDetector(
-                                                onTap: () {
-                                                  print("d");
+                                                onTap: () async{
+
+                                                  if (posController.dining_edit_perm.value) {
+                                                    var result = await Get.to(TabPosOrderPage(
+                                                      orderType: 1,
+                                                      sectionType: "Edit",
+                                                      uID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
+                                                      tableHead: '',
+                                                      splitID: listsplit[posController.selectedsplitIndex.value]["id"],
+                                                      tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
+                                                      cancelOrder: const [],
+                                                    ));
+
+                                                    if (result != null) {
+                                                      if (result[1]) {
+                                                        var res = await Get.to(TabPaymentSection(
+                                                          uID: result[2],
+                                                          tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
+                                                          splitID: listsplit[posController.selectedsplitIndex.value]["id"],
+                                                          orderType: 1,
+                                                          type: '',
+                                                          isData: false,
+                                                          responseData: '',
+                                                        ));
+
+                                                        posController.tablemergeData.clear();
+                                                        posController.fetchAllData();
+                                                        posController.update();
+                                                      } else {
+                                                        posController.tablemergeData.clear();
+                                                        posController.fetchAllData();
+                                                        posController.update();
+                                                      }
+                                                    }
+                                                  } else {
+                                                    dialogBoxPermissionDenied(context);
+                                                  }
+                                                  Get.back();
                                                 },
                                                 child: Column(
                                                   children: [
                                                     Material(
                                                       elevation: 5,
-                                                      shape:
-                                                          const CircleBorder(),
+                                                      shape: const CircleBorder(),
                                                       child: CircleAvatar(
                                                         radius: 30,
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFFA561E8),
+                                                        backgroundColor: const Color(0xFFA561E8),
                                                         child: SvgPicture.asset(
                                                           'assets/svg/edit_bottom_menu.svg',
                                                           width: 50,
@@ -2923,25 +2398,13 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                     ),
                                                     Text(
                                                       "Edit",
-                                                      style: customisedStyle(
-                                                          context,
-                                                          Colors.black,
-                                                          FontWeight.w500,
-                                                          10.0),
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              if (posController
-                                                          .selectedIndexsplit >=
-                                                      0 &&
-                                                  posController
-                                                          .selectedIndexsplit <
-                                                      listsplit.length) ...[
-                                                if (listsplit[posController
-                                                        .selectedIndexsplit
-                                                        .value]["Status"] ==
-                                                    "Paid") ...[
+                                              if (posController.selectedIndexsplit >= 0 && posController.selectedIndexsplit < listsplit.length) ...[
+                                                if (listsplit[posController.selectedIndexsplit.value]["Status"] == "Paid") ...[
                                                   // Material(
                                                   //   elevation: 5,
                                                   //   shape: const CircleBorder(),
@@ -2958,10 +2421,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   //   "Print",
                                                   //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                   // ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   // Material(
                                                   //   elevation: 5,
                                                   //   shape: const CircleBorder(),
@@ -2978,10 +2438,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   //   listsplit[posController.selectedIndexsplit.value]["Status"] == "Paid" ? "Clear" : "Cancel Order",
                                                   //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                   // ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                 ] else ...[
                                                   // Material(
                                                   //   elevation: 5,
@@ -2999,10 +2456,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   //   "Print",
                                                   //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                   // ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   // Material(
                                                   //   elevation: 5,
                                                   //   shape: const CircleBorder(),
@@ -3019,10 +2473,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   //   "Cancel Order",
                                                   //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                   // ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   // Material(
                                                   //   elevation: 5,
                                                   //   shape: const CircleBorder(),
@@ -3039,10 +2490,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   //   "Pay",
                                                   //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                   // ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   // Material(
                                                   //   elevation: 5,
                                                   //   shape: const CircleBorder(),
@@ -3059,10 +2507,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   //   "Kot",
                                                   //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
                                                   // ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   // Material(
                                                   //   elevation: 5,
                                                   //   shape: const CircleBorder(),
@@ -3119,8 +2564,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
         SliverToBoxAdapter(
           child: Container(
               margin: const EdgeInsets.only(left: 25, right: 25),
-              height: MediaQuery.of(context).size.height *
-                  .77, // Specify your desired height here
+              height: MediaQuery.of(context).size.height * .77, // Specify your desired height here
               child: Obx(
                 () => posController.isLoading.value
                     ? const Center(
@@ -3133,8 +2577,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * .20,
+                                height: MediaQuery.of(context).size.height * .20,
                                 width: MediaQuery.of(context).size.width * .22,
                                 child: DottedBorder(
                                   color: const Color(0xffC2C8D0),
@@ -3148,22 +2591,19 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                       onTap: () async {
                                         int index = 0;
                                         posController.takeAwayselectItem(index);
-                                        var result =
-                                            await Get.to(TabPosOrderPage(
+                                        var result = await Get.to(TabPosOrderPage(
                                           orderType: 2,
                                           sectionType: "Create",
                                           uID: "",
                                           splitID: "",
                                           tableHead: "Order",
-                                          cancelOrder:
-                                              posController.cancelOrder,
+                                          cancelOrder: posController.cancelOrder,
                                           tableID: "",
                                         ));
 
                                         if (result != null) {
                                           if (result[1]) {
-                                            var resultPayment =
-                                                await Get.to(TabPaymentSection(
+                                            var resultPayment = await Get.to(TabPaymentSection(
                                               uID: result[2],
                                               tableID: '',
                                               splitID: "",
@@ -3172,13 +2612,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               isData: false,
                                               responseData: '',
                                             ));
-                                            posController.takeAwayOrders
-                                                .clear();
+                                            posController.takeAwayOrders.clear();
                                             posController.fetchTOC();
                                             posController.update();
                                           } else {
-                                            posController.takeAwayOrders
-                                                .clear();
+                                            posController.takeAwayOrders.clear();
                                             posController.fetchTOC();
                                             posController.update();
                                           }
@@ -3191,10 +2629,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                       child: InkWell(
                                         child: Center(
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               const Icon(
                                                 Icons.add_circle_outlined,
@@ -3203,19 +2639,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               ),
                                               Text(
                                                 'Add Orders',
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xff000000),
-                                                    FontWeight.w600,
-                                                    15.0),
+                                                style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 15.0),
                                               ),
                                               Text(
                                                 'Add more items to your order',
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xff808080),
-                                                    FontWeight.w400,
-                                                    12.0),
+                                                style: customisedStyle(context, const Color(0xff808080), FontWeight.w400, 12.0),
                                               ),
                                             ],
                                           ),
@@ -3228,8 +2656,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             ],
                           )
                         : GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 4,
                               mainAxisSpacing: 15,
                               crossAxisSpacing: 15,
@@ -3237,8 +2664,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             ),
                             itemCount: posController.takeAwayOrders.length + 1,
                             itemBuilder: (context, index) {
-                              if (index ==
-                                  posController.takeAwayOrders.length) {
+                              if (index == posController.takeAwayOrders.length) {
                                 print("index -------$index");
                                 return DottedBorder(
                                   color: const Color(0xffC2C8D0),
@@ -3255,15 +2681,13 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                     alignment: Alignment.center,
                                     child: GestureDetector(
                                       onTap: () async {
-                                        var result =
-                                            await Get.to(TabPosOrderPage(
+                                        var result = await Get.to(TabPosOrderPage(
                                           orderType: 2,
                                           sectionType: "Create",
                                           uID: "",
                                           tableHead: "Order",
                                           splitID: "",
-                                          cancelOrder:
-                                              posController.cancelOrder,
+                                          cancelOrder: posController.cancelOrder,
                                           tableID: "",
                                         ));
 
@@ -3273,8 +2697,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           // pr("--result----${result[5]}---");
                                           // pr("-*----------------------------------------------------------");
                                           if (result[1]) {
-                                            var resultPayment =
-                                                await Get.to(TabPaymentSection(
+                                            var resultPayment = await Get.to(TabPaymentSection(
                                               uID: result[2],
                                               tableID: '',
                                               orderType: 2,
@@ -3283,13 +2706,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               isData: true,
                                               responseData: result[5],
                                             ));
-                                            posController.takeAwayOrders
-                                                .clear();
+                                            posController.takeAwayOrders.clear();
                                             posController.fetchTOC();
                                             posController.update();
                                           } else {
-                                            posController.takeAwayOrders
-                                                .clear();
+                                            posController.takeAwayOrders.clear();
                                             posController.fetchTOC();
                                             posController.update();
                                           }
@@ -3302,10 +2723,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                       child: InkWell(
                                         child: Center(
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               const Icon(
                                                 Icons.add_circle_outlined,
@@ -3314,19 +2733,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               ),
                                               Text(
                                                 'Add Orders',
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xff000000),
-                                                    FontWeight.w600,
-                                                    15.0),
+                                                style: customisedStyle(context, const Color(0xff000000), FontWeight.w600, 15.0),
                                               ),
                                               Text(
                                                 'Add more items to your order',
-                                                style: customisedStyle(
-                                                    context,
-                                                    const Color(0xff808080),
-                                                    FontWeight.w400,
-                                                    12.0),
+                                                style: customisedStyle(context, const Color(0xff808080), FontWeight.w400, 12.0),
                                               ),
                                             ],
                                           ),
@@ -3345,102 +2756,57 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                     showCustomDialog(
                                         context: context,
-                                        status: posController
-                                            .takeAwayOrders[index].status!,
-                                        salesOrderID: posController
-                                            .takeAwayOrders[index]
-                                            .salesOrderID!,
+                                        status: posController.takeAwayOrders[index].status!,
+                                        salesOrderID: posController.takeAwayOrders[index].salesOrderID!,
                                         orderID: '',
-                                        salesMasterID: posController
-                                            .takeAwayOrders[index].salesID!,
+                                        salesMasterID: posController.takeAwayOrders[index].salesID!,
                                         orderType: 'takeaway',
                                         orderTypeID: 2,
                                         index: index);
                                   },
                                   child: Obx(
                                     () => Opacity(
-                                      opacity: posController
-                                                  .takeawayselectedIndex
-                                                  .value ==
-                                              index
+                                      opacity: posController.takeawayselectedIndex.value == index
                                           ? 1
-                                          : posController.takeawayselectedIndex
-                                                      .value ==
-                                                  1000
+                                          : posController.takeawayselectedIndex.value == 1000
                                               ? 1
                                               : 0.30,
                                       child: Container(
                                           decoration: BoxDecoration(
-                                            color: posController
-                                                        .takeawayselectedIndex
-                                                        .value ==
-                                                    index
-                                                ? Colors
-                                                    .white // Highlight selected item
+                                            color: posController.takeawayselectedIndex.value == index
+                                                ? Colors.white // Highlight selected item
                                                 : Colors.white.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+                                            borderRadius: BorderRadius.circular(8),
                                           ),
                                           child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
+                                              borderRadius: BorderRadius.circular(8),
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   border: Border(
                                                     left: BorderSide(
-                                                      color: _getBackgroundColor(
-                                                          posController
-                                                              .takeAwayOrders[
-                                                                  index]
-                                                              .status!),
+                                                      color: _getBackgroundColor(posController.takeAwayOrders[index].status!),
                                                       width: 3,
                                                     ),
-                                                    right: const BorderSide(
-                                                        color:
-                                                            Color(0xffE9E9E9),
-                                                        width: 1),
-                                                    bottom: const BorderSide(
-                                                        color:
-                                                            Color(0xffE9E9E9),
-                                                        width: 1),
-                                                    top: const BorderSide(
-                                                        color:
-                                                            Color(0xffE9E9E9),
-                                                        width: 1),
+                                                    right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                    bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                    top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                                   ),
                                                 ),
                                                 child: GridTile(
                                                   footer: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
+                                                    padding: const EdgeInsets.all(10.0),
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(4),
-                                                          color: (_getBackgroundColor(
-                                                              posController
-                                                                  .takeAwayOrders[
-                                                                      index]
-                                                                  .status))),
+                                                          borderRadius: BorderRadius.circular(4),
+                                                          color: (_getBackgroundColor(posController.takeAwayOrders[index].status))),
                                                       child: Center(
                                                         child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                          padding: const EdgeInsets.all(8.0),
                                                           child: Text(
-                                                            posController
-                                                                .takeAwayOrders[
-                                                                    index]
-                                                                .status!,
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                            posController.takeAwayOrders[index].status!,
+                                                            style: const TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.w500,
                                                               fontSize: 14.0,
                                                             ),
                                                           ),
@@ -3449,123 +2815,60 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                     ),
                                                   ),
                                                   header: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
+                                                    padding: const EdgeInsets.all(8.0),
                                                     child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Text(
                                                               "Parcel ${posController.takeAwayOrders[index].tokenNumber!}",
 
                                                               /// "Parcel ${index + 1} -",
-                                                              style:
-                                                                  customisedStyle(
-                                                                      context,
-                                                                      Colors
-                                                                          .black,
-                                                                      FontWeight
-                                                                          .w500,
-                                                                      15.0),
+                                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                                             ),
                                                             Text(
-                                                              posController.returnOrderTime(
-                                                                  posController
-                                                                      .takeAwayOrders[
-                                                                          index]
-                                                                      .orderTime!,
-                                                                  posController
-                                                                      .takeAwayOrders[
-                                                                          index]
-                                                                      .status!),
-                                                              style: customisedStyle(
-                                                                  context,
-                                                                  const Color(
-                                                                      0xff00775E),
-                                                                  FontWeight
-                                                                      .w400,
-                                                                  10.0),
+                                                              posController.returnOrderTime(posController.takeAwayOrders[index].orderTime!,
+                                                                  posController.takeAwayOrders[index].status!),
+                                                              style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 10.0),
                                                             ),
                                                           ],
                                                         ),
                                                         Text(
-                                                          posController
-                                                              .takeAwayOrders[
-                                                                  index]
-                                                              .customerName!,
-                                                          style: customisedStyle(
-                                                              context,
-                                                              const Color(
-                                                                  0xff828282),
-                                                              FontWeight.w400,
-                                                              12.0),
+                                                          posController.takeAwayOrders[index].customerName!,
+                                                          style: customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
                                                         )
                                                       ],
                                                     ),
                                                   ),
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8.0,
-                                                            right: 8,
-                                                            bottom: 8,
-                                                            top: 15),
+                                                    padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 15),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
                                                       children: [
                                                         Row(
                                                           children: [
                                                             Text(
                                                               "Token: ",
-                                                              style:
-                                                                  customisedStyle(
+                                                              style: customisedStyle(
                                                                 context,
-                                                                const Color(
-                                                                    0xff757575),
+                                                                const Color(0xff757575),
                                                                 FontWeight.w400,
                                                                 10.0,
                                                               ),
                                                             ),
                                                             Text(
-                                                              posController
-                                                                  .takeAwayOrders[
-                                                                      index]
-                                                                  .tokenNumber!,
-                                                              style:
-                                                                  customisedStyle(
-                                                                      context,
-                                                                      Colors
-                                                                          .black,
-                                                                      FontWeight
-                                                                          .w400,
-                                                                      14.0),
+                                                              posController.takeAwayOrders[index].tokenNumber!,
+                                                              style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                                             )
                                                           ],
                                                         ),
                                                         Text(
                                                           "${posController.currency} ${roundStringWith(posController.takeAwayOrders[index].salesOrderGrandTotal!)}",
-                                                          style:
-                                                              customisedStyle(
-                                                                  context,
-                                                                  Colors.black,
-                                                                  FontWeight
-                                                                      .w500,
-                                                                  15.0),
+                                                          style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                                         )
                                                       ],
                                                     ),
@@ -3595,8 +2898,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
           child: Container(
             margin: const EdgeInsets.only(left: 25, right: 25),
 
-            height: MediaQuery.of(context).size.height *
-                .77, // Specify your desired height here
+            height: MediaQuery.of(context).size.height * .77, // Specify your desired height here
             child: Obx(() => posController.isLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(
@@ -3632,8 +2934,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                     if (result != null) {
                                       if (result[1]) {
-                                        var resultPayment =
-                                            await Get.to(TabPaymentSection(
+                                        var resultPayment = await Get.to(TabPaymentSection(
                                           uID: result[2],
                                           tableID: '',
                                           orderType: 4,
@@ -3673,10 +2974,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   },
                                   child: const Center(
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.add_circle_outlined,
@@ -3709,8 +3008,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         ],
                       )
                     : GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
                           mainAxisSpacing: 15,
                           crossAxisSpacing: 10,
@@ -3742,8 +3040,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                     if (result != null) {
                                       if (result[1]) {
-                                        var resultPayment =
-                                            await Get.to(TabPaymentSection(
+                                        var resultPayment = await Get.to(TabPaymentSection(
                                           uID: result[2],
                                           tableID: '',
                                           orderType: 4,
@@ -3770,10 +3067,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   },
                                   child: const Center(
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.add_circle_outlined,
@@ -3810,33 +3105,24 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 showCustomDialog(
                                     index: index,
                                     context: context,
-                                    status:
-                                        posController.carOrders[index].status!,
-                                    salesOrderID: posController
-                                        .carOrders[index].salesOrderID!,
+                                    status: posController.carOrders[index].status!,
+                                    salesOrderID: posController.carOrders[index].salesOrderID!,
                                     orderID: '',
-                                    salesMasterID:
-                                        posController.carOrders[index].salesID!,
+                                    salesMasterID: posController.carOrders[index].salesID!,
                                     orderType: 'car',
                                     orderTypeID: 4);
                               },
                               child: Obx(
                                 () => Opacity(
-                                  opacity: posController
-                                              .carselectedIndex.value ==
-                                          index
+                                  opacity: posController.carselectedIndex.value == index
                                       ? 1
-                                      : posController.carselectedIndex.value ==
-                                              1000
+                                      : posController.carselectedIndex.value == 1000
                                           ? 1
                                           : 0.30,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: posController
-                                                  .carselectedIndex.value ==
-                                              index
-                                          ? Colors
-                                              .white // Highlight selected item
+                                      color: posController.carselectedIndex.value == index
+                                          ? Colors.white // Highlight selected item
                                           : Colors.white,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -3846,49 +3132,29 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           decoration: BoxDecoration(
                                             border: Border(
                                               left: BorderSide(
-                                                color: _getBackgroundColor(
-                                                    posController
-                                                        .carOrders[index]
-                                                        .status),
+                                                color: _getBackgroundColor(posController.carOrders[index].status),
                                                 width: 3,
                                               ),
-                                              right: const BorderSide(
-                                                  color: Color(0xffE9E9E9),
-                                                  width: 1),
-                                              bottom: const BorderSide(
-                                                  color: Color(0xffE9E9E9),
-                                                  width: 1),
-                                              top: const BorderSide(
-                                                  color: Color(0xffE9E9E9),
-                                                  width: 1),
+                                              right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                              bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                              top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                             ),
                                           ),
                                           child: GridTile(
                                             footer: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
+                                              padding: const EdgeInsets.all(10.0),
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                    color: (_getBackgroundColor(
-                                                        posController
-                                                            .carOrders[index]
-                                                            .status))),
+                                                    borderRadius: BorderRadius.circular(4),
+                                                    color: (_getBackgroundColor(posController.carOrders[index].status))),
                                                 child: Center(
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
+                                                    padding: const EdgeInsets.all(8.0),
                                                     child: Text(
-                                                      posController
-                                                          .carOrders[index]
-                                                          .status!,
+                                                      posController.carOrders[index].status!,
                                                       style: const TextStyle(
                                                         color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                        fontWeight: FontWeight.w500,
                                                         fontSize: 14.0,
                                                       ),
                                                     ),
@@ -3897,58 +3163,30 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               ),
                                             ),
                                             header: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 8.0),
+                                                    padding: const EdgeInsets.only(right: 8.0),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Text(
                                                           "Car Order ${index + 1}",
-                                                          style:
-                                                              customisedStyle(
-                                                                  context,
-                                                                  Colors.black,
-                                                                  FontWeight
-                                                                      .w400,
-                                                                  14.0),
+                                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                                         ),
                                                         Text(
-                                                          posController
-                                                              .returnOrderTime(
-                                                                  posController
-                                                                      .carOrders[
-                                                                          index]
-                                                                      .orderTime!,
-                                                                  posController
-                                                                      .carOrders[
-                                                                          index]
-                                                                      .status!),
-                                                          style: customisedStyle(
-                                                              context,
-                                                              const Color(
-                                                                  0xff757575),
-                                                              FontWeight.w400,
-                                                              10.0),
+                                                          posController.returnOrderTime(
+                                                              posController.carOrders[index].orderTime!, posController.carOrders[index].status!),
+                                                          style: customisedStyle(context, const Color(0xff757575), FontWeight.w400, 10.0),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                   Text(
-                                                    posController
-                                                        .carOrders[index]
-                                                        .customerName!,
+                                                    posController.carOrders[index].customerName!,
                                                     style: customisedStyle(
                                                       context,
                                                       const Color(0xff828282),
@@ -3960,46 +3198,30 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               ),
                                             ),
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   Row(
                                                     children: [
                                                       const Text(
                                                         "Token: ",
                                                         style: TextStyle(
-                                                          color:
-                                                              Color(0xff757575),
-                                                          fontWeight:
-                                                              FontWeight.w400,
+                                                          color: Color(0xff757575),
+                                                          fontWeight: FontWeight.w400,
                                                           fontSize: 10.0,
                                                         ),
                                                       ),
                                                       Text(
-                                                        posController
-                                                            .carOrders[index]
-                                                            .tokenNumber!,
-                                                        style: customisedStyle(
-                                                            context,
-                                                            Colors.black,
-                                                            FontWeight.w400,
-                                                            14.0),
+                                                        posController.carOrders[index].tokenNumber!,
+                                                        style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                                                       ),
                                                     ],
                                                   ),
                                                   Text(
                                                     "${posController.currency} ${roundStringWith(posController.carOrders[index].salesOrderGrandTotal!)}",
-                                                    style: customisedStyle(
-                                                        context,
-                                                        Colors.black,
-                                                        FontWeight.w500,
-                                                        15.0),
+                                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                                                   )
                                                 ],
                                               ),
@@ -4038,8 +3260,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                 children: [
                   Text(
                     'Add_a_Table'.tr,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w500, 14.0),
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                   ),
                   IconButton(
                       onPressed: () {
@@ -4063,39 +3284,31 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                 child: TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: posController.customerNameController,
-                  style: customisedStyle(
-                      context, Colors.black, FontWeight.w500, 14.0),
+                  style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
                   focusNode: posController.customerNode,
                   onEditingComplete: () {
-                    FocusScope.of(context)
-                        .requestFocus(posController.saveFocusNode);
+                    FocusScope.of(context).requestFocus(posController.saveFocusNode);
                   },
                   keyboardType: TextInputType.text,
-                  decoration: TextFieldDecoration.defaultTextField(
-                      hintTextStr: 'Table_Name'.tr),
+                  decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'Table_Name'.tr),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0, right: 16, bottom: 16, top: 5),
+              padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height / 17,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            8.0), // Adjust the radius as needed
+                        borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
                       ),
                     ),
-                    backgroundColor:
-                        WidgetStateProperty.all(const Color(0xffF25F29)),
+                    backgroundColor: WidgetStateProperty.all(const Color(0xffF25F29)),
                   ),
                   onPressed: () {
-                    if (posController.customerNameController.text
-                        .trim()
-                        .isEmpty) {
+                    if (posController.customerNameController.text.trim().isEmpty) {
                       dialogBox(context, "Please enter table name");
                     } else {
                       posController.createTableApi();
@@ -4103,8 +3316,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                   },
                   child: Text(
                     'save'.tr,
-                    style: customisedStyle(
-                        context, Colors.white, FontWeight.normal, 12.0),
+                    style: customisedStyle(context, Colors.white, FontWeight.normal, 12.0),
                   ),
                 ),
               ),
@@ -4298,18 +3510,14 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               Get.back();
                               posController.printSection(
                                   context: context,
-                                  id: status == 'Ordered'
-                                      ? salesOrderID
-                                      : salesMasterID,
+                                  id: status == 'Ordered' ? salesOrderID : salesMasterID,
                                   isCancelled: false,
-                                  voucherType:
-                                      status == 'Ordered' ? "SO" : "SI");
+                                  voucherType: status == 'Ordered' ? "SO" : "SI");
                               posController.selectItem(index);
                             },
                           )
                         : Container(),
-                    status == 'Ordered' &&
-                            posController.kitchen_print_perm.value
+                    status == 'Ordered' && posController.kitchen_print_perm.value
                         ? SelectIcon(
                             color: const Color(0xffA561E8),
                             assetName: 'assets/svg/kot_bottom_menu.svg',
@@ -4318,11 +3526,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             onPressed: () {
                               Get.back();
 
-                              posController.printKOT(
-                                  cancelList: [],
-                                  isUpdate: false,
-                                  orderID: salesOrderID,
-                                  rePrint: true);
+                              posController.printKOT(cancelList: [], isUpdate: false, orderID: salesOrderID, rePrint: true);
                             },
                           )
                         : Container(),
@@ -4367,97 +3571,81 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               Get.back();
                               if (orderType == 'dine') {
                                 if (status == 'Ordered') {
-                                  var result =
-                                      await Get.to(const CancelOrderList());
+                                  var result = await Get.to(const CancelOrderList());
                                   if (result != null) {
                                     posController.cancelOrderApi(
                                         context: context,
                                         type: "Dining&Cancel",
                                         tableID: orderID,
                                         cancelReasonId: result[1],
-                                        orderID: salesOrderID);
+                                        orderID: salesOrderID,
+                                        splitUID: "");
                                   }
                                 } else {
                                   posController.cancelOrderApi(
-                                      context: context,
-                                      type: "Dining",
-                                      tableID: orderID,
-                                      cancelReasonId: "",
-                                      orderID: salesOrderID);
+                                      context: context, type: "Dining", tableID: orderID, cancelReasonId: "", orderID: salesOrderID, splitUID: "");
                                 }
                               } else if (orderType == 'takeaway') {
                                 if (status == 'Ordered') {
                                   if (posController.print_perm.value) {
-                                    var result =
-                                        await Get.to(const CancelOrderList());
+                                    var result = await Get.to(const CancelOrderList());
                                     if (result != null) {
                                       posController.cancelOrderApi(
                                           context: context,
                                           type: "Cancel",
                                           tableID: "",
                                           cancelReasonId: result[1],
-                                          orderID: salesOrderID);
+                                          orderID: salesOrderID,
+                                          splitUID: "");
                                     }
                                   } else {
                                     dialogBoxPermissionDenied(context);
                                   }
                                 } else {
                                   posController.cancelOrderApi(
-                                      context: context,
-                                      type: "TakeAway",
-                                      tableID: "",
-                                      cancelReasonId: "",
-                                      orderID: salesOrderID);
+                                      context: context, type: "TakeAway", tableID: "", cancelReasonId: "", orderID: salesOrderID, splitUID: "");
                                 }
                               } else if (orderType == 'car') {
                                 if (status == 'Ordered') {
                                   if (posController.print_perm.value) {
-                                    var result =
-                                        await Get.to(const CancelOrderList());
+                                    var result = await Get.to(const CancelOrderList());
                                     if (result != null) {
                                       posController.cancelOrderApi(
                                           context: context,
                                           type: "Cancel",
                                           tableID: "",
                                           cancelReasonId: result[1],
-                                          orderID: salesOrderID);
+                                          orderID: salesOrderID,
+                                          splitUID: "");
                                     }
                                   } else {
                                     dialogBoxPermissionDenied(context);
                                   }
                                 } else {
                                   posController.cancelOrderApi(
-                                      context: context,
-                                      type: "Car",
-                                      tableID: "",
-                                      cancelReasonId: "",
-                                      orderID: salesOrderID);
+                                      context: context, type: "Car", tableID: "", cancelReasonId: "", orderID: salesOrderID, splitUID: "");
                                 }
                               } else if (orderType == 'online') {
                                 if (status == 'Ordered') {
                                   log("orderType");
                                   pr("typedddd $orderType");
                                   if (posController.print_perm.value) {
-                                    var result =
-                                        await Get.to(const CancelOrderList());
+                                    var result = await Get.to(const CancelOrderList());
                                     if (result != null) {
                                       posController.cancelOrderApi(
                                           context: context,
                                           type: "Cancel",
                                           tableID: "",
                                           cancelReasonId: result[1],
-                                          orderID: salesOrderID);
+                                          orderID: salesOrderID,
+                                          splitUID: "");
                                     }
                                   } else {
                                     dialogBoxPermissionDenied(context);
                                   }
                                 } else {
                                   posController.cancelOrderApi(
-                                      context: context,
-                                      type: "Online",
-                                      tableID: "",
-                                      cancelReasonId: "",
-                                      orderID: salesOrderID);
+                                      context: context, type: "Online", tableID: "", cancelReasonId: "", orderID: salesOrderID, splitUID: "");
                                 }
                               }
                             },
@@ -4487,8 +3675,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                     if (result != null) {
                                       if (result[1]) {
-                                        var res =
-                                            await Get.to(TabPaymentSection(
+                                        var res = await Get.to(TabPaymentSection(
                                           uID: result[2],
                                           tableID: orderID,
                                           splitID: "",
@@ -4626,8 +3813,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       },
       transitionBuilder: (context, anim1, anim2, child) {
         return SlideTransition(
-          position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0))
-              .animate(anim1),
+          position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0)).animate(anim1),
           child: child,
         );
       },
@@ -4660,8 +3846,7 @@ class IconWithText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final POSController controller =
-        Get.put(POSController()); // Access the GetX controller
+    final POSController controller = Get.put(POSController()); // Access the GetX controller
 
     return Obx(() {
       Color iconColor = controller.getColor(type);
@@ -4737,8 +3922,7 @@ class SelectIcon extends StatelessWidget {
                 ),
                 child: SvgPicture.asset(
                   assetName,
-                  fit: BoxFit
-                      .scaleDown, // Adjust BoxFit to your need, such as contain, cover, or fitWidth
+                  fit: BoxFit.scaleDown, // Adjust BoxFit to your need, such as contain, cover, or fitWidth
                 ),
               ),
               // Container(
@@ -4756,8 +3940,7 @@ class SelectIcon extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 4.0),
                   child: Text(
                     text,
-                    style: customisedStyle(
-                        context, Colors.black, FontWeight.w500, 11.0),
+                    style: customisedStyle(context, Colors.black, FontWeight.w500, 11.0),
                   ),
                 ),
               ),

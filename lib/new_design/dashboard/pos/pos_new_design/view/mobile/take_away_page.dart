@@ -233,7 +233,7 @@ class _TakeAwayState extends State<TakeAway> {
                                                   cancelReasonId: result[1],
                                                   orderID: takeAwayController
                                                       .takeAwayOrders[index]
-                                                      .salesOrderID!);
+                                                      .salesOrderID!,splitUID: "");
                                             }
                                           }
                                           else{
@@ -249,7 +249,7 @@ class _TakeAwayState extends State<TakeAway> {
                                               cancelReasonId: "",
                                               orderID: takeAwayController
                                                   .takeAwayOrders[index]
-                                                  .salesOrderID!);
+                                                  .salesOrderID!,splitUID: "");
                                         }
                                       },
                                       backgroundColor: const Color(0xFFFC3636),

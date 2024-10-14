@@ -890,10 +890,10 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
 
                       if(double.parse(paymentController.grandTotalAmount.value) >0){
                         if (paymentController.paymentCustomerSelection.text != "walk in customer") {
-                          paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
+                          paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false,splitID: "");
                         } else {
                           if ((paymentController.cashReceived.value + paymentController.bankReceived.value) >= double.parse(paymentController.grandTotalAmount.value)) {
-                            paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
+                            paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false,splitID: "");
                           } else {
                             popAlert(head: "Waring", message: "You cant make credit sale", position: SnackPosition.TOP);
                           }
