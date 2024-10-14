@@ -142,7 +142,7 @@ class BaseUrl{
    // static String imageURL = '$baseURlApi/media/';
 
 ///
-   //
+   ///  test
   static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
   static String baseUrl = "$baseURlApi/api/v10";
   static String baseUrlV11 = "$baseURlApi/api/v11";
