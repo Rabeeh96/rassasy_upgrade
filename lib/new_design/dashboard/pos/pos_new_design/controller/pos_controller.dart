@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -104,8 +102,6 @@ class POSController extends GetxController {
   FocusNode saveFocusNode = FocusNode();
   final selectedItem = ''.obs;
 
-
-
   String currency = "SR";
   RxString userName = "".obs;
   RxInt selectedIndexsplit = RxInt(-1);
@@ -169,7 +165,8 @@ class POSController extends GetxController {
       userName.value = prefs.getString('user_name') ?? "";
       var fetchedData = await _tableService.fetchAllData(accessToken);
       selectedIndexNotifier.value = 0;
-      tablemergeData.assignAll((fetchedData).map((json) => MergeData.fromJson(json)).toList());
+      tablemergeData.assignAll(
+          (fetchedData).map((json) => MergeData.fromJson(json)).toList());
       print("selectedIndex.value-----------------${selectedIndex.value}");
       pr(tablemergeData.length.toString());
     } finally {
@@ -228,7 +225,8 @@ class POSController extends GetxController {
       isLoading(false);
       selectedIndexNotifier.value = 0;
 
-      tablemergeData.assignAll((fetchedmergeData).map((json) =>  MergeData.fromJson(json)).toList());
+      tablemergeData.assignAll(
+          (fetchedmergeData).map((json) => MergeData.fromJson(json)).toList());
       pr(tablemergeData.length.toString());
 
       //!
@@ -279,17 +277,14 @@ class POSController extends GetxController {
       pr(response.body);
 
       Map<String, dynamic> responseData =
-      json.decode(utf8.decode(response.bodyBytes));
+          json.decode(utf8.decode(response.bodyBytes));
       var status = responseData["StatusCode"];
-
-
 
       if (status == 6000) {
         Get.back();
         tablenameController.clear();
         splitcountcontroller.text = "0";
         fetchAllData();
-
       } else if (status == 6001) {
         var msg = responseData["message"];
         Get.snackbar('Error', msg); // Show error message
@@ -675,12 +670,7 @@ class POSController extends GetxController {
     convert_type_perm.value = false;
   }
 
-
-
-
-
-
-   var selectedType = 'dine'.obs;
+  var selectedType = 'dine'.obs;
 
   void selectType(String type) {
     selectedType.value = type; // Set the selected type
@@ -711,7 +701,21 @@ class POSController extends GetxController {
 
   void selectsplitItem(int index) {
     selectedsplitIndex.value = index;
+    log(selectedsplitIndex.value.toString());
   }
+
+  // int clickCount = 0;
+
+  // void selectsplitItem(int index) {
+  //   clickCount++;
+  //   if (clickCount == 0) {
+  //     selectedsplitIndex.value = index;
+  //     log(selectedsplitIndex.value.toString());
+  //   } else if (clickCount == 2) {
+  //     selectedsplitIndex.value = 1000;
+  //     log(selectedsplitIndex.value.toString());
+  //   }
+  // }
 
   void takeAwayselectItem(int index) {
     takeawayselectedIndex.value = index;
