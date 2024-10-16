@@ -104,6 +104,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
               //           : Container();
               // }),
 
+
               Obx(() {
                 return posController.isCombine.value
                     ? Container()
@@ -155,33 +156,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             );
                           }
 
-                          // List combineData = [];
-                          // String combineMessage = "";
-                          // print("posController.selectList  ${posController.selectList}");
-                          //
-                          //
-                          // if (posController.selectList.length > 1) {
-                          //   for (int i = 0; i < posController.selectList.length; i++) {
-                          //     final id = posController.tablemergeData[posController.selectList[i]].id;
-                          //     final name = posController.tablemergeData[posController.selectList[i]].tableName;
-                          //     pr(id);
-                          //     combineData.add(id);
-                          //     // combineMessage = "$combineMessage & $name";
-                          //     if (i == 0) {
-                          //       combineMessage = name!;
-                          //     } else {
-                          //       combineMessage = "$combineMessage & $name";
-                          //     }
-                          //   }
-                          //
-                          //   print("combineData  $combineData  combineMessage $combineMessage");
-                          //   _dialogCombine(context, screenSize, posController, combineData, combineMessage);
-                          // } else {
-                          //   Get.snackbar(
-                          //     'Alert',
-                          //     'Please select at least 2 Table',
-                          //   );
-                          // }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFF0E8FF),
@@ -1035,7 +1009,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "$combineMessage has orders",
+                            "$combineMessage",
                             style: customisedStyle(context, const Color(0xFF292D32), FontWeight.w500, 18.0),
                             textAlign: TextAlign.center,
                           ),
@@ -1204,48 +1178,48 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       },
     );
   }
-
-  ListView checkWidget({required splitData}) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: splitData.length,
-      itemBuilder: (context, index) {
-        final table = splitData[index];
-        return Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: Container(
-            //   height: 30,
-            width: MediaQuery.of(context).size.width * 0.02,
-            child: CircleAvatar(
-              backgroundColor: table['Status'] == "Vacant"
-                  ? const Color(0xFFE9E9E9)
-                  : table['Status'] == "Paid"
-                      ? const Color(0xFFEEF6EE)
-                      : table['Status'] == "Ordered"
-                          ? const Color(0xFFDFF1F1)
-                          : const Color(0xFFFFFFFF),
-              child: Center(
-                child: Text(
-                  (index + 1).toString(),
-                  style: customisedStyle(
-                      context,
-                      table['Status'] == "Vacant"
-                          ? const Color(0xFF828282)
-                          : table['Status'] == "Paid"
-                              ? const Color(0xFF2B952E)
-                              : table['Status'] == "Ordered"
-                                  ? const Color(0xFF03C1C1)
-                                  : '',
-                      FontWeight.w400,
-                      16.0),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+// lisy view
+  // ListView checkWidget({required splitData}) {
+  //   return ListView.builder(
+  //     scrollDirection: Axis.horizontal,
+  //     itemCount: splitData.length,
+  //     itemBuilder: (context, index) {
+  //       final table = splitData[index];
+  //       return Padding(
+  //         padding: const EdgeInsets.all(1.0),
+  //         child: Container(
+  //           //   height: 30,
+  //           width: MediaQuery.of(context).size.width * 0.02,
+  //           child: CircleAvatar(
+  //             backgroundColor: table['Status'] == "Vacant"
+  //                 ? const Color(0xFFE9E9E9)
+  //                 : table['Status'] == "Paid"
+  //                     ? const Color(0xFFEEF6EE)
+  //                     : table['Status'] == "Ordered"
+  //                         ? const Color(0xFFDFF1F1)
+  //                         : const Color(0xFFFFFFFF),
+  //             child: Center(
+  //               child: Text(
+  //                 (index + 1).toString(),
+  //                 style: customisedStyle(
+  //                     context,
+  //                     table['Status'] == "Vacant"
+  //                         ? const Color(0xFF828282)
+  //                         : table['Status'] == "Paid"
+  //                             ? const Color(0xFF2B952E)
+  //                             : table['Status'] == "Ordered"
+  //                                 ? const Color(0xFF03C1C1)
+  //                                 : '',
+  //                     FontWeight.w400,
+  //                     16.0),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   // Column SplitTableComponents(
   //     BuildContext context, Size screenSize, String? status) {
@@ -1348,26 +1322,26 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
           return Padding(
             padding: const EdgeInsets.all(1.0),
             child: Container(
-              // 0xff6C757D
-              // 0xff03C1C1
-              // 0xff2B952E
               width: MediaQuery.of(context).size.width * 0.02,
-              child: CircleAvatar(
-                backgroundColor: table['Status'] == "Vacant"
-                    ? const Color(0xff6C757D)
-                    : table['Status'] == "Paid"
-                        ? const Color(0xff2B952E)
-                        : table['Status'] == "Ordered"
-                            ? const Color(0xff03C1C1)
-                            : const Color(0xFFFFFFFF),
-                child: Center(
-                  child: Text(
-                    (index + 1).toString(),
-                    style: customisedStyle(
-                      context,
-                      Colors.white,
-                      FontWeight.w400,
-                      16.0,
+              child: Opacity(
+                opacity: .75,
+                child: CircleAvatar(
+                  backgroundColor: table['Status'] == "Vacant"
+                      ? const Color(0xff6C757D)
+                      : table['Status'] == "Paid"
+                      ? const Color(0xff2B952E)
+                      : table['Status'] == "Ordered"
+                      ? const Color(0xff03C1C1)
+                      : const Color(0xFFFFFFFF),
+                  child: Center(
+                    child: Text(
+                      (index + 1).toString(),
+                      style: customisedStyle(
+                        context,
+                        Colors.white,
+                        FontWeight.w400,
+                        13.0,
+                      ),
                     ),
                   ),
                 ),
@@ -1378,7 +1352,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       ),
     );
   }
-
+  // Opacity(
+  // opacity:
   navigatePlatform() async {
     var result = await Get.to(const OnlinePlatforms());
   }
@@ -1405,7 +1380,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
         SliverToBoxAdapter(
           child: Container(
             margin: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 25),
-            height: MediaQuery.of(context).size.height * .9, // Specify your desired height here
+            height: MediaQuery.of(context).size.height * .8, // Specify your desired height here
             child: Obx(() => posController.isLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(
@@ -1556,7 +1531,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                             padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
                                                             child: Container(
                                                                 height: 35,
-                                                                //width: 200,
                                                                 child: checkWidgetNew(splitData: posController.tableMergeData[index].splitData)),
                                                           )
                                                         : Container(),
@@ -1706,7 +1680,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             children: [
                               /// all combine not reday
                               areAllItemsVacant(listsplit)
-                                  ? ElevatedButton(
+                                  ? posController.isCombineSplit.value?Container():ElevatedButton(
                                       onPressed: () async {
                                         var combinedAction = await showDialog(
                                           context: context,
@@ -1766,7 +1740,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   splitID: "",
                                                   tableHead: "Order",
                                                   cancelOrder: posController.cancelOrder,
-                                                  tableID: posController.tableMergeData[posController.selectedCombinedIndex.value].id!,
+                                                  tableID: posController.tableMergeData[indexOfSelectedTable].id!,
                                                 ));
                                               }
 
@@ -1895,232 +1869,240 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: constraints.maxHeight * 0.65,
-                                    width: constraints.maxWidth * 0.6,
-                                    child: GridView.builder(
-                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        mainAxisSpacing: 10,
-                                        crossAxisSpacing: 20,
-                                        childAspectRatio: 1.8,
-                                      ),
-                                      itemCount: listsplit.length,
-                                      itemBuilder: (context, index) {
-                                        return GridTile(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: GestureDetector(
-                                              onLongPress: () {
-                                                posController.selectedsplitIndex.value = 1000;
-                                                posController.update();
-                                                if (listsplit[index]["Status"] == "Ordered") {
-                                                  posController.selectList.clear();
-                                                  posController.checkedbtn(index);
-                                                  posController.isCombineSplit.value = !posController.isCombineSplit.value;
-                                                  posController.update();
-                                                }
-                                              },
-                                              onTap: () async {
-                                                if (posController.isCombineSplit.value == false) {
-                                                  if (listsplit[index]["Status"] == 'Vacant') {
-                                                    Get.back();
-                                                    var result = await Get.to(TabPosOrderPage(
-                                                      orderType: 1,
-                                                      isAllCombine: false,
-                                                      sectionType: "Create",
-                                                      uID: "",
-                                                      tableHead: "Order",
-                                                      splitID: listsplit[index]["id"]!,
-                                                      cancelOrder: posController.cancelOrder,
-                                                      tableID: posController.tableMergeData[indexOfSelectedTable].id!,
-                                                    )); // Pass the value to POS Order Page
+                            GestureDetector(
+                              onTap: (){
+                                posController.selectedsplitIndex.value = 1000;
+                              },
+                              child: Container(
 
-                                                    if (result != null) {
-                                                      if (result[1]) {
-                                                        var resultPayment = await Get.to(TabPaymentSection(
-                                                          uID: result[2],
-                                                          splitID: "",
-                                                          tableID: posController.tableMergeData[index].id!,
-                                                          orderType: 0,
-                                                          type: 'dine',
-                                                          isData: false,
-                                                          responseData: '',
-                                                        ));
-                                                        posController.tableMergeData.clear();
-                                                        posController.fetchAllData();
-                                                        posController.update();
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: constraints.maxHeight * 0.65,
+                                      width: constraints.maxWidth * 0.6,
+                                      child: GridView.builder(
+                                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          mainAxisSpacing: 10,
+                                          crossAxisSpacing: 20,
+                                          childAspectRatio: 1.8,
+                                        ),
+                                        itemCount: listsplit.length,
+                                        itemBuilder: (context, index) {
+                                          return GridTile(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: GestureDetector(
+                                                onLongPress: () {
+                                                  posController.selectedsplitIndex.value = 1000;
+                                                  posController.update();
+                                                  if (listsplit[index]["Status"] != "Paid") {
+                                                    posController.selectList.clear();
+                                                    posController.checkedbtn(index);
+                                                    posController.isCombineSplit.value = !posController.isCombineSplit.value;
+                                                    posController.update();
+                                                  }
+                                                },
+                                                onTap: () async {
+                                                  if (posController.isCombineSplit.value == false) {
+                                                    if (listsplit[index]["Status"] == 'Vacant') {
+                                                      Get.back();
+                                                      var result = await Get.to(TabPosOrderPage(
+                                                        orderType: 1,
+                                                        isAllCombine: false,
+                                                        sectionType: "Create",
+                                                        uID: "",
+                                                        tableHead: "Order",
+                                                        splitID: listsplit[index]["id"]!,
+                                                        cancelOrder: posController.cancelOrder,
+                                                        tableID: posController.tableMergeData[indexOfSelectedTable].id!,
+                                                      )); // Pass the value to POS Order Page
+
+                                                      if (result != null) {
+                                                        if (result[1]) {
+                                                          var resultPayment = await Get.to(TabPaymentSection(
+                                                            uID: result[2],
+                                                            splitID: listsplit[index]["id"]!,
+                                                            tableID: posController.tableMergeData[index].id!,
+                                                            orderType: 0,
+                                                            type: 'dine',
+                                                            isData: false,
+                                                            responseData: '',
+                                                          ));
+                                                          posController.tableMergeData.clear();
+                                                          posController.fetchAllData();
+                                                          posController.update();
+                                                        } else {
+                                                          posController.tableMergeData.clear();
+                                                          posController.fetchAllData();
+                                                          posController.update();
+                                                        }
                                                       } else {
                                                         posController.tableMergeData.clear();
                                                         posController.fetchAllData();
                                                         posController.update();
                                                       }
                                                     } else {
-                                                      posController.tableMergeData.clear();
-                                                      posController.fetchAllData();
-                                                      posController.update();
+                                                      posController.selectsplitItem(index);
                                                     }
                                                   } else {
-                                                    posController.selectsplitItem(index);
+                                                    if (listsplit[index]["Status"] != "Paid") {
+                                                      posController.checkedbtn(index);
+                                                    }
                                                   }
-                                                } else {
-                                                  if (listsplit[index]["Status"] == "Ordered") {
-                                                    posController.checkedbtn(index);
-                                                  }
-                                                }
-                                              },
-                                              child: Obx(
-                                                () => Opacity(
-                                                  opacity: posController.selectedsplitIndex.value == index
-                                                      ? 1
-                                                      : posController.selectedsplitIndex.value == 1000
-                                                          ? 1
-                                                          : 0.30,
-                                                  child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: posController.selectedsplitIndex.value == index
-                                                            ? Colors.white // Highlight selected item
-                                                            : Colors.white,
-                                                        borderRadius: BorderRadius.circular(8),
-                                                      ),
-                                                      child: ClipRRect(
+                                                },
+                                                child: Obx(
+                                                  () => Opacity(
+                                                    opacity: posController.selectedsplitIndex.value == index
+                                                        ? 1
+                                                        : posController.selectedsplitIndex.value == 1000
+                                                            ? 1
+                                                            : 0.30,
+                                                    child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: posController.selectedsplitIndex.value == index
+                                                              ? Colors.white // Highlight selected item
+                                                              : Colors.white,
                                                           borderRadius: BorderRadius.circular(8),
-                                                          child: Container(
-                                                            decoration: BoxDecoration(
-                                                              border: Border(
-                                                                left: BorderSide(
-                                                                  color: _getBackgroundColor(listsplit[index]["Status"]),
-                                                                  width: 4,
+                                                        ),
+                                                        child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(8),
+                                                            child: Container(
+                                                              decoration: BoxDecoration(
+                                                                border: Border(
+                                                                  left: BorderSide(
+                                                                    color: _getBackgroundColor(listsplit[index]["Status"]),
+                                                                    width: 4,
+                                                                  ),
+                                                                  right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                                                 ),
-                                                                right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                                bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                                top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                                               ),
-                                                            ),
-                                                            child: GridTile(
-                                                              footer: Padding(
-                                                                padding: const EdgeInsets.all(10.0),
-                                                                child: Container(
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(4),
-                                                                      color: (_getBackgroundColor(listsplit[index]["Status"]))),
-                                                                  child: Center(
-                                                                    child: Padding(
-                                                                      padding: const EdgeInsets.all(8.0),
-                                                                      child: Text(
-                                                                        listsplit[index]["Status"],
-                                                                        style: const TextStyle(
-                                                                          color: Colors.white,
-                                                                          fontWeight: FontWeight.w500,
-                                                                          fontSize: 14.0,
+                                                              child: GridTile(
+                                                                footer: Padding(
+                                                                  padding: const EdgeInsets.all(10.0),
+                                                                  child: Container(
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(4),
+                                                                        color: (_getBackgroundColor(listsplit[index]["Status"]))),
+                                                                    child: Center(
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        child: Text(
+                                                                          listsplit[index]["Status"],
+                                                                          style: const TextStyle(
+                                                                            color: Colors.white,
+                                                                            fontWeight: FontWeight.w500,
+                                                                            fontSize: 14.0,
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              header: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Column(
-                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                  children: [
-                                                                    Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                      children: [
-                                                                        Expanded(
-                                                                          child: Text(
-                                                                            '${listsplit[index]["TableName"]} ',
-                                                                            style: const TextStyle(
-                                                                              color: Colors.black,
-                                                                              fontWeight: FontWeight.w500,
-                                                                              fontSize: 16.0,
-                                                                            ),
-                                                                            overflow: TextOverflow.ellipsis,
-                                                                            maxLines: 1,
-                                                                          ),
-                                                                        ),
-                                                                        Obx(
-                                                                          () => posController.isCombineSplit.value &&
-                                                                                  listsplit[index]["Status"] == "Ordered"
-                                                                              ? Checkbox(
-                                                                                  side: const BorderSide(width: 1.0, color: Colors.grey),
-                                                                                  //  activeColor: const Color(0xFF03C1C1),
-                                                                                  checkColor: Colors.white,
-                                                                                  fillColor: posController.selectList.contains(index)
-                                                                                      ? WidgetStateProperty.all(const Color(0xFF1DC9A0))
-                                                                                      : WidgetStateProperty.all(Colors.white),
-                                                                                  value: posController.selectList.contains(index),
-                                                                                  onChanged: (value) {
-                                                                                    posController.checkedbtn(index);
-                                                                                    log(index.toString());
-                                                                                  },
-                                                                                )
-                                                                              : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    posController.returnOrderTime(listsplit[index]["OrderTime"].toString(),
-                                                                                listsplit[index]["Status"]) !=
-                                                                            ""
-                                                                        ? Row(
-                                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              Text(
-                                                                                posController.returnOrderTime(listsplit[index]["orderTime"] ?? '',
-                                                                                    listsplit[index]["orderTime"] ?? ''),
-                                                                                style: customisedStyle(
-                                                                                    context, const Color(0xff828282), FontWeight.w400, 12.0),
+                                                                header: Padding(
+                                                                  padding: const EdgeInsets.all(8.0),
+                                                                  child: Column(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child: Text(
+                                                                              '${listsplit[index]["TableName"]} ',
+                                                                              style: const TextStyle(
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w500,
+                                                                                fontSize: 16.0,
                                                                               ),
-                                                                            ],
-                                                                          )
-                                                                        : Container(),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                                  children: [
-                                                                    listsplit[index]["Status"] == "Vacant"
-                                                                        ? const Text("")
-                                                                        : const Text(
-                                                                            "To be paid:",
-                                                                            style: TextStyle(
-                                                                              color: Color(0xff757575),
-                                                                              fontWeight: FontWeight.w400,
-                                                                              fontSize: 10.0,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              maxLines: 1,
                                                                             ),
                                                                           ),
-                                                                    listsplit[index]["Status"] == "Vacant"
-                                                                        ? const Text("")
-                                                                        : Text(
-                                                                            "${posController.currency} ${roundStringWith(listsplit[index]["Status"] != "Vacant" ? listsplit[index]["Status"] != "Paid" ? listsplit[index]["SalesOrderGrandTotal"].toString() : listsplit[index]["SalesGrandTotal"].toString() : '0')}",
-                                                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                                          Obx(
+                                                                            () => posController.isCombineSplit.value &&
+                                                                                    listsplit[index]["Status"] != "Paid"
+                                                                                ? Checkbox(
+                                                                                    side: const BorderSide(width: 1.0, color: Colors.grey),
+                                                                                    //  activeColor: const Color(0xFF03C1C1),
+                                                                                    checkColor: Colors.white,
+                                                                                    fillColor: posController.selectList.contains(index)
+                                                                                        ? WidgetStateProperty.all(const Color(0xFF1DC9A0))
+                                                                                        : WidgetStateProperty.all(Colors.white),
+                                                                                    value: posController.selectList.contains(index),
+                                                                                    onChanged: (value) {
+                                                                                      posController.checkedbtn(index);
+                                                                                      log(index.toString());
+                                                                                    },
+                                                                                  )
+                                                                                : Container(),
+                                                                                // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
                                                                           )
-                                                                  ],
+                                                                        ],
+                                                                      ),
+                                                                      posController.returnOrderTime(listsplit[index]["OrderTime"].toString(),
+                                                                                  listsplit[index]["Status"]) !=
+                                                                              ""
+                                                                          ? Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text(
+                                                                                  posController.returnOrderTime(listsplit[index]["orderTime"] ?? '',
+                                                                                      listsplit[index]["orderTime"] ?? ''),
+                                                                                  style: customisedStyle(
+                                                                                      context, const Color(0xff828282), FontWeight.w400, 12.0),
+                                                                                ),
+                                                                              ],
+                                                                            )
+                                                                          : Container(),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.all(8.0),
+                                                                  child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                    children: [
+                                                                      listsplit[index]["Status"] == "Vacant"
+                                                                          ? const Text("")
+                                                                          : const Text(
+                                                                              "To be paid:",
+                                                                              style: TextStyle(
+                                                                                color: Color(0xff757575),
+                                                                                fontWeight: FontWeight.w400,
+                                                                                fontSize: 10.0,
+                                                                              ),
+                                                                            ),
+                                                                      listsplit[index]["Status"] == "Vacant"
+                                                                          ? const Text("")
+                                                                          : Text(
+                                                                              "${posController.currency} ${roundStringWith(listsplit[index]["Status"] != "Vacant" ? listsplit[index]["Status"] != "Paid" ? listsplit[index]["SalesOrderGrandTotal"].toString() : listsplit[index]["SalesGrandTotal"].toString() : '0')}",
+                                                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                                            )
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ))),
+                                                            ))),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                ],
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                             Container(
+
                               child: Row(
                                 children: [
                                   Obx(

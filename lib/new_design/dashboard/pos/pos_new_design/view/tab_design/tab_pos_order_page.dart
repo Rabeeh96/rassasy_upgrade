@@ -91,12 +91,12 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     diningController.userName.value,
                     style: customisedStyle(context, const Color(0xff585858),
-                        FontWeight.w500, 13.0),
+                        FontWeight.w500, 14.0),
                   ),
                   Obx(
                     () => orderController.synMethod.value
@@ -104,7 +104,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                         : Text(
                             orderController.tokenNumber.value,
                             style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 12.0),
+                                context, Color(0xff585858), FontWeight.w500, 14.0),
                           ),
                   ),
                   const SizedBox(
@@ -112,13 +112,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   )
                 ],
               ),
-              const SizedBox(
-                width: 25,
-              ),
 
-              const SizedBox(
-                width: 20,
-              ),
               Obx(() {
                 return orderController.synMethod.value
                     ? IconButton(
@@ -139,7 +133,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                           await orderController.saveAllProduct(allProducts);
                           await stop();
                         },
-                        icon: const Text('Sync Data '))
+                        icon:   Text('Sync Data ',style: customisedStyle(
+                            context, Color(0xff585858), FontWeight.w500, 14.0),))
                     : Container();
               }),
 
@@ -202,13 +197,14 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     orderController.detailPage.value = 'settings';
                     orderController.update();
                   },
-                  icon: const Text('Settings')),
-              IconButton(
-                  onPressed: () async {
-                    Get.to(() => DragDrop(
-                        uID: widget.uID, sectionType: widget.sectionType));
-                  },
-                  icon: const Text('Draggable')),
+                  icon:   Text('Settings',style: customisedStyle(
+                      context, Colors.black, FontWeight.w500, 14.0),)),
+              // IconButton(
+              //     onPressed: () async {
+              //       Get.to(() => DragDrop(
+              //           uID: widget.uID, sectionType: widget.sectionType));
+              //     },
+              //     icon: const Text('Draggable')),
             ],
           ),
           body: Container(

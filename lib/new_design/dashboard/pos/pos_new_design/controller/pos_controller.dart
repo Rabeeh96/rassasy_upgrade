@@ -179,10 +179,9 @@ class POSController extends GetxController {
       currency = prefs.getString('CurrencySymbol') ?? "";
       userName.value = prefs.getString('user_name') ?? "";
       var fetchedData = await _tableService.fetchAllData(accessToken);
+      print(fetchedData);
       selectedIndexNotifier.value = 0;
-      tableMergeData.assignAll(
-          (fetchedData).map((json) => MergeData.fromJson(json)).toList());
-      print("selectedIndex.value-----------------${selectedIndex.value}");
+      tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
       pr(tableMergeData.length.toString());
     } finally {
       isLoading(false);
