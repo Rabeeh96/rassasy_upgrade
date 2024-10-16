@@ -9,6 +9,8 @@ import '../../../../../../global/textfield_decoration.dart';
 import '../../controller/platform_controller.dart';
 
 class OnlinePlatforms extends StatefulWidget {
+  const OnlinePlatforms({super.key});
+
   @override
   State<OnlinePlatforms> createState() => _OnlinePlatformsState();
 }
@@ -24,7 +26,7 @@ class _OnlinePlatformsState extends State<OnlinePlatforms> {
         centerTitle: false,
         titleSpacing: 0,
         title: Text('Platforms',style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),),
-        actions: [
+        actions: const [
           // TextButton(onPressed: (){
           //   controller.platformNameController.clear();
           //
@@ -34,9 +36,9 @@ class _OnlinePlatformsState extends State<OnlinePlatforms> {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
-        return controller.platforms.isEmpty?Center(child: Text("No Platforms found ")): Center(
+        return controller.platforms.isEmpty?const Center(child: Text("No Platforms found ")): Center(
           child: SizedBox(height: MediaQuery.of(context).size.height/1.1,
             width: MediaQuery.of(context).size.width/3,
             child: Column(
@@ -155,7 +157,7 @@ class _OnlinePlatformsState extends State<OnlinePlatforms> {
 
 
       },
-        child: Icon(Icons.add,color: Colors.white,),
+        child: const Icon(Icons.add,color: Colors.white,),
 
       ),
       // floatingActionButton: TextButton(
@@ -212,7 +214,7 @@ class _OnlinePlatformsState extends State<OnlinePlatforms> {
             ),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width / 4,
                 child: TextField(
                   textCapitalization: TextCapitalization.words,
@@ -233,7 +235,7 @@ class _OnlinePlatformsState extends State<OnlinePlatforms> {
             Padding(
               padding: const EdgeInsets.only(
                   left: 16.0, right: 16, bottom: 16, top: 5),
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height / 17,
                 child: ElevatedButton(
                   style: ButtonStyle(

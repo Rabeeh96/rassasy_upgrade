@@ -24,7 +24,7 @@ class OrderCreateView extends StatefulWidget {
   final int orderType;
   final List cancelOrder;
 
-  OrderCreateView({
+  const OrderCreateView({
     super.key,
     required this.tableID,
     required this.tableHead,
@@ -59,7 +59,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
     double scrollPosition = index * (MediaQuery.of(context).size.width / 5); // Adjust the multiplier based on your item width
     orderController.scrollController.animateTo(
       scrollPosition,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }
@@ -140,7 +140,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                           },
                           icon: Text(
                             'Sync',
-                            style: customisedStyleBold(context, Colors.black, FontWeight.w500, 16.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
                           ))
                       : Container();
                 }),
@@ -156,7 +156,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
             ),
           ],
         ),
-        actions: [
+        actions: const [
           // Padding(
           //   padding: const EdgeInsets.only(right: 6.0),
           //   child: IconButton(
@@ -211,10 +211,10 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                         color: isVegValue ? const Color(0xff00775E) : const Color(0xffDF1515),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(left: 8.0),
+                                        padding: const EdgeInsets.only(left: 8.0),
                                         child: Text(
                                           'veg_only'.tr,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             color: Color(0xff585858),
                                           ),
@@ -261,7 +261,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
             //   diningController.selectedIndexNotifier.value =
             /// product list
             Obx(() => orderController.productIsLoading.value
-                ? Container(height: 500, child: const Center(child: CircularProgressIndicator()))
+                ? SizedBox(height: 500, child: const Center(child: CircularProgressIndicator()))
                 : Expanded(
                     child: Obx(() => ListView.separated(
                           separatorBuilder: (context, index) => dividerStyle(),
@@ -290,7 +290,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(right: 8.0, top: 8),
-                                            child: Container(
+                                            child: SizedBox(
                                               width: MediaQuery.of(context).size.width * 0.5,
                                               child: Text(
                                                 orderController.productList[index].productName,
@@ -517,7 +517,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                                                       child: Center(
                                                                         child: Text(
                                                                           'add'.tr,
-                                                                          style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 15.0),
+                                                                          style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
                                                                           // style: TextStyle(
                                                                           //   color: Color(0xffF25F29),
                                                                           // ),
@@ -639,7 +639,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                                                                   child: Center(
                                                                     child: Text(
                                                                       'add'.tr,
-                                                                      style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 15.0),
+                                                                      style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 15.0),
                                                                       // style: TextStyle(
                                                                       //   color: Color(0xffF25F29),
                                                                       // ),
@@ -737,7 +737,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                         },
                         child: Container(
                           height: MediaQuery.of(context).size.height / 12,
-                          decoration: BoxDecoration(color: Color(0xff00775E)),
+                          decoration: const BoxDecoration(color: Color(0xff00775E)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -817,7 +817,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
               dividerStyle(),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -848,27 +848,27 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                       'balance'.tr,
-                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
+                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 14.0),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                       orderController.currency.value,
-                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 15.0),
+                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 15.0),
                     ),
                   ),
                   Obx(
                     () => Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Text(orderController.customerBalance.value, style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
+                      child: Text(orderController.customerBalance.value, style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0)),
                     ),
                   )
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -922,16 +922,16 @@ class _OrderCreateViewState extends State<OrderCreateView> {
               // ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height / 17,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
+                      backgroundColor: WidgetStateProperty.all(const Color(0xffF25F29)),
                     ),
                     onPressed: () {
                       // Do something with the text
@@ -957,7 +957,7 @@ class GroupListView extends StatelessWidget {
   final OrderController orderController = Get.find<OrderController>();
   final ScrollController scrollController;
 
-  GroupListView({required this.scrollController});
+  GroupListView({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {

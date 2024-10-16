@@ -26,7 +26,7 @@ class DiningPage extends StatefulWidget {
   final String title;
   final List<dynamic> data;
 
-  const DiningPage({Key? key, required this.title, required this.data}) : super(key: key);
+  const DiningPage({super.key, required this.title, required this.data});
 
   @override
   State<DiningPage> createState() => _DiningPageState();
@@ -90,7 +90,7 @@ class _DiningPageState extends State<DiningPage> {
             onTap: () {},
             child: Text(
               diningController.userName.value,
-              style: customisedStyle(context, Color(0xffF25F29), FontWeight.w400, 13.0),
+              style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 13.0),
             ),
           ),
           IconButton(
@@ -109,7 +109,7 @@ class _DiningPageState extends State<DiningPage> {
       body: Column(children: [
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15),
-          child: Container(
+          child: SizedBox(
            // color: Colors.green,
             height: MediaQuery.of(context).size.height / 18,
             child: ValueListenableBuilder<int>(
@@ -190,7 +190,7 @@ class _DiningPageState extends State<DiningPage> {
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: RefreshIndicator(
-                          color:  Color(0xffffab00),
+                          color:  const Color(0xffffab00),
                           onRefresh: ()async{
                             diningController.selectedIndexNotifier.value = 0;
                             diningController.tableData.clear();
@@ -233,7 +233,7 @@ class _DiningPageState extends State<DiningPage> {
                                             width: 25,
                                             //
                                           ),
-                                          Text("Kot", style: customisedStyleBold(context, Colors.white, FontWeight.w400, 12.0))
+                                          Text("Kot", style: customisedStyle(context, Colors.white, FontWeight.w400, 12.0))
                                         ],
                                       ),
                                     ):Container(),
@@ -289,12 +289,12 @@ class _DiningPageState extends State<DiningPage> {
                                                 type: "Dining&Cancel",
                                                 tableID: diningController.tableData[index].id!,
                                                 cancelReasonId: result[1],
-                                                orderID: diningController.tableData[index].salesOrderID!);
+                                                orderID: diningController.tableData[index].salesOrderID!,splitUID: "");
                                           }
                                         } else {
                                           diningController.cancelOrderApi(
                                               context:context,
-                                              type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: diningController.tableData[index].salesOrderID!);
+                                              type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: diningController.tableData[index].salesOrderID!,splitUID: "");
                                         }
                                       },
                                       backgroundColor: const Color(0xFFFC3636),
@@ -516,7 +516,7 @@ class _DiningPageState extends State<DiningPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffFFF6F2))),
+                style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () {
                   addTable();
                 },
@@ -539,7 +539,7 @@ class _DiningPageState extends State<DiningPage> {
               width: 10,
             ),
             TextButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffEFF6F5))),
+                style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffEFF6F5))),
                 onPressed: () {
                   if(posController.reservation_perm.value){
                     Get.to(ReservationPage());
@@ -606,7 +606,7 @@ class _DiningPageState extends State<DiningPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width / 4,
                 child: TextField(
                   textCapitalization: TextCapitalization.words,
@@ -623,16 +623,16 @@ class _DiningPageState extends State<DiningPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height / 17,
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
+                    backgroundColor: WidgetStateProperty.all(const Color(0xffF25F29)),
                   ),
                   onPressed: () {
                     if (diningController.customerNameController.text == "") {
@@ -667,16 +667,16 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
       return AlertDialog(
         title: Text(
           'msg6'.tr,
-          style: TextStyle(color: Colors.black, fontSize: 13),
+          style: const TextStyle(color: Colors.black, fontSize: 13),
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
+            child: Text('Yes'.tr, style: const TextStyle(color: Colors.red)),
             onPressed: () async {
 
               Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(
-                CupertinoPageRoute(builder: (context) => EnterPinNumber()),
+                CupertinoPageRoute(builder: (context) => const EnterPinNumber()),
                     (_) => false,
               );
 
@@ -691,7 +691,7 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
             },
           ),
           TextButton(
-            child: Text('No', style: TextStyle(color: Colors.black)),
+            child: const Text('No', style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.of(context).pop(ConfirmAction.cancel);
             },

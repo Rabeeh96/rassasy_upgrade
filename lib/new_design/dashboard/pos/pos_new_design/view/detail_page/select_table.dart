@@ -9,7 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../profile_mobile/settings/online_platforms/model/online_platfom_list_model.dart';
 
 class SelectTableReservation extends StatefulWidget {
-  SelectTableReservation({super.key});
+  const SelectTableReservation({super.key});
 
   @override
   State<SelectTableReservation> createState() => _SelectTableReservationState();
@@ -53,8 +53,8 @@ class _SelectTableReservationState extends State<SelectTableReservation> {
       ),
       body: Column(children: [
         dividerStyle(),
-        SizedBox(height: 20,),
-        Container(
+        const SizedBox(height: 20,),
+        SizedBox(
           height:  MediaQuery.of(context).size.height *.88,
           child: CustomScrollView(
               slivers: <Widget>[

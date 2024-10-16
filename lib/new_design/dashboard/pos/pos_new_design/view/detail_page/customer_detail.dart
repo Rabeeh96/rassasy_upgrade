@@ -4,6 +4,8 @@ import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/controller/order_controller.dart';
 class CustomerDetailPage extends StatefulWidget{
+  const CustomerDetailPage({super.key});
+
   @override
   State<CustomerDetailPage> createState() => _CustomerDetailPageState();
 }
@@ -37,7 +39,7 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
           children: [
             Text(
               'customer'.tr,
-              style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+              style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],
         ),

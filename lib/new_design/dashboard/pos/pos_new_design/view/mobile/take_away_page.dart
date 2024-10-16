@@ -16,8 +16,7 @@ class TakeAway extends StatefulWidget {
   final String title;
   final List<dynamic> data;
 
-  const TakeAway({Key? key, required this.title, required this.data})
-      : super(key: key);
+  const TakeAway({super.key, required this.title, required this.data});
 
   @override
   State<TakeAway> createState() => _TakeAwayState();
@@ -95,7 +94,7 @@ class _TakeAwayState extends State<TakeAway> {
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: RefreshIndicator(
-                          color: Color(0xffffab00),
+                          color: const Color(0xffffab00),
                           onRefresh: () async {
                             takeAwayController.tableData.clear();
                             takeAwayController.fetchAllData();
@@ -234,7 +233,7 @@ class _TakeAwayState extends State<TakeAway> {
                                                   cancelReasonId: result[1],
                                                   orderID: takeAwayController
                                                       .takeAwayOrders[index]
-                                                      .salesOrderID!);
+                                                      .salesOrderID!,splitUID: "");
                                             }
                                           }
                                           else{
@@ -250,7 +249,7 @@ class _TakeAwayState extends State<TakeAway> {
                                               cancelReasonId: "",
                                               orderID: takeAwayController
                                                   .takeAwayOrders[index]
-                                                  .salesOrderID!);
+                                                  .salesOrderID!,splitUID: "");
                                         }
                                       },
                                       backgroundColor: const Color(0xFFFC3636),
@@ -561,7 +560,7 @@ class _TakeAwayState extends State<TakeAway> {
             TextButton(
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(const Color(0xffFFF6F2))),
+                        WidgetStateProperty.all(const Color(0xffFFF6F2))),
                 onPressed: () async {
                   var result = await Get.to(OrderCreateView(
                     orderType: 2,

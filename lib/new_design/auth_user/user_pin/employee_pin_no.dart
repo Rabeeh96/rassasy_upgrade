@@ -98,6 +98,9 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     companyName = prefs.getString('companyName') ?? '';
     baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+/// only in test case
+    getProductCode("000000");
+
     setState(() {
 
     });
@@ -401,6 +404,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
       }
       if (num.length == 6) {
         String passData = num.join('');
+        print("-------------------$passData");
         getProductCode(passData);
       } else {
         print('length is not 6');

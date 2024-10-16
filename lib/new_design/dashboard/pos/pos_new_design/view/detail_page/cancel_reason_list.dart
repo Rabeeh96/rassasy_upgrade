@@ -5,6 +5,8 @@ import 'package:rassasy_new/global/global.dart';
  import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/controller/pos_controller.dart';
 
 class CancelOrderList extends StatefulWidget {
+  const CancelOrderList({super.key});
+
   @override
   State<CancelOrderList> createState() => _CancelOrderListState();
 }
@@ -39,7 +41,7 @@ class _CancelOrderListState extends State<CancelOrderList> {
           children: [
             Text(
               'Cancel_order'.tr,
-              style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+              style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],
         ),

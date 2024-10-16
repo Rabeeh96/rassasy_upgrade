@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/ProductSearchModel.dart';
 
 class SearchOrderController extends GetxController {
   TextEditingController searchController = TextEditingController();

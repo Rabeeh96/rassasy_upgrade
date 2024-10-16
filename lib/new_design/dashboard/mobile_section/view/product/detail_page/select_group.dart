@@ -60,7 +60,7 @@ class _SelectTaxState extends State<SelectGroupMobile> {
                   ? Center(
                   child: Text(
                     "No Groups to Show",
-                    style: customisedStyleBold(
+                    style: customisedStyle(
                         context, Colors.black, FontWeight.w400, 14.0),
                   ))
                   : ListView.separated(
