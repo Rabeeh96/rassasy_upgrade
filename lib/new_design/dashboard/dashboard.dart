@@ -640,7 +640,7 @@ class _DashboardNewState extends State<DashboardNew> {
                             ),
                             Text(
                               "Home",
-                              style: customisedStyleBold(
+                              style: customisedStyle(
                                   context,
                                   isProfileNotifier.value
                                       ? const Color(0xff9E9E9E)
@@ -678,7 +678,7 @@ class _DashboardNewState extends State<DashboardNew> {
                               padding: const EdgeInsets.only(top: 2.0),
                               child: Text(
                                 'Profile'.tr,
-                                style: customisedStyleBold(
+                                style: customisedStyle(
                                     context,
                                     isProfileNotifier.value
                                         ? const Color(0xffF25F29)
@@ -2214,7 +2214,7 @@ class _DashboardNewState extends State<DashboardNew> {
                         //       padding: const EdgeInsets.only(left: 8.0),
                         //       child: Text(
                         //         "Organization",
-                        //         style: customisedStyleBold(
+                        //         style: customisedStyle(
                         //             context, Colors.black, FontWeight.w400, 15.0),
                         //       ),
                         //     ),

@@ -285,6 +285,7 @@ class POSPaymentController extends GetxController {
           "EmployeeID": employeeID,
           'LoyaltyCustomerID': null,
           "table_vacant": tableVacant,
+          "table_vacant_split": tableVacant,
           "Paid": autoC,
           "CompanyID": companyID,
           "Table": tableID,

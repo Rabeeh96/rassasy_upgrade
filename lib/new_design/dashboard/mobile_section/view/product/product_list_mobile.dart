@@ -114,7 +114,7 @@ class _ProductListMobileState extends State<ProductListMobile> {
                     ? Center(
                         child: Text(
                         "No Products to Show",
-                        style: customisedStyleBold(
+                        style: customisedStyle(
                             context, Colors.black, FontWeight.w400, 14.0),
                       ))
                     :

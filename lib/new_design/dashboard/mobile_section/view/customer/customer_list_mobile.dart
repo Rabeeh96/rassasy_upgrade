@@ -110,7 +110,7 @@ class _CustomerListMobileState extends State<CustomerListMobile> {
                     ? Center(
                         child: Text(
                         "No Customers to Show",
-                        style: customisedStyleBold(
+                        style: customisedStyle(
                             context, Colors.black, FontWeight.w400, 14.0),
                       ))
                     : SlidableAutoCloseBehavior(

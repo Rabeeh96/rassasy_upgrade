@@ -55,7 +55,7 @@ class DailyReportSection extends State<DailyReport> {
          // "FromDate": "2024-10-04",
            "FromDate": apiDateFormat.format(fromDateNotifier.value),
           //"ToDate":"2024-10-08",
-          // "ToDate": apiDateFormat.format(toDateNotifier.value),
+           "ToDate": apiDateFormat.format(toDateNotifier.value),
           "FromTime": timeFormatApiFormat.format(fromDateNotifier.value),
           "ToTime": timeFormatApiFormat.format(toDateNotifier.value),
         };

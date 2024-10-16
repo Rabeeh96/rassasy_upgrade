@@ -13,6 +13,7 @@ class MergeData {
   int? position;
   bool? isActive;
   bool? isReserved;
+  bool? allCombined;
   String? companyID;
   List<dynamic>? mergedWith;
 
@@ -30,6 +31,7 @@ class MergeData {
       this.status,
       this.position,
       this.isActive,
+      this.allCombined,
       this.isReserved,
       this.companyID,
       this.mergedWith});
@@ -57,6 +59,7 @@ class MergeData {
     isReserved = json['IsReserved'];
     companyID = json['CompanyID'];
     mergedWith = json['MergedWith'];
+    allCombined = json['AllCombined'];
 
     // if (json['MergedWith'] != null) {
     //   mergedWith = <Null>[];
@@ -74,6 +77,7 @@ class MergeData {
     }
 
     data['SalesOrderID'] = salesOrderID;
+    data['AllCombined'] = allCombined;
     data['SalesMasterID'] = salesMasterID;
     data['SalesOrderGrandTotal'] = salesOrderGrandTotal;
     data['SalesGrandTotal'] = salesGrandTotal;

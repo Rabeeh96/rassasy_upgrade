@@ -160,7 +160,7 @@ class _InvoiceListMobileState extends State<InvoiceListMobile> {
                     ? Center(
                     child: Text(
                       "No invoices",
-                      style: customisedStyleBold(
+                      style: customisedStyle(
                           context, Colors.black, FontWeight.w400, 14.0),
                     ))
                     :  SlidableAutoCloseBehavior(

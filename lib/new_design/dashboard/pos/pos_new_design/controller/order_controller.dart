@@ -1768,6 +1768,7 @@ class OrderController extends GetxController {
       Map data = {
         "split_table_id": splitID,
         "Table": tableID,
+        "AllCombined":true,
         "EmployeeID": employeeID,
         "CompanyID": companyID,
         "CreatedUserID": userID,

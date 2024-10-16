@@ -19,6 +19,7 @@ class TabPosOrderPage extends StatefulWidget {
   final String uID,splitID, tableID, sectionType, tableHead;
   final int orderType;
   final List cancelOrder;
+  final bool isAllCombine;
 
   const TabPosOrderPage({
     super.key,
@@ -27,6 +28,7 @@ class TabPosOrderPage extends StatefulWidget {
     required this.tableHead,
     required this.uID,
     required this.sectionType,
+    required this.isAllCombine,
     required this.cancelOrder,
     required this.orderType,
   });

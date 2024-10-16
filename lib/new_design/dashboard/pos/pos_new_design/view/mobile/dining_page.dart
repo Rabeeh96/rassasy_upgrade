@@ -233,7 +233,7 @@ class _DiningPageState extends State<DiningPage> {
                                             width: 25,
                                             //
                                           ),
-                                          Text("Kot", style: customisedStyleBold(context, Colors.white, FontWeight.w400, 12.0))
+                                          Text("Kot", style: customisedStyle(context, Colors.white, FontWeight.w400, 12.0))
                                         ],
                                       ),
                                     ):Container(),
