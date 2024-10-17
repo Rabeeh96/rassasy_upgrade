@@ -166,6 +166,7 @@ class OrderController extends GetxController {
   late ValueNotifier<int> productSearchNotifier;
   var detailPage = 'item_add'.obs;
   var isShowImage = true.obs;
+
   var isArrange = true.obs;
   RxBool showProductDescription = true.obs;
   RxBool showWegOrNoVeg = true.obs;
@@ -269,14 +270,12 @@ class OrderController extends GetxController {
     descriptionFontSizeController.text = descriptionFontSize.toString();
     rowCountController.text = rowCountGridView.toString();
 
-    showProductDescription.value =
-        prefs.getBool('showProductDescription') ?? true;
+    autoFocusToSearchField.value = prefs.getBool("autoFocusSearch") ?? false;
+    showProductDescription.value = prefs.getBool('showProductDescription') ?? true;
     showWegOrNoVeg.value = prefs.getBool('showWegOrNoVeg') ?? true;
     isShowImage.value = prefs.getBool('show_product_image') ?? true;
-    productFontWeight.value =
-        intToFontWeight(prefs.getInt('product_weight') ?? 400);
-    groupFontWeight.value =
-        intToFontWeight(prefs.getInt('group_weight') ?? 400);
+    productFontWeight.value = intToFontWeight(prefs.getInt('product_weight') ?? 400);
+    groupFontWeight.value = intToFontWeight(prefs.getInt('group_weight') ?? 400);
     descriptionFontWeight.value =
         intToFontWeight(prefs.getInt('description_weight') ?? 400);
     amountFontWeight.value =
@@ -291,6 +290,7 @@ class OrderController extends GetxController {
 
   RxBool printAfterPayment = false.obs;
   RxBool autoFocusField = false.obs;
+  RxBool autoFocusToSearchField = false.obs;
   RxString currency = "".obs;
 
   RxString user_name = "".obs;

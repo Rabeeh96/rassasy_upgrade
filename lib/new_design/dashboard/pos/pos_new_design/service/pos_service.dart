@@ -80,6 +80,10 @@ class TableService {
         "BranchID": branchID,
       }),
     );
+    print('${{
+      "CompanyID": companyID,
+      "BranchID": branchID,
+    }}');
     // pr(response.body);
     if (response.statusCode == 200) {
       final parsed = jsonDecode(response.body) as Map<String, dynamic>;

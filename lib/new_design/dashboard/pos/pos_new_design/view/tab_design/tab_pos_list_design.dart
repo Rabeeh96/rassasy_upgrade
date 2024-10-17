@@ -192,32 +192,32 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                 }),
               ),
 
-              PopupMenuButton<String>(
-                icon: const Icon(Icons.settings),
-                onSelected: (value) {
-                  _handleMenuSelection(value);
-                },
-                itemBuilder: (BuildContext context) {
-                  return [
-                    const PopupMenuItem<String>(
-                      value: 'table',
-                      child: Text('Add a Table'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'reservation',
-                      child: Text('Reservation'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'platform',
-                      child: Text('Platform'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'settings',
-                      child: Text('Table Settings'),
-                    ),
-                  ];
-                },
-              ),
+              // PopupMenuButton<String>(
+              //   icon: const Icon(Icons.settings),
+              //   onSelected: (value) {
+              //     _handleMenuSelection(value);
+              //   },
+              //   itemBuilder: (BuildContext context) {
+              //     return [
+              //       // const PopupMenuItem<String>(
+              //       //   value: 'table',
+              //       //   child: Text('Add a Table'),
+              //       // ),
+              //       // const PopupMenuItem<String>(
+              //       //   value: 'reservation',
+              //       //   child: Text('Reservation'),
+              //       // ),
+              //       // const PopupMenuItem<String>(
+              //       //   value: 'platform',
+              //       //   child: Text('Platform'),
+              //       // ),
+              //       // const PopupMenuItem<String>(
+              //       //   value: 'settings',
+              //       //   child: Text('Table Settings'),
+              //       // ),
+              //     ];
+              //   },
+              // ),
               const SizedBox(
                 width: 20,
               )
@@ -385,7 +385,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 SizedBox(
                                   width: screenSize.width / 5,
                                   child: TextFormField(
+                                    keyboardType: TextInputType.text,
                                     controller: posController.tablenameController,
+                                    textCapitalization: TextCapitalization.words,
                                     decoration: const InputDecoration(
                                       hintText: 'Enter Table Name',
                                       hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Color(0xFF5B5B5B)),
@@ -2491,7 +2493,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       },
     );
   }
-
   CustomScrollView fetchOnline(BuildContext context) {
     return CustomScrollView(slivers: <Widget>[
       SliverAppBar(
@@ -3143,7 +3144,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       ],
     );
   }
-
   Widget fetchCarList() {
     return CustomScrollView(
       slivers: <Widget>[
@@ -3476,7 +3476,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       ],
     );
   }
-
   void addTable() {
     Get.bottomSheet(
       isDismissible: true,

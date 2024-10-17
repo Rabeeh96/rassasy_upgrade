@@ -248,7 +248,9 @@ class _DashboardNewState extends State<DashboardNew> {
         );
 
       case 6:
-        Get.to(const TabPosListDesign());
+
+        Get.to(() => const TabPosListDesign());
+       // Get.to(const TabPosListDesign());
         break;
     }
   }

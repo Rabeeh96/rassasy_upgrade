@@ -83,60 +83,68 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               style:
                   customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
             ),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    addDetails();
-                  },
-                  icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    diningController.userName.value,
-                    style: customisedStyle(context, const Color(0xff585858),
-                        FontWeight.w500, 14.0),
-                  ),
-                  Obx(
-                    () => orderController.synMethod.value
-                        ? Container()
-                        : Text(
-                            orderController.tokenNumber.value,
-                            style: customisedStyle(
-                                context, Color(0xff585858), FontWeight.w500, 14.0),
-                          ),
-                  ),
-                  const SizedBox(
-                    height: 3,
-                  )
-                ],
-              ),
 
-              Obx(() {
-                return orderController.synMethod.value
-                    ? IconButton(
-                        onPressed: () async {
-                          start(context);
-                          await orderController.fetchAndSaveProductGroupData();
-                          var savedData = await orderController
-                              .loadSavedData("productGroupData");
-                          var allProducts = [];
-                          for (var i = 0; i < savedData.length; i++) {
-                            var groupId = savedData[i]['ProductGroupID'];
-                            var groupProducts = await orderController
-                                .fetchAndSaveProductData(groupId);
-                            if (groupProducts is List) {
-                              allProducts.addAll(groupProducts);
-                            }
-                          }
-                          await orderController.saveAllProduct(allProducts);
-                          await stop();
-                        },
-                        icon:   Text('Sync Data ',style: customisedStyle(
-                            context, Color(0xff585858), FontWeight.w500, 14.0),))
-                    : Container();
-              }),
+            actions: [
+              // IconButton(
+              //     onPressed: () {
+              //       addDetails();
+              //     },
+              //     icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     Text(
+              //       diningController.userName.value,
+              //       style: customisedStyle(context, const Color(0xff585858),
+              //           FontWeight.w500, 14.0),
+              //     ),
+              //     Obx(
+              //       () => orderController.synMethod.value
+              //           ? Container()
+              //           : Text(
+              //               orderController.tokenNumber.value,
+              //               style: customisedStyle(
+              //                   context, const Color(0xff585858), FontWeight.w500, 14.0),
+              //             ),
+              //     ),
+              //     const SizedBox(
+              //       height: 3,
+              //     )
+              //   ],
+              // ),
+
+              // Text(
+              //   diningController.userName.value,
+              //   style: customisedStyle(context, const Color(0xff585858),
+              //       FontWeight.w500, 14.0),
+              // ),
+
+              // Obx(() {
+              //   return orderController.synMethod.value
+              //       ? IconButton(
+              //           onPressed: () async {
+              //             start(context);
+              //             await orderController.fetchAndSaveProductGroupData();
+              //             var savedData = await orderController
+              //                 .loadSavedData("productGroupData");
+              //             var allProducts = [];
+              //             for (var i = 0; i < savedData.length; i++) {
+              //               var groupId = savedData[i]['ProductGroupID'];
+              //               var groupProducts = await orderController
+              //                   .fetchAndSaveProductData(groupId);
+              //               if (groupProducts is List) {
+              //                 allProducts.addAll(groupProducts);
+              //               }
+              //             }
+              //             await orderController.saveAllProduct(allProducts);
+              //             await stop();
+              //             orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
+              //           },
+              //           icon:   Text('Sync Data ',style: customisedStyle(
+              //               context, Color(0xff585858), FontWeight.w500, 14.0),))
+              //       : Container();
+              // }),
 
               /// commented all section one by one
               // ElevatedButton(onPressed: ()async{
@@ -193,12 +201,16 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               // }, child: Text("Filter ")),
 
               IconButton(
-                  onPressed: () {
-                    orderController.detailPage.value = 'settings';
-                    orderController.update();
-                  },
-                  icon:   Text('Settings',style: customisedStyle(
-                      context, Colors.black, FontWeight.w500, 14.0),)),
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  // Add the functionality you want here, e.g., navigate to the settings page
+                  orderController.detailPage.value = 'settings';
+                  orderController.update();
+                },
+              ),
+
+
+
               // IconButton(
               //     onPressed: () async {
               //       Get.to(() => DragDrop(
@@ -396,6 +408,11 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                         );
                                       },
                                     ),
+                                    IconButton(
+                                        onPressed: () {
+                                          addDetails();
+                                        },
+                                        icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
                                   ],
                                 ),
                                 Row(
