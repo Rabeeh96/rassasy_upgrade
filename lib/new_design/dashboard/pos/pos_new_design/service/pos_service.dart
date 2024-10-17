@@ -6,7 +6,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TableService {
-  Future<List<dynamic>> fetchAllData(String token) async {
+   fetchAllData(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userID = prefs.getInt('user_id') ?? 0;
     var accessToken = prefs.getString('access') ?? '';
@@ -24,6 +24,7 @@ class TableService {
     );
 
     if (response.statusCode == 200) {
+
       final parsed = jsonDecode(response.body);
       return parsed;
     } else {
@@ -79,6 +80,10 @@ class TableService {
         "BranchID": branchID,
       }),
     );
+    print('${{
+      "CompanyID": companyID,
+      "BranchID": branchID,
+    }}');
     // pr(response.body);
     if (response.statusCode == 200) {
       final parsed = jsonDecode(response.body) as Map<String, dynamic>;

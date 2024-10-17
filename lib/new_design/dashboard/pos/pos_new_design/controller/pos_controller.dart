@@ -179,10 +179,9 @@ class POSController extends GetxController {
       currency = prefs.getString('CurrencySymbol') ?? "";
       userName.value = prefs.getString('user_name') ?? "";
       var fetchedData = await _tableService.fetchAllData(accessToken);
+      print(fetchedData);
       selectedIndexNotifier.value = 0;
-      tableMergeData.assignAll(
-          (fetchedData).map((json) => MergeData.fromJson(json)).toList());
-      print("selectedIndex.value-----------------${selectedIndex.value}");
+      tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
       pr(tableMergeData.length.toString());
     } finally {
       isLoading(false);
@@ -199,17 +198,21 @@ class POSController extends GetxController {
       currency = prefs.getString('CurrencySymbol') ?? "";
       userName.value = prefs.getString('user_name') ?? "";
       var fetchedTOCData = await _tableService.fetchTOC(accessToken);
+      print('-**-/-$fetchedTOCData');
       selectedIndexNotifier.value = 0;
-      onlineOrders.assignAll((fetchedTOCData['Online'] as List)
-          .map((json) => Online.fromJson(json))
-          .toList());
+      print("--------1");
+      onlineOrders.assignAll((fetchedTOCData['Online'] as List).map((json) => Online.fromJson(json)).toList());
+      print("--------1");
       takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List)
           .map((json) => TakeAway.fromJson(json))
           .toList());
+      print("--------1");
       carOrders.assignAll((fetchedTOCData['Car'] as List)
           .map((json) => Car.fromJson(json))
           .toList());
+      print("--------1");
       cancelOrder.assignAll(fetchedTOCData['Reasons'] ?? []);
+      print("--------1");
     } finally {
       isLoading(false);
     }

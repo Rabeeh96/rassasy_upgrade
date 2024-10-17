@@ -355,12 +355,12 @@ class AppBlocs {
 
     if (PrintDataDetails.type == "SI") {
       if (companyLogo != "") {
-        // final Uint8List imageData = await _fetchImageData(companyLogo);
-        // final Img.Image? image = Img.decodeImage(imageData);
-        // final Img.Image resizedImage = Img.copyResize(image!, width: 200);
-        // printer.imageRaster(resizedImage);
-        // printer.emptyLines(1);
-        //   printer.image(resizedImage);
+        final Uint8List imageData = await _fetchImageData(companyLogo);
+        final Img.Image? image = Img.decodeImage(imageData);
+        final Img.Image resizedImage = Img.copyResize(image!, width: 200);
+        printer.imageRaster(resizedImage);
+        printer.emptyLines(1);
+          printer.image(resizedImage);
       }
     }
 
