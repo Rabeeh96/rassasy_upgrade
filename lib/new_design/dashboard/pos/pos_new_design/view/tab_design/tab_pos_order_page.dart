@@ -55,7 +55,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
     orderController.orderItemList.clear();
     orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
     orderController.getDefaultValue();
-    
   }
 
   @override
@@ -114,11 +113,11 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               //   ],
               // ),
 
-              // Text(
-              //   diningController.userName.value,
-              //   style: customisedStyle(context, const Color(0xff585858),
-              //       FontWeight.w500, 14.0),
-              // ),
+             widget.sectionType =="Edit"? Text(
+                "Token Number "+"${orderController.tokenNumber.value}",
+                style: customisedStyle(context, Colors.black,
+                    FontWeight.w500, 16.0),
+              ):Container(),
 
               // Obx(() {
               //   return orderController.synMethod.value
@@ -208,8 +207,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   orderController.update();
                 },
               ),
-
-
 
               // IconButton(
               //     onPressed: () async {
@@ -973,6 +970,11 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
           ),
         ));
   }
+
+
+
+
+
 
   loadData() async {
     pr(orderController.orderItemList[orderController.indexDetail]);

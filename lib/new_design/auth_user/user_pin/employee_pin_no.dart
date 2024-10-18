@@ -99,7 +99,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     companyName = prefs.getString('companyName') ?? '';
     baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
 /// only in test case
-    getProductCode("000000");
+//     getProductCode("000000");
 
     setState(() {
 
