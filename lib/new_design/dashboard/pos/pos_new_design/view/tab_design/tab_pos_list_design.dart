@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/global.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/model/mergeModel.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/tab_design/tab_pos_payment_section.dart';
 import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 
@@ -33,9 +34,25 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   final POSController posController = Get.put(POSController());
 
   bool areAllItemsVacant(items) {
-    // Check if all items have the Status as "Vacant"
     return items.every((item) => item['Status'] == 'Vacant');
   }
+
+  bool hasUnpaidOrders(items) {
+    bool hasOrderedItem = items.any((item) => item['Status'] == 'Ordered');
+    if(hasOrderedItem){
+      bool allNotPaid = items.any((item) => item['Status'] == 'Paid');
+      if(allNotPaid){
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
+    else{
+      return false;
+    }
+  }
+
 
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
@@ -68,6 +85,26 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   }
 
   final RxBool _isLongPressed = false.obs;
+
+
+  filterVacantTables(var tables) {
+    return tables.where((table) {
+      // Check if the main table is vacant
+      if (table['Status'] != 'Vacant') {
+        return false;
+      }
+
+      // Check if all the tables in the Split_data are also vacant
+      if (table['Split_data'] != null && table['Split_data'].isNotEmpty) {
+        bool allSplitsVacant = table['Split_data'].every((splitTable) => splitTable['Status'] == 'Vacant');
+        return allSplitsVacant;
+      }
+
+      // If there's no split data or it's vacant, keep the main table
+      return true;
+    }).toList();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +141,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
               //           : Container();
               // }),
 
-
               Obx(() {
                 return posController.isCombine.value
                     ? Container()
@@ -138,6 +174,30 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
               Obx(() {
                 return posController.isCombine.value
+                    ?posController.selectList.length !=1?Container():
+                 posController.tableMergeData[posController.selectList[0]].status =="Ordered"?
+                ElevatedButton(
+                        onPressed: () async{
+                           Size screenSize = MediaQuery.of(context).size;
+                          var  vacantTables = filterVacantTables(posController.fullDataList);
+                          _dialogBuilderSwap(context,screenSize,vacantTables);
+
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFF0E8FF),
+                          minimumSize: const Size(50, 35),
+                        ),
+                        child: Text(
+                          "Change Table",
+                          style: customisedStyle(context, Color(0xff6F42C1), FontWeight.w400, 14.0),
+                        ),
+                      )
+                    : Container() : Container();
+              }),
+
+              Obx(() {
+                return posController.isCombine.value
                     ? ElevatedButton(
                         onPressed: () {
                           List combineData = [];
@@ -155,7 +215,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               'Please select at least 2 Tables',
                             );
                           }
-
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFF0E8FF),
@@ -1180,6 +1239,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       },
     );
   }
+
 // lisy view
   // ListView checkWidget({required splitData}) {
   //   return ListView.builder(
@@ -1331,10 +1391,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                   backgroundColor: table['Status'] == "Vacant"
                       ? const Color(0xff6C757D)
                       : table['Status'] == "Paid"
-                      ? const Color(0xff2B952E)
-                      : table['Status'] == "Ordered"
-                      ? const Color(0xff03C1C1)
-                      : const Color(0xFFFFFFFF),
+                          ? const Color(0xff2B952E)
+                          : table['Status'] == "Ordered"
+                              ? const Color(0xff03C1C1)
+                              : const Color(0xFFFFFFFF),
                   child: Center(
                     child: Text(
                       (index + 1).toString(),
@@ -1354,6 +1414,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       ),
     );
   }
+
   // Opacity(
   // opacity:
   navigatePlatform() async {
@@ -1682,89 +1743,109 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             children: [
                               /// all combine not reday
                               areAllItemsVacant(listsplit)
-                                  ? posController.isCombineSplit.value?Container():ElevatedButton(
-                                      onPressed: () async {
-                                        var combinedAction = await showDialog(
-                                          context: context,
-                                          builder: (
-                                            BuildContext context,
-                                          ) {
-                                            return AlertDialog(
-                                              title: Text(
-                                                'Confirmation',
-                                                style: customisedStyle(
-                                                  context,
-                                                  Colors.black,
-                                                  FontWeight.w500,
-                                                  13.0,
-                                                ),
-                                              ),
-                                              content: Text(
-                                                'Do You Want to Combine?',
-                                                style: customisedStyle(
-                                                  context,
-                                                  Colors.black,
-                                                  FontWeight.normal,
-                                                  12.0,
-                                                ),
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: const Text('Yes'),
-                                                  onPressed: () async {
-                                                    Navigator.of(context).pop(true);
-                                                  },
-                                                ),
-                                                TextButton(
-                                                  child: const Text('No'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop(false);
-                                                    // Get.back();
-                                                    //  Navigator.of(context).pop(false);
-                                                  },
-                                                ),
-                                              ],
+                                  ? posController.isCombineSplit.value
+                                      ? Container()
+                                      : ElevatedButton(
+                                          onPressed: () async {
+                                            var combinedAction = await showDialog(
+                                              context: context,
+                                              builder: (
+                                                BuildContext context,
+                                              ) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    'Confirmation',
+                                                    style: customisedStyle(
+                                                      context,
+                                                      Colors.black,
+                                                      FontWeight.w500,
+                                                      13.0,
+                                                    ),
+                                                  ),
+                                                  content: Text(
+                                                    'Do You Want to Combine?',
+                                                    style: customisedStyle(
+                                                      context,
+                                                      Colors.black,
+                                                      FontWeight.normal,
+                                                      12.0,
+                                                    ),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('Yes'),
+                                                      onPressed: () async {
+                                                        Navigator.of(context).pop(true);
+                                                      },
+                                                    ),
+                                                    TextButton(
+                                                      child: const Text('No'),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop(false);
+                                                        // Get.back();
+                                                        //  Navigator.of(context).pop(false);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             );
-                                          },
-                                        );
 
-                                        if (combinedAction != null) {
-                                           if (combinedAction) {
-                                            var result =await posController.allCombinedTable(posController.tableMergeData[indexOfSelectedTable].id!);
-                                            if (result != null) {
-                                              if(result){
-                                                Get.back();
-                                                await Get.to(TabPosOrderPage(
-                                                  orderType: 1,
-                                                  sectionType: "Create",
-                                                  uID: "",
-                                                  isAllCombine: true,
-                                                  splitID: "",
-                                                  tableHead: "Order",
-                                                  cancelOrder: posController.cancelOrder,
-                                                  tableID: posController.tableMergeData[indexOfSelectedTable].id!,
-                                                ));
+                                            if (combinedAction != null) {
+                                              if (combinedAction) {
+                                                var result =
+                                                    await posController.allCombinedTable(posController.tableMergeData[indexOfSelectedTable].id!);
+                                                if (result != null) {
+                                                  if (result) {
+                                                    Get.back();
+                                                    await Get.to(TabPosOrderPage(
+                                                      orderType: 1,
+                                                      sectionType: "Create",
+                                                      uID: "",
+                                                      isAllCombine: true,
+                                                      splitID: "",
+                                                      tableHead: "Order",
+                                                      cancelOrder: posController.cancelOrder,
+                                                      tableID: posController.tableMergeData[indexOfSelectedTable].id!,
+                                                    ));
+                                                  }
+                                                  if (result != null) {
+                                                    if (result[1]) {
+                                                      var resultPayment = await Get.to(TabPaymentSection(
+                                                        uID: result[2],
+                                                        splitID: "",
+                                                        tableID: posController.tableMergeData[indexOfSelectedTable].id!,
+                                                        orderType: 0,
+                                                        type: 'dine',
+                                                        isData: false,
+                                                        responseData: '',
+                                                      ));
+                                                      posController.refreshTableData();
+                                                    } else {
+                                                      posController.refreshTableData();
+                                                    }
+                                                  } else {
+                                                    posController.refreshTableData();
+                                                  }
+                                                }
                                               }
-
                                             }
-                                          }
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFFF0E8FF),
-                                        minimumSize: const Size(80, 40),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          // SvgPicture.asset(
-                                          //     'assets/svg/combineicon.svg'),
-                                          Text(
-                                            "All Combine",
-                                            style: customisedStyle(context, const Color(0xFF6F42C1), FontWeight.w400, 14.0),
-                                          )
-                                        ],
-                                      ),
-                                    )
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color(0xFFF0E8FF),
+                                            minimumSize: const Size(80, 40),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              // SvgPicture.asset(
+                                              //     'assets/svg/combineicon.svg'),
+                                              Text(
+                                                "All Combine",
+                                                style: customisedStyle(context, const Color(0xFF6F42C1), FontWeight.w400, 14.0),
+                                              )
+                                            ],
+                                          ),
+                                        )
                                   : const SizedBox.shrink(),
 
                               Obx(() => posController.isCombineSplit.value
@@ -1872,11 +1953,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 posController.selectedsplitIndex.value = 1000;
                               },
                               child: Container(
-
                                 child: Column(
                                   children: [
                                     SizedBox(
@@ -2041,7 +2121,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                                                     },
                                                                                   )
                                                                                 : Container(),
-                                                                                // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
+                                                                            // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
                                                                           )
                                                                         ],
                                                                       ),
@@ -2104,7 +2184,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               ),
                             ),
                             Container(
-
                               child: Row(
                                 children: [
                                   Obx(
@@ -2493,6 +2572,252 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       },
     );
   }
+  // tableMergeData = <MergeData>[].obs;
+  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return SizedBox(
+              child: AlertDialog(
+                titlePadding: EdgeInsets.zero,
+                title: Padding(
+                  padding:
+                  const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Table Swap",
+                            style: customisedStyle(
+                                context, Colors.black, FontWeight.w500, 18.0),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                color: Color(0xFF373737),
+                              )),
+                        ],
+                      ),
+                      const Divider(thickness: 1, color: Color(0xFFE0E0E0)),
+                    ],
+                  ),
+                ),
+                contentPadding: EdgeInsets.zero,
+                content: SizedBox(
+                  width: constraints.maxWidth / 3,
+                  height: constraints.maxHeight / 2,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                          height: constraints.maxHeight * 0.5,
+                          width: constraints.maxWidth / 3,
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) {
+                              return const Divider();
+                            },
+                            itemCount: itemTableName.length,
+                            itemBuilder: (context, index) {
+                              final item = itemTableName[index];
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey.shade300,
+                                              borderRadius:
+                                              BorderRadius.circular(10)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  item['TableName'],
+                                                  style: customisedStyle(
+                                                      context,
+                                                      Colors.black,
+                                                      FontWeight.w600,
+                                                      14.0),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () async{
+
+
+                                                    var result = await posController.swapTableFunction(
+                                                          fromTableID:posController.tableMergeData[posController.selectList[0]].id!,
+                                                          fromSplitTableList:[],toSplitTableID: "",toTableID: item['id']);
+                                                      if (result != null) {
+                                                        if (result) {
+                                                          Get.back();
+                                                          posController.selectList.clear();
+                                                          posController.isCombine.value = false;
+                                                          posController.isCombineSplit.value = false;
+                                                          posController.update();
+                                                          posController.fetchAllData();
+                                                        }
+                                                      }
+
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    minimumSize:
+                                                    const Size(100, 30),
+                                                    shape:
+                                                    const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              25)),
+                                                    ),
+                                                    backgroundColor:
+                                                    const Color(0xFF0CAEA6),
+                                                  ),
+                                                  child: Text(
+                                                    "Swap",
+                                                    style: customisedStyle(
+                                                      context,
+                                                      Colors.white,
+                                                      FontWeight.normal,
+                                                      14.0,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                            height: screenSize.height * 0.01),
+                                        ListView.separated(
+                                          separatorBuilder: (context, indexItem) {
+                                            return const Divider();
+                                          },
+                                          physics:
+                                          const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: itemTableName[index]["Split_data"].length,
+                                          itemBuilder: (context, indexItem) {
+                                            var  splitData = itemTableName[index]["Split_data"];
+                                            print("splitData  $splitData");
+                                            return Column(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(10),
+                                                    border: const Border(
+                                                      bottom: BorderSide(
+                                                        width: 1,
+                                                        color: Color(0xFFEAEAEA),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0,
+                                                        vertical: 4.0),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              '${splitData[indexItem]['TableName'].toString()} (${indexItem + 1})',
+                                                            ),
+                                                            ElevatedButton(
+                                                              onPressed: ()async {
+                                                                var result = await posController.swapTableFunction(
+                                                                    fromTableID:posController.tableMergeData[posController.selectList[0]].id!,
+                                                                    fromSplitTableList:[],toSplitTableID: splitData[indexItem]['id'],toTableID: item['id']);
+                                                                if (result != null) {
+                                                                  if (result) {
+                                                                    Get.back();
+                                                                    posController.selectList.clear();
+                                                                    posController.isCombine.value = false;
+                                                                    posController.isCombineSplit.value = false;
+                                                                    posController.update();
+                                                                    posController.fetchAllData();
+                                                                  }
+                                                                }
+
+                                                              },
+                                                              style:
+                                                              ElevatedButton
+                                                                  .styleFrom(
+                                                                minimumSize:
+                                                                const Size(
+                                                                    100, 30),
+                                                                shape:
+                                                                const RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius
+                                                                      .all(Radius
+                                                                      .circular(
+                                                                      25)),
+                                                                ),
+                                                                backgroundColor:
+                                                                const Color(
+                                                                    0xFF0CAEA6),
+                                                              ),
+                                                              child: Text(
+                                                                "Swap",
+                                                                style:
+                                                                customisedStyle(
+                                                                  context,
+                                                                  Colors.white,
+                                                                  FontWeight
+                                                                      .normal,
+                                                                  14.0,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          )),
+                    ],
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.transparent),
+                ),
+                backgroundColor: Colors.grey[200],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   CustomScrollView fetchOnline(BuildContext context) {
     return CustomScrollView(slivers: <Widget>[
       SliverAppBar(
@@ -3144,6 +3469,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       ],
     );
   }
+
   Widget fetchCarList() {
     return CustomScrollView(
       slivers: <Widget>[
@@ -3476,6 +3802,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       ],
     );
   }
+
   void addTable() {
     Get.bottomSheet(
       isDismissible: true,

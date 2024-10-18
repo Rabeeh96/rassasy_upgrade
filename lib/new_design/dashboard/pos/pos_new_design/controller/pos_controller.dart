@@ -115,6 +115,9 @@ class POSController extends GetxController {
   var cancelOrder = [].obs;
   var isLoading = true.obs;
 
+  var  fullDataList = [].obs;
+
+
   ///this function used for getting time
   ///in hours and minute
   String returnOrderTime(String data, String status) {
@@ -182,8 +185,14 @@ class POSController extends GetxController {
       print(fetchedData);
       selectedIndexNotifier.value = 0;
       tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
+
+      fullDataList.value = fetchedData['data']??[];
+
+      print("fullDataListfullDataList${fullDataList.length}");
+
       pr(tableMergeData.length.toString());
     } finally {
+
       isLoading(false);
     }
   }
@@ -425,6 +434,78 @@ class POSController extends GetxController {
 
     }
   }
+
+   swapTableFunction({required String fromTableID,required List fromSplitTableList,required String toTableID,required String toSplitTableID}) async {
+    try {
+      isLoading(true);
+      String baseUrl = BaseUrl.baseUrl;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var companyID = prefs.getString('companyID') ?? ''; // Change to string
+      var branchID = prefs.getInt('branchID') ?? 1;
+      var accessToken = prefs.getString('access') ?? '';
+      final String url = '$baseUrl/posholds/pos_table/swap_order/';
+      Map<String, dynamic> data = {
+
+          "CompanyID": companyID,
+          "BranchID": branchID,
+          "fromtable": [
+            {
+              "From_Main_Table": fromTableID,
+              "From_Split_Tables":fromSplitTableList
+            }
+          ],
+
+        "To_Main_Table": toTableID,
+        "To_Split_Table": toSplitTableID
+      };
+
+      print("data$data");
+      var body = json.encode(data);
+      var response = await http.post(Uri.parse(url),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $accessToken',
+          },
+          body: body);
+      log("merge response");
+      pr(response.body);
+
+      Map<String, dynamic> responseData =
+      json.decode(utf8.decode(response.bodyBytes));
+      var status = responseData["StatusCode"];
+
+      print("----${response.statusCode}");
+      if (status == 6000) {
+        return true;
+       // Get.back();
+        // tablenameController.clear();
+        // splitcountcontroller.text = "0";
+        // fetchAllData();
+      } else if (status == 6001) {
+        var msg = responseData["message"]??responseData["error"]??"";
+        Get.snackbar('Error', msg);
+        return false;// Show error message
+      }
+      // final addsplit = jsonDecode(response.body);
+      // if (response.statusCode == 200 || response.statusCode == 201) {
+      //
+      //   log("Add Split Successfull");
+      //   fetchAllData();
+      //
+      //   // return addsplit.values.toList();
+      // }
+      else {
+        throw Exception('Failed to load table data');
+      }
+    } catch (e) {
+      return false;
+      // Handle exceptions
+    } finally {
+      isLoading(false);
+      return false;
+    }
+  }
+
 
   /// create table
   Future<void> createTableApi() async {

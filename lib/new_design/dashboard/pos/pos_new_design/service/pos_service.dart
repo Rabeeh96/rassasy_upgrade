@@ -7,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TableService {
    fetchAllData(String token) async {
+     try{
+
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userID = prefs.getInt('user_id') ?? 0;
     var accessToken = prefs.getString('access') ?? '';
@@ -15,6 +18,7 @@ class TableService {
     String baseUrl = BaseUrl.baseUrl;
     print("$baseUrl/posholds/tables/?CompanyID=$companyID&BranchID=$branchID");
     print("token $token");
+
     final response = await http.get(
       Uri.parse(
           '$baseUrl/posholds/tables/?CompanyID=$companyID&BranchID=$branchID'),
@@ -30,7 +34,12 @@ class TableService {
     } else {
       throw Exception('Failed to load table data');
     }
-  }
+     }
+     catch(e){
+       print(e.toString());
+     }
+
+   }
 
   mergeData(List combineDatas) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
