@@ -169,9 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(companySelected);
     if (status) {
       if (companySelected) {
-        await defaultData(
-          context: context,
-        );
+        await defaultData(context: context,);
         var expireDate = prefs.getString('expiryDate') ?? '';
         var companyName = prefs.getString('companyName') ?? '';
         var expire = isDateExpired(expireDate);

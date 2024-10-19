@@ -93,10 +93,8 @@ String roundStringWith1(String val) {
   return GoogleFonts.poppins(textStyle:TextStyle(fontWeight: FontWeight,color: Colors,fontSize: fontSize));
 }
 checkingPerm(item) async {
-
   print("object $item");
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
   bool retData = true;
   retData = prefs.getBool(item)??true;
   print("object $retData");
@@ -135,21 +133,20 @@ myLog(msg){
 String baseURlApi='';
 class BaseUrl{
 /// server details
-
-   // static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
-   // static String baseUrl = "$baseURlApi/api/v10";
-   // static String baseUrlV11 = "$baseURlApi/api/v11";
-   // static String imageURL = '$baseURlApi/media/';
-
+   static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
+   static String baseUrl = "$baseURlApi/api/v10";
+   static String baseUrlV11 = "$baseURlApi/api/v11";
+   static String imageURL = '$baseURlApi/media/';
 ///
    ///  test
-  static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
-  static String baseUrl = "$baseURlApi/api/v10";
-  static String baseUrlV11 = "$baseURlApi/api/v11";
-  static String imageURL = '$baseURlApi/media/';
+  // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
+  // static String baseUrl = "$baseURlApi/api/v10";
+  // static String baseUrlV11 = "$baseURlApi/api/v11";
+  // static String imageURL = '$baseURlApi/media/';
 
- // local
- // http://192.168.1.52:8002/
+  //
+  // local
+  // http://192.168.1.52:8002/
 
   // static String baseUrlAuth = 'http://192.168.1.91:8000/api/v1';
   // static String baseUrl = "http://192.168.1.91:8002/api/v10";
