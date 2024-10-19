@@ -164,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var companySelected = prefs.getBool('companySelected') ?? false;
     var isPosUser = true;
 
-    /// var isPosUser = prefs.getBool('isPosUser') ?? false;
+    /// var isPosUser = prefs.getBool('isPosUser') ?? false;//
     print("isPosUser  $isPosUser");
     print(companySelected);
     if (status) {
