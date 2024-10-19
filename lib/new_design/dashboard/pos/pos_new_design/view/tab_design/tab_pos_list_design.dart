@@ -180,8 +180,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         onPressed: () async{
                            Size screenSize = MediaQuery.of(context).size;
                           var  vacantTables = filterVacantTables(posController.fullDataList);
-                          _dialogBuilderSwap(context,screenSize,vacantTables);
-
+                          _dialogBuilderSwap(context,screenSize,vacantTables,false);
 
                         },
                         style: ElevatedButton.styleFrom(
@@ -251,32 +250,32 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                 }),
               ),
 
-              // PopupMenuButton<String>(
-              //   icon: const Icon(Icons.settings),
-              //   onSelected: (value) {
-              //     _handleMenuSelection(value);
-              //   },
-              //   itemBuilder: (BuildContext context) {
-              //     return [
-              //       // const PopupMenuItem<String>(
-              //       //   value: 'table',
-              //       //   child: Text('Add a Table'),
-              //       // ),
-              //       // const PopupMenuItem<String>(
-              //       //   value: 'reservation',
-              //       //   child: Text('Reservation'),
-              //       // ),
-              //       // const PopupMenuItem<String>(
-              //       //   value: 'platform',
-              //       //   child: Text('Platform'),
-              //       // ),
-              //       // const PopupMenuItem<String>(
-              //       //   value: 'settings',
-              //       //   child: Text('Table Settings'),
-              //       // ),
-              //     ];
-              //   },
-              // ),
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.settings),
+                onSelected: (value) {
+                  _handleMenuSelection(value);
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    // const PopupMenuItem<String>(
+                    //   value: 'table',
+                    //   child: Text('Add a Table'),
+                    // ),
+                    // const PopupMenuItem<String>(
+                    //   value: 'reservation',
+                    //   child: Text('Reservation'),
+                    // ),
+                    // const PopupMenuItem<String>(
+                    //   value: 'platform',
+                    //   child: Text('Platform'),
+                    // ),
+                    const PopupMenuItem<String>(
+                      value: 'settings',
+                      child: Text('Table Settings'),
+                    ),
+                  ];
+                },
+              ),
               const SizedBox(
                 width: 20,
               )
@@ -1742,6 +1741,31 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           Row(
                             children: [
                               /// all combine not reday
+
+                              Obx(() {
+                                return posController.isCombineSplit.value
+                                    ?posController.selectList.length !=1?Container():
+                                listsplit[0]["Status"] =="Ordered"?
+                                ElevatedButton(
+                                  onPressed: () async{
+                                    Size screenSize = MediaQuery.of(context).size;
+                                    var  vacantTables = filterVacantTables(posController.fullDataList);
+                                    _dialogBuilderSwap(context,screenSize,vacantTables,true);
+
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFF0E8FF),
+                                    minimumSize: const Size(50, 35),
+                                  ),
+                                  child: Text(
+                                    "Change Table",
+                                    style: customisedStyle(context, Color(0xff6F42C1), FontWeight.w400, 14.0),
+                                  ),
+                                )
+                                    : Container() : Container();
+                              }),
+
+
                               areAllItemsVacant(listsplit)
                                   ? posController.isCombineSplit.value
                                       ? Container()
@@ -2573,7 +2597,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     );
   }
   // tableMergeData = <MergeData>[].obs;
-  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName) {
+  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName,isItem) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -2660,7 +2684,13 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                           fromTableID:posController.tableMergeData[posController.selectList[0]].id!,
                                                           fromSplitTableList:[],toSplitTableID: "",toTableID: item['id']);
                                                       if (result != null) {
+                                                        pr("=================");
+                                                        pr(result);
+
                                                         if (result) {
+                                                          if(isItem){
+                                                            Get.back();
+                                                          }
                                                           Get.back();
                                                           posController.selectList.clear();
                                                           posController.isCombine.value = false;

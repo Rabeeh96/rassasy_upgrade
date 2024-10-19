@@ -470,12 +470,13 @@ class POSController extends GetxController {
       log("merge response");
       pr(response.body);
 
-      Map<String, dynamic> responseData =
-      json.decode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
       var status = responseData["StatusCode"];
 
-      print("----${response.statusCode}");
+      pr("----------${status}");
       if (status == 6000) {
+        pr("-----------11");
+
         return true;
        // Get.back();
         // tablenameController.clear();
@@ -495,14 +496,14 @@ class POSController extends GetxController {
       //   // return addsplit.values.toList();
       // }
       else {
+        pr("-----------12");
+
         throw Exception('Failed to load table data');
       }
     } catch (e) {
+      pr("-----------1");
       return false;
       // Handle exceptions
-    } finally {
-      isLoading(false);
-      return false;
     }
   }
 
@@ -632,6 +633,8 @@ class POSController extends GetxController {
 
       if (status == 6000) {
         pr(type);
+
+
         if (type != "Cancel") {
           fetchAllData();
         } else {
