@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
-String appVersion = "1.1.54";
+String appVersion = "1.1.57";
 double defaultScreenWidth=550;
 bool enableTabDesign = false;
 start(context) {
@@ -143,18 +143,18 @@ class BaseUrl{
 
 ///
    ///  test
-  // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
-  // static String baseUrl = "$baseURlApi/api/v10";
-  // static String baseUrlV11 = "$baseURlApi/api/v11";
-  // static String imageURL = '$baseURlApi/media/';
+  static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
+  static String baseUrl = "$baseURlApi/api/v10";
+  static String baseUrlV11 = "$baseURlApi/api/v11";
+  static String imageURL = '$baseURlApi/media/';
 
  // local
  // http://192.168.1.52:8002/
 
-  static String baseUrlAuth = 'http://192.168.1.91:8000/api/v1';
-  static String baseUrl = "http://192.168.1.91:8002/api/v10";
-  static String baseUrlV11 = "http://192.168.1.91:8002/api/v11";
-  static String imageURL = 'http://192.168.1.91:8002';
+  // static String baseUrlAuth = 'http://192.168.1.91:8000/api/v1';
+  // static String baseUrl = "http://192.168.1.91:8002/api/v10";
+  // static String baseUrlV11 = "http://192.168.1.91:8002/api/v11";
+  // static String imageURL = 'http://192.168.1.91:8002';
 
    static int priceRounding=2;
 }
