@@ -50,7 +50,7 @@ class POSController extends GetxController {
   @override
   void onInit() {
     tabIndex.value = 0;
-    fetchAllData();
+    // fetchAllData();
     fetchTOC();
     ReloadAllData();
     update();

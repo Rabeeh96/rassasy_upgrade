@@ -75,6 +75,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     /// TODO: implement initState
     super.initState();
     posController.selectedIndexNotifier.value = 0;
+    posController.fetchAllData();
     posController.tableData.clear();
     posController.tableMergeData.clear();
     posController.fullOrderData.clear();
@@ -331,7 +332,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           text: 'Takeout',
                           type: 'takeout', // Unique identifier for this type
                           onPressed: () {
-                            print("take ");
+                            if(posController.takeAwayOrders.isEmpty){
+                              posController.fetchTOC();
+                            }
                           },
                         ),
                         const SizedBox(height: 10),
@@ -342,6 +345,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           text: 'Online',
                           type: 'online', // Unique identifier for this type
                           onPressed: () {
+
+
+                            if(posController.onlineOrders.isEmpty){
+                              posController.fetchTOC();
+                            }
+
                             print('Online icon pressed');
                             // Add your onPressed logic here
                           },
@@ -351,7 +360,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           assetName: 'assets/svg/car_inmgs.svg',
                           text: 'Car',
                           type: 'car', // Unique identifier for this type
-                          onPressed: () {},
+                          onPressed: () {
+                            if(posController.carOrders.isEmpty){
+                              posController.fetchTOC();
+                            }
+
+                          },
                         ),
                       ],
                     ),
