@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
-String appVersion = "1.1.57";
+String appVersion = "1.1.60";
 double defaultScreenWidth=550;
 bool enableTabDesign = false;
 start(context) {
