@@ -51,7 +51,7 @@ class POSController extends GetxController {
   void onInit() {
     tabIndex.value = 0;
     // fetchAllData();
-    fetchTOC();
+   // fetchTOC();
     ReloadAllData();
     update();
     super.onInit();
@@ -476,13 +476,14 @@ class POSController extends GetxController {
       pr("----------${status}");
       if (status == 6000) {
         pr("-----------11");
-
+        isLoading(false);
         return true;
        // Get.back();
         // tablenameController.clear();
         // splitcountcontroller.text = "0";
         // fetchAllData();
       } else if (status == 6001) {
+        isLoading(false);
         var msg = responseData["message"]??responseData["error"]??"";
         Get.snackbar('Error', msg);
         return false;// Show error message
@@ -496,11 +497,13 @@ class POSController extends GetxController {
       //   // return addsplit.values.toList();
       // }
       else {
+        isLoading(false);
         pr("-----------12");
 
         throw Exception('Failed to load table data');
       }
     } catch (e) {
+      isLoading(false);
       pr("-----------1");
       return false;
       // Handle exceptions
@@ -834,7 +837,9 @@ class POSController extends GetxController {
   ReloadAllData() async {
     print("----------------------------------------------------------------1");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    isCombine.value=false;
+    isCombineSplit.value=false;
+     selectList.clear();
     dining_view_perm.value = prefs.getBool('Diningview') ?? true;
     reservation_view_perm.value = prefs.getBool('View Reservation') ?? true;
     directOrderOption.value = prefs.getBool('directOrderOption') ?? false;
@@ -873,6 +878,7 @@ class POSController extends GetxController {
     reservation_perm.value = prefs.getBool('Reserve Table') ?? true;
     remove_table_perm.value = false;
     convert_type_perm.value = false;
+    update();
   }
 
   var selectedType = 'dine'.obs;

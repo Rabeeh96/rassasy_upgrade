@@ -74,8 +74,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   void initState() {
     /// TODO: implement initState
     super.initState();
+    posController.isCombine.value=false;
+    posController.isCombineSplit.value=false;
+    posController.selectList.clear();
     posController.selectedIndexNotifier.value = 0;
     posController.fetchAllData();
+    posController.fetchTOC();
     posController.tableData.clear();
     posController.tableMergeData.clear();
     posController.fullOrderData.clear();
@@ -88,25 +92,70 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   final RxBool _isLongPressed = false.obs;
 
 
+  // filterVacantTables(var tables) {
+  //
+  //   pr(tables);
+  //   return tables.where((table) {
+  //     // Check if the main table is vacant
+  //     if (table['Status'] != 'Vacant') {
+  //       return false;
+  //     }
+  //
+  //     // Check if all the tables in the Split_data are also vacant
+  //     if (table['Split_data'] != null && table['Split_data'].isNotEmpty) {
+  //       bool allSplitsVacant = table['Split_data'].every((splitTable) => splitTable['Status'] == 'Vacant');
+  //       return allSplitsVacant;
+  //     }
+  //
+  //     // If there's no split data or it's vacant, keep the main table
+  //     return true;
+  //   }).toList();
+  // }
+
   filterVacantTables(var tables) {
     return tables.where((table) {
-      // Check if the main table is vacant
-      if (table['Status'] != 'Vacant') {
-        return false;
+      // First check if the main (master) table is vacant
+      if (table['Status'] == 'Vacant') {
+        return true; // Master table is vacant, include it
       }
 
-      // Check if all the tables in the Split_data are also vacant
+      // If master table is not vacant, check if any split tables are vacant
       if (table['Split_data'] != null && table['Split_data'].isNotEmpty) {
-        bool allSplitsVacant = table['Split_data'].every((splitTable) => splitTable['Status'] == 'Vacant');
-        return allSplitsVacant;
+        bool anySplitsVacant = table['Split_data'].any((splitTable) => splitTable['Status'] == 'Vacant');
+        return anySplitsVacant; // If any split is vacant, include the table
       }
 
-      // If there's no split data or it's vacant, keep the main table
-      return true;
+      // If neither the master nor the splits are vacant, exclude the table
+      return false;
+    }).toList();
+  }
+
+  filterVacantTablesSplit(var tables) {
+    return tables.where((table) {
+      // Check if the table status is 'Vacant'
+      return table['Status'] == 'Vacant';
     }).toList();
   }
 
 
+  /*filterVacantTables(var tables) {
+    return tables.where((table) {
+      // Check if the main table is vacant
+      if (table['Status'] == 'Vacant') {
+        return true;
+      }
+
+      // Check if any of the tables in the Split_data are vacant
+      if (table['Split_data'] != null && table['Split_data'].isNotEmpty) {
+        bool anySplitsVacant = table['Split_data'].any((splitTable) => splitTable['Status'] == 'Vacant');
+        return anySplitsVacant;
+      }
+
+      // If there's no split data, exclude the table
+      return false;
+    }).toList();
+  }
+*/
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -180,8 +229,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                 ElevatedButton(
                         onPressed: () async{
                            Size screenSize = MediaQuery.of(context).size;
-                          var  vacantTables = filterVacantTables(posController.fullDataList);
-                          _dialogBuilderSwap(context,screenSize,vacantTables,false);
+                         // var  vacantTables = filterVacantTables(posController.fullDataList);
+
+                          _dialogBuilderSwap(context,screenSize,posController.fullDataList,false,0);
 
                         },
                         style: ElevatedButton.styleFrom(
@@ -1759,12 +1809,13 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               Obx(() {
                                 return posController.isCombineSplit.value
                                     ?posController.selectList.length !=1?Container():
-                                listsplit[0]["Status"] =="Ordered"?
+                                listsplit[posController.selectList[0]]["Status"] =="Ordered"?
                                 ElevatedButton(
                                   onPressed: () async{
                                     Size screenSize = MediaQuery.of(context).size;
-                                    var  vacantTables = filterVacantTables(posController.fullDataList);
-                                    _dialogBuilderSwap(context,screenSize,vacantTables,true);
+                                    Get.back();
+                                    //   var  vacantTables = filterVacantTables(posController.fullDataList);
+                                    _dialogBuilderSwap(context,screenSize,posController.fullDataList,true,indexOfSelectedTable);
 
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -2611,7 +2662,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     );
   }
   // tableMergeData = <MergeData>[].obs;
-  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName,isItem) {
+  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName,isItem,indexOfSelectedTable) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -2690,7 +2741,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       FontWeight.w600,
                                                       14.0),
                                                 ),
-                                                ElevatedButton(
+                                                areAllItemsVacant(item["Split_data"])?ElevatedButton(
                                                   onPressed: () async{
 
 
@@ -2702,9 +2753,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                         pr(result);
 
                                                         if (result) {
-                                                          if(isItem){
-                                                            Get.back();
-                                                          }
+                                                          // if(isItem){
+                                                          //   Get.back();
+                                                          // }
+
                                                           Get.back();
                                                           posController.selectList.clear();
                                                           posController.isCombine.value = false;
@@ -2737,7 +2789,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       14.0,
                                                     ),
                                                   ),
-                                                )
+                                                ):Container()
                                               ],
                                             ),
                                           ),
@@ -2754,7 +2806,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                           itemCount: itemTableName[index]["Split_data"].length,
                                           itemBuilder: (context, indexItem) {
                                             var  splitData = itemTableName[index]["Split_data"];
-                                            print("splitData  $splitData");
+
+                                            pr("splitData  $splitData");
                                             return Column(
                                               children: [
                                                 Container(
@@ -2783,13 +2836,30 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                             Text(
                                                               '${splitData[indexItem]['TableName'].toString()} (${indexItem + 1})',
                                                             ),
-                                                            ElevatedButton(
+                                                            splitData[indexItem]['Status'] =="Vacant"?  ElevatedButton(
                                                               onPressed: ()async {
+                                                                var  splitTableList=[];
+                                                                pr("isItem      $isItem");
+                                                                if(isItem){
+                                                                  var iindex = posController.selectList[0];
+                                                                  pr("isItem      $iindex");
+                                                                  splitTableList  = [posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]];
+                                                                }
+                                                                // pr("FROM       ${posController.tableMergeData[posController.selectList[0]].tableName}");
+                                                                // pr("FROM       ${posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]}");
+                                                                //
+
+
                                                                 var result = await posController.swapTableFunction(
                                                                     fromTableID:posController.tableMergeData[posController.selectList[0]].id!,
-                                                                    fromSplitTableList:[],toSplitTableID: splitData[indexItem]['id'],toTableID: item['id']);
+                                                                    fromSplitTableList:splitTableList,toSplitTableID: splitData[indexItem]['id'],toTableID: item['id']);
                                                                 if (result != null) {
                                                                   if (result) {
+
+                                                                    if(isItem){
+                                                                      Get.back();
+                                                                    }
+
                                                                     Get.back();
                                                                     posController.selectList.clear();
                                                                     posController.isCombine.value = false;
@@ -2828,7 +2898,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                                   14.0,
                                                                 ),
                                                               ),
-                                                            )
+                                                            ):Container()
                                                           ],
                                                         ),
                                                       ],
