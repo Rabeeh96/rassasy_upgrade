@@ -210,6 +210,33 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                 },
               ),
 
+        Obx(() {  return orderController.synMethod.value?
+
+    IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: ()async {
+                  start(context);
+                  await orderController.fetchAndSaveProductGroupData();
+                  var savedData = await orderController
+                      .loadSavedData("productGroupData");
+                  var allProducts = [];
+                  for (var i = 0; i < savedData.length; i++) {
+                    var groupId = savedData[i]['ProductGroupID'];
+                    var groupProducts = await orderController
+                        .fetchAndSaveProductData(groupId);
+                    if (groupProducts is List) {
+                      allProducts.addAll(groupProducts);
+                    }
+                  }
+                  await orderController.saveAllProduct(allProducts);
+                  await stop();
+                  orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
+                },
+              ):Container(); }),
+
+
+
+
               // IconButton(
               //     onPressed: () async {
               //       Get.to(() => DragDrop(
