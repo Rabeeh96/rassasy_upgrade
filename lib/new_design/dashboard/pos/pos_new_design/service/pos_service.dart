@@ -89,7 +89,7 @@ class TableService {
         "BranchID": branchID,
       }),
     );
-    print('${{
+    pr('${{
       "CompanyID": companyID,
       "BranchID": branchID,
     }}');

@@ -34,13 +34,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   final POSController posController = Get.put(POSController());
 
   bool areAllItemsVacant(items) {
-    pr("========items $items");
 
     return items.every((item) => item['Status'] == 'Vacant');
   }
 
   bool areAllItemsVacantCheckForTableSwap(items,status) {
-    pr("========items $items  $status");
 
     if(items.isEmpty){
       if(status =="Vacant"){
@@ -248,7 +246,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                            Size screenSize = MediaQuery.of(context).size;
                          // var  vacantTables = filterVacantTables(posController.fullDataList);
 
-                          _dialogBuilderSwap(context,screenSize,posController.fullDataList,false,0);
+                          _dialogBuilderSwap(context,screenSize,posController.fullDataList,false,0,'');
 
                         },
                         style: ElevatedButton.styleFrom(
@@ -1796,7 +1794,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   }
 
   ///100002 split details
-  Future<void> _dialogBuilderTableSplit(BuildContext context, Size screenSize, listsplit, indexOfSelectedTable) {
+  Future<void> _dialogBuilderTableSplit(BuildContext context, Size screenSize, listsplit, indexOfSelectedTableMaster) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -1815,7 +1813,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            posController.tableMergeData[indexOfSelectedTable].tableName!,
+                            posController.tableMergeData[indexOfSelectedTableMaster].tableName!,
                             style: customisedStyle(context, Colors.black, FontWeight.w700, 16.0),
                             // style: TextStyle(fontFamily: 'Poppins', fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -1831,8 +1829,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   onPressed: () async{
                                     Size screenSize = MediaQuery.of(context).size;
                                     Get.back();
+
                                     //   var  vacantTables = filterVacantTables(posController.fullDataList);
-                                    _dialogBuilderSwap(context,screenSize,posController.fullDataList,true,indexOfSelectedTable);
+                                     _dialogBuilderSwap(context,screenSize,posController.fullDataList,true,indexOfSelectedTableMaster,listsplit[posController.selectList[0]]["id"]);
 
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -1900,7 +1899,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                             if (combinedAction != null) {
                                               if (combinedAction) {
                                                 var result =
-                                                    await posController.allCombinedTable(posController.tableMergeData[indexOfSelectedTable].id!);
+                                                    await posController.allCombinedTable(posController.tableMergeData[indexOfSelectedTableMaster].id!);
                                                 if (result != null) {
                                                   if (result) {
                                                     Get.back();
@@ -1912,7 +1911,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       splitID: "",
                                                       tableHead: "Order",
                                                       cancelOrder: posController.cancelOrder,
-                                                      tableID: posController.tableMergeData[indexOfSelectedTable].id!,
+                                                      tableID: posController.tableMergeData[indexOfSelectedTableMaster].id!,
                                                     ));
                                                   }
                                                   if (result != null) {
@@ -1920,7 +1919,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       var resultPayment = await Get.to(TabPaymentSection(
                                                         uID: result[2],
                                                         splitID: "",
-                                                        tableID: posController.tableMergeData[indexOfSelectedTable].id!,
+                                                        tableID: posController.tableMergeData[indexOfSelectedTableMaster].id!,
                                                         orderType: 0,
                                                         type: 'dine',
                                                         isData: false,
@@ -2103,7 +2102,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                         tableHead: "Order",
                                                         splitID: listsplit[index]["id"]!,
                                                         cancelOrder: posController.cancelOrder,
-                                                        tableID: posController.tableMergeData[indexOfSelectedTable].id!,
+                                                        tableID: posController.tableMergeData[indexOfSelectedTableMaster].id!,
                                                       )); // Pass the value to POS Order Page
 
                                                       if (result != null) {
@@ -2348,7 +2347,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                         await posController.cancelOrderApi(
                                                             context: context,
                                                             type: "Dining&Cancel",
-                                                            tableID: posController.tableMergeData[indexOfSelectedTable].id!,
+                                                            tableID: posController.tableMergeData[indexOfSelectedTableMaster].id!,
                                                             cancelReasonId: result[1],
                                                             orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
                                                             splitUID: listsplit[posController.selectedsplitIndex.value]["id"]);
@@ -2357,7 +2356,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       await posController.cancelOrderApi(
                                                           context: context,
                                                           type: "Dining",
-                                                          tableID: posController.tableMergeData[indexOfSelectedTable].id!,
+                                                          tableID: posController.tableMergeData[indexOfSelectedTableMaster].id!,
                                                           cancelReasonId: "",
                                                           orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
                                                           splitUID: listsplit[posController.selectedsplitIndex.value]["id"]);
@@ -2679,7 +2678,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     );
   }
   // tableMergeData = <MergeData>[].obs;
-  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName,isItem,indexOfSelectedTable) {
+  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName,isItem,indexOfSelectedTable,fromSplitTableID) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -2764,11 +2763,14 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                                 ElevatedButton(
                                                   onPressed: () async{
-
-
+                                                    /// select master Table
+                                                    List fromTableList = [];
+                                                    if(fromSplitTableID !=""){
+                                                      fromTableList = [fromSplitTableID];
+                                                    }
                                                     var result = await posController.swapTableFunction(
                                                           fromTableID:posController.tableMergeData[posController.selectList[0]].id!,
-                                                          fromSplitTableList:[],toSplitTableID: "",toTableID: item['id']);
+                                                          fromSplitTableList:fromTableList,toSplitTableID: "",toTableID: item['id']);
                                                       if (result != null) {
                                                         pr("=================");
                                                         pr(result);
@@ -2859,13 +2861,21 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                             ),
                                                             splitData[indexItem]['Status'] =="Vacant"?  ElevatedButton(
                                                               onPressed: ()async {
-                                                                var  splitTableList=[];
-                                                                pr("isItem      $isItem");
-                                                                if(isItem){
-                                                                  var iindex = posController.selectList[0];
-                                                                  pr("isItem      $iindex");
-                                                                  splitTableList  = [posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]];
+                                                                /// select Detail Table
+
+                                                                List fromTableList = [];
+                                                                if(fromSplitTableID !=""){
+                                                                  fromTableList = [fromSplitTableID];
                                                                 }
+
+
+                                                                // var  splitTableList=[];
+                                                                // pr("isItem      $isItem");
+                                                                // if(isItem){
+                                                                //   var iindex = posController.selectList[0];
+                                                                //   pr("isItem      $iindex");
+                                                                //   splitTableList  = [posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]];
+                                                                // }
                                                                 // pr("FROM       ${posController.tableMergeData[posController.selectList[0]].tableName}");
                                                                 // pr("FROM       ${posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]}");
                                                                 //
@@ -2873,7 +2883,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                                                 var result = await posController.swapTableFunction(
                                                                     fromTableID:posController.tableMergeData[posController.selectList[0]].id!,
-                                                                    fromSplitTableList:splitTableList,toSplitTableID: splitData[indexItem]['id'],toTableID: item['id']);
+                                                                    fromSplitTableList:fromTableList,toSplitTableID: splitData[indexItem]['id'],toTableID: item['id']);
                                                                 if (result != null) {
                                                                   if (result) {
 

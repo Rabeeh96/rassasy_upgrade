@@ -16,8 +16,6 @@ class Demo {
     invoiceType = "SIMPLIFIED TAX INVOICE";
     invoiceTypeArabic = "(فاتورة ضريبية مبسطة)";
 
-
-
     print("---------------------------");
     print(qrCodeAvailable);
     print(qrCodeAvailable);
