@@ -465,7 +465,7 @@ class POSController extends GetxController {
         "To_Split_Table": toSplitTableID
       };
 
-      print("data$data");
+      pr("data$data");
       var body = json.encode(data);
       var response = await http.post(Uri.parse(url),
           headers: {
