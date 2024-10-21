@@ -438,6 +438,12 @@ class POSController extends GetxController {
    swapTableFunction({required String fromTableID,required List fromSplitTableList,required String toTableID,required String toSplitTableID}) async {
     try {
       isLoading(true);
+
+      pr("fromTableID $fromTableID");
+      pr("fromSplitTableList $fromSplitTableList");
+      pr("toTableID $toTableID");
+      pr("toSplitTableID $toSplitTableID");
+
       String baseUrl = BaseUrl.baseUrl;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var companyID = prefs.getString('companyID') ?? ''; // Change to string

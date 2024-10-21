@@ -451,8 +451,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                       //separatorBuilder: (context, index) => dividerStyle(),
                                       itemCount: orderController.productList.length,
                                       itemBuilder: (context, index) {
-                                        var alreadyExist = orderController.checking(orderController.productList[index].productID);
-                                        print("-----------------------already $alreadyExist");
+
                                         return Card(
                                           color: Colors.red.shade50,
                                           child: GestureDetector(
@@ -460,60 +459,77 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                               orderController.detailPage.value = 'item_add';
                                               SharedPreferences prefs = await SharedPreferences.getInstance();
 
+
+
+                                              var alreadyExist = orderController.checking(orderController.productList[index].productID);
+
                                               var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
 
-                                              orderController.unitPriceAmount.value = orderController.productList[index].defaultSalesPrice;
-                                              orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
-                                              orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
-                                              orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
+                                              pr("=====qtyIncrement $qtyIncrement alreadyExist $alreadyExist");
 
-                                              orderController.priceListID.value = orderController.productList[index].defaultUnitID;
-                                              orderController.productName.value = orderController.productList[index].productName;
-                                              orderController.productDescription.value = orderController.productList[index].description;
-                                              orderController.item_status.value = "pending";
-                                              orderController.unitName.value = orderController.productList[index].defaultUnitName;
+                                              if(qtyIncrement&&alreadyExist[0]){
+                                                print("-----------------------already $alreadyExist");
 
-                                              var taxDetails = orderController.productList[index].taxDetails;
+                                                orderController.updateQty(index: alreadyExist[1], type: 1);
+                                                print("-----------------------already $alreadyExist");
+                                              }
+                                              else{
+                                                orderController.unitPriceAmount.value = orderController.productList[index].defaultSalesPrice;
+                                                orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
+                                                orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
+                                                orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
+                                                orderController.priceListID.value = orderController.productList[index].defaultUnitID;
+                                                orderController.productName.value = orderController.productList[index].productName;
+                                                orderController.productDescription.value = orderController.productList[index].description;
+                                                orderController.item_status.value = "pending";
+                                                orderController.unitName.value = orderController.productList[index].defaultUnitName;
 
-                                              if (taxDetails != "") {
-                                                orderController.productTaxID.value = taxDetails["TaxID"];
-                                                orderController.productTaxName.value = taxDetails["TaxName"];
+                                                var taxDetails = orderController.productList[index].taxDetails;
+
+                                                if (taxDetails != "") {
+                                                  orderController.productTaxID.value = taxDetails["TaxID"];
+                                                  orderController.productTaxName.value = taxDetails["TaxName"];
+                                                }
+
+                                                orderController.detailID.value = 1;
+                                                orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
+                                                orderController.purchasePrice.value = orderController.productList[index].defaultPurchasePrice;
+                                                orderController.productID.value = orderController.productList[index].productID;
+                                                orderController.isInclusive.value = orderController.productList[index].isInclusive;
+
+                                                orderController.detailIdEdit.value = 0;
+                                                orderController.flavourID.value = "";
+                                                orderController.flavourName.value = "";
+
+                                                var newTax = orderController.productList[index].exciseData;
+
+                                                if (newTax != "") {
+                                                  orderController.isExciseProduct.value = true;
+                                                  orderController.exciseTaxID.value = newTax["TaxID"];
+                                                  orderController.exciseTaxName.value = newTax["TaxName"];
+                                                  orderController.BPValue.value = newTax["BPValue"].toString();
+                                                  orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
+                                                  orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
+                                                  orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
+                                                  orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
+                                                } else {
+                                                  orderController.exciseTaxID.value = 0;
+                                                  orderController.exciseTaxName.value = "";
+                                                  orderController.BPValue.value = "0";
+                                                  orderController.exciseTaxBefore.value = "0";
+                                                  orderController.isAmountTaxBefore.value = false;
+                                                  orderController.isAmountTaxAfter.value = false;
+                                                  orderController.isExciseProduct.value = false;
+                                                  orderController.exciseTaxAfter.value = "0";
+                                                }
+
+                                                orderController.unique_id.value = "0";
+                                                orderController.calculation();
                                               }
 
-                                              orderController.detailID.value = 1;
-                                              orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
-                                              orderController.purchasePrice.value = orderController.productList[index].defaultPurchasePrice;
-                                              orderController.productID.value = orderController.productList[index].productID;
-                                              orderController.isInclusive.value = orderController.productList[index].isInclusive;
 
-                                              orderController.detailIdEdit.value = 0;
-                                              orderController.flavourID.value = "";
-                                              orderController.flavourName.value = "";
 
-                                              var newTax = orderController.productList[index].exciseData;
 
-                                              if (newTax != "") {
-                                                orderController.isExciseProduct.value = true;
-                                                orderController.exciseTaxID.value = newTax["TaxID"];
-                                                orderController.exciseTaxName.value = newTax["TaxName"];
-                                                orderController.BPValue.value = newTax["BPValue"].toString();
-                                                orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
-                                                orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
-                                                orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
-                                                orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
-                                              } else {
-                                                orderController.exciseTaxID.value = 0;
-                                                orderController.exciseTaxName.value = "";
-                                                orderController.BPValue.value = "0";
-                                                orderController.exciseTaxBefore.value = "0";
-                                                orderController.isAmountTaxBefore.value = false;
-                                                orderController.isAmountTaxAfter.value = false;
-                                                orderController.isExciseProduct.value = false;
-                                                orderController.exciseTaxAfter.value = "0";
-                                              }
-
-                                              orderController.unique_id.value = "0";
-                                              orderController.calculation();
 
                                               //setState(() {});
                                               /// commented for new tax working
@@ -2368,34 +2384,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
   Widget itemAddWidget() {
     return Column(
       children: [
-        // Container(
-        //   height: MediaQuery.of(context).size.height / 15,
-        //   width: MediaQuery.of(context).size.width / 3,
-        //   decoration: BoxDecoration(
-        //     borderRadius: BorderRadius.circular(5),
-        //
-        //     ///  border: const Border(bottom: BorderSide(color: Color(0xffE7E7E7)))
-        //   ),
-        //   child: TextField(
-        //     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-        //     onChanged: (text) {
-        //       orderController.filterList(text);
-        //     },
-        //     controller: orderController.searchListController,
-        //     decoration: InputDecoration(
-        //         // fillColor: const Color(0xffFDFDFD),
-        //         // filled: true,
-        //         contentPadding: const EdgeInsets.all(17),
-        //         suffixIcon: IconButton(
-        //           onPressed: () {},
-        //           icon: Image.asset('assets/png/search_grey_png.png'),
-        //         ),
-        //         hintText: 'Search List',
-        //         hintStyle: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.normal, 12.0),
-        //         border: InputBorder.none),
-        //   ),
-        // ),
-        //dividerStyle(),
         Obx(
           () => Expanded(
               child: ListView.separated(

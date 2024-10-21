@@ -1049,7 +1049,7 @@ class OrderController extends GetxController {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       iGSTAmount.value = 0.0;
-      vatAmount.value = 0.0;
+      vatAmount.value =  0.0;
       totalTax.value = 0.0;
     } else if (taxType.value == "Import") {
       cGSTAmount.value = 0.0;
@@ -1135,7 +1135,6 @@ class OrderController extends GetxController {
       "netAmountRounded": roundStringWith(netAmount.value.toString()),
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
       "TotalTaxRounded": roundStringWith(totalTax.value.toString()),
-      "Description": "",
       "ExciseTaxID": exciseTaxID.value,
       "ExciseTaxName": exciseTaxName.value,
       "BPValue": BPValue.value,

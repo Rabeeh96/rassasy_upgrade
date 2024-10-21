@@ -34,6 +34,23 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   final POSController posController = Get.put(POSController());
 
   bool areAllItemsVacant(items) {
+    pr("========items $items");
+
+    return items.every((item) => item['Status'] == 'Vacant');
+  }
+
+  bool areAllItemsVacantCheckForTableSwap(items,status) {
+    pr("========items $items  $status");
+
+    if(items.isEmpty){
+      if(status =="Vacant"){
+        return true;
+      }
+      else{
+        return false;
+      }
+
+    }
     return items.every((item) => item['Status'] == 'Vacant');
   }
 
@@ -2741,7 +2758,11 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       FontWeight.w600,
                                                       14.0),
                                                 ),
-                                                areAllItemsVacant(item["Split_data"])?ElevatedButton(
+
+
+                                                areAllItemsVacantCheckForTableSwap(item["Split_data"],item['Status'])?
+
+                                                ElevatedButton(
                                                   onPressed: () async{
 
 
