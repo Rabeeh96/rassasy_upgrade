@@ -210,15 +210,12 @@ class POSController extends GetxController {
       print('-**-/-$fetchedTOCData');
       selectedIndexNotifier.value = 0;
       print("--------1");
+
       onlineOrders.assignAll((fetchedTOCData['Online'] as List).map((json) => Online.fromJson(json)).toList());
       print("--------1");
-      takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List)
-          .map((json) => TakeAway.fromJson(json))
-          .toList());
+      takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
       print("--------1");
-      carOrders.assignAll((fetchedTOCData['Car'] as List)
-          .map((json) => Car.fromJson(json))
-          .toList());
+      carOrders.assignAll((fetchedTOCData['Car'] as List).map((json) => Car.fromJson(json)).toList());
       print("--------1");
       cancelOrder.assignAll(fetchedTOCData['Reasons'] ?? []);
       print("--------1");

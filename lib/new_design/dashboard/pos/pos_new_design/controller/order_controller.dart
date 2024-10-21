@@ -170,6 +170,7 @@ class OrderController extends GetxController {
   var isArrange = true.obs;
   RxBool showProductDescription = true.obs;
   RxBool showWegOrNoVeg = true.obs;
+  RxBool disableKOT = false.obs;
   var productNameDetail = '';
   var indexDetail = 0;
   var heightOfImage = 8.0;
@@ -1873,17 +1874,25 @@ class OrderController extends GetxController {
               voucherType: "SO");
         }
 
-        Future.delayed(const Duration(seconds: 1), () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          var kot = prefs.getBool("KOT") ?? false;
-          if (kot == true) {
-            posController.printKOT(
-                cancelList: cancelPrint,
-                isUpdate: sectionType == "Edit" ? true : false,
-                orderID: n["OrderID"],
-                rePrint: false);
-          } else {}
-        });
+        if(disableKOT.value ==false){
+
+          Future.delayed(const Duration(seconds: 1), () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            var kot = prefs.getBool("KOT") ?? false;
+            if (kot == true) {
+              posController.printKOT(
+                  cancelList: cancelPrint,
+                  isUpdate: sectionType == "Edit" ? true : false,
+                  orderID: n["OrderID"],
+                  rePrint: false);
+            } else {}
+          });
+        }
+        else
+          {
+            disableKOT.value=false;
+          }
+
       } else if (status == 6001) {
         stop();
         var errorMessage = n["message"] ?? "";
