@@ -462,73 +462,8 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                 ),
 
 
-                    Obx(() =>  Row(
-                      children: [
-                        Text(
-                          'Disable KOT',
-                          style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0,right: 5.0),
-                          child: FlutterSwitch(
-                            width: 50.0,
-                            height: 25.0,
-                            valueFontSize: 30.0,
-                            toggleSize: 15.0,
-                            value: orderController.disableKOT.value,
-                            borderRadius: 20.0,
-                            padding: 1.0,
-                            activeColor: Colors.green,
-                            activeTextColor: Colors.green,
-                            inactiveTextColor: Colors.white,
-                            inactiveColor: Colors.grey,
-                            // showOnOff: true,
-                            onToggle: (val){
-                              orderController.disableKOT.value = val;
-                              orderController.update();
-                            },
-                          ),
-                        )
-                      ],
-                    )),
-                    // Obx(() =>
-                    //             Container(
-                    //               color: Colors.red,
-                    //             width: 120,
-                    //               child: ListTile(
-                    //                 title: Text(
-                    //                   'KOT',
-                    //                   style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                    //                 ),
-                    //                 trailing: SizedBox(
-                    //                   width: 60,
-                    //                   child: Center(
-                    //                     child: FlutterSwitch(
-                    //                       width: 50.0,
-                    //                       height: 25.0,
-                    //                       valueFontSize: 30.0,
-                    //                       toggleSize: 15.0,
-                    //                       value: orderController.disableKOT.value,
-                    //                       borderRadius: 20.0,
-                    //                       padding: 1.0,
-                    //                       activeColor: Colors.green,
-                    //                       activeTextColor: Colors.green,
-                    //                       inactiveTextColor: Colors.white,
-                    //                       inactiveColor: Colors.grey,
-                    //                       // showOnOff: true,
-                    //                       onToggle: (val){
-                    //                         orderController.disableKOT.value = val;
-                    //                         orderController.update();
-                    //                       },
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //                 onTap: () {
-                    //                   orderController.disableKOT.value = val;
-                    //                   orderController.update();
-                    //                 },
-                    //               ),
-                    //             )),
+
+
                               ],
                             ),
                           ),
@@ -2528,6 +2463,39 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
   Widget itemAddWidget() {
     return Column(
       children: [
+        Obx(() =>  Padding(
+          padding: const EdgeInsets.only(left: 20.0,right: 20,top: 10,bottom: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                'Disable KOT',
+                style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0,right: 5.0),
+                child: FlutterSwitch(
+                  width: 50.0,
+                  height: 25.0,
+                  valueFontSize: 30.0,
+                  toggleSize: 15.0,
+                  value: orderController.disableKOT.value,
+                  borderRadius: 20.0,
+                  padding: 1.0,
+                  activeColor: Colors.green,
+                  activeTextColor: Colors.green,
+                  inactiveTextColor: Colors.white,
+                  inactiveColor: Colors.grey,
+                  // showOnOff: true,
+                  onToggle: (val){
+                    orderController.disableKOT.value = val;
+                    orderController.update();
+                  },
+                ),
+              )
+            ],
+          ),
+        )),
         Obx(
           () => Expanded(
               child: ListView.separated(

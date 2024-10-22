@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -102,7 +103,42 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     posController.takeAwayOrders.clear();
     posController.carOrders.clear();
     posController.update();
+    startApiCall();
   }
+
+
+  @override
+  void dispose() {
+    posController.timer?.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
+
+  void startApiCall() {
+
+
+
+    posController.timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      pr("posController.selectedsplitIndex.value ${posController.selectedsplitIndex.value}posController.isCombine.value   ${posController.isCombine.value}  posController.isCombineSplit.value ${posController.isCombineSplit.value}");
+      if (posController.isCombine.value==false&&posController.isCombineSplit.value==false &&posController.selectedsplitIndex.value ==1000) {
+        pr("-----------------------------------------------${posController.selectedType.value} not dine");
+        if(posController.selectedType.value =="dine"){
+          posController.fetchAllDataWithoutLoading();
+        }
+        else{
+          pr("//////////////// not dine");
+        }
+      }
+      else{
+
+      }
+
+
+
+    });
+
+
+  }
+
 
   final RxBool _isLongPressed = false.obs;
 
@@ -271,7 +307,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             for (var index in posController.selectList) {
                               final item = posController.tableMergeData[index];
                               combineData.add(item.id);
-                              combineMessage.isEmpty ? combineMessage = item.tableName! : combineMessage += " & ${item.tableName!}";
+                              combineMessage.isEmpty ? combineMessage = item.tableName??"" : combineMessage += " & ${item.tableName??""}";
                             }
                             _dialogCombine(context, screenSize, posController, combineData, combineMessage, false);
                           } else {
@@ -1666,7 +1702,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                               ),
                                               child: GridTile(
                                                 footer: Column(
+
                                                   children: [
+                                                    // new RotatedBox(
+                                                    //     quarterTurns: 1,
+                                                    //     child: new Text("Lorem ipsum")
+                                                    // ),
                                                     posController.tableMergeData[index].splitData!.length >= 1
                                                         ? Padding(
                                                             padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),

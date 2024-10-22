@@ -39,6 +39,7 @@ class POSPaymentController extends GetxController {
   RxInt deliveryManID = 0.obs;
   RxString tokenNumber = "".obs;
   RxString taxType = "".obs;
+  RxBool isComplimentary = false.obs;
   TextEditingController cashReceivedController = TextEditingController();
   TextEditingController paymentCustomerSelection = TextEditingController()
     ..text = "walk in customer";
@@ -81,6 +82,10 @@ class POSPaymentController extends GetxController {
           var companyID = prefs.getString('companyID') ?? 0;
           var branchID = prefs.getInt('branchID') ?? 1;
           currency.value = prefs.getString('CurrencySymbol') ?? "";
+          isComplimentary.value = prefs.getBool("complimentary_bill") ?? false;
+
+          print("${isComplimentary.value}");
+
           final String url = '$baseUrl/posholds/view-pos/salesOrder/$uID/';
 
           Map data = {
@@ -293,7 +298,8 @@ class POSPaymentController extends GetxController {
           "BranchID": branchID,
           "LedgerID": ledgerID.value,
           "GrandTotal": grandTotalAmount.value,
-          "BillDiscPercent": "${billDiscPercent.value}",
+          // "BillDiscPercent": "${billDiscPercent.value}",
+          "BillDiscPercent":   checkValue(billDiscPercent.value),
           "BidillDiscAmt": "${disCount.value}",
           "CashReceived": "${cashReceived.value}",
           "BankAmount": "${bankReceived.value}",
@@ -374,11 +380,19 @@ class POSPaymentController extends GetxController {
     }
   }
 
+    checkValue(dynamic value) {
+    if (value == null || value is! num || value.isNaN || value == double.infinity || value == double.negativeInfinity) {
+      return 0;
+    }
+    return value;
+  }
   checkNan(value) {
     var val = value;
     if (value.isNaN) {
       return 0.0;
-    } else {
+    }
+
+    else {
       var val2 = val;
       return val2;
     }

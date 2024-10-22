@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -30,6 +31,11 @@ class POSController extends GetxController {
   final isLoadCar = false.obs;
 
   POSController({int defaultIndex = 0}) : tabIndex = defaultIndex.obs;
+
+
+  Timer? timer;
+
+
 
   // var tabIndex = 0.obs;
 
@@ -122,7 +128,7 @@ class POSController extends GetxController {
   ///in hours and minute
   String returnOrderTime(String data, String status) {
     if (status != "Vacant") {
-      print("----data $data   $status");
+      // print("----data $data   $status");
     }
 
     if (data == "" || status == "Vacant") {
@@ -196,6 +202,30 @@ class POSController extends GetxController {
       isLoading(false);
     }
   }
+    fetchAllDataWithoutLoading() async {
+    try {
+
+      update();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var userID = prefs.getInt('user_id') ?? 0;
+      var accessToken = prefs.getString('access') ?? '';
+      currency = prefs.getString('CurrencySymbol') ?? "";
+      userName.value = prefs.getString('user_name') ?? "";
+      var fetchedData = await _tableService.fetchAllData(accessToken);
+      print(fetchedData);
+      selectedIndexNotifier.value = 0;
+      tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
+
+      fullDataList.value = fetchedData['data']??[];
+      print("fullDataListfullDataList${fullDataList.length}");
+      pr(tableMergeData.length.toString());
+    } finally {
+
+    }
+  }
+
+
+
 
   ///fetch takeaway,online,car api call
   void fetchTOC() async {
@@ -431,12 +461,11 @@ class POSController extends GetxController {
       print(response.body);
       if (status == 6000) {
         return true;
-
-      } else if (status == 6001) {
+      }
+      else if (status == 6001) {
         var msg = responseData["message"];
         Get.snackbar('Error', msg);
         return false;
-
       }
       else{
         return false;
@@ -466,7 +495,6 @@ class POSController extends GetxController {
       var accessToken = prefs.getString('access') ?? '';
       final String url = '$baseUrl/posholds/pos_table/swap_order/';
       Map<String, dynamic> data = {
-
           "CompanyID": companyID,
           "BranchID": branchID,
           "fromtable": [
@@ -475,7 +503,6 @@ class POSController extends GetxController {
               "From_Split_Tables":fromSplitTableList
             }
           ],
-
         "To_Main_Table": toTableID,
         "To_Split_Table": toSplitTableID
       };
@@ -499,7 +526,7 @@ class POSController extends GetxController {
         pr("-----------11");
         isLoading(false);
         return true;
-       // Get.back();
+         // Get.back();
         // tablenameController.clear();
         // splitcountcontroller.text = "0";
         // fetchAllData();
@@ -509,6 +536,7 @@ class POSController extends GetxController {
         Get.snackbar('Error', msg);
         return false;// Show error message
       }
+
       // final addsplit = jsonDecode(response.body);
       // if (response.statusCode == 200 || response.statusCode == 201) {
       //
