@@ -948,9 +948,10 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
             child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
+
               prefs.setBool('isLoggedIn', false);
               prefs.setBool('companySelected', false);
-
+              prefs.clear();
               Navigator.of(context).pushAndRemoveUntil(
                 CupertinoPageRoute(builder: (context) => LoginPageNew()),
                 (_) => false,

@@ -211,12 +211,30 @@ class POSController extends GetxController {
       selectedIndexNotifier.value = 0;
       print("--------1");
 
-      onlineOrders.assignAll((fetchedTOCData['Online'] as List).map((json) => Online.fromJson(json)).toList());
-      print("--------1");
-      takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
-      print("--------1");
-      carOrders.assignAll((fetchedTOCData['Car'] as List).map((json) => Car.fromJson(json)).toList());
-      print("--------1");
+      if(fetchedTOCData['TakeAwayStatusCode'] ==6000){
+        takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
+        print("--------1");
+      }
+
+
+      if(fetchedTOCData['OnlineStatusCode'] ==6000){
+        onlineOrders.assignAll((fetchedTOCData['Online'] as List).map((json) => Online.fromJson(json)).toList());
+        print("--------1");
+      }
+
+
+      if(fetchedTOCData['CarStatusCode'] ==6000){
+        carOrders.assignAll((fetchedTOCData['Car'] as List).map((json) => Car.fromJson(json)).toList());
+        print("--------1");
+      }
+
+
+
+
+      // takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
+      // print("--------1");
+      // carOrders.assignAll((fetchedTOCData['Car'] as List).map((json) => Car.fromJson(json)).toList());
+      // print("--------1");
       cancelOrder.assignAll(fetchedTOCData['Reasons'] ?? []);
       print("--------1");
     } finally {
