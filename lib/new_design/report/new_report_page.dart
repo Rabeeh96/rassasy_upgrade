@@ -1204,7 +1204,7 @@ class _ReportPageState extends State<ReportPageNew> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('Daily_sum'.tr, style: customisedStyleBold(context, Colors.black, FontWeight.w500, 18.0), textAlign: TextAlign.left),
+                  Text('Daily_sum'.tr, style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0), textAlign: TextAlign.left),
                   Padding(
                     padding: const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
                     child: Row(
@@ -1448,13 +1448,13 @@ class _ReportPageState extends State<ReportPageNew> {
                                       width: MediaQuery.of(context).size.width / 4,
                                       child: Text(
                                         'particular'.tr,
-                                        style: customisedStyleBold(context, const Color(0xff717171), FontWeight.normal, 16.0),
+                                        style: customisedStyle(context, const Color(0xff717171), FontWeight.normal, 16.0),
                                       )),
                                   Container(
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       'CASH'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.normal, 16.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.normal, 16.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1462,7 +1462,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       'BANK'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.normal, 16.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.normal, 16.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1470,7 +1470,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       'CREDIT'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.normal, 16.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.normal, 16.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1495,11 +1495,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'opn_blns'.tr,
-                                            style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(openingBalanceTotal),
-                                            style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1508,7 +1508,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(openingBalanceCash),
-                                      style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1516,7 +1516,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(openingBalanceBank),
-                                      style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1525,7 +1525,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     child: Text(
                                       "",
                                       // roundStringWith(openingBalanceCredit),
-                                      style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0), textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1549,11 +1549,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'sales_invoice'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(salesInvoiceBalance),
-                                            style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1562,7 +1562,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(salesInvoiceCash),
-                                      style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1570,7 +1570,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(salesInvoiceBank),
-                                      style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1578,7 +1578,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(salesInvoiceCredit),
-                                      style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1603,11 +1603,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'sales_return'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(saleReturnBalance),
-                                            style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1616,7 +1616,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(saleReturnCash),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1624,7 +1624,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(saleReturnBank),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1632,7 +1632,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(saleReturnCredit),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1657,11 +1657,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'Purchase_Invoice'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(purchaseInvoiceBalance),
-                                            style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1670,7 +1670,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(purchaseInvoiceCash),
-                                      style: customisedStyleBold(context, Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1678,7 +1678,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(purchaseInvoiceBank),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1686,7 +1686,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(purchaseInvoiceCredit),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1710,11 +1710,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'Expenses'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(expenseBalance),
-                                            style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1723,7 +1723,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(expenseCash),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1731,7 +1731,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(expenseBank),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1739,7 +1739,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(expenseCredit),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1764,11 +1764,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'Receipts'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(receipt),
-                                            style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1777,7 +1777,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(receiptCash),
-                                      style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1785,7 +1785,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(receiptBank),
-                                      style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1794,7 +1794,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     child: Text(
                                       '',
                                       // roundStringWith(receiptCredit),
-                                      style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0), textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1818,11 +1818,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'payment'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(payment),
-                                            style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1831,7 +1831,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(paymentCash),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1839,7 +1839,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(paymentBank),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1848,7 +1848,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     child: Text(
                                       '',
                                       // roundStringWith(paymentCredit),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0), textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1872,11 +1872,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'Journals'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(journalsBalance),
-                                            style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1885,7 +1885,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(journalsCash),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1893,7 +1893,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(journalsBank),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1902,7 +1902,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     child: Text(
                                       '',
                                       // roundStringWith(journalsCredit),
-                                      style: customisedStyleBold(context, const Color(0xffB70404), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0), textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1926,11 +1926,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'closing_balance'.tr,
-                                            style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(closingBalance),
-                                            style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -1939,7 +1939,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(closingBalanceCash),
-                                      style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1947,7 +1947,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     width: MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(closingBalanceBank),
-                                      style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1956,7 +1956,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     child: Text(
                                       '',
                                       // roundStringWith(closingBalanceCredit),
-                                      style: customisedStyleBold(context, const Color(0xffffffff), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0), textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1993,7 +1993,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                 children: [
                                   Text(
                                     'sales_summary'.tr,
-                                    style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2006,11 +2006,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                             children: [
                                               Text(
                                                 'Gross'.tr,
-                                                style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                                style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                               ),
                                               Text(
                                                 roundStringWith(sIGrossAmount),
-                                                style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                                style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ],
@@ -2023,11 +2023,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               'disc'.tr,
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                             ),
                                             Text(
                                               roundStringWith(sIDiscountAmount),
-                                              style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2041,11 +2041,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               "VAT",
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                             ),
                                             Text(
                                               roundStringWith(sITaxAmount),
-                                              style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2059,11 +2059,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               'Total'.tr,
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                             ),
                                             Text(
                                               roundStringWith(sITotalAmount),
-                                              style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2087,7 +2087,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                 children: [
                                   Text(
                                     'sale_return_sum'.tr,
-                                    style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2100,11 +2100,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                             children: [
                                               Text(
                                                 'Gross'.tr,
-                                                style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                                style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                               ),
                                               Text(
                                                 roundStringWith(sRGrossAmount),
-                                                style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                                style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ],
@@ -2117,11 +2117,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               'disc'.tr,
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                             ),
                                             Text(
                                               roundStringWith(sRDiscountAmount),
-                                              style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2135,11 +2135,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               "VAT",
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                             ),
                                             Text(
                                               roundStringWith(sRTaxAmount),
-                                              style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2153,11 +2153,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               'Total'.tr,
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                             ),
                                             Text(
                                               roundStringWith(sRTotalAmount),
-                                              style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2194,7 +2194,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                 padding: const EdgeInsets.only(top: 8.0, bottom: 8, left: 6),
                                 child: Text(
                                   'Effective_Sale'.tr,
-                                  style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                                  style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                                 ),
                               )),
                           Container(
@@ -2214,11 +2214,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'Total'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(effectiveTotal),
-                                            style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -2231,11 +2231,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'sale_invo'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(effectiveNoSales),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2249,11 +2249,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'sale_return'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(effectiveNo_sales_return),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2267,11 +2267,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'Effective_Sale1'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(effectiveNo_effective),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2298,11 +2298,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'CASH'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(effectiveCash_sale),
-                                            style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -2315,11 +2315,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'BANK'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(effective_bank_sale),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2333,11 +2333,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'CREDIT'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(effective_credit),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2351,11 +2351,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           "",
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           "",
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                         ),
                                       ],
                                     ),
@@ -2386,7 +2386,7 @@ class _ReportPageState extends State<ReportPageNew> {
                               children: [
                                 Text(
                                   'Purchase'.tr,
-                                  style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2398,11 +2398,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'Purchase_Invoice'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(purchaseInvoiceTotalAmount),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2414,11 +2414,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'Purchase_Return'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(purchaseReturnTotalAmount),
-                                            style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -2443,7 +2443,7 @@ class _ReportPageState extends State<ReportPageNew> {
                               children: [
                                 Text(
                                   'Expenses'.tr,
-                                  style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2455,11 +2455,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'Total'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(expenseTotal),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2491,7 +2491,7 @@ class _ReportPageState extends State<ReportPageNew> {
                             padding: const EdgeInsets.only(left: 6.0, top: 7, bottom: 7),
                             child: Text(
                               'sale_byt_type'.tr,
-                              style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                             ),
                           ),
                           Container(
@@ -2511,11 +2511,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                         children: [
                                           Text(
                                             'Dining'.tr,
-                                            style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                            style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                           ),
                                           Text(
                                             roundStringWith(dineSAleAmount),
-                                            style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -2528,11 +2528,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'Take_awy'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(takeAwaySAleAmount),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2546,11 +2546,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                       children: [
                                         Text(
                                           'Car'.tr,
-                                          style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         ),
                                         Text(
                                           roundStringWith(carSaleAmount),
-                                          style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2586,7 +2586,7 @@ class _ReportPageState extends State<ReportPageNew> {
                             ),
                             child: Text(
                               'Order_Detailed'.tr,
-                              style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                             ),
                           ),
                           Container(
@@ -2611,11 +2611,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                             children: [
                                               Text(
                                                 'order'.tr,
-                                                style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                                style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                               ),
                                               Text(
                                                 roundStringWith(orderTotal),
-                                                style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                                style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ],
@@ -2626,12 +2626,12 @@ class _ReportPageState extends State<ReportPageNew> {
                                             children: [
                                               Text(
                                                 'amount'.tr,
-                                                style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                                style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                               Text(
                                                 roundStringWith(orderAmount),
-                                                style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                                style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ],
@@ -2652,12 +2652,12 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               'Cancelled'.tr,
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                             Text(
                                               roundStringWith(cancelledOrder),
-                                              style: customisedStyleBold(context, Colors.red, FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, Colors.red, FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2668,12 +2668,12 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               'amount'.tr,
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                             Text(
                                               roundStringWith(cancelOrderAmount),
-                                              style: customisedStyleBold(context, Colors.red, FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, Colors.red, FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2695,11 +2695,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               'Pending'.tr,
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                             ),
                                             Text(
                                               roundStringWith(pendingOrder),
-                                              style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2710,11 +2710,11 @@ class _ReportPageState extends State<ReportPageNew> {
                                           children: [
                                             Text(
                                               'amount'.tr,
-                                              style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                             ),
                                             Text(
                                               roundStringWith(pendingAmounts),
-                                              style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2750,7 +2750,7 @@ class _ReportPageState extends State<ReportPageNew> {
                             ),
                             child: Text(
                               'ord_emp'.tr,
-                              style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                             ),
                           ),
                           Container(
@@ -2769,7 +2769,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     ),
                                     child: Text(
                                       'Employee'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                     ),
                                   ),
                                   Container(
@@ -2779,7 +2779,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       'order'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2790,7 +2790,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2801,7 +2801,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       '#Cancelled'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2812,7 +2812,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2823,7 +2823,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       'Pending'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2834,7 +2834,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2861,14 +2861,14 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 8,
                                             child: Text(
                                               empListsList[i].empName,
-                                              style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                             ),
                                           ),
                                           Container(
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(empListsList[i].sales),
-                                              style: customisedStyleBold(context, const Color(0xff007D15), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff007D15), FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -2876,7 +2876,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(empListsList[i].sale_amount),
-                                              style: customisedStyleBold(context, const Color(0xff007D15), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff007D15), FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -2884,7 +2884,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(empListsList[i].cancelled),
-                                              style: customisedStyleBold(context, Colors.red, FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, Colors.red, FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -2892,7 +2892,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(empListsList[i].cancelled_amount),
-                                              style: customisedStyleBold(context, Colors.red, FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, Colors.red, FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -2900,7 +2900,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(empListsList[i].pending),
-                                              style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -2908,7 +2908,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(empListsList[i].pending_amount),
-                                              style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -2940,7 +2940,7 @@ class _ReportPageState extends State<ReportPageNew> {
                             ),
                             child: Text(
                               'sales_emp'.tr,
-                              style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                             ),
                           ),
                           Container(
@@ -2959,7 +2959,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     ),
                                     child: Text(
                                       'Employee'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                     ),
                                   ),
                                   Container(
@@ -2969,7 +2969,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       'Sales'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2980,7 +2980,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2991,7 +2991,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       '#Return'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -3002,7 +3002,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -3014,7 +3014,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                     child: Center(
                                       child: Text(
                                         'Effective_Sale'.tr,
-                                        style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                        style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                                         textAlign: TextAlign.right,
                                       ),
                                     ),
@@ -3040,14 +3040,14 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 8,
                                             child: Text(
                                               saleEmpModelList[i].emplyee_name,
-                                              style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                             ),
                                           ),
                                           Container(
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(saleEmpModelList[i].sales),
-                                              style: customisedStyleBold(context, const Color(0xff007D15), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff007D15), FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -3055,7 +3055,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(saleEmpModelList[i].sale_amount),
-                                              style: customisedStyleBold(context, const Color(0xff007D15), FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, const Color(0xff007D15), FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -3063,7 +3063,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(saleEmployeeReturn),
-                                              style: customisedStyleBold(context, Colors.red, FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, Colors.red, FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -3071,7 +3071,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             width: MediaQuery.of(context).size.width / 12,
                                             child: Text(
                                               roundStringWith(saleEmpModelList[i].return_amount),
-                                              style: customisedStyleBold(context, Colors.red, FontWeight.w500, 12.0),
+                                              style: customisedStyle(context, Colors.red, FontWeight.w500, 12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -3080,7 +3080,7 @@ class _ReportPageState extends State<ReportPageNew> {
                                             child: Center(
                                               child: Text(
                                                 roundStringWith(saleEmpModelList[i].effective_sale),
-                                                style: customisedStyleBold(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                                style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ),
@@ -3112,7 +3112,7 @@ class _ReportPageState extends State<ReportPageNew> {
                     //       ),
                     //       child: Text(
                     //         'Delivery Details',
-                    //         style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                    //         style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                     //       ),
                     //     ),
                     //     Container(
@@ -3147,7 +3147,7 @@ class _ReportPageState extends State<ReportPageNew> {
                     //                         ),
                     //                         child: Text(
                     //                           'Savad',
-                    //                           style: customisedStyleBold(context, Colors.black, FontWeight.w500, 13.0),
+                    //                           style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
                     //                         ),
                     //                       ),
                     //                       Padding(
@@ -3161,11 +3161,11 @@ class _ReportPageState extends State<ReportPageNew> {
                     //                               children: [
                     //                                 Text(
                     //                                   "#Orders",
-                    //                                   style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                    //                                   style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                     //                                 ),
                     //                                 Text(
                     //                                   "0.00",
-                    //                                   style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                    //                                   style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                     //                                 ),
                     //                               ],
                     //                             ),
@@ -3175,11 +3175,11 @@ class _ReportPageState extends State<ReportPageNew> {
                     //                               children: [
                     //                                 Text(
                     //                                   "Amount",
-                    //                                   style: customisedStyleBold(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                    //                                   style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
                     //                                 ),
                     //                                 Text(
                     //                                   "0.00",
-                    //                                   style: customisedStyleBold(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                    //                                   style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
                     //                                 ),
                     //                               ],
                     //                             ),
@@ -3225,7 +3225,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                     crossAxisAlignment: CrossAxisAlignment.center,
 //                     children: [
 //                       Text("Daily Summary",
-//                           style: customisedStyleBold(
+//                           style: customisedStyle(
 //                               context, Colors.black, FontWeight.w500, 18.0),
 //                           textAlign: TextAlign.left),
 //                       Padding(
@@ -3440,7 +3440,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           4,
 //                                       child: Text(
 //                                         "PARTICULARS",
-//                                         style: customisedStyleBold(
+//                                         style: customisedStyle(
 //                                             context,
 //                                             const Color(0xff717171),
 //                                             FontWeight.normal,
@@ -3451,7 +3451,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       "CASH ",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.normal,
@@ -3463,7 +3463,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       "BANK  ",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.normal,
@@ -3475,7 +3475,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       "CREDIT  ",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.normal,
@@ -3512,7 +3512,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Opening Balance",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffffffff),
 //                                                 FontWeight.w500,
@@ -3520,7 +3520,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           ),
 //                                           Text(
 //                                             roundStringWith(openingBalanceTotal)  ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffffffff),
 //                                                 FontWeight.normal,
@@ -3533,7 +3533,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(openingBalanceCash)  ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffffffff),
 //                                           FontWeight.w500,
@@ -3545,7 +3545,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(openingBalanceBank),
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffffffff),
 //                                           FontWeight.w500,
@@ -3557,7 +3557,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(openingBalanceCredit),
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffffffff),
 //                                           FontWeight.w500,
@@ -3594,7 +3594,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Sales Invoice",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff000000),
 //                                                 FontWeight.w500,
@@ -3603,7 +3603,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           Text(
 //                                             roundStringWith(salesInvoice)
 //                                             ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff007A1C),
 //                                                 FontWeight.normal,
@@ -3617,7 +3617,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith(salesInvoiceCash)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -3629,7 +3629,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(salesInvoiceBank),
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -3641,7 +3641,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(salesInvoiceCredit) ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -3678,7 +3678,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Sales Return",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff000000),
 //                                                 FontWeight.w500,
@@ -3687,7 +3687,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           Text(
 //                                             roundStringWith(saleReturn)
 //                                             ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffB70404),
 //                                                 FontWeight.normal,
@@ -3700,7 +3700,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(saleReturnCash)  ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -3713,7 +3713,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith(saleReturnBank)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -3725,7 +3725,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(saleReturnCredit)  ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -3762,7 +3762,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Purchase Invoice",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff000000),
 //                                                 FontWeight.w500,
@@ -3771,7 +3771,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           Text(
 //                                             roundStringWith(purchaseInvoice)
 //                                             ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffB70404),
 //                                                 FontWeight.normal,
@@ -3785,7 +3785,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith(purchaseInvoiceCash)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -3798,7 +3798,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith(purchaseInvoiceBank)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -3811,7 +3811,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith(purchaseInvoiceCredit)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -3848,7 +3848,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Purchase Return",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff000000),
 //                                                 FontWeight.w500,
@@ -3856,7 +3856,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           ),
 //                                           Text(
 //                                             purchaseReturn ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff007A1C),
 //                                                 FontWeight.normal,
@@ -3869,7 +3869,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       purchaseReturnCash,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -3881,7 +3881,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       purchaseReturnBank,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -3893,7 +3893,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       purchaseReturnCredit   ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -3930,7 +3930,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Expenses",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff000000),
 //                                                 FontWeight.w500,
@@ -3938,7 +3938,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           ),
 //                                           Text(
 //                                             roundStringWith(expense),
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffB70404),
 //                                                 FontWeight.normal,
@@ -3951,7 +3951,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(expenseCash)     ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -3963,7 +3963,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(expenseBank)    ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -3975,7 +3975,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(expenseCredit)    ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -4012,7 +4012,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Receipts",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff000000),
 //                                                 FontWeight.w500,
@@ -4020,7 +4020,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           ),
 //                                           Text(
 //                                             roundStringWith(receipt)  ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff007A1C),
 //                                                 FontWeight.normal,
@@ -4034,7 +4034,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith(receiptCash)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -4046,7 +4046,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     MediaQuery.of(context).size.width / 8,
 //                                     child: Text(
 //                                       roundStringWith(receiptBank)  ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -4059,7 +4059,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith(receiptCredit)   ,
 //
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff007A1C),
 //                                           FontWeight.w500,
@@ -4096,7 +4096,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Payment",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff000000),
 //                                                 FontWeight.w500,
@@ -4105,7 +4105,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           Text(
 //                                             roundStringWith(payment)
 //                                             ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffB70404),
 //                                                 FontWeight.normal,
@@ -4119,7 +4119,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith( paymentCash)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -4133,7 +4133,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       roundStringWith(  paymentBank)
 //                                       ,
 //
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -4146,7 +4146,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     child: Text(
 //                                       roundStringWith(paymentCredit),
 //
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -4183,7 +4183,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Journals",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff000000),
 //                                                 FontWeight.w500,
@@ -4193,7 +4193,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             roundStringWith(journals)
 //
 //                                             ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffB70404),
 //                                                 FontWeight.normal,
@@ -4209,7 +4209,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           journalsCash)
 //
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -4223,7 +4223,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       roundStringWith(
 //                                           journalsBank)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -4237,7 +4237,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       roundStringWith(
 //                                           journalsCredit)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffB70404),
 //                                           FontWeight.w500,
@@ -4274,7 +4274,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Closing Balance",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffffffff),
 //                                                 FontWeight.w500,
@@ -4284,7 +4284,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             roundStringWith(
 //                                                 closingBalance)
 //                                             ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xffffffff),
 //                                                 FontWeight.normal,
@@ -4299,7 +4299,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       roundStringWith(
 //                                           closingBalanceCash)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffffffff),
 //                                           FontWeight.w500,
@@ -4313,7 +4313,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       roundStringWith(
 //                                           closingBalanceBank)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffffffff),
 //                                           FontWeight.w500,
@@ -4327,7 +4327,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       roundStringWith(
 //                                           closingBalanceCredit)
 //                                       ,
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xffffffff),
 //                                           FontWeight.w500,
@@ -4373,7 +4373,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                 children: [
 //                                   Text(
 //                                     'Sales Invoice Summary',
-//                                     style: customisedStyleBold(context,
+//                                     style: customisedStyle(context,
 //                                         Colors.black, FontWeight.w500, 13.0),
 //                                   ),
 //                                   Row(
@@ -4393,7 +4393,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             children: [
 //                                               Text(
 //                                                 "Gross",
-//                                                 style: customisedStyleBold(
+//                                                 style: customisedStyle(
 //                                                     context,
 //                                                     const Color(0xff717171),
 //                                                     FontWeight.w500,
@@ -4403,7 +4403,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 roundStringWith(
 //                                                     sIGrossAmount)
 //                                                 ,
-//                                                 style: customisedStyleBold(
+//                                                 style: customisedStyle(
 //                                                     context,
 //                                                     const Color(0xff007A1C),
 //                                                     FontWeight.normal,
@@ -4424,7 +4424,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Discount",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -4433,7 +4433,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             Text(
 //                                               roundStringWith(sIDiscountAmount)
 //                                               ,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -4455,7 +4455,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "VAT",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -4464,7 +4464,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             Text(
 //                                               roundStringWith(sITaxAmount)
 //                                               ,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -4486,7 +4486,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Total",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -4494,7 +4494,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             ),
 //                                             Text(
 //                                               roundStringWith( sITotalAmount)                                                ,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -4525,7 +4525,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                 children: [
 //                                   Text(
 //                                     'Sales Return Summary',
-//                                     style: customisedStyleBold(context,
+//                                     style: customisedStyle(context,
 //                                         Colors.black, FontWeight.w500, 13.0),
 //                                   ),
 //                                   Row(
@@ -4545,7 +4545,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             children: [
 //                                               Text(
 //                                                 "Gross",
-//                                                 style: customisedStyleBold(
+//                                                 style: customisedStyle(
 //                                                     context,
 //                                                     const Color(0xff717171),
 //                                                     FontWeight.w500,
@@ -4554,7 +4554,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                               Text(
 //                                                 roundStringWith(sRGrossAmount)
 //                                                 ,
-//                                                 style: customisedStyleBold(
+//                                                 style: customisedStyle(
 //                                                     context,
 //                                                     const Color(0xff007A1C),
 //                                                     FontWeight.normal,
@@ -4575,7 +4575,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Discount",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -4584,7 +4584,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             Text(
 //                                               roundStringWith(sRDiscountAmount)
 //                                               ,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -4606,7 +4606,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "VAT",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -4615,7 +4615,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             Text(
 //                                               roundStringWith(sRTaxAmount)
 //                                               ,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -4637,7 +4637,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Total",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -4646,7 +4646,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             Text(
 //                                               roundStringWith(sRTotalAmount)
 //                                               ,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -4688,7 +4688,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     top: 8.0, bottom: 8, left: 6),
 //                                 child: Text(
 //                                   'Effective Sale',
-//                                   style: customisedStyleBold(context,
+//                                   style: customisedStyle(context,
 //                                       Colors.black, FontWeight.w500, 13.0),
 //                                 ),
 //                               )),
@@ -4718,7 +4718,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Total",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff717171),
 //                                                 FontWeight.w500,
@@ -4727,7 +4727,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           Text(
 //                                             roundStringWith(eSTotalAmount)
 //                                             ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff007A1C),
 //                                                 FontWeight.normal,
@@ -4746,7 +4746,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       children: [
 //                                         Text(
 //                                           "#Sales Invoice",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff717171),
 //                                               FontWeight.w500,
@@ -4755,7 +4755,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         Text(
 //                                           roundStringWith(eSSalesInvoice)
 //                                           ,
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff007A1C),
 //                                               FontWeight.normal,
@@ -4775,7 +4775,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       children: [
 //                                         Text(
 //                                           "#Sales Return",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff717171),
 //                                               FontWeight.w500,
@@ -4784,7 +4784,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         Text(
 //                                           roundStringWith(eSSaleReturn)
 //                                           ,
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff007A1C),
 //                                               FontWeight.normal,
@@ -4804,7 +4804,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       children: [
 //                                         Text(
 //                                           "#Effective Sale",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff717171),
 //                                               FontWeight.w500,
@@ -4813,7 +4813,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         Text(
 //                                           roundStringWith( effectiveSale)
 //                                           ,
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff007A1C),
 //                                               FontWeight.normal,
@@ -4852,7 +4852,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "CASH",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff717171),
 //                                                 FontWeight.w500,
@@ -4861,7 +4861,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           Text(
 //                                             roundStringWith( eSCashAmount)
 //                                             ,
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff007A1C),
 //                                                 FontWeight.normal,
@@ -4880,7 +4880,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       children: [
 //                                         Text(
 //                                           "BANK",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff717171),
 //                                               FontWeight.w500,
@@ -4889,7 +4889,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         Text(
 //                                           roundStringWith(eSBankAmount)
 //                                           ,
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff007A1C),
 //                                               FontWeight.normal,
@@ -4909,7 +4909,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       children: [
 //                                         Text(
 //                                           "CREDIT",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff717171),
 //                                               FontWeight.w500,
@@ -4918,7 +4918,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         Text(
 //                                           roundStringWith( eSCreditAmount)
 //                                           ,
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff007A1C),
 //                                               FontWeight.normal,
@@ -4938,7 +4938,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       children: [
 //                                         Text(
 //                                           "",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff717171),
 //                                               FontWeight.w500,
@@ -4946,7 +4946,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         ),
 //                                         Text(
 //                                           "",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff007A1C),
 //                                               FontWeight.normal,
@@ -4985,7 +4985,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                               children: [
 //                                 Text(
 //                                   "Purchase",
-//                                   style: customisedStyleBold(
+//                                   style: customisedStyle(
 //                                       context,
 //                                       const Color(0xff000000),
 //                                       FontWeight.w500,
@@ -5004,7 +5004,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Purchase Invoice",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -5012,7 +5012,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             ),
 //                                             Text(
 //                                               roundStringWith(  purchaseInvoiceAmount),
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -5029,7 +5029,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Purchase Return",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff717171),
 //                                                 FontWeight.w500,
@@ -5037,7 +5037,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           ),
 //                                           Text(
 //                                             roundStringWith(purchaseReturnAmount),
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff007A1C),
 //                                                 FontWeight.normal,
@@ -5069,7 +5069,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                               children: [
 //                                 Text(
 //                                   "Expenses",
-//                                   style: customisedStyleBold(
+//                                   style: customisedStyle(
 //                                       context,
 //                                       const Color(0xff000000),
 //                                       FontWeight.w500,
@@ -5088,7 +5088,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Total",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -5096,7 +5096,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             ),
 //                                             Text(
 //                                               roundStringWith(expenseTotal),
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -5134,7 +5134,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                 left: 6.0, top: 7, bottom: 7),
 //                             child: Text(
 //                               'Sale By Type',
-//                               style: customisedStyleBold(context,
+//                               style: customisedStyle(context,
 //                                   Colors.black, FontWeight.w500, 13.0),
 //                             ),
 //                           ),
@@ -5163,7 +5163,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         children: [
 //                                           Text(
 //                                             "Dining",
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff717171),
 //                                                 FontWeight.w500,
@@ -5171,7 +5171,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           ),
 //                                           Text(
 //                                             roundStringWith(  dineSAleAmount),
-//                                             style: customisedStyleBold(
+//                                             style: customisedStyle(
 //                                                 context,
 //                                                 const Color(0xff007A1C),
 //                                                 FontWeight.normal,
@@ -5190,7 +5190,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       children: [
 //                                         Text(
 //                                           "Take away",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff717171),
 //                                               FontWeight.w500,
@@ -5198,7 +5198,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         ),
 //                                         Text(
 //                                           roundStringWith(takeAwaySAleAmount),
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff007A1C),
 //                                               FontWeight.normal,
@@ -5218,7 +5218,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                       children: [
 //                                         Text(
 //                                           "Car",
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff717171),
 //                                               FontWeight.w500,
@@ -5226,7 +5226,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                         ),
 //                                         Text(
 //                                           roundStringWith(carSaleAmount),
-//                                           style: customisedStyleBold(
+//                                           style: customisedStyle(
 //                                               context,
 //                                               const Color(0xff007A1C),
 //                                               FontWeight.normal,
@@ -5266,7 +5266,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                             ),
 //                             child: Text(
 //                               'Order Detailed',
-//                               style: customisedStyleBold(context,
+//                               style: customisedStyle(context,
 //                                   Colors.black, FontWeight.w500, 13.0),
 //                             ),
 //                           ),
@@ -5298,7 +5298,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             children: [
 //                                               Text(
 //                                                 "#Orders",
-//                                                 style: customisedStyleBold(
+//                                                 style: customisedStyle(
 //                                                     context,
 //                                                     const Color(0xff717171),
 //                                                     FontWeight.w500,
@@ -5306,7 +5306,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                               ),
 //                                               Text(
 //                                                 roundStringWith( orderTotal),
-//                                                 style: customisedStyleBold(
+//                                                 style: customisedStyle(
 //                                                     context,
 //                                                     const Color(0xff007A1C),
 //                                                     FontWeight.normal,
@@ -5322,7 +5322,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             children: [
 //                                               Text(
 //                                                 "Amount",
-//                                                 style: customisedStyleBold(
+//                                                 style: customisedStyle(
 //                                                     context,
 //                                                     const Color(0xff717171),
 //                                                     FontWeight.w500,
@@ -5330,7 +5330,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                               ),
 //                                               Text(
 //                                                 roundStringWith(orderAmount),
-//                                                 style: customisedStyleBold(
+//                                                 style: customisedStyle(
 //                                                     context,
 //                                                     const Color(0xff007A1C),
 //                                                     FontWeight.normal,
@@ -5358,7 +5358,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Cancelled",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -5368,7 +5368,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                               roundStringWith(
 //                                                   cancelledOrder),
 //
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   Colors.red,
 //                                                   FontWeight.normal,
@@ -5384,7 +5384,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Amount",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -5392,7 +5392,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             ),
 //                                             Text(
 //                                               roundStringWith( cancelOrderAmount),
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   Colors.red,
 //                                                   FontWeight.normal,
@@ -5421,7 +5421,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Pending ",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -5432,7 +5432,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                   pendingOrder),
 //
 //
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -5448,7 +5448,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                           children: [
 //                                             Text(
 //                                               "Amount",
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff717171),
 //                                                   FontWeight.w500,
@@ -5457,7 +5457,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                             Text(
 //                                               roundStringWith( pendingAmounts),
 //
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007A1C),
 //                                                   FontWeight.normal,
@@ -5496,7 +5496,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                             ),
 //                             child: Text(
 //                               'Order By Employee',
-//                               style: customisedStyleBold(context,
+//                               style: customisedStyle(context,
 //                                   Colors.black, FontWeight.w500, 13.0),
 //                             ),
 //                           ),
@@ -5518,7 +5518,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Employee",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5534,7 +5534,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "#Orders",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5550,7 +5550,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Amount",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5566,7 +5566,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "#Cancelled",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5582,7 +5582,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Amount",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5598,7 +5598,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Pending ",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5614,7 +5614,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Amount",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5650,7 +5650,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 8,
 //                                             child: Text(
 //                                               empListsList[i].empName,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff000000),
 //                                                   FontWeight.w500,
@@ -5664,7 +5664,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               employeeOrder,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007D15),
 //                                                   FontWeight.w500,
@@ -5678,7 +5678,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               employeeAmount,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007D15),
 //                                                   FontWeight.w500,
@@ -5692,7 +5692,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               empListsList[i].cancelled,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   Colors.red,
 //                                                   FontWeight.w500,
@@ -5706,7 +5706,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               empListsList[i].cancelled_amount,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   Colors.red,
 //                                                   FontWeight.w500,
@@ -5720,7 +5720,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               empListsList[i].pending,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff000000),
 //                                                   FontWeight.w500,
@@ -5734,7 +5734,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               empListsList[i].pending_amount,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff000000),
 //                                                   FontWeight.w500,
@@ -5769,7 +5769,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                             ),
 //                             child: Text(
 //                               'Sales By Employee',
-//                               style: customisedStyleBold(context,
+//                               style: customisedStyle(context,
 //                                   Colors.black, FontWeight.w500, 13.0),
 //                             ),
 //                           ),
@@ -5791,7 +5791,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Employee",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5807,7 +5807,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Sales",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5823,7 +5823,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Amount",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5839,7 +5839,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "#Return",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5855,7 +5855,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Amount",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5871,7 +5871,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                     ),
 //                                     child: Text(
 //                                       "Effective Sale ",
-//                                       style: customisedStyleBold(
+//                                       style: customisedStyle(
 //                                           context,
 //                                           const Color(0xff717171),
 //                                           FontWeight.w500,
@@ -5906,7 +5906,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 8,
 //                                             child: Text(
 //                                               saleEmpModelList[i].emplyee_name,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff000000),
 //                                                   FontWeight.w500,
@@ -5920,7 +5920,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               saleEmpModelList[i].sales,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007D15),
 //                                                   FontWeight.w500,
@@ -5934,7 +5934,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               saleEmpModelList[i].sale_amount,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff007D15),
 //                                                   FontWeight.w500,
@@ -5948,7 +5948,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               saleEmployeeReturn,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   Colors.red,
 //                                                   FontWeight.w500,
@@ -5962,7 +5962,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 12,
 //                                             child: Text(
 //                                               saleEmpModelList[i].return_amount,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   Colors.red,
 //                                                   FontWeight.w500,
@@ -5976,7 +5976,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                                                 8,
 //                                             child: Text(
 //                                               saleEmpModelList[i].effective_sale,
-//                                               style: customisedStyleBold(
+//                                               style: customisedStyle(
 //                                                   context,
 //                                                   const Color(0xff000000),
 //                                                   FontWeight.w500,
@@ -6013,7 +6013,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                     //           ),
 //                     //           child: Text(
 //                     //             'Delivery Details',
-//                     //             style: customisedStyleBold(context,
+//                     //             style: customisedStyle(context,
 //                     //                 Colors.black, FontWeight.w500, 13.0),
 //                     //           ),
 //                     //         ),
@@ -6063,7 +6063,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                     //                             ),
 //                     //                             child: Text(
 //                     //                               'Savad',
-//                     //                               style: customisedStyleBold(
+//                     //                               style: customisedStyle(
 //                     //                                   context,
 //                     //                                   Colors.black,
 //                     //                                   FontWeight.w500,
@@ -6089,7 +6089,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                     //                                   children: [
 //                     //                                     Text(
 //                     //                                       "#Orders",
-//                     //                                       style: customisedStyleBold(
+//                     //                                       style: customisedStyle(
 //                     //                                           context,
 //                     //                                           const Color(
 //                     //                                               0xff717171),
@@ -6098,7 +6098,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                     //                                     ),
 //                     //                                     Text(
 //                     //                                       "0.00",
-//                     //                                       style: customisedStyleBold(
+//                     //                                       style: customisedStyle(
 //                     //                                           context,
 //                     //                                           const Color(
 //                     //                                               0xff007A1C),
@@ -6118,7 +6118,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                     //                                   children: [
 //                     //                                     Text(
 //                     //                                       "Amount",
-//                     //                                       style: customisedStyleBold(
+//                     //                                       style: customisedStyle(
 //                     //                                           context,
 //                     //                                           const Color(
 //                     //                                               0xff717171),
@@ -6127,7 +6127,7 @@ class _ReportPageState extends State<ReportPageNew> {
 //                     //                                     ),
 //                     //                                     Text(
 //                     //                                       "0.00",
-//                     //                                       style: customisedStyleBold(
+//                     //                                       style: customisedStyle(
 //                     //                                           context,
 //                     //                                           const Color(
 //                     //                                               0xff007A1C),
@@ -7847,7 +7847,7 @@ class _ReportPageState extends State<ReportPageNew> {
           /// commented
           // Text(
           //   "Employee",
-          //   style: customisedStyleBold(context,
+          //   style: customisedStyle(context,
           //       Colors.black, FontWeight.w500, 13.0),
           // ),
           // Padding(

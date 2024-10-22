@@ -98,6 +98,9 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     companyName = prefs.getString('companyName') ?? '';
     baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+/// only in test case
+//     getProductCode("000000");
+
     setState(() {
 
     });
@@ -401,6 +404,7 @@ class _EnterPinNumberState extends State<EnterPinNumber> {
       }
       if (num.length == 6) {
         String passData = num.join('');
+        print("-------------------$passData");
         getProductCode(passData);
       } else {
         print('length is not 6');
@@ -944,9 +948,10 @@ Future<Future<ConfirmAction?>> _asyncConfirmDialog(BuildContext context) async {
             child: Text('Yes'.tr, style: TextStyle(color: Colors.red)),
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
+
               prefs.setBool('isLoggedIn', false);
               prefs.setBool('companySelected', false);
-
+              prefs.clear();
               Navigator.of(context).pushAndRemoveUntil(
                 CupertinoPageRoute(builder: (context) => LoginPageNew()),
                 (_) => false,

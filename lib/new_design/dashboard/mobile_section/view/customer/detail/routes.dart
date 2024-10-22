@@ -63,7 +63,7 @@ class _SelectTaxState extends State<SelectRouteMobile> {
                   ? Center(
                   child: Text(
                     "No Routes",
-                    style: customisedStyleBold(
+                    style: customisedStyle(
                         context, Colors.black, FontWeight.w400, 14.0),
                   ))
                   : ListView.separated(

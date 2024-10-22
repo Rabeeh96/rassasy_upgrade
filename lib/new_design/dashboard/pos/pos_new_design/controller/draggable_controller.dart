@@ -1,24 +1,27 @@
+import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/model/groupModel.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/model/productModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../../global/global.dart';
 
 class DragAndDropController extends GetxController {
   var tableList = <Map<String, dynamic>>[].obs;
-  var isLoading=true.obs;
+  var isLoading = true.obs;
   var selectedValue = 5.obs;
-  var draggableList= <Map<String, dynamic>>[].obs;
+  var draggableList = <Map<String, dynamic>>[].obs;
   var groupIsLoading = false.obs;
   var productIsLoading = false.obs;
   RxString user_name = "".obs;
   var groupList = <GroupListModelClass>[].obs;
   var productList = <ProductListModel>[].obs;
-  ValueNotifier<bool> isVegNotifier = ValueNotifier<bool>(false); // Initialize with initial value
+  ValueNotifier<bool> isVegNotifier =
+      ValueNotifier<bool>(false); // Initialize with initial value
   var selectedIndex = RxInt(0);
   RxInt selectedGroup = 0.obs;
   var dropdownvalue = 'Name'.obs;
@@ -26,7 +29,7 @@ class DragAndDropController extends GetxController {
     print("fetch list");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    selectedValue.value=prefs.getInt('count_of_row') ?? 5;
+    selectedValue.value = prefs.getInt('count_of_row') ?? 5;
     var branchID = prefs.getInt('branchID') ?? 0;
     var companyID = prefs.getString('companyID') ?? '';
     var accessToken = prefs.getString('access') ?? '';
@@ -37,7 +40,7 @@ class DragAndDropController extends GetxController {
     final payload = {
       "CompanyID": companyID,
       "BranchID": branchID,
-      "POSTableList": [],  // Assuming this is needed for the request
+      "POSTableList": [], // Assuming this is needed for the request
       "Type": "List"
     };
     print(payload);
@@ -62,8 +65,6 @@ class DragAndDropController extends GetxController {
           tableList.value = List<Map<String, dynamic>>.from(tableListData);
           print("StatusCode");
           print("${response.statusCode}");
-
-
         } else {
           print('Unexpected StatusCode: ${data['StatusCode']}');
         }
@@ -74,11 +75,13 @@ class DragAndDropController extends GetxController {
       print('Error: $e');
     }
   }
-  Future<void> updateTables({required String type,required List reOrderList}) async {
+
+  Future<void> updateTables(
+      {required String type, required List reOrderList}) async {
     print("fetch list");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    selectedValue.value=prefs.getInt('count_of_row') ?? 5;
+    selectedValue.value = prefs.getInt('count_of_row') ?? 5;
     var branchID = prefs.getInt('branchID') ?? 0;
     var companyID = prefs.getString('companyID') ?? '';
     var accessToken = prefs.getString('access') ?? '';
@@ -89,7 +92,7 @@ class DragAndDropController extends GetxController {
     final payload = {
       "CompanyID": companyID,
       "BranchID": branchID,
-      "POSTableList": reOrderList,  // Assuming this is needed for the request
+      "POSTableList": reOrderList, // Assuming this is needed for the request
       "Type": type
     };
     print(payload);
@@ -110,10 +113,8 @@ class DragAndDropController extends GetxController {
 
         // Ensure StatusCode is what you expect
         if (data['StatusCode'] == 6000) {
-
           Get.snackbar("", "Updated Successfully");
           fetchTables();
-
         } else {
           print('Unexpected StatusCode: ${data['StatusCode']}');
         }
@@ -124,6 +125,7 @@ class DragAndDropController extends GetxController {
       print('Error: $e');
     }
   }
+
   Future<void> getCategoryListDetail(sectionType) async {
     try {
       print("2");
@@ -140,7 +142,12 @@ class DragAndDropController extends GetxController {
 
       final String url = '$baseUrl/posholds/pos/product-group/list/';
       print(url);
-      Map data = {"CompanyID": companyID, "BranchID": branchID, "CreatedUserID": userID, "is_used_group": true};
+      Map data = {
+        "CompanyID": companyID,
+        "BranchID": branchID,
+        "CreatedUserID": userID,
+        "is_used_group": true
+      };
       print(data);
       //encode Map to JSON
       var body = json.encode(data);
@@ -157,13 +164,13 @@ class DragAndDropController extends GetxController {
       print(responseJson);
       print(status);
       if (status == 6000) {
-        print("1........................................................................11");
+        print(
+            "1........................................................................11");
         groupList.clear();
         for (Map user in responseJson) {
           groupList.add(GroupListModelClass.fromJson(user));
         }
         print("..........2");
-
 
         groupIsLoading.value = false;
         if (groupList.isNotEmpty) {
@@ -185,6 +192,7 @@ class DragAndDropController extends GetxController {
       // Handle error
     }
   }
+
   RxBool showWegOrNoVeg = true.obs;
   RxString currency = "".obs;
 
@@ -257,10 +265,10 @@ class DragAndDropController extends GetxController {
     selectedIndex.value = index;
   }
 
-
   void removeTable(String id) {
     tableList.removeWhere((table) => table['id'] == id);
   }
+
   RxList orderItemList = [].obs;
   checking(int proID) {
     for (var i = 0; i < orderItemList.length; i++) {
@@ -271,6 +279,3 @@ class DragAndDropController extends GetxController {
     return [false, 0];
   }
 }
-
-
-

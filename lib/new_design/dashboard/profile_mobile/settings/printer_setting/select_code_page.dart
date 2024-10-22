@@ -45,7 +45,7 @@
 //                   itemCount: codePageController.codepage.length,
 //                   itemBuilder: (BuildContext context, int index) {
 //                     return ListTile(
-//                       title: Text(codePageController.codepage[index],style: customisedStyleBold(context, Colors.black, FontWeight.w400, 14.0),),
+//                       title: Text(codePageController.codepage[index],style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),),
 //                       onTap: ()  {
 //
 //

@@ -110,7 +110,7 @@ class _FlavourListMobileState extends State<FlavourListMobile> {
                     ? Center(
                         child: Text(
                         "No Flavours to Show",
-                        style: customisedStyleBold(
+                        style: customisedStyle(
                             context, Colors.black, FontWeight.w400, 14.0),
                       ))
                     : SlidableAutoCloseBehavior(

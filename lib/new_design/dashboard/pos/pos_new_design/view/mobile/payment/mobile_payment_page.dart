@@ -73,7 +73,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
               dividerStyle(),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -107,27 +107,27 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                       'balance'.tr,
-                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 14.0),
+                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 14.0),
                     ),
                   ),
                   Padding(
-                    padding:   EdgeInsets.only(right: 8.0),
+                    padding:   const EdgeInsets.only(right: 8.0),
                     child: Text(
                       paymentController.currency.value,
-                      style: customisedStyle(context, Color(0xff8C8C8C), FontWeight.w400, 15.0),
+                      style: customisedStyle(context, const Color(0xff8C8C8C), FontWeight.w400, 15.0),
                     ),
                   ),
                   Obx(
                         () => Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Text(paymentController.customerBalance.value, style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0)),
+                      child: Text(paymentController.customerBalance.value, style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0)),
                     ),
                   )
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -143,7 +143,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
               /// delivery man section
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 12,bottom: 12),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -187,16 +187,16 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
               // ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height / 17,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
+                      backgroundColor: WidgetStateProperty.all(const Color(0xffF25F29)),
                     ),
                     onPressed: () {
                       // Do something with the text
@@ -237,7 +237,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
           'payment'.tr,
           style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),
         ),
-        actions: [
+        actions: const [
           // ElevatedButton(
           //     onPressed: () {
           //       paymentController.getOrderDetails(uID: widget.uID);
@@ -247,7 +247,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
       ),
       body: SingleChildScrollView(
           child: Obx(() => paymentController.detailLoading.value
-              ? Container(height: 500, child: const Center(child: CircularProgressIndicator()))
+              ? SizedBox(height: 500, child: const Center(child: CircularProgressIndicator()))
               : Column(
                   children: [
                     Container(
@@ -281,7 +281,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                 },
                                 child: InkWell(
                                   child: Padding(
-                                    padding: EdgeInsets.all(12.0),
+                                    padding: const EdgeInsets.all(12.0),
                                     child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                       Text(
@@ -453,7 +453,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: Color(0xffE6E6E6))),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
@@ -465,7 +465,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                     Text(
                                       'Discount'.tr,
-                                      style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 15.0),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 15.0),
                                     ),
                                   ]),
                                   Row(
@@ -474,7 +474,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(top: 18.0),
-                                        child: Container(
+                                        child: SizedBox(
                                           width: MediaQuery.of(context).size.width / 2.5,
                                           child: TextField(
                                             textCapitalization: TextCapitalization.words,
@@ -502,7 +502,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(top: 18.0),
-                                        child: Container(
+                                        child: SizedBox(
                                           width: MediaQuery.of(context).size.width / 2.5,
                                           child: TextField(
                                             textCapitalization: TextCapitalization.words,
@@ -696,7 +696,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: Color(0xffE6E6E6))),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), border: Border.all(color: const Color(0xffE6E6E6))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
@@ -708,7 +708,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                     Text(
                                       'cash'.tr,
-                                      style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 16.5),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
                                     ),
                                   ]),
                                   Padding(
@@ -717,7 +717,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: MediaQuery.of(context).size.width / 2,
                                           child: TextField(
                                             controller: paymentController.cashReceivedController,
@@ -745,11 +745,11 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                             decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           height: 35,
                                           width: MediaQuery.of(context).size.width / 5,
                                           child: TextButton(
-                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                                            style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff10C103))),
                                             onPressed: () {
                                               paymentController.bankReceivedController.text = roundStringWith("0");
                                               paymentController.cashReceivedController.text =
@@ -768,17 +768,17 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   dividerStyle(),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                     Text(
                                       'bank'.tr,
-                                      style: customisedStyle(context, Color(0xff000000), FontWeight.w500, 16.5),
+                                      style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 16.5),
                                     ),
                                   ]),
                                   Padding(
@@ -787,7 +787,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: MediaQuery.of(context).size.width / 2,
                                           child: TextField(
                                             textCapitalization: TextCapitalization.words,
@@ -814,11 +814,11 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                                             decoration: TextFieldDecoration.defaultTextField(hintTextStr: 'amount'.tr),
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           height: 35,
                                           width: MediaQuery.of(context).size.width / 5,
                                           child: TextButton(
-                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                                            style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff10C103))),
                                             onPressed: () {
                                               paymentController.cashReceivedController.text = roundStringWith("0");
                                               paymentController.bankReceivedController.text =
@@ -863,7 +863,7 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
+                    style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffDF1515))),
                     onPressed: () {
                       Get.back();
                     },
@@ -883,17 +883,17 @@ class _MobilePaymentPageState extends State<MobilePaymentPage> {
                   width: 10,
                 ),
                 TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                    style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff10C103))),
                     onPressed: () async {
 
 
 
                       if(double.parse(paymentController.grandTotalAmount.value) >0){
                         if (paymentController.paymentCustomerSelection.text != "walk in customer") {
-                          paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
+                          paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false,splitID: "");
                         } else {
                           if ((paymentController.cashReceived.value + paymentController.bankReceived.value) >= double.parse(paymentController.grandTotalAmount.value)) {
-                            paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false);
+                            paymentController.createSaleInvoice(orderType: widget.orderType, context: context, tableID: widget.tableID, uUID: widget.uID, printSave: false,splitID: "");
                           } else {
                             popAlert(head: "Waring", message: "You cant make credit sale", position: SnackPosition.TOP);
                           }

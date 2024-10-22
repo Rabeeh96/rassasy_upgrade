@@ -7,6 +7,8 @@ import '../../../../../../global/global.dart';
 import '../../controller/draggable_controller.dart';
 
 class DragTableList extends StatefulWidget {
+  const DragTableList({super.key});
+
   @override
   State<DragTableList> createState() => _DragTableListState();
 }
@@ -14,7 +16,6 @@ class DragTableList extends StatefulWidget {
 class _DragTableListState extends State<DragTableList> {
   final DragAndDropController tableListController =
       Get.put(DragAndDropController());
-
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class _DragTableListState extends State<DragTableList> {
           "Table Setting",
           style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
         ),
-        actions: [],
+        actions: const [],
       ),
       body: Obx(() {
         final generatedChildren = List.generate(
@@ -54,15 +55,13 @@ class _DragTableListState extends State<DragTableList> {
                 // height: MediaQuery.of(context).size.height / 20,
 
                 child: Container(
-                  decoration:  const BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10.0),
                         bottomLeft: Radius.circular(10.0)),
                     border: Border(
-
                       left: BorderSide(
-                        color: Color(
-                            0xff03C1C1),
+                        color: Color(0xff03C1C1),
                         width: 5,
                       ),
 
@@ -76,8 +75,8 @@ class _DragTableListState extends State<DragTableList> {
                   ),
                   child: Center(
                     child: Text(
-                      tableListController.tableList[index]
-                      ['TableName'],
+                      tableListController.tableList[index]['TableName']
+                          .toString(),
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
@@ -89,7 +88,6 @@ class _DragTableListState extends State<DragTableList> {
         return Padding(
           padding: const EdgeInsets.all(20.0),
           child: ReorderableBuilder(
-
             scrollController: _scrollController,
             enableLongPress: true,
             onReorder: (
@@ -100,8 +98,6 @@ class _DragTableListState extends State<DragTableList> {
                     .removeAt(orderUpdateEntity.oldIndex);
                 tableListController.tableList
                     .insert(orderUpdateEntity.newIndex, fruit);
-
-
               }
             },
             children: generatedChildren,
@@ -126,34 +122,31 @@ class _DragTableListState extends State<DragTableList> {
         onPressed: () {
           var tableDetailList = [];
           for (int i = 0; i < tableListController.tableList.length; i++) {
-            var dragList={
-              "id":tableListController.tableList[i]['id'],
-              "TableName":tableListController.tableList[i]['TableName'],
-              "Position":i+1
-
+            var dragList = {
+              "id": tableListController.tableList[i]['id'],
+              "TableName": tableListController.tableList[i]['TableName'],
+              "Position": i + 1
             };
             print("darg ...$dragList");
 
-                    tableDetailList.add(dragList);
+            tableDetailList.add(dragList);
 
-
-             print("Table reorder:  ${tableDetailList}");
+            print("Table reorder:  $tableDetailList");
             // print("Table :  ${tableListController.tableList[i]}");
-
-
-
-
           }
-          tableListController.updateTables(type: 'Update', reOrderList: tableDetailList);
+          tableListController.updateTables(
+              type: 'Update', reOrderList: tableDetailList);
 
-Get.back();
-
+          Get.back();
         },
         label: Text(
           'Save Order',
           style: customisedStyle(context, Colors.white, FontWeight.w500, 13.3),
         ),
-        icon: const Icon(Icons.save,color: Colors.white,),
+        icon: const Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
         backgroundColor: const Color(0xffF25F29),
         elevation: 4.0,
         tooltip: 'Print Current Order',
@@ -161,4 +154,3 @@ Get.back();
     );
   }
 }
-

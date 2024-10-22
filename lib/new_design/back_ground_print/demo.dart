@@ -1,5 +1,5 @@
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
-////
+//////
 class Demo {
 
 
@@ -15,8 +15,6 @@ class Demo {
 
     invoiceType = "SIMPLIFIED TAX INVOICE";
     invoiceTypeArabic = "(فاتورة ضريبية مبسطة)";
-
-
 
     print("---------------------------");
     print(qrCodeAvailable);

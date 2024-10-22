@@ -23,7 +23,7 @@ import '../detail_page/customer_detail.dart';
 class DragDrop extends StatefulWidget {
   final String uID,  sectionType;
 
-  DragDrop({
+  const DragDrop({
     super.key,
     required this.uID,
     required this.sectionType,
@@ -219,13 +219,13 @@ class _DragDropState extends State<DragDrop> {
                                   Colors.transparent,
                                   Colors.transparent
                                 ],
-                                stops: [0.4, 1.9],
+                                stops: const [0.4, 1.9],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                             ),
                             child: ListTile(
-                              trailing: SizedBox.shrink(),
+                              trailing: const SizedBox.shrink(),
                               title: Obx(() {
                                 return Text(
                                   orderController
@@ -272,7 +272,7 @@ class _DragDropState extends State<DragDrop> {
             child: Obx(() => ReorderableGridView.builder(
               padding: const EdgeInsets.all(10.0),
               gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(
+              const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount:
               4,
                 mainAxisSpacing: 6.0,
@@ -510,7 +510,7 @@ class _DragDropState extends State<DragDrop> {
                                   Obx(() {
                                     // Use Obx to rebuild the text widget when selectedFontWeight changes
                                     return Container(
-                                      constraints: BoxConstraints(
+                                      constraints: const BoxConstraints(
                                           maxWidth: 160),
                                       child: Text(
                                         orderController
@@ -534,7 +534,7 @@ class _DragDropState extends State<DragDrop> {
                                   }),
                                   Obx(() {
                                     return  Container(
-                                      constraints: BoxConstraints(
+                                      constraints: const BoxConstraints(
                                           maxWidth:  170),
                                       child:
                                       Text(
@@ -648,8 +648,9 @@ class _DragDropState extends State<DragDrop> {
                     ));
               },
               onReorder: (oldIndex, newIndex) {
-                if (newIndex > oldIndex)
+                if (newIndex > oldIndex) {
                   newIndex -= 1;
+                }
                 final item = orderController
                     .productList
                     .removeAt(oldIndex);

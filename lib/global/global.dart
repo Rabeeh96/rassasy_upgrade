@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
-String appVersion = "1.1.53";
+String appVersion = "1.1.60";
 double defaultScreenWidth=550;
 bool enableTabDesign = false;
 start(context) {
@@ -81,15 +81,20 @@ String roundStringWith(String val) {
   return number;
 }
 
+String roundStringWith1(String val) {
+
+  double convertedTodDouble = double.parse(val);
+  var number = convertedTodDouble.toStringAsFixed(0);
+  return number;
+}
+
 
   customisedStyle(context,Colors,FontWeight,fontSize){
   return GoogleFonts.poppins(textStyle:TextStyle(fontWeight: FontWeight,color: Colors,fontSize: fontSize));
 }
 checkingPerm(item) async {
-
   print("object $item");
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
   bool retData = true;
   retData = prefs.getBool(item)??true;
   print("object $retData");
@@ -128,28 +133,27 @@ myLog(msg){
 String baseURlApi='';
 class BaseUrl{
 /// server details
-
    static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
    static String baseUrl = "$baseURlApi/api/v10";
    static String baseUrlV11 = "$baseURlApi/api/v11";
    static String imageURL = '$baseURlApi/media/';
-
 ///
-   //
+   ///  test
   // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
   // static String baseUrl = "$baseURlApi/api/v10";
   // static String baseUrlV11 = "$baseURlApi/api/v11";
   // static String imageURL = '$baseURlApi/media/';
 
- // local
- // http://192.168.1.52:8002/
- //  static String baseUrlAuth = 'http://192.168.1.81:8000/api/v1';
- //  static String baseUrl = "http://192.168.1.81:8002/api/v10";
- //  static String baseUrlV11 = "http://192.168.1.81:8002/api/v11";
- //  static String imageURL = 'http://192.168.1.81:8002';
+  //
+  // local
+  // http://192.168.1.52:8002/
 
-
-  static int priceRounding=2;
+  // static String baseUrlAuth = 'http://192.168.1.78:8000/api/v1';
+  // static String baseUrl = "http://192.168.1.78:8002/api/v10";
+  // static String baseUrlV11 = "http://192.168.1.78:8002/api/v11";
+  // static String imageURL = 'http://192.168.1.78:8002';
+  //
+   static int priceRounding=2;
 }
 
 

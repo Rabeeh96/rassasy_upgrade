@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,16 +18,19 @@ import '../detail_page/customer_detail.dart';
 import 'drag_drop.dart';
 
 class TabPosOrderPage extends StatefulWidget {
-  final String uID, tableID, sectionType, tableHead;
+  final String uID, splitID, tableID, sectionType, tableHead;
   final int orderType;
   final List cancelOrder;
+  final bool isAllCombine;
 
-  TabPosOrderPage({
+  const TabPosOrderPage({
     super.key,
     required this.tableID,
+    required this.splitID,
     required this.tableHead,
     required this.uID,
     required this.sectionType,
+    required this.isAllCombine,
     required this.cancelOrder,
     required this.orderType,
   });
@@ -50,6 +53,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
     // TODO: implement initState
     super.initState();
     orderController.productList.clear();
+
     orderController.groupList.clear();
     orderController.orderItemList.clear();
     orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
@@ -58,598 +62,726 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return MediaQuery(
         data: MediaQuery.of(context).copyWith(
           textScaler: const TextScaler.linear(1.0),
         ),
-    child:  Scaffold(
-      backgroundColor: const Color(0xffFDFDFD),
-      appBar: AppBar(
-        centerTitle: false,
-        titleSpacing: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          "Choose Items",
-          style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
-        ),
-        actions: [
-          IconButton(
+        child: Scaffold(
+          backgroundColor: const Color(0xffFDFDFD),
+          appBar: AppBar(
+            centerTitle: false,
+            titleSpacing: 0,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
               onPressed: () {
-                addDetails();
+                Navigator.pop(context);
               },
-              icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                diningController.userName.value,
-                style: customisedStyle(context, const Color(0xff585858), FontWeight.w500, 13.0),
+            ),
+            title: Text(
+              "Choose Items",
+              style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
+            ),
+            actions: [
+              // IconButton(
+              //     onPressed: () {
+              //       addDetails();
+              //     },
+              //     icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     Text(
+              //       diningController.userName.value,
+              //       style: customisedStyle(context, const Color(0xff585858),
+              //           FontWeight.w500, 14.0),
+              //     ),
+              //     Obx(
+              //       () => orderController.synMethod.value
+              //           ? Container()
+              //           : Text(
+              //               orderController.tokenNumber.value,
+              //               style: customisedStyle(
+              //                   context, const Color(0xff585858), FontWeight.w500, 14.0),
+              //             ),
+              //     ),
+              //     const SizedBox(
+              //       height: 3,
+              //     )
+              //   ],
+              // ),
+
+              widget.sectionType == "Edit"
+                  ? Text(
+                      "Token Number " + "${orderController.tokenNumber.value}",
+                      style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
+                    )
+                  : Container(),
+
+              // Obx(() {
+              //   return orderController.synMethod.value
+              //       ? IconButton(
+              //           onPressed: () async {
+              //             start(context);
+              //             await orderController.fetchAndSaveProductGroupData();
+              //             var savedData = await orderController
+              //                 .loadSavedData("productGroupData");
+              //             var allProducts = [];
+              //             for (var i = 0; i < savedData.length; i++) {
+              //               var groupId = savedData[i]['ProductGroupID'];
+              //               var groupProducts = await orderController
+              //                   .fetchAndSaveProductData(groupId);
+              //               if (groupProducts is List) {
+              //                 allProducts.addAll(groupProducts);
+              //               }
+              //             }
+              //             await orderController.saveAllProduct(allProducts);
+              //             await stop();
+              //             orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
+              //           },
+              //           icon:   Text('Sync Data ',style: customisedStyle(
+              //               context, Color(0xff585858), FontWeight.w500, 14.0),))
+              //       : Container();
+              // }),
+
+              /// commented all section one by one
+              // ElevatedButton(onPressed: ()async{
+              //   try{
+              //     start(context);
+              //     var savedData = await orderController.loadSavedData("productGroupData");
+              //     pr("savedData   $savedData group lenght ${savedData.length}  ");
+              //
+              //     var  allProducts = [];
+              //     for (var i = 0; i < savedData.length; i++) {
+              //       var groupId = savedData[i]['ProductGroupID'];
+              //       var data=await orderController.fetchAndSaveProductData(groupId);
+              //       pr("group ID $groupId   $data");
+              //
+              //       var groupProducts = await orderController.fetchAndSaveProductData(groupId);
+              //
+              //       // Check if groupProducts is a list and add its elements to the allProducts list
+              //       if (groupProducts is List) {
+              //         allProducts.addAll(groupProducts);
+              //       }
+              //
+              //     }
+              //
+              //     await orderController.saveAllProduct(allProducts);
+              //     await stop();
+              //
+              //   }
+              //   catch(e){
+              //     pr("error ${e.toString()}");
+              //       stop();
+              //   }
+              //
+              //
+              //
+              // //  fetchAndSaveProductData
+              //
+              // }, child: Text("Download Product ")),
+              //
+              // ElevatedButton(onPressed: (){
+              //   orderController.fetchAndSaveProductGroupData();
+              // }, child: Text("Download group ")),
+              //
+              // ElevatedButton(onPressed: ()async{
+              //   var savedData = await orderController.loadSavedData("productData");
+              //   var productList = savedData["data"];
+              //   pr("product   ${productList} product lenght ${productList.length}  ");
+              //
+              // }, child: Text("Shwo  product ")),
+              //
+              // ElevatedButton(onPressed: ()async{
+              //   var filteredProducts = orderController.filterProductsByGroupId(2);
+              //   pr("filteredProducts   ${filteredProducts} filteredProducts filteredProducts ${filteredProducts.length}  ");
+              //
+              // }, child: Text("Filter ")),
+
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  // Add the functionality you want here, e.g., navigate to the settings page
+                  orderController.detailPage.value = 'settings';
+                  orderController.update();
+                },
               ),
-              Obx(
-                () => orderController.synMethod.value
-                    ? Container()
-                    : Text(
-                        orderController.tokenNumber.value,
-                        style: customisedStyle(context, Colors.black, FontWeight.w500, 12.0),
-                      ),
-              ),
-              const SizedBox(
-                height: 3,
-              )
+
+        Obx(() {  return orderController.synMethod.value?
+
+    IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: ()async {
+                  start(context);
+                  await orderController.fetchAndSaveProductGroupData();
+                  var savedData = await orderController
+                      .loadSavedData("productGroupData");
+                  var allProducts = [];
+                  for (var i = 0; i < savedData.length; i++) {
+                    var groupId = savedData[i]['ProductGroupID'];
+                    var groupProducts = await orderController
+                        .fetchAndSaveProductData(groupId);
+                    if (groupProducts is List) {
+                      allProducts.addAll(groupProducts);
+                    }
+                  }
+                  await orderController.saveAllProduct(allProducts);
+                  await stop();
+                  orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
+                },
+              ):Container(); }),
+
+
+
+
+              // IconButton(
+              //     onPressed: () async {
+              //       Get.to(() => DragDrop(
+              //           uID: widget.uID, sectionType: widget.sectionType));
+              //     },
+              //     icon: const Text('Draggable')),
             ],
           ),
-          SizedBox(
-            width: 25,
-          ),
+          body: Container(
+            decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xffE9E9E9), width: 2))),
+            child: Row(
+              children: [
+                ///group list section
+                Flexible(
+                    flex: 3,
+                    child: Container(
+                      decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color(0xffE9E9E9)))),
+                      width: MediaQuery.of(context).size.width / 6,
+                      child: Obx(() {
+                        if (orderController.groupIsLoading.value) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (orderController.groupList.isEmpty) {
+                          return const Center(child: Text("Group Not Found!"));
+                        } else {
+                          return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: orderController.groupList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  orderController.selectIndex(index);
+                                  orderController.selectedGroup.value = index;
+                                  orderController.productIsLoading.value = true;
 
-          SizedBox(
-            width: 20,
-          ),
-          Obx(() {
-            return orderController.synMethod.value
-                ? IconButton(
-                    onPressed: () async {
-                      start(context);
-                      await orderController.fetchAndSaveProductGroupData();
-                      var savedData = await orderController.loadSavedData("productGroupData");
-                      var allProducts = [];
-                      for (var i = 0; i < savedData.length; i++) {
-                        var groupId = savedData[i]['ProductGroupID'];
-                        var groupProducts = await orderController.fetchAndSaveProductData(groupId);
-                        if (groupProducts is List) {
-                          allProducts.addAll(groupProducts);
-                        }
-                      }
-                      await orderController.saveAllProduct(allProducts);
-                      await stop();
-                    },
-                    icon: const Text('Sync Data '))
-                : Container();
-          }),
+                                  pr("========productIsLoading=======${orderController.productIsLoading.value}");
+                                  if (orderController.synMethod.value) {
+                                    orderController.getProductListDetailLocal(orderController.groupList[index].groupID);
+                                  } else {
+                                    orderController.getProductListDetail(orderController.groupList[index].groupID);
+                                  }
 
-          /// commented all section one by one
-          // ElevatedButton(onPressed: ()async{
-          //   try{
-          //     start(context);
-          //     var savedData = await orderController.loadSavedData("productGroupData");
-          //     pr("savedData   $savedData group lenght ${savedData.length}  ");
-          //
-          //     var  allProducts = [];
-          //     for (var i = 0; i < savedData.length; i++) {
-          //       var groupId = savedData[i]['ProductGroupID'];
-          //       var data=await orderController.fetchAndSaveProductData(groupId);
-          //       pr("group ID $groupId   $data");
-          //
-          //       var groupProducts = await orderController.fetchAndSaveProductData(groupId);
-          //
-          //       // Check if groupProducts is a list and add its elements to the allProducts list
-          //       if (groupProducts is List) {
-          //         allProducts.addAll(groupProducts);
-          //       }
-          //
-          //     }
-          //
-          //     await orderController.saveAllProduct(allProducts);
-          //     await stop();
-          //
-          //   }
-          //   catch(e){
-          //     pr("error ${e.toString()}");
-          //       stop();
-          //   }
-          //
-          //
-          //
-          // //  fetchAndSaveProductData
-          //
-          // }, child: Text("Download Product ")),
-          //
-          // ElevatedButton(onPressed: (){
-          //   orderController.fetchAndSaveProductGroupData();
-          // }, child: Text("Download group ")),
-          //
-          // ElevatedButton(onPressed: ()async{
-          //   var savedData = await orderController.loadSavedData("productData");
-          //   var productList = savedData["data"];
-          //   pr("product   ${productList} product lenght ${productList.length}  ");
-          //
-          // }, child: Text("Shwo  product ")),
-          //
-          // ElevatedButton(onPressed: ()async{
-          //   var filteredProducts = orderController.filterProductsByGroupId(2);
-          //   pr("filteredProducts   ${filteredProducts} filteredProducts filteredProducts ${filteredProducts.length}  ");
-          //
-          // }, child: Text("Filter ")),
-
-          IconButton(
-              onPressed: () {
-                orderController.detailPage.value = 'settings';
-                orderController.update();
-              },
-              icon: const Text('Settings')),
-          IconButton(
-              onPressed: () async {
-                Get.to(() => DragDrop(uID: widget.uID, sectionType: widget.sectionType));
-              },
-              icon: const Text('Draggable')),
-        ],
-      ),
-      body: Container(
-        decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xffE9E9E9), width: 2))),
-        child: Row(
-          children: [
-            ///group list section
-            Flexible(
-                flex: 3,
-                child: Container(
-                  decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color(0xffE9E9E9)))),
-                  width: MediaQuery.of(context).size.width / 6,
-                  child: Obx(() {
-                    if (orderController.groupIsLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (orderController.groupList.isEmpty) {
-                      return const Center(child: Text("Group Not Found!"));
-                    } else {
-                      return ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: orderController.groupList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              orderController.selectIndex(index);
-                              orderController.selectedGroup.value = index;
-                              orderController.productIsLoading.value = true;
-
-                              pr("========productIsLoading=======${orderController.productIsLoading.value}");
-                              if (orderController.synMethod.value) {
-                                orderController.getProductListDetailLocal(orderController.groupList[index].groupID);
-                              } else {
-                                orderController.getProductListDetail(orderController.groupList[index].groupID);
-                              }
-
-                              //
+                                  //
+                                },
+                                child: Obx(() {
+                                  return Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                color: orderController.selectedIndex.value == index ? const Color(0xffff4400) : Colors.transparent,
+                                                width: 5)),
+                                        gradient: LinearGradient(
+                                          colors: orderController.selectedIndex.value == index
+                                              ? [Colors.white.withOpacity(.4), const Color(0xffff4400).withOpacity(.001)]
+                                              : [Colors.transparent, Colors.transparent],
+                                          // Colors to be used in gradient
+                                          stops: const [0.4, 1.9],
+                                          // Position of each color
+                                          begin: Alignment.topLeft,
+                                          // Start of the gradient
+                                          end: Alignment.bottomRight, // End of the gradient
+                                        ),
+                                      ),
+                                      child: ListTile(
+                                        title: Obx(() {
+                                          return Text(
+                                            orderController.groupList[index].groupName,
+                                            style: customisedStyle(
+                                                context,
+                                                orderController.selectedIndex.value == index ? const Color(0xffF25F29) : const Color(0xff585858),
+                                                orderController.groupFontWeight.value,
+                                                orderController.groupFontSize),
+                                          );
+                                        }),
+                                      ));
+                                }),
+                              );
                             },
-                            child: Obx(() {
-                              return Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                        right: BorderSide(
-                                            color: orderController.selectedIndex.value == index ? const Color(0xffff4400) : Colors.transparent,
-                                            width: 5)),
-                                    gradient: LinearGradient(
-                                      colors: orderController.selectedIndex.value == index
-                                          ? [Colors.white.withOpacity(.4), const Color(0xffff4400).withOpacity(.001)]
-                                          : [Colors.transparent, Colors.transparent],
-                                      // Colors to be used in gradient
-                                      stops: [0.4, 1.9],
-                                      // Position of each color
-                                      begin: Alignment.topLeft,
-                                      // Start of the gradient
-                                      end: Alignment.bottomRight, // End of the gradient
-                                    ),
-                                  ),
-                                  child: ListTile(
-                                    title: Obx(() {
-                                      return Text(
-                                        orderController.groupList[index].groupName,
-                                        style: customisedStyle(
-                                            context,
-                                            orderController.selectedIndex.value == index ? const Color(0xffF25F29) : const Color(0xff585858),
-                                            orderController.groupFontWeight.value,
-                                            orderController.groupFontSize),
-                                      );
-                                    }),
-                                  ));
-                            }),
                           );
-                        },
-                      );
-                    }
-                  }),
-                )),
+                        }
+                      }),
+                    )),
 
-            ///product list section
-            Flexible(
-              flex: 10,
-              child: Container(
-                decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color(0xffE9E9E9)))),
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 10, top: 7),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 15,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
+                ///product list section
+                Flexible(
+                  flex: 10,
+                  child: Container(
+                    decoration: const BoxDecoration(border: Border(right: BorderSide(color: Color(0xffE9E9E9)))),
+                    width: MediaQuery.of(context).size.width / 1.3,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, right: 10, top: 7),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height / 15,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Text(
-                                    'choose_item'.tr,
-                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                  ),
-                                ),
-                                ValueListenableBuilder<bool>(
-                                  valueListenable: orderController.isVegNotifier,
-                                  builder: (context, isVegValue, child) {
-                                    return GestureDetector(
-                                      onTap: () async {
-                                        orderController.isVegNotifier.value = !isVegValue;
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: const Color(0xffDBDBDB)),
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 8, right: 8, top: 6, bottom: 6),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/svg/veg_mob.svg",
-                                                color: isVegValue ? const Color(0xff00775E) : const Color(0xffDF1515),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 8.0),
-                                                child: Text(
-                                                  'veg_only'.tr,
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xff585858),
+                                Row(
+                                  children: [
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(right: 8.0),
+                                    //   child: Text(
+                                    //     'choose_item'.tr,
+                                    //     style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                    //   ),
+                                    // ),
+                                    ValueListenableBuilder<bool>(
+                                      valueListenable: orderController.isVegNotifier,
+                                      builder: (context, isVegValue, child) {
+                                        return GestureDetector(
+                                          onTap: () async {
+                                            orderController.isVegNotifier.value = !isVegValue;
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: const Color(0xffDBDBDB)),
+                                              borderRadius: BorderRadius.circular(5),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 8, right: 8, top: 6, bottom: 6),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/svg/veg_mob.svg",
+                                                    color: isVegValue ? const Color(0xff00775E) : const Color(0xffDF1515),
                                                   ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  height: MediaQuery.of(context).size.height / 22,
-                                  decoration: BoxDecoration(color: const Color(0xffFFF6F2), borderRadius: BorderRadius.circular(29)),
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                                      child: Obx(() => DropdownButton(
-                                            borderRadius: BorderRadius.circular(29),
-                                            // Initial Value
-                                            value: orderController.dropdownvalue.value,
-                                            underline: Container(color: Colors.transparent),
-                                            // Down Arrow Icon
-                                            icon: SvgPicture.asset("assets/svg/drop_arrow.svg"),
-                                            // Array list of items
-                                            items: orderController.items.map((String item) {
-                                              return DropdownMenuItem(
-                                                value: item,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.only(right: 0.0, left: 5),
-                                                  child: Text(item, style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 12.0)),
-                                                ),
-                                              );
-                                            }).toList(),
-                                            // After selecting the desired option,it will
-                                            // change button value to selected value
-                                            onChanged: (String? newValue) {
-                                              orderController.dropdownvalue.value = newValue!;
-                                            },
-                                          ))),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Container(
-                                  height: MediaQuery.of(context).size.height / 20,
-                                  width: MediaQuery.of(context).size.width / 6,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: TextField(
-                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-                                    onChanged: (quary) async {
-                                      if (orderController.synMethod.value) {
-                                        orderController.getProductListDetailSearchLocal(quary);
-                                      } else {
-                                        orderController.searchItemsTab(
-                                            productName: quary,
-                                            isCode: orderController.dropdownvalue.value == "Code" ? true : false,
-                                            isDescription: orderController.dropdownvalue.value == "Description" ? true : false);
-                                      }
-
-                                      /// local
-                                    },
-                                    controller: orderController.searchController,
-                                    decoration: InputDecoration(
-                                      enabledBorder: const OutlineInputBorder(borderSide: const BorderSide(color: Color(0xffE7E7E7))),
-                                      focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffE7E7E7))),
-                                      disabledBorder: const OutlineInputBorder(borderSide: const BorderSide(color: Color(0xffE7E7E7))),
-                                      contentPadding: const EdgeInsets.all(10),
-                                      suffixIcon: IconButton(
-                                        onPressed: () {},
-                                        icon: Image.asset('assets/png/search_grey_png.png'),
-                                      ),
-                                      hintText: 'search'.tr,
-                                      hintStyle: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.normal, 12.0),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    //   diningController.selectedIndexNotifier.value =
-                    /// product list
-                    Obx(() => orderController.productIsLoading.value
-                        ? const SizedBox(height: 500, child: Center(child: CircularProgressIndicator()))
-                        : Expanded(
-                            child: Obx(() => GridView.builder(
-                                  padding: const EdgeInsets.all(10.0),
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: orderController.rowCountGridView,
-                                    mainAxisSpacing: 2.0,
-                                    mainAxisExtent: orderController.heightOfITem * 10,
-                                    // childAspectRatio: widthGrid/heightGrid,
-                                    childAspectRatio: 3.2,
-                                    crossAxisSpacing: 2,
-                                  ),
-                                  //separatorBuilder: (context, index) => dividerStyle(),
-                                  itemCount: orderController.productList.length,
-                                  itemBuilder: (context, index) {
-                                    var alreadyExist = orderController.checking(orderController.productList[index].productID);
-                                    print("-----------------------already $alreadyExist");
-                                    return Card(
-                                      color: Colors.red.shade50,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          orderController.detailPage.value = 'item_add';
-                                          SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                                          var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
-
-                                          orderController.unitPriceAmount.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
-                                          orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
-
-                                          orderController.priceListID.value = orderController.productList[index].defaultUnitID;
-                                          orderController.productName.value = orderController.productList[index].productName;
-                                          orderController.productDescription.value = orderController.productList[index].description;
-                                          orderController.item_status.value = "pending";
-                                          orderController.unitName.value = orderController.productList[index].defaultUnitName;
-
-                                          var taxDetails = orderController.productList[index].taxDetails;
-
-                                          if (taxDetails != "") {
-                                            orderController.productTaxID.value = taxDetails["TaxID"];
-                                            orderController.productTaxName.value = taxDetails["TaxName"];
-                                          }
-
-                                          orderController.detailID.value = 1;
-                                          orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
-                                          orderController.purchasePrice.value = orderController.productList[index].defaultPurchasePrice;
-                                          orderController.productID.value = orderController.productList[index].productID;
-                                          orderController.isInclusive.value = orderController.productList[index].isInclusive;
-
-                                          orderController.detailIdEdit.value = 0;
-                                          orderController.flavourID.value = "";
-                                          orderController.flavourName.value = "";
-
-                                          var newTax = orderController.productList[index].exciseData;
-
-                                          if (newTax != "") {
-                                            orderController.isExciseProduct.value = true;
-                                            orderController.exciseTaxID.value = newTax["TaxID"];
-                                            orderController.exciseTaxName.value = newTax["TaxName"];
-                                            orderController.BPValue.value = newTax["BPValue"].toString();
-                                            orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
-                                            orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
-                                            orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
-                                            orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
-                                          } else {
-                                            orderController.exciseTaxID.value = 0;
-                                            orderController.exciseTaxName.value = "";
-                                            orderController.BPValue.value = "0";
-                                            orderController.exciseTaxBefore.value = "0";
-                                            orderController.isAmountTaxBefore.value = false;
-                                            orderController.isAmountTaxAfter.value = false;
-                                            orderController.isExciseProduct.value = false;
-                                            orderController.exciseTaxAfter.value = "0";
-                                          }
-
-                                          orderController.unique_id.value = "0";
-                                          orderController.calculation();
-
-                                          //setState(() {});
-                                          /// commented for new tax working
-
-                                          /// qty increment
-                                        },
-                                        child: InkWell(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(left: 5.0, right: 5, top: 8, bottom: 8),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                ///productname,des,rate,veg
-                                                Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Obx(() {
-                                                      return orderController.showWegOrNoVeg.value
-                                                          ? Container(
-                                                              child: SvgPicture.asset(
-                                                                "assets/svg/veg_mob.svg",
-                                                                color: orderController.productList[index].vegOrNonVeg == "Non-veg"
-                                                                    ? const Color(0xffDF1515)
-                                                                    : const Color(0xff00775E),
-                                                              ),
-                                                            )
-                                                          : Container();
-                                                    }),
-                                                    Obx(() {
-                                                      // Use Obx to rebuild the text widget when selectedFontWeight changes
-                                                      return Container(
-                                                        constraints: BoxConstraints(
-                                                            maxWidth: orderController.returnProductLength(
-                                                                orderController.rowCountGridView, orderController.isShowImage.value)),
-                                                        // constraints: BoxConstraints(maxWidth:orderController.returnProductLength(orderController.rowCountGridView,orderController.isShowImage.value)),
-                                                        child: Text(
-                                                          orderController.productList[index].productName,
-                                                          style: customisedStyle(context, Colors.black, orderController.productFontWeight.value,
-                                                              orderController.productFontSize),
-                                                          overflow: TextOverflow.ellipsis,
-                                                          softWrap: true,
-                                                          maxLines: 4,
-                                                        ),
-                                                      );
-                                                    }),
-                                                    Obx(() {
-                                                      return orderController.showProductDescription.value
-                                                          ? Container(
-                                                              constraints: BoxConstraints(
-                                                                  maxWidth: orderController.returnProductLength(
-                                                                      orderController.rowCountGridView, orderController.isShowImage.value)),
-                                                              child: Text(
-                                                                orderController.productList[index].description,
-                                                                style: customisedStyle(context, Colors.black,
-                                                                    orderController.descriptionFontWeight.value, orderController.descriptionFontSize),
-                                                                overflow: TextOverflow.ellipsis,
-                                                                softWrap: true,
-                                                                maxLines: 4,
-                                                              ),
-                                                            )
-                                                          : Container();
-                                                    }),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Text(
-                                                          orderController.currency.value,
-                                                          style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 13.0),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.only(left: 5.0),
-                                                          child: Obx(() {
-                                                            return Text(
-                                                              roundStringWith(orderController.productList[index].defaultSalesPrice),
-                                                              style: customisedStyle(context, Colors.black, orderController.amountFontWeight.value,
-                                                                  orderController.amountFontSize),
-                                                            );
-                                                          }),
-                                                        ),
-                                                        //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
-                                                      ],
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 8.0),
+                                                    child: Text(
+                                                      'veg_only'.tr,
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Color(0xff585858),
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-
-                                                ///image
-                                                Obx(() => orderController.isShowImage.value
-                                                    ? Container(
-                                                        height: MediaQuery.of(context).size.height * orderController.heightOfImage / 100,
-                                                        width: MediaQuery.of(context).size.width * (orderController.widthOfImage / 100),
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(10),
-                                                          // Set border radius to make the Container round
-                                                        ),
-                                                        child: Stack(
-                                                          children: <Widget>[
-                                                            Positioned.fill(
-                                                              child: ClipRRect(
-                                                                borderRadius: BorderRadius.circular(10),
-                                                                // Clip image to match the rounded corners of the Container
-                                                                child: Image.network(
-                                                                  orderController.productList[index].productImage != ""
-                                                                      ? orderController.productList[index].productImage
-                                                                      : 'https://www.api.viknbooks.com/media/uploads/Group_5140.png',
-                                                                  fit: BoxFit.cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : Container()),
-                                                // else
-                                              ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
+                                        );
+                                      },
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          addDetails();
+                                        },
+                                        icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
+
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 22,
+                                      decoration: BoxDecoration(color: const Color(0xffFFF6F2), borderRadius: BorderRadius.circular(29)),
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                                          child: Obx(() => DropdownButton(
+                                                borderRadius: BorderRadius.circular(29),
+                                                // Initial Value
+                                                value: orderController.dropdownvalue.value,
+                                                underline: Container(color: Colors.transparent),
+                                                // Down Arrow Icon
+                                                icon: SvgPicture.asset("assets/svg/drop_arrow.svg"),
+                                                // Array list of items
+                                                items: orderController.items.map((String item) {
+                                                  return DropdownMenuItem(
+                                                    value: item,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(right: 0.0, left: 5),
+                                                      child:
+                                                          Text(item, style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 12.0)),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                // After selecting the desired option,it will
+                                                // change button value to selected value
+                                                onChanged: (String? newValue) {
+                                                  orderController.dropdownvalue.value = newValue!;
+                                                },
+                                              ))),
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 20,
+                                      width: MediaQuery.of(context).size.width / 6,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: TextField(
+                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
+                                        onChanged: (quary) async {
+                                          if (orderController.synMethod.value) {
+                                            orderController.getProductListDetailSearchLocal(quary);
+                                          } else {
+                                            orderController.searchItemsTab(
+                                                productName: quary,
+                                                isCode: orderController.dropdownvalue.value == "Code" ? true : false,
+                                                isDescription: orderController.dropdownvalue.value == "Description" ? true : false);
+                                          }
+
+                                          /// local
+                                        },
+                                        controller: orderController.searchController,
+                                        decoration: InputDecoration(
+                                          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffE7E7E7))),
+                                          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffE7E7E7))),
+                                          disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffE7E7E7))),
+                                          contentPadding: const EdgeInsets.all(10),
+                                          suffixIcon: IconButton(
+                                            onPressed: () {},
+                                            icon: Image.asset('assets/png/search_grey_png.png'),
+                                          ),
+                                          hintText: 'search'.tr,
+                                          hintStyle: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.normal, 12.0),
                                         ),
                                       ),
-                                    );
-                                  },
-                                ))))
-                  ],
+                                    )
+                                  ],
+                                ),
+
+
+                    Obx(() =>  Row(
+                      children: [
+                        Text(
+                          'Disable KOT',
+                          style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 5.0),
+                          child: FlutterSwitch(
+                            width: 50.0,
+                            height: 25.0,
+                            valueFontSize: 30.0,
+                            toggleSize: 15.0,
+                            value: orderController.disableKOT.value,
+                            borderRadius: 20.0,
+                            padding: 1.0,
+                            activeColor: Colors.green,
+                            activeTextColor: Colors.green,
+                            inactiveTextColor: Colors.white,
+                            inactiveColor: Colors.grey,
+                            // showOnOff: true,
+                            onToggle: (val){
+                              orderController.disableKOT.value = val;
+                              orderController.update();
+                            },
+                          ),
+                        )
+                      ],
+                    )),
+                    // Obx(() =>
+                    //             Container(
+                    //               color: Colors.red,
+                    //             width: 120,
+                    //               child: ListTile(
+                    //                 title: Text(
+                    //                   'KOT',
+                    //                   style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                    //                 ),
+                    //                 trailing: SizedBox(
+                    //                   width: 60,
+                    //                   child: Center(
+                    //                     child: FlutterSwitch(
+                    //                       width: 50.0,
+                    //                       height: 25.0,
+                    //                       valueFontSize: 30.0,
+                    //                       toggleSize: 15.0,
+                    //                       value: orderController.disableKOT.value,
+                    //                       borderRadius: 20.0,
+                    //                       padding: 1.0,
+                    //                       activeColor: Colors.green,
+                    //                       activeTextColor: Colors.green,
+                    //                       inactiveTextColor: Colors.white,
+                    //                       inactiveColor: Colors.grey,
+                    //                       // showOnOff: true,
+                    //                       onToggle: (val){
+                    //                         orderController.disableKOT.value = val;
+                    //                         orderController.update();
+                    //                       },
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 onTap: () {
+                    //                   orderController.disableKOT.value = val;
+                    //                   orderController.update();
+                    //                 },
+                    //               ),
+                    //             )),
+                              ],
+                            ),
+                          ),
+                        ),
+                        //   diningController.selectedIndexNotifier.value =
+                        /// product list
+                        Obx(() => orderController.productIsLoading.value
+                            ? const SizedBox(height: 500, child: Center(child: CircularProgressIndicator()))
+                            : Expanded(
+                                child: Obx(() => GridView.builder(
+                                      padding: const EdgeInsets.all(10.0),
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: orderController.rowCountGridView,
+                                        mainAxisSpacing: 2.0,
+                                        mainAxisExtent: orderController.heightOfITem * 10,
+                                        // childAspectRatio: widthGrid/heightGrid,
+                                        childAspectRatio: 3.2,
+                                        crossAxisSpacing: 2,
+                                      ),
+                                      //separatorBuilder: (context, index) => dividerStyle(),
+                                      itemCount: orderController.productList.length,
+                                      itemBuilder: (context, index) {
+
+                                        return Card(
+                                          color: Colors.red.shade50,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              orderController.detailPage.value = 'item_add';
+                                              SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+
+                                              var alreadyExist = orderController.checking(orderController.productList[index].productID);
+
+                                              var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
+
+                                              pr("=====qtyIncrement $qtyIncrement alreadyExist $alreadyExist");
+
+                                              if(qtyIncrement&&alreadyExist[0]){
+                                                print("-----------------------already $alreadyExist");
+
+                                                orderController.updateQty(index: alreadyExist[1], type: 1);
+                                                print("-----------------------already $alreadyExist");
+                                              }
+                                              else{
+                                                orderController.unitPriceAmount.value = orderController.productList[index].defaultSalesPrice;
+                                                orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
+                                                orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
+                                                orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
+                                                orderController.priceListID.value = orderController.productList[index].defaultUnitID;
+                                                orderController.productName.value = orderController.productList[index].productName;
+                                                orderController.productDescription.value = orderController.productList[index].description;
+                                                orderController.item_status.value = "pending";
+                                                orderController.unitName.value = orderController.productList[index].defaultUnitName;
+
+                                                var taxDetails = orderController.productList[index].taxDetails;
+
+                                                if (taxDetails != "") {
+                                                  orderController.productTaxID.value = taxDetails["TaxID"];
+                                                  orderController.productTaxName.value = taxDetails["TaxName"];
+                                                }
+
+                                                orderController.detailID.value = 1;
+                                                orderController.salesPrice.value = orderController.productList[index].defaultSalesPrice;
+                                                orderController.purchasePrice.value = orderController.productList[index].defaultPurchasePrice;
+                                                orderController.productID.value = orderController.productList[index].productID;
+                                                orderController.isInclusive.value = orderController.productList[index].isInclusive;
+
+                                                orderController.detailIdEdit.value = 0;
+                                                orderController.flavourID.value = "";
+                                                orderController.flavourName.value = "";
+
+                                                var newTax = orderController.productList[index].exciseData;
+
+                                                if (newTax != "") {
+                                                  orderController.isExciseProduct.value = true;
+                                                  orderController.exciseTaxID.value = newTax["TaxID"];
+                                                  orderController.exciseTaxName.value = newTax["TaxName"];
+                                                  orderController.BPValue.value = newTax["BPValue"].toString();
+                                                  orderController.exciseTaxBefore.value = newTax["TaxBefore"].toString();
+                                                  orderController.isAmountTaxBefore.value = newTax["IsAmountTaxBefore"];
+                                                  orderController.isAmountTaxAfter.value = newTax["IsAmountTaxAfter"];
+                                                  orderController.exciseTaxAfter.value = newTax["TaxAfter"].toString();
+                                                } else {
+                                                  orderController.exciseTaxID.value = 0;
+                                                  orderController.exciseTaxName.value = "";
+                                                  orderController.BPValue.value = "0";
+                                                  orderController.exciseTaxBefore.value = "0";
+                                                  orderController.isAmountTaxBefore.value = false;
+                                                  orderController.isAmountTaxAfter.value = false;
+                                                  orderController.isExciseProduct.value = false;
+                                                  orderController.exciseTaxAfter.value = "0";
+                                                }
+
+                                                orderController.unique_id.value = "0";
+                                                orderController.calculation();
+                                              }
+
+
+
+
+
+                                              //setState(() {});
+                                              /// commented for new tax working
+
+                                              /// qty increment
+                                            },
+                                            child: InkWell(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(left: 5.0, right: 5, top: 8, bottom: 8),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    ///productname,des,rate,veg
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Obx(() {
+                                                          return orderController.showWegOrNoVeg.value
+                                                              ? Container(
+                                                                  child: SvgPicture.asset(
+                                                                    "assets/svg/veg_mob.svg",
+                                                                    color: orderController.productList[index].vegOrNonVeg == "Non-veg"
+                                                                        ? const Color(0xffDF1515)
+                                                                        : const Color(0xff00775E),
+                                                                  ),
+                                                                )
+                                                              : Container();
+                                                        }),
+                                                        Obx(() {
+                                                          // Use Obx to rebuild the text widget when selectedFontWeight changes
+                                                          return Container(
+                                                            constraints: BoxConstraints(
+                                                                maxWidth: orderController.returnProductLength(
+                                                                    orderController.rowCountGridView, orderController.isShowImage.value)),
+                                                            // constraints: BoxConstraints(maxWidth:orderController.returnProductLength(orderController.rowCountGridView,orderController.isShowImage.value)),
+                                                            child: Text(
+                                                              orderController.productList[index].productName,
+                                                              style: customisedStyle(context, Colors.black, orderController.productFontWeight.value,
+                                                                  orderController.productFontSize),
+                                                              overflow: TextOverflow.ellipsis,
+                                                              softWrap: true,
+                                                              maxLines: 4,
+                                                            ),
+                                                          );
+                                                        }),
+                                                        Obx(() {
+                                                          return orderController.showProductDescription.value
+                                                              ? Container(
+                                                                  constraints: BoxConstraints(
+                                                                      maxWidth: orderController.returnProductLength(
+                                                                          orderController.rowCountGridView, orderController.isShowImage.value)),
+                                                                  child: Text(
+                                                                    orderController.productList[index].description,
+                                                                    style: customisedStyle(
+                                                                        context,
+                                                                        Colors.black,
+                                                                        orderController.descriptionFontWeight.value,
+                                                                        orderController.descriptionFontSize),
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                    softWrap: true,
+                                                                    maxLines: 4,
+                                                                  ),
+                                                                )
+                                                              : Container();
+                                                        }),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            Text(
+                                                              orderController.currency.value,
+                                                              style: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.w400, 13.0),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left: 5.0),
+                                                              child: Obx(() {
+                                                                return Text(
+                                                                  roundStringWith(orderController.productList[index].defaultSalesPrice),
+                                                                  style: customisedStyle(context, Colors.black,
+                                                                      orderController.amountFontWeight.value, orderController.amountFontSize),
+                                                                );
+                                                              }),
+                                                            ),
+                                                            //diningController.tableData[index].reserved!.isEmpty?Text("res"):Text(""),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    ///image
+                                                    Obx(() => orderController.isShowImage.value
+                                                        ? Container(
+                                                            height: MediaQuery.of(context).size.height * orderController.heightOfImage / 100,
+                                                            width: MediaQuery.of(context).size.width * (orderController.widthOfImage / 100),
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              // Set border radius to make the Container round
+                                                            ),
+                                                            child: Stack(
+                                                              children: <Widget>[
+                                                                Positioned.fill(
+                                                                  child: ClipRRect(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    // Clip image to match the rounded corners of the Container
+                                                                    child: Image.network(
+                                                                      orderController.productList[index].productImage != ""
+                                                                          ? orderController.productList[index].productImage
+                                                                          : 'https://www.api.viknbooks.com/media/uploads/Group_5140.png',
+                                                                      fit: BoxFit.cover,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        : Container()),
+                                                    // else
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ))))
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                //here we need condition
+                /// item details
+                Flexible(
+                    flex: 6,
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: Obx(() {
+                          switch (orderController.detailPage.value) {
+                            case 'item_add':
+                              return itemAddWidget();
+                            case 'detail_page':
+                              return productDetailPage();
+                            case 'settings':
+                              return settingsUI();
+                            default:
+                              return itemAddWidget();
+                          }
+                        }))),
+              ],
             ),
-            //here we need condition
-/// item details
-            Flexible(
-                flex: 6,
-                child: SizedBox(
-                    width: MediaQuery.of(context).size.width / 3,
-                    child: Obx(() {
-                      switch (orderController.detailPage.value) {
-                        case 'item_add':
-                          return itemAddWidget();
-                        case 'detail_page':
-                          return productDetailPage();
-                        case 'settings':
-                          return settingsUI();
-                        default:
-                          return itemAddWidget();
-                      }
-                    }))
-
-
-            ),
-          ],
-        ),
-      ),
-    )
-    );
+          ),
+        ));
   }
 
   loadData() async {
@@ -726,7 +858,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 12),
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height * .75,
               child: Column(
                 children: [
@@ -756,7 +888,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                           const SizedBox(
                             width: 10,
                           ),
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height / 23,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -924,7 +1056,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                           const SizedBox(
                             width: 10,
                           ),
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height / 23,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1059,7 +1191,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                           const SizedBox(
                             width: 10,
                           ),
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height / 23,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1188,7 +1320,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                           const SizedBox(
                             width: 10,
                           ),
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height / 23,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2016,19 +2148,120 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
 
   Widget productDetailPage() {
     return ListView(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0,right: 10.0,top: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
                 "Product Details",
-                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                style: customisedStyle(context, Colors.black, FontWeight.w600, 16.0),
               ),
-            ),
-          ],
+
+
+              Row(
+                children: [
+                  IconButton(
+                    icon: SvgPicture.asset(
+                      height: 40,
+                      width: 50,
+                      "assets/svg/close-circle.svg",
+                      colorFilter: ColorFilter.mode(
+                        Color(0xffDF1515),
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    onPressed: () {
+                      orderController.detailPage.value = 'item_add';
+                      orderController.update();
+                      // Add your desired action here
+                    },
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset(
+                      height: 40,
+                      width: 50,
+                      "assets/svg/save_mob.svg",
+                      colorFilter: ColorFilter.mode(
+                        Color(0xff10C103),
+                        BlendMode.srcIn,
+
+                      ),
+                    ),
+                    onPressed: () {
+                      orderController.addItemToList(index: orderController.indexDetail);
+                      orderController.detailPage.value = 'item_add';
+                      orderController.update();
+                      // Add your desired action here
+                    },
+                  )
+                ],
+              ),
+
+
+              // Container(
+              //   decoration: const BoxDecoration(
+              //     border: Border(
+              //         top: BorderSide(
+              //           //  color: Colors.red
+              //             color: Color(0xFFE8E8E8))),
+              //   ),
+              //   //  height: 50,
+              //   height: MediaQuery.of(context).size.height * .11,
+              //   child: Center(
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         TextButton(
+              //             style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffDF1515))),
+              //             onPressed: () {
+              //               orderController.detailPage.value = 'item_add';
+              //               orderController.update();
+              //             },
+              //             child: Row(
+              //               children: [
+              //                 SvgPicture.asset("assets/svg/close-circle.svg"),
+              //                 Padding(
+              //                   padding: const EdgeInsets.only(left: 12.0, right: 12),
+              //                   child: Text(
+              //                     'cancel'.tr,
+              //                     style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 13.0),
+              //                   ),
+              //                 ),
+              //               ],
+              //             )),
+              //         const SizedBox(
+              //           width: 10,
+              //         ),
+              //         TextButton(
+              //             style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff10C103))),
+              //             onPressed: () {
+              //               orderController.addItemToList(index: orderController.indexDetail);
+              //               orderController.detailPage.value = 'item_add';
+              //               orderController.update();
+              //             },
+              //             child: Row(
+              //               children: [
+              //                 SvgPicture.asset('assets/svg/save_mob.svg'),
+              //                 Padding(
+              //                   padding: const EdgeInsets.only(left: 8.0, right: 8),
+              //                   child: Text(
+              //                     'Save'.tr,
+              //                     style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
+              //                   ),
+              //                 )
+              //               ],
+              //             )),
+              //       ],
+              //     ),
+              //   ),
+              // )
+
+            ],
+          ),
         ),
 
         dividerStyle(),
@@ -2056,11 +2289,10 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
 
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0, top: 8),
-                    child: Container(
-
+                    child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.19,
                       child: Column(
-                     //   mainAxisAlignment: MainAxisAlignment.start,
+                        //   mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -2069,13 +2301,14 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                           ),
-
-                          orderController.productDescription.value !=""?Text(
-                            orderController.productDescription.value,
-                            style: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ):Container(),
+                          orderController.productDescription.value != ""
+                              ? Text(
+                                  orderController.productDescription.value,
+                                  style: customisedStyle(context, Colors.grey, FontWeight.w400, 12.0),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              : Container(),
                         ],
                       ),
                     ),
@@ -2194,7 +2427,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
           padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 10),
           child: Container(
             height: MediaQuery.of(context).size.height / 19,
-           // width: MediaQuery.of(context).size.width / 10,
+            // width: MediaQuery.of(context).size.width / 10,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               // border: Border.all(color: Color(0xffE7E7E7))
@@ -2206,6 +2439,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
             ),
           ),
         ),
+
         /// flavour commented on last
 
         const SizedBox(
@@ -2222,17 +2456,18 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                       "Select a Flavour",
                       style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
                     ),
-                    orderController.flavourID.value !=""? GestureDetector(
-                      onTap: (){
-                        orderController.flavourID.value = "";
-                        orderController.update();
-                      },
-                      child: const Icon(
-                        Icons.cancel,
-                        color: Colors.blueGrey,
-                      ),
-                    ):Container(),
-
+                    orderController.flavourID.value != ""
+                        ? GestureDetector(
+                            onTap: () {
+                              orderController.flavourID.value = "";
+                              orderController.update();
+                            },
+                            child: const Icon(
+                              Icons.cancel,
+                              color: Colors.blueGrey,
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               )
@@ -2240,10 +2475,10 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
         Obx(() => orderController.flavourList.isNotEmpty ? dividerStyle() : Container()),
         Obx(() => orderController.flavourList.isNotEmpty
             ? ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 280, minHeight: 280),
+                constraints: const BoxConstraints(maxHeight: 280, minHeight: 280),
                 child: ListView.separated(
-                 // physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
+                    // physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     separatorBuilder: (context, index) => dividerStyle(),
                     itemCount: orderController.flavourList.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -2280,68 +2515,11 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                         ),
                       );
                     }))
-            : Container(height: 280,)),
+            : Container(
+                height: 280,
+              )),
 
-        Container(
-          decoration: const BoxDecoration(
-            border: Border(top: BorderSide(
-              //  color: Colors.red
-                 color: Color(0xFFE8E8E8)
 
-            )),
-          ),
-        //  height: 50,
-         height: MediaQuery.of(context).size.height * .11,
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
-                    onPressed: () {
-                      orderController.detailPage.value = 'item_add';
-                      orderController.update();
-                    },
-                    child: Row(
-                      children: [
-                        SvgPicture.asset("assets/svg/close-circle.svg"),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12.0, right: 12),
-                          child: Text(
-                            'cancel'.tr,
-                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 13.0),
-                          ),
-                        ),
-                      ],
-                    )),
-                const SizedBox(
-                  width: 10,
-                ),
-                TextButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
-                    onPressed: () {
-
-                      orderController.addItemToList(index: orderController.indexDetail);
-                      orderController.detailPage.value = 'item_add';
-                      orderController.update();
-                    },
-                    child: Row(
-                      children: [
-                        SvgPicture.asset('assets/svg/save_mob.svg'),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: Text(
-                            'Save'.tr,
-                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 12.0),
-                          ),
-                        )
-                      ],
-                    )),
-              ],
-            ),
-          ),
-        )
         // DividerStyle()
       ],
     );
@@ -2350,35 +2528,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
   Widget itemAddWidget() {
     return Column(
       children: [
-
-        // Container(
-        //   height: MediaQuery.of(context).size.height / 15,
-        //   width: MediaQuery.of(context).size.width / 3,
-        //   decoration: BoxDecoration(
-        //     borderRadius: BorderRadius.circular(5),
-        //
-        //     ///  border: const Border(bottom: BorderSide(color: Color(0xffE7E7E7)))
-        //   ),
-        //   child: TextField(
-        //     style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0),
-        //     onChanged: (text) {
-        //       orderController.filterList(text);
-        //     },
-        //     controller: orderController.searchListController,
-        //     decoration: InputDecoration(
-        //         // fillColor: const Color(0xffFDFDFD),
-        //         // filled: true,
-        //         contentPadding: const EdgeInsets.all(17),
-        //         suffixIcon: IconButton(
-        //           onPressed: () {},
-        //           icon: Image.asset('assets/png/search_grey_png.png'),
-        //         ),
-        //         hintText: 'Search List',
-        //         hintStyle: customisedStyle(context, const Color(0xffA5A5A5), FontWeight.normal, 12.0),
-        //         border: InputBorder.none),
-        //   ),
-        // ),
-        //dividerStyle(),
         Obx(
           () => Expanded(
               child: ListView.separated(
@@ -2407,7 +2556,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     loadData();
                     orderController.productNameDetail = orderController.orderItemList[index]["ProductName"];
                     orderController.indexDetail = index;
-
                   },
                   child: InkWell(
                     child: Padding(
@@ -2421,7 +2569,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                               () => IconButton(
                                 icon: Icon(Icons.check_circle,
                                     size: 25,
-                                    color: orderController.checkValueInList(index) == true ? const Color(0xffF25F29) : const Color(0xffFDDDDDD)),
+                                    color: orderController.checkValueInList(index) == true ? const Color(0xffF25F29) : const Color(0xfffdddddd)),
                                 onPressed: () {
                                   var result = orderController.checkValueInList(index);
                                   if (result) {
@@ -2445,7 +2593,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                       SvgPicture.asset("assets/svg/veg_mob.svg"),
                                       Padding(
                                         padding: const EdgeInsets.only(right: 10.0, top: 0, left: 10),
-                                        child: Container(
+                                        child: SizedBox(
                                           width: MediaQuery.of(context).size.width * 0.11,
                                           child: Text(
                                             orderController.orderItemList[index]["ProductName"] ?? '',
@@ -2459,16 +2607,15 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   ),
                                   orderController.orderItemList[index]["Description"] != ""
                                       ? ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                        maxWidth: 160, minWidth: 10),
-                                        child: Padding(
+                                          constraints: const BoxConstraints(maxWidth: 160, minWidth: 10),
+                                          child: Padding(
                                             padding: const EdgeInsets.only(left: 10.0, right: 5),
                                             child: Text(
                                               orderController.orderItemList[index]["Description"],
                                               style: customisedStyle(context, const Color(0xffF25F29), FontWeight.w400, 12.0),
                                             ),
                                           ),
-                                      )
+                                        )
                                       : Container(),
                                   Obx(
                                     () => Padding(
@@ -2480,7 +2627,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                           orderController.orderItemList[index]["Flavour_Name"] != ""
                                               ? Padding(
                                                   padding: const EdgeInsets.only(left: 5.0),
-                                                  child: Container(
+                                                  child: SizedBox(
                                                     width: MediaQuery.of(context).size.width / 15,
                                                     child: Padding(
                                                       padding: const EdgeInsets.only(right: 5),
@@ -2604,7 +2751,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
 
         ///
 
-        Container(
+        SizedBox(
           height: MediaQuery.of(context).size.height * .22,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -2633,7 +2780,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     width: 7,
                   ),
                   TextButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffF0F0F0))),
+                      style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffF0F0F0))),
                       onPressed: () {
                         orderController.changeStatus("delivered");
                         orderController.update();
@@ -2695,7 +2842,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     TextButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xffDF1515))),
+                        style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xffDF1515))),
                         onPressed: () {
                           Get.back();
                         },
@@ -2716,7 +2863,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                     ),
                     posController.checkPermissionForSave(widget.orderType)
                         ? TextButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff10C103))),
+                            style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xff10C103))),
                             onPressed: () async {
                               orderController.createMethod(
                                   tableID: widget.tableID,
@@ -2724,6 +2871,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   orderType: widget.orderType,
                                   context: context,
                                   orderID: widget.uID,
+                                  splitID: widget.splitID,
                                   isPayment: false,
                                   sectionType: widget.sectionType,
                                   platformID: platformController.platformID.value);
@@ -2752,6 +2900,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                   tableID: widget.tableID,
                                   tableHead: widget.tableHead,
                                   orderType: widget.orderType,
+                                  splitID: widget.splitID,
                                   context: context,
                                   orderID: widget.uID,
                                   isPayment: true,
@@ -2780,6 +2929,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
       ],
     );
   }
+
   void addDetails() {
     Get.bottomSheet(
       isDismissible: true,
@@ -2820,7 +2970,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               dividerStyle(),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -2872,7 +3022,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width / 4,
                   child: TextField(
                     textCapitalization: TextCapitalization.words,
@@ -2926,16 +3076,16 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               // ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16, top: 5),
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height / 17,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all(const Color(0xffF25F29)),
+                      backgroundColor: WidgetStateProperty.all(const Color(0xffF25F29)),
                     ),
                     onPressed: () {
                       // Do something with the text

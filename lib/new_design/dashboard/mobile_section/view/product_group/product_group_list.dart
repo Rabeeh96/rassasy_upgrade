@@ -105,7 +105,7 @@ class _ProductGroupMobileState extends State<ProductGroupMobile> {
                     ? Center(
                         child: Text(
                         "No Groups to Show",
-                        style: customisedStyleBold(context, Colors.black, FontWeight.w400, 14.0),
+                        style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                       ))
                     : SlidableAutoCloseBehavior(
                         closeWhenOpened: true,

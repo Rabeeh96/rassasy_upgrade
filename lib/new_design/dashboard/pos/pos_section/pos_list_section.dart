@@ -206,11 +206,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
       remove_table_perm = false;
       convert_type_perm = false;
 
-      /// commented because its not in api
-      // remove_table_perm = prefs.getBool('remove_table_perm')??true;
-      // convert_type_perm = prefs.getBool('convert_type_perm')??true;
 
-      // IsSelectPos = checkPermissions();
     });
   }
 
