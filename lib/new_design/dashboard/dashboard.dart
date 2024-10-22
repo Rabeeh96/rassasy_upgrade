@@ -21,11 +21,10 @@ import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/mobile/pos_main_page.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/tab_design/tab_pos_list_design.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/tab_design/tabl_pos_beta.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_section/pos_list_section.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
-import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:rassasy_new/new_design/report/new_report_page.dart';
 import 'package:rassasy_new/setting/settings_page.dart';
@@ -248,9 +247,8 @@ class _DashboardNewState extends State<DashboardNew> {
         );
 
       case 6:
+        // Get.to(() => const TabPosListDesign());
 
-        Get.to(() => const TabPosListDesign());
-       // Get.to(const TabPosListDesign());
         break;
     }
   }
@@ -558,28 +556,28 @@ class _DashboardNewState extends State<DashboardNew> {
                                     )
                                   ],
                                 )),
-                            const PopupMenuDivider(),
-                            PopupMenuItem<int>(
-                                value: 6,
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.dashboard,
-                                      color: Colors.red,
-                                    ),
-                                    const SizedBox(
-                                      width: 7,
-                                    ),
-                                    Text(
-                                      'New POS (Beta Version)',
-                                      style: customisedStyle(
-                                          context,
-                                          Colors.black,
-                                          FontWeight.normal,
-                                          14.0),
-                                    )
-                                  ],
-                                )),
+                            // const PopupMenuDivider(),
+                            // PopupMenuItem<int>(
+                            //     value: 6,
+                            //     child: Row(
+                            //       children: [
+                            //         const Icon(
+                            //           Icons.dashboard,
+                            //           color: Colors.red,
+                            //         ),
+                            //         const SizedBox(
+                            //           width: 7,
+                            //         ),
+                            //         Text(
+                            //           'New POS (Beta Version)',
+                            //           style: customisedStyle(
+                            //               context,
+                            //               Colors.black,
+                            //               FontWeight.normal,
+                            //               14.0),
+                            //         )
+                            //       ],
+                            //     )),
                           ],
                           icon: const Icon(
                             Icons.more_vert,
@@ -1361,6 +1359,81 @@ class _DashboardNewState extends State<DashboardNew> {
                         //     )
                         //   ],
                         // ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (BuildContext context) =>
+                                //             const DailyReport()));
+                                Get.to(
+                                    () => const Tablelistbeta()); //! Beta Nav
+                                // Get.to(() => const TabPosListDesign()); //! New POS Nav
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (BuildContext context) =>
+                                //             const DragableList()));
+
+                                // var invoices = await checkingPerm('Invoices'.tr);
+                                //
+                                // if (invoices == true) {
+                                //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewInvoice()));
+                                //
+                                // } else {
+                                //   dialogBoxPermissionDenied(context);
+                                // }
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    color: Color(0xffEEEEEE),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                height: isTablet
+                                    ? screenHeight / 12
+                                    : screenHeight / 15,
+                                width: isTablet
+                                    ? screenWidth / 17
+                                    : screenWidth / 6,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              20,
+                                      width: MediaQuery.of(context).size.width /
+                                          20,
+                                      child: SvgPicture.asset(
+                                          'assets/svg/POS.svg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 12,
+                              ),
+                              child: Text(
+                                'posbeta'.tr,
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
