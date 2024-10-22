@@ -158,7 +158,7 @@ class _PrinterSettingsDetailPageMobileState
                       ),
                       child: Text(
                         'set_def'.tr,
-                        style: customisedStyleBold(
+                        style: customisedStyle(
                             context, const Color(0xffF25F29), FontWeight.w500, 14.0),
                       ),
                     ),
@@ -175,7 +175,7 @@ class _PrinterSettingsDetailPageMobileState
                       const EdgeInsets.only(left: 20.0, top: 10, bottom: 15),
                   child: Text(
                     'select_capability'.tr,
-                    style: customisedStyleBold(
+                    style: customisedStyle(
                         context, Colors.black, FontWeight.w500, 14.0),
                   ),
                 ),
@@ -223,7 +223,7 @@ class _PrinterSettingsDetailPageMobileState
                   const EdgeInsets.only(left: 20.0, top: 10, bottom: 15),
                   child: Text(
                     'select_code_page'.tr,
-                    style: customisedStyleBold(
+                    style: customisedStyle(
                         context, Colors.black, FontWeight.w500, 14.0),
                   ),
                 ),
@@ -932,7 +932,7 @@ class _PrinterSettingsDetailPageMobileState
                       const EdgeInsets.only(left: 20.0, top: 20, bottom: 15),
                   child: Text(
                     "Terms & Conditions",
-                    style: customisedStyleBold(
+                    style: customisedStyle(
                         context, Colors.black, FontWeight.w500, 14.0),
                   ),
                 ),

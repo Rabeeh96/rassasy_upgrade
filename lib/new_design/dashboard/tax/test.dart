@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rassasy_new/global/global.dart';
 
 
 class RassassyScreen extends StatefulWidget {
@@ -48,8 +49,8 @@ class _RassassyScreenState extends State<RassassyScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("Dining",style: customisedStyleBold(context, Color(0xff717171), FontWeight.w500, 21.0),),
-                        Text("Choose a Table",style: customisedStyleBold(context, Colors.black, FontWeight.w500, 17.0),),
+                        Text("Dining",style: customisedStyle(context, Color(0xff717171), FontWeight.w500, 21.0),),
+                        Text("Choose a Table",style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),),
                       ],
                     ),
                   ),
@@ -63,7 +64,7 @@ class _RassassyScreenState extends State<RassassyScreen> {
                       children: [
                         Container(color: Colors.red, width: width),
                         SvgPicture.asset("assets/Refresg (1).svg"),
-                        Container(child: Text(text,style: customisedStyleBold(context, Colors.black, FontWeight.w500, 17.0),)),
+                        Container(child: Text(text,style: customisedStyle(context, Colors.black, FontWeight.w500, 17.0),)),
                         IconButton(onPressed: (){}, icon: Icon(Icons.logout))
 
                       ],
@@ -80,7 +81,4 @@ class _RassassyScreenState extends State<RassassyScreen> {
 
     );
   }
-}
-customisedStyleBold(context,clr,fontWeight,fontSize){
-  return GoogleFonts.poppins(textStyle:TextStyle(fontWeight: fontWeight,color: clr,fontSize: fontSize));
 }

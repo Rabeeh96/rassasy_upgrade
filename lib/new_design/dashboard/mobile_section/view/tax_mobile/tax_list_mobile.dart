@@ -123,7 +123,7 @@ class _TaxListMobileState extends State<TaxListMobile> {
                     ? Center(
                     child: Text(
                       "No Tax to Show",
-                      style: customisedStyleBold(
+                      style: customisedStyle(
                           context, Colors.black, FontWeight.w400, 14.0),
                     ))
                     : SlidableAutoCloseBehavior(

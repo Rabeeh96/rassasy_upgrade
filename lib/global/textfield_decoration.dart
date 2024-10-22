@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rassasy_new/global/global.dart';
 
-/// s
+/// s//
 class TextFieldDecoration {
   static InputDecoration textFieldDecor({String labelTextStr = "", String hintTextStr = ""}) {
     return InputDecoration(

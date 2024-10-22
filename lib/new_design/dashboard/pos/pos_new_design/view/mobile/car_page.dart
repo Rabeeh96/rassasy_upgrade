@@ -172,7 +172,7 @@ class _TakeAwayState extends State<CarPage> {
                                   if(posController.print_perm.value){
                                     var result = await Get.to(CancelOrderList());
                                     if(result !=null){
-                                      carController.cancelOrderApi(context:context,type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: carController.carOrders[index].salesOrderID!);
+                                      carController.cancelOrderApi(context:context,type: "Cancel", tableID: "", cancelReasonId: result[1], orderID: carController.carOrders[index].salesOrderID!,splitUID: "");
                                     }
                                   }
                                   else{
@@ -183,7 +183,7 @@ class _TakeAwayState extends State<CarPage> {
 
                                 }
                                 else{
-                                  carController.cancelOrderApi(context:context,type: "Car", tableID: "", cancelReasonId: "", orderID:carController.carOrders[index].salesOrderID!);
+                                  carController.cancelOrderApi(context:context,type: "Car", tableID: "", cancelReasonId: "", orderID:carController.carOrders[index].salesOrderID!,splitUID: "");
                                 }
 
 

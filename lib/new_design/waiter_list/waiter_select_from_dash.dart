@@ -6,13 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
-//asd//////
+//asd////////
 class SelectWaiter extends StatefulWidget {
   const SelectWaiter({Key? key}) : super(key: key);
   @override
   State<SelectWaiter> createState() => _ProductDetailsState();
 }
-//////
+////////////
 
 class _ProductDetailsState extends State<SelectWaiter> {
   @override

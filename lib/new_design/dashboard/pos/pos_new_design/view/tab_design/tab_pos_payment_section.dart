@@ -1507,6 +1507,7 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                                                         context: context,
                                                         tableID: widget.tableID,
                                                         uUID: widget.uID,
+                                                        splitID:widget.splitID,
                                                         printSave: false);
                                               } else {
                                                 if ((paymentController
@@ -1521,6 +1522,7 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                                                             .value)) {
                                                   paymentController
                                                       .createSaleInvoice(
+                                                      splitID:widget.splitID,
                                                           orderType:
                                                               widget.orderType,
                                                           context: context,

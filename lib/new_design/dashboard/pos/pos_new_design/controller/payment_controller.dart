@@ -234,7 +234,9 @@ class POSPaymentController extends GetxController {
       required BuildContext context,
       required String tableID,
       required String uUID,
-      required int orderType}) async {
+      required int orderType,
+        required String splitID,
+      }) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       stop();
@@ -279,9 +281,11 @@ class POSPaymentController extends GetxController {
         final String url = '$baseUrl/posholds/create-pos/salesInvoice/';
         print(url);
         Map data = {
+          "split_table_id": splitID,
           "EmployeeID": employeeID,
           'LoyaltyCustomerID': null,
           "table_vacant": tableVacant,
+          "table_vacant_split": tableVacant,
           "Paid": autoC,
           "CompanyID": companyID,
           "Table": tableID,

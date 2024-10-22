@@ -6,7 +6,10 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TableService {
-  Future<List<dynamic>> fetchAllData(String token) async {
+   fetchAllData(String token) async {
+     try{
+
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userID = prefs.getInt('user_id') ?? 0;
     var accessToken = prefs.getString('access') ?? '';
@@ -15,6 +18,7 @@ class TableService {
     String baseUrl = BaseUrl.baseUrl;
     print("$baseUrl/posholds/tables/?CompanyID=$companyID&BranchID=$branchID");
     print("token $token");
+
     final response = await http.get(
       Uri.parse(
           '$baseUrl/posholds/tables/?CompanyID=$companyID&BranchID=$branchID'),
@@ -24,14 +28,20 @@ class TableService {
     );
 
     if (response.statusCode == 200) {
+
       final parsed = jsonDecode(response.body);
       return parsed;
     } else {
       throw Exception('Failed to load table data');
     }
-  }
+     }
+     catch(e){
+       print(e.toString());
+     }
 
-  Future<List<dynamic>> mergeData(List combineDatas) async {
+   }
+
+  mergeData(List combineDatas) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // var userID = prefs.getInt('user_id') ?? 0;
     var accessToken = prefs.getString('access') ?? '';
@@ -39,9 +49,8 @@ class TableService {
     var branchID = prefs.getInt('branchID') ?? 1;
     String baseUrl = BaseUrl.baseUrl;
     String url = '$baseUrl/posholds/tables/${combineDatas[0]}/merge/';
-    var tableId = await combineDatas[0];
-    // log("tableId.toString()");
-    log(tableId.toString());
+    print("url$url");
+
     combineDatas.removeAt(0);
     final response = await http.post(
       Uri.parse(url),
@@ -55,15 +64,11 @@ class TableService {
         "table_ids": combineDatas,
       }),
     );
-    pr(response);
-
+    pr(response.body);
     if (response.statusCode == 200) {
-      final fetchmerge = jsonDecode(response.body);
-      log("Merge Successfull");
-
-      return fetchmerge.values.toList();
+      return true;
     } else {
-      throw Exception('Failed to load table data');
+      return false;
     }
   }
 
@@ -72,6 +77,7 @@ class TableService {
     var companyID = prefs.getString('companyID') ?? '';
     var branchID = prefs.getInt('branchID') ?? 1;
     String baseUrl = BaseUrl.baseUrlV11;
+    print("$baseUrl/posholds/pos-order-online-list/");
     final response = await http.post(
       Uri.parse('$baseUrl/posholds/pos-order-online-list/'),
       headers: <String, String>{
@@ -83,6 +89,10 @@ class TableService {
         "BranchID": branchID,
       }),
     );
+    pr('${{
+      "CompanyID": companyID,
+      "BranchID": branchID,
+    }}');
     // pr(response.body);
     if (response.statusCode == 200) {
       final parsed = jsonDecode(response.body) as Map<String, dynamic>;

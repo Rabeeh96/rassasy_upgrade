@@ -166,9 +166,11 @@ class OrderController extends GetxController {
   late ValueNotifier<int> productSearchNotifier;
   var detailPage = 'item_add'.obs;
   var isShowImage = true.obs;
+
   var isArrange = true.obs;
   RxBool showProductDescription = true.obs;
   RxBool showWegOrNoVeg = true.obs;
+  RxBool disableKOT = false.obs;
   var productNameDetail = '';
   var indexDetail = 0;
   var heightOfImage = 8.0;
@@ -269,14 +271,12 @@ class OrderController extends GetxController {
     descriptionFontSizeController.text = descriptionFontSize.toString();
     rowCountController.text = rowCountGridView.toString();
 
-    showProductDescription.value =
-        prefs.getBool('showProductDescription') ?? true;
+    autoFocusToSearchField.value = prefs.getBool("autoFocusSearch") ?? false;
+    showProductDescription.value = prefs.getBool('showProductDescription') ?? true;
     showWegOrNoVeg.value = prefs.getBool('showWegOrNoVeg') ?? true;
     isShowImage.value = prefs.getBool('show_product_image') ?? true;
-    productFontWeight.value =
-        intToFontWeight(prefs.getInt('product_weight') ?? 400);
-    groupFontWeight.value =
-        intToFontWeight(prefs.getInt('group_weight') ?? 400);
+    productFontWeight.value = intToFontWeight(prefs.getInt('product_weight') ?? 400);
+    groupFontWeight.value = intToFontWeight(prefs.getInt('group_weight') ?? 400);
     descriptionFontWeight.value =
         intToFontWeight(prefs.getInt('description_weight') ?? 400);
     amountFontWeight.value =
@@ -291,6 +291,7 @@ class OrderController extends GetxController {
 
   RxBool printAfterPayment = false.obs;
   RxBool autoFocusField = false.obs;
+  RxBool autoFocusToSearchField = false.obs;
   RxString currency = "".obs;
 
   RxString user_name = "".obs;
@@ -1049,7 +1050,7 @@ class OrderController extends GetxController {
       cGSTAmount.value = 0.0;
       sGSTAmount.value = 0.0;
       iGSTAmount.value = 0.0;
-      vatAmount.value = 0.0;
+      vatAmount.value =  0.0;
       totalTax.value = 0.0;
     } else if (taxType.value == "Import") {
       cGSTAmount.value = 0.0;
@@ -1135,7 +1136,6 @@ class OrderController extends GetxController {
       "netAmountRounded": roundStringWith(netAmount.value.toString()),
       "InclusivePrice": inclusiveUnitPriceAmountWR.value,
       "TotalTaxRounded": roundStringWith(totalTax.value.toString()),
-      "Description": "",
       "ExciseTaxID": exciseTaxID.value,
       "ExciseTaxName": exciseTaxName.value,
       "BPValue": BPValue.value,
@@ -1768,6 +1768,7 @@ class OrderController extends GetxController {
       Map data = {
         "split_table_id": splitID,
         "Table": tableID,
+        "AllCombined":true,
         "EmployeeID": employeeID,
         "CompanyID": companyID,
         "CreatedUserID": userID,
@@ -1873,17 +1874,25 @@ class OrderController extends GetxController {
               voucherType: "SO");
         }
 
-        Future.delayed(const Duration(seconds: 1), () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          var kot = prefs.getBool("KOT") ?? false;
-          if (kot == true) {
-            posController.printKOT(
-                cancelList: cancelPrint,
-                isUpdate: sectionType == "Edit" ? true : false,
-                orderID: n["OrderID"],
-                rePrint: false);
-          } else {}
-        });
+        if(disableKOT.value ==false){
+
+          Future.delayed(const Duration(seconds: 1), () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            var kot = prefs.getBool("KOT") ?? false;
+            if (kot == true) {
+              posController.printKOT(
+                  cancelList: cancelPrint,
+                  isUpdate: sectionType == "Edit" ? true : false,
+                  orderID: n["OrderID"],
+                  rePrint: false);
+            } else {}
+          });
+        }
+        else
+          {
+            disableKOT.value=false;
+          }
+
       } else if (status == 6001) {
         stop();
         var errorMessage = n["message"] ?? "";

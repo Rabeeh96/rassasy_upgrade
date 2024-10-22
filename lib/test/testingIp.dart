@@ -11,7 +11,11 @@ class IpTest extends StatelessWidget {
     );
   }
 }
+<<<<<<< HEAD
 ////
+=======
+////////
+>>>>>>> 1e610b7f5fa32cf20c53ebe9583d55d9fb6994cb
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

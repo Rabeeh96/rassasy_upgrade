@@ -233,7 +233,7 @@ class _DiningPageState extends State<DiningPage> {
                                             width: 25,
                                             //
                                           ),
-                                          Text("Kot", style: customisedStyleBold(context, Colors.white, FontWeight.w400, 12.0))
+                                          Text("Kot", style: customisedStyle(context, Colors.white, FontWeight.w400, 12.0))
                                         ],
                                       ),
                                     ):Container(),
@@ -289,12 +289,12 @@ class _DiningPageState extends State<DiningPage> {
                                                 type: "Dining&Cancel",
                                                 tableID: diningController.tableData[index].id!,
                                                 cancelReasonId: result[1],
-                                                orderID: diningController.tableData[index].salesOrderID!);
+                                                orderID: diningController.tableData[index].salesOrderID!,splitUID: "");
                                           }
                                         } else {
                                           diningController.cancelOrderApi(
                                               context:context,
-                                              type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: diningController.tableData[index].salesOrderID!);
+                                              type: "Dining", tableID: diningController.tableData[index].id!, cancelReasonId: "", orderID: diningController.tableData[index].salesOrderID!,splitUID: "");
                                         }
                                       },
                                       backgroundColor: const Color(0xFFFC3636),

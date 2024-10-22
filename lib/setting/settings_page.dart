@@ -19,6 +19,7 @@ import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
 import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/select_codepage.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/controller/order_controller.dart';
 import 'package:rassasy_new/new_design/waiter_list/waiter_select_from_dash.dart';
 import 'package:rassasy_new/test/dragable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -4386,6 +4387,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           synMethod = val;
                           switchStatus("synMethod", synMethod);
+                          if(synMethod){
+                            loadDataToLocal();
+                            print("-**/*/-*/*/-*/-*/-*/-*/*/-*/-*/-*/-");
+                            //   loadDataToLocal();
+                          }
                         });
                       },
                     ),
@@ -4620,6 +4626,25 @@ class _SettingsPageState extends State<SettingsPage> {
         )
       ],
     );
+  }
+
+  loadDataToLocal()async{
+    OrderController orderController = Get.put(OrderController());
+      start(context);
+      await orderController.fetchAndSaveProductGroupData();
+      var savedData = await orderController.loadSavedData("productGroupData");
+      var allProducts = [];
+      for (var i = 0; i < savedData.length; i++) {
+        var groupId = savedData[i]['ProductGroupID'];
+        var groupProducts = await orderController
+            .fetchAndSaveProductData(groupId);
+        if (groupProducts is List) {
+          allProducts.addAll(groupProducts);
+        }
+      }
+      await orderController.saveAllProduct(allProducts);
+      await stop();
+
   }
 
   String compensationHour = '1';

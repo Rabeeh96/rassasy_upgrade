@@ -63,7 +63,7 @@ class _SelectTaxState extends State<SelectTaxMobile> {
                   ? Center(
                   child: Text(
                     "Tax is empty",
-                    style: customisedStyleBold(
+                    style: customisedStyle(
                         context, Colors.black, FontWeight.w400, 14.0),
                   ))
                   : ListView.separated(

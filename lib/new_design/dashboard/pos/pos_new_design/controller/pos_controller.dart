@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -52,15 +50,15 @@ class POSController extends GetxController {
   @override
   void onInit() {
     tabIndex.value = 0;
-    fetchAllData();
-    fetchTOC();
+    // fetchAllData();
+   // fetchTOC();
     ReloadAllData();
     update();
     super.onInit();
   }
 
   clear() {
-    tablemergeData.clear();
+    tableMergeData.clear();
     onlineOrders.clear();
     takeAwayOrders.clear();
     carOrders.clear();
@@ -104,20 +102,21 @@ class POSController extends GetxController {
   FocusNode saveFocusNode = FocusNode();
   final selectedItem = ''.obs;
 
-
-
   String currency = "SR";
   RxString userName = "".obs;
-  RxInt selectedIndexsplit = RxInt(-1);
+  RxInt selectedIndexSplit = RxInt(-1);
   final TableService _tableService = TableService();
   var tableData = <Data>[].obs;
-  var tablemergeData = <MergeData>[].obs;
+  var tableMergeData = <MergeData>[].obs;
   var fullOrderData = <Data>[].obs;
   var onlineOrders = <Online>[].obs;
   var takeAwayOrders = <TakeAway>[].obs;
   var carOrders = <Car>[].obs;
   var cancelOrder = [].obs;
   var isLoading = true.obs;
+
+  var  fullDataList = [].obs;
+
 
   ///this function used for getting time
   ///in hours and minute
@@ -157,8 +156,23 @@ class POSController extends GetxController {
     }
   }
 
+  refreshTableData(){
+    tableMergeData.clear();
+    fetchAllData();
+    update();
+  }
+
+  refreshTOC(){
+    onlineOrders.clear();
+    takeAwayOrders.clear();
+    carOrders.clear();
+    fetchTOC();
+    update();
+  }
+
+
   ///fetch all api call
-  void fetchAllData() async {
+    fetchAllData() async {
     try {
       isLoading(true);
       update();
@@ -168,11 +182,17 @@ class POSController extends GetxController {
       currency = prefs.getString('CurrencySymbol') ?? "";
       userName.value = prefs.getString('user_name') ?? "";
       var fetchedData = await _tableService.fetchAllData(accessToken);
+      print(fetchedData);
       selectedIndexNotifier.value = 0;
-      tablemergeData.assignAll((fetchedData).map((json) => MergeData.fromJson(json)).toList());
-      print("selectedIndex.value-----------------${selectedIndex.value}");
-      pr(tablemergeData.length.toString());
+      tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
+
+      fullDataList.value = fetchedData['data']??[];
+
+      print("fullDataListfullDataList${fullDataList.length}");
+
+      pr(tableMergeData.length.toString());
     } finally {
+
       isLoading(false);
     }
   }
@@ -187,17 +207,36 @@ class POSController extends GetxController {
       currency = prefs.getString('CurrencySymbol') ?? "";
       userName.value = prefs.getString('user_name') ?? "";
       var fetchedTOCData = await _tableService.fetchTOC(accessToken);
+      print('-**-/-$fetchedTOCData');
       selectedIndexNotifier.value = 0;
-      onlineOrders.assignAll((fetchedTOCData['Online'] as List)
-          .map((json) => Online.fromJson(json))
-          .toList());
-      takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List)
-          .map((json) => TakeAway.fromJson(json))
-          .toList());
-      carOrders.assignAll((fetchedTOCData['Car'] as List)
-          .map((json) => Car.fromJson(json))
-          .toList());
+      print("--------1");
+
+      if(fetchedTOCData['TakeAwayStatusCode'] ==6000){
+        takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
+        print("--------1");
+      }
+
+
+      if(fetchedTOCData['OnlineStatusCode'] ==6000){
+        onlineOrders.assignAll((fetchedTOCData['Online'] as List).map((json) => Online.fromJson(json)).toList());
+        print("--------1");
+      }
+
+
+      if(fetchedTOCData['CarStatusCode'] ==6000){
+        carOrders.assignAll((fetchedTOCData['Car'] as List).map((json) => Car.fromJson(json)).toList());
+        print("--------1");
+      }
+
+
+
+
+      // takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
+      // print("--------1");
+      // carOrders.assignAll((fetchedTOCData['Car'] as List).map((json) => Car.fromJson(json)).toList());
+      // print("--------1");
       cancelOrder.assignAll(fetchedTOCData['Reasons'] ?? []);
+      print("--------1");
     } finally {
       isLoading(false);
     }
@@ -221,26 +260,85 @@ class POSController extends GetxController {
   //     isLoading(false);
   //   }
   // }
-  void combineData(BuildContext context, List combineDatas) async {
+    combineDataFunction(BuildContext context, List combineDatas) async {
     try {
       isLoading(true);
       final fetchedmergeData = await _tableService.mergeData(combineDatas);
       isLoading(false);
-      selectedIndexNotifier.value = 0;
 
-      tablemergeData.assignAll((fetchedmergeData).map((json) =>  MergeData.fromJson(json)).toList());
-      pr(tablemergeData.length.toString());
+      if(fetchedmergeData){
+        selectedIndexNotifier.value = 0;
+        return [true];
+      }
+      else{
+        return [false,""];
+      }
 
-      //!
     } catch (e) {
       isLoading(false);
-
+      return [false,e.toString()];
       print('Error: $e');
+    }
+  }
+  /// split merge
+   mergeSplitTable(combineData) async {
+    try {
+      isLoading(true);
+      String baseUrl = BaseUrl.baseUrl;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var companyID = prefs.getString('companyID') ?? ''; // Change to string
+      var branchID = prefs.getInt('branchID') ?? 1;
+      var accessToken = prefs.getString('access') ?? '';
+      String url = '$baseUrl/posholds/split-tables/${combineData[0]}/merge/';
+      print("url$url");
+      combineData.removeAt(0);
+      Map<String, dynamic> data = {
+        "CompanyID": companyID,
+        "BranchID": branchID,
+        "table_ids": combineData,
+      };
+      print("data $data");
+      var body = json.encode(data);
+
+      var response = await http.post(Uri.parse(url),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $accessToken',
+          },
+          body: body);
+      log("merge response");
+      pr(response.body);
+
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+      var status = responseData["StatusCode"];
+
+      if (status == 6000) {
+        return [true];
+        // Get.back();
+        // fetchAllData();
+      } else if (status == 6001) {
+        var msg = responseData["message"]??"";
+        return [false,msg];
+      }
+      else if (status == 6002) {
+        var msg = responseData["error"]??responseData["message"]??"Something went wrong";
+        return [false,msg];
+      }
+
+      else {
+        return [false,"Something went wrong"];
+
+      }
+    } catch (e) {
+      return [false,"${e.toString()}"];
+      // Handle exceptions
+    } finally {
+      isLoading(false);
     }
   }
 
   /// create Split table
-  Future<void> createTableSplit(combineDatas) async {
+  Future<void> createTableSplit() async {
     try {
       isLoading(true);
       String baseUrl = BaseUrl.baseUrl;
@@ -279,17 +377,14 @@ class POSController extends GetxController {
       pr(response.body);
 
       Map<String, dynamic> responseData =
-      json.decode(utf8.decode(response.bodyBytes));
+          json.decode(utf8.decode(response.bodyBytes));
       var status = responseData["StatusCode"];
-
-
 
       if (status == 6000) {
         Get.back();
         tablenameController.clear();
         splitcountcontroller.text = "0";
         fetchAllData();
-
       } else if (status == 6001) {
         var msg = responseData["message"];
         Get.snackbar('Error', msg); // Show error message
@@ -311,6 +406,131 @@ class POSController extends GetxController {
       isLoading(false);
     }
   }
+  allCombinedTable(tableID) async {
+    try {
+      isLoading(true);
+      String baseUrl = BaseUrl.baseUrl;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var companyID = prefs.getString('companyID') ?? ''; // Change to string
+      var branchID = prefs.getInt('branchID') ?? 1;
+      var accessToken = prefs.getString('access') ?? '';
+      // http://192.168.1.91:8002/api/v10/posholds/tables/?CompanyID=5a09676a-55ef-47e3-ab02-bac62005d847&BranchID=1&AllCombined=False&get_combine_table_ID=6f6cbbb7-451d-4986-b6d7-450e15a273bc
+      final String url = '$baseUrl/posholds/tables/?CompanyID=$companyID&branchID=$branchID&AllCombined=True&get_combine_table_ID=$tableID';
+      print("-----url$url");
+      var response = await http.get(Uri.parse(url),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $accessToken',
+          },
+          );
+      log("merge response");
+      pr(response.body);
+
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+      var status = responseData["StatusCode"];
+      print(response.body);
+      if (status == 6000) {
+        return true;
+
+      } else if (status == 6001) {
+        var msg = responseData["message"];
+        Get.snackbar('Error', msg);
+        return false;
+
+      }
+      else{
+        return false;
+      }
+    } catch (e) {
+      return false;
+      // Handle exceptions
+    } finally {
+      isLoading(false);
+
+    }
+  }
+
+   swapTableFunction({required String fromTableID,required List fromSplitTableList,required String toTableID,required String toSplitTableID}) async {
+    try {
+      isLoading(true);
+
+      pr("fromTableID $fromTableID");
+      pr("fromSplitTableList $fromSplitTableList");
+      pr("toTableID $toTableID");
+      pr("toSplitTableID $toSplitTableID");
+
+      String baseUrl = BaseUrl.baseUrl;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var companyID = prefs.getString('companyID') ?? ''; // Change to string
+      var branchID = prefs.getInt('branchID') ?? 1;
+      var accessToken = prefs.getString('access') ?? '';
+      final String url = '$baseUrl/posholds/pos_table/swap_order/';
+      Map<String, dynamic> data = {
+
+          "CompanyID": companyID,
+          "BranchID": branchID,
+          "fromtable": [
+            {
+              "From_Main_Table": fromTableID,
+              "From_Split_Tables":fromSplitTableList
+            }
+          ],
+
+        "To_Main_Table": toTableID,
+        "To_Split_Table": toSplitTableID
+      };
+
+      pr("data$data");
+      var body = json.encode(data);
+      var response = await http.post(Uri.parse(url),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $accessToken',
+          },
+          body: body);
+      log("merge response");
+      pr(response.body);
+
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+      var status = responseData["StatusCode"];
+
+      pr("----------${status}");
+      if (status == 6000) {
+        pr("-----------11");
+        isLoading(false);
+        return true;
+       // Get.back();
+        // tablenameController.clear();
+        // splitcountcontroller.text = "0";
+        // fetchAllData();
+      } else if (status == 6001) {
+        isLoading(false);
+        var msg = responseData["message"]??responseData["error"]??"";
+        Get.snackbar('Error', msg);
+        return false;// Show error message
+      }
+      // final addsplit = jsonDecode(response.body);
+      // if (response.statusCode == 200 || response.statusCode == 201) {
+      //
+      //   log("Add Split Successfull");
+      //   fetchAllData();
+      //
+      //   // return addsplit.values.toList();
+      // }
+      else {
+        isLoading(false);
+        pr("-----------12");
+
+        throw Exception('Failed to load table data');
+      }
+    } catch (e) {
+      isLoading(false);
+      pr("-----------1");
+      return false;
+      // Handle exceptions
+    }
+  }
+
 
   /// create table
   Future<void> createTableApi() async {
@@ -378,7 +598,9 @@ class POSController extends GetxController {
       required String type,
       required String tableID,
       required String cancelReasonId,
-      required String orderID}) async {
+      required String orderID,
+      required String splitUID
+      }) async {
     try {
       isLoading(true);
 
@@ -407,8 +629,8 @@ class POSController extends GetxController {
         "CompanyID": companyID,
         "BranchID": branchID,
         "Type": type,
-        "unqid":
-            type == "Dining&Cancel" || type == "Dining" ? tableID : orderID,
+        "split_table_id":splitUID,
+        "unqid": type == "Dining&Cancel" || type == "Dining" ? tableID : orderID,
         "reason_id": cancelReasonId,
       };
 
@@ -435,6 +657,8 @@ class POSController extends GetxController {
 
       if (status == 6000) {
         pr(type);
+
+
         if (type != "Cancel") {
           fetchAllData();
         } else {
@@ -634,7 +858,9 @@ class POSController extends GetxController {
   ReloadAllData() async {
     print("----------------------------------------------------------------1");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    isCombine.value=false;
+    isCombineSplit.value=false;
+     selectList.clear();
     dining_view_perm.value = prefs.getBool('Diningview') ?? true;
     reservation_view_perm.value = prefs.getBool('View Reservation') ?? true;
     directOrderOption.value = prefs.getBool('directOrderOption') ?? false;
@@ -673,14 +899,10 @@ class POSController extends GetxController {
     reservation_perm.value = prefs.getBool('Reserve Table') ?? true;
     remove_table_perm.value = false;
     convert_type_perm.value = false;
+    update();
   }
 
-
-
-
-
-
-   var selectedType = 'dine'.obs;
+  var selectedType = 'dine'.obs;
 
   void selectType(String type) {
     selectedType.value = type; // Set the selected type
@@ -711,7 +933,21 @@ class POSController extends GetxController {
 
   void selectsplitItem(int index) {
     selectedsplitIndex.value = index;
+    log(selectedsplitIndex.value.toString());
   }
+
+  // int clickCount = 0;
+
+  // void selectsplitItem(int index) {
+  //   clickCount++;
+  //   if (clickCount == 0) {
+  //     selectedsplitIndex.value = index;
+  //     log(selectedsplitIndex.value.toString());
+  //   } else if (clickCount == 2) {
+  //     selectedsplitIndex.value = 1000;
+  //     log(selectedsplitIndex.value.toString());
+  //   }
+  // }
 
   void takeAwayselectItem(int index) {
     takeawayselectedIndex.value = index;
@@ -735,10 +971,11 @@ class POSController extends GetxController {
   // List<int> selectList = [];
   RxList<int> selectList = RxList<int>();
 
-  List combineDatas = [];
+
 
   // RxList<int> combineDatas = <int>[].obs;
   RxBool isCombine = false.obs;
+  RxBool isCombineSplit = false.obs;
   // final tableData = [].obs;
   final selectedCombinedIndex = 0.obs;
 

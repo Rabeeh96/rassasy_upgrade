@@ -140,7 +140,7 @@ class _OrderCreateViewState extends State<OrderCreateView> {
                           },
                           icon: Text(
                             'Sync',
-                            style: customisedStyleBold(context, Colors.black, FontWeight.w500, 16.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 16.0),
                           ))
                       : Container();
                 }),

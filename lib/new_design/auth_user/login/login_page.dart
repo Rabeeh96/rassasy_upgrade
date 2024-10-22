@@ -63,7 +63,6 @@ class _LoginPageNewState extends State<LoginPageNew> {
     /// chaged
    bool isTablet = enableTabDesign;
 
-
     return Scaffold(
       appBar: isTablet
           ? AppBar()
@@ -763,7 +762,7 @@ class _LoginPageNewState extends State<LoginPageNew> {
               backGroundColor: Colors.red, forGroundColor: Colors.white);
         }
       } catch (e) {
-        print("10000");
+        print("10000${e.toString()}");
         stopLoading();
         popAlertWithColor(head: "Alert", message: e.toString(), position: SnackPosition.BOTTOM,
             backGroundColor: Colors.red, forGroundColor: Colors.white);

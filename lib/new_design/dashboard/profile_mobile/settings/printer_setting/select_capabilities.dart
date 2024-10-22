@@ -46,7 +46,7 @@ class _SelectCapabilitiesMobState extends State<SelectCapabilitiesMob> {
                       ListTile(
                         title: Text(
                           capabilitiesController.printerModels[index],
-                          style: customisedStyleBold(context, Colors.black, FontWeight.w400, 14.0),
+                          style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
                         ),
                         onTap: () {
                           Navigator.pop(context, capabilitiesController.printerModels[index]);
