@@ -964,18 +964,39 @@ class POSController extends GetxController {
     log(selectedsplitIndex.value.toString());
   }
 
-  // int clickCount = 0;
-
-  // void selectsplitItem(int index) {
-  //   clickCount++;
-  //   if (clickCount == 0) {
-  //     selectedsplitIndex.value = index;
-  //     log(selectedsplitIndex.value.toString());
-  //   } else if (clickCount == 2) {
-  //     selectedsplitIndex.value = 1000;
-  //     log(selectedsplitIndex.value.toString());
-  //   }
+//    startApiCall();
+  // @override
+  // void dispose() {
+  //   posController.timer?.cancel(); // Cancel the timer when the widget is disposed
+  //   super.dispose();
   // }
+  //
+  // void startApiCall() {
+  //
+  //
+  //
+  //   posController.timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+  //     pr("posController.selectedsplitIndex.value ${posController.selectedsplitIndex.value}posController.isCombine.value   ${posController.isCombine.value}  posController.isCombineSplit.value ${posController.isCombineSplit.value}");
+  //     if (posController.isCombine.value==false&&posController.isCombineSplit.value==false &&posController.selectedsplitIndex.value ==1000) {
+  //       pr("-----------------------------------------------${posController.selectedType.value} not dine");
+  //       if(posController.selectedType.value =="dine"){
+  //         posController.fetchAllDataWithoutLoading();
+  //       }
+  //       else{
+  //         pr("//////////////// not dine");
+  //       }
+  //     }
+  //     else{
+  //
+  //     }
+  //
+  //
+  //
+  //   });
+  //
+  //
+  // }
+
 
   void takeAwayselectItem(int index) {
     takeawayselectedIndex.value = index;
@@ -1013,6 +1034,9 @@ class POSController extends GetxController {
     log(datalist.toString());
     return datalist;
   }
+
+  var tableheight = 2.0.obs;
+  var tablewidth = 4.obs;
 
   checkedbtn(int index) {
     final datalist = selectList.contains(index);

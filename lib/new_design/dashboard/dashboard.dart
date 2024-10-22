@@ -37,6 +37,7 @@ import 'mobile_section/view/customer/customer_list_mobile.dart';
 import 'mobile_section/view/invoice/invocie_list_mobile.dart';
 import 'mobile_section/view/product/product_list_mobile.dart';
 import 'mobile_section/view/product_group/product_group_list.dart';
+import 'pos/pos_new_design/view/tab_design/tab_pos_list_design.dart';
 import 'product/create_products.dart';
 import 'profile_mobile/about_us/about_us_page.dart';
 import 'profile_mobile/contact_us/contact_us.dart';
@@ -1377,7 +1378,7 @@ class _DashboardNewState extends State<DashboardNew> {
                                 //         builder: (BuildContext context) =>
                                 //             const DailyReport()));
                                 Get.to(
-                                    () => const Tablelistbeta()); //! Beta Nav
+                                    () => const TabPosListDesign()); //! Beta Nav
                                 // Get.to(() => const TabPosListDesign()); //! New POS Nav
 
                                 // Navigator.push(

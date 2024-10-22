@@ -1,15 +1,10 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/model/mergeModel.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/tab_design/tab_pos_payment_section.dart';
-import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 
 import '../../../../../../global/textfield_decoration.dart';
 import '../../controller/pos_controller.dart';
@@ -17,6 +12,7 @@ import '../detail_page/cancel_reason_list.dart';
 import '../detail_page/platform.dart';
 import '../detail_page/reservation_list.dart';
 import 'draggable_list.dart';
+import 'new_dragable.dart';
 import 'tab_pos_order_page.dart';
 
 ///image size not correct ,in bottom sheet cancel order and print
@@ -35,40 +31,33 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   final POSController posController = Get.put(POSController());
 
   bool areAllItemsVacant(items) {
-
     return items.every((item) => item['Status'] == 'Vacant');
   }
 
-  bool areAllItemsVacantCheckForTableSwap(items,status) {
-
-    if(items.isEmpty){
-      if(status =="Vacant"){
+  bool areAllItemsVacantCheckForTableSwap(items, status) {
+    if (items.isEmpty) {
+      if (status == "Vacant") {
         return true;
-      }
-      else{
+      } else {
         return false;
       }
-
     }
     return items.every((item) => item['Status'] == 'Vacant');
   }
 
   bool hasUnpaidOrders(items) {
     bool hasOrderedItem = items.any((item) => item['Status'] == 'Ordered');
-    if(hasOrderedItem){
+    if (hasOrderedItem) {
       bool allNotPaid = items.any((item) => item['Status'] == 'Paid');
-      if(allNotPaid){
+      if (allNotPaid) {
         return false;
-      }
-      else{
+      } else {
         return true;
       }
-    }
-    else{
+    } else {
       return false;
     }
   }
-
 
   Color _getBackgroundColor(String? status) {
     if (status == 'Vacant') {
@@ -90,8 +79,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
   void initState() {
     /// TODO: implement initState
     super.initState();
-    posController.isCombine.value=false;
-    posController.isCombineSplit.value=false;
+    posController.isCombine.value = false;
+    posController.isCombineSplit.value = false;
     posController.selectList.clear();
     posController.selectedIndexNotifier.value = 0;
     posController.fetchAllData();
@@ -103,45 +92,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     posController.takeAwayOrders.clear();
     posController.carOrders.clear();
     posController.update();
-    startApiCall();
   }
-
-
-  @override
-  void dispose() {
-    posController.timer?.cancel(); // Cancel the timer when the widget is disposed
-    super.dispose();
-  }
-
-  void startApiCall() {
-
-
-
-    posController.timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      pr("posController.selectedsplitIndex.value ${posController.selectedsplitIndex.value}posController.isCombine.value   ${posController.isCombine.value}  posController.isCombineSplit.value ${posController.isCombineSplit.value}");
-      if (posController.isCombine.value==false&&posController.isCombineSplit.value==false &&posController.selectedsplitIndex.value ==1000) {
-        pr("-----------------------------------------------${posController.selectedType.value} not dine");
-        if(posController.selectedType.value =="dine"){
-          posController.fetchAllDataWithoutLoading();
-        }
-        else{
-          pr("//////////////// not dine");
-        }
-      }
-      else{
-
-      }
-
-
-
-    });
-
-
-  }
-
 
   final RxBool _isLongPressed = false.obs;
-
 
   // filterVacantTables(var tables) {
   //
@@ -188,7 +141,6 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     }).toList();
   }
 
-
   /*filterVacantTables(var tables) {
     return tables.where((table) {
       // Check if the main table is vacant
@@ -229,7 +181,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
             titleSpacing: 0,
             title: Obx(() {
               return Text(
-                posController.selectedType.value == "dine" ? "Choose a Table" : "Create Order",
+                posController.selectedType.value == "dine" ? "Choose a Table (Beta)" : "Create Order",
                 style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
               );
             }),
@@ -242,115 +194,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
               //           : Container();
               // }),
 
-              Obx(() {
-                return posController.isCombine.value
-                    ? Container()
-                    : posController.selectedType.value == "dine"
-                        ? ElevatedButton(
-                            onPressed: () {
-                              createTableSplit(context, screenSize, posController);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFF0E8FF),
-                              minimumSize: const Size(50, 35),
-                            ),
-                            child: Text(
-                              "Create Table",
-                              style: customisedStyle(context, Color(0xff6F42C1), FontWeight.w400, 14.0),
-                            ),
-                          )
-                        : Container();
-              }),
 
               // TextButton(
               //     onPressed: () {
               //       _dialogBuilderQRDownload(context, screenSize, posController);
               //     },
               //     child: const Text("QR Download")),
-              // TextButton(
-              //     onPressed: () {
-              //       _dialogBuilderQRoption(context, screenSize, posController);
-              //     },
-              //     child: const Text("qr option")),
-
-              Obx(() {
-                return posController.isCombine.value
-                    ?posController.selectList.length !=1?Container():
-                 posController.tableMergeData[posController.selectList[0]].status =="Ordered"?
-                ElevatedButton(
-                        onPressed: () async{
-                           Size screenSize = MediaQuery.of(context).size;
-                         // var  vacantTables = filterVacantTables(posController.fullDataList);
-
-                          _dialogBuilderSwap(context,screenSize,posController.fullDataList,false,0,'');
-
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF0E8FF),
-                          minimumSize: const Size(50, 35),
-                        ),
-                        child: Text(
-                          "Change Table",
-                          style: customisedStyle(context, Color(0xff6F42C1), FontWeight.w400, 14.0),
-                        ),
-                      )
-                    : Container() : Container();
-              }),
-
-              Obx(() {
-                return posController.isCombine.value
-                    ? ElevatedButton(
-                        onPressed: () {
-                          List combineData = [];
-                          String combineMessage = "";
-                          if (posController.selectList.length > 1) {
-                            for (var index in posController.selectList) {
-                              final item = posController.tableMergeData[index];
-                              combineData.add(item.id);
-                              combineMessage.isEmpty ? combineMessage = item.tableName??"" : combineMessage += " & ${item.tableName??""}";
-                            }
-                            _dialogCombine(context, screenSize, posController, combineData, combineMessage, false);
-                          } else {
-                            Get.snackbar(
-                              'Alert',
-                              'Please select at least 2 Tables',
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF0E8FF),
-                          minimumSize: const Size(50, 35),
-                        ),
-                        child: Text(
-                          "Combine",
-                          style: customisedStyle(context, Color(0xff6F42C1), FontWeight.w400, 14.0),
-                        ),
-                      )
-                    : Container();
-              }),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Obx(() {
-                  return posController.isCombine.value
-                      ? ElevatedButton(
-                          onPressed: () {
-                            posController.isCombine.value = false;
-                            posController.selectList.clear();
-                            posController.update();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF0E8FF),
-                            minimumSize: const Size(50, 35),
-                          ),
-                          child: Text(
-                            "X",
-                            style: customisedStyle(context, Colors.red, FontWeight.w400, 14.0),
-                          ),
-                        )
-                      : Container();
-                }),
-              ),
 
               PopupMenuButton<String>(
                 icon: const Icon(Icons.settings),
@@ -375,6 +224,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                       value: 'settings',
                       child: Text('Table Settings'),
                     ),
+                    const PopupMenuItem<String>(
+                      value: 'poslistbeta',
+                      child: Text('Table Beta'),
+                    ),
                   ];
                 },
               ),
@@ -384,7 +237,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
             ],
           ),
           body: Container(
-            decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xffE9E9E9)))),
+            decoration: const BoxDecoration(
+              border: Border(
+                  top: BorderSide(
+                color: Color(0xffE9E9E9),
+              )),
+            ),
             child: Row(
               children: [
                 Flexible(
@@ -393,7 +251,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                     // Switch between different widgets based on selectedType
                     switch (posController.selectedType.value) {
                       case 'dine':
-                        return fetchDiningList();
+                        return fetchDiningList(screenSize);
                       case 'takeout':
                         return fetchTakeAway();
                       case 'online':
@@ -433,7 +291,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           text: 'Takeout',
                           type: 'takeout', // Unique identifier for this type
                           onPressed: () {
-                            if(posController.takeAwayOrders.isEmpty){
+                            if (posController.takeAwayOrders.isEmpty) {
                               posController.fetchTOC();
                             }
                           },
@@ -446,9 +304,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           text: 'Online',
                           type: 'online', // Unique identifier for this type
                           onPressed: () {
-
-
-                            if(posController.onlineOrders.isEmpty){
+                            if (posController.onlineOrders.isEmpty) {
                               posController.fetchTOC();
                             }
 
@@ -462,10 +318,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           text: 'Car',
                           type: 'car', // Unique identifier for this type
                           onPressed: () {
-                            if(posController.carOrders.isEmpty){
+                            if (posController.carOrders.isEmpty) {
                               posController.fetchTOC();
                             }
-
                           },
                         ),
                       ],
@@ -491,6 +346,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
         return navigatePlatform();
       case 'settings':
         return navigateSettings();
+      case 'poslistbeta':
+        return tablelistBeta();
 
       default:
         break;
@@ -551,7 +408,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  "Create Table",
+                                  "Create Table ",
                                   style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(height: screenSize.height * 0.01),
@@ -687,7 +544,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                   (int.parse(posController.splitcountcontroller.text) == 0 ||
                                       (int.parse(posController.splitcountcontroller.text) > 1 &&
                                           int.parse(posController.splitcountcontroller.text) <= 9)))) {
-                            log("Success");
+                            pr("Success");
                             await posController.createTableSplit();
                           } else {
                             if (posController.splitcountcontroller.text.isNotEmpty && int.parse(posController.splitcountcontroller.text) == 1) {
@@ -1497,7 +1354,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
           final table = splitData[index];
           return Padding(
             padding: const EdgeInsets.all(1.0),
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.02,
               child: Opacity(
                 opacity: .75,
@@ -1535,6 +1392,10 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
     var result = await Get.to(const OnlinePlatforms());
   }
 
+  tablelistBeta() async {
+    var result = await Get.to(const TabPosListDesign());
+  }
+
   addReservation() async {
     if (posController.reservation_perm.value) {
       Get.to(const ReservationPage());
@@ -1545,289 +1406,451 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
   ///not updating
   navigateSettings() async {
-    var result = await Get.to(const DragTableList());
+    final result = await Get.to(() => TableSettings());
+    // var result = await Get.to(const TableSettings());
     posController.selectedIndexNotifier.value = 0;
     posController.refreshTableData();
   }
 
-  Widget fetchDiningList() {
+  Widget fetchDiningList(Size screenSize) {
     return CustomScrollView(
       slivers: <Widget>[
         ///dining list
         SliverToBoxAdapter(
-          child: Container(
-            margin: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 25),
-            height: MediaQuery.of(context).size.height * .8, // Specify your desired height here
-            child: Obx(() => posController.isLoading.value
-                ? const Center(
-                    child: CircularProgressIndicator(
-                    color: Color(0xffffab00),
-                  ))
-                : posController.tableMergeData.isEmpty
-                    ? Center(
-                        child: Text(
-                        "No recent orders",
-                        style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
+          child: Column(
+            children: [
+              Container(
+                //color:Colors.red,
+                margin: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 25),
+                height: MediaQuery.of(context).size.height * .7, // Specify your desired height here
+                child: Obx(() => posController.isLoading.value
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                        color: Color(0xffffab00),
                       ))
-                    : RefreshIndicator(
-                        onRefresh: () async {
-                          posController.fetchAllData();
-                        },
-                        child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 2.0,
-                          ),
-                          itemCount: posController.tableMergeData.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == posController.tableMergeData.length) {
-                              return Container();
-                            }
+                    : posController.tableMergeData.isEmpty
+                        ? Center(
+                            child: Text(
+                            "No recent orders",
+                            style: customisedStyle(context, Colors.black, FontWeight.w400, 18.0),
+                          ))
+                        : RefreshIndicator(
+                            onRefresh: () async {
+                              posController.fetchAllData();
+                            },
+                            child: GridView.builder(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: posController.tablewidth.value,
+                                // crossAxisCount: 4,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                childAspectRatio: posController.tableheight.value,
+                                // childAspectRatio: 2.0,
+                              ),
+                              itemCount: posController.tableMergeData.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index == posController.tableMergeData.length) {
+                                  return Container();
+                                }
 
-                            // posController.selectedIndex.value = index;
-                            return GestureDetector(
-                                onLongPress: () {
-                                  print("${areAllItemsVacant(posController.tableMergeData[index].splitData)}----");
-                                  if (areAllItemsVacant(posController.tableMergeData[index].splitData) == false) {
-                                  } else {
-                                    if (posController.tableMergeData[index].status != "Paid") {
-                                      posController.selectList.clear();
-                                      posController.checkedbtn(index);
-                                      posController.isCombine.value = !posController.isCombine.value;
-                                      posController.update();
-                                    }
-                                  }
-                                },
-                                //!
-                                onTap: () async {
-                                  if (posController.isCombine.value) {
-                                    if (posController.tableMergeData[index].status != "Paid") {
-                                      posController.checkedbtn(index);
-                                    }
-                                  } else {
-                                    if (posController.tableMergeData[index].splitData!.isEmpty) {
-                                      if (posController.tableMergeData[index].status == 'Vacant') {
-                                        var result = await Get.to(TabPosOrderPage(
-                                          orderType: 1,
-                                          sectionType: "Create",
-                                          isAllCombine: false,
-                                          uID: "",
-                                          splitID: "",
-                                          tableHead: "Order",
-                                          cancelOrder: posController.cancelOrder,
-                                          tableID: posController.tableMergeData[index].id!,
-                                        )); // Pass the value to POS Order Page
-
-                                        if (result != null) {
-                                          if (result[1]) {
-                                            var resultPayment = await Get.to(TabPaymentSection(
-                                              uID: result[2],
-                                              splitID: "",
-                                              tableID: posController.tableMergeData[index].id!,
-                                              orderType: 0,
-                                              type: 'dine',
-                                              isData: false,
-                                              responseData: '',
-                                            ));
-                                            posController.refreshTableData();
-                                          } else {
-                                            posController.refreshTableData();
-                                          }
-                                        } else {
-                                          posController.refreshTableData();
-                                        }
+                                // posController.selectedIndex.value = index;
+                                return GestureDetector(
+                                    onLongPress: () {
+                                      print("${areAllItemsVacant(posController.tableMergeData[index].splitData)}----");
+                                      if (areAllItemsVacant(posController.tableMergeData[index].splitData) == false) {
                                       } else {
-                                        if (_isLongPressed.value == false) {
-                                          posController.selectItem(index);
-
-                                          ///1000005
-                                          showCustomDialog(
-                                            context: context,
-                                            status: posController.tableMergeData[index].status!,
-                                            salesOrderID: posController.tableMergeData[index].salesOrderID!,
-                                            orderID: posController.tableMergeData[index].id!,
-                                            salesMasterID: posController.tableMergeData[index].salesMasterID!,
-                                            orderType: 'dine',
-                                            orderTypeID: 1,
-                                            index: index,
-                                          );
-                                        } else {
-                                          final checkeddata = index;
-                                          if (!posController.selectList.contains(index)) {
-                                            posController.selectList.add(checkeddata);
-                                          } else {
-                                            posController.selectList.remove(checkeddata);
-                                          }
+                                        if (posController.tableMergeData[index].status != "Paid") {
+                                          posController.selectList.clear();
+                                          posController.checkedbtn(index);
+                                          posController.isCombine.value = !posController.isCombine.value;
+                                          posController.update();
                                         }
                                       }
-                                    } else {
-                                      posController.selectedsplitIndex.value = 1000;
-                                      posController.update();
-                                      posController.selectList.clear();
-                                      posController.isCombineSplit.value = false;
-                                      Size screenSize = MediaQuery.of(context).size;
-                                      _dialogBuilderTableSplit(context, screenSize, posController.tableMergeData[index].splitData!, index);
-                                    }
-                                  }
-                                },
-                                child: Obx(
-                                  () => Opacity(
-                                    opacity: posController.selectedIndex.value == index
-                                        ? 1
-                                        : posController.selectedIndex.value == 1000
-                                            ? 1
-                                            : 0.30,
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                          color: posController.selectedIndex.value == index
-                                              ? Colors.white // Highlight selected item
-                                              : Colors.white.withOpacity(0.5),
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  left: BorderSide(
-                                                    color: _getBackgroundColor(posController.tableMergeData[index].status),
-                                                    width: 3,
-                                                  ),
-                                                  right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                  bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                  top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                ),
-                                              ),
-                                              child: GridTile(
-                                                footer: Column(
+                                    },
+                                    //!
+                                    onTap: () async {
+                                      if (posController.isCombine.value) {
+                                        if (posController.tableMergeData[index].status != "Paid") {
+                                          posController.checkedbtn(index);
+                                        }
+                                      } else {
+                                        if (posController.tableMergeData[index].splitData!.isEmpty) {
+                                          if (posController.tableMergeData[index].status == 'Vacant') {
+                                            var result = await Get.to(TabPosOrderPage(
+                                              orderType: 1,
+                                              sectionType: "Create",
+                                              isAllCombine: false,
+                                              uID: "",
+                                              splitID: "",
+                                              tableHead: "Order",
+                                              cancelOrder: posController.cancelOrder,
+                                              tableID: posController.tableMergeData[index].id!,
+                                            )); // Pass the value to POS Order Page
 
-                                                  children: [
-                                                    // new RotatedBox(
-                                                    //     quarterTurns: 1,
-                                                    //     child: new Text("Lorem ipsum")
-                                                    // ),
-                                                    posController.tableMergeData[index].splitData!.length >= 1
-                                                        ? Padding(
-                                                            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-                                                            child: Container(
-                                                                height: 35,
-                                                                child: checkWidgetNew(splitData: posController.tableMergeData[index].splitData)),
-                                                          )
-                                                        : Container(),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(10.0),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(4),
-                                                            color: (_getBackgroundColor(posController.tableMergeData[index].status))),
+                                            if (result != null) {
+                                              if (result[1]) {
+                                                var resultPayment = await Get.to(TabPaymentSection(
+                                                  uID: result[2],
+                                                  splitID: "",
+                                                  tableID: posController.tableMergeData[index].id!,
+                                                  orderType: 0,
+                                                  type: 'dine',
+                                                  isData: false,
+                                                  responseData: '',
+                                                ));
+                                                posController.refreshTableData();
+                                              } else {
+                                                posController.refreshTableData();
+                                              }
+                                            } else {
+                                              posController.refreshTableData();
+                                            }
+                                          } else {
+                                            if (_isLongPressed.value == false) {
+                                              posController.selectItem(index);
+
+                                              ///1000005
+                                              showCustomDialog(
+                                                context: context,
+                                                status: posController.tableMergeData[index].status!,
+                                                salesOrderID: posController.tableMergeData[index].salesOrderID!,
+                                                orderID: posController.tableMergeData[index].id!,
+                                                salesMasterID: posController.tableMergeData[index].salesMasterID!,
+                                                orderType: 'dine',
+                                                orderTypeID: 1,
+                                                index: index,
+                                              );
+                                            } else {
+                                              final checkeddata = index;
+                                              if (!posController.selectList.contains(index)) {
+                                                posController.selectList.add(checkeddata);
+                                              } else {
+                                                posController.selectList.remove(checkeddata);
+                                              }
+                                            }
+                                          }
+                                        } else {
+                                          posController.selectedsplitIndex.value = 1000;
+                                          posController.update();
+                                          posController.selectList.clear();
+                                          posController.isCombineSplit.value = false;
+                                          Size screenSize = MediaQuery.of(context).size;
+                                          _dialogBuilderTableSplit(context, screenSize, posController.tableMergeData[index].splitData!, index);
+                                        }
+                                      }
+                                    },
+                                    child: Obx(
+                                      () => Opacity(
+                                        opacity: posController.selectedIndex.value == index
+                                            ? 1
+                                            : posController.selectedIndex.value == 1000
+                                                ? 1
+                                                : 0.30,
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              color: posController.selectedIndex.value == index ? Colors.white : Colors.white.withOpacity(0.5),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(8),
+                                                child: Container(
+                                                  decoration: const BoxDecoration(
+                                                    border: Border(
+                                                      left: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                      right: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                      bottom: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                      top: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        color: _getBackgroundColor(posController.tableMergeData[index].status),
+                                                        height: MediaQuery.of(context).size.height,
+                                                        width: MediaQuery.of(context).size.width * 0.02,
                                                         child: Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(8.0),
+                                                          child: RotatedBox(
+                                                            quarterTurns: 3,
                                                             child: Text(
                                                               posController.tableMergeData[index].status!,
-                                                              style: const TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: 14.0,
-                                                              ),
+                                                              style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                header: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Expanded(
-                                                            child: Text(
-                                                              posController.tableMergeData[index].tableName ?? '',
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: 16.0,
+                                                      Expanded(
+                                                        child: GridTile(
+                                                          footer: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              Column(
+                                                                children: [
+                                                                  posController.tableMergeData[index].splitData!.isNotEmpty
+                                                                      ? Padding(
+                                                                          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                                                                          child: SizedBox(
+                                                                              height: 50,
+                                                                              child: checkWidgetNew(
+                                                                                  splitData: posController.tableMergeData[index].splitData)),
+                                                                        )
+                                                                      : Container(),
+                                                                  // Padding(
+                                                                  //   padding:
+                                                                  //       const EdgeInsets.all(
+                                                                  //           10.0),
+                                                                  //   child: Container(
+                                                                  //     decoration: BoxDecoration(
+                                                                  //         borderRadius:
+                                                                  //             BorderRadius
+                                                                  //                 .circular(
+                                                                  //                     4),
+                                                                  //         color: (_getBackgroundColor(
+                                                                  //             posController
+                                                                  //                 .tableMergeData[
+                                                                  //                     index]
+                                                                  //                 .status))),
+                                                                  //     child: Center(
+                                                                  //       child: Padding(
+                                                                  //         padding:
+                                                                  //             const EdgeInsets
+                                                                  //                 .all(8.0),
+                                                                  //         child: Text(
+                                                                  //           posController
+                                                                  //               .tableMergeData[
+                                                                  //                   index]
+                                                                  //               .status!,
+                                                                  //           style:
+                                                                  //               const TextStyle(
+                                                                  //             color: Colors
+                                                                  //                 .white,
+                                                                  //             fontWeight:
+                                                                  //                 FontWeight
+                                                                  //                     .w500,
+                                                                  //             fontSize: 14.0,
+                                                                  //           ),
+                                                                  //         ),
+                                                                  //       ),
+                                                                  //     ),
+                                                                  //   ),
+                                                                  // ),
+                                                                ],
                                                               ),
-                                                              overflow: TextOverflow.ellipsis,
-                                                              maxLines: 1,
+                                                            ],
+                                                          ),
+                                                          header: Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child: Text(
+                                                                        posController.tableMergeData[index].tableName ?? '',
+                                                                        style: const TextStyle(
+                                                                          color: Colors.black,
+                                                                          fontWeight: FontWeight.w500,
+                                                                          fontSize: 16.0,
+                                                                        ),
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                        maxLines: 1,
+                                                                      ),
+                                                                    ),
+                                                                    Obx(
+                                                                      () => areAllItemsVacant(posController.tableMergeData[index].splitData) == false
+                                                                          ? Container()
+                                                                          : posController.isCombine.value &&
+                                                                                  posController.tableMergeData[index].status != "Paid"
+                                                                              ? Checkbox(
+                                                                                  side: const BorderSide(width: 1.0, color: Colors.grey),
+                                                                                  // activeColor: Colors.red,
+                                                                                  //  activeColor: const Color(0xFF1DC9A0),
+                                                                                  checkColor: Colors.white,
+                                                                                  fillColor: posController.selectList.contains(index)
+                                                                                      ? WidgetStateProperty.all(const Color(0xFF1DC9A0))
+                                                                                      : WidgetStateProperty.all(Colors.white),
+                                                                                  // fillColor: WidgetStateProperty.all(const Color(0xFF1DC9A0)),
+                                                                                  value: posController.selectList.contains(index),
+                                                                                  onChanged: (value) {
+                                                                                    posController.checkedbtn(index);
+                                                                                    pr(index.toString());
+                                                                                  },
+                                                                                )
+                                                                              : Container(),
+                                                                      // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                Text(
+                                                                  posController.returnOrderTime(posController.tableMergeData[index].orderTime!,
+                                                                      posController.tableMergeData[index].status!),
+                                                                  style: customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
-                                                          Obx(
-                                                            () => areAllItemsVacant(posController.tableMergeData[index].splitData) == false
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(5.0),
+                                                            child: posController.tableMergeData[index].splitData!.isNotEmpty
                                                                 ? Container()
-                                                                : posController.isCombine.value &&
-                                                                        posController.tableMergeData[index].status != "Paid"
-                                                                    ? Checkbox(
-                                                                        side: const BorderSide(width: 1.0, color: Colors.grey),
-                                                                        // activeColor: Colors.red,
-                                                                        //  activeColor: const Color(0xFF1DC9A0),
-                                                                        checkColor: Colors.white,
-                                                                        fillColor: posController.selectList.contains(index)
-                                                                            ? WidgetStateProperty.all(const Color(0xFF1DC9A0))
-                                                                            : WidgetStateProperty.all(Colors.white),
-                                                                        // fillColor: WidgetStateProperty.all(const Color(0xFF1DC9A0)),
-                                                                        value: posController.selectList.contains(index),
-                                                                        onChanged: (value) {
-                                                                          posController.checkedbtn(index);
-                                                                          log(index.toString());
-                                                                        },
-                                                                      )
-                                                                    : Container(),
-                                                            // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
-                                                          )
-                                                        ],
+                                                                : Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                    children: [
+                                                                      posController.returnOrderTime(posController.tableMergeData[index].orderTime!,
+                                                                                  posController.tableMergeData[index].status!) !=
+                                                                              ""
+                                                                          ? const Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text(
+                                                                                  "To be paid:",
+                                                                                  style: TextStyle(
+                                                                                    color: Color(0xff757575),
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                    fontSize: 10.0,
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            )
+                                                                          : Container(),
+                                                                      posController.tableMergeData[index].status == "Vacant"
+                                                                          ? const Text("")
+                                                                          : Text(
+                                                                              "${posController.currency} ${roundStringWith(posController.tableMergeData[index].status != "Vacant" ? posController.tableMergeData[index].status != "Paid" ? posController.tableMergeData[index].salesOrderGrandTotal.toString() : posController.tableMergeData[index].salesGrandTotal.toString() : '0')}",
+                                                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                                            )
+                                                                    ],
+                                                                  ),
+                                                          ),
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(5.0),
-                                                  child: posController.tableMergeData[index].splitData!.length >= 1
-                                                      ? Container()
-                                                      : Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          children: [
-                                                            posController.returnOrderTime(posController.tableMergeData[index].orderTime!,
-                                                                        posController.tableMergeData[index].status!) !=
-                                                                    ""
-                                                                ? Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    children: [
-                                                                      Text(
-                                                                        posController.returnOrderTime(posController.tableMergeData[index].orderTime!,
-                                                                            posController.tableMergeData[index].status!),
-                                                                        style:
-                                                                            customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
-                                                                      ),
-                                                                    ],
-                                                                  )
-                                                                : Container(),
-                                                            posController.tableMergeData[index].status == "Vacant"
-                                                                ? const Text("")
-                                                                : Text(
-                                                                    "${posController.currency} ${roundStringWith(posController.tableMergeData[index].status != "Vacant" ? posController.tableMergeData[index].status != "Paid" ? posController.tableMergeData[index].salesOrderGrandTotal.toString() : posController.tableMergeData[index].salesGrandTotal.toString() : '0')}",
-                                                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                                  )
-                                                          ],
-                                                        ),
-                                                ),
-                                              ),
-                                            ))),
-                                  ),
-                                ));
-                          },
-                        ),
-                      )),
+                                                ))),
+                                      ),
+                                    ));
+                              },
+                            ),
+                          )),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Obx(() {
+                    return posController.isCombine.value
+                        ? Container()
+                        : posController.selectedType.value == "dine"
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  createTableSplit(context, screenSize, posController);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFFF6F2),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.add,
+                                      color: Color(0xFFF25F29),
+                                    ),
+                                    Text(
+                                      "Add Table",
+                                      style: customisedStyle(context, const Color(0xFFF25F29), FontWeight.w400, 14.0),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container();
+                  }),
+                  Obx(() {
+                    return posController.isCombine.value
+                        ? posController.selectList.length != 1
+                            ? Container()
+                            : posController.tableMergeData[posController.selectList[0]].status == "Ordered"
+                                ? ElevatedButton(
+                                    onPressed: () async {
+                                      Size screenSize = MediaQuery.of(context).size;
+                                      // var  vacantTables = filterVacantTables(posController.fullDataList);
+
+                                      _dialogBuilderSwap(context, screenSize, posController.fullDataList, false, 0, '');
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFF7F3FF),
+                                      minimumSize: const Size(50, 35),
+                                    ),
+                                    child: Text(
+                                      "Change Table",
+                                      style: customisedStyle(context, const Color(0xff6F42C1), FontWeight.w400, 14.0),
+                                    ),
+                                  )
+                                : Container()
+                        : Container();
+                  }),
+                  SizedBox(width: screenSize.width * 0.01),
+                  Obx(() {
+                    return posController.isCombine.value
+                        ? ElevatedButton(
+                            onPressed: () {
+                              List combineData = [];
+                              String combineMessage = "";
+                              if (posController.selectList.length > 1) {
+                                for (var index in posController.selectList) {
+                                  final item = posController.tableMergeData[index];
+                                  combineData.add(item.id);
+                                  combineMessage.isEmpty ? combineMessage = item.tableName! : combineMessage += " & ${item.tableName!}";
+                                }
+                                _dialogCombine(context, screenSize, posController, combineData, combineMessage, false);
+                              } else {
+                                Get.snackbar(
+                                  'Alert',
+                                  'Please select at least 2 Tables',
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFF7F3FF),
+                              minimumSize: const Size(50, 35),
+                            ),
+                            child: Obx(
+                              () => Text(
+                                "Combine (${posController.selectList.length})",
+                                style: customisedStyle(context, const Color(0xff6F42C1), FontWeight.w400, 14.0),
+                              ),
+                            ))
+                        : Container();
+                  }),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Obx(
+                      () {
+                        return posController.isCombine.value
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  posController.isCombine.value = false;
+                                  posController.selectList.clear();
+                                  posController.update();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFF0E8FF),
+                                  minimumSize: const Size(50, 35),
+                                ),
+                                child: Text(
+                                  "Cancel",
+                                  style: customisedStyle(context, Colors.red, FontWeight.w400, 14.0),
+                                ),
+                              )
+                            : Container();
+                      },
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ],
@@ -1864,29 +1887,30 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                               Obx(() {
                                 return posController.isCombineSplit.value
-                                    ?posController.selectList.length !=1?Container():
-                                listsplit[posController.selectList[0]]["Status"] =="Ordered"?
-                                ElevatedButton(
-                                  onPressed: () async{
-                                    Size screenSize = MediaQuery.of(context).size;
-                                    Get.back();
+                                    ? posController.selectList.length != 1
+                                        ? Container()
+                                        : listsplit[posController.selectList[0]]["Status"] == "Ordered"
+                                            ? ElevatedButton(
+                                                onPressed: () async {
+                                                  Size screenSize = MediaQuery.of(context).size;
+                                                  Get.back();
 
-                                    //   var  vacantTables = filterVacantTables(posController.fullDataList);
-                                     _dialogBuilderSwap(context,screenSize,posController.fullDataList,true,indexOfSelectedTableMaster,listsplit[posController.selectList[0]]["id"]);
-
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFF0E8FF),
-                                    minimumSize: const Size(50, 35),
-                                  ),
-                                  child: Text(
-                                    "Change Table",
-                                    style: customisedStyle(context, Color(0xff6F42C1), FontWeight.w400, 14.0),
-                                  ),
-                                )
-                                    : Container() : Container();
+                                                  //   var  vacantTables = filterVacantTables(posController.fullDataList);
+                                                  _dialogBuilderSwap(context, screenSize, posController.fullDataList, true,
+                                                      indexOfSelectedTableMaster, listsplit[posController.selectList[0]]["id"]);
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: const Color(0xFFF0E8FF),
+                                                  minimumSize: const Size(50, 35),
+                                                ),
+                                                child: Text(
+                                                  "Change Table",
+                                                  style: customisedStyle(context, const Color(0xff6F42C1), FontWeight.w400, 14.0),
+                                                ),
+                                              )
+                                            : Container()
+                                    : Container();
                               }),
-
 
                               areAllItemsVacant(listsplit)
                                   ? posController.isCombineSplit.value
@@ -1939,8 +1963,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 
                                             if (combinedAction != null) {
                                               if (combinedAction) {
-                                                var result =
-                                                    await posController.allCombinedTable(posController.tableMergeData[indexOfSelectedTableMaster].id!);
+                                                var result = await posController
+                                                    .allCombinedTable(posController.tableMergeData[indexOfSelectedTableMaster].id!);
                                                 if (result != null) {
                                                   if (result) {
                                                     Get.back();
@@ -2109,11 +2133,13 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                       height: constraints.maxHeight * 0.65,
                                       width: constraints.maxWidth * 0.6,
                                       child: GridView.builder(
-                                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
+                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                          // crossAxisCount: 3,
                                           mainAxisSpacing: 10,
                                           crossAxisSpacing: 20,
-                                          childAspectRatio: 1.8,
+                                          // childAspectRatio: 1.8,
+                                          crossAxisCount: posController.tablewidth.value,
+                                          childAspectRatio: posController.tableheight.value,
                                         ),
                                         itemCount: listsplit.length,
                                         itemBuilder: (context, index) {
@@ -2196,125 +2222,150 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                         child: ClipRRect(
                                                             borderRadius: BorderRadius.circular(8),
                                                             child: Container(
-                                                              decoration: BoxDecoration(
+                                                              decoration: const BoxDecoration(
                                                                 border: Border(
-                                                                  left: BorderSide(
-                                                                    color: _getBackgroundColor(listsplit[index]["Status"]),
-                                                                    width: 4,
-                                                                  ),
-                                                                  right: const BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                                  bottom: const BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                                  top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  right: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  bottom: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  top: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  left: BorderSide(color: Color(0xffE9E9E9), width: 1),
                                                                 ),
                                                               ),
-                                                              child: GridTile(
-                                                                footer: Padding(
-                                                                  padding: const EdgeInsets.all(10.0),
-                                                                  child: Container(
-                                                                    decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius.circular(4),
-                                                                        color: (_getBackgroundColor(listsplit[index]["Status"]))),
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    color: _getBackgroundColor(listsplit[index]["Status"]),
+                                                                    height: MediaQuery.of(context).size.height,
+                                                                    width: MediaQuery.of(context).size.width * 0.02,
                                                                     child: Center(
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                      child: RotatedBox(
+                                                                        quarterTurns: 3,
                                                                         child: Text(
                                                                           listsplit[index]["Status"],
-                                                                          style: const TextStyle(
-                                                                            color: Colors.white,
-                                                                            fontWeight: FontWeight.w500,
-                                                                            fontSize: 14.0,
-                                                                          ),
+                                                                          style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                header: Padding(
-                                                                  padding: const EdgeInsets.all(8.0),
-                                                                  child: Column(
-                                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    children: [
-                                                                      Row(
-                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Expanded(
-                                                                            child: Text(
-                                                                              '${listsplit[index]["TableName"]} ',
-                                                                              style: const TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontWeight: FontWeight.w500,
-                                                                                fontSize: 16.0,
-                                                                              ),
-                                                                              overflow: TextOverflow.ellipsis,
-                                                                              maxLines: 1,
+                                                                  Expanded(
+                                                                    child: GridTile(
+                                                                      // footer:
+                                                                      //     Padding(
+                                                                      //   padding: const EdgeInsets
+                                                                      //       .all(
+                                                                      //       10.0),
+                                                                      //   child:
+                                                                      //       Container(
+                                                                      //     decoration: BoxDecoration(
+                                                                      //         borderRadius: BorderRadius.circular(4),
+                                                                      //         color: (_getBackgroundColor(listsplit[index]["Status"]))),
+                                                                      //     child:
+                                                                      //         Center(
+                                                                      //       child:
+                                                                      //           Padding(
+                                                                      //         padding: const EdgeInsets.all(8.0),
+                                                                      //         child: Text(
+                                                                      //           listsplit[index]["Status"],
+                                                                      //           style: const TextStyle(
+                                                                      //             color: Colors.white,
+                                                                      //             fontWeight: FontWeight.w500,
+                                                                      //             fontSize: 14.0,
+                                                                      //           ),
+                                                                      //         ),
+                                                                      //       ),
+                                                                      //     ),
+                                                                      //   ),
+                                                                      // ),
+                                                                      header: Padding(
+                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        child: Column(
+                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  child: Text(
+                                                                                    '${listsplit[index]["TableName"]} ',
+                                                                                    style: const TextStyle(
+                                                                                      color: Colors.black,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                      fontSize: 16.0,
+                                                                                    ),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    maxLines: 1,
+                                                                                  ),
+                                                                                ),
+                                                                                Obx(
+                                                                                  () => posController.isCombineSplit.value &&
+                                                                                          listsplit[index]["Status"] != "Paid"
+                                                                                      ? Checkbox(
+                                                                                          side: const BorderSide(width: 1.0, color: Colors.grey),
+                                                                                          //  activeColor: const Color(0xFF03C1C1),
+                                                                                          checkColor: Colors.white,
+                                                                                          fillColor: posController.selectList.contains(index)
+                                                                                              ? WidgetStateProperty.all(const Color(0xFF1DC9A0))
+                                                                                              : WidgetStateProperty.all(Colors.white),
+                                                                                          value: posController.selectList.contains(index),
+                                                                                          onChanged: (value) {
+                                                                                            posController.checkedbtn(index);
+                                                                                            pr(index.toString());
+                                                                                          },
+                                                                                        )
+                                                                                      : Container(),
+                                                                                  // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
+                                                                                )
+                                                                              ],
                                                                             ),
-                                                                          ),
-                                                                          Obx(
-                                                                            () => posController.isCombineSplit.value &&
-                                                                                    listsplit[index]["Status"] != "Paid"
-                                                                                ? Checkbox(
-                                                                                    side: const BorderSide(width: 1.0, color: Colors.grey),
-                                                                                    //  activeColor: const Color(0xFF03C1C1),
-                                                                                    checkColor: Colors.white,
-                                                                                    fillColor: posController.selectList.contains(index)
-                                                                                        ? WidgetStateProperty.all(const Color(0xFF1DC9A0))
-                                                                                        : WidgetStateProperty.all(Colors.white),
-                                                                                    value: posController.selectList.contains(index),
-                                                                                    onChanged: (value) {
-                                                                                      posController.checkedbtn(index);
-                                                                                      log(index.toString());
-                                                                                    },
+                                                                            posController.returnOrderTime(listsplit[index]["OrderTime"].toString(),
+                                                                                        listsplit[index]["Status"]) !=
+                                                                                    ""
+                                                                                ? Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    children: [
+                                                                                      Text(
+                                                                                        posController.returnOrderTime(
+                                                                                            listsplit[index]["orderTime"] ?? '',
+                                                                                            listsplit[index]["orderTime"] ?? ''),
+                                                                                        style: customisedStyle(
+                                                                                            context, const Color(0xff828282), FontWeight.w400, 12.0),
+                                                                                      ),
+                                                                                    ],
                                                                                   )
                                                                                 : Container(),
-                                                                            // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
-                                                                          )
-                                                                        ],
+                                                                          ],
+                                                                        ),
                                                                       ),
-                                                                      posController.returnOrderTime(listsplit[index]["OrderTime"].toString(),
-                                                                                  listsplit[index]["Status"]) !=
-                                                                              ""
-                                                                          ? Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Text(
-                                                                                  posController.returnOrderTime(listsplit[index]["orderTime"] ?? '',
-                                                                                      listsplit[index]["orderTime"] ?? ''),
-                                                                                  style: customisedStyle(
-                                                                                      context, const Color(0xff828282), FontWeight.w400, 12.0),
-                                                                                ),
-                                                                              ],
-                                                                            )
-                                                                          : Container(),
-                                                                    ],
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        child: Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                                          children: [
+                                                                            listsplit[index]["Status"] == "Vacant"
+                                                                                ? const Text("")
+                                                                                : const Text(
+                                                                                    "To be paid:",
+                                                                                    style: TextStyle(
+                                                                                      color: Color(0xff757575),
+                                                                                      fontWeight: FontWeight.w400,
+                                                                                      fontSize: 10.0,
+                                                                                    ),
+                                                                                  ),
+                                                                            listsplit[index]["Status"] == "Vacant"
+                                                                                ? const Text("")
+                                                                                : Text(
+                                                                                    "${posController.currency} ${roundStringWith(listsplit[index]["Status"] != "Vacant" ? listsplit[index]["Status"] != "Paid" ? listsplit[index]["SalesOrderGrandTotal"].toString() : listsplit[index]["SalesGrandTotal"].toString() : '0')}",
+                                                                                    style:
+                                                                                        customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                                                  )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets.all(8.0),
-                                                                  child: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                                    children: [
-                                                                      listsplit[index]["Status"] == "Vacant"
-                                                                          ? const Text("")
-                                                                          : const Text(
-                                                                              "To be paid:",
-                                                                              style: TextStyle(
-                                                                                color: Color(0xff757575),
-                                                                                fontWeight: FontWeight.w400,
-                                                                                fontSize: 10.0,
-                                                                              ),
-                                                                            ),
-                                                                      listsplit[index]["Status"] == "Vacant"
-                                                                          ? const Text("")
-                                                                          : Text(
-                                                                              "${posController.currency} ${roundStringWith(listsplit[index]["Status"] != "Vacant" ? listsplit[index]["Status"] != "Paid" ? listsplit[index]["SalesOrderGrandTotal"].toString() : listsplit[index]["SalesGrandTotal"].toString() : '0')}",
-                                                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                                            )
-                                                                    ],
-                                                                  ),
-                                                                ),
+                                                                ],
                                                               ),
                                                             ))),
                                                   ),
@@ -2329,376 +2380,374 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 ),
                               ),
                             ),
-                            Container(
-                              child: Row(
-                                children: [
-                                  Obx(
-                                    () => posController.selectedsplitIndex.value != 1000
-                                        ? Container(
-                                            height: constraints.maxHeight * 0.65,
-                                            width: constraints.maxWidth * 0.07,
-                                            // color: Colors.blue.shade300,
-                                            decoration: const BoxDecoration(border: Border(left: BorderSide(color: Color(0xFFE0E0E0)))),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    Get.back();
-                                                    await posController.printSection(
-                                                        context: context,
-                                                        id: listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
-                                                            ? listsplit[posController.selectedsplitIndex.value]["SalesOrderID"]
-                                                            : listsplit[posController.selectedsplitIndex.value]["SalesMasterID"],
-                                                        isCancelled: false,
-                                                        voucherType:
-                                                            listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered' ? "SO" : "SI");
+                            Row(
+                              children: [
+                                Obx(
+                                  () => posController.selectedsplitIndex.value != 1000
+                                      ? Container(
+                                          height: constraints.maxHeight * 0.65,
+                                          width: constraints.maxWidth * 0.07,
+                                          // color: Colors.blue.shade300,
+                                          decoration: const BoxDecoration(border: Border(left: BorderSide(color: Color(0xFFE0E0E0)))),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  Get.back();
+                                                  await posController.printSection(
+                                                      context: context,
+                                                      id: listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
+                                                          ? listsplit[posController.selectedsplitIndex.value]["SalesOrderID"]
+                                                          : listsplit[posController.selectedsplitIndex.value]["SalesMasterID"],
+                                                      isCancelled: false,
+                                                      voucherType:
+                                                          listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered' ? "SO" : "SI");
 
-                                                    posController.selectedsplitIndex.value = 1000;
-                                                    posController.update();
-                                                  },
-                                                  child: Column(
-                                                    children: [
-                                                      Material(
-                                                        elevation: 5,
-                                                        shape: const CircleBorder(),
-                                                        child: CircleAvatar(
-                                                          radius: 30,
-                                                          backgroundColor: const Color(0xFF1E1F4E),
-                                                          child: SvgPicture.asset(
-                                                            'assets/svg/printer_icon_menu.svg',
-                                                            width: 50,
-                                                          ),
+                                                  posController.selectedsplitIndex.value = 1000;
+                                                  posController.update();
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Material(
+                                                      elevation: 5,
+                                                      shape: const CircleBorder(),
+                                                      child: CircleAvatar(
+                                                        radius: 30,
+                                                        backgroundColor: const Color(0xFF1E1F4E),
+                                                        child: SvgPicture.asset(
+                                                          'assets/svg/printer_icon_menu.svg',
+                                                          width: 50,
                                                         ),
                                                       ),
-                                                      Text(
-                                                        "Print",
-                                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    Text(
+                                                      "Print",
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                    ),
+                                                  ],
                                                 ),
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    Get.back();
-                                                    if (listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered') {
-                                                      var result = await Get.to(const CancelOrderList());
-                                                      if (result != null) {
-                                                        await posController.cancelOrderApi(
-                                                            context: context,
-                                                            type: "Dining&Cancel",
-                                                            tableID: posController.tableMergeData[indexOfSelectedTableMaster].id!,
-                                                            cancelReasonId: result[1],
-                                                            orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
-                                                            splitUID: listsplit[posController.selectedsplitIndex.value]["id"]);
-                                                      }
-                                                    } else {
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  Get.back();
+                                                  if (listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered') {
+                                                    var result = await Get.to(const CancelOrderList());
+                                                    if (result != null) {
                                                       await posController.cancelOrderApi(
                                                           context: context,
-                                                          type: "Dining",
+                                                          type: "Dining&Cancel",
                                                           tableID: posController.tableMergeData[indexOfSelectedTableMaster].id!,
-                                                          cancelReasonId: "",
+                                                          cancelReasonId: result[1],
                                                           orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
                                                           splitUID: listsplit[posController.selectedsplitIndex.value]["id"]);
-
-                                                      posController.refreshTableData();
                                                     }
-                                                    posController.selectedsplitIndex.value = 1000;
-                                                  },
-                                                  child: Column(
-                                                    children: [
-                                                      Material(
-                                                        elevation: 5,
-                                                        shape: const CircleBorder(),
-                                                        child: CircleAvatar(
-                                                          radius: 30,
-                                                          backgroundColor: const Color(0xFFFC3636),
-                                                          child: SvgPicture.asset(
-                                                            'assets/svg/cancel_bottom_menu.svg',
-                                                            width: 50,
-                                                          ),
+                                                  } else {
+                                                    await posController.cancelOrderApi(
+                                                        context: context,
+                                                        type: "Dining",
+                                                        tableID: posController.tableMergeData[indexOfSelectedTableMaster].id!,
+                                                        cancelReasonId: "",
+                                                        orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
+                                                        splitUID: listsplit[posController.selectedsplitIndex.value]["id"]);
+
+                                                    posController.refreshTableData();
+                                                  }
+                                                  posController.selectedsplitIndex.value = 1000;
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Material(
+                                                      elevation: 5,
+                                                      shape: const CircleBorder(),
+                                                      child: CircleAvatar(
+                                                        radius: 30,
+                                                        backgroundColor: const Color(0xFFFC3636),
+                                                        child: SvgPicture.asset(
+                                                          'assets/svg/cancel_bottom_menu.svg',
+                                                          width: 50,
                                                         ),
                                                       ),
-                                                      Text(
-                                                        listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
-                                                            ? "Cancel Order"
-                                                            : "Clear",
-                                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                      ),
-                                                      SizedBox(height: screenSize.height * 0.01),
-                                                    ],
-                                                  ),
-                                                ),
-                                                listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
-                                                    ? GestureDetector(
-                                                        onTap: () async {
-                                                          if (posController.pay_perm.value) {
-                                                            Get.back();
-                                                            var result = await Get.to(TabPaymentSection(
-                                                              splitID: listsplit[posController.selectedsplitIndex.value]["id"],
-                                                              uID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
-                                                              orderType: 1,
-                                                              tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
-                                                              type: "dine",
-                                                              isData: false,
-                                                              responseData: '',
-                                                            ));
-
-                                                            posController.refreshTableData();
-                                                          } else {
-                                                            dialogBoxPermissionDenied(context);
-                                                          }
-                                                          posController.selectedsplitIndex.value = 1000;
-                                                        },
-                                                        child: Column(
-                                                          children: [
-                                                            Material(
-                                                              elevation: 5,
-                                                              shape: const CircleBorder(),
-                                                              child: CircleAvatar(
-                                                                radius: 30,
-                                                                backgroundColor: const Color(0xFF44B678),
-                                                                child: SvgPicture.asset(
-                                                                  'assets/svg/pay_bottom_menu.svg',
-                                                                  width: 50,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              "Pay",
-                                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                            ),
-                                                            SizedBox(height: screenSize.height * 0.01),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : Container(),
-                                                listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
-                                                    ? GestureDetector(
-                                                        onTap: () {
-                                                          posController.printKOT(
-                                                              cancelList: [],
-                                                              isUpdate: false,
-                                                              orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
-                                                              rePrint: true);
-
-                                                          posController.selectedsplitIndex.value = 1000;
-                                                          posController.update();
-                                                          Get.back();
-                                                        },
-                                                        child: Column(
-                                                          children: [
-                                                            Material(
-                                                              elevation: 5,
-                                                              shape: const CircleBorder(),
-                                                              child: CircleAvatar(
-                                                                radius: 30,
-                                                                backgroundColor: const Color(0xFF17A2B8),
-                                                                child: SvgPicture.asset(
-                                                                  'assets/svg/kot_bottom_menu.svg',
-                                                                  width: 50,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              "Kot",
-                                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                            ),
-                                                            SizedBox(height: screenSize.height * 0.01),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : Container(),
-                                                listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
-                                                    ? GestureDetector(
-                                                        onTap: () async {
-                                                          if (posController.dining_edit_perm.value) {
-                                                            var result = await Get.to(TabPosOrderPage(
-                                                              orderType: 1,
-                                                              sectionType: "Edit",
-                                                              isAllCombine: false,
-                                                              uID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
-                                                              tableHead: '',
-                                                              splitID: listsplit[posController.selectedsplitIndex.value]["id"],
-                                                              tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
-                                                              cancelOrder: const [],
-                                                            ));
-
-                                                            if (result != null) {
-                                                              if (result[1]) {
-                                                                var res = await Get.to(TabPaymentSection(
-                                                                  uID: result[2],
-                                                                  tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
-                                                                  splitID: listsplit[posController.selectedsplitIndex.value]["id"],
-                                                                  orderType: 1,
-                                                                  type: '',
-                                                                  isData: false,
-                                                                  responseData: '',
-                                                                ));
-
-                                                                posController.refreshTableData();
-                                                              } else {
-                                                                posController.refreshTableData();
-                                                              }
-                                                            }
-                                                          } else {
-                                                            dialogBoxPermissionDenied(context);
-                                                          }
-                                                          Get.back();
-                                                        },
-                                                        child: Column(
-                                                          children: [
-                                                            Material(
-                                                              elevation: 5,
-                                                              shape: const CircleBorder(),
-                                                              child: CircleAvatar(
-                                                                radius: 30,
-                                                                backgroundColor: const Color(0xFFA561E8),
-                                                                child: SvgPicture.asset(
-                                                                  'assets/svg/edit_bottom_menu.svg',
-                                                                  width: 50,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              "Edit",
-                                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : Container(),
-                                                if (posController.selectedIndexSplit >= 0 && posController.selectedIndexSplit < listsplit.length) ...[
-                                                  if (listsplit[posController.selectedIndexSplit.value]["Status"] == "Paid") ...[
-                                                    // Material(
-                                                    //   elevation: 5,
-                                                    //   shape: const CircleBorder(),
-                                                    //   child: CircleAvatar(
-                                                    //     radius: 30,
-                                                    //     backgroundColor: const Color(0xFF1E1F4E),
-                                                    //     child: SvgPicture.asset(
-                                                    //       'assets/svg/printer_icon_menu.svg',
-                                                    //       width: 30,
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    // Text(
-                                                    //   "Print",
-                                                    //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                    // ),
+                                                    ),
+                                                    Text(
+                                                      listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
+                                                          ? "Cancel Order"
+                                                          : "Clear",
+                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                    ),
                                                     SizedBox(height: screenSize.height * 0.01),
-                                                    // Material(
-                                                    //   elevation: 5,
-                                                    //   shape: const CircleBorder(),
-                                                    //   child: CircleAvatar(
-                                                    //     radius: 30,
-                                                    //     backgroundColor: const Color(0xFFFC3636),
-                                                    //     child: SvgPicture.asset(
-                                                    //       'assets/svg/cancel_bottom_menu.svg',
-                                                    //       width: 30,
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    // Text(
-                                                    //   listsplit[posController.selectedIndexsplit.value]["Status"] == "Paid" ? "Clear" : "Cancel Order",
-                                                    //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                    // ),
-                                                    SizedBox(height: screenSize.height * 0.01),
-                                                  ] else ...[
-                                                    // Material(
-                                                    //   elevation: 5,
-                                                    //   shape: const CircleBorder(),
-                                                    //   child: CircleAvatar(
-                                                    //     radius: 30,
-                                                    //     backgroundColor: const Color(0xFF1E1F4E),
-                                                    //     child: SvgPicture.asset(
-                                                    //       'assets/svg/printer_icon_menu.svg',
-                                                    //       width: 30,
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    // Text(
-                                                    //   "Print",
-                                                    //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                    // ),
-                                                    SizedBox(height: screenSize.height * 0.01),
-                                                    // Material(
-                                                    //   elevation: 5,
-                                                    //   shape: const CircleBorder(),
-                                                    //   child: CircleAvatar(
-                                                    //     radius: 30,
-                                                    //     backgroundColor: const Color(0xFFFC3636),
-                                                    //     child: SvgPicture.asset(
-                                                    //       'assets/svg/cancel_bottom_menu.svg',
-                                                    //       width: 30,
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    // Text(
-                                                    //   "Cancel Order",
-                                                    //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                    // ),
-                                                    SizedBox(height: screenSize.height * 0.01),
-                                                    // Material(
-                                                    //   elevation: 5,
-                                                    //   shape: const CircleBorder(),
-                                                    //   child: CircleAvatar(
-                                                    //     radius: 30,
-                                                    //     backgroundColor: const Color(0xFF44B678),
-                                                    //     child: SvgPicture.asset(
-                                                    //       'assets/svg/pay_bottom_menu.svg',
-                                                    //       width: 30,
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    // Text(
-                                                    //   "Pay",
-                                                    //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                    // ),
-                                                    SizedBox(height: screenSize.height * 0.01),
-                                                    // Material(
-                                                    //   elevation: 5,
-                                                    //   shape: const CircleBorder(),
-                                                    //   child: CircleAvatar(
-                                                    //     radius: 30,
-                                                    //     backgroundColor: const Color(0xFF17A2B8),
-                                                    //     child: SvgPicture.asset(
-                                                    //       'assets/svg/kot_bottom_menu.svg',
-                                                    //       width: 30,
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    // Text(
-                                                    //   "Kot",
-                                                    //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                    // ),
-                                                    SizedBox(height: screenSize.height * 0.01),
-                                                    // Material(
-                                                    //   elevation: 5,
-                                                    //   shape: const CircleBorder(),
-                                                    //   child: CircleAvatar(
-                                                    //     radius: 30,
-                                                    //     backgroundColor: const Color(0xFFA561E8),
-                                                    //     child: SvgPicture.asset(
-                                                    //       'assets/svg/edit_bottom_menu.svg',
-                                                    //       width: 30,
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    // Text(
-                                                    //   "Edit",
-                                                    //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
-                                                    // ),
                                                   ],
-                                                ] else
-                                                  ...[],
-                                              ],
-                                            ))
-                                        : Container(),
-                                  )
-                                ],
-                              ),
+                                                ),
+                                              ),
+                                              listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
+                                                  ? GestureDetector(
+                                                      onTap: () async {
+                                                        if (posController.pay_perm.value) {
+                                                          Get.back();
+                                                          var result = await Get.to(TabPaymentSection(
+                                                            splitID: listsplit[posController.selectedsplitIndex.value]["id"],
+                                                            uID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
+                                                            orderType: 1,
+                                                            tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
+                                                            type: "dine",
+                                                            isData: false,
+                                                            responseData: '',
+                                                          ));
+
+                                                          posController.refreshTableData();
+                                                        } else {
+                                                          dialogBoxPermissionDenied(context);
+                                                        }
+                                                        posController.selectedsplitIndex.value = 1000;
+                                                      },
+                                                      child: Column(
+                                                        children: [
+                                                          Material(
+                                                            elevation: 5,
+                                                            shape: const CircleBorder(),
+                                                            child: CircleAvatar(
+                                                              radius: 30,
+                                                              backgroundColor: const Color(0xFF44B678),
+                                                              child: SvgPicture.asset(
+                                                                'assets/svg/pay_bottom_menu.svg',
+                                                                width: 50,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "Pay",
+                                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                          ),
+                                                          SizedBox(height: screenSize.height * 0.01),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                              listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
+                                                  ? GestureDetector(
+                                                      onTap: () {
+                                                        posController.printKOT(
+                                                            cancelList: [],
+                                                            isUpdate: false,
+                                                            orderID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
+                                                            rePrint: true);
+
+                                                        posController.selectedsplitIndex.value = 1000;
+                                                        posController.update();
+                                                        Get.back();
+                                                      },
+                                                      child: Column(
+                                                        children: [
+                                                          Material(
+                                                            elevation: 5,
+                                                            shape: const CircleBorder(),
+                                                            child: CircleAvatar(
+                                                              radius: 30,
+                                                              backgroundColor: const Color(0xFF17A2B8),
+                                                              child: SvgPicture.asset(
+                                                                'assets/svg/kot_bottom_menu.svg',
+                                                                width: 50,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "Kot",
+                                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                          ),
+                                                          SizedBox(height: screenSize.height * 0.01),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                              listsplit[posController.selectedsplitIndex.value]["Status"] == 'Ordered'
+                                                  ? GestureDetector(
+                                                      onTap: () async {
+                                                        if (posController.dining_edit_perm.value) {
+                                                          var result = await Get.to(TabPosOrderPage(
+                                                            orderType: 1,
+                                                            sectionType: "Edit",
+                                                            isAllCombine: false,
+                                                            uID: listsplit[posController.selectedsplitIndex.value]["SalesOrderID"],
+                                                            tableHead: '',
+                                                            splitID: listsplit[posController.selectedsplitIndex.value]["id"],
+                                                            tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
+                                                            cancelOrder: const [],
+                                                          ));
+
+                                                          if (result != null) {
+                                                            if (result[1]) {
+                                                              var res = await Get.to(TabPaymentSection(
+                                                                uID: result[2],
+                                                                tableID: listsplit[posController.selectedsplitIndex.value]["Table"],
+                                                                splitID: listsplit[posController.selectedsplitIndex.value]["id"],
+                                                                orderType: 1,
+                                                                type: '',
+                                                                isData: false,
+                                                                responseData: '',
+                                                              ));
+
+                                                              posController.refreshTableData();
+                                                            } else {
+                                                              posController.refreshTableData();
+                                                            }
+                                                          }
+                                                        } else {
+                                                          dialogBoxPermissionDenied(context);
+                                                        }
+                                                        Get.back();
+                                                      },
+                                                      child: Column(
+                                                        children: [
+                                                          Material(
+                                                            elevation: 5,
+                                                            shape: const CircleBorder(),
+                                                            child: CircleAvatar(
+                                                              radius: 30,
+                                                              backgroundColor: const Color(0xFFA561E8),
+                                                              child: SvgPicture.asset(
+                                                                'assets/svg/edit_bottom_menu.svg',
+                                                                width: 50,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "Edit",
+                                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                              if (posController.selectedIndexSplit >= 0 && posController.selectedIndexSplit < listsplit.length) ...[
+                                                if (listsplit[posController.selectedIndexSplit.value]["Status"] == "Paid") ...[
+                                                  // Material(
+                                                  //   elevation: 5,
+                                                  //   shape: const CircleBorder(),
+                                                  //   child: CircleAvatar(
+                                                  //     radius: 30,
+                                                  //     backgroundColor: const Color(0xFF1E1F4E),
+                                                  //     child: SvgPicture.asset(
+                                                  //       'assets/svg/printer_icon_menu.svg',
+                                                  //       width: 30,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Text(
+                                                  //   "Print",
+                                                  //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                  // ),
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  // Material(
+                                                  //   elevation: 5,
+                                                  //   shape: const CircleBorder(),
+                                                  //   child: CircleAvatar(
+                                                  //     radius: 30,
+                                                  //     backgroundColor: const Color(0xFFFC3636),
+                                                  //     child: SvgPicture.asset(
+                                                  //       'assets/svg/cancel_bottom_menu.svg',
+                                                  //       width: 30,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Text(
+                                                  //   listsplit[posController.selectedIndexsplit.value]["Status"] == "Paid" ? "Clear" : "Cancel Order",
+                                                  //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                  // ),
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                ] else ...[
+                                                  // Material(
+                                                  //   elevation: 5,
+                                                  //   shape: const CircleBorder(),
+                                                  //   child: CircleAvatar(
+                                                  //     radius: 30,
+                                                  //     backgroundColor: const Color(0xFF1E1F4E),
+                                                  //     child: SvgPicture.asset(
+                                                  //       'assets/svg/printer_icon_menu.svg',
+                                                  //       width: 30,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Text(
+                                                  //   "Print",
+                                                  //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                  // ),
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  // Material(
+                                                  //   elevation: 5,
+                                                  //   shape: const CircleBorder(),
+                                                  //   child: CircleAvatar(
+                                                  //     radius: 30,
+                                                  //     backgroundColor: const Color(0xFFFC3636),
+                                                  //     child: SvgPicture.asset(
+                                                  //       'assets/svg/cancel_bottom_menu.svg',
+                                                  //       width: 30,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Text(
+                                                  //   "Cancel Order",
+                                                  //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                  // ),
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  // Material(
+                                                  //   elevation: 5,
+                                                  //   shape: const CircleBorder(),
+                                                  //   child: CircleAvatar(
+                                                  //     radius: 30,
+                                                  //     backgroundColor: const Color(0xFF44B678),
+                                                  //     child: SvgPicture.asset(
+                                                  //       'assets/svg/pay_bottom_menu.svg',
+                                                  //       width: 30,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Text(
+                                                  //   "Pay",
+                                                  //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                  // ),
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  // Material(
+                                                  //   elevation: 5,
+                                                  //   shape: const CircleBorder(),
+                                                  //   child: CircleAvatar(
+                                                  //     radius: 30,
+                                                  //     backgroundColor: const Color(0xFF17A2B8),
+                                                  //     child: SvgPicture.asset(
+                                                  //       'assets/svg/kot_bottom_menu.svg',
+                                                  //       width: 30,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Text(
+                                                  //   "Kot",
+                                                  //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                  // ),
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  // Material(
+                                                  //   elevation: 5,
+                                                  //   shape: const CircleBorder(),
+                                                  //   child: CircleAvatar(
+                                                  //     radius: 30,
+                                                  //     backgroundColor: const Color(0xFFA561E8),
+                                                  //     child: SvgPicture.asset(
+                                                  //       'assets/svg/edit_bottom_menu.svg',
+                                                  //       width: 30,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Text(
+                                                  //   "Edit",
+                                                  //   style: customisedStyle(context, Colors.black, FontWeight.w500, 10.0),
+                                                  // ),
+                                                ],
+                                              ] else
+                                                ...[],
+                                            ],
+                                          ))
+                                      : Container(),
+                                )
+                              ],
                             )
                           ],
                         ),
@@ -2718,8 +2767,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
       },
     );
   }
+
   // tableMergeData = <MergeData>[].obs;
-  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName,isItem,indexOfSelectedTable,fromSplitTableID) {
+  Future<void> _dialogBuilderSwap(BuildContext context, Size screenSize, List itemTableName, isItem, indexOfSelectedTable, fromSplitTableID) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -2729,8 +2779,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
               child: AlertDialog(
                 titlePadding: EdgeInsets.zero,
                 title: Padding(
-                  padding:
-                  const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -2739,8 +2788,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         children: [
                           Text(
                             "Table Swap",
-                            style: customisedStyle(
-                                context, Colors.black, FontWeight.w500, 18.0),
+                            style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
                           ),
                           IconButton(
                               onPressed: () {
@@ -2775,109 +2823,90 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               return Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                                     child: Column(
                                       children: [
                                         Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              borderRadius:
-                                              BorderRadius.circular(10)),
+                                          decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(10)),
                                           child: Padding(
                                             padding: const EdgeInsets.all(12.0),
                                             child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Text(
                                                   item['TableName'],
-                                                  style: customisedStyle(
-                                                      context,
-                                                      Colors.black,
-                                                      FontWeight.w600,
-                                                      14.0),
+                                                  style: customisedStyle(context, Colors.black, FontWeight.w600, 14.0),
                                                 ),
+                                                areAllItemsVacantCheckForTableSwap(item["Split_data"], item['Status'])
+                                                    ? ElevatedButton(
+                                                        onPressed: () async {
+                                                          /// select master Table
+                                                          List fromTableList = [];
+                                                          if (fromSplitTableID != "") {
+                                                            fromTableList = [fromSplitTableID];
+                                                          }
+                                                          var result = await posController.swapTableFunction(
+                                                              fromTableID: posController.tableMergeData[posController.selectList[0]].id!,
+                                                              fromSplitTableList: fromTableList,
+                                                              toSplitTableID: "",
+                                                              toTableID: item['id']);
+                                                          if (result != null) {
+                                                            pr("=================");
+                                                            pr(result);
 
+                                                            if (result) {
+                                                              // if(isItem){
+                                                              //   Get.back();
+                                                              // }
 
-                                                areAllItemsVacantCheckForTableSwap(item["Split_data"],item['Status'])?
-
-                                                ElevatedButton(
-                                                  onPressed: () async{
-                                                    /// select master Table
-                                                    List fromTableList = [];
-                                                    if(fromSplitTableID !=""){
-                                                      fromTableList = [fromSplitTableID];
-                                                    }
-                                                    var result = await posController.swapTableFunction(
-                                                          fromTableID:posController.tableMergeData[posController.selectList[0]].id!,
-                                                          fromSplitTableList:fromTableList,toSplitTableID: "",toTableID: item['id']);
-                                                      if (result != null) {
-                                                        pr("=================");
-                                                        pr(result);
-
-                                                        if (result) {
-                                                          // if(isItem){
-                                                          //   Get.back();
-                                                          // }
-
-                                                          Get.back();
-                                                          posController.selectList.clear();
-                                                          posController.isCombine.value = false;
-                                                          posController.isCombineSplit.value = false;
-                                                          posController.update();
-                                                          posController.fetchAllData();
-                                                        }
-                                                      }
-
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                    minimumSize:
-                                                    const Size(100, 30),
-                                                    shape:
-                                                    const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              25)),
-                                                    ),
-                                                    backgroundColor:
-                                                    const Color(0xFF0CAEA6),
-                                                  ),
-                                                  child: Text(
-                                                    "Swap",
-                                                    style: customisedStyle(
-                                                      context,
-                                                      Colors.white,
-                                                      FontWeight.normal,
-                                                      14.0,
-                                                    ),
-                                                  ),
-                                                ):Container()
+                                                              Get.back();
+                                                              posController.selectList.clear();
+                                                              posController.isCombine.value = false;
+                                                              posController.isCombineSplit.value = false;
+                                                              posController.update();
+                                                              posController.fetchAllData();
+                                                            }
+                                                          }
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                          minimumSize: const Size(100, 30),
+                                                          shape: const RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                                                          ),
+                                                          backgroundColor: const Color(0xFF0CAEA6),
+                                                        ),
+                                                        child: Text(
+                                                          "Swap",
+                                                          style: customisedStyle(
+                                                            context,
+                                                            Colors.white,
+                                                            FontWeight.normal,
+                                                            14.0,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container()
                                               ],
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                            height: screenSize.height * 0.01),
+                                        SizedBox(height: screenSize.height * 0.01),
                                         ListView.separated(
                                           separatorBuilder: (context, indexItem) {
                                             return const Divider();
                                           },
-                                          physics:
-                                          const NeverScrollableScrollPhysics(),
+                                          physics: const NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: itemTableName[index]["Split_data"].length,
                                           itemBuilder: (context, indexItem) {
-                                            var  splitData = itemTableName[index]["Split_data"];
+                                            var splitData = itemTableName[index]["Split_data"];
 
                                             pr("splitData  $splitData");
                                             return Column(
                                               children: [
                                                 Container(
                                                   decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    borderRadius: BorderRadius.circular(10),
                                                     border: const Border(
                                                       bottom: BorderSide(
                                                         width: 1,
@@ -2886,91 +2915,74 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                     ),
                                                   ),
                                                   child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 8.0,
-                                                        vertical: 4.0),
+                                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                                                     child: Column(
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Text(
                                                               '${splitData[indexItem]['TableName'].toString()} (${indexItem + 1})',
                                                             ),
-                                                            splitData[indexItem]['Status'] =="Vacant"?  ElevatedButton(
-                                                              onPressed: ()async {
-                                                                /// select Detail Table
+                                                            splitData[indexItem]['Status'] == "Vacant"
+                                                                ? ElevatedButton(
+                                                                    onPressed: () async {
+                                                                      /// select Detail Table
 
-                                                                List fromTableList = [];
-                                                                if(fromSplitTableID !=""){
-                                                                  fromTableList = [fromSplitTableID];
-                                                                }
+                                                                      List fromTableList = [];
+                                                                      if (fromSplitTableID != "") {
+                                                                        fromTableList = [fromSplitTableID];
+                                                                      }
 
+                                                                      // var  splitTableList=[];
+                                                                      // pr("isItem      $isItem");
+                                                                      // if(isItem){
+                                                                      //   var iindex = posController.selectList[0];
+                                                                      //   pr("isItem      $iindex");
+                                                                      //   splitTableList  = [posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]];
+                                                                      // }
+                                                                      // pr("FROM       ${posController.tableMergeData[posController.selectList[0]].tableName}");
+                                                                      // pr("FROM       ${posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]}");
+                                                                      //
 
-                                                                // var  splitTableList=[];
-                                                                // pr("isItem      $isItem");
-                                                                // if(isItem){
-                                                                //   var iindex = posController.selectList[0];
-                                                                //   pr("isItem      $iindex");
-                                                                //   splitTableList  = [posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]];
-                                                                // }
-                                                                // pr("FROM       ${posController.tableMergeData[posController.selectList[0]].tableName}");
-                                                                // pr("FROM       ${posController.tableMergeData[indexOfSelectedTable].splitData![iindex]["id"]}");
-                                                                //
+                                                                      var result = await posController.swapTableFunction(
+                                                                          fromTableID: posController.tableMergeData[posController.selectList[0]].id!,
+                                                                          fromSplitTableList: fromTableList,
+                                                                          toSplitTableID: splitData[indexItem]['id'],
+                                                                          toTableID: item['id']);
+                                                                      if (result != null) {
+                                                                        if (result) {
+                                                                          if (isItem) {
+                                                                            Get.back();
+                                                                          }
 
-
-                                                                var result = await posController.swapTableFunction(
-                                                                    fromTableID:posController.tableMergeData[posController.selectList[0]].id!,
-                                                                    fromSplitTableList:fromTableList,toSplitTableID: splitData[indexItem]['id'],toTableID: item['id']);
-                                                                if (result != null) {
-                                                                  if (result) {
-
-                                                                    if(isItem){
-                                                                      Get.back();
-                                                                    }
-
-                                                                    Get.back();
-                                                                    posController.selectList.clear();
-                                                                    posController.isCombine.value = false;
-                                                                    posController.isCombineSplit.value = false;
-                                                                    posController.update();
-                                                                    posController.fetchAllData();
-                                                                  }
-                                                                }
-
-                                                              },
-                                                              style:
-                                                              ElevatedButton
-                                                                  .styleFrom(
-                                                                minimumSize:
-                                                                const Size(
-                                                                    100, 30),
-                                                                shape:
-                                                                const RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius
-                                                                      .all(Radius
-                                                                      .circular(
-                                                                      25)),
-                                                                ),
-                                                                backgroundColor:
-                                                                const Color(
-                                                                    0xFF0CAEA6),
-                                                              ),
-                                                              child: Text(
-                                                                "Swap",
-                                                                style:
-                                                                customisedStyle(
-                                                                  context,
-                                                                  Colors.white,
-                                                                  FontWeight
-                                                                      .normal,
-                                                                  14.0,
-                                                                ),
-                                                              ),
-                                                            ):Container()
+                                                                          Get.back();
+                                                                          posController.selectList.clear();
+                                                                          posController.isCombine.value = false;
+                                                                          posController.isCombineSplit.value = false;
+                                                                          posController.update();
+                                                                          posController.fetchAllData();
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    style: ElevatedButton.styleFrom(
+                                                                      minimumSize: const Size(100, 30),
+                                                                      shape: const RoundedRectangleBorder(
+                                                                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                                                                      ),
+                                                                      backgroundColor: const Color(0xFF0CAEA6),
+                                                                    ),
+                                                                    child: Text(
+                                                                      "Swap",
+                                                                      style: customisedStyle(
+                                                                        context,
+                                                                        Colors.white,
+                                                                        FontWeight.normal,
+                                                                        14.0,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : Container()
                                                           ],
                                                         ),
                                                       ],
@@ -4377,7 +4389,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                 }
                               } else if (orderType == 'online') {
                                 if (status == 'Ordered') {
-                                  log("orderType");
+                                  pr("orderType");
                                   pr("typedddd $orderType");
                                   if (posController.print_perm.value) {
                                     var result = await Get.to(const CancelOrderList());
