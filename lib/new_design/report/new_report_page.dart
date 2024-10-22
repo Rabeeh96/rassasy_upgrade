@@ -8044,7 +8044,6 @@ class _ReportPageState extends State<ReportPageNew> {
 
             reportsList.clear();
             stop();
-
             for (Map user in responseJson) {
               reportsList.add(ReportModel.fromJson(user));
             }
