@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/model/groupModel.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/model/mergeModel.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/model/productModel.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/service/pos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../global/global.dart';
@@ -17,6 +19,8 @@ class DragAndDropController extends GetxController {
   var draggableList = <Map<String, dynamic>>[].obs;
   var groupIsLoading = false.obs;
   var productIsLoading = false.obs;
+  var heightOfITem = 12.0;
+  var heightOfITemSplit = 12.0;
   RxString user_name = "".obs;
   var groupList = <GroupListModelClass>[].obs;
   var productList = <ProductListModel>[].obs;
@@ -25,6 +29,64 @@ class DragAndDropController extends GetxController {
   var selectedIndex = RxInt(0);
   RxInt selectedGroup = 0.obs;
   var dropdownvalue = 'Name'.obs;
+
+  TextEditingController rowCountController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+  TextEditingController rowCountControllerSplit = TextEditingController();
+  TextEditingController heightControllerSplit = TextEditingController();
+  final TableService _tableService = TableService();
+  // var tableMergeData = <MergeData>[].obs;
+
+
+
+  var tableMergeData =<Map<String, dynamic>>[].obs;
+  fetchAllData() async {
+    try {
+      isLoading(true);
+      update();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+
+
+      rowCountGridViewSplit = prefs.getInt('count_of_row_pos_split') ?? 2;
+      heightOfITemSplit = prefs.getDouble('height_of_item_pos_split') ?? 12.0;
+      heightControllerSplit.text = heightOfITemSplit.toString();
+      rowCountControllerSplit.text = rowCountGridViewSplit.toString();
+
+      rowCountGridView = prefs.getInt('count_of_row_pos') ?? 2;
+      heightOfITem = prefs.getDouble('height_of_item_pos') ?? 12.0;
+      heightController.text = heightOfITem.toString();
+      rowCountController.text = rowCountGridView.toString();
+      var userID = prefs.getInt('user_id') ?? 0;
+      var accessToken = prefs.getString('access') ?? '';
+
+      var fetchedData = await _tableService.fetchAllData(accessToken);
+      print(fetchedData);
+      tableMergeData.clear();
+      final List<dynamic> tableListData = fetchedData['data'];
+      tableMergeData.value = List<Map<String, dynamic>>.from(tableListData);
+      // tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
+      pr("--------------------------------------------------------");
+      pr(tableMergeData.length.toString());
+    } finally {
+
+      isLoading(false);
+    }
+  }
+  var rowCountGridView = 2;
+  var tableheight = 2.0.obs;
+
+  var rowCountGridViewSplit = 2;
+  var tableheightSplit = 2.0.obs;
+
+
+
+
+//!
+
+
+
   Future<void> fetchTables() async {
     print("fetch list");
 
@@ -75,11 +137,57 @@ class DragAndDropController extends GetxController {
       print('Error: $e');
     }
   }
+  String returnOrderTime(String data, String status) {
+    if (status != "Vacant") {
+      // print("----data $data   $status");
+    }
 
+    if (data == "" || status == "Vacant") {
+      return "";
+    }
+
+    var t = data;
+    var yy = int.parse(t.substring(0, 4));
+    var month = int.parse(t.substring(5, 7));
+    var da = int.parse(t.substring(8, 10));
+    var hou = int.parse(t.substring(11, 13));
+    var mnt = int.parse(t.substring(14, 16));
+    var sec = int.parse(t.substring(17, 19));
+
+    var startTime = DateTime(yy, month, da, hou, mnt, sec);
+    var currentTime = DateTime.now();
+
+    var difference = currentTime.difference(startTime);
+    var hours = difference.inHours;
+    var remainingMinutes = difference.inMinutes.remainder(60);
+
+    ///to get time in hours and minutes
+    if (difference.inHours > 0) {
+      if (remainingMinutes > 0) {
+        return "$hours hour${hours > 1 ? 's' : ''} $remainingMinutes minute${remainingMinutes > 1 ? 's' : ''}";
+      } else {
+        return "$hours hour${hours > 1 ? 's' : ''}";
+      }
+    } else {
+      return "$remainingMinutes minute${remainingMinutes > 1 ? 's' : ''}";
+    }
+  }
+  Color getBackgroundColor(String? status) {
+    if (status == 'Vacant') {
+      return const Color(0xff6C757D); // Set your desired color for pending status
+    } else if (status == 'Ordered') {
+      return const Color(0xff03C1C1); // Set your desired color for completed status
+    } else if (status == 'Paid') {
+      return const Color(0xff2B952E); // Set your desired color for cancelled status
+    } else if (status == 'Billed') {
+      return const Color(0xff034FC1); // Set your desired color for cancelled status
+    } else {
+      return const Color(0xffEFEFEF); // Default color if status is not recognized
+    }
+  }
   Future<void> updateTables(
       {required String type, required List reOrderList}) async {
     print("fetch list");
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     selectedValue.value = prefs.getInt('count_of_row') ?? 5;
     var branchID = prefs.getInt('branchID') ?? 0;

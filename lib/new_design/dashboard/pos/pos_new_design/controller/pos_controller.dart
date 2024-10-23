@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -31,11 +32,17 @@ class POSController extends GetxController {
 
   POSController({int defaultIndex = 0}) : tabIndex = defaultIndex.obs;
 
+
+  Timer? timer;
+
+
+
   // var tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
     tabIndex.value = index;
   }
+
 
   checkPermissionForSave(value) {
     final permissions = {
@@ -122,7 +129,7 @@ class POSController extends GetxController {
   ///in hours and minute
   String returnOrderTime(String data, String status) {
     if (status != "Vacant") {
-      print("----data $data   $status");
+      // print("----data $data   $status");
     }
 
     if (data == "" || status == "Vacant") {
@@ -181,6 +188,14 @@ class POSController extends GetxController {
       var accessToken = prefs.getString('access') ?? '';
       currency = prefs.getString('CurrencySymbol') ?? "";
       userName.value = prefs.getString('user_name') ?? "";
+
+      rowCountGridView.value = prefs.getInt('count_of_row_pos') ?? 2;
+      heightOfITem.value = prefs.getDouble('height_of_item_pos') ?? 12.0;
+
+      rowCountGridViewSplit.value = prefs.getInt('count_of_row_pos_split') ?? 2;
+      heightOfITemSplit.value = prefs.getDouble('height_of_item_pos_split') ?? 12.0;
+
+
       var fetchedData = await _tableService.fetchAllData(accessToken);
       print(fetchedData);
       selectedIndexNotifier.value = 0;
@@ -195,6 +210,30 @@ class POSController extends GetxController {
       isLoading(false);
     }
   }
+    fetchAllDataWithoutLoading() async {
+    try {
+
+      update();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var userID = prefs.getInt('user_id') ?? 0;
+      var accessToken = prefs.getString('access') ?? '';
+      currency = prefs.getString('CurrencySymbol') ?? "";
+      userName.value = prefs.getString('user_name') ?? "";
+      var fetchedData = await _tableService.fetchAllData(accessToken);
+      print(fetchedData);
+      selectedIndexNotifier.value = 0;
+      tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
+
+      fullDataList.value = fetchedData['data']??[];
+      print("fullDataListfullDataList${fullDataList.length}");
+      pr(tableMergeData.length.toString());
+    } finally {
+
+    }
+  }
+
+
+
 
   ///fetch takeaway,online,car api call
   void fetchTOC() async {
@@ -430,12 +469,11 @@ class POSController extends GetxController {
       print(response.body);
       if (status == 6000) {
         return true;
-
-      } else if (status == 6001) {
+      }
+      else if (status == 6001) {
         var msg = responseData["message"];
         Get.snackbar('Error', msg);
         return false;
-
       }
       else{
         return false;
@@ -465,7 +503,6 @@ class POSController extends GetxController {
       var accessToken = prefs.getString('access') ?? '';
       final String url = '$baseUrl/posholds/pos_table/swap_order/';
       Map<String, dynamic> data = {
-
           "CompanyID": companyID,
           "BranchID": branchID,
           "fromtable": [
@@ -474,7 +511,6 @@ class POSController extends GetxController {
               "From_Split_Tables":fromSplitTableList
             }
           ],
-
         "To_Main_Table": toTableID,
         "To_Split_Table": toSplitTableID
       };
@@ -498,7 +534,7 @@ class POSController extends GetxController {
         pr("-----------11");
         isLoading(false);
         return true;
-       // Get.back();
+         // Get.back();
         // tablenameController.clear();
         // splitcountcontroller.text = "0";
         // fetchAllData();
@@ -508,6 +544,7 @@ class POSController extends GetxController {
         Get.snackbar('Error', msg);
         return false;// Show error message
       }
+
       // final addsplit = jsonDecode(response.body);
       // if (response.statusCode == 200 || response.statusCode == 201) {
       //
@@ -853,13 +890,31 @@ class POSController extends GetxController {
   var kitchen_print_perm = false.obs;
   var remove_table_perm = false.obs;
   var convert_type_perm = false.obs;
+  var rowCountGridView = 2.obs;
+  var heightOfITem = 12.0.obs;
+
+   var rowCountGridViewSplit = 2.obs;
+   var heightOfITemSplit = 12.0.obs;
+
+
+
 
   ReloadAllData() async {
     print("----------------------------------------------------------------1");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isCombine.value=false;
     isCombineSplit.value=false;
-     selectList.clear();
+    selectList.clear();
+    rowCountGridView.value = prefs.getInt('count_of_row_pos') ?? 2;
+    heightOfITem.value = prefs.getDouble('height_of_item_pos') ?? 12.0;
+
+    rowCountGridViewSplit.value = prefs.getInt('count_of_row_pos_split') ?? 2;
+    heightOfITemSplit.value = prefs.getDouble('height_of_item_pos_split') ?? 12.0;
+
+
+
+    print("-------------------19920 ${rowCountGridView.value} ${heightOfITem.value} ");
+
     dining_view_perm.value = prefs.getBool('Diningview') ?? true;
     reservation_view_perm.value = prefs.getBool('View Reservation') ?? true;
     directOrderOption.value = prefs.getBool('directOrderOption') ?? false;
@@ -935,18 +990,39 @@ class POSController extends GetxController {
     log(selectedsplitIndex.value.toString());
   }
 
-  // int clickCount = 0;
-
-  // void selectsplitItem(int index) {
-  //   clickCount++;
-  //   if (clickCount == 0) {
-  //     selectedsplitIndex.value = index;
-  //     log(selectedsplitIndex.value.toString());
-  //   } else if (clickCount == 2) {
-  //     selectedsplitIndex.value = 1000;
-  //     log(selectedsplitIndex.value.toString());
-  //   }
+//    startApiCall();
+  // @override
+  // void dispose() {
+  //   posController.timer?.cancel(); // Cancel the timer when the widget is disposed
+  //   super.dispose();
   // }
+  //
+  // void startApiCall() {
+  //
+  //
+  //
+  //   posController.timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+  //     pr("posController.selectedsplitIndex.value ${posController.selectedsplitIndex.value}posController.isCombine.value   ${posController.isCombine.value}  posController.isCombineSplit.value ${posController.isCombineSplit.value}");
+  //     if (posController.isCombine.value==false&&posController.isCombineSplit.value==false &&posController.selectedsplitIndex.value ==1000) {
+  //       pr("-----------------------------------------------${posController.selectedType.value} not dine");
+  //       if(posController.selectedType.value =="dine"){
+  //         posController.fetchAllDataWithoutLoading();
+  //       }
+  //       else{
+  //         pr("//////////////// not dine");
+  //       }
+  //     }
+  //     else{
+  //
+  //     }
+  //
+  //
+  //
+  //   });
+  //
+  //
+  // }
+
 
   void takeAwayselectItem(int index) {
     takeawayselectedIndex.value = index;
@@ -984,6 +1060,9 @@ class POSController extends GetxController {
     log(datalist.toString());
     return datalist;
   }
+
+  var tableheight = 2.0.obs;
+  var tablewidth = 4.obs;
 
   checkedbtn(int index) {
     final datalist = selectList.contains(index);

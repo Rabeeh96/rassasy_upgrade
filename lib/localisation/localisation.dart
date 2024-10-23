@@ -23,7 +23,8 @@ class LocaleChange extends Translations {
           'verification': 'This will be used for verification.',
           'country': 'Country',
           'phone': 'Phone',
-          'msg': 'Use 8 or more characters with a mix of letters, numbers & symbols.',
+          'msg':
+              'Use 8 or more characters with a mix of letters, numbers & symbols.',
           'sign_in_instead': 'Sign in instead.',
           'first_name': 'First name',
           'second_name': 'Second name',
@@ -39,7 +40,8 @@ class LocaleChange extends Translations {
           'go_back': 'Go back',
           'please_enter_email_username': 'Please enter username or email',
           'Profile': 'Profile',
-          'msg1': 'if you delete account once, you wont be able to retrieve your information',
+          'msg1':
+              'if you delete account once, you wont be able to retrieve your information',
           'msg2': 'Please accept terms and condition',
           'dlt_acnt': 'Delete Account',
           'enter_pin': 'Enter PIN',
@@ -279,7 +281,8 @@ class LocaleChange extends Translations {
           'Delivered': 'Delivered',
           'Print test page': 'Print test page',
           'Are you sure?': 'Are you sure?',
-          'There are unsaved changes are you sure ou want to leave this page': 'There are unsaved changes are you sure ou want to leave this page',
+          'There are unsaved changes are you sure ou want to leave this page':
+              'There are unsaved changes are you sure ou want to leave this page',
           'Open_drawer': 'Open Drawer',
           'edit': 'Edit',
           'print': 'Print',
@@ -378,8 +381,7 @@ class LocaleChange extends Translations {
           'is_tab_design': 'Tab Design',
           'sync_method': 'Sync Method',
           'lineAfteritem': 'Line after item',
-
-
+          'posbeta': 'POS (Beta Version)'
         },
 
         /////
@@ -387,6 +389,7 @@ class LocaleChange extends Translations {
         ///
         ///
         'ar': {
+          'posbeta': 'نقاط البيع (الإصدار التجريبي)',
           'lineAfteritem': 'سطر بعد البند',
           'sync_method': 'طريقة المزامنة',
           'is_tab_design': 'تصميم علامة التبويب',
@@ -491,7 +494,8 @@ class LocaleChange extends Translations {
           'Delivered': 'تم التوصيل',
           'POS': 'نقاط البيع',
           'Are you sure?': 'هل أنت متأكد؟',
-          'There are unsaved changes are you sure ou want to leave this page': 'هناك تغييرات غير محفوظة، هل أنت متأكد من أنك تريد مغادرة هذه الصفحة',
+          'There are unsaved changes are you sure ou want to leave this page':
+              'هناك تغييرات غير محفوظة، هل أنت متأكد من أنك تريد مغادرة هذه الصفحة',
           'Tax': 'ضريبة',
           'Rate': 'معدل',
           'Qty': 'كمية',
@@ -525,9 +529,11 @@ class LocaleChange extends Translations {
           'please_enter_details': 'الرجاء إدخال تفاصيل المستخدم',
           'user_or_email': 'اسم المستخدم أو البريد الالكتروني',
           'go_back': 'عُد',
-          'please_enter_email_username': 'الرجاء إدخال اسم المستخدم أو البريد الإلكتروني',
+          'please_enter_email_username':
+              'الرجاء إدخال اسم المستخدم أو البريد الإلكتروني',
           'Profile': 'حساب تعريفي',
-          'msg1': 'إذا قمت بحذف الحساب مرة واحدة، فلن تتمكن من استرداد معلوماتك',
+          'msg1':
+              'إذا قمت بحذف الحساب مرة واحدة، فلن تتمكن من استرداد معلوماتك',
           'msg2': 'يرجى قبول الشروط والأحكام',
           'dlt_acnt': 'حذف الحساب',
           'enter_pin': 'يدخل PIN',

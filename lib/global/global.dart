@@ -1,26 +1,25 @@
 import 'dart:developer';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 // import 'package:alert/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-String appVersion = "1.1.60";
-double defaultScreenWidth=550;
+String appVersion = "1.1.62";
+double defaultScreenWidth = 550;
 bool enableTabDesign = false;
 start(context) {
   Loader.show(context,
       progressIndicator: const CircularProgressIndicator(),
       overlayColor: Colors.transparent,
-      themeData: ThemeData(colorScheme:const ColorScheme.dark(primary: Color(0xffffab00))
-      )
-  );
+      themeData: ThemeData(
+          colorScheme: const ColorScheme.dark(primary: Color(0xffffab00))));
 }
 
-dialogBoxHide(BuildContext context, msg) async {
-}
+dialogBoxHide(BuildContext context, msg) async {}
 
 dialogBox(BuildContext context, msg) async {
   await showDialog<bool>(
@@ -28,22 +27,26 @@ dialogBox(BuildContext context, msg) async {
     builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor: const Color(0xff415369),
-           title: Text(msg, style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
-         actions: <Widget>[
+        title: Text(msg,
+            style:
+                customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
+        actions: <Widget>[
           TextButton(
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
-              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              textStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text("OK", style: customisedStyle(context, Colors.white, FontWeight.w600, 14.0)),
+            child: Text("OK",
+                style: customisedStyle(
+                    context, Colors.white, FontWeight.w600, 14.0)),
           ),
         ],
       );
     },
   );
 }
-
 
 class CommonStyleTextField {
   static InputDecoration textFieldStyle(
@@ -62,9 +65,9 @@ class CommonStyleTextField {
         ),
         borderSide: BorderSide(color: Color(0xff000000)),
       ),
-      hintStyle:  TextStyle(color: Colors.grey[800], fontSize: 12),
+      hintStyle: TextStyle(color: Colors.grey[800], fontSize: 12),
       hintText: hintTextStr,
-      labelStyle:  const TextStyle(color: Color(0xff9F9F9F), fontSize: 12),
+      labelStyle: const TextStyle(color: Color(0xff9F9F9F), fontSize: 12),
       labelText: labelTextStr,
       fillColor: const Color(0xffFAFAFA),
       contentPadding: const EdgeInsets.fromLTRB(15, 3, 3, 3),
@@ -82,24 +85,26 @@ String roundStringWith(String val) {
 }
 
 String roundStringWith1(String val) {
-
   double convertedTodDouble = double.parse(val);
   var number = convertedTodDouble.toStringAsFixed(0);
   return number;
 }
 
-
-  customisedStyle(context,Colors,FontWeight,fontSize){
-  return GoogleFonts.poppins(textStyle:TextStyle(fontWeight: FontWeight,color: Colors,fontSize: fontSize));
+customisedStyle(context, Colors, FontWeight, fontSize) {
+  return GoogleFonts.poppins(
+      textStyle:
+          TextStyle(fontWeight: FontWeight, color: Colors, fontSize: fontSize));
 }
+
 checkingPerm(item) async {
   print("object $item");
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool retData = true;
-  retData = prefs.getBool(item)??true;
+  retData = prefs.getBool(item) ?? true;
   print("object $retData");
   return retData;
 }
+
 String convertDateAndTime(DateTime time) {
   // Define the desired format
   final DateFormat formatter = DateFormat('hh:mm a dd-MM-yyyy');
@@ -120,25 +125,26 @@ dialogBoxPermissionDenied(BuildContext context) async {
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black, fontSize: 13),
         ),
-
-
       );
     },
   );
 }
 
-myLog(msg){
+myLog(msg) {
   log("___________________${msg.toString()}");
 }
-String baseURlApi='';
-class BaseUrl{
-/// server details
-//    static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
-//    static String baseUrl = "$baseURlApi/api/v10";
-//    static String baseUrlV11 = "$baseURlApi/api/v11";
-//    static String imageURL = '$baseURlApi/media/';
-///
-   ///  test
+
+String baseURlApi = '';
+
+class BaseUrl {
+  /// server details
+  static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
+  static String baseUrl = "$baseURlApi/api/v10";
+  static String baseUrlV11 = "$baseURlApi/api/v11";
+  static String imageURL = '$baseURlApi/media/';
+
+  ///
+  ///  test
   // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
   // static String baseUrl = "$baseURlApi/api/v10";
   // static String baseUrlV11 = "$baseURlApi/api/v11";
@@ -148,34 +154,34 @@ class BaseUrl{
   // local
   // http://192.168.1.52:8002/
 
-  static String baseUrlAuth = 'http://192.168.1.78:8000/api/v1';
-  static String baseUrl = "http://192.168.1.78:8002/api/v10";
-  static String baseUrlV11 = "http://192.168.1.78:8002/api/v11";
-  static String imageURL = 'http://192.168.1.78:8002';
+  // static String baseUrlAuth = 'http://192.168.1.78:8000/api/v1';
+  // static String baseUrl = "http://192.168.1.78:8002/api/v10";
+  // static String baseUrlV11 = "http://192.168.1.78:8002/api/v11";
+  // static String imageURL = 'http://192.168.1.78:8002';
   //
-   static int priceRounding=2;
+  static int priceRounding = 2;
 }
 
-
-pr(data){
+pr(data) {
   log("------$data");
 }
 
-String convertToSaudiArabiaTime(String utcTimeString,currencyCode) {
+String convertToSaudiArabiaTime(String utcTimeString, currencyCode) {
   DateTime utcTime = DateTime.parse(utcTimeString).toUtc();
   var timeZone = const Duration(hours: 5, minutes: 30);
-  print("****************************************************************************************");
+  print(
+      "****************************************************************************************");
   print("utcTimeString $utcTimeString");
   print("timeZone $timeZone");
   print("currencyCode $currencyCode");
-  if(currencyCode =="SAR"){
+  if (currencyCode == "SAR") {
     timeZone = const Duration(hours: -3, minutes: 0);
-    String formattedTime = DateFormat('HH:mm:ss').format(DateTime.parse(utcTimeString));
+    String formattedTime =
+        DateFormat('HH:mm:ss').format(DateTime.parse(utcTimeString));
     print("formattedTime $formattedTime");
 
     return formattedTime;
-  }
-  else if (currencyCode =="INR"){
+  } else if (currencyCode == "INR") {
     timeZone = const Duration(hours: 0, minutes: -30);
   }
   print("timeZone $timeZone");
@@ -247,7 +253,7 @@ String convertToSaudiArabiaTime(String utcTimeString,currencyCode) {
 //   }
 // }
 
-Future<bool>? returnNetwork()async{
+Future<bool>? returnNetwork() async {
   var connectivityResult = await (Connectivity().checkConnectivity());
   if (connectivityResult == ConnectivityResult.none) {
     return false;
@@ -262,9 +268,7 @@ stop() {
   });
 }
 
-
 bool isDateExpired(String dateString) {
-
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   DateTime expiryDate = dateFormat.parse(dateString);
   DateTime adjustedExpiryDate = expiryDate.add(const Duration(days: 1));
@@ -272,12 +276,9 @@ bool isDateExpired(String dateString) {
   return currentDate.isAfter(adjustedExpiryDate);
 }
 
-
 checkExpire(date) {
-
   var dt = DateTime.parse(date);
   var now = DateTime.now();
-
 
   if (dt.compareTo(now) < 0) {
     if (dt.year == now.year && dt.month == now.month && dt.day == now.day) {
@@ -289,8 +290,8 @@ checkExpire(date) {
     return false;
   }
 }
-class Global {
 
+class Global {
   static InputDecoration textFieldBottomBorder(
       {String labelTextStr = "", String hintTextStr = ""}) {
     return InputDecoration(
@@ -306,27 +307,25 @@ class Global {
   }
 
   static InputDecoration textField(
-      {String labelTextStr = "",String hintTextStr = ""}) {
+      {String labelTextStr = "", String hintTextStr = ""}) {
     return InputDecoration(
-      filled:true,
-    fillColor:const Color(0xffF8F8F8),
+      filled: true,
+      fillColor: const Color(0xffF8F8F8),
       hintStyle: TextStyle(color: Colors.grey[800], fontSize: 14),
-      hintText:hintTextStr,
-      labelStyle:
-      const TextStyle(color: Color(0xff9F9F9F), fontSize: 14),
+      hintText: hintTextStr,
+      labelStyle: const TextStyle(color: Color(0xff9F9F9F), fontSize: 14),
       labelText: labelTextStr,
       contentPadding: const EdgeInsets.fromLTRB(0, 3, 5, 0),
     );
   }
 }
 
-
-
 class AutoClosingAlert extends StatefulWidget {
   final String message;
   final Duration duration;
 
-  AutoClosingAlert({required this.message, required this.duration});
+  const AutoClosingAlert(
+      {super.key, required this.message, required this.duration});
 
   @override
   _AutoClosingAlertState createState() => _AutoClosingAlertState();
@@ -351,7 +350,8 @@ class _AutoClosingAlertState extends State<AutoClosingAlert> {
         actions: <Widget>[
           ElevatedButton(
             onPressed: () {
-              overlayEntry?.remove(); // Use safe navigation to remove the overlay
+              overlayEntry
+                  ?.remove(); // Use safe navigation to remove the overlay
             },
             child: const Text('OK'),
           ),
@@ -379,11 +379,11 @@ class _AutoClosingAlertState extends State<AutoClosingAlert> {
 // )
 bottomDialogueFunction(
     {required BuildContext context,
-      required String textMsg,
-      required Function() fistBtnOnPressed,
-      required Function() secondBtnPressed,
-      required String secondBtnText,
-      required bool isDismissible}) {
+    required String textMsg,
+    required Function() fistBtnOnPressed,
+    required Function() secondBtnPressed,
+    required String secondBtnText,
+    required bool isDismissible}) {
   return showModalBottomSheet(
     isDismissible: isDismissible,
     context: context,
@@ -391,7 +391,7 @@ bottomDialogueFunction(
     builder: (BuildContext context) {
       return Container(
         padding:
-        EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
