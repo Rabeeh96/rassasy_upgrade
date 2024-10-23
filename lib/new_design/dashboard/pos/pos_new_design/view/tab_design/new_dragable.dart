@@ -132,7 +132,7 @@ class _TableSettingsState extends State<TableSettings> {
                                     child: GestureDetector(
                                         onTap: () async{
                                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                                          if (tableListController.rowCountGridView == 6) {
+                                          if (tableListController.rowCountGridView == 9) {
                                           } else {
                                             setState(() {
                                               tableListController.rowCountGridView = tableListController.rowCountGridView + 1;
