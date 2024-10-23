@@ -130,6 +130,7 @@ class AppBlocs {
           print("1-------------------------------");
           BluetoothPrintThermalDetails.tableName = responseJson["TableName"] ?? "";
           BluetoothPrintThermalDetails.splitTableName= responseJson["TableName_Split"] ?? "";
+          BluetoothPrintThermalDetails.employeeName= responseJson["EmployeeName"] ?? "";
           BluetoothPrintThermalDetails.time = responseJson["CreatedDate"] ?? "${DateTime.now()}";
           print("1-------------------------------");
           BluetoothPrintThermalDetails.currency = currency;
@@ -162,7 +163,9 @@ class AppBlocs {
     var hilightTokenNumber = prefs.getBool("hilightTokenNumber") ?? false;
     var paymentDetailsInPrint = prefs.getBool("paymentDetailsInPrint") ?? false;
     var headerAlignment = prefs.getBool("headerAlignment") ?? false;
-    var salesMan = prefs.getString("user_name") ?? '';
+    var user = prefs.getString("user_name") ?? '';
+
+    var salesMan =  BluetoothPrintThermalDetails.employeeName?? user;
     var OpenDrawer = prefs.getBool("OpenDrawer") ?? false;
     var timeInPrint = prefs.getBool("time_in_invoice") ?? false;
     var hideTaxDetails = prefs.getBool("hideTaxDetails") ?? false;

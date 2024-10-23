@@ -1764,6 +1764,32 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+
+
+                  ElevatedButton(
+                    onPressed: () {
+                      posController.refreshTableData();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFFF6F2),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.add,
+                          color: Color(0xFFF25F29),
+                        ),
+                        Text(
+                          "Refresh",
+                          style: customisedStyle(context, const Color(0xFFF25F29), FontWeight.w400, 14.0),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+
                   Obx(() {
                     return posController.isCombine.value
                         ? Container()
