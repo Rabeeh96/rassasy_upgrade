@@ -2387,7 +2387,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                                                     children: [
                                                                                       Text(
                                                                                         posController.returnOrderTime(
-                                                                                            listsplit[index]["orderTime"] ?? '',
+                                                                                            listsplit[index]["OrderTime"] ?? '',
                                                                                             listsplit[index]["orderTime"] ?? ''),
                                                                                         style: customisedStyle(
                                                                                             context, const Color(0xff828282), FontWeight.w400, 12.0),
