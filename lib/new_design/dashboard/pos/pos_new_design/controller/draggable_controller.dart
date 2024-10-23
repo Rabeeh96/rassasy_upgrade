@@ -19,6 +19,8 @@ class DragAndDropController extends GetxController {
   var draggableList = <Map<String, dynamic>>[].obs;
   var groupIsLoading = false.obs;
   var productIsLoading = false.obs;
+  var heightOfITem = 12.0;
+  var heightOfITemSplit = 12.0;
   RxString user_name = "".obs;
   var groupList = <GroupListModelClass>[].obs;
   var productList = <ProductListModel>[].obs;
@@ -30,8 +32,12 @@ class DragAndDropController extends GetxController {
 
   TextEditingController rowCountController = TextEditingController();
   TextEditingController heightController = TextEditingController();
+  TextEditingController rowCountControllerSplit = TextEditingController();
+  TextEditingController heightControllerSplit = TextEditingController();
   final TableService _tableService = TableService();
   // var tableMergeData = <MergeData>[].obs;
+
+
 
   var tableMergeData =<Map<String, dynamic>>[].obs;
   fetchAllData() async {
@@ -39,6 +45,19 @@ class DragAndDropController extends GetxController {
       isLoading(true);
       update();
       SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+
+
+      rowCountGridViewSplit = prefs.getInt('count_of_row_pos_split') ?? 2;
+      heightOfITemSplit = prefs.getDouble('height_of_item_pos_split') ?? 12.0;
+      heightControllerSplit.text = heightOfITemSplit.toString();
+      rowCountControllerSplit.text = rowCountGridViewSplit.toString();
+
+      rowCountGridView = prefs.getInt('count_of_row_pos') ?? 2;
+      heightOfITem = prefs.getDouble('height_of_item_pos') ?? 12.0;
+      heightController.text = heightOfITem.toString();
+      rowCountController.text = rowCountGridView.toString();
       var userID = prefs.getInt('user_id') ?? 0;
       var accessToken = prefs.getString('access') ?? '';
 
@@ -57,25 +76,17 @@ class DragAndDropController extends GetxController {
   }
   var rowCountGridView = 2;
   var tableheight = 2.0.obs;
-  var tablewidth = 4.obs;
-  void heightinc() {
-    tableheight.value += 0.1;
-  }
 
-  void heightdesc() {
-    tableheight.value -= 0.1;
-  }
+  var rowCountGridViewSplit = 2;
+  var tableheightSplit = 2.0.obs;
+
+
+
 
 //!
 
-  void widthinc() {
-    tablewidth.value++;
-  }
-  void widthdesc() {
-    if (tablewidth.value > 1) {
-      tablewidth.value--;
-    }
-  }
+
+
   Future<void> fetchTables() async {
     print("fetch list");
 
@@ -177,7 +188,6 @@ class DragAndDropController extends GetxController {
   Future<void> updateTables(
       {required String type, required List reOrderList}) async {
     print("fetch list");
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     selectedValue.value = prefs.getInt('count_of_row') ?? 5;
     var branchID = prefs.getInt('branchID') ?? 0;

@@ -30,6 +30,8 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
 //  final POSController diningController = Get.put(POSController());
   final POSController posController = Get.put(POSController());
 
+
+
   bool areAllItemsVacant(items) {
     return items.every((item) => item['Status'] == 'Vacant');
   }
@@ -181,7 +183,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
             titleSpacing: 0,
             title: Obx(() {
               return Text(
-                posController.selectedType.value == "dine" ? "Choose a Table (Beta)" : "Create Order",
+                posController.selectedType.value == "dine" ? "Choose a Table " : "Create Order",
                 style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0),
               );
             }),
@@ -195,42 +197,63 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
               // }),
 
 
+
+
+              IconButton(
+                  onPressed: ()async {
+
+                    posController.isCombine.value = false;
+                    posController.isCombineSplit.value = false;
+
+                    final result = await Get.to(() => const TableSettings());
+                    // var result = await Get.to(const TableSettings());
+                    posController.selectedIndexNotifier.value = 0;
+                    posController.update();
+                    posController.refreshTableData();
+                  },
+                  icon: const Icon(
+                    Icons.settings,
+                    color: Color(0xFF373737),
+                  )),
+
+
+
               // TextButton(
               //     onPressed: () {
               //       _dialogBuilderQRDownload(context, screenSize, posController);
               //     },
               //     child: const Text("QR Download")),
 
-              PopupMenuButton<String>(
-                icon: const Icon(Icons.settings),
-                onSelected: (value) {
-                  _handleMenuSelection(value);
-                },
-                itemBuilder: (BuildContext context) {
-                  return [
-                    // const PopupMenuItem<String>(
-                    //   value: 'table',
-                    //   child: Text('Add a Table'),
-                    // ),
-                    // const PopupMenuItem<String>(
-                    //   value: 'reservation',
-                    //   child: Text('Reservation'),
-                    // ),
-                    // const PopupMenuItem<String>(
-                    //   value: 'platform',
-                    //   child: Text('Platform'),
-                    // ),
-                    const PopupMenuItem<String>(
-                      value: 'settings',
-                      child: Text('Table Settings'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'poslistbeta',
-                      child: Text('Table Beta'),
-                    ),
-                  ];
-                },
-              ),
+              // PopupMenuButton<String>(
+              //   icon: const Icon(Icons.settings),
+              //   onSelected: (value) {
+              //     _handleMenuSelection(value);
+              //   },
+              //   itemBuilder: (BuildContext context) {
+              //     return [
+              //       // const PopupMenuItem<String>(
+              //       //   value: 'table',
+              //       //   child: Text('Add a Table'),
+              //       // ),
+              //       // const PopupMenuItem<String>(
+              //       //   value: 'reservation',
+              //       //   child: Text('Reservation'),
+              //       // ),
+              //       // const PopupMenuItem<String>(
+              //       //   value: 'platform',
+              //       //   child: Text('Platform'),
+              //       // ),
+              //       const PopupMenuItem<String>(
+              //         value: 'settings',
+              //         child: Text('Table Settings'),
+              //       ),
+              //       const PopupMenuItem<String>(
+              //         value: 'poslistbeta',
+              //         child: Text('Table Beta'),
+              //       ),
+              //     ];
+              //   },
+              // ),
               const SizedBox(
                 width: 20,
               )
@@ -1440,11 +1463,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             },
                             child: GridView.builder(
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: posController.tablewidth.value,
-                                // crossAxisCount: 4,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
-                                childAspectRatio: posController.tableheight.value,
+                                crossAxisCount: posController.rowCountGridView.value,
+                                mainAxisExtent: posController.heightOfITem.value * 10,
+                                childAspectRatio: 3.2,
+                                mainAxisSpacing: 15.0,
+                                crossAxisSpacing: 15,
+
                                 // childAspectRatio: 2.0,
                               ),
                               itemCount: posController.tableMergeData.length + 1,
@@ -2134,12 +2158,20 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                       width: constraints.maxWidth * 0.6,
                                       child: GridView.builder(
                                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+
+
+                                          crossAxisCount: posController.rowCountGridViewSplit.value,
+                                          mainAxisSpacing: 2.0,
+                                          mainAxisExtent: posController.heightOfITemSplit.value * 10,
+                                          childAspectRatio: 3.2,
+                                          crossAxisSpacing: 10,
+
                                           // crossAxisCount: 3,
-                                          mainAxisSpacing: 10,
-                                          crossAxisSpacing: 20,
-                                          // childAspectRatio: 1.8,
-                                          crossAxisCount: posController.tablewidth.value,
-                                          childAspectRatio: posController.tableheight.value,
+                                          // mainAxisSpacing: 10,
+                                          // crossAxisSpacing: 20,
+                                          // // childAspectRatio: 1.8,
+                                          // crossAxisCount: posController.tablewidth.value,
+                                          // childAspectRatio: posController.tableheight.value,
                                         ),
                                         itemCount: listsplit.length,
                                         itemBuilder: (context, index) {

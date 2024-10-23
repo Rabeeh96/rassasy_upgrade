@@ -43,6 +43,7 @@ class POSController extends GetxController {
     tabIndex.value = index;
   }
 
+
   checkPermissionForSave(value) {
     final permissions = {
       1: dining_create_perm.value,
@@ -187,6 +188,14 @@ class POSController extends GetxController {
       var accessToken = prefs.getString('access') ?? '';
       currency = prefs.getString('CurrencySymbol') ?? "";
       userName.value = prefs.getString('user_name') ?? "";
+
+      rowCountGridView.value = prefs.getInt('count_of_row_pos') ?? 2;
+      heightOfITem.value = prefs.getDouble('height_of_item_pos') ?? 12.0;
+
+      rowCountGridViewSplit.value = prefs.getInt('count_of_row_pos_split') ?? 2;
+      heightOfITemSplit.value = prefs.getDouble('height_of_item_pos_split') ?? 12.0;
+
+
       var fetchedData = await _tableService.fetchAllData(accessToken);
       print(fetchedData);
       selectedIndexNotifier.value = 0;
@@ -882,13 +891,31 @@ class POSController extends GetxController {
   var kitchen_print_perm = false.obs;
   var remove_table_perm = false.obs;
   var convert_type_perm = false.obs;
+  var rowCountGridView = 2.obs;
+  var heightOfITem = 12.0.obs;
+
+   var rowCountGridViewSplit = 2.obs;
+   var heightOfITemSplit = 12.0.obs;
+
+
+
 
   ReloadAllData() async {
     print("----------------------------------------------------------------1");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isCombine.value=false;
     isCombineSplit.value=false;
-     selectList.clear();
+    selectList.clear();
+    rowCountGridView.value = prefs.getInt('count_of_row_pos') ?? 2;
+    heightOfITem.value = prefs.getDouble('height_of_item_pos') ?? 12.0;
+
+    rowCountGridViewSplit.value = prefs.getInt('count_of_row_pos_split') ?? 2;
+    heightOfITemSplit.value = prefs.getDouble('height_of_item_pos_split') ?? 12.0;
+
+
+
+    print("-------------------19920 ${rowCountGridView.value} ${heightOfITem.value} ");
+
     dining_view_perm.value = prefs.getBool('Diningview') ?? true;
     reservation_view_perm.value = prefs.getBool('View Reservation') ?? true;
     directOrderOption.value = prefs.getBool('directOrderOption') ?? false;

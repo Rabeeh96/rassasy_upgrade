@@ -210,32 +210,29 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                 },
               ),
 
-        Obx(() {  return orderController.synMethod.value?
-
-    IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: ()async {
-                  start(context);
-                  await orderController.fetchAndSaveProductGroupData();
-                  var savedData = await orderController
-                      .loadSavedData("productGroupData");
-                  var allProducts = [];
-                  for (var i = 0; i < savedData.length; i++) {
-                    var groupId = savedData[i]['ProductGroupID'];
-                    var groupProducts = await orderController
-                        .fetchAndSaveProductData(groupId);
-                    if (groupProducts is List) {
-                      allProducts.addAll(groupProducts);
-                    }
-                  }
-                  await orderController.saveAllProduct(allProducts);
-                  await stop();
-                  orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
-                },
-              ):Container(); }),
-
-
-
+              Obx(() {
+                return orderController.synMethod.value
+                    ? IconButton(
+                        icon: const Icon(Icons.refresh),
+                        onPressed: () async {
+                          start(context);
+                          await orderController.fetchAndSaveProductGroupData();
+                          var savedData = await orderController.loadSavedData("productGroupData");
+                          var allProducts = [];
+                          for (var i = 0; i < savedData.length; i++) {
+                            var groupId = savedData[i]['ProductGroupID'];
+                            var groupProducts = await orderController.fetchAndSaveProductData(groupId);
+                            if (groupProducts is List) {
+                              allProducts.addAll(groupProducts);
+                            }
+                          }
+                          await orderController.saveAllProduct(allProducts);
+                          await stop();
+                          orderController.posFunctions(sectionType: widget.sectionType, uUID: widget.uID);
+                        },
+                      )
+                    : Container();
+              }),
 
               // IconButton(
               //     onPressed: () async {
@@ -385,7 +382,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                           addDetails();
                                         },
                                         icon: SvgPicture.asset('assets/svg/Info_mob.svg')),
-
                                   ],
                                 ),
                                 Row(
@@ -460,10 +456,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                     )
                                   ],
                                 ),
-
-
-
-
                               ],
                             ),
                           ),
@@ -486,7 +478,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                       //separatorBuilder: (context, index) => dividerStyle(),
                                       itemCount: orderController.productList.length,
                                       itemBuilder: (context, index) {
-
                                         return Card(
                                           color: Colors.red.shade50,
                                           child: GestureDetector(
@@ -494,23 +485,21 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                               orderController.detailPage.value = 'item_add';
                                               SharedPreferences prefs = await SharedPreferences.getInstance();
 
-
-
                                               var alreadyExist = orderController.checking(orderController.productList[index].productID);
 
                                               var qtyIncrement = prefs.getBool("qtyIncrement") ?? true;
 
                                               pr("=====qtyIncrement $qtyIncrement alreadyExist $alreadyExist");
 
-                                              if(qtyIncrement&&alreadyExist[0]){
+                                              if (qtyIncrement && alreadyExist[0]) {
                                                 print("-----------------------already $alreadyExist");
 
                                                 orderController.updateQty(index: alreadyExist[1], type: 1);
                                                 print("-----------------------already $alreadyExist");
-                                              }
-                                              else{
+                                              } else {
                                                 orderController.unitPriceAmount.value = orderController.productList[index].defaultSalesPrice;
-                                                orderController.inclusiveUnitPriceAmountWR.value = orderController.productList[index].defaultSalesPrice;
+                                                orderController.inclusiveUnitPriceAmountWR.value =
+                                                    orderController.productList[index].defaultSalesPrice;
                                                 orderController.vatPer.value = double.parse(orderController.productList[index].vatsSalesTax);
                                                 orderController.gstPer.value = double.parse(orderController.productList[index].gSTSalesTax);
                                                 orderController.priceListID.value = orderController.productList[index].defaultUnitID;
@@ -561,10 +550,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                                                 orderController.unique_id.value = "0";
                                                 orderController.calculation();
                                               }
-
-
-
-
 
                                               //setState(() {});
                                               /// commented for new tax working
@@ -2086,7 +2071,7 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
       physics: const NeverScrollableScrollPhysics(),
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20.0,right: 10.0,top: 10),
+          padding: const EdgeInsets.only(left: 20.0, right: 10.0, top: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -2094,7 +2079,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                 "Product Details",
                 style: customisedStyle(context, Colors.black, FontWeight.w600, 16.0),
               ),
-
 
               Row(
                 children: [
@@ -2122,7 +2106,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                       colorFilter: ColorFilter.mode(
                         Color(0xff10C103),
                         BlendMode.srcIn,
-
                       ),
                     ),
                     onPressed: () {
@@ -2134,7 +2117,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                   )
                 ],
               ),
-
 
               // Container(
               //   decoration: const BoxDecoration(
@@ -2194,7 +2176,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
               //     ),
               //   ),
               // )
-
             ],
           ),
         ),
@@ -2454,7 +2435,6 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
                 height: 280,
               )),
 
-
         // DividerStyle()
       ],
     );
@@ -2463,39 +2443,39 @@ class _TabPosOrderPageState extends State<TabPosOrderPage> {
   Widget itemAddWidget() {
     return Column(
       children: [
-        Obx(() =>  Padding(
-          padding: const EdgeInsets.only(left: 20.0,right: 20,top: 10,bottom: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                'Disable KOT',
-                style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
+        Obx(() => Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 10, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Disable KOT',
+                    style: customisedStyle(context, Colors.black, FontWeight.w400, 12.0),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, right: 5.0),
+                    child: FlutterSwitch(
+                      width: 50.0,
+                      height: 25.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: orderController.disableKOT.value,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        orderController.disableKOT.value = val;
+                        orderController.update();
+                      },
+                    ),
+                  )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0,right: 5.0),
-                child: FlutterSwitch(
-                  width: 50.0,
-                  height: 25.0,
-                  valueFontSize: 30.0,
-                  toggleSize: 15.0,
-                  value: orderController.disableKOT.value,
-                  borderRadius: 20.0,
-                  padding: 1.0,
-                  activeColor: Colors.green,
-                  activeTextColor: Colors.green,
-                  inactiveTextColor: Colors.white,
-                  inactiveColor: Colors.grey,
-                  // showOnOff: true,
-                  onToggle: (val){
-                    orderController.disableKOT.value = val;
-                    orderController.update();
-                  },
-                ),
-              )
-            ],
-          ),
-        )),
+            )),
         Obx(
           () => Expanded(
               child: ListView.separated(
