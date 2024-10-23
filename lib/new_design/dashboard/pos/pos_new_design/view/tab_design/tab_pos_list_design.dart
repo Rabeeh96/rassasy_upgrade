@@ -2302,7 +2302,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                                         quarterTurns: 3,
                                                                         child: Text(
                                                                           listsplit[index]["Status"],
-                                                                          style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
+                                                                          style: customisedStyle(context, Colors.white, FontWeight.w400, 11.0),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -3013,9 +3013,9 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                                           toTableID: item['id']);
                                                                       if (result != null) {
                                                                         if (result) {
-                                                                          if (isItem) {
-                                                                            Get.back();
-                                                                          }
+                                                                          // if (isItem) {
+                                                                          //   Get.back();
+                                                                          // }
 
                                                                           Get.back();
                                                                           posController.selectList.clear();

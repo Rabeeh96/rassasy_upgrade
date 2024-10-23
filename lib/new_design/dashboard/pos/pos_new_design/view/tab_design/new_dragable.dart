@@ -604,7 +604,10 @@ class _TableSettingsState extends State<TableSettings> {
                               ),
                             ),
                           ))));
-              return Padding(
+              return   tableListController.isLoading.value? const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xffffab00),
+                  )) : Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ReorderableBuilder(
                   scrollController: _scrollController,
@@ -803,7 +806,7 @@ class _TableSettingsState extends State<TableSettings> {
                                                                               children: [
                                                                                 Text(
                                                                                   tableListController.returnOrderTime(
-                                                                                      listsplit[index]["orderTime"] ?? '',
+                                                                                      listsplit[index]["OrderTime"] ?? '',
                                                                                       listsplit[index]["orderTime"] ?? ''),
                                                                                   style: customisedStyle(
                                                                                       context, const Color(0xff828282), FontWeight.w400, 12.0),

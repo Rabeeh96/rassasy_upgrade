@@ -128,9 +128,9 @@ class POSController extends GetxController {
   ///this function used for getting time
   ///in hours and minute
   String returnOrderTime(String data, String status) {
-    print("data $data");
+
     if (status != "Vacant") {
-      // print("----data $data   $status");
+
     }
 
     if (data == "" || status == "Vacant") {
