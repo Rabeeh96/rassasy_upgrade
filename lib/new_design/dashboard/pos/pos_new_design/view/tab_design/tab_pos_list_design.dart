@@ -3183,11 +3183,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                         posController.fetchTOC();
                       },
                       child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            mainAxisSpacing: 15,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 2.0,
+                          gridDelegate:   SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: posController.rowCountGridView.value,
+                            mainAxisExtent: posController.heightOfITem.value * 10,
+                            childAspectRatio: 3.2,
+                            mainAxisSpacing: 15.0,
+                            crossAxisSpacing: 15,
                           ),
                           itemCount: posController.onlineOrders.length + 1,
                           itemBuilder: (context, index) {
@@ -3309,97 +3310,118 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                 top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                               ),
                                             ),
-                                            child: GridTile(
-                                              footer: Padding(
-                                                padding: const EdgeInsets.all(10.0),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(4),
-                                                      color: (_getBackgroundColor(posController.onlineOrders[index].status))),
-                                                  child: Center(
-                                                    child: Padding(
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                              color: _getBackgroundColor(posController.onlineOrders[index].status),
+                                              height: MediaQuery.of(context).size.height,
+                                              width: MediaQuery.of(context).size.width * 0.02,
+                                              child: Center(
+                                                child: RotatedBox(
+                                                  quarterTurns: 3,
+                                                  child: Text(
+                                                    posController.onlineOrders[index].status!,
+                                                    style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                                Expanded(
+                                                  child: GridTile(
+                                                    // footer: Padding(
+                                                    //   padding: const EdgeInsets.all(10.0),
+                                                    //   child: Container(
+                                                    //     decoration: BoxDecoration(
+                                                    //         borderRadius: BorderRadius.circular(4),
+                                                    //         color: (_getBackgroundColor(posController.onlineOrders[index].status))),
+                                                    //     child: Center(
+                                                    //       child: Padding(
+                                                    //         padding: const EdgeInsets.all(8.0),
+                                                    //         child: Row(
+                                                    //           mainAxisAlignment: MainAxisAlignment.center,
+                                                    //           children: [
+                                                    //             Text(
+                                                    //               posController.onlineOrders[index].status!,
+                                                    //               style: const TextStyle(
+                                                    //                 color: Colors.white,
+                                                    //                 fontWeight: FontWeight.w500,
+                                                    //                 fontSize: 14.0,
+                                                    //               ),
+                                                    //             ),
+                                                    //           ],
+                                                    //         ),
+                                                    //       ),
+                                                    //     ),
+                                                    //   ),
+                                                    // ),
+                                                    header: Padding(
                                                       padding: const EdgeInsets.all(8.0),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 8.0),
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  "Online Order ${index + 1}",
+                                                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                                ),
+                                                                Text(
+                                                                  posController.returnOrderTime(posController.onlineOrders[index].orderTime!,
+                                                                      posController.onlineOrders[index].status!),
+                                                                  style: customisedStyle(context, const Color(0xff757575), FontWeight.w400, 10.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
                                                           Text(
-                                                            posController.onlineOrders[index].status!,
-                                                            style: const TextStyle(
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 14.0,
+                                                            posController.onlineOrders[index].customerName!,
+                                                            style: customisedStyle(
+                                                              context,
+                                                              const Color(0xff828282),
+                                                              FontWeight.w500,
+                                                              12.0,
                                                             ),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                  ),
-                                                ),
-                                              ),
-                                              header: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(right: 8.0),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
-                                                          Text(
-                                                            "Online Order ${index + 1}",
-                                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                          Row(
+                                                            children: [
+                                                              const Text(
+                                                                "Token: ",
+                                                                style: TextStyle(
+                                                                  color: Color(0xff757575),
+                                                                  fontWeight: FontWeight.w400,
+                                                                  fontSize: 10.0,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                posController.onlineOrders[index].tokenNumber!,
+                                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                              ),
+                                                            ],
                                                           ),
                                                           Text(
-                                                            posController.returnOrderTime(posController.onlineOrders[index].orderTime!,
-                                                                posController.onlineOrders[index].status!),
-                                                            style: customisedStyle(context, const Color(0xff757575), FontWeight.w400, 10.0),
-                                                          ),
+                                                            "${posController.currency} ${roundStringWith(posController.onlineOrders[index].salesOrderGrandTotal!)}",
+                                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                          )
                                                         ],
                                                       ),
                                                     ),
-                                                    Text(
-                                                      posController.onlineOrders[index].customerName!,
-                                                      style: customisedStyle(
-                                                        context,
-                                                        const Color(0xff828282),
-                                                        FontWeight.w500,
-                                                        12.0,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        const Text(
-                                                          "Token: ",
-                                                          style: TextStyle(
-                                                            color: Color(0xff757575),
-                                                            fontWeight: FontWeight.w400,
-                                                            fontSize: 10.0,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          posController.onlineOrders[index].tokenNumber!,
-                                                          style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Text(
-                                                      "${posController.currency} ${roundStringWith(posController.onlineOrders[index].salesOrderGrandTotal!)}",
-                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
+                                              ],
                                             ),
                                           )),
                                     ),
@@ -3513,11 +3535,17 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                               posController.fetchTOC();
                             },
                             child: GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4,
-                                mainAxisSpacing: 15,
+                              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: posController.rowCountGridView.value,
+                                mainAxisExtent: posController.heightOfITem.value * 10,
+                                childAspectRatio: 3.2,
+                                mainAxisSpacing: 15.0,
                                 crossAxisSpacing: 15,
-                                childAspectRatio: 2.0,
+
+                                // crossAxisCount: 4,
+                                // mainAxisSpacing: 15,
+                                // crossAxisSpacing: 15,
+                                // childAspectRatio: 2.0,
                               ),
                               itemCount: posController.takeAwayOrders.length + 1,
                               itemBuilder: (context, index) {
@@ -3635,87 +3663,111 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                       top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                                     ),
                                                   ),
-                                                  child: GridTile(
-                                                    footer: Padding(
-                                                      padding: const EdgeInsets.all(10.0),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(4),
-                                                            color: (_getBackgroundColor(posController.takeAwayOrders[index].status))),
+                                                  child: Row(
+                                                    children: [
+
+
+                                                      Container(
+                                                        color: _getBackgroundColor(posController.takeAwayOrders[index].status),
+                                                        height: MediaQuery.of(context).size.height,
+                                                        width: MediaQuery.of(context).size.width * 0.02,
                                                         child: Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(8.0),
+                                                          child: RotatedBox(
+                                                            quarterTurns: 3,
                                                             child: Text(
                                                               posController.takeAwayOrders[index].status!,
-                                                              style: const TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: 14.0,
-                                                              ),
+                                                              style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    header: Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                "Token ${posController.takeAwayOrders[index].tokenNumber!}",
 
-                                                                /// "Parcel ${index + 1} -",
-                                                                style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                              ),
-                                                              Text(
-                                                                posController.returnOrderTime(posController.takeAwayOrders[index].orderTime!,
-                                                                    posController.takeAwayOrders[index].status!),
-                                                                style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 10.0),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Text(
-                                                            posController.takeAwayOrders[index].customerName!,
-                                                            style: customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 15),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                "Token: ",
-                                                                style: customisedStyle(
-                                                                  context,
-                                                                  const Color(0xff757575),
-                                                                  FontWeight.w400,
-                                                                  10.0,
+
+                                                      Expanded(
+                                                        child: GridTile(
+                                                          // footer: Padding(
+                                                          //   padding: const EdgeInsets.all(10.0),
+                                                          //   child: Container(
+                                                          //     decoration: BoxDecoration(
+                                                          //         borderRadius: BorderRadius.circular(4),
+                                                          //         color: (_getBackgroundColor(posController.takeAwayOrders[index].status))),
+                                                          //     child: Center(
+                                                          //       child: Padding(
+                                                          //         padding: const EdgeInsets.all(8.0),
+                                                          //         child: Text(
+                                                          //           posController.takeAwayOrders[index].status!+"lll",
+                                                          //           style: const TextStyle(
+                                                          //             color: Colors.white,
+                                                          //             fontWeight: FontWeight.w500,
+                                                          //             fontSize: 14.0,
+                                                          //           ),
+                                                          //         ),
+                                                          //       ),
+                                                          //     ),
+                                                          //   ),
+                                                          // ),
+                                                          header: Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Token ${posController.takeAwayOrders[index].tokenNumber!}",
+
+                                                                      /// "Parcel ${index + 1} -",
+                                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                                    ),
+                                                                    Text(
+                                                                      posController.returnOrderTime(posController.takeAwayOrders[index].orderTime!,
+                                                                          posController.takeAwayOrders[index].status!),
+                                                                      style: customisedStyle(context, const Color(0xff00775E), FontWeight.w400, 10.0),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                posController.takeAwayOrders[index].tokenNumber!,
-                                                                style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                                                              )
-                                                            ],
+                                                                Text(
+                                                                  posController.takeAwayOrders[index].customerName!,
+                                                                  style: customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
-                                                          Text(
-                                                            "${posController.currency} ${roundStringWith(posController.takeAwayOrders[index].salesOrderGrandTotal!)}",
-                                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                          )
-                                                        ],
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 15),
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      "Token: ",
+                                                                      style: customisedStyle(
+                                                                        context,
+                                                                        const Color(0xff757575),
+                                                                        FontWeight.w400,
+                                                                        10.0,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      posController.takeAwayOrders[index].tokenNumber!,
+                                                                      style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                Text(
+                                                                  "${posController.currency} ${roundStringWith(posController.takeAwayOrders[index].salesOrderGrandTotal!)}",
+                                                                  style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
                                                 ))),
                                       ),
@@ -3836,11 +3888,12 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                           posController.fetchTOC();
                         },
                         child: GridView.builder(
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              mainAxisSpacing: 15,
-                              crossAxisSpacing: 10,
-                              childAspectRatio: 2.0,
+                            gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: posController.rowCountGridView.value,
+                              mainAxisExtent: posController.heightOfITem.value * 10,
+                              childAspectRatio: 3.2,
+                              mainAxisSpacing: 15.0,
+                              crossAxisSpacing: 15,
                             ),
                             itemCount: posController.carOrders.length + 1,
                             itemBuilder: (context, index) {
@@ -3963,92 +4016,114 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                                                   top: const BorderSide(color: Color(0xffE9E9E9), width: 1),
                                                 ),
                                               ),
-                                              child: GridTile(
-                                                footer: Padding(
-                                                  padding: const EdgeInsets.all(10.0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(4),
-                                                        color: (_getBackgroundColor(posController.carOrders[index].status))),
-                                                    child: Center(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Text(
-                                                          posController.carOrders[index].status!,
-                                                          style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 14.0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
+                                              child: Row(
+                                                children: [
+
+                                              Container(
+                                              color: _getBackgroundColor(posController.carOrders[index].status),
+                                              height: MediaQuery.of(context).size.height,
+                                              width: MediaQuery.of(context).size.width * 0.02,
+                                              child: Center(
+                                                child: RotatedBox(
+                                                  quarterTurns: 3,
+                                                  child: Text(
+                                                    posController.carOrders[index].status!,
+                                                    style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
                                                   ),
                                                 ),
-                                                header: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(right: 8.0),
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              ),
+                                            ),
+
+                                                  Expanded(
+                                                    child: GridTile(
+                                                      // footer: Padding(
+                                                      //   padding: const EdgeInsets.all(10.0),
+                                                      //   child: Container(
+                                                      //     decoration: BoxDecoration(
+                                                      //         borderRadius: BorderRadius.circular(4),
+                                                      //         color: (_getBackgroundColor(posController.carOrders[index].status))),
+                                                      //     child: Center(
+                                                      //       child: Padding(
+                                                      //         padding: const EdgeInsets.all(8.0),
+                                                      //         child: Text(
+                                                      //           posController.carOrders[index].status!,
+                                                      //           style: const TextStyle(
+                                                      //             color: Colors.white,
+                                                      //             fontWeight: FontWeight.w500,
+                                                      //             fontSize: 14.0,
+                                                      //           ),
+                                                      //         ),
+                                                      //       ),
+                                                      //     ),
+                                                      //   ),
+                                                      // ),
+                                                      header: Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Column(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
-                                                            Text(
-                                                              "Car Order ${index + 1}",
-                                                              style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(right: 8.0),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    "Car Order ${index + 1}",
+                                                                    style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                                  ),
+                                                                  Text(
+                                                                    posController.returnOrderTime(
+                                                                        posController.carOrders[index].orderTime!, posController.carOrders[index].status!),
+                                                                    style: customisedStyle(context, const Color(0xff757575), FontWeight.w400, 10.0),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                             Text(
-                                                              posController.returnOrderTime(
-                                                                  posController.carOrders[index].orderTime!, posController.carOrders[index].status!),
-                                                              style: customisedStyle(context, const Color(0xff757575), FontWeight.w400, 10.0),
+                                                              posController.carOrders[index].customerName!,
+                                                              style: customisedStyle(
+                                                                context,
+                                                                const Color(0xff828282),
+                                                                FontWeight.w500,
+                                                                12.0,
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
-                                                      Text(
-                                                        posController.carOrders[index].customerName!,
-                                                        style: customisedStyle(
-                                                          context,
-                                                          const Color(0xff828282),
-                                                          FontWeight.w500,
-                                                          12.0,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                const Text(
+                                                                  "Token: ",
+                                                                  style: TextStyle(
+                                                                    color: Color(0xff757575),
+                                                                    fontWeight: FontWeight.w400,
+                                                                    fontSize: 10.0,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  posController.carOrders[index].tokenNumber!,
+                                                                  style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Text(
+                                                              "${posController.currency} ${roundStringWith(posController.carOrders[index].salesOrderGrandTotal!)}",
+                                                              style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                            )
+                                                          ],
                                                         ),
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            "Token: ",
-                                                            style: TextStyle(
-                                                              color: Color(0xff757575),
-                                                              fontWeight: FontWeight.w400,
-                                                              fontSize: 10.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            posController.carOrders[index].tokenNumber!,
-                                                            style: customisedStyle(context, Colors.black, FontWeight.w400, 14.0),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Text(
-                                                        "${posController.currency} ${roundStringWith(posController.carOrders[index].salesOrderGrandTotal!)}",
-                                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
+                                                ],
                                               ),
                                             )),
                                       ),
