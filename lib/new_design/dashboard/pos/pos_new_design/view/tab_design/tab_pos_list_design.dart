@@ -1441,6 +1441,7 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
         ///dining list
         SliverToBoxAdapter(
           child: Column(
+
             children: [
               Container(
                 //color:Colors.red,
@@ -1761,34 +1762,36 @@ class _TabPosListDesignState extends State<TabPosListDesign> {
                             ),
                           )),
               ),
-              Row(
+              posController.isLoading.value?Container():Row(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
 
 
-                  ElevatedButton(
-                    onPressed: () {
-                      posController.refreshTableData();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFFF6F2),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.add,
-                          color: Color(0xFFF25F29),
-                        ),
-                        Text(
-                          "Refresh",
-                          style: customisedStyle(context, const Color(0xFFF25F29), FontWeight.w400, 14.0),
-                        ),
-                      ],
+                  posController.isCombine.value?Container(): Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        posController.refreshTableData();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:Colors.white,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                            Icon(
+                            Icons.refresh,
+                            color: Colors.green),
+
+                          Text(
+                            " Refresh",
+                            style: customisedStyle(context,  Colors.green, FontWeight.w400, 14.0),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-
-
 
                   Obx(() {
                     return posController.isCombine.value
