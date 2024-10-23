@@ -103,6 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool carSwitch = false;
   bool onlineSwitch = false;
   bool showInvoice = false;
+  bool enableNewPos = false;
   bool clearTable = false;
   bool printAfterPayment = false;
   bool highlightsProductDetails = false;
@@ -328,6 +329,7 @@ class _SettingsPageState extends State<SettingsPage> {
       userType = prefs.getInt("user_type") ?? 1;
       numberOfCopies = prefs.getString("number_of_print") ?? '1';
       showInvoice = prefs.getBool("AutoClear") ?? false;
+      enableNewPos = prefs.getBool("enableNewPos") ?? false;
       clearTable = prefs.getBool("tableClearAfterPayment") ?? false;
       printAfterPayment = prefs.getBool("printAfterPayment") ?? false;
       highlightsProductDetails = prefs.getBool("highlightsProductDetails") ?? false;
@@ -4354,6 +4356,48 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+
+            Card(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Color(0xffDFDFDF), width: 1),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              color: Colors.grey[100],
+              child: ListTile(
+                onTap: null,
+                title: Text(
+                  'Enable New Pos design'.tr,
+                  style: customisedStyle(context, Colors.black, FontWeight.w400, 15.0),
+                ),
+                trailing: SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: FlutterSwitch(
+                      width: 40.0,
+                      height: 20.0,
+                      valueFontSize: 30.0,
+                      toggleSize: 15.0,
+                      value: enableNewPos,
+                      borderRadius: 20.0,
+                      padding: 1.0,
+                      activeColor: Colors.green,
+                      activeTextColor: Colors.green,
+                      inactiveTextColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      // showOnOff: true,
+                      onToggle: (val) {
+                        setState(() {
+                          enableNewPos = val;
+                          switchStatus("enableNewPos", enableNewPos);
+
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
 
             Card(
               shape: RoundedRectangleBorder(

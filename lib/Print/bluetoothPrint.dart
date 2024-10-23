@@ -498,6 +498,7 @@ class BluetoothPrintThermalDetails {
   static String salesType = "";
   static String tableName = "";
   static String splitTableName = "";
+  static String employeeName = "";
   static String time = "";
   static String totalVATAmount = "";
   static String totalExciseAmount = "";

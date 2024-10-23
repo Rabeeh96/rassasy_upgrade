@@ -200,7 +200,6 @@ class POSController extends GetxController {
       print(fetchedData);
       selectedIndexNotifier.value = 0;
       tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
-
       fullDataList.value = fetchedData['data']??[];
 
       print("fullDataListfullDataList${fullDataList.length}");

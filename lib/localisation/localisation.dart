@@ -381,7 +381,9 @@ class LocaleChange extends Translations {
           'is_tab_design': 'Tab Design',
           'sync_method': 'Sync Method',
           'lineAfteritem': 'Line after item',
-          'posbeta': 'POS (Beta Version)'
+          'posbeta': 'POS (Beta Version)',
+          'Enable New Pos design': 'Enable New Pos design',
+
         },
 
         /////
@@ -766,7 +768,8 @@ class LocaleChange extends Translations {
           'excise_tax': 'الضريبة',
           'total_vat': 'ضريبة القيمة المضافة',
           'select_code_page': 'حدد صفحة الرموز',
-          'extraDetailsInKOT': 'تفاصيل إضافية في KOT'
+          'extraDetailsInKOT': 'تفاصيل إضافية في KOT',
+          'Enable New Pos design': 'تمكين تصميم نقاط البيع الجديدة '
         },
       };
 }

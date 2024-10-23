@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -2077,7 +2076,7 @@ class _POSListItemsSectionState extends State<POSListItemsSection> {
     showModalBottomSheet<void>(
         context: context,
         isDismissible: true,
-        
+
         isScrollControlled: true,
         useSafeArea: true,
         barrierColor: Colors.black.withAlpha(1),

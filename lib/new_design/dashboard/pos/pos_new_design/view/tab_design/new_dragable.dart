@@ -457,185 +457,197 @@ class _TableSettingsState extends State<TableSettings> {
 
         ],
       ),
-      body: Obx(() {
-        final generatedChildren = List.generate(
-            tableListController.tableMergeData.length,
-            (index) => Container(
-                key: Key(tableListController.tableMergeData[index]['id'].toString()),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(color: Color(0xffE9E9E9), width: 1),
-                          right: BorderSide(color: Color(0xffE9E9E9), width: 1),
-                          bottom: BorderSide(color: Color(0xffE9E9E9), width: 1),
-                          top: BorderSide(color: Color(0xffE9E9E9), width: 1),
-                        ),
+      body: Row(
+        children: [
+          Flexible(
+            flex: 20,
+            child: Obx(() {
+              final generatedChildren = List.generate(
+                  tableListController.tableMergeData.length,
+                  (index) => Container(
+                      key: Key(tableListController.tableMergeData[index]['id'].toString()),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      child: GestureDetector(
-                        onTap: (){
-
-                          if(tableListController.tableMergeData[index]["Split_data"].isNotEmpty){
-                            Size screenSize = MediaQuery.of(context).size;
-                            _dialogBuilderTableSplit(context, screenSize, tableListController.tableMergeData[index]["Split_data"]!, index);
-                          }
-
-                        },
-                        child: InkWell(
-                          child: Row(
-                            children: [
-                              Container(
-                                color: tableListController.getBackgroundColor(tableListController.tableMergeData[index]["Status"]),
-                                height: MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width * 0.02,
-                                child: Center(
-                                  child: RotatedBox(
-                                    quarterTurns: 3,
-                                    child: Text(
-                                      tableListController.tableMergeData[index]["Status"]!,
-                                      style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
-                                    ),
-                                  ),
-                                ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                left: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                right: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                bottom: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                top: BorderSide(color: Color(0xffE9E9E9), width: 1),
                               ),
-                              Expanded(
-                                child: GridTile(
+                            ),
+                            child: GestureDetector(
+                              onTap: (){
 
-                                  footer: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          tableListController.tableMergeData[index]["Split_data"]!.isNotEmpty
-                                              ? Padding(
-                                                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-                                                  child: SizedBox(
-                                                      height: 50,
-                                                      child: checkWidgetNew(splitData: tableListController.tableMergeData[index]["Split_data"])),
-                                                )
-                                              : Container(),
+                                if(tableListController.tableMergeData[index]["Split_data"].isNotEmpty){
+                                  Size screenSize = MediaQuery.of(context).size;
+                                  _dialogBuilderTableSplit(context, screenSize, tableListController.tableMergeData[index]["Split_data"]!, index);
+                                }
 
-                                        ],
+                              },
+                              child: InkWell(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      color: tableListController.getBackgroundColor(tableListController.tableMergeData[index]["Status"]),
+                                      height: MediaQuery.of(context).size.height,
+                                      width: MediaQuery.of(context).size.width * 0.02,
+                                      child: Center(
+                                        child: RotatedBox(
+                                          quarterTurns: 3,
+                                          child: Text(
+                                            tableListController.tableMergeData[index]["Status"]!,
+                                            style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
+                                          ),
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                  header: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                tableListController.tableMergeData[index]["TableName"] ?? '',
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16.0,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                              ),
-                                            ),
+                                    ),
+                                    Expanded(
+                                      child: GridTile(
 
-                                            // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
+                                        footer: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                tableListController.tableMergeData[index]["Split_data"]!.isNotEmpty
+                                                    ? Padding(
+                                                        padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                                                        child: SizedBox(
+                                                            height: 50,
+                                                            child: checkWidgetNew(splitData: tableListController.tableMergeData[index]["Split_data"])),
+                                                      )
+                                                    : Container(),
+
+                                              ],
+                                            ),
                                           ],
                                         ),
-                                        Text(
-                                          tableListController.returnOrderTime(tableListController.tableMergeData[index]["OrderTime"]!,
-                                              tableListController.tableMergeData[index]["Status"]!),
-                                          style: customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: tableListController.tableMergeData[index]["Split_data"]!.isNotEmpty
-                                        ? Container()
-                                        : Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                        header: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              tableListController.returnOrderTime(tableListController.tableMergeData[index]["OrderTime"]!,
-                                                          tableListController.tableMergeData[index]["Status"]!) !=
-                                                      ""
-                                                  ? const Row(
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          "To be paid:",
-                                                          style: TextStyle(
-                                                            color: Color(0xff757575),
-                                                            fontWeight: FontWeight.w400,
-                                                            fontSize: 10.0,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  : Container(),
-                                              tableListController.tableMergeData[index]["Status"] == "Vacant"
-                                                  ? const Text("")
-                                                  : Text(
-                                                      "${tableListController.currency} ${roundStringWith(tableListController.tableMergeData[index]["Status"] != "Vacant" ? tableListController.tableMergeData[index]["Status"] != "Paid" ? tableListController.tableMergeData[index]["SalesOrderGrandTotal"].toString() : tableListController.tableMergeData[index]["SalesGrandTotal"].toString() : '0')}",
-                                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                    )
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      tableListController.tableMergeData[index]["TableName"] ?? '',
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 16.0,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                    ),
+                                                  ),
+
+                                                  // : IconButton(onPressed: () {}, icon: const Icon(Icons.edit_outlined)),
+                                                ],
+                                              ),
+                                              Text(
+                                                tableListController.returnOrderTime(tableListController.tableMergeData[index]["OrderTime"]!,
+                                                    tableListController.tableMergeData[index]["Status"]!),
+                                                style: customisedStyle(context, const Color(0xff828282), FontWeight.w400, 12.0),
+                                              ),
+
                                             ],
                                           ),
-                                  ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: tableListController.tableMergeData[index]["Split_data"]!.isNotEmpty
+                                              ? Container()
+                                              : Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    tableListController.returnOrderTime(tableListController.tableMergeData[index]["OrderTime"]!,
+                                                                tableListController.tableMergeData[index]["Status"]!) !=
+                                                            ""
+                                                        ? const Row(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                "To be paid:",
+                                                                style: TextStyle(
+                                                                  color: Color(0xff757575),
+                                                                  fontWeight: FontWeight.w400,
+                                                                  fontSize: 10.0,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : Container(),
+                                                    tableListController.tableMergeData[index]["Status"] == "Vacant"
+                                                        ? const Text("")
+                                                        : Text(
+                                                            "${tableListController.currency} ${roundStringWith(tableListController.tableMergeData[index]["Status"] != "Vacant" ? tableListController.tableMergeData[index]["Status"] != "Paid" ? tableListController.tableMergeData[index]["SalesOrderGrandTotal"].toString() : tableListController.tableMergeData[index]["SalesGrandTotal"].toString() : '0')}",
+                                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                          )
+                                                  ],
+                                                ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ))));
-        return Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ReorderableBuilder(
-            scrollController: _scrollController,
-            enableLongPress: true,
-            onReorder: (
-              List<OrderUpdateEntity> orderUpdateEntities,
-            ) {
-              for (final orderUpdateEntity in orderUpdateEntities) {
-                final fruit = tableListController.tableMergeData.removeAt(orderUpdateEntity.oldIndex);
-                tableListController.tableMergeData.insert(orderUpdateEntity.newIndex, fruit);
-              }
-            },
-            children: generatedChildren,
-            builder: (children) {
-              return GridView(
-                key: _gridViewKey,
-                controller: _scrollController,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: tableListController.rowCountGridView,
-                  mainAxisSpacing: 15.0,
-                  mainAxisExtent: tableListController.heightOfITem * 10,
-                  childAspectRatio: 3.2,
-                  crossAxisSpacing: 15,
+                            ),
+                          ))));
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ReorderableBuilder(
+                  scrollController: _scrollController,
+                  enableLongPress: true,
+                  onReorder: (
+                    List<OrderUpdateEntity> orderUpdateEntities,
+                  ) {
+                    for (final orderUpdateEntity in orderUpdateEntities) {
+                      final fruit = tableListController.tableMergeData.removeAt(orderUpdateEntity.oldIndex);
+                      tableListController.tableMergeData.insert(orderUpdateEntity.newIndex, fruit);
+                    }
+                  },
+                  children: generatedChildren,
+                  builder: (children) {
+                    return GridView(
+                      key: _gridViewKey,
+                      controller: _scrollController,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: tableListController.rowCountGridView,
+                        mainAxisSpacing: 15.0,
+                        mainAxisExtent: tableListController.heightOfITem * 10,
+                        childAspectRatio: 3.2,
+                        crossAxisSpacing: 15,
 
-                  // crossAxisCount: tableListController.tablewidth.value,
-                  // mainAxisSpacing: 10,
-                  // crossAxisSpacing: 10,
-                  // childAspectRatio: tableListController.tableheight.value,
+                        // crossAxisCount: tableListController.tablewidth.value,
+                        // mainAxisSpacing: 10,
+                        // crossAxisSpacing: 10,
+                        // childAspectRatio: tableListController.tableheight.value,
+                      ),
+                      children: children,
+                    );
+                  },
                 ),
-                children: children,
               );
-            },
+            }),
           ),
-        );
-      }),
+          Flexible(
+            child: SizedBox(),
+            flex: 2,
+          )
+
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         foregroundColor: Colors.red,
         onPressed: ()async {
@@ -646,14 +658,19 @@ class _TableSettingsState extends State<TableSettings> {
               "TableName": tableListController.tableMergeData[i]["TableName"],
               "Position": i + 1
             };
-            print("darg ...$dragList");
+
 
             tableDetailList.add(dragList);
 
-            print("Table reorder:  $tableDetailList");
+
             // print("Table :  ${tableListController.tableList[i]}");
           }
-             await tableListController.updateTables(type: 'Update', reOrderList: tableDetailList);
+           var result =  await tableListController.updateTables(type: 'Update', reOrderList: tableDetailList);
+
+          // if(result){
+          //   Get.back();
+          // }
+
             // Get.back();
         },
         label: Text(
@@ -685,167 +702,164 @@ class _TableSettingsState extends State<TableSettings> {
 
                 contentPadding: EdgeInsets.zero,
                 content: SizedBox(
-                  width: constraints.maxWidth / 1.4,
+                  width: constraints.maxWidth / 1.8,
                   height: constraints.maxHeight / 1.5,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
 
-                              },
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: constraints.maxHeight * 0.65,
-                                      width: constraints.maxWidth * 0.6,
-                                      child: GridView.builder(
-                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: tableListController.rowCountGridViewSplit,
-                                          mainAxisSpacing: 2.0,
-                                          mainAxisExtent: tableListController.heightOfITemSplit * 10,
-                                          childAspectRatio: 3.2,
-                                          crossAxisSpacing: 10,
+                            },
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: constraints.maxHeight * 0.65,
+                                    width: constraints.maxWidth / 1.8,
+                                    child: GridView.builder(
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: tableListController.rowCountGridViewSplit,
+                                        mainAxisSpacing: 2.0,
+                                        mainAxisExtent: tableListController.heightOfITemSplit * 10,
+                                        childAspectRatio: 3.2,
+                                        crossAxisSpacing: 10,
 
-                                        ),
-                                        itemCount: listsplit.length,
-                                        itemBuilder: (context, index) {
-                                          return GridTile(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: GestureDetector(
-
-                                                child:  Container(
-                                                          decoration: BoxDecoration(
-                                                            color:  Colors.white,
-                                                            borderRadius: BorderRadius.circular(8),
-                                                          ),
-                                                          child: ClipRRect(
-                                                              borderRadius: BorderRadius.circular(8),
-                                                              child: Container(
-                                                                decoration: const BoxDecoration(
-                                                                  border: Border(
-                                                                    right: BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                                    bottom: BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                                    top: BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                                    left: BorderSide(color: Color(0xffE9E9E9), width: 1),
-                                                                  ),
-                                                                ),
-                                                                child: Row(
-                                                                  children: [
-                                                                    Container(
-                                                                      color: tableListController.getBackgroundColor(listsplit[index]["Status"]),
-                                                                      height: MediaQuery.of(context).size.height,
-                                                                      width: MediaQuery.of(context).size.width * 0.02,
-                                                                      child: Center(
-                                                                        child: RotatedBox(
-                                                                          quarterTurns: 3,
-                                                                          child: Text(
-                                                                            listsplit[index]["Status"],
-                                                                            style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      child: GridTile(
-
-                                                                        header: Padding(
-                                                                          padding: const EdgeInsets.all(8.0),
-                                                                          child: Column(
-                                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                children: [
-                                                                                  Expanded(
-                                                                                    child: Text(
-                                                                                      '${listsplit[index]["TableName"]} ',
-                                                                                      style: const TextStyle(
-                                                                                        color: Colors.black,
-                                                                                        fontWeight: FontWeight.w500,
-                                                                                        fontSize: 16.0,
-                                                                                      ),
-                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                      maxLines: 1,
-                                                                                    ),
-                                                                                  ),
-
-                                                                                ],
-                                                                              ),
-                                                                              tableListController.returnOrderTime(listsplit[index]["OrderTime"].toString(),
-                                                                                  listsplit[index]["Status"]) !=
-                                                                                  ""
-                                                                                  ? Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                children: [
-                                                                                  Text(
-                                                                                    tableListController.returnOrderTime(
-                                                                                        listsplit[index]["orderTime"] ?? '',
-                                                                                        listsplit[index]["orderTime"] ?? ''),
-                                                                                    style: customisedStyle(
-                                                                                        context, const Color(0xff828282), FontWeight.w400, 12.0),
-                                                                                  ),
-                                                                                ],
-                                                                              )
-                                                                                  : Container(),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        child: Padding(
-                                                                          padding: const EdgeInsets.all(8.0),
-                                                                          child: Row(
-                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                                            children: [
-                                                                              listsplit[index]["Status"] == "Vacant"
-                                                                                  ? const Text("")
-                                                                                  : const Text(
-                                                                                "To be paid:",
-                                                                                style: TextStyle(
-                                                                                  color: Color(0xff757575),
-                                                                                  fontWeight: FontWeight.w400,
-                                                                                  fontSize: 10.0,
-                                                                                ),
-                                                                              ),
-                                                                              listsplit[index]["Status"] == "Vacant"
-                                                                                  ? const Text("")
-                                                                                  : Text(
-                                                                                "${tableListController.currency} ${roundStringWith(listsplit[index]["Status"] != "Vacant" ? listsplit[index]["Status"] != "Paid" ? listsplit[index]["SalesOrderGrandTotal"].toString() : listsplit[index]["SalesGrandTotal"].toString() : '0')}",
-                                                                                style:
-                                                                                customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ))),
-
-                                              ),
-                                            ),
-                                          );
-                                        },
                                       ),
-                                    )
-                                  ],
-                                ),
+                                      itemCount: listsplit.length,
+                                      itemBuilder: (context, index) {
+                                        return GridTile(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GestureDetector(
+
+                                              child:  Container(
+                                                        decoration: BoxDecoration(
+                                                          color:  Colors.white,
+                                                          borderRadius: BorderRadius.circular(8),
+                                                        ),
+                                                        child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(8),
+                                                            child: Container(
+                                                              decoration: const BoxDecoration(
+                                                                border: Border(
+                                                                  right: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  bottom: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  top: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                  left: BorderSide(color: Color(0xffE9E9E9), width: 1),
+                                                                ),
+                                                              ),
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    color: tableListController.getBackgroundColor(listsplit[index]["Status"]),
+                                                                    height: MediaQuery.of(context).size.height,
+                                                                    width: MediaQuery.of(context).size.width * 0.02,
+                                                                    child: Center(
+                                                                      child: RotatedBox(
+                                                                        quarterTurns: 3,
+                                                                        child: Text(
+                                                                          listsplit[index]["Status"],
+                                                                          style: customisedStyle(context, Colors.white, FontWeight.w400, 14.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                    child: GridTile(
+
+                                                                      header: Padding(
+                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        child: Column(
+                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  child: Text(
+                                                                                    '${listsplit[index]["TableName"]} ',
+                                                                                    style: const TextStyle(
+                                                                                      color: Colors.black,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                      fontSize: 16.0,
+                                                                                    ),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    maxLines: 1,
+                                                                                  ),
+                                                                                ),
+
+                                                                              ],
+                                                                            ),
+                                                                            tableListController.returnOrderTime(listsplit[index]["OrderTime"].toString(),
+                                                                                listsplit[index]["Status"]) !=
+                                                                                ""
+                                                                                ? Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text(
+                                                                                  tableListController.returnOrderTime(
+                                                                                      listsplit[index]["orderTime"] ?? '',
+                                                                                      listsplit[index]["orderTime"] ?? ''),
+                                                                                  style: customisedStyle(
+                                                                                      context, const Color(0xff828282), FontWeight.w400, 12.0),
+                                                                                ),
+                                                                              ],
+                                                                            )
+                                                                                : Container(),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        child: Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                                          children: [
+                                                                            listsplit[index]["Status"] == "Vacant"
+                                                                                ? const Text("")
+                                                                                : const Text(
+                                                                              "To be paid:",
+                                                                              style: TextStyle(
+                                                                                color: Color(0xff757575),
+                                                                                fontWeight: FontWeight.w400,
+                                                                                fontSize: 10.0,
+                                                                              ),
+                                                                            ),
+                                                                            listsplit[index]["Status"] == "Vacant"
+                                                                                ? const Text("")
+                                                                                : Text(
+                                                                              "${tableListController.currency} ${roundStringWith(listsplit[index]["Status"] != "Vacant" ? listsplit[index]["Status"] != "Paid" ? listsplit[index]["SalesOrderGrandTotal"].toString() : listsplit[index]["SalesGrandTotal"].toString() : '0')}",
+                                                                              style:
+                                                                              customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ))),
+
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
+                          ),
 
-                          ],
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 shape: RoundedRectangleBorder(

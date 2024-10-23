@@ -77,9 +77,10 @@ class _DashboardNewState extends State<DashboardNew> {
         Get.updateLocale(const Locale('en', 'US'));
       }
       pr("-------------------------------------------------------------------------------------------3");
-      baseURlApi =
-          prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+      baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
       userName = prefs.getString('user_name') ?? '';
+      enableNewPos = prefs.getBool('enableNewPos') ?? false;
+
       companyName = prefs.getString('companyName') ?? '';
       companyType = prefs.getString('companyType') ?? '';
       pr("-------------------------------------------------------------------------------------------4");
@@ -192,6 +193,8 @@ class _DashboardNewState extends State<DashboardNew> {
         break;
       case 1:
         if (settingsPermission) {
+
+
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const SettingsPage()));
         } else {
@@ -256,6 +259,7 @@ class _DashboardNewState extends State<DashboardNew> {
 
   var companyName = "";
   bool settingsPermission = false;
+  bool enableNewPos = false;
   var userName = "";
   String india = "+91 905775 00400";
   String ksa = "+966 533133 4959";
@@ -976,12 +980,25 @@ class _DashboardNewState extends State<DashboardNew> {
                                 ),
                               ),
                               onTap: () async {
+
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                                bool perm =  prefs.getBool("enableNewPos")??false;
                                 // Get.to(const TabPosListDesign());
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            const POSListItemsSection()));
+
+                                if(perm ==false){
+                                  Get.to(() => const POSListItemsSection());
+                                }
+
+
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (BuildContext context) =>
+                                //             const POSListItemsSection()));
+                                //
+
                                 // var dinePerm = await checkingPerm("Diningview");
                                 // var takeAwayPerm = await checkingPerm("Take awayview");
                                 // var carPerm = await checkingPerm("Carview");
@@ -1377,8 +1394,11 @@ class _DashboardNewState extends State<DashboardNew> {
                                 //     MaterialPageRoute(
                                 //         builder: (BuildContext context) =>
                                 //             const DailyReport()));
-                                Get.to(
-                                    () => const TabPosListDesign()); //! Beta Nav
+
+                                  Get.to(() => const TabPosListDesign());
+
+
+                               //! Beta Nav
                                 // Get.to(() => const TabPosListDesign()); //! New POS Nav
 
                                 // Navigator.push(

@@ -185,7 +185,7 @@ class DragAndDropController extends GetxController {
       return const Color(0xffEFEFEF); // Default color if status is not recognized
     }
   }
-  Future<void> updateTables(
+  updateTables(
       {required String type, required List reOrderList}) async {
     print("fetch list");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -221,15 +221,22 @@ class DragAndDropController extends GetxController {
 
         // Ensure StatusCode is what you expect
         if (data['StatusCode'] == 6000) {
-          Get.snackbar("", "Updated Successfully");
-          fetchTables();
+          Get.back();
+         // Get.snackbar("", "Updated Successfully");
+
+          return true;
+
+         // fetchTables();
         } else {
+          return false;
           print('Unexpected StatusCode: ${data['StatusCode']}');
         }
       } else {
+        return false;
         print('Failed to fetch tables: ${response.statusCode}');
       }
     } catch (e) {
+      return false;
       print('Error: $e');
     }
   }
