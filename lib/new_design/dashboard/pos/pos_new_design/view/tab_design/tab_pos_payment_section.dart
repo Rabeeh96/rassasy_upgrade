@@ -718,8 +718,8 @@ class _TabPaymentSectionState extends State<TabPaymentSection> {
                                                                           textStyle: customisedStyle(context, Colors.black, FontWeight.w500, 10.00),
                                                                         ),
                                                                         onPressed: () {
-                                                                          paymentController.bankReceivedController.text = roundStringWith("0");
-                                                                          paymentController.cashReceivedController.text =
+                                                                          paymentController.cashReceivedController.text = roundStringWith("0");
+                                                                          paymentController.bankReceivedController.text =
                                                                               roundStringWith(paymentController.grandTotalAmount.value.toString());
                                                                           paymentController.calculationOnPayment();
                                                                         },
