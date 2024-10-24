@@ -1395,7 +1395,19 @@ class _DashboardNewState extends State<DashboardNew> {
                                 //         builder: (BuildContext context) =>
                                 //             const DailyReport()));
 
+//https://we.tl/t-1CnrGn1S9f
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                                bool perm =  prefs.getBool("enableNewPos")??false;
+                                // Get.to(const TabPosListDesign());
+
+                                if(perm){
                                   Get.to(() => const TabPosListDesign());
+                                }
+
+
+
+
 
 
                                //! Beta Nav

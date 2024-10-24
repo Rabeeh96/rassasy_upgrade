@@ -249,6 +249,9 @@ class POSController extends GetxController {
       print('-**-/-$fetchedTOCData');
       selectedIndexNotifier.value = 0;
       print("--------1");
+      takeAwayOrders.clear();
+      onlineOrders.clear();
+      carOrders.clear();
 
       if(fetchedTOCData['TakeAwayStatusCode'] ==6000){
         takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
@@ -699,6 +702,11 @@ class POSController extends GetxController {
         if (type != "Cancel") {
           fetchAllData();
         } else {
+
+
+
+          pr("---------------------}===========");
+
           fetchTOC();
         }
 
