@@ -21,12 +21,12 @@ import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/mobile/pos_main_page.dart';
+import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/reports/reportBeta.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/tab_design/tabl_pos_beta.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_section/pos_list_section.dart';
 import 'package:rassasy_new/new_design/dashboard/product_group/product_group_new.dart';
 import 'package:rassasy_new/new_design/dashboard/profile_mobile/web.dart';
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
-import 'package:rassasy_new/new_design/report/new_report_page.dart';
 import 'package:rassasy_new/setting/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -1055,11 +1055,12 @@ class _DashboardNewState extends State<DashboardNew> {
                                     diningReport == true ||
                                     takeAwayReport == true ||
                                     carReport == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              const ReportPageNew()));
+                                  Get.to(const ReportPageNewbeta());
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (BuildContext context) =>
+                                  //             const ReportPageNew()));
                                 } else {
                                   dialogBoxPermissionDenied(context);
                                 }

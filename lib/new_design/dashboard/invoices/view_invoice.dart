@@ -22,6 +22,8 @@ import 'package:rassasy_new/new_design/dashboard/invoices/preview_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewInvoice extends StatefulWidget {
+  const ViewInvoice({super.key});
+
   @override
   State<ViewInvoice> createState() => _ViewInvoiceState();
 }
@@ -58,6 +60,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
         String baseUrl = BaseUrl.baseUrl;
         var userID = prefs.getInt('user_id') ?? 0;
         var accessToken = prefs.getString('access') ?? '';
+        // pr(accessToken);
         var companyID = prefs.getString('companyID') ?? 0;
         var branchID = prefs.getInt('branchID') ?? 1;
 
@@ -193,12 +196,12 @@ class _ViewInvoiceState extends State<ViewInvoice> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         appBar: AppBar(
           backgroundColor: const Color(0xffF3F3F3),
           elevation: 0.0,
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: Colors.black,
             ),
@@ -216,12 +219,12 @@ class _ViewInvoiceState extends State<ViewInvoice> {
               ),
             ],
           ),
-          actions: [],
+          actions: const [],
         ),
         body: networkConnection == true
             ? Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height / 10,
                     child: Row(
                       children: [
@@ -258,10 +261,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                                 7,
                                         child: Row(
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
-                                            Icon(
+                                            const Icon(
                                               Icons.calendar_today_outlined,
                                               color: Colors.black,
                                             ),
@@ -328,10 +331,10 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                                 7,
                                         child: Row(
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
-                                            Icon(
+                                            const Icon(
                                               Icons.calendar_today_outlined,
                                               color: Colors.black,
                                             ),
@@ -368,10 +371,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                     ),
                   ),
 
-                  Container(
-
-                   height: MediaQuery.of(context).size.height*.7,
-
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .7,
                     child: Column(
                       children: [
                         Expanded(
@@ -391,48 +392,53 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                               }
                               return true;
                             },
-                            child:RefreshIndicator(
+                            child: RefreshIndicator(
                                 color: Colors.blue,
                                 onRefresh: () async {
-                                  pageNumber=1;
+                                  pageNumber = 1;
                                   invoiceList.clear();
                                   viewList();
                                 },
                                 child: ListView.builder(
-                                  // the number of items in the list
+                                    // the number of items in the list
                                     itemCount: invoiceList.length,
                                     // display each item of the product list
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
-                                          onTap: ()async {
-
-                                          var result=await  Get.to(InvoiceDetailPage(
-                                              MasterUID:invoiceList[index].salesMasterID,
-                                              detailID:invoiceList[index].saleOrderID,
+                                          onTap: () async {
+                                            var result =
+                                                await Get.to(InvoiceDetailPage(
+                                              MasterUID: invoiceList[index]
+                                                  .salesMasterID,
+                                              detailID: invoiceList[index]
+                                                  .saleOrderID,
                                               masterType: 'SI',
                                             ));
 
-                                          if(result !=null){
-                                            pageNumber=1;
-                                            invoiceList.clear();
-                                            viewList();
-                                          }
-
+                                            if (result != null) {
+                                              pageNumber = 1;
+                                              invoiceList.clear();
+                                              viewList();
+                                            }
                                           },
                                           child: Card(
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(3),
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
                                                 side: const BorderSide(
                                                     width: 1,
                                                     color: Color(0xffDFDFDF))),
-                                            color: Color(0xffffffff),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width /
+                                            color: const Color(0xffffffff),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
                                                   1.1,
                                               child: Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   // Padding(
                                                   //   padding: const EdgeInsets.only(
@@ -464,87 +470,97 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                                   //     ),
                                                   //   ),
                                                   // ),
-                                                  Container(
-                                                    width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                        1.5,
-                                                    child: Padding(
-                                                      padding:
-                                                      const EdgeInsets.all(8.0),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
-                                                        children: [
-                                                          Container(
-                                                            width:
-                                                            MediaQuery.of(context)
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
                                                                 .size
                                                                 .width /
+                                                            1.5,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SizedBox(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
                                                                 8,
                                                             child: Column(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                                  MainAxisAlignment
+                                                                      .start,
                                                               crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                                  CrossAxisAlignment
+                                                                      .start,
                                                               children: [
                                                                 Text(
-                                                                  invoiceList[index]
+                                                                  invoiceList[
+                                                                          index]
                                                                       .voucherNo,
-                                                                  style:
-                                                                  customisedStyle(
+                                                                  style: customisedStyle(
                                                                       context,
-                                                                      Colors.black,
+                                                                      Colors
+                                                                          .black,
                                                                       FontWeight
                                                                           .w600,
                                                                       13.0),
                                                                 ),
                                                                 Text(
-                                                                  invoiceList[index]
+                                                                  invoiceList[
+                                                                          index]
                                                                       .date,
                                                                   style: customisedStyle(
                                                                       context,
-                                                                      Color(0xff585858),
-                                                                      FontWeight.w600,
+                                                                      const Color(
+                                                                          0xff585858),
+                                                                      FontWeight
+                                                                          .w600,
                                                                       12.0),
                                                                 ),
                                                               ],
                                                             ),
                                                           ),
-                                                          Container(
-                                                            width:
-                                                            MediaQuery.of(context)
-                                                                .size
-                                                                .width /
+                                                          SizedBox(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
                                                                 8,
                                                             child: Column(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                                  MainAxisAlignment
+                                                                      .start,
                                                               crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                                  CrossAxisAlignment
+                                                                      .start,
                                                               children: [
                                                                 Text(
                                                                   'token_no'.tr,
                                                                   style: customisedStyle(
                                                                       context,
-                                                                      Color(0xff9A9A9A),
-                                                                      FontWeight.w600,
+                                                                      const Color(
+                                                                          0xff9A9A9A),
+                                                                      FontWeight
+                                                                          .w600,
                                                                       12.0),
                                                                 ),
                                                                 Text(
-                                                                  invoiceList[index]
+                                                                  invoiceList[
+                                                                          index]
                                                                       .tokenNo,
-                                                                  style:
-                                                                  customisedStyle(
+                                                                  style: customisedStyle(
                                                                       context,
-                                                                      Colors.black,
+                                                                      Colors
+                                                                          .black,
                                                                       FontWeight
                                                                           .w600,
                                                                       12.0),
@@ -552,37 +568,40 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                                               ],
                                                             ),
                                                           ),
-                                                          Container(
-                                                            width:
-                                                            MediaQuery.of(context)
-                                                                .size
-                                                                .width /
+                                                          SizedBox(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
                                                                 3,
                                                             child: Column(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                                  MainAxisAlignment
+                                                                      .start,
                                                               crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                                  CrossAxisAlignment
+                                                                      .start,
                                                               children: [
                                                                 Text(
                                                                   'customer'.tr,
-                                                                  style:
-                                                                  customisedStyle(
+                                                                  style: customisedStyle(
                                                                       context,
-                                                                      Colors.black,
+                                                                      Colors
+                                                                          .black,
                                                                       FontWeight
                                                                           .w600,
                                                                       13.0),
                                                                 ),
                                                                 Text(
-                                                                  invoiceList[index]
+                                                                  invoiceList[
+                                                                          index]
                                                                       .custName,
                                                                   style: customisedStyle(
                                                                       context,
-                                                                      Color(0xff585858),
-                                                                      FontWeight.w600,
+                                                                      const Color(
+                                                                          0xff585858),
+                                                                      FontWeight
+                                                                          .w600,
                                                                       12.0),
                                                                 ),
                                                               ],
@@ -592,31 +611,39 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                                       ),
                                                     ),
                                                   ),
-                                                  Container(
-                                                    width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                        5,
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            5,
                                                     child: Row(
                                                       mainAxisAlignment:
-                                                      MainAxisAlignment.end,
+                                                          MainAxisAlignment.end,
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Padding(
-                                                          padding: EdgeInsets.only(
-                                                              right: 15.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 15.0),
                                                           child: Text(
                                                               roundStringWith(
-                                                                  invoiceList[index]
+                                                                  invoiceList[
+                                                                          index]
                                                                       .salesData[
-                                                                  "GrandTotal"]
+                                                                          "GrandTotal"]
                                                                       .toString()),
-                                                              style: customisedStyle(
-                                                                  context,
-                                                                  Colors.black,
-                                                                  FontWeight.w600,
-                                                                  13.0)),
+                                                              style:
+                                                                  customisedStyle(
+                                                                      context,
+                                                                      Colors
+                                                                          .black,
+                                                                      FontWeight
+                                                                          .w600,
+                                                                      13.0)),
                                                         ),
 
                                                         /// export and print commented
@@ -660,7 +687,8 @@ class _ViewInvoiceState extends State<ViewInvoice> {
                                               ),
                                             ),
                                           ));
-                                    })), ),
+                                    })),
+                          ),
                         )
                       ],
                     ),
@@ -860,8 +888,7 @@ class _ViewInvoiceState extends State<ViewInvoice> {
     print(
         "Date ---------5   ---------5   ---------5    ${DateTime.now().second} ");
 
-    pr(
-        "--------------${arabicImageBytes.runtimeType}---------$arabicImageBytes");
+    pr("--------------${arabicImageBytes.runtimeType}---------$arabicImageBytes");
 
     final Img.Image? image = Img.decodeImage(arabicImageBytes);
 
@@ -1012,15 +1039,15 @@ class _ViewInvoiceState extends State<ViewInvoice> {
             width: 100,
             height: 100,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             'no_network'.tr,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black, fontWeight: FontWeight.w800, fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextButton(
@@ -1028,12 +1055,13 @@ class _ViewInvoiceState extends State<ViewInvoice> {
               //getAllTax();
               // defaultData();
             },
+            style: ButtonStyle(
+                backgroundColor:
+                    WidgetStateProperty.all(const Color(0xffEE830C))),
             child: Text('retry'.tr,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 )),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xffEE830C))),
           ),
         ],
       ),

@@ -1,24 +1,26 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:intl/intl.dart';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:rassasy_new/global/global.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/printClass.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/back_ground_print_wifi.dart';
-import 'package:rassasy_new/new_design/dashboard/tax/test.dart';
 import 'package:rassasy_new/new_design/report/preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
+
 import 'selectDetails/select_group.dart';
 import 'selectDetails/select_product.dart';
 import 'selectDetails/select_table.dart';
+
 //
 class ReportPageNew extends StatefulWidget {
-  const ReportPageNew({Key? key}) : super(key: key);
+  const ReportPageNew({super.key});
 
   @override
   State<ReportPageNew> createState() => _ReportPageState();
@@ -62,11 +64,15 @@ class _ReportPageState extends State<ReportPageNew> {
   DateFormat timeFormat = DateFormat.jm();
   DateFormat dateFormat = DateFormat("dd/MM/yyy");
 
-  late ValueNotifier<DateTime> fromDateRMSNotifier = ValueNotifier(DateTime.now());
-  late ValueNotifier<DateTime> toDateRMSNotifier = ValueNotifier(DateTime.now());
+  late ValueNotifier<DateTime> fromDateRMSNotifier =
+      ValueNotifier(DateTime.now());
+  late ValueNotifier<DateTime> toDateRMSNotifier =
+      ValueNotifier(DateTime.now());
 
-  late ValueNotifier<DateTime> fromTimeRMSNotifier = ValueNotifier(DateTime.now());
-  late ValueNotifier<DateTime> toTimeRMSNotifier = ValueNotifier(DateTime.now());
+  late ValueNotifier<DateTime> fromTimeRMSNotifier =
+      ValueNotifier(DateTime.now());
+  late ValueNotifier<DateTime> toTimeRMSNotifier =
+      ValueNotifier(DateTime.now());
 
   DateFormat timeFormatApiFormat = DateFormat('HH:mm');
 
@@ -189,7 +195,7 @@ class _ReportPageState extends State<ReportPageNew> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         appBar: AppBar(
             elevation: 0.0,
             leading: IconButton(
@@ -203,16 +209,16 @@ class _ReportPageState extends State<ReportPageNew> {
             ),
             title: Text(
               'Report'.tr,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
                 fontSize: 20,
               ),
             ),
             backgroundColor: const Color(0xffF3F3F3),
-            actions: <Widget>[]),
+            actions: const <Widget>[]),
         body: Row(children: <Widget>[
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height / 1, //height of button
             width: MediaQuery.of(context).size.width / 1.5,
 
@@ -220,7 +226,7 @@ class _ReportPageState extends State<ReportPageNew> {
             child: selectReportType(),
           ),
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border: Border(
               left: BorderSide(width: .6, color: Color(0xffD9D9D9)),
             )),
@@ -229,20 +235,23 @@ class _ReportPageState extends State<ReportPageNew> {
             child: Padding(
               padding: const EdgeInsets.all(7.0),
               child: ListView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   Container(
                       alignment: Alignment.centerLeft,
-                      height: MediaQuery.of(context).size.height / 13, //height of button
+                      height: MediaQuery.of(context).size.height /
+                          13, //height of button
                       child: Text(
                         'report_type'.tr,
-                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0),
+                        style: customisedStyle(
+                            context, Colors.black, FontWeight.w500, 15.0),
                       )),
 
                   ///lists of report types and select tables
-                  Container(
+                  SizedBox(
                     //    color: Colors.yellow,
-                    height: MediaQuery.of(context).size.height / 1.45, //height of button
+                    height: MediaQuery.of(context).size.height /
+                        1.45, //height of button
 
                     child: ListView(
                       //  physics: NeverScrollableScrollPhysics(),
@@ -257,18 +266,25 @@ class _ReportPageState extends State<ReportPageNew> {
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Color(0xffCBCBCB),
+                                color: const Color(0xffCBCBCB),
                                 width: 0.5,
                               ),
                             ),
                             height: MediaQuery.of(context).size.height / 14.5,
                             child: Padding(
-                              padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                              padding:
+                                  const EdgeInsets.only(right: 8.0, left: 8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(typeHead, style: customisedStyle(context, Color(0xff828282), FontWeight.w500, 12.0)),
-                                  Icon(Icons.arrow_drop_down),
+                                  Text(typeHead,
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff828282),
+                                          FontWeight.w500,
+                                          12.0)),
+                                  const Icon(Icons.arrow_drop_down),
                                 ],
                               ),
                             ),
@@ -277,7 +293,7 @@ class _ReportPageState extends State<ReportPageNew> {
 
                         reportType == true
                             ? ListView(
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 children: [
                                   saleReport == true
@@ -323,7 +339,8 @@ class _ReportPageState extends State<ReportPageNew> {
                                                 type = 7;
                                                 chooseReportTypeName(type);
 
-                                                typeHead = "Product wise report";
+                                                typeHead =
+                                                    "Product wise report";
 
                                                 ///
                                                 ///commented no use
@@ -423,101 +440,194 @@ class _ReportPageState extends State<ReportPageNew> {
                         selectProductAndTableList(),
 
                         type != 8
-                            ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'from'.tr,
-                                      style: customisedStyle(context, Colors.black, FontWeight.w500, 12.0),
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'from'.tr,
+                                          style: customisedStyle(
+                                              context,
+                                              Colors.black,
+                                              FontWeight.w500,
+                                              12.0),
+                                        ),
+                                        ValueListenableBuilder(
+                                            valueListenable: fromDateNotifier,
+                                            builder: (BuildContext ctx,
+                                                DateTime fromDateNewValue, _) {
+                                              return GestureDetector(
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: const Color(
+                                                              0xffCBCBCB))),
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      15,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      7,
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 10.0,
+                                                                right: 10.0),
+                                                        child: Icon(
+                                                          Icons
+                                                              .calendar_today_outlined,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                              dateFormat.format(
+                                                                  fromDateNewValue),
+                                                              style: customisedStyle(
+                                                                  context,
+                                                                  Colors.black,
+                                                                  FontWeight
+                                                                      .normal,
+                                                                  12.0)),
+                                                          Text(
+                                                              timeFormat.format(
+                                                                  fromTimeNotifier
+                                                                      .value),
+                                                              style: customisedStyle(
+                                                                  context,
+                                                                  const Color(
+                                                                      0xff888580),
+                                                                  FontWeight
+                                                                      .normal,
+                                                                  11.0)),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  print(fromDateNotifier);
+                                                  print(fromTimeNotifier);
+                                                  showDatePickerFunction(
+                                                      context,
+                                                      fromDateNotifier,
+                                                      fromTimeNotifier);
+                                                },
+                                              );
+                                            }),
+                                      ],
                                     ),
-                                    ValueListenableBuilder(
-                                        valueListenable: fromDateNotifier,
-                                        builder: (BuildContext ctx, DateTime fromDateNewValue, _) {
-                                          return GestureDetector(
-                                            child: Container(
-                                              decoration: BoxDecoration(border: Border.all(color: const Color(0xffCBCBCB))),
-                                              height: MediaQuery.of(context).size.height / 15,
-                                              width: MediaQuery.of(context).size.width / 7,
-                                              child: Row(
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                                                    child: Icon(
-                                                      Icons.calendar_today_outlined,
-                                                      color: Colors.black,
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('to'.tr,
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.black,
+                                                  FontWeight.w500,
+                                                  12.0)),
+                                          ValueListenableBuilder(
+                                              valueListenable: toDateNotifier,
+                                              builder: (BuildContext ctx,
+                                                  DateTime fromDateNewValue,
+                                                  _) {
+                                                return GestureDetector(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: const Color(
+                                                                0xffCBCBCB))),
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            15,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            7,
+                                                    child: Row(
+                                                      children: [
+                                                        const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 10.0,
+                                                                  right: 10.0),
+                                                          child: Icon(
+                                                            Icons
+                                                                .calendar_today_outlined,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                                dateFormat.format(
+                                                                    fromDateNewValue),
+                                                                style: customisedStyle(
+                                                                    context,
+                                                                    Colors
+                                                                        .black,
+                                                                    FontWeight
+                                                                        .normal,
+                                                                    12.0)),
+                                                            Text(
+                                                                timeFormat.format(
+                                                                    toTimeNotifier
+                                                                        .value),
+                                                                style: customisedStyle(
+                                                                    context,
+                                                                    const Color(
+                                                                        0xff888580),
+                                                                    FontWeight
+                                                                        .normal,
+                                                                    11.0)),
+                                                          ],
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    children: [
-                                                      Text(dateFormat.format(fromDateNewValue),
-                                                          style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
-                                                      Text(timeFormat.format(fromTimeNotifier.value),
-                                                          style: customisedStyle(context, Color(0xff888580), FontWeight.normal, 11.0)),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              print(fromDateNotifier);
-                                              print(fromTimeNotifier);
-                                              showDatePickerFunction(context, fromDateNotifier, fromTimeNotifier);
-                                            },
-                                          );
-                                        }),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('to'.tr, style: customisedStyle(context, Colors.black, FontWeight.w500, 12.0)),
-                                      ValueListenableBuilder(
-                                          valueListenable: toDateNotifier,
-                                          builder: (BuildContext ctx, DateTime fromDateNewValue, _) {
-                                            return GestureDetector(
-                                              child: Container(
-                                                decoration: BoxDecoration(border: Border.all(color: const Color(0xffCBCBCB))),
-                                                height: MediaQuery.of(context).size.height / 15,
-                                                width: MediaQuery.of(context).size.width / 7,
-                                                child: Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                                                      child: Icon(
-                                                        Icons.calendar_today_outlined,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: [
-                                                        Text(dateFormat.format(fromDateNewValue),
-                                                            style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
-                                                        Text(timeFormat.format(toTimeNotifier.value),
-                                                            style: customisedStyle(context, Color(0xff888580), FontWeight.normal, 11.0)),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              onTap: () {
-                                                showDatePickerFunction(context, toDateNotifier, toTimeNotifier);
-                                              },
-                                            );
-                                          }),
-                                    ],
-                                  ),
-                                ),
-                              ])
+                                                  onTap: () {
+                                                    showDatePickerFunction(
+                                                        context,
+                                                        toDateNotifier,
+                                                        toTimeNotifier);
+                                                  },
+                                                );
+                                              }),
+                                        ],
+                                      ),
+                                    ),
+                                  ])
                             : Container(),
 
-/// user filter option commented
+                        /// user filter option commented
 
                         //
                         // type == 8
@@ -670,15 +780,19 @@ class _ReportPageState extends State<ReportPageNew> {
 
                   ///get report button
                   Padding(
-                    padding: const EdgeInsets.only(left: 14, top: 8, right: 14, bottom: 8),
+                    padding: const EdgeInsets.only(
+                        left: 14, top: 8, right: 14, bottom: 8),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height / 16, //height of button
+                      height: MediaQuery.of(context).size.height /
+                          16, //height of button
                       width: MediaQuery.of(context).size.width / 4,
                       child: TextButton(
                         onPressed: () async {
-                          var connectivityResult = await (Connectivity().checkConnectivity());
+                          var connectivityResult =
+                              await (Connectivity().checkConnectivity());
                           if (connectivityResult == ConnectivityResult.none) {
-                            dialogBox(context, "Unable to connect... Please check internet connection");
+                            dialogBox(context,
+                                "Unable to connect... Please check internet connection");
                           } else {
                             print("object asd$type");
 
@@ -709,11 +823,13 @@ class _ReportPageState extends State<ReportPageNew> {
                             }
                           }
                         },
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(
+                                const Color(0xff247B00))),
                         child: Text('get_rep'.tr,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xffffffff),
                             )),
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff247B00))),
                       ),
                     ),
                   )
@@ -728,7 +844,7 @@ class _ReportPageState extends State<ReportPageNew> {
   selectReportType() {
     if (type == 1) {
       ///sale report
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).size.height / 1, //height of button
         width: MediaQuery.of(context).size.width / 1.5,
         child: ListView(
@@ -749,66 +865,76 @@ class _ReportPageState extends State<ReportPageNew> {
               //height of button
               width: MediaQuery.of(context).size.width / 1,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8, top: 0, right: 12, bottom: 0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                  Row(
+                padding: const EdgeInsets.only(
+                    left: 8, top: 0, right: 12, bottom: 0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(
-                        'cash1'.tr,
-                        style: TextStyle(color: Color(0xff0C4000), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'cash1'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff0C4000), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(cashSum),
+                            style: const TextStyle(
+                                color: Color(0xff0C4000), fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "${roundStringWith(cashSum)}",
-                        style: TextStyle(color: Color(0xff0C4000), fontSize: 20),
+                      Row(
+                        children: [
+                          Text(
+                            'bank1'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff004067), fontSize: 16),
+                          ),
+                          Text(
+                            ' ${roundStringWith(bankSum)}',
+                            style: const TextStyle(
+                                color: Color(0xff004067), fontSize: 20),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'bank1'.tr,
-                        style: TextStyle(color: Color(0xff004067), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'credit'.tr,
+                            style: const TextStyle(
+                                color: Color(0xffB44800), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(creditSum),
+                            style: const TextStyle(
+                                color: Color(0xffB44800), fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        ' ${roundStringWith(bankSum)}',
-                        style: TextStyle(color: Color(0xff004067), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'credit'.tr,
-                        style: TextStyle(color: Color(0xffB44800), fontSize: 16),
-                      ),
-                      Text(
-                        '${roundStringWith(creditSum)}',
-                        style: TextStyle(color: Color(0xffB44800), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'grand_tot'.tr,
-                        style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                      ),
-                      Text(
-                        '${roundStringWith(grandTotal)}',
-                        style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                      ),
-                    ],
-                  )
-                ]),
+                      Row(
+                        children: [
+                          Text(
+                            'grand_tot'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff000000), fontSize: 20),
+                          ),
+                          Text(
+                            roundStringWith(grandTotal),
+                            style: const TextStyle(
+                                color: Color(0xff000000), fontSize: 20),
+                          ),
+                        ],
+                      )
+                    ]),
               ),
             )
           ],
         ),
       );
-    }
-    else if (type == 2) {
+    } else if (type == 2) {
       ///dining
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).size.height / 1, //height of button
         width: MediaQuery.of(context).size.width / 1.5,
         child: ListView(
@@ -828,66 +954,76 @@ class _ReportPageState extends State<ReportPageNew> {
               //height of button
               width: MediaQuery.of(context).size.width / 1,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8, top: 0, right: 12, bottom: 0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                  Row(
+                padding: const EdgeInsets.only(
+                    left: 8, top: 0, right: 12, bottom: 0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(
-                        'cash1'.tr,
-                        style: TextStyle(color: Color(0xff0C4000), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'cash1'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff0C4000), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(cashSum),
+                            style: const TextStyle(
+                                color: Color(0xff0C4000), fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${roundStringWith(cashSum)}',
-                        style: TextStyle(color: Color(0xff0C4000), fontSize: 20),
+                      Row(
+                        children: [
+                          Text(
+                            'bank1'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff004067), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(bankSum),
+                            style: const TextStyle(
+                                color: Color(0xff004067), fontSize: 20),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'bank1'.tr,
-                        style: TextStyle(color: Color(0xff004067), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'credit'.tr,
+                            style: const TextStyle(
+                                color: Color(0xffB44800), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(creditSum),
+                            style: const TextStyle(
+                                color: Color(0xffB44800), fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${roundStringWith(bankSum)}',
-                        style: TextStyle(color: Color(0xff004067), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'credit'.tr,
-                        style: TextStyle(color: Color(0xffB44800), fontSize: 16),
-                      ),
-                      Text(
-                        '${roundStringWith(creditSum)}',
-                        style: TextStyle(color: Color(0xffB44800), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'grand_tot'.tr,
-                        style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                      ),
-                      Text(
-                        '${roundStringWith(grandTotal)}',
-                        style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                      ),
-                    ],
-                  )
-                ]),
+                      Row(
+                        children: [
+                          Text(
+                            'grand_tot'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff000000), fontSize: 20),
+                          ),
+                          Text(
+                            roundStringWith(grandTotal),
+                            style: const TextStyle(
+                                color: Color(0xff000000), fontSize: 20),
+                          ),
+                        ],
+                      )
+                    ]),
               ),
             )
           ],
         ),
       );
-    }
-    else if (type == 3) {
+    } else if (type == 3) {
       ///take away
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).size.height / 1, //height of button
         width: MediaQuery.of(context).size.width / 1.5,
         child: ListView(
@@ -907,66 +1043,76 @@ class _ReportPageState extends State<ReportPageNew> {
               //height of button
               width: MediaQuery.of(context).size.width / 1,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8, top: 0, right: 12, bottom: 0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                  Row(
+                padding: const EdgeInsets.only(
+                    left: 8, top: 0, right: 12, bottom: 0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(
-                        'cash1'.tr,
-                        style: TextStyle(color: Color(0xff0C4000), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'cash1'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff0C4000), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(cashSum),
+                            style: const TextStyle(
+                                color: Color(0xff0C4000), fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${roundStringWith(cashSum)}',
-                        style: TextStyle(color: Color(0xff0C4000), fontSize: 20),
+                      Row(
+                        children: [
+                          Text(
+                            'bank1'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff004067), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(bankSum),
+                            style: const TextStyle(
+                                color: Color(0xff004067), fontSize: 20),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'bank1'.tr,
-                        style: TextStyle(color: Color(0xff004067), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'credit'.tr,
+                            style: const TextStyle(
+                                color: Color(0xffB44800), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(creditSum),
+                            style: const TextStyle(
+                                color: Color(0xffB44800), fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${roundStringWith(bankSum)}',
-                        style: TextStyle(color: Color(0xff004067), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'credit'.tr,
-                        style: TextStyle(color: Color(0xffB44800), fontSize: 16),
-                      ),
-                      Text(
-                        '${roundStringWith(creditSum)}',
-                        style: TextStyle(color: Color(0xffB44800), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'grand_tot'.tr,
-                        style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                      ),
-                      Text(
-                        '${roundStringWith(grandTotal)}',
-                        style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                      ),
-                    ],
-                  )
-                ]),
+                      Row(
+                        children: [
+                          Text(
+                            'grand_tot'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff000000), fontSize: 20),
+                          ),
+                          Text(
+                            roundStringWith(grandTotal),
+                            style: const TextStyle(
+                                color: Color(0xff000000), fontSize: 20),
+                          ),
+                        ],
+                      )
+                    ]),
               ),
             )
           ],
         ),
       );
-    }
-    else if (type == 4) {
+    } else if (type == 4) {
       ///online
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).size.height / 1, //height of button
         width: MediaQuery.of(context).size.width / 1.5,
         child: ListView(
@@ -986,66 +1132,76 @@ class _ReportPageState extends State<ReportPageNew> {
               height: MediaQuery.of(context).size.height / 12,
               width: MediaQuery.of(context).size.width / 1,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8, top: 0, right: 12, bottom: 0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                  Row(
+                padding: const EdgeInsets.only(
+                    left: 8, top: 0, right: 12, bottom: 0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(
-                        'cash1'.tr,
-                        style: TextStyle(color: Color(0xff0C4000), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'cash1'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff0C4000), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(cashSum),
+                            style: const TextStyle(
+                                color: Color(0xff0C4000), fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${roundStringWith(cashSum)}',
-                        style: TextStyle(color: Color(0xff0C4000), fontSize: 20),
+                      Row(
+                        children: [
+                          Text(
+                            'bank1'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff004067), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(bankSum),
+                            style: const TextStyle(
+                                color: Color(0xff004067), fontSize: 20),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'bank1'.tr,
-                        style: TextStyle(color: Color(0xff004067), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'credit'.tr,
+                            style: const TextStyle(
+                                color: Color(0xffB44800), fontSize: 16),
+                          ),
+                          Text(
+                            roundStringWith(creditSum),
+                            style: const TextStyle(
+                                color: Color(0xffB44800), fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${roundStringWith(bankSum)}',
-                        style: TextStyle(color: Color(0xff004067), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'credit'.tr,
-                        style: TextStyle(color: Color(0xffB44800), fontSize: 16),
-                      ),
-                      Text(
-                        '${roundStringWith(creditSum)}',
-                        style: TextStyle(color: Color(0xffB44800), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'grand_tot'.tr,
-                        style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                      ),
-                      Text(
-                        '${roundStringWith(grandTotal)}',
-                        style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                      ),
-                    ],
-                  )
-                ]),
+                      Row(
+                        children: [
+                          Text(
+                            'grand_tot'.tr,
+                            style: const TextStyle(
+                                color: Color(0xff000000), fontSize: 20),
+                          ),
+                          Text(
+                            roundStringWith(grandTotal),
+                            style: const TextStyle(
+                                color: Color(0xff000000), fontSize: 20),
+                          ),
+                        ],
+                      )
+                    ]),
               ),
             )
           ],
         ),
       );
-    }
-    else if (type == 5) {
+    } else if (type == 5) {
       ///car wise report
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).size.height / 1, //height of button
         width: MediaQuery.of(context).size.width / 1.5,
         child: ListView(
@@ -1059,10 +1215,9 @@ class _ReportPageState extends State<ReportPageNew> {
           ],
         ),
       );
-    }
-    else if (type == 6) {
+    } else if (type == 6) {
       ///table wise
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).size.height / 1, //height of button
         width: MediaQuery.of(context).size.width / 1.5,
         child: ListView(
@@ -1076,64 +1231,73 @@ class _ReportPageState extends State<ReportPageNew> {
               color: const Color(0xffFFFFFF),
               height: MediaQuery.of(context).size.height / 12,
               width: MediaQuery.of(context).size.width / 1,
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                Row(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      'cash1'.tr,
-                      style: TextStyle(color: Color(0xff0C4000), fontSize: 16),
+                    Row(
+                      children: [
+                        Text(
+                          'cash1'.tr,
+                          style: const TextStyle(
+                              color: Color(0xff0C4000), fontSize: 16),
+                        ),
+                        Text(
+                          roundStringWith(cashSum),
+                          style: const TextStyle(
+                              color: Color(0xff0C4000), fontSize: 20),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${roundStringWith(cashSum)}',
-                      style: TextStyle(color: Color(0xff0C4000), fontSize: 20),
+                    Row(
+                      children: [
+                        Text(
+                          'bank1'.tr,
+                          style: const TextStyle(
+                              color: Color(0xff004067), fontSize: 16),
+                        ),
+                        Text(
+                          roundStringWith(bankSum),
+                          style: const TextStyle(
+                              color: Color(0xff004067), fontSize: 20),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'bank1'.tr,
-                      style: TextStyle(color: Color(0xff004067), fontSize: 16),
+                    Row(
+                      children: [
+                        Text(
+                          'credit'.tr,
+                          style: const TextStyle(
+                              color: Color(0xffB44800), fontSize: 16),
+                        ),
+                        Text(
+                          roundStringWith(creditSum),
+                          style: const TextStyle(
+                              color: Color(0xffB44800), fontSize: 20),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${roundStringWith(bankSum)}',
-                      style: TextStyle(color: Color(0xff004067), fontSize: 20),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'credit'.tr,
-                      style: TextStyle(color: Color(0xffB44800), fontSize: 16),
-                    ),
-                    Text(
-                      '${roundStringWith(creditSum)}',
-                      style: TextStyle(color: Color(0xffB44800), fontSize: 20),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'grand_tot'.tr,
-                      style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                    ),
-                    Text(
-                      '${roundStringWith(grandTotal)}',
-                      style: TextStyle(color: Color(0xff000000), fontSize: 20),
-                    ),
-                  ],
-                )
-              ]),
+                    Row(
+                      children: [
+                        Text(
+                          'grand_tot'.tr,
+                          style: const TextStyle(
+                              color: Color(0xff000000), fontSize: 20),
+                        ),
+                        Text(
+                          roundStringWith(grandTotal),
+                          style: const TextStyle(
+                              color: Color(0xff000000), fontSize: 20),
+                        ),
+                      ],
+                    )
+                  ]),
             )
           ],
         ),
       );
-    }
-    else if (type == 7) {
+    } else if (type == 7) {
       ///product wise
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).size.height / 1, //height of button
         width: MediaQuery.of(context).size.width / 1.5,
         child: ListView(
@@ -1151,62 +1315,75 @@ class _ReportPageState extends State<ReportPageNew> {
               //height of button
               width: MediaQuery.of(context).size.width / 1,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8, top: 0, right: 12, bottom: 0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [
-                  Row(
+                padding: const EdgeInsets.only(
+                    left: 8, top: 0, right: 12, bottom: 0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        'total_sld'.tr,
-                        style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 16.0),
+                      Row(
+                        children: [
+                          Text(
+                            'total_sld'.tr,
+                            style: customisedStyle(context,
+                                const Color(0xff000000), FontWeight.w600, 16.0),
+                          ),
+                          Text(
+                            ' ${roundStringWith(totalNoOfSold)}',
+                            style: customisedStyle(context,
+                                const Color(0xff000000), FontWeight.w600, 18.0),
+                            //   style: TextStyle(color: Colors.blueGrey, fontSize: 20),
+                          ),
+                        ],
                       ),
-                      Text(
-                        ' ${roundStringWith(totalNoOfSold)}',
-                        style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 18.0),
-                        //   style: TextStyle(color: Colors.blueGrey, fontSize: 20),
+                      const SizedBox(
+                        width: 20,
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'grand_tot'.tr,
-                        style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 16.0),
-                        //style: TextStyle(color: Color(0xff000000), fontSize: 16),
+                      Row(
+                        children: [
+                          Text(
+                            'grand_tot'.tr,
+                            style: customisedStyle(context,
+                                const Color(0xff000000), FontWeight.w600, 16.0),
+                            //style: TextStyle(color: Color(0xff000000), fontSize: 16),
+                          ),
+                          Text(
+                            ' ${roundStringWith(grandTotal.toString())}',
+                            style: customisedStyle(context,
+                                const Color(0xff000000), FontWeight.w600, 18.0),
+                          ),
+                        ],
                       ),
-                      Text(
-                        ' ${roundStringWith(grandTotal.toString())}',
-                        style: customisedStyle(context, Color(0xff000000), FontWeight.w600, 18.0),
-                      ),
-                    ],
-                  ),
-                ]),
+                    ]),
               ),
             )
           ],
         ),
       );
-    }
-    else if (type == 8) {
-      return Container(
+    } else if (type == 8) {
+      return SizedBox(
         height: MediaQuery.of(context).size.height / 1, //height of button
         width: MediaQuery.of(context).size.width / 1.5,
         child: ListView(children: [
           ///heading
           Padding(
-            padding: const EdgeInsets.only(left: 12, top: 0, right: 12, bottom: 0),
-            child: Container(
-              height: MediaQuery.of(context).size.height / 12, //height of button
+            padding:
+                const EdgeInsets.only(left: 12, top: 0, right: 12, bottom: 0),
+            child: SizedBox(
+              height:
+                  MediaQuery.of(context).size.height / 12, //height of button
               width: MediaQuery.of(context).size.width / 1.1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('Daily_sum'.tr, style: customisedStyle(context, Colors.black, FontWeight.w500, 18.0), textAlign: TextAlign.left),
+                  Text('Daily_sum'.tr,
+                      style: customisedStyle(
+                          context, Colors.black, FontWeight.w500, 18.0),
+                      textAlign: TextAlign.left),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
+                    padding: const EdgeInsets.only(
+                        left: 10, top: 0, right: 10, bottom: 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1214,104 +1391,167 @@ class _ReportPageState extends State<ReportPageNew> {
                           width: 6,
                         ),
 
-                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'from'.tr,
-                                style: customisedStyle(context, Colors.black, FontWeight.w500, 12.0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'from'.tr,
+                                    style: customisedStyle(context,
+                                        Colors.black, FontWeight.w500, 12.0),
+                                  ),
+                                  ValueListenableBuilder(
+                                      valueListenable: fromDateNotifier,
+                                      builder: (BuildContext ctx,
+                                          DateTime fromDateNewValue, _) {
+                                        return GestureDetector(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: const Color(
+                                                        0xffCBCBCB))),
+                                            // height: MediaQuery.of(context).size.height / 16,
+                                            //    width: MediaQuery.of(context).size.width / 8,
+                                            child: Row(
+                                              children: [
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 15.0, right: 10.0),
+                                                  child: Icon(
+                                                    Icons
+                                                        .calendar_today_outlined,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                          dateFormat.format(
+                                                              fromDateNewValue),
+                                                          style:
+                                                              customisedStyle(
+                                                                  context,
+                                                                  Colors.black,
+                                                                  FontWeight
+                                                                      .normal,
+                                                                  11.0)),
+                                                      Text(
+                                                          timeFormat.format(
+                                                              fromTimeNotifier
+                                                                  .value),
+                                                          style: customisedStyle(
+                                                              context,
+                                                              const Color(
+                                                                  0xff888580),
+                                                              FontWeight.normal,
+                                                              10.0)),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            print(fromDateNotifier);
+                                            print(fromTimeNotifier);
+                                            showDatePickerFunction(
+                                                context,
+                                                fromDateNotifier,
+                                                fromTimeNotifier);
+                                          },
+                                        );
+                                      }),
+                                ],
                               ),
-                              ValueListenableBuilder(
-                                  valueListenable: fromDateNotifier,
-                                  builder: (BuildContext ctx, DateTime fromDateNewValue, _) {
-                                    return GestureDetector(
-                                      child: Container(
-                                        decoration: BoxDecoration(border: Border.all(color: const Color(0xffCBCBCB))),
-                                        // height: MediaQuery.of(context).size.height / 16,
-                                        //    width: MediaQuery.of(context).size.width / 8,
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 15.0, right: 10.0),
-                                              child: Icon(
-                                                Icons.calendar_today_outlined,
-                                                color: Colors.black,
-                                              ),
+                              const SizedBox(
+                                width: 25,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('to'.tr,
+                                      style: customisedStyle(context,
+                                          Colors.black, FontWeight.w500, 12.0)),
+                                  ValueListenableBuilder(
+                                      valueListenable: toDateNotifier,
+                                      builder: (BuildContext ctx,
+                                          DateTime fromDateNewValue, _) {
+                                        return GestureDetector(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: const Color(
+                                                        0xffCBCBCB))),
+                                            //  height: MediaQuery.of(context).size.height / 15,
+                                            //    width: MediaQuery.of(context).size.width / 9,
+                                            child: Row(
+                                              children: [
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 15.0, right: 10.0),
+                                                  child: Icon(
+                                                    Icons
+                                                        .calendar_today_outlined,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                          dateFormat.format(
+                                                              fromDateNewValue),
+                                                          style:
+                                                              customisedStyle(
+                                                                  context,
+                                                                  Colors.black,
+                                                                  FontWeight
+                                                                      .normal,
+                                                                  11.0)),
+                                                      Text(
+                                                          timeFormat.format(
+                                                              toTimeNotifier
+                                                                  .value),
+                                                          style: customisedStyle(
+                                                              context,
+                                                              const Color(
+                                                                  0xff888580),
+                                                              FontWeight.normal,
+                                                              10.0)),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(right: 10.0),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  Text(dateFormat.format(fromDateNewValue),
-                                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0)),
-                                                  Text(timeFormat.format(fromTimeNotifier.value),
-                                                      style: customisedStyle(context, Color(0xff888580), FontWeight.normal, 10.0)),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        print(fromDateNotifier);
-                                        print(fromTimeNotifier);
-                                        showDatePickerFunction(context, fromDateNotifier, fromTimeNotifier);
-                                      },
-                                    );
-                                  }),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('to'.tr, style: customisedStyle(context, Colors.black, FontWeight.w500, 12.0)),
-                              ValueListenableBuilder(
-                                  valueListenable: toDateNotifier,
-                                  builder: (BuildContext ctx, DateTime fromDateNewValue, _) {
-                                    return GestureDetector(
-                                      child: Container(
-                                        decoration: BoxDecoration(border: Border.all(color: const Color(0xffCBCBCB))),
-                                        //  height: MediaQuery.of(context).size.height / 15,
-                                        //    width: MediaQuery.of(context).size.width / 9,
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 15.0, right: 10.0),
-                                              child: Icon(
-                                                Icons.calendar_today_outlined,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(right: 10.0),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  Text(dateFormat.format(fromDateNewValue),
-                                                      style: customisedStyle(context, Colors.black, FontWeight.normal, 11.0)),
-                                                  Text(timeFormat.format(toTimeNotifier.value),
-                                                      style: customisedStyle(context, Color(0xff888580), FontWeight.normal, 10.0)),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        showDatePickerFunction(context, toDateNotifier, toTimeNotifier);
-                                      },
-                                    );
-                                  }),
-                            ],
-                          ),
-                        ]),
+                                          ),
+                                          onTap: () {
+                                            showDatePickerFunction(context,
+                                                toDateNotifier, toTimeNotifier);
+                                          },
+                                        );
+                                      }),
+                                ],
+                              ),
+                            ]),
 
                         // ValueListenableBuilder(
                         //     valueListenable: fromDateNotifier,
@@ -1365,44 +1605,44 @@ class _ReportPageState extends State<ReportPageNew> {
                         // const SizedBox(
                         //   width: 10,
                         // ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
 
                         /// print
-                    SizedBox(
-                          height: MediaQuery.of(context).size.height / 18, //height of button
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height /
+                              18, //height of button
                           width: MediaQuery.of(context).size.width / 10,
                           child: TextButton(
                             onPressed: () {
-                                var heading;
+                              var heading;
 
-                                print("details");
+                              print("details");
 
+                              generateRmsHtml();
 
-                                generateRmsHtml();
-
-
-                                // var printType = typeHead;
-                                //   if (printType == "Product report") {
-                                //     heading = "$typeHead from";
-                                //     // PrintPreview.heading = "$typeHead from $fromDate to $toDate of $productTitle";
-                                //   } else if (printType == "TableWise report") {
-                                //     heading = "$typeHead from ";
-                                //   } else {
-                                //     heading = "$typeHead from ";
-                                //   }
-                                //
-                                //   print(typeHead);
-                                //   _navigatePrinter(context, heading, details, printType);
-                                //
-
+                              // var printType = typeHead;
+                              //   if (printType == "Product report") {
+                              //     heading = "$typeHead from";
+                              //     // PrintPreview.heading = "$typeHead from $fromDate to $toDate of $productTitle";
+                              //   } else if (printType == "TableWise report") {
+                              //     heading = "$typeHead from ";
+                              //   } else {
+                              //     heading = "$typeHead from ";
+                              //   }
+                              //
+                              //   print(typeHead);
+                              //   _navigatePrinter(context, heading, details, printType);
+                              //
                             },
+                            style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(
+                                    const Color(0xff00428E))),
                             child: const Text("Print",
                                 style: TextStyle(
                                   color: Color(0xffffffff),
                                 )),
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff00428E))),
                           ),
                         ),
                       ],
@@ -1415,16 +1655,19 @@ class _ReportPageState extends State<ReportPageNew> {
 
           ///list
           Padding(
-            padding: const EdgeInsets.only(left: 8, top: 0, right: 10, bottom: 0),
-            child: Container(
-              height: MediaQuery.of(context).size.height / 1.3, //height of button
+            padding:
+                const EdgeInsets.only(left: 8, top: 0, right: 10, bottom: 0),
+            child: SizedBox(
+              height:
+                  MediaQuery.of(context).size.height / 1.3, //height of button
               width: MediaQuery.of(context).size.width / 1.1,
               child: ListView(
 //  physics: NeverScrollableScrollPhysics(),
                   children: [
                     ///
                     Container(
-                      height: MediaQuery.of(context).size.height / 1.5, //height of button
+                      height: MediaQuery.of(context).size.height /
+                          1.5, //height of button
 
                       decoration: BoxDecoration(
                           color: const Color(0xffffffff),
@@ -1433,44 +1676,68 @@ class _ReportPageState extends State<ReportPageNew> {
                             color: const Color(0xffE2E2E2),
                           )),
                       child: ListView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         children: [
                           Container(
                             height: MediaQuery.of(context).size.height / 19,
-                            decoration: BoxDecoration(color: const Color(0xffFFFFFF), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffFFFFFF),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffFFFFFF),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Text(
                                         'particular'.tr,
-                                        style: customisedStyle(context, const Color(0xff717171), FontWeight.normal, 16.0),
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff717171),
+                                            FontWeight.normal,
+                                            16.0),
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       'CASH'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.normal, 16.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.normal,
+                                          16.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       'BANK'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.normal, 16.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.normal,
+                                          16.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       'CREDIT'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.normal, 16.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.normal,
+                                          16.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1480,52 +1747,84 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
 //         height: MediaQuery.of(context).size.height / 15,
-                            decoration: BoxDecoration(color: const Color(0xff434343), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xff434343),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xff434343),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'opn_blns'.tr,
-                                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffffffff),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
-                                            roundStringWith(openingBalanceTotal),
-                                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 10.0),
+                                            roundStringWith(
+                                                openingBalanceTotal),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffffffff),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(openingBalanceCash),
-                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffffffff),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(openingBalanceBank),
-                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffffffff),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       "",
                                       // roundStringWith(openingBalanceCredit),
-                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffffffff),
+                                          FontWeight.w500,
+                                          12.0),
+                                      textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1534,51 +1833,82 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
 //      height: MediaQuery.of(context).size.height / 15,
-                            decoration: BoxDecoration(color: const Color(0xffffffff), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffffffff),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffffffff),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'sales_invoice'.tr,
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff000000),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
-                                            roundStringWith(salesInvoiceBalance),
-                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            roundStringWith(
+                                                salesInvoiceBalance),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff007A1C),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(salesInvoiceCash),
-                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff007A1C),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(salesInvoiceBank),
-                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff007A1C),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(salesInvoiceCredit),
-                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff007A1C),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1588,51 +1918,81 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
 //  height: MediaQuery.of(context).size.height / 15,
-                            decoration: BoxDecoration(color: const Color(0xffF5F5F5), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffF5F5F5),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffF5F5F5),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'sales_return'.tr,
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff000000),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(saleReturnBalance),
-                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffB70404),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(saleReturnCash),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(saleReturnBank),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(saleReturnCredit),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1642,51 +2002,82 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
 //   height: MediaQuery.of(context).size.height / 17,
-                            decoration: BoxDecoration(color: const Color(0xffffffff), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffffffff),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffffffff),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Purchase_Invoice'.tr,
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff000000),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
-                                            roundStringWith(purchaseInvoiceBalance),
-                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            roundStringWith(
+                                                purchaseInvoiceBalance),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffB70404),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(purchaseInvoiceCash),
-                                      style: customisedStyle(context, Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(purchaseInvoiceBank),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(purchaseInvoiceCredit),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1695,51 +2086,81 @@ class _ReportPageState extends State<ReportPageNew> {
                             ),
                           ),
                           Container(
-                            decoration: BoxDecoration(color: const Color(0xffffffff), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffffffff),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffffffff),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Expenses'.tr,
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff000000),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(expenseBalance),
-                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffB70404),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(expenseCash),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(expenseBank),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(expenseCredit),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -1749,52 +2170,83 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
 //                height: MediaQuery.of(context).size.height / 17,
-                            decoration: BoxDecoration(color: const Color(0xffF5F5F5), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffF5F5F5),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffF5F5F5),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Receipts'.tr,
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff000000),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(receipt),
-                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff007A1C),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(receiptCash),
-                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff007A1C),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(receiptBank),
-                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff007A1C),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       '',
                                       // roundStringWith(receiptCredit),
-                                      style: customisedStyle(context, const Color(0xff007A1C), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff007A1C),
+                                          FontWeight.w500,
+                                          12.0),
+                                      textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1803,52 +2255,83 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
 //   height: MediaQuery.of(context).size.height / 17,
-                            decoration: BoxDecoration(color: const Color(0xffffffff), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffffffff),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffffffff),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'payment'.tr,
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff000000),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(payment),
-                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffB70404),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(paymentCash),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(paymentBank),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       '',
                                       // roundStringWith(paymentCredit),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
+                                      textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1857,52 +2340,83 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
 //     height: MediaQuery.of(context).size.height / 17,
-                            decoration: BoxDecoration(color: const Color(0xffF5F5F5), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffF5F5F5),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffF5F5F5),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Journals'.tr,
-                                            style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff000000),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(journalsBalance),
-                                            style: customisedStyle(context, const Color(0xffB70404), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffB70404),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(journalsCash),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(journalsBank),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       '',
                                       // roundStringWith(journalsCredit),
-                                      style: customisedStyle(context, const Color(0xffB70404), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffB70404),
+                                          FontWeight.w500,
+                                          12.0),
+                                      textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1911,52 +2425,83 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
 //    height: MediaQuery.of(context).size.height / 15,
-                            decoration: BoxDecoration(color: const Color(0xff434343), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xff434343),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xff434343),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'closing_balance'.tr,
-                                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffffffff),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(closingBalance),
-                                            style: customisedStyle(context, const Color(0xffffffff), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xffffffff),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(closingBalanceCash),
-                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffffffff),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       roundStringWith(closingBalanceBank),
-                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffffffff),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Text(
                                       '',
                                       // roundStringWith(closingBalanceCredit),
-                                      style: customisedStyle(context, const Color(0xffffffff), FontWeight.w500, 12.0), textAlign: TextAlign.right,
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xffffffff),
+                                          FontWeight.w500,
+                                          12.0),
+                                      textAlign: TextAlign.right,
                                     ),
                                   ),
                                 ],
@@ -1970,7 +2515,8 @@ class _ReportPageState extends State<ReportPageNew> {
                       height: 8,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height / 4.9, //height of button
+                      height: MediaQuery.of(context).size.height /
+                          4.9, //height of button
 
                       decoration: BoxDecoration(
                           color: const Color(0xffffffff),
@@ -1983,7 +2529,10 @@ class _ReportPageState extends State<ReportPageNew> {
                         children: [
                           Container(
                             height: MediaQuery.of(context).size.height / 10.1,
-                            decoration: BoxDecoration(color: const Color(0xffffffff), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffffffff),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffffffff),
                               elevation: 0.0,
@@ -1993,77 +2542,128 @@ class _ReportPageState extends State<ReportPageNew> {
                                 children: [
                                   Text(
                                     'sales_summary'.tr,
-                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                                    style: customisedStyle(context,
+                                        Colors.black, FontWeight.w500, 13.0),
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
-                                          width: MediaQuery.of(context).size.width / 4,
+                                      SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              4,
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 'Gross'.tr,
-                                                style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff717171),
+                                                    FontWeight.w500,
+                                                    12.0),
                                               ),
                                               Text(
                                                 roundStringWith(sIGrossAmount),
-                                                style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff007A1C),
+                                                    FontWeight.normal,
+                                                    10.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ],
                                           )),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 8,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                8,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'disc'.tr,
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                             Text(
                                               roundStringWith(sIDiscountAmount),
-                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007A1C),
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 8,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                8,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "VAT",
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                             Text(
                                               roundStringWith(sITaxAmount),
-                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007A1C),
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 8,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                8,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Total'.tr,
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                             Text(
                                               roundStringWith(sITotalAmount),
-                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007A1C),
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2077,7 +2677,10 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
                             height: MediaQuery.of(context).size.height / 10.1,
-                            decoration: BoxDecoration(color: const Color(0xffF5F5F5), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffF5F5F5),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffF5F5F5),
                               elevation: 0.0,
@@ -2087,77 +2690,128 @@ class _ReportPageState extends State<ReportPageNew> {
                                 children: [
                                   Text(
                                     'sale_return_sum'.tr,
-                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                                    style: customisedStyle(context,
+                                        Colors.black, FontWeight.w500, 13.0),
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
-                                          width: MediaQuery.of(context).size.width / 4,
+                                      SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              4,
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 'Gross'.tr,
-                                                style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff717171),
+                                                    FontWeight.w500,
+                                                    12.0),
                                               ),
                                               Text(
                                                 roundStringWith(sRGrossAmount),
-                                                style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff007A1C),
+                                                    FontWeight.normal,
+                                                    10.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ],
                                           )),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 8,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                8,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'disc'.tr,
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                             Text(
                                               roundStringWith(sRDiscountAmount),
-                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007A1C),
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 8,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                8,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "VAT",
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                             Text(
                                               roundStringWith(sRTaxAmount),
-                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007A1C),
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / 8,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                8,
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Total'.tr,
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                             Text(
                                               roundStringWith(sRTotalAmount),
-                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007A1C),
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2176,7 +2830,8 @@ class _ReportPageState extends State<ReportPageNew> {
                       height: 8,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height / 5.5, //height of button
+                      height: MediaQuery.of(context).size.height /
+                          5.5, //height of button
 
                       decoration: BoxDecoration(
                           color: const Color(0xffffffff),
@@ -2188,90 +2843,142 @@ class _ReportPageState extends State<ReportPageNew> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
+                          SizedBox(
                               height: MediaQuery.of(context).size.height / 23,
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 8.0, bottom: 8, left: 6),
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, bottom: 8, left: 6),
                                 child: Text(
                                   'Effective_Sale'.tr,
-                                  style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                                  style: customisedStyle(context, Colors.black,
+                                      FontWeight.w500, 13.0),
                                 ),
                               )),
                           Container(
                             height: MediaQuery.of(context).size.height / 15,
-                            decoration: BoxDecoration(color: const Color(0xffF5F5F5), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffF5F5F5),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffF5F5F5),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Total'.tr,
-                                            style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff717171),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(effectiveTotal),
-                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff007A1C),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'sale_invo'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
                                           roundStringWith(effectiveNoSales),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'sale_return'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
-                                          roundStringWith(effectiveNo_sales_return),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          roundStringWith(
+                                              effectiveNo_sales_return),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Effective_Sale1'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
-                                          roundStringWith(effectiveNo_effective),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          roundStringWith(
+                                              effectiveNo_effective),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2283,79 +2990,127 @@ class _ReportPageState extends State<ReportPageNew> {
                           ),
                           Container(
                             height: MediaQuery.of(context).size.height / 15,
-                            decoration: BoxDecoration(color: const Color(0xffffffff), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffffffff),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffffffff),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 4,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'CASH'.tr,
-                                            style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff717171),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(effectiveCash_sale),
-                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff007A1C),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'BANK'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
                                           roundStringWith(effective_bank_sale),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'CREDIT'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
                                           roundStringWith(effective_credit),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "",
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
                                           "",
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                         ),
                                       ],
                                     ),
@@ -2376,9 +3131,12 @@ class _ReportPageState extends State<ReportPageNew> {
                         Container(
                           height: MediaQuery.of(context).size.height / 10,
                           width: MediaQuery.of(context).size.width / 3.15,
-                          decoration: BoxDecoration(color: const Color(0xffFffff), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                          decoration: BoxDecoration(
+                              color: const Color(0x0fffffff),
+                              border: Border.all(
+                                  color: const Color(0xffE2E2E2), width: .5)),
                           child: Card(
-                            color: const Color(0xffFffff),
+                            color: const Color(0x0fffffff),
                             elevation: 0.0,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -2386,39 +3144,66 @@ class _ReportPageState extends State<ReportPageNew> {
                               children: [
                                 Text(
                                   'Purchase'.tr,
-                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                  style: customisedStyle(
+                                      context,
+                                      const Color(0xff000000),
+                                      FontWeight.w500,
+                                      12.0),
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                         child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Purchase_Invoice'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
-                                          roundStringWith(purchaseInvoiceTotalAmount),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          roundStringWith(
+                                              purchaseInvoiceTotalAmount),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
                                     )),
                                     Container(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Purchase_Return'.tr,
-                                            style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff717171),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
-                                            roundStringWith(purchaseReturnTotalAmount),
-                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            roundStringWith(
+                                                purchaseReturnTotalAmount),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff007A1C),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
@@ -2433,9 +3218,12 @@ class _ReportPageState extends State<ReportPageNew> {
                         Container(
                           height: MediaQuery.of(context).size.height / 10,
                           width: MediaQuery.of(context).size.width / 3.15,
-                          decoration: BoxDecoration(color: const Color(0xffFffff), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                          decoration: BoxDecoration(
+                              color: const Color(0x0fffffff),
+                              border: Border.all(
+                                  color: const Color(0xffE2E2E2), width: .5)),
                           child: Card(
-                            color: const Color(0xffFffff),
+                            color: const Color(0x0fffffff),
                             elevation: 0.0,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -2443,23 +3231,38 @@ class _ReportPageState extends State<ReportPageNew> {
                               children: [
                                 Text(
                                   'Expenses'.tr,
-                                  style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                  style: customisedStyle(
+                                      context,
+                                      const Color(0xff000000),
+                                      FontWeight.w500,
+                                      12.0),
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                         child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Total'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
                                           roundStringWith(expenseTotal),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2476,7 +3279,8 @@ class _ReportPageState extends State<ReportPageNew> {
                       height: 8,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height / 9, //height of button
+                      height: MediaQuery.of(context).size.height /
+                          9, //height of button
                       decoration: BoxDecoration(
                           color: const Color(0xffffffff),
                           borderRadius: BorderRadius.circular(8.0),
@@ -2488,69 +3292,107 @@ class _ReportPageState extends State<ReportPageNew> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 6.0, top: 7, bottom: 7),
+                            padding: const EdgeInsets.only(
+                                left: 6.0, top: 7, bottom: 7),
                             child: Text(
                               'sale_byt_type'.tr,
-                              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                              style: customisedStyle(
+                                  context, Colors.black, FontWeight.w500, 13.0),
                             ),
                           ),
                           Container(
 // height: MediaQuery.of(context).size.height / 17,
-                            decoration: BoxDecoration(color: const Color(0xffF5F5F5), border: Border.all(color: const Color(0xffE2E2E2), width: .5)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffF5F5F5),
+                                border: Border.all(
+                                    color: const Color(0xffE2E2E2), width: .5)),
                             child: Card(
                               color: const Color(0xffF5F5F5),
                               elevation: 0.0,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Container(
-                                      width: MediaQuery.of(context).size.width / 6,
+                                  SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 6,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Dining'.tr,
-                                            style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff717171),
+                                                FontWeight.w500,
+                                                12.0),
                                           ),
                                           Text(
                                             roundStringWith(dineSAleAmount),
-                                            style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff007A1C),
+                                                FontWeight.normal,
+                                                10.0),
                                             textAlign: TextAlign.right,
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 6,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Take_awy'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
                                           roundStringWith(takeAwaySAleAmount),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 6,
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Car'.tr,
-                                          style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff717171),
+                                              FontWeight.w500,
+                                              12.0),
                                         ),
                                         Text(
                                           roundStringWith(carSaleAmount),
-                                          style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                          style: customisedStyle(
+                                              context,
+                                              const Color(0xff007A1C),
+                                              FontWeight.normal,
+                                              10.0),
                                           textAlign: TextAlign.right,
                                         ),
                                       ],
@@ -2567,7 +3409,8 @@ class _ReportPageState extends State<ReportPageNew> {
                       height: 8,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height / 9, //height of button
+                      height: MediaQuery.of(context).size.height /
+                          9, //height of button
 
                       decoration: BoxDecoration(
                           color: const Color(0xffffffff),
@@ -2586,52 +3429,76 @@ class _ReportPageState extends State<ReportPageNew> {
                             ),
                             child: Text(
                               'Order_Detailed'.tr,
-                              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                              style: customisedStyle(
+                                  context, Colors.black, FontWeight.w500, 13.0),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height / 15,
                             child: Card(
                               color: const Color(0xffF5F5F5),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                      width: MediaQuery.of(context).size.width / 4.8,
+                                      width: MediaQuery.of(context).size.width /
+                                          4.8,
                                       decoration: const BoxDecoration(
                                         color: Color(0xffF5F5F5),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
                                         children: [
                                           Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 'order'.tr,
-                                                style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff717171),
+                                                    FontWeight.w500,
+                                                    12.0),
                                               ),
                                               Text(
                                                 roundStringWith(orderTotal),
-                                                style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff007A1C),
+                                                    FontWeight.normal,
+                                                    10.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ],
                                           ),
                                           Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 'amount'.tr,
-                                                style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff717171),
+                                                    FontWeight.w500,
+                                                    12.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                               Text(
                                                 roundStringWith(orderAmount),
-                                                style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff007A1C),
+                                                    FontWeight.normal,
+                                                    10.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ],
@@ -2639,41 +3506,64 @@ class _ReportPageState extends State<ReportPageNew> {
                                         ],
                                       )),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 4.8,
+                                    width:
+                                        MediaQuery.of(context).size.width / 4.8,
                                     decoration: const BoxDecoration(
                                       color: Color(0xffFfffff),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Cancelled'.tr,
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                             Text(
                                               roundStringWith(cancelledOrder),
-                                              style: customisedStyle(context, Colors.red, FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.red,
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
                                         ),
                                         Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'amount'.tr,
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                             Text(
-                                              roundStringWith(cancelOrderAmount),
-                                              style: customisedStyle(context, Colors.red, FontWeight.normal, 10.0),
+                                              roundStringWith(
+                                                  cancelOrderAmount),
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.red,
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2682,39 +3572,61 @@ class _ReportPageState extends State<ReportPageNew> {
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 4.8,
+                                    width:
+                                        MediaQuery.of(context).size.width / 4.8,
                                     decoration: const BoxDecoration(
                                       color: Color(0xffF5F5F5),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Pending'.tr,
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                             Text(
                                               roundStringWith(pendingOrder),
-                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007A1C),
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
                                         ),
                                         Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'amount'.tr,
-                                              style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff717171),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                             Text(
                                               roundStringWith(pendingAmounts),
-                                              style: customisedStyle(context, const Color(0xff007A1C), FontWeight.normal, 10.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007A1C),
+                                                  FontWeight.normal,
+                                                  10.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ],
@@ -2750,7 +3662,8 @@ class _ReportPageState extends State<ReportPageNew> {
                             ),
                             child: Text(
                               'ord_emp'.tr,
-                              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                              style: customisedStyle(
+                                  context, Colors.black, FontWeight.w500, 13.0),
                             ),
                           ),
                           Container(
@@ -2760,81 +3673,123 @@ class _ReportPageState extends State<ReportPageNew> {
                               color: const Color(0xffFfffff),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     decoration: const BoxDecoration(
                                       color: Color(0xffFfffff),
                                     ),
                                     child: Text(
                                       'Employee'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       'order'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       '#Cancelled'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       'Pending'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -2845,70 +3800,129 @@ class _ReportPageState extends State<ReportPageNew> {
 
                           /// nashid
                           ConstrainedBox(
-                              constraints: BoxConstraints(maxHeight: 2000, minHeight: 10),
+                              constraints: const BoxConstraints(
+                                  maxHeight: 2000, minHeight: 10),
                               child: ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: empListsList.length,
                                   itemBuilder: (context, i) {
                                     return Container(
                                       color: const Color(0xffF5F5F5),
-                                      height: MediaQuery.of(context).size.height / 20,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              20,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 8,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                8,
                                             child: Text(
                                               empListsList[i].empName,
-                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff000000),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(empListsList[i].sales),
-                                              style: customisedStyle(context, const Color(0xff007D15), FontWeight.w500, 12.0),
+                                              roundStringWith(
+                                                  empListsList[i].sales),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007D15),
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(empListsList[i].sale_amount),
-                                              style: customisedStyle(context, const Color(0xff007D15), FontWeight.w500, 12.0),
+                                              roundStringWith(
+                                                  empListsList[i].sale_amount),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007D15),
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(empListsList[i].cancelled),
-                                              style: customisedStyle(context, Colors.red, FontWeight.w500, 12.0),
+                                              roundStringWith(
+                                                  empListsList[i].cancelled),
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.red,
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(empListsList[i].cancelled_amount),
-                                              style: customisedStyle(context, Colors.red, FontWeight.w500, 12.0),
+                                              roundStringWith(empListsList[i]
+                                                  .cancelled_amount),
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.red,
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(empListsList[i].pending),
-                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                              roundStringWith(
+                                                  empListsList[i].pending),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff000000),
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(empListsList[i].pending_amount),
-                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                              roundStringWith(empListsList[i]
+                                                  .pending_amount),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff000000),
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -2940,7 +3954,8 @@ class _ReportPageState extends State<ReportPageNew> {
                             ),
                             child: Text(
                               'sales_emp'.tr,
-                              style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0),
+                              style: customisedStyle(
+                                  context, Colors.black, FontWeight.w500, 13.0),
                             ),
                           ),
                           Container(
@@ -2950,71 +3965,107 @@ class _ReportPageState extends State<ReportPageNew> {
                               color: const Color(0xffFfffff),
                               elevation: 0.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 8,
+                                    width:
+                                        MediaQuery.of(context).size.width / 8,
                                     decoration: const BoxDecoration(
                                       color: Color(0xffFfffff),
                                     ),
                                     child: Text(
                                       'Employee'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       'Sales'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       '#Return'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 12,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Text(
                                       'amount'.tr,
-                                      style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                      style: customisedStyle(
+                                          context,
+                                          const Color(0xff717171),
+                                          FontWeight.w500,
+                                          12.0),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 6,
-                                    decoration: const BoxDecoration(color: Colors.white
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
+                                    decoration:
+                                        const BoxDecoration(color: Colors.white
 //color: const Color(0xffF5F5F5),
-                                        ),
+                                            ),
                                     child: Center(
                                       child: Text(
                                         'Effective_Sale'.tr,
-                                        style: customisedStyle(context, const Color(0xff717171), FontWeight.w500, 12.0),
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff717171),
+                                            FontWeight.w500,
+                                            12.0),
                                         textAlign: TextAlign.right,
                                       ),
                                     ),
@@ -3024,63 +4075,117 @@ class _ReportPageState extends State<ReportPageNew> {
                             ),
                           ),
                           ConstrainedBox(
-                              constraints: BoxConstraints(maxHeight: 2000, minHeight: 10),
+                              constraints: const BoxConstraints(
+                                  maxHeight: 2000, minHeight: 10),
                               child: ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: saleEmpModelList.length,
                                   itemBuilder: (context, i) {
                                     return Container(
                                       color: const Color(0xffF5F5F5),
-                                      height: MediaQuery.of(context).size.height / 20,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              20,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 8,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                8,
                                             child: Text(
                                               saleEmpModelList[i].emplyee_name,
-                                              style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff000000),
+                                                  FontWeight.w500,
+                                                  12.0),
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(saleEmpModelList[i].sales),
-                                              style: customisedStyle(context, const Color(0xff007D15), FontWeight.w500, 12.0),
+                                              roundStringWith(
+                                                  saleEmpModelList[i].sales),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007D15),
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(saleEmpModelList[i].sale_amount),
-                                              style: customisedStyle(context, const Color(0xff007D15), FontWeight.w500, 12.0),
+                                              roundStringWith(
+                                                  saleEmpModelList[i]
+                                                      .sale_amount),
+                                              style: customisedStyle(
+                                                  context,
+                                                  const Color(0xff007D15),
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(saleEmployeeReturn),
-                                              style: customisedStyle(context, Colors.red, FontWeight.w500, 12.0),
+                                              roundStringWith(
+                                                  saleEmployeeReturn),
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.red,
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 12,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                12,
                                             child: Text(
-                                              roundStringWith(saleEmpModelList[i].return_amount),
-                                              style: customisedStyle(context, Colors.red, FontWeight.w500, 12.0),
+                                              roundStringWith(
+                                                  saleEmpModelList[i]
+                                                      .return_amount),
+                                              style: customisedStyle(
+                                                  context,
+                                                  Colors.red,
+                                                  FontWeight.w500,
+                                                  12.0),
                                               textAlign: TextAlign.right,
                                             ),
                                           ),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width / 6,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                6,
                                             child: Center(
                                               child: Text(
-                                                roundStringWith(saleEmpModelList[i].effective_sale),
-                                                style: customisedStyle(context, const Color(0xff000000), FontWeight.w500, 12.0),
+                                                roundStringWith(
+                                                    saleEmpModelList[i]
+                                                        .effective_sale),
+                                                style: customisedStyle(
+                                                    context,
+                                                    const Color(0xff000000),
+                                                    FontWeight.w500,
+                                                    12.0),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ),
@@ -3200,11 +4305,6 @@ class _ReportPageState extends State<ReportPageNew> {
           ),
         ]),
       );
-
-
-
-
-
 
       /// old
 //    return Container(
@@ -6160,11 +7260,7 @@ class _ReportPageState extends State<ReportPageNew> {
     }
   }
 
-
-
-  generateRmsHtml(){
-
-
+  generateRmsHtml() {
     var orderDetails = """
  
     </tr>
@@ -6195,8 +7291,7 @@ class _ReportPageState extends State<ReportPageNew> {
     <td class="center sm">${roundStringWith(empListsList[i].cancelled_amount)}</td>
     <td class="center sm">${roundStringWith(empListsList[i].pending)}</td>
     <td class="center sm">${roundStringWith(empListsList[i].pending_amount)}</td>
-    </tr>"""
-      ;
+    </tr>""";
     }
 
     var invoiceDetails = """
@@ -6213,7 +7308,6 @@ class _ReportPageState extends State<ReportPageNew> {
     """;
 
     for (var i = 0; i < saleEmpModelList.length; i++) {
-
       invoiceDetails += """
       
      <tr>
@@ -6224,12 +7318,10 @@ class _ReportPageState extends State<ReportPageNew> {
     <td class="center sm">${roundStringWith(saleEmpModelList[i].return_amount)}</td>
     <td class="center sm">${roundStringWith(saleEmpModelList[i].effective_sale)}</td>
    
-    </tr>"""
-      ;
+    </tr>""";
     }
 
-    var htmlString=
-"""  <html>
+    var htmlString = """  <html>
     <head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" />
     <style>
@@ -6523,9 +7615,9 @@ class _ReportPageState extends State<ReportPageNew> {
 
     log("message  $htmlString");
 
-    _navigatePrinter(context, "RMS report ", details, "RMS Report",htmlString);
-
+    _navigatePrinter(context, "RMS report ", details, "RMS Report", htmlString);
   }
+
   /// rms report
   String openingBalanceTotal = "0.0";
   String openingBalanceCredit = "0.0";
@@ -6667,17 +7759,18 @@ class _ReportPageState extends State<ReportPageNew> {
         var openingBalanceResponse = n["opening_balance"];
         var closingBalanceResponse = n["closing_balance"];
         var saleAmountResponse = n["sales_amount"];
-        var sales_return_amount = n["sales_return_amount"];
+        var salesReturnAmount = n["sales_return_amount"];
         var purchaseResponseTotal = n["total_purchase"];
         var expenseResponse = n["expenses_amount"];
         var receiptResponse = n["receipts_amount"];
         var paymentResponse = n["payments_amount"];
         var journalResponse = n["journal_amount"];
         var saleInvoiceSummaryResponse = n["sales_invoice_summary"];
-        var saleReturnInvoiceSummaryResponse = n["sales_return_invoice_summary"];
+        var saleReturnInvoiceSummaryResponse =
+            n["sales_return_invoice_summary"];
 
         var effectiveSaleResponse = n['effective_sales'];
-        var purchase_amountResponse = n['purchase_amount'];
+        var purchaseAmountresponse = n['purchase_amount'];
         var purchaseReturnAmountResponse = n['purchase_return_amount'];
         var saleByTypeResponse = n['sales_by_type'];
         var orderDetailResponse = n['order_details'];
@@ -6689,35 +7782,50 @@ class _ReportPageState extends State<ReportPageNew> {
           setState(() {
             empListsList.clear();
             saleEmpModelList.clear();
-            openingBalanceBank = openingBalanceResponse['bank_opening_balance'].toString();
-            openingBalanceCash = openingBalanceResponse['cash_opening_balance'].toString();
+            openingBalanceBank =
+                openingBalanceResponse['bank_opening_balance'].toString();
+            openingBalanceCash =
+                openingBalanceResponse['cash_opening_balance'].toString();
             openingBalanceTotal = openingBalanceResponse['total'].toString();
             closingBalance = closingBalanceResponse['total'].toString();
-            closingBalanceBank = closingBalanceResponse['bank_closing_balance'].toString();
-            closingBalanceCash = closingBalanceResponse['cash_closing_balance'].toString();
+            closingBalanceBank =
+                closingBalanceResponse['bank_closing_balance'].toString();
+            closingBalanceCash =
+                closingBalanceResponse['cash_closing_balance'].toString();
 
             salesInvoiceBalance = saleAmountResponse['total'].toString();
             salesInvoiceCash = saleAmountResponse['cash_sale'].toString();
             salesInvoiceBank = saleAmountResponse['bank_sale'].toString();
             salesInvoiceCredit = saleAmountResponse['credit_sale'].toString();
 
-            saleReturnBalance = sales_return_amount['total'].toString();
-            saleReturnCredit = sales_return_amount['credit_sale_return'].toString();
-            saleReturnCash = sales_return_amount['cash_sale_return'].toString();
-            saleReturnBank = sales_return_amount['bank_sale_return'].toString();
+            saleReturnBalance = salesReturnAmount['total'].toString();
+            saleReturnCredit =
+                salesReturnAmount['credit_sale_return'].toString();
+            saleReturnCash = salesReturnAmount['cash_sale_return'].toString();
+            saleReturnBank = salesReturnAmount['bank_sale_return'].toString();
 
-            purchaseInvoiceTotalAmount = purchaseResponseTotal['total_purchase_invoice'].toString();
-            purchaseReturnTotalAmount = purchaseResponseTotal['total_purchase_return'].toString();
+            purchaseInvoiceTotalAmount =
+                purchaseResponseTotal['total_purchase_invoice'].toString();
+            purchaseReturnTotalAmount =
+                purchaseResponseTotal['total_purchase_return'].toString();
 
-            purchaseInvoiceBalance = purchase_amountResponse['total'].toString();
-            purchaseInvoiceBank = purchase_amountResponse['bank_purchase'].toString();
-            purchaseInvoiceCash = purchase_amountResponse['cash_purchase'].toString();
-            purchaseInvoiceCredit = purchase_amountResponse['credit_purchase'].toString();
+            purchaseInvoiceBalance = purchaseAmountresponse['total'].toString();
+            purchaseInvoiceBank =
+                purchaseAmountresponse['bank_purchase'].toString();
+            purchaseInvoiceCash =
+                purchaseAmountresponse['cash_purchase'].toString();
+            purchaseInvoiceCredit =
+                purchaseAmountresponse['credit_purchase'].toString();
 
-            purchaseReturnBalance = purchaseReturnAmountResponse['total'].toString();
-            purchaseReturnCash = purchaseReturnAmountResponse['cash_purchase_return'].toString();
-            purchaseReturnBank = purchaseReturnAmountResponse['bank_purchase_return'].toString();
-            purchaseReturnCredit = purchaseReturnAmountResponse['credit_purchase_return'].toString();
+            purchaseReturnBalance =
+                purchaseReturnAmountResponse['total'].toString();
+            purchaseReturnCash =
+                purchaseReturnAmountResponse['cash_purchase_return'].toString();
+            purchaseReturnBank =
+                purchaseReturnAmountResponse['bank_purchase_return'].toString();
+            purchaseReturnCredit =
+                purchaseReturnAmountResponse['credit_purchase_return']
+                    .toString();
 
             expenseBalance = expenseResponse['total'].toString();
             expenseBank = expenseResponse['bank_expense'].toString();
@@ -6739,29 +7847,40 @@ class _ReportPageState extends State<ReportPageNew> {
             journalsCash = journalResponse['cash_journal'].toString();
 
             sIGrossAmount = saleInvoiceSummaryResponse['gross'].toString();
-            sIDiscountAmount = saleInvoiceSummaryResponse['discount'].toString();
+            sIDiscountAmount =
+                saleInvoiceSummaryResponse['discount'].toString();
             sITaxAmount = saleInvoiceSummaryResponse['tax'].toString();
             sITotalAmount = saleInvoiceSummaryResponse['total'].toString();
-            sRDiscountAmount = saleReturnInvoiceSummaryResponse['discount'].toString();
-            sRGrossAmount = saleReturnInvoiceSummaryResponse['gross'].toString();
+            sRDiscountAmount =
+                saleReturnInvoiceSummaryResponse['discount'].toString();
+            sRGrossAmount =
+                saleReturnInvoiceSummaryResponse['gross'].toString();
             sRTaxAmount = saleReturnInvoiceSummaryResponse['tax'].toString();
-            sRTotalAmount = saleReturnInvoiceSummaryResponse['total'].toString();
+            sRTotalAmount =
+                saleReturnInvoiceSummaryResponse['total'].toString();
 
             effectiveNoSales = effectiveSaleResponse['no_sales'].toString();
-            effectiveNo_sales_return = effectiveSaleResponse['no_sales_return'].toString();
-            effectiveNo_effective = effectiveSaleResponse['no_effective'].toString();
+            effectiveNo_sales_return =
+                effectiveSaleResponse['no_sales_return'].toString();
+            effectiveNo_effective =
+                effectiveSaleResponse['no_effective'].toString();
             effectiveTotal = effectiveSaleResponse['total'].toString();
-            effectiveCash_sale = effectiveSaleResponse['effective_cash_sale'].toString();
-            effective_bank_sale = effectiveSaleResponse['effective_bank_sale'].toString();
-            effective_credit = effectiveSaleResponse['effective_credit'].toString();
+            effectiveCash_sale =
+                effectiveSaleResponse['effective_cash_sale'].toString();
+            effective_bank_sale =
+                effectiveSaleResponse['effective_bank_sale'].toString();
+            effective_credit =
+                effectiveSaleResponse['effective_credit'].toString();
 
             expenseTotal = n['total_expense'].toString();
             dineSAleAmount = saleByTypeResponse['dining_sales'].toString();
-            takeAwaySAleAmount = saleByTypeResponse['take_away_sales'].toString();
+            takeAwaySAleAmount =
+                saleByTypeResponse['take_away_sales'].toString();
             carSaleAmount = saleByTypeResponse['car_sales'].toString();
             pendingAmounts = orderDetailResponse['pending_amount'].toString();
             pendingOrder = orderDetailResponse['pending'].toString();
-            cancelOrderAmount = orderDetailResponse['cancelled_amount'].toString();
+            cancelOrderAmount =
+                orderDetailResponse['cancelled_amount'].toString();
             cancelledOrder = orderDetailResponse['cancelled'].toString();
             orderAmount = orderDetailResponse['orders_amount'].toString();
             orderTotal = orderDetailResponse['orders'].toString();
@@ -6788,7 +7907,7 @@ class _ReportPageState extends State<ReportPageNew> {
   Widget reportHeading() {
     return Padding(
       padding: const EdgeInsets.only(left: 12, top: 0, right: 12, bottom: 0),
-      child: Container(
+      child: SizedBox(
         height: MediaQuery.of(context).size.height / 12, //height of button
         width: MediaQuery.of(context).size.width / 1.1,
         child: Row(
@@ -6796,14 +7915,15 @@ class _ReportPageState extends State<ReportPageNew> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(typeHead,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                   fontSize: 18,
                 ),
                 textAlign: TextAlign.left),
             Padding(
-              padding: const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
+              padding:
+                  const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
               child: Row(
                 children: [
                   /// export & print section commented
@@ -6832,7 +7952,8 @@ class _ReportPageState extends State<ReportPageNew> {
                     width: 10,
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 18, //height of button
+                    height: MediaQuery.of(context).size.height /
+                        18, //height of button
                     width: MediaQuery.of(context).size.width / 10,
                     child: TextButton(
                       onPressed: () {
@@ -6853,58 +7974,68 @@ class _ReportPageState extends State<ReportPageNew> {
                               heading = "$typeHead from ";
                             }
 
-
-                            _navigatePrinter(context, heading, details, printType,"");
+                            _navigatePrinter(
+                                context, heading, details, printType, "");
                           }
                         }
                       },
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff00428E))),
-                      child:   Text("View",
-                          style: customisedStyle(context, Colors.white, FontWeight.w500, 14.0)),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStateProperty.all(const Color(0xff00428E))),
+                      child: Text("View",
+                          style: customisedStyle(
+                              context, Colors.white, FontWeight.w500, 14.0)),
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 18, //height of button
+                    height: MediaQuery.of(context).size.height /
+                        18, //height of button
                     width: MediaQuery.of(context).size.width / 10,
                     child: TextButton(
                       onPressed: () {
                         if (details.isEmpty) {
                           dialogBox(context, "You have nothing to print");
                         } else {
-                            var heading = '';
+                          var heading = '';
 
-                            var printType = typeHead;
-                            if (printType == "Product report") {
-                              heading = "$typeHead from";
-                            } else if (printType == "TableWise report") {
-                              heading = "$typeHead from ";
-                            } else {
-                              heading = "$typeHead from ";
-                            }
+                          var printType = typeHead;
+                          if (printType == "Product report") {
+                            heading = "$typeHead from";
+                          } else if (printType == "TableWise report") {
+                            heading = "$typeHead from ";
+                          } else {
+                            heading = "$typeHead from ";
+                          }
 
+                          print(
+                              "------${fromDateNotifier.value}----${toDateNotifier.value}----");
 
-
-
-
-                            print("------${fromDateNotifier.value}----${toDateNotifier.value}----");
-
-
-                           var head  = "$typeHead   ${printType == "Product wise report"? "${"("+details[0]["ProductName"]??""})":""}  ${printType == "TableWise report"? "${"("+details[0]["TableName"]})":""} ${dateFormat.format(fromDateNotifier.value)} ${timeFormat.format(fromTimeNotifier.value)}   ${dateFormat.format(toDateNotifier.value)}  ${timeFormat.format(toTimeNotifier.value)}";
-                            print("heading $printType   $heading  details $details  printType  $printType ");
-                            printDetail(heading: head,details: details,reportType:printType,
+                          var head =
+                              "$typeHead   ${printType == "Product wise report" ? "${"(" + details[0]["ProductName"] ?? ""})" : ""}  ${printType == "TableWise report" ? "${"(" + details[0]["TableName"]})" : ""} ${dateFormat.format(fromDateNotifier.value)} ${timeFormat.format(fromTimeNotifier.value)}   ${dateFormat.format(toDateNotifier.value)}  ${timeFormat.format(toTimeNotifier.value)}";
+                          print(
+                              "heading $printType   $heading  details $details  printType  $printType ");
+                          printDetail(
+                              heading: head,
+                              details: details,
+                              reportType: printType,
                               totalBank: bankSum,
-                              totalCash: printType == "Product wise report"?totalNoOfSold:cashSum,
+                              totalCash: printType == "Product wise report"
+                                  ? totalNoOfSold
+                                  : cashSum,
                               totalCredit: creditSum,
-                              totalGrand: grandTotal
-                            );
-                           //_navigatePrinter(context, heading, details, printType,"");
-
+                              totalGrand: grandTotal);
+                          //_navigatePrinter(context, heading, details, printType,"");
                         }
                       },
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff00428E))),
-                      child:   Text("Print Report",
-                          style: customisedStyle(context, Colors.white, FontWeight.w500, 14.0)),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStateProperty.all(const Color(0xff00428E))),
+                      child: Text("Print Report",
+                          style: customisedStyle(
+                              context, Colors.white, FontWeight.w500, 14.0)),
                     ),
                   ),
                 ],
@@ -6935,42 +8066,77 @@ class _ReportPageState extends State<ReportPageNew> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: ListTile(
-                        shape: RoundedRectangleBorder(side: const BorderSide(color: Color(0xffCFCFCF)), borderRadius: BorderRadius.circular(5.0)),
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Color(0xffCFCFCF)),
+                            borderRadius: BorderRadius.circular(5.0)),
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 5),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(reportsList[index].voucherNo, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(reportsList[index].date, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 12.0)),
-                                //    style: TextStyle(color: Color(0xff585858)),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                reportsList[index].tableName != ""
-                                    ? Text(reportsList[index].tableName, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0))
-                                    : SizedBox(),
-                                Text(reportsList[index].custName, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 12.0)),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('total'.tr, style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0)),
-                                //     style: TextStyle(fontWeight: FontWeight.bold)),
-                                Text(reportsList[index].total, style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0)),
-                              ],
-                            ),
-                          ]),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(reportsList[index].voucherNo,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            14.0)),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(reportsList[index].date,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.normal,
+                                            12.0)),
+                                    //    style: TextStyle(color: Color(0xff585858)),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    reportsList[index].tableName != ""
+                                        ? Text(reportsList[index].tableName,
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w500,
+                                                14.0))
+                                        : const SizedBox(),
+                                    Text(reportsList[index].custName,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.normal,
+                                            12.0)),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text('total'.tr,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            15.0)),
+                                    //     style: TextStyle(fontWeight: FontWeight.bold)),
+                                    Text(reportsList[index].total,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            15.0)),
+                                  ],
+                                ),
+                              ]),
                         ),
                       ),
                     );
@@ -6997,40 +8163,76 @@ class _ReportPageState extends State<ReportPageNew> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: ListTile(
-                        shape: RoundedRectangleBorder(side: const BorderSide(color: Color(0xffCFCFCF)), borderRadius: BorderRadius.circular(5.0)),
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Color(0xffCFCFCF)),
+                            borderRadius: BorderRadius.circular(5.0)),
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(reportsList[index].voucherNo, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
-                                // style: TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(reportsList[index].date, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 12.0)),
-                                //   style: TextStyle(color: Color(0xff585858)),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(reportsList[index].tableName, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
-                                Text(reportsList[index].custName, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 12.0)),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('total'.tr, style: customisedStyle(context, Color(0xff585858), FontWeight.w600, 15.0)),
-                                Text(roundStringWith(reportsList[index].total),
-                                    style: customisedStyle(context, Color(0xff585858), FontWeight.w600, 15.0)),
-                              ],
-                            ),
-                          ]),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(reportsList[index].voucherNo,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            14.0)),
+                                    // style: TextStyle(fontWeight: FontWeight.bold)),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(reportsList[index].date,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.normal,
+                                            12.0)),
+                                    //   style: TextStyle(color: Color(0xff585858)),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(reportsList[index].tableName,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            14.0)),
+                                    Text(reportsList[index].custName,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.normal,
+                                            12.0)),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('total'.tr,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.w600,
+                                            15.0)),
+                                    Text(
+                                        roundStringWith(
+                                            reportsList[index].total),
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.w600,
+                                            15.0)),
+                                  ],
+                                ),
+                              ]),
                         ),
                       ),
                     );
@@ -7057,41 +8259,76 @@ class _ReportPageState extends State<ReportPageNew> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: ListTile(
-                        shape: RoundedRectangleBorder(side: const BorderSide(color: Color(0xffCFCFCF)), borderRadius: BorderRadius.circular(5.0)),
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Color(0xffCFCFCF)),
+                            borderRadius: BorderRadius.circular(5.0)),
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(reportsList[index].voucherNo, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(reportsList[index].date, style: customisedStyle(context, Color(0xff585858), FontWeight.w500, 12.0)),
-                                //   style: TextStyle(color: Color(0xff585858)),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                reportsList[index].tableName == ""
-                                    ? Container()
-                                    : Text(reportsList[index].tableName, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
-                                //    style: TextStyle(fontWeight: FontWeight.w500)),
-                                Text(reportsList[index].custName, style: customisedStyle(context, Color(0xff585858), FontWeight.w500, 12.0)),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('total'.tr, style: customisedStyle(context, Colors.black, FontWeight.w600, 15.0)),
-                                Text(reportsList[index].total, style: customisedStyle(context, Colors.black, FontWeight.w600, 15.0)),
-                              ],
-                            ),
-                          ]),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(reportsList[index].voucherNo,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            14.0)),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(reportsList[index].date,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.w500,
+                                            12.0)),
+                                    //   style: TextStyle(color: Color(0xff585858)),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    reportsList[index].tableName == ""
+                                        ? Container()
+                                        : Text(reportsList[index].tableName,
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w500,
+                                                14.0)),
+                                    //    style: TextStyle(fontWeight: FontWeight.w500)),
+                                    Text(reportsList[index].custName,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.w500,
+                                            12.0)),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('total'.tr,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w600,
+                                            15.0)),
+                                    Text(reportsList[index].total,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w600,
+                                            15.0)),
+                                  ],
+                                ),
+                              ]),
                         ),
                       ),
                     );
@@ -7118,42 +8355,59 @@ class _ReportPageState extends State<ReportPageNew> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: ListTile(
-                        shape: RoundedRectangleBorder(side: const BorderSide(color: Color(0xffCFCFCF)), borderRadius: BorderRadius.circular(5.0)),
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Color(0xffCFCFCF)),
+                            borderRadius: BorderRadius.circular(5.0)),
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(reportsList[index].voucherNo, style: TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  reportsList[index].date,
-                                  style: TextStyle(color: Color(0xff585858)),
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                reportsList[index].tableName == ""
-                                    ? Container()
-                                    : Text(reportsList[index].tableName, style: TextStyle(fontWeight: FontWeight.w500)),
-                                Text(reportsList[index].custName, style: TextStyle(fontWeight: FontWeight.w500, color: Color(0xff585858))),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('total'.tr, style: TextStyle(fontWeight: FontWeight.bold)),
-                                Text(reportsList[index].total, style: TextStyle(fontWeight: FontWeight.bold))
-                              ],
-                            ),
-                          ]),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(reportsList[index].voucherNo,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(
+                                      reportsList[index].date,
+                                      style: const TextStyle(
+                                          color: Color(0xff585858)),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    reportsList[index].tableName == ""
+                                        ? Container()
+                                        : Text(reportsList[index].tableName,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w500)),
+                                    Text(reportsList[index].custName,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xff585858))),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('total'.tr,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(reportsList[index].total,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold))
+                                  ],
+                                ),
+                              ]),
                         ),
                       ),
                     );
@@ -7180,42 +8434,59 @@ class _ReportPageState extends State<ReportPageNew> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: ListTile(
-                        shape: RoundedRectangleBorder(side: const BorderSide(color: Color(0xffCFCFCF)), borderRadius: BorderRadius.circular(5.0)),
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Color(0xffCFCFCF)),
+                            borderRadius: BorderRadius.circular(5.0)),
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(reportsList[index].voucherNo, style: TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  reportsList[index].date,
-                                  style: TextStyle(color: Color(0xff585858)),
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                reportsList[index].tableName == ""
-                                    ? Container()
-                                    : Text(reportsList[index].tableName, style: TextStyle(fontWeight: FontWeight.w500)),
-                                Text(reportsList[index].custName, style: TextStyle(fontWeight: FontWeight.w500, color: Color(0xff585858))),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('total'.tr, style: TextStyle(fontWeight: FontWeight.bold)),
-                                Text(reportsList[index].total, style: TextStyle(fontWeight: FontWeight.bold))
-                              ],
-                            ),
-                          ]),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(reportsList[index].voucherNo,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(
+                                      reportsList[index].date,
+                                      style: const TextStyle(
+                                          color: Color(0xff585858)),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    reportsList[index].tableName == ""
+                                        ? Container()
+                                        : Text(reportsList[index].tableName,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w500)),
+                                    Text(reportsList[index].custName,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xff585858))),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('total'.tr,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(reportsList[index].total,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold))
+                                  ],
+                                ),
+                              ]),
                         ),
                       ),
                     );
@@ -7237,11 +8508,11 @@ class _ReportPageState extends State<ReportPageNew> {
             children: [
               Text(
                 'cash1'.tr,
-                style: TextStyle(color: Color(0xff0C4000), fontSize: 16),
+                style: const TextStyle(color: Color(0xff0C4000), fontSize: 16),
               ),
               Text(
-                '${roundStringWith(cashSum)}',
-                style: TextStyle(color: Color(0xff0C4000), fontSize: 20),
+                roundStringWith(cashSum),
+                style: const TextStyle(color: Color(0xff0C4000), fontSize: 20),
               ),
             ],
           ),
@@ -7249,11 +8520,11 @@ class _ReportPageState extends State<ReportPageNew> {
             children: [
               Text(
                 'bank1'.tr,
-                style: TextStyle(color: Color(0xff004067), fontSize: 16),
+                style: const TextStyle(color: Color(0xff004067), fontSize: 16),
               ),
               Text(
-                '${roundStringWith(bankSum)}',
-                style: TextStyle(color: Color(0xff004067), fontSize: 20),
+                roundStringWith(bankSum),
+                style: const TextStyle(color: Color(0xff004067), fontSize: 20),
               ),
             ],
           ),
@@ -7261,11 +8532,11 @@ class _ReportPageState extends State<ReportPageNew> {
             children: [
               Text(
                 'credit'.tr,
-                style: TextStyle(color: Color(0xffB44800), fontSize: 16),
+                style: const TextStyle(color: Color(0xffB44800), fontSize: 16),
               ),
               Text(
-                '${roundStringWith(creditSum)}',
-                style: TextStyle(color: Color(0xffB44800), fontSize: 20),
+                roundStringWith(creditSum),
+                style: const TextStyle(color: Color(0xffB44800), fontSize: 20),
               ),
             ],
           ),
@@ -7273,11 +8544,11 @@ class _ReportPageState extends State<ReportPageNew> {
             children: [
               Text(
                 'grand_tot'.tr,
-                style: TextStyle(color: Color(0xff000000), fontSize: 20),
+                style: const TextStyle(color: Color(0xff000000), fontSize: 20),
               ),
               Text(
-                '${roundStringWith(grandTotal.toString())}',
-                style: TextStyle(color: Color(0xff000000), fontSize: 20),
+                roundStringWith(grandTotal.toString()),
+                style: const TextStyle(color: Color(0xff000000), fontSize: 20),
               ),
             ],
           )
@@ -7305,40 +8576,69 @@ class _ReportPageState extends State<ReportPageNew> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: ListTile(
-                        shape: RoundedRectangleBorder(side: const BorderSide(color: Color(0xffCFCFCF)), borderRadius: BorderRadius.circular(5.0)),
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Color(0xffCFCFCF)),
+                            borderRadius: BorderRadius.circular(5.0)),
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(tableReportLists[index].voucherNo, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
-                                SizedBox(
-                                  height: 2,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(tableReportLists[index].voucherNo,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            14.0)),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(tableReportLists[index].tokenNumber,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.w500,
+                                            12.0))
+                                  ],
                                 ),
-                                Text(tableReportLists[index].tokenNumber, style: customisedStyle(context, Color(0xff585858), FontWeight.w500, 12.0))
-                              ],
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(tableReportLists[index].tableName, style: customisedStyle(context, Colors.black, FontWeight.w500, 14.0)),
-                                Text(tableReportLists[index].custName, style: customisedStyle(context, Color(0xff585858), FontWeight.w500, 12.0))
-                              ],
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Total " + roundStringWith(tableReportLists[index].total),
-                                    style: customisedStyle(context, Colors.black, FontWeight.w500, 15.0)),
-                              ],
-                            ),
-                          ]),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(tableReportLists[index].tableName,
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            14.0)),
+                                    Text(tableReportLists[index].custName,
+                                        style: customisedStyle(
+                                            context,
+                                            const Color(0xff585858),
+                                            FontWeight.w500,
+                                            12.0))
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                        "Total ${roundStringWith(tableReportLists[index].total)}",
+                                        style: customisedStyle(
+                                            context,
+                                            Colors.black,
+                                            FontWeight.w500,
+                                            15.0)),
+                                  ],
+                                ),
+                              ]),
                         ),
                       ),
                     );
@@ -7365,77 +8665,152 @@ class _ReportPageState extends State<ReportPageNew> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: ListTile(
-                        shape: RoundedRectangleBorder(side: const BorderSide(color: Color(0xffCFCFCF)), borderRadius: BorderRadius.circular(5.0)),
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Color(0xffCFCFCF)),
+                            borderRadius: BorderRadius.circular(5.0)),
                         title: Container(
                           //  height: MediaQuery.of(context).size.height/18,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                              Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(productReportLists[index].date, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 14.0)),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 5,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text('Product'.tr, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 14.0)
-                                        // style: TextStyle(color: Color(0xff585858)),
-                                        ),
-                                    Text(productReportLists[index].productName,
-                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 13.50)),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 12,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text('Price'.tr, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 14.0)),
-                                    Text(roundStringWith(productReportLists[index].rate),
-                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.50)),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 12,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text('no_sold'.tr, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 14.0)),
-                                    Row(
-                                      children: [
-                                        Text(roundStringWith(productReportLists[index].noOfSold),
-                                            style: customisedStyle(context, Colors.black, FontWeight.w500, 15.50)),
-                                        Text(" ${productReportLists[index].unitName}",
-                                            style: customisedStyle(context, Colors.blueGrey, FontWeight.w400, 12.50)),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(productReportLists[index].date,
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff585858),
+                                                FontWeight.normal,
+                                                14.0)),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 10,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Total'.tr, style: customisedStyle(context, Color(0xff585858), FontWeight.normal, 14.0)),
-                                    Text(roundStringWith(productReportLists[index].grandTotal),
-                                        style: customisedStyle(context, Colors.black, FontWeight.w500, 15.50)),
-                                  ],
-                                ),
-                              ),
-                            ]),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 5,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text('Product'.tr,
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff585858),
+                                                FontWeight.normal,
+                                                14.0)
+                                            // style: TextStyle(color: Color(0xff585858)),
+                                            ),
+                                        Text(
+                                            productReportLists[index]
+                                                .productName,
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w500,
+                                                13.50)),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text('Price'.tr,
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff585858),
+                                                FontWeight.normal,
+                                                14.0)),
+                                        Text(
+                                            roundStringWith(
+                                                productReportLists[index].rate),
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w500,
+                                                15.50)),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 12,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text('no_sold'.tr,
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff585858),
+                                                FontWeight.normal,
+                                                14.0)),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                roundStringWith(
+                                                    productReportLists[index]
+                                                        .noOfSold),
+                                                style: customisedStyle(
+                                                    context,
+                                                    Colors.black,
+                                                    FontWeight.w500,
+                                                    15.50)),
+                                            Text(
+                                                " ${productReportLists[index].unitName}",
+                                                style: customisedStyle(
+                                                    context,
+                                                    Colors.blueGrey,
+                                                    FontWeight.w400,
+                                                    12.50)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 10,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text('Total'.tr,
+                                            style: customisedStyle(
+                                                context,
+                                                const Color(0xff585858),
+                                                FontWeight.normal,
+                                                14.0)),
+                                        Text(
+                                            roundStringWith(
+                                                productReportLists[index]
+                                                    .grandTotal),
+                                            style: customisedStyle(
+                                                context,
+                                                Colors.black,
+                                                FontWeight.w500,
+                                                15.50)),
+                                      ],
+                                    ),
+                                  ),
+                                ]),
                           ),
                         ),
                       ),
@@ -7449,11 +8824,11 @@ class _ReportPageState extends State<ReportPageNew> {
   ///select product and table
   selectProductAndTableList() {
     if (type == 1) {
-      return Column();
+      return const Column();
     } else if (type == 2) {
-      return Column();
+      return const Column();
     } else if (type == 3) {
-      return Column(
+      return const Column(
         children: [
           // Padding(
           //   padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -7549,9 +8924,9 @@ class _ReportPageState extends State<ReportPageNew> {
         ],
       );
     } else if (type == 4) {
-      return Column();
+      return const Column();
     } else if (type == 5) {
-      return Column();
+      return const Column();
     } else if (type == 6) {
       ///table list view
       return ListView(
@@ -7561,14 +8936,15 @@ class _ReportPageState extends State<ReportPageNew> {
             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
             child: Text('select_table'.tr,
                 // style: TextStyle(fontWeight: FontWeight.w800),
-                style: customisedStyle(context, Colors.black, FontWeight.w500, 13.0)),
+                style: customisedStyle(
+                    context, Colors.black, FontWeight.w500, 13.0)),
           ),
 
           GestureDetector(
             onTap: () async {
               var result = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SelectTable()),
+                MaterialPageRoute(builder: (context) => const SelectTable()),
               );
               if (result != null) {
                 setState(() {
@@ -7583,7 +8959,8 @@ class _ReportPageState extends State<ReportPageNew> {
                   color: Colors.grey, // Border color
                   width: 0.5, // Border width
                 ),
-                borderRadius: BorderRadius.circular(5.0), // Optional: Add rounded corners
+                borderRadius:
+                    BorderRadius.circular(5.0), // Optional: Add rounded corners
               ),
               height: MediaQuery.of(context).size.height * .07,
               width: MediaQuery.of(context).size.width / 8,
@@ -7594,19 +8971,20 @@ class _ReportPageState extends State<ReportPageNew> {
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Text(
                       title,
-                      style: customisedStyle(context, Colors.black, FontWeight.normal, 13.0),
+                      style: customisedStyle(
+                          context, Colors.black, FontWeight.normal, 13.0),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: const Icon(Icons.arrow_drop_down),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Icon(Icons.arrow_drop_down),
                   ),
                 ],
               ),
             ),
           ),
 
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -7621,7 +8999,7 @@ class _ReportPageState extends State<ReportPageNew> {
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Container(
-              color: Color(0xffffffff),
+              color: const Color(0xffffffff),
               height: MediaQuery.of(context).size.height / 14.5,
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0, left: 8.0),
@@ -7638,7 +9016,8 @@ class _ReportPageState extends State<ReportPageNew> {
                         });
                       },
                       child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
                         height: MediaQuery.of(context).size.height * .07,
                         width: MediaQuery.of(context).size.width / 8,
                         child: Row(
@@ -7661,7 +9040,9 @@ class _ReportPageState extends State<ReportPageNew> {
                             //     "assets/svg/checkmark-filled.svg",height: 20,),
                             // ),
                             Container(
-                              child: Text('Product'.tr, style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                              child: Text('Product'.tr,
+                                  style: customisedStyle(context, Colors.black,
+                                      FontWeight.normal, 12.0)),
                             )
                           ],
                         ),
@@ -7676,7 +9057,8 @@ class _ReportPageState extends State<ReportPageNew> {
                         });
                       },
                       child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
                         height: MediaQuery.of(context).size.height * .07,
                         width: MediaQuery.of(context).size.width / 7,
                         child: Row(
@@ -7698,7 +9080,9 @@ class _ReportPageState extends State<ReportPageNew> {
                             //     "assets/svg/checkmark-filled_selected.svg",height: 20),
                             // ),
                             Container(
-                              child: Text('product_group'.tr, style: customisedStyle(context, Colors.black, FontWeight.normal, 12.0)),
+                              child: Text('product_group'.tr,
+                                  style: customisedStyle(context, Colors.black,
+                                      FontWeight.normal, 12.0)),
                             )
                           ],
                         ),
@@ -7794,12 +9178,13 @@ class _ReportPageState extends State<ReportPageNew> {
               if (productType) {
                 result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SelectProduct()),
+                  MaterialPageRoute(
+                      builder: (context) => const SelectProduct()),
                 );
               } else {
                 result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SelectGroup()),
+                  MaterialPageRoute(builder: (context) => const SelectGroup()),
                 );
               }
 
@@ -7824,24 +9209,24 @@ class _ReportPageState extends State<ReportPageNew> {
                   //   isSearch=false;
                   // });
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_drop_down,
                   color: Colors.black,
                 ),
               ),
-              contentPadding: EdgeInsets.all(8),
+              contentPadding: const EdgeInsets.all(8),
               hintText: 'search'.tr,
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
             ),
           ),
 
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
         ],
       );
     } else if (type == 8) {
-      return Column(
+      return const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// commented
@@ -7913,7 +9298,14 @@ class _ReportPageState extends State<ReportPageNew> {
       print(url);
       print(accessToken);
 
-      Map data = {"CompanyID": companyID, "BranchID": branchID, "PriceRounding": 2, "search": name, "CreatedUserID": userID, "is_deliveryman": true};
+      Map data = {
+        "CompanyID": companyID,
+        "BranchID": branchID,
+        "PriceRounding": 2,
+        "search": name,
+        "CreatedUserID": userID,
+        "is_deliveryman": true
+      };
       print(data);
 
       print(data);
@@ -7992,7 +9384,7 @@ class _ReportPageState extends State<ReportPageNew> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt('user_id') ?? 0;
 
         var accessToken = prefs.getString('access') ?? '';
@@ -8014,8 +9406,8 @@ class _ReportPageState extends State<ReportPageNew> {
           "DeliveryManID": deliveryManID,
           "FromDate": apiDateFormat.format(fromDateNotifier.value),
           "ToDate": apiDateFormat.format(toDateNotifier.value),
-          "FromTime":timeFormatApiFormat.format(fromTimeNotifier.value),
-          "ToTime":timeFormatApiFormat.format(toTimeNotifier.value),
+          "FromTime": timeFormatApiFormat.format(fromTimeNotifier.value),
+          "ToTime": timeFormatApiFormat.format(toTimeNotifier.value),
           "CreatedUserID": userID,
         };
 
@@ -8039,8 +9431,8 @@ class _ReportPageState extends State<ReportPageNew> {
         var responseJson1 = n["sum_values"];
         if (status == 6000) {
           setState(() {
-           // productID = 0;
-           // tableID = "";
+            // productID = 0;
+            // tableID = "";
 
             reportsList.clear();
             stop();
@@ -8092,7 +9484,7 @@ class _ReportPageState extends State<ReportPageNew> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt('user_id') ?? 0;
 
         var accessToken = prefs.getString('access') ?? '';
@@ -8109,8 +9501,8 @@ class _ReportPageState extends State<ReportPageNew> {
           "filterVal": [productID],
           "FromDate": apiDateFormat.format(fromDateNotifier.value),
           "ToDate": apiDateFormat.format(toDateNotifier.value),
-          "FromTime":timeFormatApiFormat.format(fromTimeNotifier.value),
-          "ToTime":timeFormatApiFormat.format(toTimeNotifier.value),
+          "FromTime": timeFormatApiFormat.format(fromTimeNotifier.value),
+          "ToTime": timeFormatApiFormat.format(toTimeNotifier.value),
           "CreatedUserID": userID,
           "is_productgroup": !productType
         };
@@ -8139,7 +9531,7 @@ class _ReportPageState extends State<ReportPageNew> {
 
         if (status == 6000) {
           setState(() {
-           // productID = 0;
+            // productID = 0;
             productReportLists.clear();
             details = n["data"];
             stop();
@@ -8167,9 +9559,7 @@ class _ReportPageState extends State<ReportPageNew> {
           stop();
         }
       } catch (e) {
-
-          stop();
-
+        stop();
       }
     }
   }
@@ -8186,7 +9576,7 @@ class _ReportPageState extends State<ReportPageNew> {
         String baseUrl = BaseUrl.baseUrl;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var companyID = prefs.getString('companyID') ?? 0;
-         var branchID = prefs.getInt('branchID') ?? 1;
+        var branchID = prefs.getInt('branchID') ?? 1;
         var userID = prefs.getInt('user_id') ?? 0;
 
         var accessToken = prefs.getString('access') ?? '';
@@ -8205,8 +9595,8 @@ class _ReportPageState extends State<ReportPageNew> {
           "filterVal": tableID,
           "FromDate": apiDateFormat.format(fromDateNotifier.value),
           "ToDate": apiDateFormat.format(toDateNotifier.value),
-          "FromTime":timeFormatApiFormat.format(fromTimeNotifier.value),
-          "ToTime":timeFormatApiFormat.format(toTimeNotifier.value),
+          "FromTime": timeFormatApiFormat.format(fromTimeNotifier.value),
+          "ToTime": timeFormatApiFormat.format(toTimeNotifier.value),
           "CreatedUserID": userID
         };
 
@@ -8233,7 +9623,7 @@ class _ReportPageState extends State<ReportPageNew> {
 
         if (status == 6000) {
           setState(() {
-           // tableID = "";
+            // tableID = "";
             stop();
             details = n["data"];
             tableReportLists.clear();
@@ -8276,7 +9666,8 @@ class _ReportPageState extends State<ReportPageNew> {
     }
   }
 
-  showDatePickerFunction(context, ValueNotifier dateNotifier, ValueNotifier timeNotifier) {
+  showDatePickerFunction(
+      context, ValueNotifier dateNotifier, ValueNotifier timeNotifier) {
     final mHeight = MediaQuery.of(context).size.height;
     final mWidth = MediaQuery.of(context).size.width / 2;
     showDialog(
@@ -8295,11 +9686,13 @@ class _ReportPageState extends State<ReportPageNew> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: mWidth * .13, top: mHeight * .01),
+                    padding:
+                        EdgeInsets.only(left: mWidth * .13, top: mHeight * .01),
                     child: Center(
                       child: Text(
                         'select_date'.tr,
-                        style: customisedStyle(context, Colors.black, FontWeight.bold, 18.0),
+                        style: customisedStyle(
+                            context, Colors.black, FontWeight.bold, 18.0),
                       ),
                     ),
                   ),
@@ -8315,7 +9708,8 @@ class _ReportPageState extends State<ReportPageNew> {
                   );
                   if (pickedTime != null) {
                     setState(() {
-                      timeNotifier.value = DateFormat.jm().parse(pickedTime.format(context).toString());
+                      timeNotifier.value = DateFormat.jm()
+                          .parse(pickedTime.format(context).toString());
                     });
                   } else {}
 
@@ -8334,11 +9728,12 @@ class _ReportPageState extends State<ReportPageNew> {
     );
   }
 
+  var printHelperUsb = USBPrintClass();
+  var printHelperIP = AppBlocs();
 
-  var printHelperUsb =   USBPrintClass();
-  var printHelperIP =   AppBlocs();
-
-  printDetail({required heading,required details,
+  printDetail({
+    required heading,
+    required details,
     required reportType,
     required totalCash,
     required totalBank,
@@ -8355,28 +9750,35 @@ class _ReportPageState extends State<ReportPageNew> {
     if (defaultIp == "") {
       dialogBox(context, "Please select a printer");
     } else {
-      if(printType =='Wifi'){
+      if (printType == 'Wifi') {
         //  var ret = await printHelperIP.printDetails();
-        var ret=2;
+        var ret = 2;
         if (ret == 2) {
-          printHelperIP.print_report(printerIp: defaultIp,reportTypeR: reportType,ctx: context,detailsR: details,dateR: heading,
-              totalBankR: bankSum,
-              totalCashR: cashSum,
-              totalCreditR: creditSum,
-              totalGrandR: grandTotal,
-                fromTime:[],
-                userName:[],
-                effectiveSale:[],  orderDetails:[],  saleByType:[],  salesOrder:[],  totalRevenue:[],
-
+          printHelperIP.print_report(
+            printerIp: defaultIp,
+            reportTypeR: reportType,
+            ctx: context,
+            detailsR: details,
+            dateR: heading,
+            totalBankR: bankSum,
+            totalCashR: cashSum,
+            totalCreditR: creditSum,
+            totalGrandR: grandTotal,
+            fromTime: [],
+            userName: [],
+            effectiveSale: [],
+            orderDetails: [],
+            saleByType: [],
+            salesOrder: [],
+            totalRevenue: [],
           );
         } else {
           dialogBox(context, 'Please try again later');
         }
         //
-      }
-      else{
+      } else {
         var ret = await printHelperUsb.reportPrint(
-          template: temp,
+            template: temp,
             capabilities: capabilities,
             printerIP: defaultIp,
             invoiceType: reportType,
@@ -8385,8 +9787,7 @@ class _ReportPageState extends State<ReportPageNew> {
             totalBank: bankSum,
             totalCash: cashSum,
             totalCredit: creditSum,
-            totalGrand: grandTotal
-        );
+            totalGrand: grandTotal);
         // if (ret == 2) {
         //
         //   var ip = "";
@@ -8395,14 +9796,13 @@ class _ReportPageState extends State<ReportPageNew> {
         // } else {
         //   dialogBox(context, 'Please try again later');
         // }
-
       }
-
     }
-
   }
+
   /// convert to pdf
-  _navigatePrinter(BuildContext context, heading, details, printType,html) async {
+  _navigatePrinter(
+      BuildContext context, heading, details, printType, html) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -8410,7 +9810,7 @@ class _ReportPageState extends State<ReportPageNew> {
                 heading: head,
                 details: details,
                 printType: printType,
-               html: html,
+                html: html,
               )),
     );
     print(result);
@@ -8418,6 +9818,7 @@ class _ReportPageState extends State<ReportPageNew> {
     } else {}
   }
 
+  @override
   void dispose() {
     super.dispose();
     stop();
@@ -8427,7 +9828,13 @@ class _ReportPageState extends State<ReportPageNew> {
 List<EmployeeModel> empListsList = [];
 
 class EmployeeModel {
-  String empName, sales, sale_amount, cancelled, cancelled_amount, pending, pending_amount;
+  String empName,
+      sales,
+      sale_amount,
+      cancelled,
+      cancelled_amount,
+      pending,
+      pending_amount;
 
   EmployeeModel({
     required this.empName,
@@ -8454,7 +9861,12 @@ class EmployeeModel {
 List<SaleEmployModel> saleEmpModelList = [];
 
 class SaleEmployModel {
-  String emplyee_name, sales, sale_amount, returns, return_amount, effective_sale;
+  String emplyee_name,
+      sales,
+      sale_amount,
+      returns,
+      return_amount,
+      effective_sale;
 
   SaleEmployModel({
     required this.emplyee_name,
@@ -8481,7 +9893,13 @@ List<ReportModel> reportsList = [];
 class ReportModel {
   String id, voucherNo, date, custName, tableName, total;
 
-  ReportModel({required this.id, required this.tableName, required this.voucherNo, required this.date, required this.custName, required this.total});
+  ReportModel(
+      {required this.id,
+      required this.tableName,
+      required this.voucherNo,
+      required this.date,
+      required this.custName,
+      required this.total});
 
   factory ReportModel.fromJson(Map<dynamic, dynamic> json) {
     return ReportModel(
