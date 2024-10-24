@@ -96,6 +96,21 @@ customisedStyle(context, Colors, FontWeight, fontSize) {
           TextStyle(fontWeight: FontWeight, color: Colors, fontSize: fontSize));
 }
 
+TextStyle googleFontStyle({ //!For RMS Reports
+  fontFamily = 'Poppins',
+  FontWeight fontWeight = FontWeight.normal,
+  Color color = Colors.black,
+  double fontSize = 12,
+}) {
+  return GoogleFonts.getFont(
+    fontFamily,
+    fontWeight: fontWeight,
+    color: color,
+    fontSize: fontSize,
+  );
+}
+
+
 checkingPerm(item) async {
   print("object $item");
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -138,17 +153,17 @@ String baseURlApi = '';
 
 class BaseUrl {
   /// server details
-  static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
-  static String baseUrl = "$baseURlApi/api/v10";
-  static String baseUrlV11 = "$baseURlApi/api/v11";
-  static String imageURL = '$baseURlApi/media/';
-
-  ///
-  ///  test
-  // static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
+  // static String baseUrlAuth = 'https://api.accounts.vikncodes.com/api/v1';
   // static String baseUrl = "$baseURlApi/api/v10";
   // static String baseUrlV11 = "$baseURlApi/api/v11";
   // static String imageURL = '$baseURlApi/media/';
+
+  ///
+   ///0 test
+  static String baseUrlAuth = 'https://api.accounts.vikncodes.in/api/v1';
+  static String baseUrl = "$baseURlApi/api/v10";
+  static String baseUrlV11 = "$baseURlApi/api/v11";
+  static String imageURL = '$baseURlApi/media/';
 
   //
   // local

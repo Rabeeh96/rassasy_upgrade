@@ -132,7 +132,6 @@ class _DragTableListState extends State<DragTableList> {
             tableDetailList.add(dragList);
 
             print("Table reorder:  $tableDetailList");
-            // print("Table :  ${tableListController.tableList[i]}");
           }
           tableListController.updateTables(
               type: 'Update', reOrderList: tableDetailList);
