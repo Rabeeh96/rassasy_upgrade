@@ -16,6 +16,7 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
   final ReportController reportController = Get.put(ReportController());
   final FocusNode _focusNode = FocusNode();
   DateTime _selectedDate = DateTime.now();
+
   void _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -78,10 +79,8 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(16.0),
@@ -95,14 +94,10 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     Icons.arrow_back,
                                                     color: Colors.black,
                                                   )),
-                                              SizedBox(
-                                                  width:
-                                                      screenSize.width * 0.01),
+                                              SizedBox(width: screenSize.width * 0.01),
                                               Text(
                                                 "Report",
-                                                style: googleFontStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18),
+                                                style: googleFontStyle(fontWeight: FontWeight.bold, fontSize: 18),
                                               ),
                                             ],
                                           ),
@@ -120,75 +115,41 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                           child: Column(
                                             children: [
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    reportController
-                                                                .selectedValue
-                                                                .value ==
-                                                            'Invoice'
+                                                    reportController.selectedValue.value == 'Invoice'
                                                         ? 'Invoice Report'
-                                                        : reportController
-                                                                    .selectedValue
-                                                                    .value ==
-                                                                'Sales'
+                                                        : reportController.selectedValue.value == 'Sales'
                                                             ? 'Sales Report'
-                                                            : reportController
-                                                                        .selectedValue
-                                                                        .value ==
-                                                                    'Salesorder'
+                                                            : reportController.selectedValue.value == 'Salesorder'
                                                                 ? 'Sales Order Report'
-                                                                : reportController
-                                                                            .selectedValue
-                                                                            .value ==
-                                                                        'Product'
+                                                                : reportController.selectedValue.value == 'Product'
                                                                     ? 'Product Report'
-                                                                    : reportController.selectedValue.value ==
-                                                                            'Tablewise'
+                                                                    : reportController.selectedValue.value == 'Tablewise'
                                                                         ? 'Table Wise Report'
-                                                                        : reportController.selectedValue.value ==
-                                                                                'Dailysummary'
+                                                                        : reportController.selectedValue.value == 'Dailysummary'
                                                                             ? 'Daily Summary'
                                                                             : '',
                                                     style: googleFontStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 16,
                                                     ),
                                                   ),
                                                   Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.grey)),
+                                                    decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                                                     child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
+                                                      padding: const EdgeInsets.all(8.0),
                                                       child: Row(
                                                         children: [
                                                           Text(
                                                             'Dining- 01 ',
-                                                            style: googleFontStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                            style: googleFontStyle(fontWeight: FontWeight.bold),
                                                           ),
                                                           const Text("|"),
-                                                          Text(
-                                                              ' Take Away- 03 ',
-                                                              style: googleFontStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
+                                                          Text(' Take Away- 03 ', style: googleFontStyle(fontWeight: FontWeight.bold)),
                                                           const Text("|"),
-                                                          Text(' Online- 01',
-                                                              style: googleFontStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
+                                                          Text(' Online- 01', style: googleFontStyle(fontWeight: FontWeight.bold)),
                                                         ],
                                                       ),
                                                     ),
@@ -197,121 +158,75 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     children: [
                                                       ElevatedButton(
                                                         onPressed: () {},
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          minimumSize:
-                                                              const Size(
-                                                                  120, 45),
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          side: const BorderSide(
-                                                              width: 1,
-                                                              color: Color(
-                                                                  0xFFDFE1E7)),
+                                                        style: ElevatedButton.styleFrom(
+                                                          minimumSize: const Size(120, 45),
+                                                          backgroundColor: Colors.white,
+                                                          side: const BorderSide(width: 1, color: Color(0xFFDFE1E7)),
                                                         ),
                                                         child: Row(
                                                           children: [
                                                             const Icon(
-                                                              Icons
-                                                                  .cloud_download_outlined,
-                                                              color: Color(
-                                                                  0xFF394358),
+                                                              Icons.cloud_download_outlined,
+                                                              color: Color(0xFF394358),
                                                             ),
                                                             Text(
                                                               " Export",
-                                                              style:
-                                                                  googleFontStyle(
-                                                                color: const Color(
-                                                                    0xFF394358),
+                                                              style: googleFontStyle(
+                                                                color: const Color(0xFF394358),
                                                               ),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
-                                                      SizedBox(
-                                                          width:
-                                                              screenSize.width *
-                                                                  0.01),
+                                                      SizedBox(width: screenSize.width * 0.01),
                                                       ElevatedButton(
-                                                        onPressed: () {},
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          minimumSize:
-                                                              const Size(
-                                                                  120, 45),
-                                                          backgroundColor:
-                                                              const Color(
-                                                                  0xFF0A46A1),
+                                                        onPressed: () {
+                                                          reportController.getSalesReport();
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                          minimumSize: const Size(120, 45),
+                                                          backgroundColor: const Color(0xFF0A46A1),
                                                         ),
                                                         child: const Text(
                                                           "Print",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
+                                                          style: TextStyle(color: Colors.white),
                                                         ),
                                                       )
                                                     ],
                                                   )
                                                 ],
                                               ),
-                                              SizedBox(
-                                                  height:
-                                                      screenSize.height * 0.01),
+                                              SizedBox(height: screenSize.height * 0.01),
                                               SizedBox(
                                                   // color: Colors.blue,
                                                   width: screenSize.width,
-                                                  height:
-                                                      screenSize.height * 0.7,
+                                                  height: screenSize.height * 0.7,
                                                   child: SingleChildScrollView(
-                                                    physics:
-                                                        const BouncingScrollPhysics(),
+                                                    physics: const BouncingScrollPhysics(),
                                                     child: Column(
                                                       children: [
-                                                        if (reportController
-                                                                .reporttype
-                                                                .value ==
-                                                            'Daily Summary') ...[
+                                                        if (reportController.reporttype.value == 'Daily Summary') ...[
                                                           const Rms()
-                                                        ] else if (reportController
-                                                                .reporttype
-                                                                .value ==
-                                                            'Sales Report') ...[
+                                                        ] else if (reportController.reporttype.value == 'Sales Report') ...[
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(16.0),
+                                                            padding: const EdgeInsets.all(16.0),
                                                             child: SizedBox(
-                                                                height: screenSize
-                                                                        .height *
-                                                                    0.8,
+                                                                height: screenSize.height * 0.8,
                                                                 child: Obx(
                                                                   () {
-                                                                    if (reportController
-                                                                        .salesReportList
-                                                                        .isEmpty) {
-                                                                      return const Center(
-                                                                          child:
-                                                                              Text('No data available'));
+                                                                    if (reportController.salesReportList.value.data!.isEmpty) {
+                                                                      return const Center(child: Text('No data available'));
                                                                       // return const Center(
                                                                       //     child:
                                                                       //         CircularProgressIndicator());
                                                                     } else {
-                                                                      return ListView
-                                                                          .builder(
-                                                                        itemCount: reportController
-                                                                            .salesReportList
-                                                                            .length,
-                                                                        itemBuilder:
-                                                                            (context,
-                                                                                index) {
-                                                                          final reportData =
-                                                                              reportController.salesReportList[index];
-                                                                          pr(reportData
-                                                                              .data);
-                                                                          return const ListTile(
-                                                                            title:
-                                                                                Text(
-                                                                              'Voucher No: }',
+                                                                      return ListView.builder(
+                                                                        itemCount: reportController.salesReportList.value.data!.length,
+                                                                        itemBuilder: (context, index) {
+                                                                          var reportData = reportController.salesReportList.value.data![index];
+                                                                          return   ListTile(
+                                                                            title: Text(
+                                                                              'Voucher No: ${reportData.tokenNumber}',
                                                                             ),
                                                                           );
                                                                         },
@@ -322,20 +237,16 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                           )
                                                         ] else ...[
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(16.0),
+                                                            padding: const EdgeInsets.all(16.0),
                                                             child: Column(
-                                                              children:
-                                                                  List.generate(
+                                                              children: List.generate(
                                                                 3,
                                                                 (index) {
                                                                   return Column(
                                                                     children: [
                                                                       ReportList(),
                                                                       SizedBox(
-                                                                        height: screenSize.height *
-                                                                            0.01,
+                                                                        height: screenSize.height * 0.01,
                                                                       ),
                                                                     ],
                                                                   );
@@ -351,51 +262,29 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                               //   height:
                                               //       screenSize.height * 0.01,
                                               // ),
-                                              if (reportController
-                                                          .reporttype.value ==
-                                                      "Invoice Report" ||
-                                                  reportController
-                                                          .reporttype.value ==
-                                                      "Sales Report" ||
-                                                  reportController
-                                                          .reporttype.value ==
-                                                      "Sales Order Report") ...[
+                                              if (reportController.reporttype.value == "Invoice Report" ||
+                                                  reportController.reporttype.value == "Sales Report" ||
+                                                  reportController.reporttype.value == "Sales Order Report") ...[
                                                 Container(
                                                   color: Colors.white,
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
+                                                    padding: const EdgeInsets.all(16.0),
                                                     child: Column(
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                           children: [
                                                             Row(
                                                               children: [
                                                                 Text(
                                                                   "Gross: ",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xFF0C4000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xFF0C4000), fontWeight: FontWeight.w400, fontSize: 16),
                                                                 ),
                                                                 Text(
                                                                   "Rs.2123.00",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xFF0C4000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xFF0C4000), fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                               ],
                                                             ),
@@ -404,24 +293,12 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                                 Text(
                                                                   "Tax: ",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xFF004067),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xFF004067), fontWeight: FontWeight.w400, fontSize: 16),
                                                                 ),
                                                                 Text(
                                                                   "Rs.2123.00",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xFF004067),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xFF004067), fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                               ],
                                                             ),
@@ -430,24 +307,12 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                                 Text(
                                                                   "Bill Discount: ",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xFFB44800),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xFFB44800), fontWeight: FontWeight.w400, fontSize: 16),
                                                                 ),
                                                                 Text(
                                                                   "Rs.2123.00",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xFFB44800),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xFFB44800), fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                               ],
                                                             ),
@@ -456,24 +321,12 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                                 Text(
                                                                   "Total: ",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.w400, fontSize: 16),
                                                                 ),
                                                                 Text(
                                                                   "Rs.2123.00",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                               ],
                                                             ),
@@ -483,75 +336,42 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     ),
                                                   ),
                                                 ),
-                                              ] else if (reportController
-                                                      .reporttype.value ==
-                                                  "Product Report") ...[
+                                              ] else if (reportController.reporttype.value == "Product Report") ...[
                                                 Container(
                                                   color: Colors.white,
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
+                                                    padding: const EdgeInsets.all(16.0),
                                                     child: Column(
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
+                                                          mainAxisAlignment: MainAxisAlignment.end,
                                                           children: [
                                                             Row(
                                                               children: [
                                                                 Text(
                                                                   "Total Sold: ",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.w400, fontSize: 16),
                                                                 ),
                                                                 Text(
                                                                   "Rs.150",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                               ],
                                                             ),
-                                                            SizedBox(
-                                                                width: screenSize
-                                                                        .width *
-                                                                    0.03),
+                                                            SizedBox(width: screenSize.width * 0.03),
                                                             Row(
                                                               children: [
                                                                 Text(
                                                                   "Total: ",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.w400, fontSize: 16),
                                                                 ),
                                                                 Text(
                                                                   "Rs.2000.00",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                               ],
                                                             ),
@@ -561,75 +381,42 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     ),
                                                   ),
                                                 ),
-                                              ] else if (reportController
-                                                      .reporttype.value ==
-                                                  "Table Wise Report") ...[
+                                              ] else if (reportController.reporttype.value == "Table Wise Report") ...[
                                                 Container(
                                                   color: Colors.white,
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
+                                                    padding: const EdgeInsets.all(16.0),
                                                     child: Column(
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
+                                                          mainAxisAlignment: MainAxisAlignment.end,
                                                           children: [
                                                             Row(
                                                               children: [
                                                                 Text(
                                                                   "Ordered Amount: ",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.w400, fontSize: 16),
                                                                 ),
                                                                 Text(
                                                                   "Rs.2123.00",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                               ],
                                                             ),
-                                                            SizedBox(
-                                                                width: screenSize
-                                                                        .width *
-                                                                    0.03),
+                                                            SizedBox(width: screenSize.width * 0.03),
                                                             Row(
                                                               children: [
                                                                 Text(
                                                                   "Total Sales: ",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.w400, fontSize: 16),
                                                                 ),
                                                                 Text(
                                                                   "Rs.2123.00",
                                                                   style: googleFontStyle(
-                                                                      color: const Color(
-                                                                          0xff000000),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          16),
+                                                                      color: const Color(0xff000000), fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                               ],
                                                             ),
@@ -657,8 +444,7 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                             children: [
                               Container(
                                 height: constraints.maxHeight * 0.1,
-                                width: constraints.maxWidth -
-                                    (constraints.maxWidth * 0.7),
+                                width: constraints.maxWidth - (constraints.maxWidth * 0.7),
                                 decoration: const BoxDecoration(
                                   color: Color(0xFFF6F8FE),
                                   border: Border(
@@ -673,9 +459,7 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.more_vert)),
+                                      child: IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
                                     ),
                                   ],
                                 ),
@@ -684,8 +468,7 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                 children: [
                                   Container(
                                     height: constraints.maxHeight * 0.9,
-                                    width: constraints.maxWidth -
-                                        (constraints.maxWidth * 0.7),
+                                    width: constraints.maxWidth - (constraints.maxWidth * 0.7),
                                     decoration: const BoxDecoration(
                                       color: Color(0xFFF6F8FE),
                                       border: Border(
@@ -696,201 +479,115 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 25,
-                                          right: 25,
-                                          top: 8,
-                                          bottom: 25),
+                                      padding: const EdgeInsets.only(left: 25, right: 25, top: 8, bottom: 25),
                                       child: Container(
                                         color: const Color(0xFFF6F8FE),
                                         child: SingleChildScrollView(
-                                          physics:
-                                              const BouncingScrollPhysics(),
+                                          physics: const BouncingScrollPhysics(),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   "Report Type",
-                                                  style: googleFontStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  style: googleFontStyle(fontWeight: FontWeight.bold),
                                                 ),
-                                                SizedBox(
-                                                    height: screenSize.height *
-                                                        0.01),
+                                                SizedBox(height: screenSize.height * 0.01),
                                                 Center(
                                                   child: Container(
                                                     width: screenSize.width,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      border: Border.all(
-                                                          color: Colors.grey),
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      border: Border.all(color: Colors.grey),
                                                     ),
-                                                    child:
-                                                        DropdownButtonFormField<
-                                                            String>(
+                                                    child: DropdownButtonFormField<String>(
                                                       icon: const Icon(null),
                                                       focusNode: _focusNode,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 15,
-                                                                horizontal: 15),
+                                                      decoration: InputDecoration(
+                                                        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                                                         suffixIcon: const Icon(
-                                                          Icons
-                                                              .keyboard_arrow_down_outlined,
-                                                          color:
-                                                              Color(0xFF000000),
+                                                          Icons.keyboard_arrow_down_outlined,
+                                                          color: Color(0xFF000000),
                                                         ),
                                                         fillColor: Colors.white,
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          borderSide:
-                                                              const BorderSide(
-                                                                  width: 0.1,
-                                                                  color: Colors
-                                                                      .grey),
+                                                        focusedBorder: OutlineInputBorder(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                         ),
-                                                        border:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          borderSide:
-                                                              const BorderSide(
-                                                                  width: 0.1,
-                                                                  color: Colors
-                                                                      .grey),
+                                                        border: OutlineInputBorder(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                         ),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          borderSide:
-                                                              const BorderSide(
-                                                                  width: 0.1,
-                                                                  color: Colors
-                                                                      .grey),
+                                                        enabledBorder: OutlineInputBorder(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                         ),
                                                       ),
-                                                      value: reportController
-                                                          .selectedValue.value,
+                                                      value: reportController.selectedValue.value,
                                                       onChanged: (value) {
-                                                        reportController
-                                                            .reportonChanged(
-                                                                value);
+                                                        reportController.reportonChanged(value);
                                                         _focusNode.unfocus();
                                                       },
-                                                      dropdownColor:
-                                                          Colors.white,
+                                                      dropdownColor: Colors.white,
                                                       items: const [
-                                                        DropdownMenuItem<
-                                                            String>(
+                                                        DropdownMenuItem<String>(
                                                           value: 'Invoice',
-                                                          child: Text(
-                                                              'Invoice Report'),
+                                                          child: Text('Invoice Report'),
                                                         ),
-                                                        DropdownMenuItem<
-                                                            String>(
+                                                        DropdownMenuItem<String>(
                                                           value: 'Sales',
-                                                          child: Text(
-                                                              'Sales Report'),
+                                                          child: Text('Sales Report'),
                                                         ),
-                                                        DropdownMenuItem<
-                                                            String>(
+                                                        DropdownMenuItem<String>(
                                                           value: 'Salesorder',
-                                                          child: Text(
-                                                              'Sales Order Report'),
+                                                          child: Text('Sales Order Report'),
                                                         ),
-                                                        DropdownMenuItem<
-                                                            String>(
+                                                        DropdownMenuItem<String>(
                                                           value: 'Product',
-                                                          child: Text(
-                                                              'Product Report'),
+                                                          child: Text('Product Report'),
                                                         ),
-                                                        DropdownMenuItem<
-                                                            String>(
+                                                        DropdownMenuItem<String>(
                                                           value: 'Tablewise',
-                                                          child: Text(
-                                                              'Table Wise Report'),
+                                                          child: Text('Table Wise Report'),
                                                         ),
-                                                        DropdownMenuItem<
-                                                            String>(
+                                                        DropdownMenuItem<String>(
                                                           value: 'Dailysummary',
-                                                          child: Text(
-                                                              'Daily Summary'),
+                                                          child: Text('Daily Summary'),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                    height: screenSize.height *
-                                                        0.01),
-                                                if (reportController
-                                                        .reporttype.value ==
-                                                    'Product Report') ...[
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                SizedBox(height: screenSize.height * 0.01),
+                                                if (reportController.reporttype.value == 'Product Report') ...[
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   Container(
-                                                    height: screenSize.height *
-                                                        0.08,
+                                                    height: screenSize.height * 0.08,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      border: Border.all(
-                                                          color: Colors.grey,
-                                                          width: 1),
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      border: Border.all(color: Colors.grey, width: 1),
                                                     ),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         Row(
                                                           children: [
                                                             Radio(
-                                                              activeColor:
-                                                                  const Color(
-                                                                      0xFF00428E),
+                                                              activeColor: const Color(0xFF00428E),
                                                               value: 1,
-                                                              groupValue:
-                                                                  reportController
-                                                                      .productValue
-                                                                      .value,
-                                                              onChanged:
-                                                                  (value) {
-                                                                reportController
-                                                                        .productValue
-                                                                        .value =
-                                                                    value
-                                                                        as int;
+                                                              groupValue: reportController.productValue.value,
+                                                              onChanged: (value) {
+                                                                reportController.productValue.value = value as int;
                                                               },
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
-                                                                reportController
-                                                                    .productValue
-                                                                    .value = 1;
+                                                                reportController.productValue.value = 1;
                                                               },
                                                               child: Text(
                                                                 "Product",
-                                                                style:
-                                                                    googleFontStyle(),
+                                                                style: googleFontStyle(),
                                                               ),
                                                             ),
                                                           ],
@@ -898,33 +595,20 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                         Row(
                                                           children: [
                                                             Radio(
-                                                              activeColor:
-                                                                  const Color(
-                                                                      0xFF00428E),
+                                                              activeColor: const Color(0xFF00428E),
                                                               value: 2,
-                                                              groupValue:
-                                                                  reportController
-                                                                      .productValue
-                                                                      .value,
-                                                              onChanged:
-                                                                  (value) {
-                                                                reportController
-                                                                        .productValue
-                                                                        .value =
-                                                                    value
-                                                                        as int;
+                                                              groupValue: reportController.productValue.value,
+                                                              onChanged: (value) {
+                                                                reportController.productValue.value = value as int;
                                                               },
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
-                                                                reportController
-                                                                    .productValue
-                                                                    .value = 2;
+                                                                reportController.productValue.value = 2;
                                                               },
                                                               child: Text(
                                                                 "Product Group",
-                                                                style:
-                                                                    googleFontStyle(),
+                                                                style: googleFontStyle(),
                                                               ),
                                                             ),
                                                           ],
@@ -933,87 +617,46 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     ),
                                                   )
                                                 ],
-                                                SizedBox(
-                                                    height: screenSize.height *
-                                                        0.01),
+                                                SizedBox(height: screenSize.height * 0.01),
                                                 Text(
                                                   "User",
-                                                  style: googleFontStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  style: googleFontStyle(fontWeight: FontWeight.bold),
                                                 ),
-                                                SizedBox(
-                                                    height: screenSize.height *
-                                                        0.01),
+                                                SizedBox(height: screenSize.height * 0.01),
                                                 Center(
                                                   child: Container(
                                                     width: screenSize.width,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      border: Border.all(
-                                                          color: Colors.grey),
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      border: Border.all(color: Colors.grey),
                                                     ),
-                                                    child:
-                                                        DropdownButtonFormField<
-                                                            String>(
+                                                    child: DropdownButtonFormField<String>(
                                                       icon: const Icon(null),
                                                       value: 'None',
                                                       onChanged: (value) {},
-                                                      decoration:
-                                                          InputDecoration(
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 15,
-                                                                horizontal: 15),
+                                                      decoration: InputDecoration(
+                                                        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                                                         suffixIcon: const Icon(
-                                                          Icons
-                                                              .keyboard_arrow_down_outlined,
-                                                          color:
-                                                              Color(0xFF000000),
+                                                          Icons.keyboard_arrow_down_outlined,
+                                                          color: Color(0xFF000000),
                                                         ),
                                                         fillColor: Colors.white,
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          borderSide:
-                                                              const BorderSide(
-                                                                  width: 0.1,
-                                                                  color: Colors
-                                                                      .grey),
+                                                        focusedBorder: OutlineInputBorder(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                         ),
-                                                        border:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          borderSide:
-                                                              const BorderSide(
-                                                                  width: 0.1,
-                                                                  color: Colors
-                                                                      .grey),
+                                                        border: OutlineInputBorder(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                         ),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          borderSide:
-                                                              const BorderSide(
-                                                                  width: 0.1,
-                                                                  color: Colors
-                                                                      .grey),
+                                                        enabledBorder: OutlineInputBorder(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                         ),
                                                       ),
-                                                      dropdownColor:
-                                                          Colors.white,
+                                                      dropdownColor: Colors.white,
                                                       items: const [
-                                                        DropdownMenuItem<
-                                                            String>(
+                                                        DropdownMenuItem<String>(
                                                           value: 'None',
                                                           child: Text('None'),
                                                         ),
@@ -1021,570 +664,268 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                    height: screenSize.height *
-                                                        0.01),
-                                                if (reportController
-                                                        .reporttype.value ==
-                                                    'Product Report') ...[
+                                                SizedBox(height: screenSize.height * 0.01),
+                                                if (reportController.reporttype.value == 'Product Report') ...[
                                                   Text(
                                                     "Select Product",
-                                                    style: googleFontStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: googleFontStyle(fontWeight: FontWeight.bold),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   Center(
                                                     child: Container(
                                                       width: screenSize.width,
                                                       decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        border: Border.all(
-                                                            color: Colors.grey),
+                                                        borderRadius: BorderRadius.circular(5),
+                                                        border: Border.all(color: Colors.grey),
                                                       ),
-                                                      child:
-                                                          DropdownButtonFormField<
-                                                              String>(
+                                                      child: DropdownButtonFormField<String>(
                                                         icon: const Icon(null),
-                                                        value: reportController
-                                                            .selectproduct
-                                                            .value,
+                                                        value: reportController.selectproduct.value,
                                                         onChanged: (value) {
-                                                          reportController
-                                                              .selectproduct
-                                                              .value = value!;
+                                                          reportController.selectproduct.value = value!;
                                                         },
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical: 15,
-                                                                  horizontal:
-                                                                      15),
-                                                          suffixIcon:
-                                                              const Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down_outlined,
-                                                            color: Color(
-                                                                0xFF000000),
+                                                        decoration: InputDecoration(
+                                                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                          suffixIcon: const Icon(
+                                                            Icons.keyboard_arrow_down_outlined,
+                                                            color: Color(0xFF000000),
                                                           ),
-                                                          fillColor:
-                                                              Colors.white,
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          fillColor: Colors.white,
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
                                                         ),
-                                                        dropdownColor:
-                                                            Colors.white,
+                                                        dropdownColor: Colors.white,
                                                         items: const [
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: 'cbf',
-                                                            child: Text(
-                                                                'Chicken Biriyani'),
+                                                            child: Text('Chicken Biriyani'),
                                                           ),
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: 'mandhi',
-                                                            child:
-                                                                Text('Mandhi'),
+                                                            child: Text('Mandhi'),
                                                           ),
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: 'bf',
-                                                            child: Text(
-                                                                'Beef Fry'),
+                                                            child: Text('Beef Fry'),
                                                           ),
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: 'ch',
-                                                            child: Text(
-                                                                'Chicken Handi'),
+                                                            child: Text('Chicken Handi'),
                                                           ),
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: 'kf',
-                                                            child: Text(
-                                                                'Kadai Fish'),
+                                                            child: Text('Kadai Fish'),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
-                                                  if (reportController
-                                                          .reporttype.value ==
-                                                      'Product Report') ...[
-                                                    if (reportController
-                                                            .productValue
-                                                            .value ==
-                                                        2) ...[
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  if (reportController.reporttype.value == 'Product Report') ...[
+                                                    if (reportController.productValue.value == 2) ...[
                                                       Text(
                                                         "Product Group",
-                                                        style: googleFontStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                        style: googleFontStyle(fontWeight: FontWeight.bold),
                                                       ),
-                                                      SizedBox(
-                                                          height: screenSize
-                                                                  .height *
-                                                              0.01),
+                                                      SizedBox(height: screenSize.height * 0.01),
                                                       Center(
                                                         child: Container(
-                                                          width:
-                                                              screenSize.width,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey),
+                                                          width: screenSize.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            border: Border.all(color: Colors.grey),
                                                           ),
-                                                          child:
-                                                              DropdownButtonFormField<
-                                                                  String>(
-                                                            icon: const Icon(
-                                                                null),
-                                                            value: reportController
-                                                                .selectproductgroup
-                                                                .value,
+                                                          child: DropdownButtonFormField<String>(
+                                                            icon: const Icon(null),
+                                                            value: reportController.selectproductgroup.value,
                                                             onChanged: (value) {
-                                                              reportController
-                                                                  .selectproductgroup
-                                                                  .value = value!;
+                                                              reportController.selectproductgroup.value = value!;
                                                             },
-                                                            decoration:
-                                                                InputDecoration(
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          15,
-                                                                      horizontal:
-                                                                          15),
-                                                              suffixIcon:
-                                                                  const Icon(
-                                                                Icons
-                                                                    .keyboard_arrow_down_outlined,
-                                                                color: Color(
-                                                                    0xFF000000),
+                                                            decoration: InputDecoration(
+                                                              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                              suffixIcon: const Icon(
+                                                                Icons.keyboard_arrow_down_outlined,
+                                                                color: Color(0xFF000000),
                                                               ),
-                                                              fillColor:
-                                                                  Colors.white,
-                                                              focusedBorder:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              fillColor: Colors.white,
+                                                              focusedBorder: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              border: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              enabledBorder: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
                                                             ),
-                                                            dropdownColor:
-                                                                Colors.white,
+                                                            dropdownColor: Colors.white,
                                                             items: const [
-                                                              DropdownMenuItem<
-                                                                  String>(
+                                                              DropdownMenuItem<String>(
                                                                 value: 'All',
-                                                                child:
-                                                                    Text('All'),
+                                                                child: Text('All'),
                                                               ),
-                                                              DropdownMenuItem<
-                                                                  String>(
+                                                              DropdownMenuItem<String>(
                                                                 value: 'Veg',
-                                                                child:
-                                                                    Text('Veg'),
+                                                                child: Text('Veg'),
                                                               ),
-                                                              DropdownMenuItem<
-                                                                  String>(
+                                                              DropdownMenuItem<String>(
                                                                 value: 'Nonveg',
-                                                                child: Text(
-                                                                    'Nonveg'),
+                                                                child: Text('Nonveg'),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      SizedBox(
-                                                          height: screenSize
-                                                                  .height *
-                                                              0.02),
+                                                      SizedBox(height: screenSize.height * 0.02),
                                                     ],
                                                   ],
                                                   Text(
                                                     "Salesman",
-                                                    style: googleFontStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: googleFontStyle(fontWeight: FontWeight.bold),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   Center(
                                                     child: Container(
                                                       width: screenSize.width,
                                                       decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        border: Border.all(
-                                                            color: Colors.grey),
+                                                        borderRadius: BorderRadius.circular(5),
+                                                        border: Border.all(color: Colors.grey),
                                                       ),
-                                                      child:
-                                                          DropdownButtonFormField<
-                                                              String>(
+                                                      child: DropdownButtonFormField<String>(
                                                         icon: const Icon(null),
                                                         value: 'Salesman',
                                                         onChanged: (value) {},
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical: 15,
-                                                                  horizontal:
-                                                                      15),
-                                                          suffixIcon:
-                                                              const Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down_outlined,
-                                                            color: Color(
-                                                                0xFF000000),
+                                                        decoration: InputDecoration(
+                                                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                          suffixIcon: const Icon(
+                                                            Icons.keyboard_arrow_down_outlined,
+                                                            color: Color(0xFF000000),
                                                           ),
-                                                          fillColor:
-                                                              Colors.white,
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          fillColor: Colors.white,
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
                                                         ),
-                                                        dropdownColor:
-                                                            Colors.white,
+                                                        dropdownColor: Colors.white,
                                                         items: const [
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: 'Salesman',
-                                                            child: Text(
-                                                                'Salesman'),
+                                                            child: Text('Salesman'),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.02),
-                                                  if (reportController
-                                                          .reportDetailValue
-                                                          .value ==
-                                                      2) ...[
+                                                  SizedBox(height: screenSize.height * 0.02),
+                                                  if (reportController.reportDetailValue.value == 2) ...[
                                                     Text(
                                                       "Employee",
-                                                      style: googleFontStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: googleFontStyle(fontWeight: FontWeight.bold),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                     Center(
                                                       child: Container(
                                                         width: screenSize.width,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.grey),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          border: Border.all(color: Colors.grey),
                                                         ),
-                                                        child:
-                                                            DropdownButtonFormField<
-                                                                String>(
-                                                          icon:
-                                                              const Icon(null),
+                                                        child: DropdownButtonFormField<String>(
+                                                          icon: const Icon(null),
                                                           value: 'None',
                                                           onChanged: (value) {},
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        15,
-                                                                    horizontal:
-                                                                        15),
-                                                            suffixIcon:
-                                                                const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_outlined,
-                                                              color: Color(
-                                                                  0xFF000000),
+                                                          decoration: InputDecoration(
+                                                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                            suffixIcon: const Icon(
+                                                              Icons.keyboard_arrow_down_outlined,
+                                                              color: Color(0xFF000000),
                                                             ),
-                                                            fillColor:
-                                                                Colors.white,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            fillColor: Colors.white,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            border:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
                                                           ),
-                                                          dropdownColor:
-                                                              Colors.white,
+                                                          dropdownColor: Colors.white,
                                                           items: const [
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: 'None',
-                                                              child:
-                                                                  Text('None'),
+                                                              child: Text('None'),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.02),
+                                                    SizedBox(height: screenSize.height * 0.02),
                                                     Text(
                                                       "Table",
-                                                      style: googleFontStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: googleFontStyle(fontWeight: FontWeight.bold),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                     Center(
                                                       child: Container(
                                                         width: screenSize.width,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.grey),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          border: Border.all(color: Colors.grey),
                                                         ),
-                                                        child:
-                                                            DropdownButtonFormField<
-                                                                String>(
-                                                          icon:
-                                                              const Icon(null),
+                                                        child: DropdownButtonFormField<String>(
+                                                          icon: const Icon(null),
                                                           value: '21',
                                                           onChanged: (value) {},
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        15,
-                                                                    horizontal:
-                                                                        15),
-                                                            suffixIcon:
-                                                                const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_outlined,
-                                                              color: Color(
-                                                                  0xFF000000),
+                                                          decoration: InputDecoration(
+                                                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                            suffixIcon: const Icon(
+                                                              Icons.keyboard_arrow_down_outlined,
+                                                              color: Color(0xFF000000),
                                                             ),
-                                                            fillColor:
-                                                                Colors.white,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            fillColor: Colors.white,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            border:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
                                                           ),
-                                                          dropdownColor:
-                                                              Colors.white,
+                                                          dropdownColor: Colors.white,
                                                           items: const [
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: '21',
                                                               child: Text('21'),
                                                             ),
@@ -1592,171 +933,84 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.02),
-                                                    if (reportController
-                                                            .productValue
-                                                            .value ==
-                                                        2) ...[
+                                                    SizedBox(height: screenSize.height * 0.02),
+                                                    if (reportController.productValue.value == 2) ...[
                                                       Text(
                                                         "Product Group",
-                                                        style: googleFontStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                        style: googleFontStyle(fontWeight: FontWeight.bold),
                                                       ),
-                                                      SizedBox(
-                                                          height: screenSize
-                                                                  .height *
-                                                              0.01),
+                                                      SizedBox(height: screenSize.height * 0.01),
                                                       Center(
                                                         child: Container(
-                                                          width:
-                                                              screenSize.width,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey),
+                                                          width: screenSize.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            border: Border.all(color: Colors.grey),
                                                           ),
-                                                          child:
-                                                              DropdownButtonFormField<
-                                                                  String>(
-                                                            icon: const Icon(
-                                                                null),
+                                                          child: DropdownButtonFormField<String>(
+                                                            icon: const Icon(null),
                                                             value: 'All',
-                                                            onChanged:
-                                                                (value) {},
-                                                            decoration:
-                                                                InputDecoration(
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          15,
-                                                                      horizontal:
-                                                                          15),
-                                                              suffixIcon:
-                                                                  const Icon(
-                                                                Icons
-                                                                    .keyboard_arrow_down_outlined,
-                                                                color: Color(
-                                                                    0xFF000000),
+                                                            onChanged: (value) {},
+                                                            decoration: InputDecoration(
+                                                              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                              suffixIcon: const Icon(
+                                                                Icons.keyboard_arrow_down_outlined,
+                                                                color: Color(0xFF000000),
                                                               ),
-                                                              fillColor:
-                                                                  Colors.white,
-                                                              focusedBorder:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              fillColor: Colors.white,
+                                                              focusedBorder: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              border: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              enabledBorder: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
                                                             ),
-                                                            dropdownColor:
-                                                                Colors.white,
+                                                            dropdownColor: Colors.white,
                                                             items: const [
-                                                              DropdownMenuItem<
-                                                                  String>(
+                                                              DropdownMenuItem<String>(
                                                                 value: 'All',
-                                                                child:
-                                                                    Text('All'),
+                                                                child: Text('All'),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      SizedBox(
-                                                          height: screenSize
-                                                                  .height *
-                                                              0.02),
+                                                      SizedBox(height: screenSize.height * 0.02),
                                                     ],
                                                   ],
                                                   Container(
                                                     /// Product (Consolidate and Detailed)
-                                                    height: screenSize.height *
-                                                        0.08,
+                                                    height: screenSize.height * 0.08,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      border: Border.all(
-                                                          color: Colors.grey,
-                                                          width: 1),
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      border: Border.all(color: Colors.grey, width: 1),
                                                     ),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         Row(
                                                           children: [
                                                             Radio(
-                                                              activeColor:
-                                                                  const Color(
-                                                                      0xFF00428E),
+                                                              activeColor: const Color(0xFF00428E),
                                                               value: 1,
-                                                              groupValue:
-                                                                  reportController
-                                                                      .reportDetailValue
-                                                                      .value,
-                                                              onChanged:
-                                                                  (value) {
-                                                                reportController
-                                                                        .reportDetailValue
-                                                                        .value =
-                                                                    value
-                                                                        as int;
+                                                              groupValue: reportController.reportDetailValue.value,
+                                                              onChanged: (value) {
+                                                                reportController.reportDetailValue.value = value as int;
                                                               },
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
-                                                                reportController
-                                                                    .reportDetailValue
-                                                                    .value = 1;
+                                                                reportController.reportDetailValue.value = 1;
                                                               },
                                                               child: Text(
                                                                 "Consolidate",
-                                                                style:
-                                                                    googleFontStyle(),
+                                                                style: googleFontStyle(),
                                                               ),
                                                             ),
                                                           ],
@@ -1764,33 +1018,20 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                         Row(
                                                           children: [
                                                             Radio(
-                                                              activeColor:
-                                                                  const Color(
-                                                                      0xFF00428E),
+                                                              activeColor: const Color(0xFF00428E),
                                                               value: 2,
-                                                              groupValue:
-                                                                  reportController
-                                                                      .reportDetailValue
-                                                                      .value,
-                                                              onChanged:
-                                                                  (value) {
-                                                                reportController
-                                                                        .reportDetailValue
-                                                                        .value =
-                                                                    value
-                                                                        as int;
+                                                              groupValue: reportController.reportDetailValue.value,
+                                                              onChanged: (value) {
+                                                                reportController.reportDetailValue.value = value as int;
                                                               },
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
-                                                                reportController
-                                                                    .reportDetailValue
-                                                                    .value = 2;
+                                                                reportController.reportDetailValue.value = 2;
                                                               },
                                                               child: Text(
                                                                 "Detailed",
-                                                                style:
-                                                                    googleFontStyle(),
+                                                                style: googleFontStyle(),
                                                               ),
                                                             ),
                                                           ],
@@ -1799,106 +1040,50 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     ),
                                                   )
                                                 ],
-                                                if (reportController
-                                                        .reporttype.value ==
-                                                    'Product Report')
+                                                if (reportController.reporttype.value == 'Product Report')
                                                   ...[]
-                                                else if (reportController
-                                                            .reporttype.value ==
-                                                        'Table Wise Report' ||
-                                                    reportController
-                                                            .reporttype.value ==
-                                                        'Sales Order Report' ||
-                                                    reportController
-                                                            .reporttype.value ==
-                                                        'Sales Report' ||
-                                                    reportController
-                                                            .reporttype.value ==
-                                                        'Invoice Report') ...[
+                                                else if (reportController.reporttype.value == 'Table Wise Report' ||
+                                                    reportController.reporttype.value == 'Sales Order Report' ||
+                                                    reportController.reporttype.value == 'Sales Report' ||
+                                                    reportController.reporttype.value == 'Invoice Report') ...[
                                                   Text(
                                                     "Employee",
-                                                    style: googleFontStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: googleFontStyle(fontWeight: FontWeight.bold),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   Center(
                                                     child: Container(
                                                       width: screenSize.width,
                                                       decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        border: Border.all(
-                                                            color: Colors.grey),
+                                                        borderRadius: BorderRadius.circular(5),
+                                                        border: Border.all(color: Colors.grey),
                                                       ),
-                                                      child:
-                                                          DropdownButtonFormField<
-                                                              String>(
+                                                      child: DropdownButtonFormField<String>(
                                                         icon: const Icon(null),
                                                         onChanged: (value) {},
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical: 15,
-                                                                  horizontal:
-                                                                      15),
-                                                          suffixIcon:
-                                                              const Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down_outlined,
-                                                            color: Color(
-                                                                0xFF000000),
+                                                        decoration: InputDecoration(
+                                                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                          suffixIcon: const Icon(
+                                                            Icons.keyboard_arrow_down_outlined,
+                                                            color: Color(0xFF000000),
                                                           ),
-                                                          fillColor:
-                                                              Colors.white,
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          fillColor: Colors.white,
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
                                                         ),
-                                                        dropdownColor:
-                                                            Colors.white,
+                                                        dropdownColor: Colors.white,
                                                         items: const [
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: '',
                                                             child: Text(''),
                                                           ),
@@ -1906,438 +1091,202 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
-                                                  if (reportController
-                                                          .reporttype.value ==
-                                                      "Table Wise Report")
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  if (reportController.reporttype.value == "Table Wise Report")
                                                     ...[]
                                                   else ...[
                                                     Text(
                                                       "Service Type",
-                                                      style: googleFontStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: googleFontStyle(fontWeight: FontWeight.bold),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                     Center(
                                                       child: Container(
                                                         width: screenSize.width,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.grey),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          border: Border.all(color: Colors.grey),
                                                         ),
-                                                        child:
-                                                            DropdownButtonFormField<
-                                                                String>(
-                                                          icon:
-                                                              const Icon(null),
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        15,
-                                                                    horizontal:
-                                                                        15),
-                                                            suffixIcon:
-                                                                const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_outlined,
-                                                              color: Color(
-                                                                  0xFF000000),
+                                                        child: DropdownButtonFormField<String>(
+                                                          icon: const Icon(null),
+                                                          decoration: InputDecoration(
+                                                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                            suffixIcon: const Icon(
+                                                              Icons.keyboard_arrow_down_outlined,
+                                                              color: Color(0xFF000000),
                                                             ),
-                                                            fillColor:
-                                                                Colors.white,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            fillColor: Colors.white,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            border:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
                                                           ),
-                                                          dropdownColor:
-                                                              Colors.white,
-                                                          value: reportController
-                                                              .servicetypevalue
-                                                              .value,
-                                                          onChanged:
-                                                              reportController
-                                                                  .serviceonChanged,
+                                                          dropdownColor: Colors.white,
+                                                          value: reportController.servicetypevalue.value,
+                                                          onChanged: reportController.serviceonChanged,
                                                           items: const [
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: 'dinein',
-                                                              child: Text(
-                                                                  'Dine In'),
+                                                              child: Text('Dine In'),
                                                             ),
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: 'takeaway',
-                                                              child: Text(
-                                                                  'Take Away'),
+                                                              child: Text('Take Away'),
                                                             ),
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: 'online',
-                                                              child: Text(
-                                                                  'Online'),
+                                                              child: Text('Online'),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                   ],
-                                                  if (reportController
-                                                          .servicetype.value ==
-                                                      'Dine In') ...[
+                                                  if (reportController.servicetype.value == 'Dine In') ...[
                                                     Text(
                                                       "Table",
-                                                      style: googleFontStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: googleFontStyle(fontWeight: FontWeight.bold),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                     Center(
                                                       child: Container(
                                                         width: screenSize.width,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.grey),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          border: Border.all(color: Colors.grey),
                                                         ),
-                                                        child:
-                                                            DropdownButtonFormField<
-                                                                String>(
-                                                          icon:
-                                                              const Icon(null),
+                                                        child: DropdownButtonFormField<String>(
+                                                          icon: const Icon(null),
                                                           value: 'All',
                                                           onChanged: (value) {},
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        15,
-                                                                    horizontal:
-                                                                        15),
-                                                            suffixIcon:
-                                                                const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_outlined,
-                                                              color: Color(
-                                                                  0xFF000000),
+                                                          decoration: InputDecoration(
+                                                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                            suffixIcon: const Icon(
+                                                              Icons.keyboard_arrow_down_outlined,
+                                                              color: Color(0xFF000000),
                                                             ),
-                                                            fillColor:
-                                                                Colors.white,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            fillColor: Colors.white,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            border:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
                                                           ),
-                                                          dropdownColor:
-                                                              Colors.white,
+                                                          dropdownColor: Colors.white,
                                                           items: const [
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: 'All',
-                                                              child:
-                                                                  Text('All'),
+                                                              child: Text('All'),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
-                                                  ] else if (reportController
-                                                          .servicetype.value ==
-                                                      'Online') ...[
+                                                    SizedBox(height: screenSize.height * 0.01),
+                                                  ] else if (reportController.servicetype.value == 'Online') ...[
                                                     Text(
                                                       "Platform",
-                                                      style: googleFontStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: googleFontStyle(fontWeight: FontWeight.bold),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                     Center(
                                                       child: Container(
                                                         width: screenSize.width,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.grey),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          border: Border.all(color: Colors.grey),
                                                         ),
-                                                        child:
-                                                            DropdownButtonFormField<
-                                                                String>(
-                                                          icon:
-                                                              const Icon(null),
-                                                          value:
-                                                              'hungerstation',
+                                                        child: DropdownButtonFormField<String>(
+                                                          icon: const Icon(null),
+                                                          value: 'hungerstation',
                                                           onChanged: (value) {},
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        15,
-                                                                    horizontal:
-                                                                        15),
-                                                            suffixIcon:
-                                                                const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_outlined,
-                                                              color: Color(
-                                                                  0xFF000000),
+                                                          decoration: InputDecoration(
+                                                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                            suffixIcon: const Icon(
+                                                              Icons.keyboard_arrow_down_outlined,
+                                                              color: Color(0xFF000000),
                                                             ),
-                                                            fillColor:
-                                                                Colors.white,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            fillColor: Colors.white,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            border:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
                                                           ),
-                                                          dropdownColor:
-                                                              Colors.white,
+                                                          dropdownColor: Colors.white,
                                                           items: const [
-                                                            DropdownMenuItem<
-                                                                String>(
-                                                              value:
-                                                                  'hungerstation',
-                                                              child: Text(
-                                                                  'Hungerstation'),
+                                                            DropdownMenuItem<String>(
+                                                              value: 'hungerstation',
+                                                              child: Text('Hungerstation'),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                   ],
                                                   Text(
                                                     "Tax Type",
-                                                    style: googleFontStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: googleFontStyle(fontWeight: FontWeight.bold),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   Center(
                                                     child: Container(
                                                       width: screenSize.width,
                                                       decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        border: Border.all(
-                                                            color: Colors.grey),
+                                                        borderRadius: BorderRadius.circular(5),
+                                                        border: Border.all(color: Colors.grey),
                                                       ),
-                                                      child:
-                                                          DropdownButtonFormField<
-                                                              String>(
+                                                      child: DropdownButtonFormField<String>(
                                                         icon: const Icon(null),
                                                         value: 'None',
                                                         onChanged: (value) {},
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical: 15,
-                                                                  horizontal:
-                                                                      15),
-                                                          suffixIcon:
-                                                              const Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down_outlined,
-                                                            color: Color(
-                                                                0xFF000000),
+                                                        decoration: InputDecoration(
+                                                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                          suffixIcon: const Icon(
+                                                            Icons.keyboard_arrow_down_outlined,
+                                                            color: Color(0xFF000000),
                                                           ),
-                                                          fillColor:
-                                                              Colors.white,
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          fillColor: Colors.white,
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
                                                         ),
-                                                        dropdownColor:
-                                                            Colors.white,
+                                                        dropdownColor: Colors.white,
                                                         items: const [
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: 'None',
                                                             child: Text('None'),
                                                           ),
@@ -2345,405 +1294,190 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
-                                                  if (reportController
-                                                          .servicetype.value ==
-                                                      "Take Away") ...[
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  if (reportController.servicetype.value == "Take Away") ...[
                                                     /// Status in Service Type
                                                     Text(
                                                       "Status Type",
-                                                      style: googleFontStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: googleFontStyle(fontWeight: FontWeight.bold),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                     Center(
                                                       child: Container(
                                                         width: screenSize.width,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.grey),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          border: Border.all(color: Colors.grey),
                                                         ),
-                                                        child:
-                                                            DropdownButtonFormField<
-                                                                String>(
+                                                        child: DropdownButtonFormField<String>(
                                                           value: 'pending',
-                                                          icon:
-                                                              const Icon(null),
+                                                          icon: const Icon(null),
                                                           onChanged: (value) {},
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        15,
-                                                                    horizontal:
-                                                                        15),
-                                                            suffixIcon:
-                                                                const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_outlined,
-                                                              color: Color(
-                                                                  0xFF000000),
+                                                          decoration: InputDecoration(
+                                                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                            suffixIcon: const Icon(
+                                                              Icons.keyboard_arrow_down_outlined,
+                                                              color: Color(0xFF000000),
                                                             ),
-                                                            fillColor:
-                                                                Colors.white,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            fillColor: Colors.white,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            border:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
                                                           ),
-                                                          dropdownColor:
-                                                              Colors.white,
+                                                          dropdownColor: Colors.white,
                                                           items: const [
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: 'pending',
-                                                              child: Text(
-                                                                  'Pending'),
+                                                              child: Text('Pending'),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                   ],
-                                                  if (reportController
-                                                              .reporttype
-                                                              .value ==
-                                                          'Sales Report' ||
-                                                      reportController
-                                                              .reporttype
-                                                              .value ==
-                                                          'Table Wise Report') ...[
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                  if (reportController.reporttype.value == 'Sales Report' ||
+                                                      reportController.reporttype.value == 'Table Wise Report') ...[
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                     Text(
                                                       "Payment Mode",
-                                                      style: googleFontStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                      style: googleFontStyle(fontWeight: FontWeight.bold),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
+                                                    SizedBox(height: screenSize.height * 0.01),
                                                     Center(
                                                       child: Container(
                                                         width: screenSize.width,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.grey),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          border: Border.all(color: Colors.grey),
                                                         ),
-                                                        child:
-                                                            DropdownButtonFormField<
-                                                                String>(
-                                                          icon:
-                                                              const Icon(null),
+                                                        child: DropdownButtonFormField<String>(
+                                                          icon: const Icon(null),
                                                           value: 'Cash',
                                                           onChanged: (value) {},
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        15,
-                                                                    horizontal:
-                                                                        15),
-                                                            suffixIcon:
-                                                                const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_outlined,
-                                                              color: Color(
-                                                                  0xFF000000),
+                                                          decoration: InputDecoration(
+                                                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                            suffixIcon: const Icon(
+                                                              Icons.keyboard_arrow_down_outlined,
+                                                              color: Color(0xFF000000),
                                                             ),
-                                                            fillColor:
-                                                                Colors.white,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            fillColor: Colors.white,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            border:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
                                                           ),
-                                                          dropdownColor:
-                                                              Colors.white,
+                                                          dropdownColor: Colors.white,
                                                           items: const [
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: 'Cash',
-                                                              child:
-                                                                  Text('Cash'),
+                                                              child: Text('Cash'),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                        height:
-                                                            screenSize.height *
-                                                                0.01),
-                                                    if (reportController
-                                                            .reporttype.value ==
-                                                        "Table Wise Report") ...[
+                                                    SizedBox(height: screenSize.height * 0.01),
+                                                    if (reportController.reporttype.value == "Table Wise Report") ...[
                                                       // Status Table wise
                                                       Text(
                                                         "Status",
-                                                        style: googleFontStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                        style: googleFontStyle(fontWeight: FontWeight.bold),
                                                       ),
-                                                      SizedBox(
-                                                          height: screenSize
-                                                                  .height *
-                                                              0.01),
+                                                      SizedBox(height: screenSize.height * 0.01),
                                                       Center(
                                                         child: Container(
-                                                          width:
-                                                              screenSize.width,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey),
+                                                          width: screenSize.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            border: Border.all(color: Colors.grey),
                                                           ),
-                                                          child:
-                                                              DropdownButtonFormField<
-                                                                  String>(
-                                                            icon: const Icon(
-                                                                null),
+                                                          child: DropdownButtonFormField<String>(
+                                                            icon: const Icon(null),
                                                             value: 'invoiced',
-                                                            onChanged:
-                                                                (value) {},
-                                                            decoration:
-                                                                InputDecoration(
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          15,
-                                                                      horizontal:
-                                                                          15),
-                                                              suffixIcon:
-                                                                  const Icon(
-                                                                Icons
-                                                                    .keyboard_arrow_down_outlined,
-                                                                color: Color(
-                                                                    0xFF000000),
+                                                            onChanged: (value) {},
+                                                            decoration: InputDecoration(
+                                                              contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                              suffixIcon: const Icon(
+                                                                Icons.keyboard_arrow_down_outlined,
+                                                                color: Color(0xFF000000),
                                                               ),
-                                                              fillColor:
-                                                                  Colors.white,
-                                                              focusedBorder:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              fillColor: Colors.white,
+                                                              focusedBorder: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              border: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                borderSide:
-                                                                    const BorderSide(
-                                                                        width:
-                                                                            0.1,
-                                                                        color: Colors
-                                                                            .grey),
+                                                              enabledBorder: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(5),
+                                                                borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                               ),
                                                             ),
-                                                            dropdownColor:
-                                                                Colors.white,
+                                                            dropdownColor: Colors.white,
                                                             items: const [
-                                                              DropdownMenuItem<
-                                                                  String>(
-                                                                value:
-                                                                    'invoiced',
-                                                                child: Text(
-                                                                    'Invoiced'),
+                                                              DropdownMenuItem<String>(
+                                                                value: 'invoiced',
+                                                                child: Text('Invoiced'),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      SizedBox(
-                                                          height: screenSize
-                                                                  .height *
-                                                              0.01),
+                                                      SizedBox(height: screenSize.height * 0.01),
                                                     ]
                                                   ],
                                                   Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
                                                       Expanded(
                                                         child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Text(
                                                               "From",
-                                                              style: googleFontStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
+                                                              style: googleFontStyle(fontWeight: FontWeight.bold),
                                                             ),
                                                             ElevatedButton(
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                        0xFFD1EFFF),
-                                                                minimumSize:
-                                                                    const Size(
-                                                                        100,
-                                                                        40),
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor: const Color(0xFFD1EFFF),
+                                                                minimumSize: const Size(100, 40),
                                                               ),
                                                               onPressed: () {
-                                                                _selectDate(
-                                                                    context);
+                                                                _selectDate(context);
                                                               },
                                                               child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
                                                                   const Icon(
-                                                                    Icons
-                                                                        .calendar_today_outlined,
-                                                                    color: Color(
-                                                                        0xFF2B3F6C),
+                                                                    Icons.calendar_today_outlined,
+                                                                    color: Color(0xFF2B3F6C),
                                                                     size: 10,
                                                                   ),
                                                                   Text(
                                                                     " DD/MM/YYYY",
-                                                                    style:
-                                                                        googleFontStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          8,
+                                                                    style: googleFontStyle(
+                                                                      fontWeight: FontWeight.bold,
+                                                                      fontSize: 8,
                                                                     ),
                                                                   ),
                                                                 ],
@@ -2753,63 +1487,38 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                         ),
                                                       ),
                                                       SizedBox(
-                                                        width:
-                                                            screenSize.width *
-                                                                0.01,
+                                                        width: screenSize.width * 0.01,
                                                       ),
                                                       Expanded(
                                                         child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Text(
                                                               "To",
-                                                              style: googleFontStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
+                                                              style: googleFontStyle(fontWeight: FontWeight.bold),
                                                             ),
                                                             ElevatedButton(
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                        0xFFD1EFFF),
-                                                                minimumSize:
-                                                                    const Size(
-                                                                        100,
-                                                                        40),
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor: const Color(0xFFD1EFFF),
+                                                                minimumSize: const Size(100, 40),
                                                               ),
                                                               onPressed: () {
-                                                                _selectDate(
-                                                                    context);
+                                                                _selectDate(context);
                                                               },
                                                               child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
                                                                   const Icon(
-                                                                    Icons
-                                                                        .calendar_today_outlined,
-                                                                    color: Color(
-                                                                        0xFF2B3F6C),
+                                                                    Icons.calendar_today_outlined,
+                                                                    color: Color(0xFF2B3F6C),
                                                                     size: 10,
                                                                   ),
                                                                   Text(
                                                                     " DD/MM/YYYY",
-                                                                    style:
-                                                                        googleFontStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          8,
+                                                                    style: googleFontStyle(
+                                                                      fontWeight: FontWeight.bold,
+                                                                      fontSize: 8,
                                                                     ),
                                                                   ),
                                                                 ],
@@ -2821,93 +1530,45 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     ],
                                                   ),
                                                 ],
-                                                if (reportController
-                                                        .reporttype.value ==
-                                                    'Daily Summary') ...[
+                                                if (reportController.reporttype.value == 'Daily Summary') ...[
                                                   Text(
                                                     "Employee",
-                                                    style: googleFontStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: googleFontStyle(fontWeight: FontWeight.bold),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   Center(
                                                     child: Container(
                                                       width: screenSize.width,
                                                       decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        border: Border.all(
-                                                            color: Colors.grey),
+                                                        borderRadius: BorderRadius.circular(5),
+                                                        border: Border.all(color: Colors.grey),
                                                       ),
-                                                      child:
-                                                          DropdownButtonFormField<
-                                                              String>(
+                                                      child: DropdownButtonFormField<String>(
                                                         icon: const Icon(null),
                                                         onChanged: (value) {},
-                                                        decoration:
-                                                            InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical: 15,
-                                                                  horizontal:
-                                                                      15),
-                                                          suffixIcon:
-                                                              const Icon(
-                                                            Icons
-                                                                .keyboard_arrow_down_outlined,
-                                                            color: Color(
-                                                                0xFF000000),
+                                                        decoration: InputDecoration(
+                                                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                          suffixIcon: const Icon(
+                                                            Icons.keyboard_arrow_down_outlined,
+                                                            color: Color(0xFF000000),
                                                           ),
-                                                          fillColor:
-                                                              Colors.white,
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          fillColor: Colors.white,
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                    width: 0.1,
-                                                                    color: Colors
-                                                                        .grey),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                           ),
                                                         ),
-                                                        dropdownColor:
-                                                            Colors.white,
+                                                        dropdownColor: Colors.white,
                                                         items: const [
-                                                          DropdownMenuItem<
-                                                              String>(
+                                                          DropdownMenuItem<String>(
                                                             value: '',
                                                             child: Text(''),
                                                           ),
@@ -2915,181 +1576,90 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   Text(
                                                     "Type",
-                                                    style: googleFontStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: googleFontStyle(fontWeight: FontWeight.bold),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
+                                                  SizedBox(height: screenSize.height * 0.01),
                                                   Center(
                                                     child: Container(
                                                         width: screenSize.width,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.grey),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(5),
+                                                          border: Border.all(color: Colors.grey),
                                                         ),
-                                                        child:
-                                                            DropdownButtonFormField<
-                                                                String>(
-                                                          icon:
-                                                              const Icon(null),
-                                                          decoration:
-                                                              InputDecoration(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        15,
-                                                                    horizontal:
-                                                                        15),
-                                                            suffixIcon:
-                                                                const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_outlined,
-                                                              color: Color(
-                                                                  0xFF000000),
+                                                        child: DropdownButtonFormField<String>(
+                                                          icon: const Icon(null),
+                                                          decoration: InputDecoration(
+                                                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                                            suffixIcon: const Icon(
+                                                              Icons.keyboard_arrow_down_outlined,
+                                                              color: Color(0xFF000000),
                                                             ),
-                                                            fillColor:
-                                                                Colors.white,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            fillColor: Colors.white,
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            border:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  const BorderSide(
-                                                                      width:
-                                                                          0.1,
-                                                                      color: Colors
-                                                                          .grey),
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(5),
+                                                              borderSide: const BorderSide(width: 0.1, color: Colors.grey),
                                                             ),
                                                           ),
-                                                          dropdownColor:
-                                                              Colors.white,
-                                                          value:
-                                                              reportController
-                                                                  .rmstypevalue
-                                                                  .value,
-                                                          onChanged:
-                                                              reportController
-                                                                  .rmstypeonChanged,
+                                                          dropdownColor: Colors.white,
+                                                          value: reportController.rmstypevalue.value,
+                                                          onChanged: reportController.rmstypeonChanged,
                                                           items: const [
-                                                            DropdownMenuItem<
-                                                                String>(
+                                                            DropdownMenuItem<String>(
                                                               value: 'date',
-                                                              child:
-                                                                  Text('Date'),
+                                                              child: Text('Date'),
                                                             ),
-                                                            DropdownMenuItem<
-                                                                String>(
-                                                              value:
-                                                                  'transactiondate',
-                                                              child: Text(
-                                                                  'Transaction Date'),
+                                                            DropdownMenuItem<String>(
+                                                              value: 'transactiondate',
+                                                              child: Text('Transaction Date'),
                                                             ),
-                                                            DropdownMenuItem<
-                                                                String>(
-                                                              value:
-                                                                  'createddate',
-                                                              child: Text(
-                                                                  'Created Date'),
+                                                            DropdownMenuItem<String>(
+                                                              value: 'createddate',
+                                                              child: Text('Created Date'),
                                                             ),
                                                           ],
                                                         )),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.01),
-                                                  if (reportController
-                                                          .rmstypevalue.value ==
-                                                      "date") ...[
+                                                  SizedBox(height: screenSize.height * 0.01),
+                                                  if (reportController.rmstypevalue.value == "date") ...[
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Expanded(
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  backgroundColor:
-                                                                      const Color(
-                                                                          0xFFD1EFFF),
-                                                                  minimumSize:
-                                                                      const Size(
-                                                                          100,
-                                                                          40),
+                                                                style: ElevatedButton.styleFrom(
+                                                                  backgroundColor: const Color(0xFFD1EFFF),
+                                                                  minimumSize: const Size(100, 40),
                                                                 ),
                                                                 onPressed: () {
-                                                                  _selectDate(
-                                                                      context);
+                                                                  _selectDate(context);
                                                                 },
                                                                 child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                                   children: [
                                                                     const Icon(
-                                                                      Icons
-                                                                          .calendar_today_outlined,
-                                                                      color: Color(
-                                                                          0xFF2B3F6C),
+                                                                      Icons.calendar_today_outlined,
+                                                                      color: Color(0xFF2B3F6C),
                                                                       size: 10,
                                                                     ),
                                                                     Text(
                                                                       " DD/MM/YYYY",
-                                                                      style:
-                                                                          googleFontStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                        fontSize:
-                                                                            8,
+                                                                      style: googleFontStyle(
+                                                                        fontWeight: FontWeight.bold,
+                                                                        fontSize: 8,
                                                                       ),
                                                                     ),
                                                                   ],
@@ -3099,54 +1669,34 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                           ),
                                                         ),
                                                         SizedBox(
-                                                          width:
-                                                              screenSize.width *
-                                                                  0.01,
+                                                          width: screenSize.width * 0.01,
                                                         ),
                                                         Expanded(
                                                           child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  backgroundColor:
-                                                                      const Color(
-                                                                          0xFFD1EFFF),
-                                                                  minimumSize:
-                                                                      const Size(
-                                                                          100,
-                                                                          40),
+                                                                style: ElevatedButton.styleFrom(
+                                                                  backgroundColor: const Color(0xFFD1EFFF),
+                                                                  minimumSize: const Size(100, 40),
                                                                 ),
                                                                 onPressed: () {
-                                                                  _selectDate(
-                                                                      context);
+                                                                  _selectDate(context);
                                                                 },
                                                                 child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                                   children: [
                                                                     const Icon(
-                                                                      Icons
-                                                                          .calendar_today_outlined,
-                                                                      color: Color(
-                                                                          0xFF2B3F6C),
+                                                                      Icons.calendar_today_outlined,
+                                                                      color: Color(0xFF2B3F6C),
                                                                       size: 10,
                                                                     ),
                                                                     Text(
                                                                       " DD/MM/YYYY",
-                                                                      style:
-                                                                          googleFontStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                        fontSize:
-                                                                            8,
+                                                                      style: googleFontStyle(
+                                                                        fontWeight: FontWeight.bold,
+                                                                        fontSize: 8,
                                                                       ),
                                                                     ),
                                                                   ],
@@ -3157,59 +1707,37 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                         ),
                                                       ],
                                                     ),
-                                                  ] else if (reportController
-                                                          .rmstypevalue ==
-                                                      'transactiondate') ...[
+                                                  ] else if (reportController.rmstypevalue == 'transactiondate') ...[
                                                     Column(
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Expanded(
                                                               child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   ElevatedButton(
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      backgroundColor:
-                                                                          const Color(
-                                                                              0xFFD1EFFF),
-                                                                      minimumSize:
-                                                                          const Size(
-                                                                              100,
-                                                                              40),
+                                                                    style: ElevatedButton.styleFrom(
+                                                                      backgroundColor: const Color(0xFFD1EFFF),
+                                                                      minimumSize: const Size(100, 40),
                                                                     ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      _selectDate(
-                                                                          context);
+                                                                    onPressed: () {
+                                                                      _selectDate(context);
                                                                     },
                                                                     child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                                       children: [
                                                                         const Icon(
-                                                                          Icons
-                                                                              .calendar_today_outlined,
-                                                                          color:
-                                                                              Color(0xFF2B3F6C),
-                                                                          size:
-                                                                              10,
+                                                                          Icons.calendar_today_outlined,
+                                                                          color: Color(0xFF2B3F6C),
+                                                                          size: 10,
                                                                         ),
                                                                         Text(
                                                                           " DD/MM/YYYY",
-                                                                          style:
-                                                                              googleFontStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                8,
+                                                                          style: googleFontStyle(
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 8,
                                                                           ),
                                                                         ),
                                                                       ],
@@ -3219,56 +1747,34 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                               ),
                                                             ),
                                                             SizedBox(
-                                                              width: screenSize
-                                                                      .width *
-                                                                  0.01,
+                                                              width: screenSize.width * 0.01,
                                                             ),
                                                             Expanded(
                                                               child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   ElevatedButton(
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      backgroundColor:
-                                                                          const Color(
-                                                                              0xFFD1EFFF),
-                                                                      minimumSize:
-                                                                          const Size(
-                                                                              100,
-                                                                              40),
+                                                                    style: ElevatedButton.styleFrom(
+                                                                      backgroundColor: const Color(0xFFD1EFFF),
+                                                                      minimumSize: const Size(100, 40),
                                                                     ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      _selectDate(
-                                                                          context);
+                                                                    onPressed: () {
+                                                                      _selectDate(context);
                                                                     },
                                                                     child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                                       children: [
                                                                         const Icon(
-                                                                          Icons
-                                                                              .calendar_today_outlined,
-                                                                          color:
-                                                                              Color(0xFF2B3F6C),
-                                                                          size:
-                                                                              10,
+                                                                          Icons.calendar_today_outlined,
+                                                                          color: Color(0xFF2B3F6C),
+                                                                          size: 10,
                                                                         ),
                                                                         Text(
                                                                           " DD/MM/YYYY",
-                                                                          style:
-                                                                              googleFontStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                8,
+                                                                          style: googleFontStyle(
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 8,
                                                                           ),
                                                                         ),
                                                                       ],
@@ -3280,53 +1786,33 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                           ],
                                                         ),
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Expanded(
                                                               child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   ElevatedButton(
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      backgroundColor:
-                                                                          const Color(
-                                                                              0xFFD1EFFF),
-                                                                      minimumSize:
-                                                                          const Size(
-                                                                              100,
-                                                                              40),
+                                                                    style: ElevatedButton.styleFrom(
+                                                                      backgroundColor: const Color(0xFFD1EFFF),
+                                                                      minimumSize: const Size(100, 40),
                                                                     ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      _selectTime(
-                                                                          context);
+                                                                    onPressed: () {
+                                                                      _selectTime(context);
                                                                     },
                                                                     child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                                       children: [
                                                                         const Icon(
-                                                                          Icons
-                                                                              .timer_sharp,
-                                                                          color:
-                                                                              Color(0xFF2B3F6C),
-                                                                          size:
-                                                                              10,
+                                                                          Icons.timer_sharp,
+                                                                          color: Color(0xFF2B3F6C),
+                                                                          size: 10,
                                                                         ),
                                                                         Text(
                                                                           " Time",
-                                                                          style:
-                                                                              googleFontStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                8,
+                                                                          style: googleFontStyle(
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 8,
                                                                           ),
                                                                         ),
                                                                       ],
@@ -3336,56 +1822,34 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                               ),
                                                             ),
                                                             SizedBox(
-                                                              width: screenSize
-                                                                      .width *
-                                                                  0.01,
+                                                              width: screenSize.width * 0.01,
                                                             ),
                                                             Expanded(
                                                               child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   ElevatedButton(
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      backgroundColor:
-                                                                          const Color(
-                                                                              0xFFD1EFFF),
-                                                                      minimumSize:
-                                                                          const Size(
-                                                                              100,
-                                                                              40),
+                                                                    style: ElevatedButton.styleFrom(
+                                                                      backgroundColor: const Color(0xFFD1EFFF),
+                                                                      minimumSize: const Size(100, 40),
                                                                     ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      _selectTime(
-                                                                          context);
+                                                                    onPressed: () {
+                                                                      _selectTime(context);
                                                                     },
                                                                     child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                                       children: [
                                                                         const Icon(
-                                                                          Icons
-                                                                              .timer_sharp,
-                                                                          color:
-                                                                              Color(0xFF2B3F6C),
-                                                                          size:
-                                                                              10,
+                                                                          Icons.timer_sharp,
+                                                                          color: Color(0xFF2B3F6C),
+                                                                          size: 10,
                                                                         ),
                                                                         Text(
                                                                           " Time",
-                                                                          style:
-                                                                              googleFontStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                8,
+                                                                          style: googleFontStyle(
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: 8,
                                                                           ),
                                                                         ),
                                                                       ],
@@ -3400,59 +1864,35 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                     ),
                                                   ]
                                                 ],
-                                                SizedBox(
-                                                    height: screenSize.height *
-                                                        0.02),
-                                                if (reportController
-                                                        .reporttype.value ==
-                                                    "Table Wise Report") ...[
+                                                SizedBox(height: screenSize.height * 0.02),
+                                                if (reportController.reporttype.value == "Table Wise Report") ...[
                                                   /// Tablewise (Consolidate and Detailed)
                                                   Container(
-                                                    height: screenSize.height *
-                                                        0.08,
+                                                    height: screenSize.height * 0.08,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      border: Border.all(
-                                                          color: Colors.grey,
-                                                          width: 1),
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      border: Border.all(color: Colors.grey, width: 1),
                                                     ),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         Row(
                                                           children: [
                                                             Radio(
-                                                              activeColor:
-                                                                  const Color(
-                                                                      0xFF00428E),
+                                                              activeColor: const Color(0xFF00428E),
                                                               value: 1,
-                                                              groupValue:
-                                                                  reportController
-                                                                      .tablewisereportValue
-                                                                      .value,
-                                                              onChanged:
-                                                                  (value) {
-                                                                reportController
-                                                                        .tablewisereportValue
-                                                                        .value =
-                                                                    value
-                                                                        as int;
+                                                              groupValue: reportController.tablewisereportValue.value,
+                                                              onChanged: (value) {
+                                                                reportController.tablewisereportValue.value = value as int;
                                                               },
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
-                                                                reportController
-                                                                    .tablewisereportValue
-                                                                    .value = 1;
+                                                                reportController.tablewisereportValue.value = 1;
                                                               },
                                                               child: Text(
                                                                 "Consolidate",
-                                                                style:
-                                                                    googleFontStyle(),
+                                                                style: googleFontStyle(),
                                                               ),
                                                             ),
                                                           ],
@@ -3460,33 +1900,20 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                         Row(
                                                           children: [
                                                             Radio(
-                                                              activeColor:
-                                                                  const Color(
-                                                                      0xFF00428E),
+                                                              activeColor: const Color(0xFF00428E),
                                                               value: 2,
-                                                              groupValue:
-                                                                  reportController
-                                                                      .tablewisereportValue
-                                                                      .value,
-                                                              onChanged:
-                                                                  (value) {
-                                                                reportController
-                                                                        .tablewisereportValue
-                                                                        .value =
-                                                                    value
-                                                                        as int;
+                                                              groupValue: reportController.tablewisereportValue.value,
+                                                              onChanged: (value) {
+                                                                reportController.tablewisereportValue.value = value as int;
                                                               },
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
-                                                                reportController
-                                                                    .tablewisereportValue
-                                                                    .value = 2;
+                                                                reportController.tablewisereportValue.value = 2;
                                                               },
                                                               child: Text(
                                                                 "Detailed",
-                                                                style:
-                                                                    googleFontStyle(),
+                                                                style: googleFontStyle(),
                                                               ),
                                                             ),
                                                           ],
@@ -3494,28 +1921,19 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                                                       ],
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                      height:
-                                                          screenSize.height *
-                                                              0.02),
+                                                  SizedBox(height: screenSize.height * 0.02),
                                                 ],
                                                 SizedBox(
                                                   width: screenSize.width,
                                                   child: ElevatedButton(
                                                     onPressed: () {},
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      minimumSize:
-                                                          const Size(220, 50),
-                                                      backgroundColor:
-                                                          const Color(
-                                                              0xFFE28903),
+                                                    style: ElevatedButton.styleFrom(
+                                                      minimumSize: const Size(220, 50),
+                                                      backgroundColor: const Color(0xFFE28903),
                                                     ),
                                                     child: Text(
                                                       "Get Report",
-                                                      style: googleFontStyle(
-                                                          fontSize: 16,
-                                                          color: Colors.white),
+                                                      style: googleFontStyle(fontSize: 16, color: Colors.white),
                                                     ),
                                                   ),
                                                 ),
