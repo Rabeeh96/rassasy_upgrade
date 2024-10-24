@@ -144,13 +144,13 @@ class SalesreportModel {
 
   SalesreportModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['StatusCode'];
-    // if (json['data'] != null) {
-    //   data = <Data>[];
-    //   json['data'].forEach((v) {
-    //     data!.add(new Data.fromJson(v));
-    //   });
-    // }
-    data = json['data'];
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add( Data.fromJson(v));
+      });
+    }
+    // data = json['data'];
 
     sumValues = json['sum_values'] != null
         ? new SumValues.fromJson(json['sum_values'])
@@ -204,10 +204,10 @@ class Data {
     totalTax = json['TotalTax'].toString();
     voucherNo = json['VoucherNo'];
     date = json['Date'];
-    tokenNumber = json['TokenNumber'];
+    tokenNumber = json['TokenNumber'].toString();
     customerName = json['CustomerName'];
     grandTotal = json['GrandTotal'].toString();
-    tableName = json['TableName'];
+    tableName = json['TableName']??"";
   }
 
   Map<String, dynamic> toJson() {

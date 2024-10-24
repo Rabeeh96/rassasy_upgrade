@@ -65,9 +65,10 @@ class ReportController extends GetxController {
     }
   }
 
-  var salesReportList = <SalesreportModel>[].obs;
-
-  Future<List<SalesreportModel>?> getSalesReport() async {
+  //  salesReportList = <Data>[].obs;
+  // var salesReportList = <SalesreportModel>[].obs;
+    var salesReportList = SalesreportModel().obs;
+   getSalesReport() async {
     try {
       isLoading(true);
       String baseUrl = BaseUrl.baseUrlV11;
@@ -78,19 +79,22 @@ class ReportController extends GetxController {
 
       final String url = '$baseUrl/posholds/rassassy-reports/';
 
+
+      pr("url$url");
       Map<String, dynamic> data = {
-        "CompanyID": "1599a958-2f9b-4d92-9eb3-58738a805f2d",
-        "BranchID": 1,
+        "CompanyID": companyID,
+        "BranchID": branchID,
         "PriceRounding": 2,
         "ReportType": "SalesReport",
         "EmployeeID": 0,
         "FromDate": "2024-10-15",
-        "ToDate": "2024-10-23",
+        "ToDate": "2024-10-24",
         "FromTime": "11:38",
-        "ToTime": "11:38",
+        "ToTime": "12:38",
         "CreatedUserID": 62,
         "filterVal ": "all"
       };
+      pr("data$data");
 
       var response = await http.post(Uri.parse(url),
           headers: {
@@ -102,18 +106,52 @@ class ReportController extends GetxController {
       pr("Sales Report Response:  ${response.body}");
       final jsonData = jsonDecode(response.body);
       if (jsonData['StatusCode'] == 6000) {
+
+        SalesreportModel salesReport = SalesreportModel.fromJson(jsonData);
+        salesReportList.value = salesReport;
+
+
+
+        // SalesreportModel salesReport = SalesreportModel.fromJson(jsonData);
+        // salesReportList.add(salesReport);
+        // pr("data salesReportList${salesReportList[0].data}");
+        // SalesreportModel salesReport = SalesreportModel.fromJson(jsonData);
+        // salesReportList.value =salesReport;
         pr("data 6000");
+// Assuming jsonData is the full JSON object
+      //  salesReportList.value = SalesreportModel.fromJson(jsonData);
+        // SalesreportModel salesReport = SalesreportModel.fromJson(jsonData);
+// If you want to assign the data list to salesReportList
+     //   salesReportList.assignAll(salesReport);
+
+// You can also access other parts of the SalesreportModel like sumValues
+//         SumValues? sumValues = salesReport.sumValues;
+//         print(sumValues?.grandTotalSum);
+
+
+
+        // salesReportList.assignAll(salesReport.data ?? []);
+        // var jsonData = jsonDecode(response.body); // Assuming response is your API result
+        // var dataList = jsonData['data'] as List<dynamic>; // Access the list inside the 'data' field
+        // salesReportList.assignAll(dataList.map((json) => SalesreportModel.fromJson(json)).toList());
+
+
 
         // salesReportList.value = (jsonData['data'])
         //     .map((item) => SalesreportModel.fromJson(item))
         //     .toList();
-        salesReportList.assignAll((jsonData['data'])
-            .map((json) => SalesreportModel.fromJson(json))
-            .toList());
 
-        pr("data aa");
-        pr(salesReportList);
-        return salesReportList;
+        //salesReportList.assign((jsonData).map((json) => SalesreportModel.fromJson(json)).toList());
+      //  salesReportList.assignAll((jsonData as List).map((json) => SalesreportModel.fromJson(json)).toList());
+
+     //   pr("${salesReportList.length}");
+    //  salesReportList.assignAll((jsonData).map((json) => SalesreportModel.fromJson(json)).toList());
+       // salesReportList.assignAll((jsonData['data']).map((json) => SalesreportModel.fromJson(json)).toList());
+
+       // salesReportList.assignAll((jsonData['data'] as List).map((json) => Data.fromJson(json)).toList());
+
+
+     //   return salesReportList;
       } else if (jsonData['StatusCode'] == 6001) {
         final msg = jsonData["message"];
         Get.snackbar('Error', msg);
@@ -122,6 +160,7 @@ class ReportController extends GetxController {
       }
     
     } catch (e) {
+      pr("error${e.toString()}");
       // Handle exceptions
     } finally {
       isLoading(false);
