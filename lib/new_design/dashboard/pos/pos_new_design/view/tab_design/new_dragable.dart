@@ -658,7 +658,7 @@ class _TableSettingsState extends State<TableSettings> {
           for (int i = 0; i < tableListController.tableMergeData.length; i++) {
             var dragList = {
               "id": tableListController.tableMergeData[i]["id"],
-              "TableName": tableListController.tableMergeData[i]["TableName"],
+              "TableName": tableListController.tableMergeData[i]["TableName"]??"",
               "Position": i + 1
             };
 
@@ -668,7 +668,11 @@ class _TableSettingsState extends State<TableSettings> {
 
             // print("Table :  ${tableListController.tableList[i]}");
           }
-           var result =  await tableListController.updateTables(type: 'Update', reOrderList: tableDetailList);
+
+
+          pr(tableDetailList);
+
+        var result =  await tableListController.updateTables(type: 'Update', reOrderList: tableDetailList);
 
           // if(result){
           //   Get.back();

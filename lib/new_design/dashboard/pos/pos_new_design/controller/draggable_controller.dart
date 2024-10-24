@@ -203,7 +203,7 @@ class DragAndDropController extends GetxController {
       "POSTableList": reOrderList, // Assuming this is needed for the request
       "Type": type
     };
-    print(payload);
+    pr(payload);
     log("$payload");
 
     try {
@@ -215,7 +215,7 @@ class DragAndDropController extends GetxController {
         },
         body: jsonEncode(payload),
       );
-      print('Response: ${response.body}');
+      pr('Response: ======================${response.body}');
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
@@ -279,8 +279,7 @@ class DragAndDropController extends GetxController {
       print(responseJson);
       print(status);
       if (status == 6000) {
-        print(
-            "1........................................................................11");
+        print("1........................................................................11");
         groupList.clear();
         for (Map user in responseJson) {
           groupList.add(GroupListModelClass.fromJson(user));
