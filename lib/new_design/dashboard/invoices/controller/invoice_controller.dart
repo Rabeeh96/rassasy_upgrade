@@ -1,32 +1,24 @@
 import 'dart:convert';
-import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:image/image.dart' as Img;
 import 'package:intl/intl.dart';
 import 'package:rassasy_new/Print/bluetoothPrint.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-
+import 'package:rassasy_new/new_design/dashboard/invoices/model/invoice_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
+import '../../../back_ground_print/USB/printClass.dart';
+import '../../../back_ground_print/USB/test_page/test_file.dart';
+import '../../../back_ground_print/bluetooth/back_ground_print_bt.dart';
+import '../../../back_ground_print/bluetooth/new.dart';
+import '../../../back_ground_print/wifi_print/back_ground_print_wifi.dart';
+import '../../../back_ground_print/wifi_print/customisation_template/customisation_template.dart';
 
-import '../../back_ground_print/USB/printClass.dart';
-import '../../back_ground_print/USB/test_page/test_file.dart';
-import '../../back_ground_print/bluetooth/back_ground_print_bt.dart';
-import '../../back_ground_print/bluetooth/new.dart';
-import '../../back_ground_print/wifi_print/back_ground_print_wifi.dart';
-import '../../back_ground_print/wifi_print/customisation_template/customisation_template.dart';
-
-class InvoiceControllerA extends GetxController{
+class InvoiceController extends GetxController {
   var type = "".obs;
   var customerName = "".obs;
   var voucherNo = "".obs;
@@ -39,24 +31,24 @@ class InvoiceControllerA extends GetxController{
   var gross_amount = "0.0".obs;
   var grand_total = "0.0".obs;
   var itemTableList = [].obs;
-  var salesMasterID=0;
+  var salesMasterID = 0;
   var salesDetailIds = <int>[];
-  var isSelectInvoice=false.obs;
+  var isSelectInvoice = false.obs;
   void selectAll() {
     selectedItems.assignAll(
-      Map.fromIterable(
-        itemTableList.asMap().entries,
-        key: (e) => e.key,
-        value: (e) => true, // Set all to true
-      ),
+      {for (var e in itemTableList.asMap().entries) e.key: true},
     );
   }
+
   // Method to deselect all items
   void deselectAll() {
     selectedItems.clear();
   }
+
   List getSelectedItems() {
-    return itemTableList.where((item) => selectedItems[itemTableList.indexOf(item)] == true).toList();
+    return itemTableList
+        .where((item) => selectedItems[itemTableList.indexOf(item)] == true)
+        .toList();
   }
 
   // Observable map to keep track of selected items
@@ -67,13 +59,13 @@ class InvoiceControllerA extends GetxController{
     selectedItems[index] = isSelected;
     update();
   }
+
   var isLoading = false.obs;
   var errorMessage = "".obs;
 
   String currency = " SR";
 
-
- var place_of_supply = "".obs;
+  var place_of_supply = "".obs;
   // var whatsUppNumber = "";
   // var warehouseName = "";
   // var reference_bill_number = "";
@@ -81,8 +73,7 @@ class InvoiceControllerA extends GetxController{
   // var notesVisibility = false;
   // var statusShow = false;
   Future<void> getSingleSalesDetails(String masterUID) async {
-
-    print("master id ${masterUID}");
+    print("master id $masterUID");
     bool network = await checkNetwork();
     if (!network) {
       // Handle network error
@@ -131,12 +122,11 @@ class InvoiceControllerA extends GetxController{
       var ledgerData = responseJson["LedgerData"];
       var placeData = responseJson["PlaceData"];
 
-
       if (status == 6000) {
         print("1");
         type.value = "sales_invoice";
         customerName.value = ledgerData["LedgerName"];
-        place_of_supply.value=placeData['Place_of_Supply']??'';
+        place_of_supply.value = placeData['Place_of_Supply'] ?? '';
 
         print("2");
 
@@ -152,25 +142,29 @@ class InvoiceControllerA extends GetxController{
         dateText.value = formatter.format(selectedDateAndTime);
         print("5");
 
-        cashAmountReceived.value = roundStringWith(salesData["CashReceived"].toString());
+        cashAmountReceived.value =
+            roundStringWith(salesData["CashReceived"].toString());
         print("6");
 
-        bankAmountReceived.value = roundStringWith(salesData["BankAmount"].toString());
+        bankAmountReceived.value =
+            roundStringWith(salesData["BankAmount"].toString());
         print("7");
 
         total_tax.value = roundStringWith(salesData['TotalTax'].toString());
         print("8");
 
-        discount_amount.value = roundStringWith(salesData['DiscountAmount']?.toString() ?? '0');
-        grand_total.value = roundStringWith(salesData["GrandTotal"]?.toString() ?? '0');
-         // discount_amount.value = roundStringWith(salesData['DiscountAmount']);
+        discount_amount.value =
+            roundStringWith(salesData['DiscountAmount']?.toString() ?? '0');
+        grand_total.value =
+            roundStringWith(salesData["GrandTotal"]?.toString() ?? '0');
+        // discount_amount.value = roundStringWith(salesData['DiscountAmount']);
         // grand_total.value = roundStringWith(salesData["GrandTotal"]);
-        gross_amount.value = roundStringWith(salesData['TotalGrossAmt']?.toString() ?? '0');
-        salesMasterID=responseJson['SalesMasterID'];
+        gross_amount.value =
+            roundStringWith(salesData['TotalGrossAmt']?.toString() ?? '0');
+        salesMasterID = responseJson['SalesMasterID'];
         itemTableList.assignAll(responseJson["SalesDetails"]);
-       // salesDetailsID=itemTableList['SalesDetailsID']
+        // salesDetailsID=itemTableList['SalesDetailsID']
         print("12");
-
       } else {
         errorMessage.value = message;
       }
@@ -181,7 +175,6 @@ class InvoiceControllerA extends GetxController{
     }
   }
 
-
   checkNetwork() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -190,6 +183,7 @@ class InvoiceControllerA extends GetxController{
       return true;
     }
   }
+
   var printHelperNew = USBPrintClassTest();
   var printHelperUsb = USBPrintClass();
   var printHelperIP = AppBlocs();
@@ -242,8 +236,7 @@ class InvoiceControllerA extends GetxController{
                 position: SnackPosition.TOP);
           }
         }
-      }
-      else if (printType == 'USB') {
+      } else if (printType == 'USB') {
         if (temp == "template5") {
           print(
               "Date ---------step 1   ---------   ---------     ${DateTime.now().second} ");
@@ -268,10 +261,9 @@ class InvoiceControllerA extends GetxController{
         }
 
         /// commented
-      }
-      else {
+      } else {
         var loadData =
-        await bluetoothHelper.bluetoothPrintOrderAndInvoice(Get.context!);
+            await bluetoothHelper.bluetoothPrintOrderAndInvoice(Get.context!);
         // handlePrint(context);
 
         if (loadData) {
@@ -279,7 +271,8 @@ class InvoiceControllerA extends GetxController{
           if (printStatus == 1) {
             dialogBox(Get.context!, "Check your bluetooth connection");
           } else if (printStatus == 2) {
-            dialogBox(Get.context!, "Your default printer configuration problem");
+            dialogBox(
+                Get.context!, "Your default printer configuration problem");
           } else if (printStatus == 3) {
             await bluetoothHelper.scan(false);
             // alertMessage("Try again");
@@ -309,21 +302,20 @@ class InvoiceControllerA extends GetxController{
         // alertMessage("Try again");
         break;
       case 4:
-      // alertMessage("Printed successfully");
+        // alertMessage("Printed successfully");
         break;
     }
   }
 
-
   // Method to make the API call with an authentication token
   void createSalesReturn(BuildContext context) async {
-  start(context);
-     String apiUrl = '${BaseUrl.baseUrlV11}/salesReturns/sales-return-rassasy/';
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     int userID = prefs.getInt('user_id') ?? 0;
-     int branchID = prefs.getInt('branchID') ?? 1;
-     String accessToken = prefs.getString('access') ?? '';
-     String companyID = prefs.getString('companyID') ?? '';
+    start(context);
+    String apiUrl = '${BaseUrl.baseUrlV11}/salesReturns/sales-return-rassasy/';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int userID = prefs.getInt('user_id') ?? 0;
+    int branchID = prefs.getInt('branchID') ?? 1;
+    String accessToken = prefs.getString('access') ?? '';
+    String companyID = prefs.getString('companyID') ?? '';
     final payload = {
       "CompanyID": companyID,
       "BranchID": branchID,
@@ -351,7 +343,6 @@ class InvoiceControllerA extends GetxController{
           print('Success: ${responseBody['message']}');
 
           Get.back();
-
         } else {
           stop();
           print('Error: ${responseBody['message']}');
@@ -363,6 +354,126 @@ class InvoiceControllerA extends GetxController{
     } catch (e) {
       stop();
       print('Exception: $e');
+    }
+  }
+
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  var selectedPosValue = ''.obs;
+  var searchValue = ''.obs;
+
+  void updateValue(String value) {
+    selectedPosValue.value = value;
+    viewList();
+
+    pr(selectedPosValue);
+  }
+
+  late ValueNotifier<DateTime> fromDateNotifier = ValueNotifier(DateTime.now());
+  late ValueNotifier<DateTime> toDateNotifier = ValueNotifier(DateTime.now());
+
+  DateFormat apiDateFormat = DateFormat("yyyy-MM-dd");
+  // List<InvoiceModelClass> invoiceList = [];
+  var invoiceList = <InvoiceModelClass>[].obs;
+  var pageNumber = 1;
+  var itemPerPage = 10;
+  var firstTime = 1;
+  //  var isLoading = true.obs;
+  var isClear = true.obs;
+
+  Future<Null> viewList() async {
+    //isClear
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      // dialogBox(context, "Please check your network connection");
+    } else {
+      try {
+        isClear(true);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        // start(context);
+        String baseUrl = BaseUrl.baseUrl;
+        var userID = prefs.getInt('user_id') ?? 0;
+        var accessToken = prefs.getString('access') ?? '';
+        // pr(accessToken);
+        var companyID = prefs.getString('companyID') ?? 0;
+        var branchID = prefs.getInt('branchID') ?? 1;
+
+        final String url = '$baseUrl/posholds/list-pos-hold-invoices/';
+        String selectedType = selectedPosValue.value;
+        String searchinvoice = searchValue.value;
+        pr("radioselect $selectedType");
+        Map data = {
+          "CompanyID": companyID,
+          "CreatedUserID": userID,
+          "BranchID": branchID,
+          "page_number": pageNumber,
+          "page_size": itemPerPage,
+          "from_date": apiDateFormat.format(fromDateNotifier.value),
+          "to_date": apiDateFormat.format(toDateNotifier.value),
+          "Type": selectedType,
+          "search": searchinvoice,
+        };
+        print(url);
+        print(data);
+
+        var body = json.encode(data);
+        var response = await http.post(Uri.parse(url),
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': 'Bearer $accessToken',
+            },
+            body: body);
+
+        Map n = json.decode(utf8.decode(response.bodyBytes));
+        var status = n["StatusCode"];
+        print(status);
+
+        var responseJson = n["data"];
+        print(response.body);
+
+        if (status == 6000) {
+          for (Map user in responseJson) {
+            invoiceList.add(InvoiceModelClass.fromJson(user));
+          }
+          // if (firstTime == 1) {
+          //   invoiceList.clear();
+          //   stop();
+          // }
+          // isLoading = false;
+          // stop();
+          // setState(() {
+          //   messageShow = "";
+
+          //   for (Map user in responseJson) {
+          //     invoiceList.add(InvoiceModelClass.fromJson(user));
+          //   }
+          //   if (invoiceList.isEmpty) {
+          //     messageShow = "No sale during these period";
+          //   }
+          // });
+        } else if (status == 6001) {
+          // if (firstTime == 1) {
+          //   stop();
+          // }
+          // isLoading = false;
+          // messageShow = "No sale during these period";
+          // stop();
+        } else {
+          // if (firstTime == 1) {
+          //   stop();
+          // }
+          // isLoading = false;
+          // stop();
+        }
+      } catch (e) {
+        isClear(false);
+        // if (firstTime == 1) {
+        //   stop();
+        // }
+        // isLoading = false;
+        // stop();
+        // print("Error ${e.toString()}");
+      }
     }
   }
 }

@@ -17,7 +17,7 @@ import 'package:rassasy_new/new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'package:rassasy_new/new_design/back_ground_print/USB/test_page/usb_test_page.dart';
 import 'package:rassasy_new/new_design/back_ground_print/bluetooth/test_page/test_page_bluetooth.dart';
 import 'package:rassasy_new/new_design/back_ground_print/wifi_print/test_page/print_settings.dart';
-import 'package:rassasy_new/new_design/dashboard/invoices/view_invoice.dart';
+import 'package:rassasy_new/new_design/dashboard/invoices/view/view_invoice.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/flavour/floavour_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/mobile_section/view/tax_mobile/tax_list_mobile.dart';
 import 'package:rassasy_new/new_design/dashboard/pos/pos_new_design/view/mobile/pos_main_page.dart';

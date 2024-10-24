@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rassasy_new/global/customclass.dart';
 import 'package:rassasy_new/global/global.dart';
-import 'package:rassasy_new/new_design/dashboard/invoices/invoice_controller_a.dart';
+import 'package:rassasy_new/new_design/dashboard/invoices/controller/invoice_controller.dart';
 
-import '../../../Print/bluetoothPrint.dart';
+import '../../../../Print/bluetoothPrint.dart';
 
 class InvoiceDetailPage extends StatefulWidget {
   InvoiceDetailPage(
@@ -20,7 +20,7 @@ class InvoiceDetailPage extends StatefulWidget {
 }
 
 class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
-  InvoiceControllerA invoiceControllerA = Get.put(InvoiceControllerA());
+  InvoiceController invoiceControllerA = Get.put(InvoiceController());
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
   }
 
   void _showSelectableListDialog(BuildContext context) {
-    final invoiceControllerA = Get.find<InvoiceControllerA>();
+    final invoiceControllerA = Get.find<InvoiceController>();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -117,7 +117,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                               fontSize: 12.0,
                                             ),
                                           ),
-                                          SizedBox(height: 8),
+                                          const SizedBox(height: 8),
                                         ],
                                       ),
                                     ),
@@ -129,12 +129,11 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                         final selectedItems = invoiceControllerA
                                             .getSelectedItems();
                                         List<int> listOfID = [];
-                                        print(
-                                            "selectedItems   ${selectedItems}");
+                                        print("selectedItems   $selectedItems");
 
                                         for (var item in selectedItems) {
                                           print(
-                                              "selectedItems   ${selectedItems}");
+                                              "selectedItems   $selectedItems");
 
                                           print(
                                               'Selected Item - ID: ${item['id']},  mstr ${item['SalesDetailsID']} Name: ${item['ProductName']}');
@@ -178,9 +177,9 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                 TextButton(
                   onPressed: () {
                     Get.back();
-                    print( "invoiceControllerA.salesDetailIds :  ${invoiceControllerA.salesDetailIds}");
+                    print(
+                        "invoiceControllerA.salesDetailIds :  ${invoiceControllerA.salesDetailIds}");
                     invoiceControllerA.createSalesReturn(context);
-
                   },
                   child: Text(
                     'OK',
@@ -212,11 +211,11 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
       appBar: AppBar(),
       body: Center(
         child: Container(
-          color: Color(0xfff1f1f1),
+          color: const Color(0xfff1f1f1),
           width: MediaQuery.of(context).size.width / 3,
           child: Obx(() {
             if (invoiceControllerA.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (invoiceControllerA.errorMessage.isNotEmpty) {
@@ -266,7 +265,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                         width: 100,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff0347A1)),
+                              backgroundColor: const Color(0xff0347A1)),
                           onPressed: () {
                             PrintDataDetails.type = "SI";
                             PrintDataDetails.id = widget.MasterUID!;
@@ -323,7 +322,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                 children: <TextSpan>[
                                   TextSpan(
                                       text:
-                                          "${invoiceControllerA.grand_total.value}",
+                                          invoiceControllerA.grand_total.value,
                                       style: customisedStyle(context,
                                           Colors.black, FontWeight.w400, 16.0)),
                                   TextSpan(
@@ -436,7 +435,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width / 5,
                                     // color: Colors.red,
@@ -490,7 +489,9 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
                                             14.0),
                                       ),
                                       Text(
-                                        "${roundStringWith(invoiceControllerA.itemTableList[index]["UnitPrice"].toString())}",
+                                        roundStringWith(invoiceControllerA
+                                            .itemTableList[index]["UnitPrice"]
+                                            .toString()),
                                         style: customisedStyle(
                                             context,
                                             const Color(0xffa1a1a1),

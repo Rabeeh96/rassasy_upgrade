@@ -68,7 +68,7 @@ class _ReportPageNewbetaState extends State<ReportPageNewbeta> {
                       SizedBox(
                           width: constraints.maxWidth * 0.7,
                           height: constraints.maxHeight * 1,
-                          // height: constraints.maxHeight * 1,
+                      
                           child: Obx(
                             () {
                               return SingleChildScrollView(

@@ -1,57 +1,21 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:bitsdojo_window/bitsdojo_window.dart' if (dart.library.html) '';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:rassasy_new/new_design/auth_user/login/login_page.dart';
-
 import 'package:rassasy_new/new_design/organization/mob_oganisation_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart' if (dart.library.html) '';
 
 import 'global/global.dart';
 import 'localisation/localisation.dart';
 import 'new_design/auth_user/user_pin/employee_pin_no.dart';
 import 'new_design/organization/list_organization.dart';
-import 'dart:convert';
-import 'dart:developer';
-import 'package:http/http.dart' as http;
-
-///code commented here
-// void main() {
-//   WidgetsFlutterBinding.ensureInitialized();
-//
-//
-//   bool isTablet = isTabletDevice();
-//   print("main  $isTablet");
-//   /// Set preferred orientations based on the device type
-//   ///
-//   if (isTablet) {
-//
-//
-//     SystemChrome.setPreferredOrientations([
-//       DeviceOrientation.landscapeLeft,
-//       DeviceOrientation.landscapeRight,
-//     ]).then((_) {
-//       runApp(MyApp());
-//     });
-//
-//
-//   } else {
-//     print("else  $isTablet");
-//     SystemChrome.setPreferredOrientations([
-//       DeviceOrientation.portraitUp,
-//       DeviceOrientation.portraitDown,
-//     ]).then((_) {
-//       runApp(MyApp());
-//     });
-//   }
-// }
-
-import 'package:path_provider/path_provider.dart' as path_provider;
-
-import 'test/loc/View/group.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,12 +33,15 @@ void main() async {
     // bool isTablet = true;
     bool isTablet = prefs.getBool('isTablet') ?? isTabletDevice();
     enableTabDesign = isTablet;
-    prefs.setBool('isTablet', isTablet); // Save isTablet value to SharedPreferences
+    prefs.setBool(
+        'isTablet', isTablet); // Save isTablet value to SharedPreferences
     print("main isTablet: $isTablet");
 
     SystemChrome.setPreferredOrientations([
       isTablet ? DeviceOrientation.landscapeLeft : DeviceOrientation.portraitUp,
-      isTablet ? DeviceOrientation.landscapeRight : DeviceOrientation.portraitDown,
+      isTablet
+          ? DeviceOrientation.landscapeRight
+          : DeviceOrientation.portraitDown,
     ]).then((_) {
       runApp(MyApp(isTablet: isTablet));
     });
@@ -83,8 +50,10 @@ void main() async {
 
 bool isTabletDevice() {
   /// Determine if the device is a tablet based on the screen width
-  double screenWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
-  print("--screenWidth  $screenWidth   ---------  defaultScreenWidth   $defaultScreenWidth");
+  double screenWidth =
+      MediaQueryData.fromView(WidgetsBinding.instance.window).size.width;
+  print(
+      "--screenWidth  $screenWidth   ---------  defaultScreenWidth   $defaultScreenWidth");
 
   /// You may need to adjust this threshold based on your requirements
   return screenWidth > defaultScreenWidth;
@@ -93,7 +62,7 @@ bool isTabletDevice() {
 class MyApp extends StatelessWidget {
   final bool isTablet;
 
-  MyApp({required this.isTablet});
+  const MyApp({super.key, required this.isTablet});
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +73,10 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           //  return MaterialApp(home: TestDemoPrintingOption());
           return GetMaterialApp(
-              translations: LocaleChange(), locale: const Locale('en', 'US'), fallbackLocale: const Locale('en', 'US'), home: Splash());
+              translations: LocaleChange(),
+              locale: const Locale('en', 'US'),
+              fallbackLocale: const Locale('en', 'US'),
+              home: const Splash());
         } else {
           // Loading is done, return the app:
           return GetMaterialApp(
@@ -137,7 +109,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   final bool isTablet;
 
-  MyHomePage({required this.isTablet});
+  const MyHomePage({super.key, required this.isTablet});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -169,13 +141,16 @@ class _MyHomePageState extends State<MyHomePage> {
     print(companySelected);
     if (status) {
       if (companySelected) {
-        await defaultData(context: context,);
+        await defaultData(
+          context: context,
+        );
         var expireDate = prefs.getString('expiryDate') ?? '';
         var companyName = prefs.getString('companyName') ?? '';
         var expire = isDateExpired(expireDate);
         if (expire == true) {
           prefs.setBool('companySelected', false);
-          await dialogBox(context, "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
+          await dialogBox(context,
+              "$companyName Expired! Please Contact us(+91 95775 00400 | +966 53 313 4959 | +971 52295 6284)to continue");
           if (isTablet) {
             Get.off(OrganizationList());
           } else {
@@ -206,13 +181,18 @@ class _MyHomePageState extends State<MyHomePage> {
       var companyID = prefs.getString('companyID') ?? 0;
       var branchID = prefs.getInt('branchID') ?? 1;
       var accessToken = prefs.getString('access') ?? '';
-      baseURlApi = prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
+      baseURlApi =
+          prefs.getString('BaseURL') ?? 'https://www.api.viknbooks.com';
 
       String baseUrl = BaseUrl.baseUrl;
 
       final String url = '$baseUrl/users/get-default-values/';
       print(url);
-      Map data = {"CompanyID": companyID, "userId": userID, "BranchID": branchID};
+      Map data = {
+        "CompanyID": companyID,
+        "userId": userID,
+        "BranchID": branchID
+      };
       print(data);
       print(accessToken);
       //encode Map to JSON
@@ -246,7 +226,8 @@ class _MyHomePageState extends State<MyHomePage> {
         prefs.setString("expiryDate", settingsData["ExpiryDate"]);
         prefs.setString("PriceDecimalPoint", settingsData["PriceDecimalPoint"]);
         prefs.setString("RoundingFigure", settingsData["RoundingFigure"]);
-        prefs.setBool("EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
+        prefs.setBool(
+            "EnableExciseTax", settingsData["EnableExciseTax"] ?? false);
         prefs.setInt("user_type", n["user_type"]);
       } else {
         var errorMessage = n["error"] ?? n["error"] ?? "";
@@ -279,10 +260,12 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class Splash extends StatelessWidget {
+  const Splash({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF8F8F8),
+      backgroundColor: const Color(0xffF8F8F8),
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -312,6 +295,8 @@ class Init {
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
