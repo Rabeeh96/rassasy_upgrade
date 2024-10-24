@@ -266,9 +266,9 @@ class OrderController extends GetxController {
     amountFontSizeController.text = amountFontSize.toString();
 
     groupNameFontSizeController.text = groupFontSize.toString();
-    heightController.text = heightOfITem.toString();
     widthController.text = widthOfItem.toString();
     descriptionFontSizeController.text = descriptionFontSize.toString();
+    heightController.text = heightOfITem.toString();
     rowCountController.text = rowCountGridView.toString();
 
     autoFocusToSearchField.value = prefs.getBool("autoFocusSearch") ?? false;

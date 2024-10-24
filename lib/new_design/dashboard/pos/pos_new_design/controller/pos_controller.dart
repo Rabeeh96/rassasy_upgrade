@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -31,40 +32,17 @@ class POSController extends GetxController {
 
   POSController({int defaultIndex = 0}) : tabIndex = defaultIndex.obs;
 
+
+  Timer? timer;
+
+
+
   // var tabIndex = 0.obs;
-
-//!check height width customs
-
-  var tableheight = 2.0.obs;
-
-  void heightinc() {
-    tableheight.value += 0.1;
-  }
-
-  void heightdesc() {
-    // if (tableheight.value > 1.5) {
-    tableheight.value -= 0.1;
-    // } else if (tableheight.value == 1.5) {
-    // tableheight.value = 2.0;
-    // }
-  }
-
-//!
-  var tablewidth = 4.obs;
-
-  void widthinc() {
-    tablewidth.value++;
-  }
-
-  void widthdesc() {
-    if (tablewidth.value > 1) {
-      tablewidth.value--;
-    }
-  }
 
   void changeTabIndex(int index) {
     tabIndex.value = index;
   }
+
 
   checkPermissionForSave(value) {
     final permissions = {
@@ -80,7 +58,7 @@ class POSController extends GetxController {
   void onInit() {
     tabIndex.value = 0;
     // fetchAllData();
-    // fetchTOC();
+   // fetchTOC();
     ReloadAllData();
     update();
     super.onInit();
@@ -144,13 +122,15 @@ class POSController extends GetxController {
   var cancelOrder = [].obs;
   var isLoading = true.obs;
 
-  var fullDataList = [].obs;
+  var  fullDataList = [].obs;
+
 
   ///this function used for getting time
   ///in hours and minute
   String returnOrderTime(String data, String status) {
+
     if (status != "Vacant") {
-      print("----data $data   $status");
+
     }
 
     if (data == "" || status == "Vacant") {
@@ -184,13 +164,13 @@ class POSController extends GetxController {
     }
   }
 
-  refreshTableData() {
+  refreshTableData(){
     tableMergeData.clear();
     fetchAllData();
     update();
   }
 
-  refreshTOC() {
+  refreshTOC(){
     onlineOrders.clear();
     takeAwayOrders.clear();
     carOrders.clear();
@@ -198,10 +178,42 @@ class POSController extends GetxController {
     update();
   }
 
+
   ///fetch all api call
-  fetchAllData() async {
+    fetchAllData() async {
     try {
       isLoading(true);
+      update();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var userID = prefs.getInt('user_id') ?? 0;
+      var accessToken = prefs.getString('access') ?? '';
+      currency = prefs.getString('CurrencySymbol') ?? "";
+      userName.value = prefs.getString('user_name') ?? "";
+
+      rowCountGridView.value = prefs.getInt('count_of_row_pos') ?? 2;
+      heightOfITem.value = prefs.getDouble('height_of_item_pos') ?? 12.0;
+
+      rowCountGridViewSplit.value = prefs.getInt('count_of_row_pos_split') ?? 2;
+      heightOfITemSplit.value = prefs.getDouble('height_of_item_pos_split') ?? 12.0;
+
+
+      var fetchedData = await _tableService.fetchAllData(accessToken);
+      print(fetchedData);
+      selectedIndexNotifier.value = 0;
+      tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
+      fullDataList.value = fetchedData['data']??[];
+
+      print("fullDataListfullDataList${fullDataList.length}");
+
+      pr(tableMergeData.length.toString());
+    } finally {
+
+      isLoading(false);
+    }
+  }
+    fetchAllDataWithoutLoading() async {
+    try {
+
       update();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userID = prefs.getInt('user_id') ?? 0;
@@ -211,19 +223,18 @@ class POSController extends GetxController {
       var fetchedData = await _tableService.fetchAllData(accessToken);
       print(fetchedData);
       selectedIndexNotifier.value = 0;
-      tableMergeData.assignAll((fetchedData['data'] as List)
-          .map((json) => MergeData.fromJson(json))
-          .toList());
+      tableMergeData.assignAll((fetchedData['data'] as List).map((json) => MergeData.fromJson(json)).toList());
 
-      fullDataList.value = fetchedData['data'] ?? [];
-
+      fullDataList.value = fetchedData['data']??[];
       print("fullDataListfullDataList${fullDataList.length}");
-
       pr(tableMergeData.length.toString());
     } finally {
-      isLoading(false);
+
     }
   }
+
+
+
 
   ///fetch takeaway,online,car api call
   void fetchTOC() async {
@@ -238,27 +249,29 @@ class POSController extends GetxController {
       print('-**-/-$fetchedTOCData');
       selectedIndexNotifier.value = 0;
       print("--------1");
+      takeAwayOrders.clear();
+      onlineOrders.clear();
+      carOrders.clear();
 
-      if (fetchedTOCData['TakeAwayStatusCode'] == 6000) {
-        takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List)
-            .map((json) => TakeAway.fromJson(json))
-            .toList());
+      if(fetchedTOCData['TakeAwayStatusCode'] ==6000){
+        takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
         print("--------1");
       }
 
-      if (fetchedTOCData['OnlineStatusCode'] == 6000) {
-        onlineOrders.assignAll((fetchedTOCData['Online'] as List)
-            .map((json) => Online.fromJson(json))
-            .toList());
+
+      if(fetchedTOCData['OnlineStatusCode'] ==6000){
+        onlineOrders.assignAll((fetchedTOCData['Online'] as List).map((json) => Online.fromJson(json)).toList());
         print("--------1");
       }
 
-      if (fetchedTOCData['CarStatusCode'] == 6000) {
-        carOrders.assignAll((fetchedTOCData['Car'] as List)
-            .map((json) => Car.fromJson(json))
-            .toList());
+
+      if(fetchedTOCData['CarStatusCode'] ==6000){
+        carOrders.assignAll((fetchedTOCData['Car'] as List).map((json) => Car.fromJson(json)).toList());
         print("--------1");
       }
+
+
+
 
       // takeAwayOrders.assignAll((fetchedTOCData['TakeAway'] as List).map((json) => TakeAway.fromJson(json)).toList());
       // print("--------1");
@@ -289,27 +302,28 @@ class POSController extends GetxController {
   //     isLoading(false);
   //   }
   // }
-  combineDataFunction(BuildContext context, List combineDatas) async {
+    combineDataFunction(BuildContext context, List combineDatas) async {
     try {
       isLoading(true);
       final fetchedmergeData = await _tableService.mergeData(combineDatas);
       isLoading(false);
 
-      if (fetchedmergeData) {
+      if(fetchedmergeData){
         selectedIndexNotifier.value = 0;
         return [true];
-      } else {
-        return [false, ""];
       }
+      else{
+        return [false,""];
+      }
+
     } catch (e) {
       isLoading(false);
-      return [false, e.toString()];
+      return [false,e.toString()];
       print('Error: $e');
     }
   }
-
   /// split merge
-  mergeSplitTable(combineData) async {
+   mergeSplitTable(combineData) async {
     try {
       isLoading(true);
       String baseUrl = BaseUrl.baseUrl;
@@ -337,8 +351,7 @@ class POSController extends GetxController {
       log("merge response");
       pr(response.body);
 
-      Map<String, dynamic> responseData =
-          json.decode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
       var status = responseData["StatusCode"];
 
       if (status == 6000) {
@@ -346,18 +359,20 @@ class POSController extends GetxController {
         // Get.back();
         // fetchAllData();
       } else if (status == 6001) {
-        var msg = responseData["message"] ?? "";
-        return [false, msg];
-      } else if (status == 6002) {
-        var msg = responseData["error"] ??
-            responseData["message"] ??
-            "Something went wrong";
-        return [false, msg];
-      } else {
-        return [false, "Something went wrong"];
+        var msg = responseData["message"]??"";
+        return [false,msg];
+      }
+      else if (status == 6002) {
+        var msg = responseData["error"]??responseData["message"]??"Something went wrong";
+        return [false,msg];
+      }
+
+      else {
+        return [false,"Something went wrong"];
+
       }
     } catch (e) {
-      return [false, (e.toString())];
+      return [false,"${e.toString()}"];
       // Handle exceptions
     } finally {
       isLoading(false);
@@ -433,7 +448,6 @@ class POSController extends GetxController {
       isLoading(false);
     }
   }
-
   allCombinedTable(tableID) async {
     try {
       isLoading(true);
@@ -443,30 +457,29 @@ class POSController extends GetxController {
       var branchID = prefs.getInt('branchID') ?? 1;
       var accessToken = prefs.getString('access') ?? '';
       // http://192.168.1.91:8002/api/v10/posholds/tables/?CompanyID=5a09676a-55ef-47e3-ab02-bac62005d847&BranchID=1&AllCombined=False&get_combine_table_ID=6f6cbbb7-451d-4986-b6d7-450e15a273bc
-      final String url =
-          '$baseUrl/posholds/tables/?CompanyID=$companyID&branchID=$branchID&AllCombined=True&get_combine_table_ID=$tableID';
+      final String url = '$baseUrl/posholds/tables/?CompanyID=$companyID&branchID=$branchID&AllCombined=True&get_combine_table_ID=$tableID';
       print("-----url$url");
-      var response = await http.get(
-        Uri.parse(url),
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer $accessToken',
-        },
-      );
+      var response = await http.get(Uri.parse(url),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $accessToken',
+          },
+          );
       log("merge response");
       pr(response.body);
 
-      Map<String, dynamic> responseData =
-          json.decode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
       var status = responseData["StatusCode"];
       print(response.body);
       if (status == 6000) {
         return true;
-      } else if (status == 6001) {
+      }
+      else if (status == 6001) {
         var msg = responseData["message"];
         Get.snackbar('Error', msg);
         return false;
-      } else {
+      }
+      else{
         return false;
       }
     } catch (e) {
@@ -474,14 +487,11 @@ class POSController extends GetxController {
       // Handle exceptions
     } finally {
       isLoading(false);
+
     }
   }
 
-  swapTableFunction(
-      {required String fromTableID,
-      required List fromSplitTableList,
-      required String toTableID,
-      required String toSplitTableID}) async {
+   swapTableFunction({required String fromTableID,required List fromSplitTableList,required String toTableID,required String toSplitTableID}) async {
     try {
       isLoading(true);
 
@@ -497,14 +507,14 @@ class POSController extends GetxController {
       var accessToken = prefs.getString('access') ?? '';
       final String url = '$baseUrl/posholds/pos_table/swap_order/';
       Map<String, dynamic> data = {
-        "CompanyID": companyID,
-        "BranchID": branchID,
-        "fromtable": [
-          {
-            "From_Main_Table": fromTableID,
-            "From_Split_Tables": fromSplitTableList
-          }
-        ],
+          "CompanyID": companyID,
+          "BranchID": branchID,
+          "fromtable": [
+            {
+              "From_Main_Table": fromTableID,
+              "From_Split_Tables":fromSplitTableList
+            }
+          ],
         "To_Main_Table": toTableID,
         "To_Split_Table": toSplitTableID
       };
@@ -520,25 +530,25 @@ class POSController extends GetxController {
       log("merge response");
       pr(response.body);
 
-      Map<String, dynamic> responseData =
-          json.decode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
       var status = responseData["StatusCode"];
 
-      pr("----------$status");
+      pr("----------${status}");
       if (status == 6000) {
         pr("-----------11");
         isLoading(false);
         return true;
-        // Get.back();
+         // Get.back();
         // tablenameController.clear();
         // splitcountcontroller.text = "0";
         // fetchAllData();
       } else if (status == 6001) {
         isLoading(false);
-        var msg = responseData["message"] ?? responseData["error"] ?? "";
+        var msg = responseData["message"]??responseData["error"]??"";
         Get.snackbar('Error', msg);
-        return false; // Show error message
+        return false;// Show error message
       }
+
       // final addsplit = jsonDecode(response.body);
       // if (response.statusCode == 200 || response.statusCode == 201) {
       //
@@ -560,6 +570,7 @@ class POSController extends GetxController {
       // Handle exceptions
     }
   }
+
 
   /// create table
   Future<void> createTableApi() async {
@@ -628,7 +639,8 @@ class POSController extends GetxController {
       required String tableID,
       required String cancelReasonId,
       required String orderID,
-      required String splitUID}) async {
+      required String splitUID
+      }) async {
     try {
       isLoading(true);
 
@@ -657,9 +669,8 @@ class POSController extends GetxController {
         "CompanyID": companyID,
         "BranchID": branchID,
         "Type": type,
-        "split_table_id": splitUID,
-        "unqid":
-            type == "Dining&Cancel" || type == "Dining" ? tableID : orderID,
+        "split_table_id":splitUID,
+        "unqid": type == "Dining&Cancel" || type == "Dining" ? tableID : orderID,
         "reason_id": cancelReasonId,
       };
 
@@ -687,9 +698,15 @@ class POSController extends GetxController {
       if (status == 6000) {
         pr(type);
 
+
         if (type != "Cancel") {
           fetchAllData();
         } else {
+
+
+
+          pr("---------------------}===========");
+
           fetchTOC();
         }
 
@@ -882,13 +899,31 @@ class POSController extends GetxController {
   var kitchen_print_perm = false.obs;
   var remove_table_perm = false.obs;
   var convert_type_perm = false.obs;
+  var rowCountGridView = 2.obs;
+  var heightOfITem = 12.0.obs;
+
+   var rowCountGridViewSplit = 2.obs;
+   var heightOfITemSplit = 12.0.obs;
+
+
+
 
   ReloadAllData() async {
     print("----------------------------------------------------------------1");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isCombine.value = false;
-    isCombineSplit.value = false;
+    isCombine.value=false;
+    isCombineSplit.value=false;
     selectList.clear();
+    rowCountGridView.value = prefs.getInt('count_of_row_pos') ?? 2;
+    heightOfITem.value = prefs.getDouble('height_of_item_pos') ?? 12.0;
+
+    rowCountGridViewSplit.value = prefs.getInt('count_of_row_pos_split') ?? 2;
+    heightOfITemSplit.value = prefs.getDouble('height_of_item_pos_split') ?? 12.0;
+
+
+
+    print("-------------------19920 ${rowCountGridView.value} ${heightOfITem.value} ");
+
     dining_view_perm.value = prefs.getBool('Diningview') ?? true;
     reservation_view_perm.value = prefs.getBool('View Reservation') ?? true;
     directOrderOption.value = prefs.getBool('directOrderOption') ?? false;
@@ -964,18 +999,39 @@ class POSController extends GetxController {
     log(selectedsplitIndex.value.toString());
   }
 
-  // int clickCount = 0;
-
-  // void selectsplitItem(int index) {
-  //   clickCount++;
-  //   if (clickCount == 0) {
-  //     selectedsplitIndex.value = index;
-  //     log(selectedsplitIndex.value.toString());
-  //   } else if (clickCount == 2) {
-  //     selectedsplitIndex.value = 1000;
-  //     log(selectedsplitIndex.value.toString());
-  //   }
+//    startApiCall();
+  // @override
+  // void dispose() {
+  //   posController.timer?.cancel(); // Cancel the timer when the widget is disposed
+  //   super.dispose();
   // }
+  //
+  // void startApiCall() {
+  //
+  //
+  //
+  //   posController.timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+  //     pr("posController.selectedsplitIndex.value ${posController.selectedsplitIndex.value}posController.isCombine.value   ${posController.isCombine.value}  posController.isCombineSplit.value ${posController.isCombineSplit.value}");
+  //     if (posController.isCombine.value==false&&posController.isCombineSplit.value==false &&posController.selectedsplitIndex.value ==1000) {
+  //       pr("-----------------------------------------------${posController.selectedType.value} not dine");
+  //       if(posController.selectedType.value =="dine"){
+  //         posController.fetchAllDataWithoutLoading();
+  //       }
+  //       else{
+  //         pr("//////////////// not dine");
+  //       }
+  //     }
+  //     else{
+  //
+  //     }
+  //
+  //
+  //
+  //   });
+  //
+  //
+  // }
+
 
   void takeAwayselectItem(int index) {
     takeawayselectedIndex.value = index;
@@ -999,6 +1055,8 @@ class POSController extends GetxController {
   // List<int> selectList = [];
   RxList<int> selectList = RxList<int>();
 
+
+
   // RxList<int> combineDatas = <int>[].obs;
   RxBool isCombine = false.obs;
   RxBool isCombineSplit = false.obs;
@@ -1011,6 +1069,9 @@ class POSController extends GetxController {
     log(datalist.toString());
     return datalist;
   }
+
+  var tableheight = 2.0.obs;
+  var tablewidth = 4.obs;
 
   checkedbtn(int index) {
     final datalist = selectList.contains(index);
